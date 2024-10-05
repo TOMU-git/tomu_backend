@@ -1,7 +1,8 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
-import { Module } from 'src/modules/module/entities/module.entity';
-import { Column, OneToMany } from 'typeorm';
+import { Block } from 'src/modules/block/entities/block.entity'; // O'zgartirish: Module o'rniga Block
+import { Column, Entity, OneToMany } from 'typeorm';
 
+@Entity('courses')
 export class Course extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   title: string;
@@ -9,19 +10,15 @@ export class Course extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
+  @Column({ type: 'int' })
+  price: number;
+
   @Column({ type: 'varchar', length: 255 })
   instructor: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  created_at: Date;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  imageUrl: string; // Rasm URL manzili
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updated_at: Date;
-
-  @OneToMany(() => Module, (module) => module.course)
-  modules: Module[];
+  @OneToMany(() => Block, (block) => block.course)
+  blocks: Block[]; // Blocklar bilan bog'liq
 }
