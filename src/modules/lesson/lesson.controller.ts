@@ -1,34 +1,57 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LessonService } from './lesson.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Inject,
+} from '@nestjs/common';
+import { ID } from 'src/common/types/type';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { ResData } from 'src/lib/resData';
+import { Lesson } from './entities/lesson.entity';
+import { ILessonService } from './interfaces/lesson.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('lesson')
 @Controller('lesson')
 export class LessonController {
-  constructor(private readonly lessonService: LessonService) {}
+  constructor(
+    @Inject('ILessonService')
+    private readonly lessonService: ILessonService,
+  ) {}
 
   @Post()
-  create(@Body() createLessonDto: CreateLessonDto) {
-    return this.lessonService.create(createLessonDto);
+  async create(
+    @Body() createLessonDto: CreateLessonDto,
+  ): Promise<ResData<Lesson>> {
+    return await this.lessonService.create(createLessonDto);
   }
 
   @Get()
-  findAll() {
-    return this.lessonService.findAll();
+  async findAll(): Promise<ResData<Array<Lesson>>> {
+    return await this.lessonService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lessonService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
+    return await this.lessonService.findOneById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLessonDto: UpdateLessonDto) {
-    return this.lessonService.update(+id, updateLessonDto);
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
+    @Body() updateLessonDto: UpdateLessonDto,
+  ): Promise<ResData<Lesson>> {
+    return await this.lessonService.update(id, updateLessonDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lessonService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
+    return await this.lessonService.delete(id);
   }
 }
