@@ -28,11 +28,6 @@ async function bootstrap() {
     }),
   );
 
-  // sdhjhjf
-  // fix bug
-  // bug
-  // 12
-// fffff
   const options = new DocumentBuilder()
     .setTitle('lms')
     .setDescription('Description')
@@ -40,8 +35,6 @@ async function bootstrap() {
     .addTag('apies')
     .addBearerAuth()
     .build();
-
-  // comment
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
