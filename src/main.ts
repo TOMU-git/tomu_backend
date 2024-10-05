@@ -15,7 +15,7 @@ async function bootstrap() {
   });
   app.useBodyParser('json');
 
-  // Nimadir
+  // Nimadir sjdhfsjdh
 
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
