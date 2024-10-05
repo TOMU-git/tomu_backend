@@ -13,13 +13,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  app.useBodyParser('json'); // comment
+  app.useBodyParser('json');
 
-  // Nimadir yana nimadir
-  // Foo1
-
-
-  // Salom
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
