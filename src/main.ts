@@ -13,7 +13,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  app.useBodyParser('json');
+  app.useBodyParser('json'); // comment
 
   // Nimadir sjdhfsjdh
 
