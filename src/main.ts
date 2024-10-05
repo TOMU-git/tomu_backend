@@ -15,8 +15,11 @@ async function bootstrap() {
   });
   app.useBodyParser('json'); // comment
 
-  // Nimadir sjdhfsjdh
+  // Nimadir yana nimadir
+  // Foo1
 
+
+  // Salom
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
