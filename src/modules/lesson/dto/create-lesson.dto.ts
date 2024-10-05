@@ -1,6 +1,13 @@
-import { IsInt, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsInt,
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsPositive,
+  MaxLength,
+} from 'class-validator';
 
-export class CreateLessonDTO {
+export class CreateLessonDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
@@ -12,9 +19,27 @@ export class CreateLessonDTO {
   video_url: string;
 
   @IsInt()
+  @IsPositive()
   order: number;
 
-  // Grammar va Homework uchun optional, agar kerak bo'lsa
-  grammarId?: string; // Agar siz grammarning ID-sini qo'shmoqchi bo'lsangiz
-  homeworkId?: string; // Agar siz homeworkning ID-sini qo'shmoqchi bo'lsangiz
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(50)
+  mimetype: string;
+
+  @IsInt()
+  @IsPositive()
+  size: number;
+
+  @IsOptional()
+  @IsString()
+  blockId: string; // Bog'lanadigan `Block`ning `id`si
+
+  @IsOptional()
+  @IsString()
+  grammarId: string; // Bog'lanadigan `Grammar`ning `id`si
+
+  @IsOptional()
+  @IsString()
+  homeworkId: string; // Bog'lanadigan `Homework`ning `id`si
 }

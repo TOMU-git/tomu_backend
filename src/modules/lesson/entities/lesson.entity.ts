@@ -22,6 +22,20 @@ export class Lesson extends BaseEntity {
    */
   order: number;
 
+  @Column({ type: 'varchar', length: 50 })
+  /**
+   * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
+   * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
+   */
+  mimetype: string;
+
+  @Column({ type: 'int' })
+  /**
+   * Faylning o'lchamini baytlarda ko'rsatadi.
+   * Bu maydon yuklangan faylning hajmini nazorat qilish va foydalanuvchiga ma'lumot berish imkonini beradi.
+   */
+  size: number;
+
   @ManyToOne(() => Block, (block) => block.lessons)
   block: Block;
 
