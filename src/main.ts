@@ -16,6 +16,7 @@ async function bootstrap() {
   app.useBodyParser('json');
 
   // Nimadir yana nimadir
+  // Foo
 
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
