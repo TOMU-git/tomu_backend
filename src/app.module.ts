@@ -17,12 +17,16 @@ import { LiveChatModule } from './modules/live-chat/live-chat.module';
 import { FileModule } from './modules/file/file.module';
 import { File } from './modules/file/entities/file.entity';
 import { AuthModule } from './modules/auth/auth.module';
-import { LessonModule } from './modules/lesson/lesson.module';
-import { ModuleModule } from './modules/module/module.module';
-import { GrammarModule } from './modules/grammar/grammar.module';
 import { HomeworkModule } from './modules/homework/homework.module';
 import { CourseModule } from './modules/course/course.module';
 import { Course } from './modules/course/entities/course.entity';
+import { BlockModule } from './modules/block/block.module';
+import { Block } from './modules/block/entities/block.entity';
+import { Lesson } from './modules/lesson/entities/lesson.entity';
+import { Grammar } from './modules/grammar/entities/grammar.entity';
+import { LessonModule } from './modules/lesson/lesson.module';
+import { GrammarModule } from './modules/grammar/grammar.module';
+import { Homework } from './modules/homework/entities/homework.entity';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import { Course } from './modules/course/entities/course.entity';
       entities: [
         User,
         Course,
+        Lesson,
+        Grammar,
+        Homework,
+        Block,
         Feedback,
         Payment,
         Progress,
@@ -56,10 +64,11 @@ import { Course } from './modules/course/entities/course.entity';
     LiveChatModule,
     FileModule,
     LessonModule,
-    ModuleModule,
+    BlockModule,
     GrammarModule,
     HomeworkModule,
     CourseModule,
+    BlockModule,
   ],
 })
 export class AppModule {}

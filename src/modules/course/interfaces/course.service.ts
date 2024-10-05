@@ -1,0 +1,14 @@
+import { ResData } from 'src/lib/resData';
+import { ID } from 'src/common/types/type';
+import { Course } from '../entities/course.entity';
+import { CreateCourseDto } from '../dto/create-course.dto';
+import { UpdateCourseDto } from '../dto/update-course.dto';
+
+export interface ICourseService {
+  create(dto: CreateCourseDto): Promise<ResData<Course>>;
+  findAll(): Promise<ResData<Array<Course>>>;
+  findOneById(id: ID): Promise<ResData<Course>>;
+  update(id: ID, dto: UpdateCourseDto): Promise<ResData<Course>>;
+  create(dto: CreateCourseDto): Promise<ResData<Course>>;
+  delete(id: ID): Promise<ResData<Course>>;
+}
