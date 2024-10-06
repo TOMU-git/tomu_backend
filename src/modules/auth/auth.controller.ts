@@ -17,7 +17,11 @@ import { CurrentUser } from 'src/common/decorator/CurrentUser.decorator';
 import { User } from '../user/entities/user.entity';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { RolesGuard } from '../shared/guards/role.guard';
-import { LoginAuthDto } from './dto/auth.dto';
+import {
+  LoginAuthDto,
+  UpdatePasswordDto,
+  UpdateProfileDto,
+} from './dto/auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -42,5 +46,35 @@ export class AuthController {
   @Post('login')
   login(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.login(loginAuthDto);
+  }
+
+  // Profile
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('profile')
+  profile(@CurrentUser() currentUser: User) {
+    return this.authService.profile(currentUser);
+  }
+
+  // Update profile
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Patch('profile')
+  updateProfile(
+    @Body() updateProfileDto: UpdateProfileDto,
+    @CurrentUser() currentUser: User,
+  ) {
+    return this.authService.updateProfile(updateProfileDto, currentUser);
+  }
+
+  // Update password
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Patch('update-password')
+  updatePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @CurrentUser() currentUser: User,
+  ) {
+    return this.authService.updatePassword(updatePasswordDto, currentUser);
   }
 }
