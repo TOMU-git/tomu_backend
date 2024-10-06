@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Body, Inject, Injectable } from '@nestjs/common';
+import { LoginAuthDto } from './dto/auth.dto';
+import { JwtService } from '@nestjs/jwt';
+import { IUserResData, IUserService } from '../user/interfaces/user.service';
+import { AuthException } from './exception/auth.exception';
+import { matchPassword } from 'src/lib/bcrypt';
+import { ResData } from 'src/lib/resData';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    private jwtService: JwtService,
+    @Inject('IUserService') private readonly userService: IUserService,
+  ) {}
+  async login(@Body() loginAuthDto: LoginAuthDto) {
+    const findByPhoneNumber = await this.userService._findByPhoneNumber(
+      loginAuthDto.phoneNumber,
+    );
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    console.log(findByPhoneNumber);
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!findByPhoneNumber) {
+      throw new AuthException();
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const isMatch = await matchPassword(
+      loginAuthDto.password,
+      findByPhoneNumber.password,
+    );
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    console.log(isMatch);
+
+    if (!isMatch) {
+      throw new AuthException();
+    }
+
+    const token = this.jwtService.sign({ id: findByPhoneNumber.id });
+
+    return new ResData<IUserResData>('success', 200, {
+      user: findByPhoneNumber,
+      token,
+    });
   }
 }
