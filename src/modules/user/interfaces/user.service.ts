@@ -13,9 +13,18 @@ export interface IUserService {
     createUserDto: CreateUserDto,
     currentUser: User,
   ): Promise<ResData<IUserResData>>;
+
   findAll(): Promise<ResData<User[]>>;
+
   findOne(id: number): Promise<ResData<User>>;
+
   _findByPhoneNumber(phoneNumber: string): Promise<User>;
-  update(id: number, updateUserDto: UpdateUserDto): Promise<ResData<User>>;
-  delete(id: number): Promise<ResData<User>>;
+
+  update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    currentUser: User,
+  ): Promise<ResData<User>>;
+
+  delete(id: number, currentUser: User): Promise<ResData<User>>;
 }

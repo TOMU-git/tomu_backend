@@ -17,8 +17,6 @@ export class AuthService {
       loginAuthDto.phoneNumber,
     );
 
-    console.log(findByPhoneNumber);
-
     if (!findByPhoneNumber) {
       throw new AuthException();
     }
@@ -27,8 +25,6 @@ export class AuthService {
       loginAuthDto.password,
       findByPhoneNumber.password,
     );
-
-    console.log(isMatch);
 
     if (!isMatch) {
       throw new AuthException();

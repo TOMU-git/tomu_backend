@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
-    console.log(token);
 
     if (!token) {
       throw new UnauthorizedException();
@@ -31,7 +30,6 @@ export class AuthGuard implements CanActivate {
         secret: config.jwtSecretKey,
       });
 
-      console.log(payload);
 
       const { data: foundUser } = await this.userService.findOne(payload.id);
 
