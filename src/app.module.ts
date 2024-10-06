@@ -27,6 +27,7 @@ import { Grammar } from './modules/grammar/entities/grammar.entity';
 import { LessonModule } from './modules/lesson/lesson.module';
 import { GrammarModule } from './modules/grammar/grammar.module';
 import { Homework } from './modules/homework/entities/homework.entity';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { Homework } from './modules/homework/entities/homework.entity';
     HomeworkModule,
     CourseModule,
     BlockModule,
+    UserModule,
   ],
 })
 export class AppModule {}
