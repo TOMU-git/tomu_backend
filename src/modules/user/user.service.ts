@@ -26,12 +26,9 @@ export class UserService implements IUserService {
     createUserDto: CreateUserDto,
     currentUser: User,
   ): Promise<ResData<IUserResData>> {
-    console.log('currentUser', currentUser);
     const findByPhoneNumber = await this._findByPhoneNumber(
       createUserDto.phoneNumber,
     );
-
-    console.log('findByPhoneNumber', findByPhoneNumber);
 
     if (findByPhoneNumber) {
       throw new UserAlreadyExist();
@@ -68,7 +65,7 @@ export class UserService implements IUserService {
   // READ
   async findAll(): Promise<ResData<User[]>> {
     const data = await this.userRepository.findAll();
-    return new ResData<User[]>('ok', 200, data);
+    return new ResData<User[]>('success', 200, data);
   }
   async findOne(id: number): Promise<ResData<User>> {
     const foundUser = await this.userRepository.findOneById(id);
@@ -76,9 +73,8 @@ export class UserService implements IUserService {
       throw new UserNotFound();
     }
 
-    return new ResData<User>('ok', 200, foundUser);
+    return new ResData<User>('success', 200, foundUser);
   }
-
   async _findByPhoneNumber(phoneNumber: string): Promise<User> {
     return await this.userRepository.findByPhoneNumber(phoneNumber);
   }
@@ -87,12 +83,53 @@ export class UserService implements IUserService {
   async update(
     id: number,
     updateUserDto: UpdateUserDto,
+    currentUser: User,
   ): Promise<ResData<User>> {
-    throw new Error('Method not implemented.');
+    const { data: foundUser } = await this.findOne(id);
+
+    if (
+      currentUser.role === RoleEnum.ADMIN &&
+      foundUser.role === RoleEnum.DIRECTOR
+    ) {
+      throw new UserForbiddenException(
+        'You do not have sufficient rights to update a user in this role.',
+      );
+    }
+
+    const foundByPhoneNumber = await this._findByPhoneNumber(
+      updateUserDto.phoneNumber,
+    );
+
+    if (
+      foundByPhoneNumber &&
+      foundUser.phoneNumber !== foundByPhoneNumber.phoneNumber
+    ) {
+      throw new UserAlreadyExist();
+    }
+
+    let editedUser = Object.assign(foundUser, updateUserDto);
+
+    editedUser.password = await hashPassword(updateUserDto.password);
+
+    const updatedUser = await this.userRepository.update(editedUser);
+
+    return new ResData<User>('updated', 200, updatedUser);
   }
 
   // DELETE
-  async delete(id: number): Promise<ResData<User>> {
-    throw new Error('Method not implemented.');
+  async delete(id: number, currentUser: User): Promise<ResData<User>> {
+    const { data: foundUser } = await this.findOne(id);
+
+    if (
+      currentUser.role === RoleEnum.ADMIN &&
+      foundUser.role === RoleEnum.DIRECTOR
+    ) {
+      throw new UserForbiddenException(
+        'You do not have sufficient rights to delete a user in this role.',
+      );
+    }
+
+    const deletedUser = await this.userRepository.delete(id);
+    return new ResData<User>('deleted', 200, deletedUser);
   }
 }
