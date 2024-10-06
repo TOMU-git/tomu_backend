@@ -6,16 +6,20 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { TariffService } from './tariff.service';
 import { CreateTariffDto } from './dto/create-tariff.dto';
 import { UpdateTariffDto } from './dto/update-tariff.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ITariffService } from './interface/tariff.service';
 
 @ApiTags('tariff')
 @Controller('tariff')
 export class TariffController {
-  constructor(private readonly tariffService: TariffService) {}
+  constructor(
+    @Inject('ITariffService') private readonly tariffService: ITariffService,
+  ) {}
 
   @Post()
   create(@Body() createTariffDto: CreateTariffDto) {
@@ -38,7 +42,7 @@ export class TariffController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tariffService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.tariffService.delete(+id);
   }
 }

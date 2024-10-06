@@ -28,6 +28,8 @@ import { LessonModule } from './modules/lesson/lesson.module';
 import { GrammarModule } from './modules/grammar/grammar.module';
 import { Homework } from './modules/homework/entities/homework.entity';
 import { UserModule } from './modules/user/user.module';
+import { UserTariffModule } from './modules/user-tariff/user-tariff.module';
+import { UserTariff } from './modules/user-tariff/entities/user-tariff.entity';
 
 @Module({
   imports: [
@@ -52,6 +54,7 @@ import { UserModule } from './modules/user/user.module';
         UserCourse,
         LiveChat,
         File,
+        UserTariff
       ],
       synchronize: true,
     }),
@@ -71,6 +74,7 @@ import { UserModule } from './modules/user/user.module';
     CourseModule,
     BlockModule,
     UserModule,
+    UserTariffModule,
   ],
 })
 export class AppModule {}

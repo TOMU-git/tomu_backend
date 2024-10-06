@@ -2,7 +2,7 @@ import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
 import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
 import { Homework } from 'src/modules/homework/entities/homework.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity('lessons') // Entity nomini belgilash
 export class Lesson extends BaseEntity {
@@ -37,6 +37,7 @@ export class Lesson extends BaseEntity {
   size: number;
 
   @ManyToOne(() => Block, (block) => block.lessons)
+  @JoinColumn({ name: 'block_id' })
   block: Block;
 
   // Bu yerda Grammar bilan bog'lanish
