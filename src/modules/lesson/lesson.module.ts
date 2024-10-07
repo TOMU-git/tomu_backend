@@ -10,8 +10,12 @@ import { Lesson } from './entities/lesson.entity';
   imports: [TypeOrmModule.forFeature([Lesson])],
   controllers: [LessonController],
   providers: [
-    {provide: 'ILessonService', useClass: LessonService},
-    {provide: 'ILessonRepository', useClass: LessonRepository},
+    { provide: 'ILessonService', useClass: LessonService },
+    { provide: 'ILessonRepository', useClass: LessonRepository },
+  ],
+  exports: [
+    { provide: 'ILessonService', useClass: LessonService },
+    { provide: 'ILessonRepository', useClass: LessonRepository },
   ],
 })
 export class LessonModule {}

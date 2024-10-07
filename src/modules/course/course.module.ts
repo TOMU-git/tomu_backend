@@ -12,5 +12,9 @@ import { CourseController } from './course.controller';
     { provide: 'ICourseService', useClass: CourseService },
     { provide: 'ICourseRepository', useClass: CourseRepository },
   ],
+  exports: [
+    { provide: 'ICourseService', useClass: CourseService },
+    { provide: 'ICourseRepository', useClass: CourseRepository },
+  ],
 })
 export class CourseModule {}
