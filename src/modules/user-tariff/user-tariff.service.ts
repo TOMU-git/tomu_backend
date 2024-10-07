@@ -35,21 +35,19 @@ export class UserTariffService implements IUserTariffService {
     newUserTariff.tariff = foundTariff;
 
     const purchaseDate = new Date();
-    // console.log('purchaseDate', purchaseDate);
-
     newUserTariff.purchaseDate = purchaseDate;
 
     const date = new Date(newUserTariff.purchaseDate);
-    const expirationDate = date.setMonth(
-      date.getMonth() + foundTariff.duration,
-    );
+    date.setMonth(date.getMonth() + foundTariff.duration);
 
-    console.log('date=>', date);
-    console.log('getMonth=>', date.getMonth());
-    
+    newUserTariff.expirationDate = date;
 
-    // console.log(expirationDate);
-    // console.log('newUserTariff', newUserTariff);
+    // console.log(
+    //   'current date =>',
+    //   newUserTariff.purchaseDate.toLocaleDateString(),
+    // );
+    // console.log('date =>', newUserTariff.expirationDate.toLocaleDateString());
+
     throw new Error('Method not implemented.');
   }
 

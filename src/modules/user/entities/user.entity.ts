@@ -44,6 +44,6 @@ export class User extends BaseEntity {
   })
   userCourses: UserCourse[];
 
-  @OneToMany(() => Feedback, (feedback) => feedback.user)
-  feedbacks: Feedback[];
+  // @OneToMany(() => Feedback, (feedback) => feedback.user)
+  // feedbacks: Feedback[];
 }
