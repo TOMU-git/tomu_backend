@@ -5,7 +5,12 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('user-tariffs')
 export class UserTariff extends BaseEntity {
-  @Column({ name: 'purchase_date', type: 'date', nullable: false })
+  @Column({
+    name: 'purchase_date',
+    type: 'date',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   purchaseDate: Date;
 
   @Column({ name: 'expiration_date', type: 'date', nullable: false })

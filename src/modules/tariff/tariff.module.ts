@@ -12,5 +12,9 @@ import { TariffRepository } from './tariff.repository';
     { provide: 'ITariffService', useClass: TariffService },
     { provide: 'ITariffRepository', useClass: TariffRepository },
   ],
+  exports: [
+    { provide: 'ITariffService', useClass: TariffService },
+    { provide: 'ITariffRepository', useClass: TariffRepository },
+  ],
 })
 export class TariffModule {}

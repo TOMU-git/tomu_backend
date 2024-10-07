@@ -1,6 +1,7 @@
 import { Body, Inject, Injectable } from '@nestjs/common';
 import {
   LoginAuthDto,
+  RegisterOnlyUser,
   UpdatePasswordDto,
   UpdateProfileDto,
 } from './dto/auth.dto';
@@ -16,6 +17,7 @@ import { IAuthService } from './interface/auth.service';
 import { User } from '../user/entities/user.entity';
 import { UserAlreadyExist } from '../user/exception/user.exception';
 import { IUserRepository } from '../user/interfaces/user.repository';
+import { RoleEnum } from 'src/common/enums/enum';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -24,6 +26,25 @@ export class AuthService implements IAuthService {
     @Inject('IUserService') private readonly userService: IUserService,
     @Inject('IUserRepository') private readonly userRepository: IUserRepository,
   ) {}
+
+  // User registration only
+  async registerOnlyUser(
+    registerOnlyUser: RegisterOnlyUser,
+  ): Promise<ResData<IUserResData>> {
+    let newUser = new User();
+    newUser = Object.assign(newUser, registerOnlyUser);
+
+    newUser.password = await hashPassword(registerOnlyUser.password);
+    newUser.role = RoleEnum.STUDENT;
+
+    const createdUser = await this.userRepository.insert(newUser);
+    const token = this.jwtService.sign({ id: createdUser.id });
+
+    return new ResData<IUserResData>('User created successfully', 201, {
+      user: createdUser,
+      token,
+    });
+  }
 
   // Login
   async login(
