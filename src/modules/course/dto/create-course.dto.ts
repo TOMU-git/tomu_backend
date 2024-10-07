@@ -1,47 +1,51 @@
+import {
+  IsOptional,
+  IsString,
+  IsInt,
+  IsArray,
+  IsNotEmpty,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CreateCourseDto {
   @ApiProperty({
-    description: 'Title of the course',
-    type: String,
+    description: 'Course title',
     example: 'Introduction to Programming',
   })
   @IsString()
-  @IsNotEmpty()
   title: string;
 
   @ApiProperty({
-    description: 'Detailed description of the course',
-    type: String,
+    description: 'Course description',
     example: 'This course covers the basics of programming using Python.',
   })
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @ApiProperty({
-    description: 'Instructor of the course',
-    type: String,
-    example: 'John Doe',
+    description: 'Course instructor ID',
+    example: '550e8400-e29b-41d4-a716-446655440000', // UUID formatida
   })
+  @IsNotEmpty({ message: "O'qituvchi ID si bo'sh bo'lmasligi kerak" })
   @IsString()
-  @IsNotEmpty()
-  instructor: string;
-  @ApiProperty({
-    description: 'List of block IDs associated with the course',
-    type: [String], // ID lar ro'yxati
-    example: ['block_id_1', 'block_id_2'], // Misol
-  })
-  blocks: string[];
+  instructor: string; // O'qituvchi ID si
 
   @ApiProperty({
-    description: 'URL of the course image',
-    type: String,
+    description: 'Image URL for the course',
     example: 'https://example.com/image.jpg',
-    required: false, // Bu ixtiyoriy
+    required: false, // Ixtiyoriy ekanligini ko'rsatish
   })
   @IsOptional()
   @IsString()
-  imageUrl?: string; // Rasm URL'i ixtiyoriy
+  imageUrl?: string;
+
+  @ApiProperty({
+    description: 'List of block IDs',
+    example: ['block_id_1', 'block_id_2'],
+    required: false, // Ixtiyoriy ekanligini ko'rsatish
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  blocks?: string[];
 }
