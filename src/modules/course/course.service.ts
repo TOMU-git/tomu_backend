@@ -22,7 +22,7 @@ export class CourseService implements ICourseService {
     const foundData = await this.courseRepository.findOneByName(
       createCourseDto.title,
     );
-    if (foundData) {
+    if (!foundData) {
       throw new CourseAlreadyExistException();
     }
     let newCourse = new Course();
