@@ -1,16 +1,11 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
 
 @Entity()
 export class Chat extends BaseEntity {
-  @Column()
+  @Column({ nullable: false })
   userId: number;
 
-  @Column()
+  @Column({ nullable: false })
   message: string;
 }
