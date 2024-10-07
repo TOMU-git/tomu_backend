@@ -11,9 +11,6 @@ export class Course extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'int' })
-  price: number;
-
   @Column({ type: 'varchar', length: 255 })
   instructor: string;
 
@@ -25,6 +22,9 @@ export class Course extends BaseEntity {
   })
   userCourses: UserCourse;
 
-  @OneToMany(() => Block, (block) => block.course, { onDelete: 'NO ACTION' })
+  @OneToMany(() => Block, (block) => block.course, {
+    onDelete: 'NO ACTION',
+    nullable: true,
+  })
   blocks: Block[]; // Blocklar bilan bog'liq
 }
