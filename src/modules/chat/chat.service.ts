@@ -20,6 +20,7 @@ export class ChatService implements IChatService {
   async create(createChatDto: CreateChatDto): Promise<ResData<Chat>> {
     const newChat = new Chat();
     newChat.message = createChatDto.message;
+    newChat.userId = createChatDto.userId;
 
     const savedChat = await this.chatRepository.create(newChat);
 
