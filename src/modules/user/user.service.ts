@@ -1,26 +1,135 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IUserRepository } from './interfaces/user.repository';
+import { IUserResData, IUserService } from './interfaces/user.service';
+import { ResData } from 'src/lib/resData';
+import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import {
+  UserAlreadyExist,
+  UserForbiddenException,
+  UserNotFound,
+} from './exception/user.exception';
+import { RoleEnum } from 'src/common/enums/enum';
+import { hashPassword } from 'src/lib/bcrypt';
 
 @Injectable()
-export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+export class UserService implements IUserService {
+  constructor(
+    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    private jwtService: JwtService,
+  ) {}
+
+  // CREATE
+  async create(
+    createUserDto: CreateUserDto,
+    currentUser: User,
+  ): Promise<ResData<IUserResData>> {
+    const findByPhoneNumber = await this._findByPhoneNumber(
+      createUserDto.phoneNumber,
+    );
+
+    if (findByPhoneNumber) {
+      throw new UserAlreadyExist();
+    }
+
+    let newUser = new User();
+    newUser = Object.assign(newUser, createUserDto);
+
+    if (
+      currentUser.role === RoleEnum.STUDENT ||
+      currentUser.role === RoleEnum.TEACHER
+    ) {
+      newUser.role = RoleEnum.STUDENT;
+    } else if (
+      currentUser.role === RoleEnum.ADMIN &&
+      newUser.role === RoleEnum.DIRECTOR
+    ) {
+      throw new UserForbiddenException(
+        'You do not have sufficient rights to create a user in this role.',
+      );
+    }
+
+    newUser.password = await hashPassword(newUser.password);
+
+    const createdUser = await this.userRepository.insert(newUser);
+    const token = this.jwtService.sign({ id: createdUser.id });
+
+    return new ResData<IUserResData>('created', 201, {
+      user: createdUser,
+      token,
+    });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  // READ
+  async findAll(): Promise<ResData<User[]>> {
+    const data = await this.userRepository.findAll();
+    return new ResData<User[]>('success', 200, data);
+  }
+  async findOne(id: number): Promise<ResData<User>> {
+    const foundUser = await this.userRepository.findOneById(id);
+    if (!foundUser) {
+      throw new UserNotFound();
+    }
+
+    return new ResData<User>('success', 200, foundUser);
+  }
+  async _findByPhoneNumber(phoneNumber: string): Promise<User> {
+    return await this.userRepository.findByPhoneNumber(phoneNumber);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // UPDATE
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    currentUser: User,
+  ): Promise<ResData<User>> {
+    const { data: foundUser } = await this.findOne(id);
+
+    if (
+      currentUser.role === RoleEnum.ADMIN &&
+      foundUser.role === RoleEnum.DIRECTOR
+    ) {
+      throw new UserForbiddenException(
+        'You do not have sufficient rights to update a user in this role.',
+      );
+    }
+
+    const foundByPhoneNumber = await this._findByPhoneNumber(
+      updateUserDto.phoneNumber,
+    );
+
+    if (
+      foundByPhoneNumber &&
+      foundUser.phoneNumber !== foundByPhoneNumber.phoneNumber
+    ) {
+      throw new UserAlreadyExist();
+    }
+
+    let editedUser = Object.assign(foundUser, updateUserDto);
+
+    editedUser.password = await hashPassword(updateUserDto.password);
+
+    const updatedUser = await this.userRepository.update(editedUser);
+
+    return new ResData<User>('updated', 200, updatedUser);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // DELETE
+  async delete(id: number, currentUser: User): Promise<ResData<User>> {
+    const { data: foundUser } = await this.findOne(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    if (
+      currentUser.role === RoleEnum.ADMIN &&
+      foundUser.role === RoleEnum.DIRECTOR
+    ) {
+      throw new UserForbiddenException(
+        'You do not have sufficient rights to delete a user in this role.',
+      );
+    }
+
+    const deletedUser = await this.userRepository.delete(id);
+    return new ResData<User>('deleted', 200, deletedUser);
   }
 }

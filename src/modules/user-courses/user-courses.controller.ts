@@ -12,7 +12,7 @@ import { CreateUserCourseDto } from './dto/create-user-course.dto';
 import { UpdateUserCourseDto } from './dto/update-user-course.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('user')
+@ApiTags('user-courses')
 @Controller('user-courses')
 export class UserCoursesController {
   constructor(private readonly userCoursesService: UserCoursesService) {}
