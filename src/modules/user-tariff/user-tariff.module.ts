@@ -4,12 +4,14 @@ import { UserTariffController } from './user-tariff.controller';
 import { UserTariffRepository } from './user-tariff.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserTariff } from './entities/user-tariff.entity';
+import { UserModule } from '../user/user.module';
+import { TariffModule } from '../tariff/tariff.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserTariff])],
+  imports: [TypeOrmModule.forFeature([UserTariff]), UserModule, TariffModule],
   controllers: [UserTariffController],
   providers: [
-    { provide: 'IUserTariffService', useValue: UserTariffService },
+    { provide: 'IUserTariffService', useClass: UserTariffService },
     { provide: 'IUserTariffRepository', useClass: UserTariffRepository },
   ],
 })
