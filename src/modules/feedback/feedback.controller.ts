@@ -6,42 +6,52 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Inject,
 } from '@nestjs/common';
-import { FeedbackService } from './feedback.service';
-import { CreateFeedbackDto } from './dto/create-feedback.dto';
+import { ID } from 'src/common/types/type';
+import { ResData } from 'src/lib/resData';
 import { ApiTags } from '@nestjs/swagger';
-import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { IFeedbackService } from '../feedback/interfaces/feedback.service';
+import { CreateFeedbackDto } from '../feedback/dto/create-feedback.dto';
+import { Feedback } from '../feedback/entities/feedback.entity';
+import { UpdateFeedbackDto } from '../feedback/dto/update-feedback.dto';
 
 @ApiTags('feedback')
 @Controller('feedback')
 export class FeedbackController {
-  constructor(private readonly feedbackService: FeedbackService) {}
+  constructor(
+    @Inject('IFeedbackService')
+    private readonly feedbackService: IFeedbackService,
+  ) {}
 
   @Post()
-  create(@Body() createFeedbackDto: CreateFeedbackDto) {
-    return this.feedbackService.create(createFeedbackDto);
+  async create(
+    @Body() createFeedbackDto: CreateFeedbackDto,
+  ): Promise<ResData<Feedback>> {
+    return await this.feedbackService.create(createFeedbackDto);
   }
 
   @Get()
-  findAll() {
-    return this.feedbackService.findAll();
+  async findAll(): Promise<ResData<Feedback[]>> {
+    return await this.feedbackService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feedbackService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Feedback>> {
+    return await this.feedbackService.findOneById(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
     @Body() updateFeedbackDto: UpdateFeedbackDto,
-  ) {
-    return this.feedbackService.update(+id, updateFeedbackDto);
+  ): Promise<ResData<Feedback>> {
+    return await this.feedbackService.update(id, updateFeedbackDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.feedbackService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Feedback>> {
+    return await this.feedbackService.delete(id);
   }
 }
