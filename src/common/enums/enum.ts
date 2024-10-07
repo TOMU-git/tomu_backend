@@ -9,3 +9,14 @@ export enum RedisKey {
   ALL_USER = 'ALL_USER',
   ALL_TRANSACTION = 'ALL_TRANSACTION',
 }
+
+export enum GenderEnum {
+  MALE = 'male',
+  FEMALE = 'female',
+}
+
+export enum StatusEnum {
+  PANDING = 'pending',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+}

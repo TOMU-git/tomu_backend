@@ -1,1 +1,23 @@
-export class Tariff {}
+import { BaseEntity } from 'src/common/database/baseEntity';
+import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
+
+@Entity('tariffs')
+export class Tariff extends BaseEntity {
+  @Column({ type: 'varchar', length: 256, nullable: false })
+  name: string;
+
+  @Column({ type: 'int', nullable: false })
+  price: number;
+
+  @Column({ type: 'int', nullable: false })
+  duration: number;
+
+  @Column({ type: 'text', nullable: false })
+  description: string;
+
+  @OneToMany(() => UserTariff, (userTariff) => userTariff.tariff, {
+    onDelete: 'SET NULL',
+  })
+  userTariffs: UserTariff[];
+}
