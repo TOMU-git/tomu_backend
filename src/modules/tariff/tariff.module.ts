@@ -4,9 +4,10 @@ import { TariffController } from './tariff.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tariff } from './entities/tariff.entity';
 import { TariffRepository } from './tariff.repository';
+import { CourseModule } from '../course/course.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tariff])],
+  imports: [TypeOrmModule.forFeature([Tariff]), CourseModule],
   controllers: [TariffController],
   providers: [
     { provide: 'ITariffService', useClass: TariffService },

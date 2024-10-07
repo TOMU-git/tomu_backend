@@ -6,18 +6,27 @@ import { ITariffRepository } from './interface/tariff.repository';
 import { ResData } from 'src/lib/resData';
 import { Tariff } from './entities/tariff.entity';
 import { TariffNotFoundException } from './exception/tariff.exception';
+import { ICourseService } from '../course/interfaces/course.service';
 
 @Injectable()
 export class TariffService implements ITariffService {
   constructor(
     @Inject('ITariffRepository')
     private readonly tariffRepository: ITariffRepository,
+    @Inject('ICourseService')
+    private readonly courseService: ICourseService,
   ) {}
 
   // CREATE
   async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
+    const { data: foundCurse } = await this.courseService.findOneById(
+      createTariffDto.course_id,
+    );
+
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
+
+    newTariff.course = foundCurse;
 
     const createdTariff = await this.tariffRepository.insert(newTariff);
 

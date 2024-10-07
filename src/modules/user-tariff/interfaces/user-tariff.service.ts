@@ -12,10 +12,5 @@ export interface IUserTariffService {
 
   findOne(id: number): Promise<ResData<UserTariff>>;
 
-  update(
-    id: number,
-    updateUserTariffDto: UpdateUserTariffDto,
-  ): Promise<ResData<UserTariff>>;
-
   delete(id: number): Promise<ResData<UserTariff>>;
 }

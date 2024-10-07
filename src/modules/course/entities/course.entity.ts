@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity'; // O'zgartirish: Module o'rniga Block
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
+import { Tariff } from 'src/modules/tariff/entities/tariff.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 
@@ -23,12 +24,22 @@ export class Course extends BaseEntity {
   })
   userCourses: UserCourse;
 
-  @OneToMany(() => Feedback, (feedback) => feedback.course)
+  @OneToMany(() => Feedback, (feedback) => feedback.course, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
   feedbacks: Feedback[];
 
   @OneToMany(() => Block, (block) => block.course, {
     onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
     nullable: true,
   })
   blocks: Block[]; // Blocklar bilan bog'liq
+
+  @OneToMany(() => Tariff, (tariff) => tariff.course, {
+    onDelete: 'CASCADE',
+    onUpdate: 'NO ACTION',
+  })
+  tariffs: Tariff[];
 }

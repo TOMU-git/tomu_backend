@@ -7,6 +7,7 @@ import { ResData } from 'src/lib/resData';
 import { UserTariff } from './entities/user-tariff.entity';
 import { IUserService } from '../user/interfaces/user.service';
 import { ITariffService } from '../tariff/interface/tariff.service';
+import { UserTariffNotFoundException } from './exception/user-tariff.exception';
 
 @Injectable()
 export class UserTariffService implements IUserTariffService {
@@ -42,33 +43,40 @@ export class UserTariffService implements IUserTariffService {
 
     newUserTariff.expirationDate = date;
 
-    // console.log(
-    //   'current date =>',
-    //   newUserTariff.purchaseDate.toLocaleDateString(),
-    // );
-    // console.log('date =>', newUserTariff.expirationDate.toLocaleDateString());
+    const createdUserTariff =
+      await this.userTariffRepository.insert(newUserTariff);
 
-    throw new Error('Method not implemented.');
+    return new ResData<UserTariff>(
+      'User-Tariff created successfully',
+      201,
+      createdUserTariff,
+    );
   }
 
   // READ
   async findAll(): Promise<ResData<UserTariff[]>> {
-    throw new Error('Method not implemented.');
-  }
-  async findOne(id: number): Promise<ResData<UserTariff>> {
-    throw new Error('Method not implemented.');
+    const data = await this.userTariffRepository.findAll();
+    return new ResData<UserTariff[]>('success', 200, data);
   }
 
-  // UPDATE
-  async update(
-    id: number,
-    updateUserTariffDto: UpdateUserTariffDto,
-  ): Promise<ResData<UserTariff>> {
-    throw new Error('Method not implemented.');
+  async findOne(id: number): Promise<ResData<UserTariff>> {
+    const foundUserTariff = await this.userTariffRepository.findOneById(id);
+
+    if (!foundUserTariff) {
+      throw new UserTariffNotFoundException();
+    }
+
+    return new ResData<UserTariff>('success', 200, foundUserTariff);
   }
 
   // DELETE
   async delete(id: number): Promise<ResData<UserTariff>> {
-    throw new Error('Method not implemented.');
+    await this.findOne(id);
+    const deletedUserTariff = await this.userTariffRepository.delete(id);
+    return new ResData<UserTariff>(
+      'User Tariff deleted successfully',
+      200,
+      deletedUserTariff,
+    );
   }
 }

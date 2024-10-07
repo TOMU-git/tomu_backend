@@ -36,14 +36,6 @@ export class UserTariffController {
     return this.userTariffService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserTariffDto: UpdateUserTariffDto,
-  ) {
-    return this.userTariffService.update(+id, updateUserTariffDto);
-  }
-
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.userTariffService.delete(+id);
