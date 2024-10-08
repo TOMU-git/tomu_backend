@@ -4,9 +4,10 @@ import { HomeworkController } from './homework.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Homework } from './entities/homework.entity';
 import { HomeworkRepository } from './homework.repository';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Homework])],
+  imports: [TypeOrmModule.forFeature([Homework]), SharedModule],
   controllers: [HomeworkController],
   providers: [
     { provide: 'IHomeworkService', useClass: HomeworkService },
