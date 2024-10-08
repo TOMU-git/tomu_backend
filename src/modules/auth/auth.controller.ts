@@ -38,7 +38,7 @@ export class AuthController {
     return this.authService.registerOnlyUser(registerOnlyUser);
   }
 
-  // Register
+  Register
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Post('register')

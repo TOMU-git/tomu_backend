@@ -5,9 +5,10 @@ import { LessonController } from './lesson.controller';
 import { LessonService } from './lesson.service';
 import { LessonRepository } from './lesson.repository';
 import { Lesson } from './entities/lesson.entity';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lesson])],
+  imports: [TypeOrmModule.forFeature([Lesson]), SharedModule],
   controllers: [LessonController],
   providers: [
     { provide: 'ILessonService', useClass: LessonService },

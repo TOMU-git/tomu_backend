@@ -4,9 +4,10 @@ import { GrammarController } from './grammar.controller';
 import { Grammar } from './entities/grammar.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GrammarRepository } from './grammar.repository';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Grammar])],
+  imports: [TypeOrmModule.forFeature([Grammar]), SharedModule],
   controllers: [GrammarController],
   providers: [
     { provide: 'IGrammarService', useClass: GrammarService },

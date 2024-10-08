@@ -29,9 +29,9 @@ export class UserController {
   ) {}
 
   // READ
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Get()
   findAll() {
     return this.userService.findAll();
