@@ -28,7 +28,6 @@ import { UserTariffModule } from './modules/user-tariff/user-tariff.module';
 import { UserTariff } from './modules/user-tariff/entities/user-tariff.entity';
 import { ChatModule } from './modules/chat/chat.module';
 import { Chat } from './modules/chat/entities/chat.entity';
-import { HomePageModule } from './modules/home-page/home-page.module';
 import { Homework } from './modules/homework/entities/homework.entity';
 import { HomeworkModule } from './modules/homework/homework.module';
 
@@ -76,7 +75,6 @@ import { HomeworkModule } from './modules/homework/homework.module';
     UserModule,
     UserTariffModule,
     ChatModule,
-    HomePageModule,
   ],
 })
 export class AppModule {}
