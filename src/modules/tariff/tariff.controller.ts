@@ -19,6 +19,7 @@ import { RolesGuard } from '../shared/guards/role.guard';
 import { Roles } from '../auth/decorator/role.decorator';
 import { RoleEnum } from 'src/common/enums/enum';
 
+@ApiTags('tariff')
 @Controller('tariff')
 export class TariffController {
   constructor(

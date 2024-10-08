@@ -33,9 +33,8 @@ export class CreateTariffDto {
   @IsNotEmpty()
   description: string;
 
-  // options maydoni
   @ApiProperty({ type: [String], required: false })
-  @IsOptional() // ixtiyoriy bo'lishini ko'rsatadi
-  @IsArray() // massivi ekanligini tekshiradi
+  @IsOptional()
+  @IsArray()
   options?: string[];
 }
