@@ -9,8 +9,8 @@ import { HomePageRepository } from './home-page.repository';
   imports: [TypeOrmModule.forFeature([HomePage])],
   controllers: [HomePageController],
   providers: [
-    {provide: 'IHomePageService', useClass: HomePageService},
-    {provide: 'IHomePageRepository', useClass: HomePageRepository},
+    { provide: 'IHomePageService', useClass: HomePageService },
+    { provide: 'IHomePageRepository', useClass: HomePageRepository },
   ],
 })
 export class HomePageModule {}

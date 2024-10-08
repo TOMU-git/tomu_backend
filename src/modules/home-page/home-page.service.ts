@@ -69,5 +69,5 @@ export class HomePageService implements IHomePageService {
     const data = await this.homePageRepository.delete(foundData);
 
     return new ResData<HomePage>('Home Page deleted successfully', 200, data);
-  }
+}
 }
