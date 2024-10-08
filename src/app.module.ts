@@ -32,6 +32,7 @@ import { UserTariffModule } from './modules/user-tariff/user-tariff.module';
 import { UserTariff } from './modules/user-tariff/entities/user-tariff.entity';
 import { ChatModule } from './modules/chat/chat.module';
 import { Chat } from './modules/chat/entities/chat.entity';
+import { HomePageModule } from './modules/home-page/home-page.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { Chat } from './modules/chat/entities/chat.entity';
     UserModule,
     UserTariffModule,
     ChatModule,
+    HomePageModule,
   ],
 })
 export class AppModule {}
