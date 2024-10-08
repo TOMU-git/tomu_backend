@@ -4,9 +4,10 @@ import { FeedbackController } from './feedback.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Feedback } from './entities/feedback.entity';
 import { FeedbackRepository } from './feedback.repository';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Feedback])],
+  imports: [TypeOrmModule.forFeature([Feedback]), SharedModule],
   controllers: [FeedbackController],
   providers: [
     { provide: 'IFeedbackService', useClass: FeedbackService },

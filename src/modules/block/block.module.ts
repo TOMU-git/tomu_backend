@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Block } from './entities/block.entity';
 import { BlockRepository } from './block.repository';
 import { CourseModule } from '../course/course.module';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Block]), CourseModule],
+  imports: [TypeOrmModule.forFeature([Block]), CourseModule, SharedModule],
   controllers: [BlockController],
   providers: [
     { provide: 'IBlockService', useClass: BlockService },

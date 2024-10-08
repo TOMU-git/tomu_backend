@@ -36,6 +36,7 @@ export class UserService implements IUserService {
 
     let newUser = new User();
     newUser = Object.assign(newUser, createUserDto);
+    console.log(currentUser)
 
     if (
       currentUser.role === RoleEnum.STUDENT ||
@@ -46,6 +47,7 @@ export class UserService implements IUserService {
       currentUser.role === RoleEnum.ADMIN &&
       newUser.role === RoleEnum.DIRECTOR
     ) {
+      // console.log(createUserDto);
       throw new UserForbiddenException(
         'You do not have sufficient rights to create a user in this role.',
       );
