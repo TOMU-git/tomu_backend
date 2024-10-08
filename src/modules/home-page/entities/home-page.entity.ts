@@ -1,8 +1,8 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Column, Entity } from 'typeorm';
 
-@Entity('landing_pages')
-export class LandingPage extends BaseEntity {
+@Entity('home-page')
+export class HomePage extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: false })
   title: string;
 

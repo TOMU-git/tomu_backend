@@ -1,34 +1,71 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { HomePageService } from './home-page.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Inject,
+  UseGuards,
+} from '@nestjs/common';
+import { ID } from 'src/common/types/type';
 import { CreateHomePageDto } from './dto/create-home-page.dto';
 import { UpdateHomePageDto } from './dto/update-home-page.dto';
+import { ResData } from 'src/lib/resData';
+import { HomePage } from './entities/home-page.entity';
+import { IHomePageService } from './interfaces/home-page.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../shared/guards/auth.guard';
+import { RolesGuard } from '../shared/guards/role.guard';
+import { Roles } from '../auth/decorator/role.decorator';
+import { RoleEnum } from 'src/common/enums/enum';
 
+@ApiTags('home-page')
 @Controller('home-page')
 export class HomePageController {
-  constructor(private readonly homePageService: HomePageService) {}
+  constructor(
+    @Inject('IHomePageService')
+    private readonly homePageService: IHomePageService,
+  ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
-  create(@Body() createHomePageDto: CreateHomePageDto) {
-    return this.homePageService.create(createHomePageDto);
+  async create(
+    @Body() createHomePageDto: CreateHomePageDto,
+  ): Promise<ResData<HomePage>> {
+    return await this.homePageService.create(createHomePageDto);
   }
 
   @Get()
-  findAll() {
-    return this.homePageService.findAll();
+  async findAll(): Promise<ResData<Array<HomePage>>> {
+    return await this.homePageService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homePageService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<HomePage>> {
+    return await this.homePageService.findOneById(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomePageDto: UpdateHomePageDto) {
-    return this.homePageService.update(+id, updateHomePageDto);
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
+    @Body() updateHomePageDto: UpdateHomePageDto,
+  ): Promise<ResData<HomePage>> {
+    return await this.homePageService.update(id, updateHomePageDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.homePageService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<HomePage>> {
+    return await this.homePageService.delete(id);
   }
 }
