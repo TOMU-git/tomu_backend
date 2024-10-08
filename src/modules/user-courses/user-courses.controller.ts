@@ -6,42 +6,56 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Inject,
 } from '@nestjs/common';
-import { UserCoursesService } from './user-courses.service';
+import { ID } from 'src/common/types/type';
 import { CreateUserCourseDto } from './dto/create-user-course.dto';
 import { UpdateUserCourseDto } from './dto/update-user-course.dto';
+import { ResData } from 'src/lib/resData';
+import { UserCourse } from './entities/user-course.entity';
+import { IUserCourseService } from './interfaces/user-course.service';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('user-courses')
-@Controller('user-courses')
+@ApiTags('user-course')
+@Controller('user-course')
 export class UserCoursesController {
-  constructor(private readonly userCoursesService: UserCoursesService) {}
+  constructor(
+    @Inject('IUserCourseService')
+    private readonly userCourseService: IUserCourseService,
+  ) {}
 
   @Post()
-  create(@Body() createUserCourseDto: CreateUserCourseDto) {
-    return this.userCoursesService.create(createUserCourseDto);
+  async create(
+    @Body() createUserCourseDto: CreateUserCourseDto,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.create(createUserCourseDto);
   }
 
   @Get()
-  findAll() {
-    return this.userCoursesService.findAll();
+  async findAll(): Promise<ResData<Array<UserCourse>>> {
+    return await this.userCourseService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userCoursesService.findOne(+id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.findOneById(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
     @Body() updateUserCourseDto: UpdateUserCourseDto,
-  ) {
-    return this.userCoursesService.update(+id, updateUserCourseDto);
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.update(id, updateUserCourseDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userCoursesService.remove(+id);
+  async remove(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.delete(id);
   }
 }
