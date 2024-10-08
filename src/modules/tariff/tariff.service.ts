@@ -28,6 +28,11 @@ export class TariffService implements ITariffService {
 
     newTariff.course = foundCurse;
 
+    // options maydonini kiritamiz
+    if (createTariffDto.options) {
+      newTariff.options = createTariffDto.options;
+    }
+
     const createdTariff = await this.tariffRepository.insert(newTariff);
 
     return new ResData<Tariff>(
@@ -42,6 +47,7 @@ export class TariffService implements ITariffService {
     const data = await this.tariffRepository.findAll();
     return new ResData<Tariff[]>('success', 200, data);
   }
+
   async findOne(id: number): Promise<ResData<Tariff>> {
     const foundTariff = await this.tariffRepository.findOneById(id);
 
@@ -58,6 +64,12 @@ export class TariffService implements ITariffService {
     updateTariffDto: UpdateTariffDto,
   ): Promise<ResData<Tariff>> {
     const { data: foundTariff } = await this.findOne(id);
+
+    // options maydonini yangilash
+    if (updateTariffDto.options) {
+      foundTariff.options = updateTariffDto.options;
+    }
+
     const editedTariff = Object.assign(foundTariff, updateTariffDto);
     const updatedTariff = await this.tariffRepository.update(editedTariff);
 
