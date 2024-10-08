@@ -4,9 +4,10 @@ import { HomePageController } from './home-page.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HomePage } from './entities/home-page.entity';
 import { HomePageRepository } from './home-page.repository';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([HomePage])],
+  imports: [TypeOrmModule.forFeature([HomePage]), SharedModule],
   controllers: [HomePageController],
   providers: [
     { provide: 'IHomePageService', useClass: HomePageService },
