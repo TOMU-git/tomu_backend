@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateHomePageDto } from './dto/create-home-page.dto';
-import { UpdateHomePageDto } from './dto/update-home-page.dto';
 import { HomePage } from './entities/home-page.entity';
 import { IHomePageRepository } from './interfaces/home-page.repository';
 import { ResData } from 'src/lib/resData';
@@ -55,7 +54,7 @@ export class HomePageService implements IHomePageService {
 
   async update(
     id: ID,
-    updateHomePageDto: UpdateHomePageDto,
+    updateHomePageDto: CreateHomePageDto,
   ): Promise<ResData<HomePage>> {
     const { data: foundData } = await this.findOneById(id);
     const updatedData = Object.assign(foundData, updateHomePageDto);

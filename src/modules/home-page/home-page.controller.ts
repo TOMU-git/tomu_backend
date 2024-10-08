@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateHomePageDto } from './dto/create-home-page.dto';
-import { UpdateHomePageDto } from './dto/update-home-page.dto';
 import { ResData } from 'src/lib/resData';
 import { HomePage } from './entities/home-page.entity';
 import { IHomePageService } from './interfaces/home-page.service';
@@ -56,7 +55,7 @@ export class HomePageController {
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
-    @Body() updateHomePageDto: UpdateHomePageDto,
+    @Body() updateHomePageDto: CreateHomePageDto,
   ): Promise<ResData<HomePage>> {
     return await this.homePageService.update(id, updateHomePageDto);
   }
