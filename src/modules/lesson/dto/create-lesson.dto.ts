@@ -1,45 +1,81 @@
 import {
   IsInt,
-  IsString,
-  IsOptional,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
+  IsString,
   MaxLength,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'; // Swagger uchun dekorator
 
 export class CreateLessonDto {
+  @ApiProperty({
+    description: 'Darsning sarlavhasi',
+    example: 'Ingliz tilida dars',
+    maxLength: 255,
+  })
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @MaxLength(255)
   title: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(255)
-  video_url: string;
+  @ApiPropertyOptional({
+    type: 'string',
+    format: 'binary', // Fayl yuklash uchun format
+  })
+  @IsOptional() // Fayl yuklash optional
+  video: any; // Fayl yuklash uchun maydon
 
-  @IsInt()
-  @IsPositive()
+  @ApiProperty({
+    description: 'Dars tartibi',
+    example: 1,
+  })
+  // @IsInt()
+  // @IsPositive()
   order: number;
 
+  @ApiProperty({
+    description: 'Fayl turi (mimetype)',
+    example: 'video/mp4',
+    maxLength: 50,
+  })
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
+  // @IsNotEmpty()
+  // @MaxLength(50)
   mimetype: string;
 
-  @IsInt()
-  @IsPositive()
+  @ApiProperty({
+    description: 'Fayl o‘lchami baytlarda',
+    example: 1048576,
+  })
+  // @IsInt()
+  // @IsPositive()
   size: number;
 
+  @ApiProperty({
+    description: 'Bog‘lanadigan Blockning IDsi',
+    example: 1,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  blockId: string; // Bog'lanadigan `Block`ning `id`si
+  // @IsInt()
+  blockId: number; // ID format
 
+  @ApiProperty({
+    description: 'Bog‘lanadigan Grammarning IDsi',
+    example: 2,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  grammarId: string; // Bog'lanadigan `Grammar`ning `id`si
+  // @IsInt()
+  grammarId: number; // ID format
 
+  @ApiProperty({
+    description: 'Bog‘lanadigan Homeworkning IDsi',
+    example: 3,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  homeworkId: string; // Bog'lanadigan `Homework`ning `id`si
+  // @IsInt()
+  homeworkId: number; // ID format
 }
