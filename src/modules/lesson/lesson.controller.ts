@@ -42,9 +42,9 @@ export class LessonController {
     private readonly lessonService: ILessonService,
   ) {}
 
-  // @ApiBearerAuth()
-  // @UseGuards(AuthGuard, RolesGuard)
-  // @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
