@@ -40,7 +40,12 @@ export class LessonService implements ILessonService {
     );
 
     const newLesson = new Lesson();
-    Object.assign(newLesson, { ...dto, video_url: videoUrl, size: file.size }); // Size ni qo'shish
+    Object.assign(newLesson, {
+      ...dto,
+      video_url: videoUrl,
+      mimetype: file.mimetype,
+      size: file.size,
+    }); // Size ni qo'shish
 
     const savedLesson = await this.lessonRepository.create(newLesson);
 

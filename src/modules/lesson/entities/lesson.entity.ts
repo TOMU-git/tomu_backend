@@ -6,10 +6,10 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity('lessons') // Entity nomini belgilash
 export class Lesson extends BaseEntity {
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255})
   title: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255 })
   video_url: string;
 
   @Column({ type: 'int' })
@@ -22,7 +22,7 @@ export class Lesson extends BaseEntity {
    */
   order: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50 })
   /**
    * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
    * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
