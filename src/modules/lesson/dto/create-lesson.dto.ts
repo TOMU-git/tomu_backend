@@ -1,45 +1,64 @@
+import { Transform } from 'class-transformer';
 import {
   IsInt,
-  IsString,
-  IsOptional,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
+  IsString,
   MaxLength,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateLessonDto {
+  @ApiProperty({
+    description: 'Darsning sarlavhasi',
+    example: 'Ingliz tilida dars',
+    maxLength: 255,
+  })
   @IsString()
-  @IsNotEmpty()
   @MaxLength(255)
   title: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(255)
-  video_url: string;
+  @ApiPropertyOptional({
+    type: 'string',
+    format: 'binary',
+  })
+  @IsOptional()
+  video: any; // Fayl yuklash uchun maydon
 
+  @ApiProperty({
+    description: 'Dars tartibi',
+    example: 1,
+  })
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   @IsInt()
   @IsPositive()
   order: number;
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(50)
-  mimetype: string;
-
-  @IsInt()
-  @IsPositive()
-  size: number;
-
+  @ApiProperty({
+    description: 'Bog‘lanadigan Blockning IDsi',
+    example: 1,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  blockId: string; // Bog'lanadigan `Block`ning `id`si
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  blockId: number;
 
+  @ApiProperty({
+    description: 'Bog‘lanadigan Grammarning IDsi',
+    example: 2,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  grammarId: string; // Bog'lanadigan `Grammar`ning `id`si
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  grammarId: number;
 
+  @ApiProperty({
+    description: 'Bog‘lanadigan Homeworkning IDsi',
+    example: 3,
+    required: false,
+  })
   @IsOptional()
-  @IsString()
-  homeworkId: string; // Bog'lanadigan `Homework`ning `id`si
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  homeworkId: number;
 }
