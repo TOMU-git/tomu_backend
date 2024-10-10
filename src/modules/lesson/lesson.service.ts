@@ -24,20 +24,23 @@ export class LessonService implements ILessonService {
     dto: CreateLessonDto,
     file: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
-    console.log("Service__________", dto)
+    console.log('in service', file);
+
     const foundData = await this.lessonRepository.findOneByName(dto.title);
     if (foundData) {
       throw new LessonAlreadyExistException();
     }
 
+    // video_url ni yuklanadigan video faylning URL ga aylantirish
     const videoUrl = await this.vimeoService.uploadVideo(
-      file.path,
+      file.buffer, // Faylni buffer orqali yuklash
       dto.title,
       'Dars videosi',
+      file.size, // Faylning o'lchamini olish
     );
 
     const newLesson = new Lesson();
-    Object.assign(newLesson, { ...dto, video_url: videoUrl });
+    Object.assign(newLesson, { ...dto, video_url: videoUrl, size: file.size }); // Size ni qo'shish
 
     const savedLesson = await this.lessonRepository.create(newLesson);
 

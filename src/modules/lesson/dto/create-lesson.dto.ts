@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
@@ -6,7 +7,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'; // Swagger uchun dekorator
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateLessonDto {
   @ApiProperty({
@@ -15,42 +16,24 @@ export class CreateLessonDto {
     maxLength: 255,
   })
   @IsString()
-  // @IsNotEmpty()
   @MaxLength(255)
   title: string;
 
   @ApiPropertyOptional({
     type: 'string',
-    format: 'binary', // Fayl yuklash uchun format
+    format: 'binary',
   })
-  @IsOptional() // Fayl yuklash optional
+  @IsOptional()
   video: any; // Fayl yuklash uchun maydon
 
   @ApiProperty({
     description: 'Dars tartibi',
     example: 1,
   })
-  // @IsInt()
-  // @IsPositive()
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  @IsInt()
+  @IsPositive()
   order: number;
-
-  @ApiProperty({
-    description: 'Fayl turi (mimetype)',
-    example: 'video/mp4',
-    maxLength: 50,
-  })
-  @IsString()
-  // @IsNotEmpty()
-  // @MaxLength(50)
-  mimetype: string;
-
-  @ApiProperty({
-    description: 'Fayl o‘lchami baytlarda',
-    example: 1048576,
-  })
-  // @IsInt()
-  // @IsPositive()
-  size: number;
 
   @ApiProperty({
     description: 'Bog‘lanadigan Blockning IDsi',
@@ -58,8 +41,8 @@ export class CreateLessonDto {
     required: false,
   })
   @IsOptional()
-  // @IsInt()
-  blockId: number; // ID format
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  blockId: number;
 
   @ApiProperty({
     description: 'Bog‘lanadigan Grammarning IDsi',
@@ -67,8 +50,8 @@ export class CreateLessonDto {
     required: false,
   })
   @IsOptional()
-  // @IsInt()
-  grammarId: number; // ID format
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  grammarId: number;
 
   @ApiProperty({
     description: 'Bog‘lanadigan Homeworkning IDsi',
@@ -76,6 +59,6 @@ export class CreateLessonDto {
     required: false,
   })
   @IsOptional()
-  // @IsInt()
-  homeworkId: number; // ID format
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
+  homeworkId: number;
 }

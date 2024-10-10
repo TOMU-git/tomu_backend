@@ -12,6 +12,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateLessonDto } from './dto/create-lesson.dto';
@@ -19,14 +20,19 @@ import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { ResData } from 'src/lib/resData';
 import { Lesson } from './entities/lesson.entity';
 import { ILessonService } from './interfaces/lesson.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { RolesGuard } from '../shared/guards/role.guard';
 import { RoleEnum } from 'src/common/enums/enum';
 import { Roles } from '../auth/decorator/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { fileOption } from 'src/lib/file';
-import { Request, request } from 'express';
 
 @ApiTags('lesson')
 @Controller('lesson')
@@ -36,34 +42,53 @@ export class LessonController {
     private readonly lessonService: ILessonService,
   ) {}
 
-  @Post('video')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Post()
   @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
   @ApiBody({
-    description: 'Upload video file',
-    type: 'multipart/form-data', // You can specify the content type if needed
-    // Specify the file property here
+    description: "Yuklanadigan video ma'lumotlari",
+    type: CreateLessonDto,
+    // Swaggervida yuklanadigan fayl haqida ma\'lumot
+    // video maydonini qo'shishingiz mumkin
     schema: {
       type: 'object',
       properties: {
-        file: {
+        title: {
           type: 'string',
-          format: 'binary', // Indicates that this is a file upload
+        },
+        order: {
+          type: 'number',
+        },
+        blockId: {
+          type: 'number',
+        },
+        grammarId: {
+          type: 'number',
+        },
+        homeworkId: {
+          type: 'number',
+        },
+        video: {
+          // Video faylini yuklash maydoni
+          type: 'string',
+          format: 'binary', // Bu maydon fayl yuklash uchun kerak
         },
       },
-      required: ['file'], // Specify required fields
     },
   })
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadVideo(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: Request,
-  ) {
-    
-    console.log(file);
-    return {
-      message: 'Video uploaded successfully!',
-      filename: file.originalname,
-    };
+  async create(
+    @Body() createLessonDto: CreateLessonDto,
+    @UploadedFile() file: Express.Multer.File, // Yuklangan faylni olish
+  ): Promise<ResData<Lesson>> {
+    console.log('working controller');
+    console.log(file); // Fayl obyektini konsolda tekshirish
+    if (!file) {
+      throw new BadRequestException('Fayl yuklanmadi');
+    }
+    return this.lessonService.create(createLessonDto, file); // Yangi darsni yaratish
   }
 
   @ApiBearerAuth()

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Vimeo } from 'vimeo';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class VimeoService {
@@ -13,25 +15,47 @@ export class VimeoService {
     this.vimeoClient = new Vimeo(clientId, clientSecret, accessToken);
   }
 
-  async uploadVideo(filePath: string, title: string, description: string) {
+  async uploadVideo(
+    fileBuffer: Buffer,
+    title: string,
+    description: string,
+    size: number, // Faylning o'lchami
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.vimeoClient.upload(
-        filePath,
-        {
-          name: title,
-          description: description,
-        },
-        (uri) => {
-          resolve(uri);
-        },
-        (bytesUploaded, bytesTotal) => {
-          const percentage = (bytesUploaded / bytesTotal) * 100;
-          console.log(`${percentage.toFixed(2)}% uploaded`);
-        },
-        (error) => {
-          reject(error);
-        },
-      );
+      // Vaqtinchalik fayl nomini yarating
+      const tempFilePath = path.join(__dirname, 'temp_video.mp4');
+
+      // Bufferni vaqtinchalik faylga yozing
+      fs.writeFile(tempFilePath, fileBuffer, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+
+        // Faylni yuklash
+        this.vimeoClient.upload(
+          tempFilePath,
+          {
+            name: title,
+            description: description,
+          },
+          (uri) => {
+            const videoId = uri.split('/').pop();
+            const videoUrl = `https://vimeo.com/${videoId}`;
+            // Vaqtinchalik faylni o'chirish
+            fs.unlink(tempFilePath, (err) => {
+              if (err) console.error('Error deleting temp file', err);
+            });
+            resolve(videoUrl);
+          },
+          (bytesUploaded, bytesTotal) => {
+            const percentage = (bytesUploaded / bytesTotal) * 100;
+            console.log(`${percentage.toFixed(2)}% uploaded`);
+          },
+          (error) => {
+            reject(error);
+          },
+        );
+      });
     });
   }
 }
