@@ -12,10 +12,12 @@ export class UserCourse extends BaseEntity {
   @Column({ type: 'enum', enum: StatusEnum, nullable: false })
   status: StatusEnum;
 
+  // Foydalanuvchi bilan bog'lanish
   @ManyToOne(() => User, (user) => user.userCourses)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  // Kurs bilan bog'lanish
   @ManyToOne(() => Course, (course) => course.userCourses)
   @JoinColumn({ name: 'course_id' })
   course: Course;

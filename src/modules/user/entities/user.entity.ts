@@ -1,6 +1,7 @@
 import { IsPhoneNumber } from 'class-validator';
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
+import { Course } from 'src/modules/course/entities/course.entity';
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
@@ -15,7 +16,7 @@ export class User extends BaseEntity {
   lastName: string;
 
   @Column({ name: 'phone_number', type: 'varchar', length: 15, nullable: true })
-  @IsPhoneNumber(null) // null => har qanday mamlakat kodini qo'llab-quvvatlaydi
+  @IsPhoneNumber(null)
   phoneNumber: string;
 
   @Column({ type: 'enum', enum: GenderEnum, nullable: false })
@@ -27,18 +28,26 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: RoleEnum, nullable: false })
   role: RoleEnum;
 
+  // O'qituvchi sifatida kurslarga bog'lanish
+  @OneToMany(() => Course, (course) => course.instructor)
+  courses: Course[];
+
   @Column({ name: 'hashed_refresh_token', type: 'varchar', nullable: true })
   hashed_refresh_token: string;
+
+  // Foydalanuvchi tariflari
   @OneToMany(() => UserTariff, (userTariff) => userTariff.user, {
     onDelete: 'SET NULL',
   })
   userTariffs: UserTariff[];
 
+  // Foydalanuvchi o'qigan kurslar bilan bog'lanish
   @OneToMany(() => UserCourse, (userCourse) => userCourse.user, {
     onDelete: 'NO ACTION',
   })
   userCourses: UserCourse[];
 
+  // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
 }
