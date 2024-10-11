@@ -12,5 +12,6 @@ import { FileRepository } from './file.repository';
     { provide: 'IFileService', useClass: FileService },
     { provide: 'IFileRepository', useClass: FileRepository },
   ],
+  exports: [{ provide: 'IFileService', useClass: FileService }],
 })
 export class FileModule {}

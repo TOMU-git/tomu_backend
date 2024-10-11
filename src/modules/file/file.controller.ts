@@ -29,10 +29,9 @@ export class FileController {
     schema: {
       type: 'object',
       properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
+        title: { type: 'string' }, // Qo'shimcha input
+        description: { type: 'string' }, // Qo'shimcha input
+        file: { type: 'string', format: 'binary' }, // Fayl yuklash
       },
     },
   })
