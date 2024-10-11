@@ -8,28 +8,37 @@ export class UserRepository implements IUserRepository {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  // CREAD
-  async insert(entity: User): Promise<User> {
-    return this.userRepository.save(entity);
+  // *** Create a new user *** //
+
+  async create(entity: User): Promise<User> {
+    return await this.userRepository.save(entity);
   }
 
-  // READ
+  // *** Find all available users *** //
+
   async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+    return await this.userRepository.find();
   }
+  // *** Find one user by id *** //
+
   async findOneById(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+    return await this.userRepository.findOneBy({ id });
   }
+
+  // *** Find one user by phone number *** //
+
   async findByPhoneNumber(phoneNumber: string): Promise<User> {
-    return this.userRepository.findOneBy({ phoneNumber });
+    return await this.userRepository.findOneBy({ phoneNumber });
   }
 
-  // UPDATE
+  // *** Update user by id *** // 
+
   async update(entity: User): Promise<User> {
-    return this.userRepository.save(entity);
+    return await this.userRepository.save(entity);
   }
 
-  // DELETE
+  // *** Delete user by id *** //
+  
   async delete(id: number): Promise<User> {
     const foundUser = await this.findOneById(id);
     await this.userRepository.delete({ id });

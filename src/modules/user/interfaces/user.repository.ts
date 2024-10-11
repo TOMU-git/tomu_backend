@@ -1,7 +1,7 @@
 import { User } from '../entities/user.entity';
 
 export interface IUserRepository {
-  insert(entity: User): Promise<User>;
+  create(entity: User): Promise<User>;
   findAll(): Promise<Array<User>>;
   findOneById(id: number): Promise<User>;
   findByPhoneNumber(phoneNumber: string): Promise<User>;

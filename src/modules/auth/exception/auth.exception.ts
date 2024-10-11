@@ -1,13 +1,18 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class AuthException extends HttpException {
+export class PhoneOrPasswordWrongException extends HttpException {
   constructor() {
-    super('Invalid Credentials', 401);
+    super('Admin Phone or Password Wrong!', HttpStatus.BAD_REQUEST);
+  }
+}
+export class InvalidRefreshToken extends HttpException {
+  constructor() {
+    super('Invalid Token', HttpStatus.BAD_REQUEST);
+  }
+}
+export class PhoneNumberAlreadyExist extends HttpException {
+  constructor() {
+    super('This phone already exist, Please enter other number!', HttpStatus.BAD_REQUEST);
   }
 }
 
-export class AuthIncorrectPassword extends HttpException {
-  constructor(message: string) {
-    super(message, 400);
-  }
-}

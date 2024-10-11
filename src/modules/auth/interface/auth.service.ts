@@ -1,29 +1,21 @@
 import { ResData } from 'src/lib/resData';
-import {
-  LoginAuthDto,
-  RegisterOnlyUser,
-  UpdatePasswordDto,
-  UpdateProfileDto,
-} from '../dto/auth.dto';
-import { IUserResData } from 'src/modules/user/interfaces/user.service';
+import { LoginAuthDto } from '../dto/auth.dto';
 import { User } from 'src/modules/user/entities/user.entity';
+import { CreateAdminTeacherDto, CreateStudentDto } from 'src/modules/user/dto/create-users.dto';
+import { Response } from 'express';
 
 export interface IAuthService {
-  registerOnlyUser(
-    registerOnlyUser: RegisterOnlyUser,
-  ): Promise<ResData<IUserResData>>;
+  login(dto: LoginAuthDto, res: Response): Promise<ResData<ILoginData>>;
+  createAdminTeacher(dto: CreateAdminTeacherDto, res: Response): Promise<ResData<ILoginData>>;
+  createStudent(dto: CreateStudentDto, res: Response): Promise<ResData<ILoginData>>;
+}
 
-  login(loginAuthDto: LoginAuthDto): Promise<ResData<IUserResData>>;
+export interface ILoginData {
+  data: User;
+  tokens: ITokens;
+}
 
-  profile(currentUser: User): Promise<ResData<User>>;
-
-  updateProfile(
-    updateProfileDto: UpdateProfileDto,
-    currentUser: User,
-  ): Promise<ResData<User>>;
-
-  updatePassword(
-    updatePasswordDto: UpdatePasswordDto,
-    currentUser: User,
-  ): Promise<ResData<User>>;
+interface ITokens {
+  access_token: string;
+  refresh_token: string;
 }

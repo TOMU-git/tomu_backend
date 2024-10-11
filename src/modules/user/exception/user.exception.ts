@@ -8,7 +8,7 @@ export class UserNotFound extends HttpException {
 
 export class UserAlreadyExist extends HttpException {
   constructor() {
-    super('user already exist', HttpStatus.BAD_REQUEST);
+    super('User already exist', HttpStatus.BAD_REQUEST);
   }
 }
 

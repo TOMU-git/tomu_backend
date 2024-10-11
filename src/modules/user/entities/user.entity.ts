@@ -6,11 +6,15 @@ import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity
 import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
 import {
   Entity,
+<<<<<<< HEAD
+  Column
+=======
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
+>>>>>>> a51bcfa36b30da7d3963da419e9d93fd73fef9d2
 } from 'typeorm';
 
 @Entity('users')
@@ -34,6 +38,10 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: RoleEnum, nullable: false })
   role: RoleEnum;
 
+<<<<<<< HEAD
+  @Column({ name: "hashed_refresh_token", type: 'varchar', nullable: true })
+  hashed_refresh_token: string;
+=======
   @OneToMany(() => UserTariff, (userTariff) => userTariff.user, {
     onDelete: 'SET NULL',
   })
@@ -46,4 +54,5 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
+>>>>>>> a51bcfa36b30da7d3963da419e9d93fd73fef9d2
 }
