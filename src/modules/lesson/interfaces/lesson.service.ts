@@ -9,7 +9,7 @@ export interface ILessonService {
     dto: CreateLessonDto,
     file: Express.Multer.File,
   ): Promise<ResData<Lesson>>; // 2-tafsirli ko'rinish
-  findAll(): Promise<ResData<Array<Lesson>>>;
+  findAll(): Promise<ResData<Lesson[]>>;
   findOneById(id: ID): Promise<ResData<Lesson>>;
   update(id: ID, dto: UpdateLessonDto): Promise<ResData<Lesson>>;
   delete(id: ID): Promise<ResData<Lesson>>;

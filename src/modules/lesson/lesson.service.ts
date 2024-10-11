@@ -56,9 +56,9 @@ export class LessonService implements ILessonService {
     );
   }
 
-  async findAll(): Promise<ResData<Array<Lesson>>> {
+  async findAll(): Promise<ResData<Lesson[]>> {
     const data = await this.lessonRepository.findAll();
-    return new ResData<Array<Lesson>>('ok', 200, data);
+    return new ResData<Lesson[]>('ok', 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Lesson>> {
