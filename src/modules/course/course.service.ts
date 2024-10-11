@@ -10,25 +10,52 @@ import {
   CourseAlreadyExistException,
   CourseNotFoundException,
 } from './exception/course.exception';
+import { IFileService } from '../file/interfaces/file.service';
+import { CreateFileDto } from '../file/dto/create-file.dto';
 
 @Injectable()
 export class CourseService implements ICourseService {
   constructor(
     @Inject('ICourseRepository')
     private readonly courseRepository: ICourseRepository,
+
+    @Inject('IFileService')
+    private readonly fileService: IFileService,
   ) {}
 
-  async create(createCourseDto: CreateCourseDto): Promise<ResData<Course>> {
-    const foundData = await this.courseRepository.findOneByName(
-      createCourseDto.title,
-    );
-    if (!foundData) {
+  async create(
+    dto: CreateCourseDto,
+    file?: Express.Multer.File, // Fayl ixtiyoriy
+  ): Promise<ResData<Course>> {
+    console.log(dto);
+    console.log(file);
+    const foundData = await this.courseRepository.findOneByName(dto.title);
+    if (foundData) {
       throw new CourseAlreadyExistException();
     }
-    let newCourse = new Course();
-    newCourse = Object.assign(newCourse, createCourseDto);
-    const newData = await this.courseRepository.create(newCourse);
 
+    let newCourse = new Course();
+
+    // Fayl yuklash jarayoni
+    if (file) {
+      const fileDto = new CreateFileDto();
+      const savedFile = await this.fileService.create(
+        Object.assign(fileDto, {
+          originalname: file.originalname,
+          path: file.path,
+          mimetype: file.mimetype,
+          size: file.size,
+        }),
+      );
+      // Fayl muvaffaqiyatli yuklangan bo'lsa, imageUrl sifatida kursga qo'shamiz
+      newCourse = Object.assign(newCourse, dto, {
+        imageUrl: savedFile.data.path,
+      });
+    } else {
+      newCourse = Object.assign(newCourse, dto);
+    }
+
+    const newData = await this.courseRepository.create(newCourse);
     return new ResData<Course>('Course created successfully', 201, newData);
   }
 

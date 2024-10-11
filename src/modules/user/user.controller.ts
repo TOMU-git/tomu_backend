@@ -21,7 +21,7 @@ export class UserController {
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
   // *** Getting all available users *** //
-  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Get()
   async findAll() {
     return await this.userService.findAll();
