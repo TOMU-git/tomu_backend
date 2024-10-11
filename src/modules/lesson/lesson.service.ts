@@ -10,25 +10,50 @@ import {
   LessonAlreadyExistException,
   LessonNotFoundException,
 } from './exception/lesson.exception';
+import { VimeoService } from './vimeo.service';
 
 @Injectable()
 export class LessonService implements ILessonService {
   constructor(
     @Inject('ILessonRepository')
     private readonly lessonRepository: ILessonRepository,
+    private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
-  async create(dto: CreateLessonDto): Promise<ResData<Lesson>> {
+  async create(
+    dto: CreateLessonDto,
+    file: Express.Multer.File,
+  ): Promise<ResData<Lesson>> {
+    console.log('in service', file);
+
     const foundData = await this.lessonRepository.findOneByName(dto.title);
     if (foundData) {
       throw new LessonAlreadyExistException();
     }
 
-    let newLesson = new Lesson();
-    newLesson = Object.assign(newLesson, dto);
-    const newData = await this.lessonRepository.create(newLesson);
+    // video_url ni yuklanadigan video faylning URL ga aylantirish
+    const videoUrl = await this.vimeoService.uploadVideo(
+      file.buffer, // Faylni buffer orqali yuklash
+      dto.title,
+      'Dars videosi',
+      file.size, // Faylning o'lchamini olish
+    );
 
-    return new ResData<Lesson>('Lesson created successfully', 201, newData);
+    const newLesson = new Lesson();
+    Object.assign(newLesson, {
+      ...dto,
+      video_url: videoUrl,
+      mimetype: file.mimetype,
+      size: file.size,
+    }); // Size ni qo'shish
+
+    const savedLesson = await this.lessonRepository.create(newLesson);
+
+    return new ResData<Lesson>(
+      'Dars muvaffaqiyatli yaratildi',
+      201,
+      savedLesson,
+    );
   }
 
   async findAll(): Promise<ResData<Array<Lesson>>> {

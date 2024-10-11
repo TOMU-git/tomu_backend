@@ -17,7 +17,6 @@ import { CookieGetter } from 'src/common/decorator/cookiGetter';
 import { LoginAuthDto } from './dto/auth.dto';
 import { IUserService } from '../user/interfaces/user.service';
 
-
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -25,7 +24,6 @@ export class AuthController {
     private readonly authService: AuthService,
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
-
   // **** Login for all users **** //
 
   @ApiOperation({ summary: "Log In user or admin by phone number and password" })

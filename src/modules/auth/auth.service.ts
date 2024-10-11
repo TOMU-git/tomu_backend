@@ -1,7 +1,5 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import {
-  LoginAuthDto
-} from './dto/auth.dto';
+import { LoginAuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { IUserService } from '../user/interfaces/user.service';
 import { hashed, compare } from 'src/lib/bcrypt';
@@ -26,6 +24,8 @@ export class AuthService implements IAuthService {
   async login(dto: LoginAuthDto, res: Response): Promise<ResData<ILoginData>> {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
       dto.phoneNumber,
+
+  // User registration only
     );
 
     if (!foundUser) {

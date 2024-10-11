@@ -1,7 +1,5 @@
 import { ResData } from 'src/lib/resData';
-import {
-  LoginAuthDto,
-} from '../dto/auth.dto';
+import { LoginAuthDto } from '../dto/auth.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { CreateAdminTeacherDto, CreateStudentDto } from 'src/modules/user/dto/create-users.dto';
 import { Response } from 'express';

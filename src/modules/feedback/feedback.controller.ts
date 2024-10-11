@@ -6,42 +6,66 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Inject,
+  UseGuards,
 } from '@nestjs/common';
-import { FeedbackService } from './feedback.service';
-import { CreateFeedbackDto } from './dto/create-feedback.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { ID } from 'src/common/types/type';
+import { ResData } from 'src/lib/resData';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { IFeedbackService } from '../feedback/interfaces/feedback.service';
+import { CreateFeedbackDto } from '../feedback/dto/create-feedback.dto';
+import { Feedback } from '../feedback/entities/feedback.entity';
+import { UpdateFeedbackDto } from '../feedback/dto/update-feedback.dto';
+import { AuthGuard } from '../shared/guards/auth.guard';
+import { RolesGuard } from '../shared/guards/role.guard';
+import { RoleEnum } from 'src/common/enums/enum';
+import { Roles } from '../auth/decorator/role.decorator';
 
 @ApiTags('feedback')
 @Controller('feedback')
 export class FeedbackController {
-  constructor(private readonly feedbackService: FeedbackService) {}
+  constructor(
+    @Inject('IFeedbackService')
+    private readonly feedbackService: IFeedbackService,
+  ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.STUDENT)
   @Post()
-  create(@Body() createFeedbackDto: CreateFeedbackDto) {
-    return this.feedbackService.create(createFeedbackDto);
+  async create(
+    @Body() createFeedbackDto: CreateFeedbackDto,
+  ): Promise<ResData<Feedback>> {
+    return await this.feedbackService.create(createFeedbackDto);
   }
 
   @Get()
-  findAll() {
-    return this.feedbackService.findAll();
+  async findAll(): Promise<ResData<Feedback[]>> {
+    return await this.feedbackService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feedbackService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Feedback>> {
+    return await this.feedbackService.findOneById(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.STUDENT, RoleEnum.ADMIN)
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
     @Body() updateFeedbackDto: UpdateFeedbackDto,
-  ) {
-    return this.feedbackService.update(+id, updateFeedbackDto);
+  ): Promise<ResData<Feedback>> {
+    return await this.feedbackService.update(id, updateFeedbackDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.STUDENT, RoleEnum.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.feedbackService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Feedback>> {
+    return await this.feedbackService.delete(id);
   }
 }

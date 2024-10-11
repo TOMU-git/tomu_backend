@@ -28,7 +28,6 @@ export class UserService implements IUserService {
    }
    return resData;
  }
-
  // *** Find one by id *** //
 
  async findOneById(id: number): Promise<ResData<User>> {
@@ -38,7 +37,6 @@ export class UserService implements IUserService {
    }
    return new ResData<User>("User found successfully", 200, foundUserId);
  }
-
  // *** Find all available users *** //
 
  async findAll(): Promise<ResData<User[]>> {

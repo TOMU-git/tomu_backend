@@ -20,7 +20,6 @@ export class UserController {
   constructor(
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
-
   // *** Getting all available users *** //
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Get()
