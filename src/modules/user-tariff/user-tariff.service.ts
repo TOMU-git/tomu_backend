@@ -22,7 +22,7 @@ export class UserTariffService implements IUserTariffService {
   async create(
     createUserTariffDto: CreateUserTariffDto,
   ): Promise<ResData<UserTariff>> {
-    const { data: foundUser } = await this.userService.findOne(
+    const { data: foundUser } = await this.userService.findOneById(
       createUserTariffDto.userId,
     );
     const { data: foundTariff } = await this.tariffService.findOne(
