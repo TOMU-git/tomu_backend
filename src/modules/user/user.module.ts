@@ -9,11 +9,6 @@ import { config } from 'src/common/config';
 
 @Module({
   imports: [
-    JwtModule.register({
-      global: true,
-      secret: config.jwtSecretKey,
-      signOptions: { expiresIn: config.jwtExpiredIn },
-    }),
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UserController],

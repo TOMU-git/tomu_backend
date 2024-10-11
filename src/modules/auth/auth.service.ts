@@ -1,21 +1,19 @@
-import { Body, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import {
-  LoginAuthDto,
-  UpdatePasswordDto,
-  UpdateProfileDto,
+  LoginAuthDto
 } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import { IUserResData, IUserService } from '../user/interfaces/user.service';
-import {
-  AuthException,
-  AuthIncorrectPassword,
-} from './exception/auth.exception';
-import { hashPassword, matchPassword } from 'src/lib/bcrypt';
+import { IUserService } from '../user/interfaces/user.service';
+import { hashed, compare } from 'src/lib/bcrypt';
 import { ResData } from 'src/lib/resData';
-import { IAuthService } from './interface/auth.service';
+import { IAuthService, ILoginData } from './interface/auth.service';
 import { User } from '../user/entities/user.entity';
-import { UserAlreadyExist } from '../user/exception/user.exception';
 import { IUserRepository } from '../user/interfaces/user.repository';
+import { CreateAdminTeacherDto, CreateStudentDto } from '../user/dto/create-users.dto';
+import { RoleEnum } from 'src/common/enums/enum';
+import { config } from 'src/common/config';
+import { Response } from 'express';
+import { InvalidRefreshToken, PhoneOrPasswordWrongException } from './exception/auth.exception';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -25,93 +23,95 @@ export class AuthService implements IAuthService {
     @Inject('IUserRepository') private readonly userRepository: IUserRepository,
   ) {}
 
-  // Login
-  async login(
-    @Body() loginAuthDto: LoginAuthDto,
-  ): Promise<ResData<IUserResData>> {
-    const findByPhoneNumber = await this.userService._findByPhoneNumber(
-      loginAuthDto.phoneNumber,
+  async login(dto: LoginAuthDto, res: Response): Promise<ResData<ILoginData>> {
+    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+      dto.phoneNumber,
     );
 
-    if (!findByPhoneNumber) {
-      throw new AuthException();
+    if (!foundUser) {
+      throw new PhoneOrPasswordWrongException();
     }
-
-    const isMatch = await matchPassword(
-      loginAuthDto.password,
-      findByPhoneNumber.password,
-    );
-
-    if (!isMatch) {
-      throw new AuthException();
+    const compared = await compare(dto.password, foundUser.password);
+    if (!compared) {
+      throw new PhoneOrPasswordWrongException();
     }
-
-    const token = this.jwtService.sign({ id: findByPhoneNumber.id });
-
-    return new ResData<IUserResData>('success', 200, {
-      user: findByPhoneNumber,
-      token,
+    const access_token = await this.jwtService.signAsync({ id: foundUser.id }, {secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn});
+    const refresh_token = await this.jwtService.signAsync({ id: foundUser.id }, { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn });
+    foundUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(foundUser);
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      maxAge: config.jwtCookieTime,
+    });
+    return new ResData<ILoginData>("User successfully logged in", HttpStatus.OK, {
+      data: foundUser,
+      tokens: {access_token, refresh_token},
     });
   }
 
-  // Profile
-  async profile(currentUser: User): Promise<ResData<User>> {
-    const { data: foundUser } = await this.userService.findOne(currentUser.id);
-
-    return new ResData<User>('success', 200, foundUser);
+  async refreshToken(id: number, refreshToken: string, res: Response): Promise<ResData<ILoginData>> {
+    const verified = await this.jwtService.verifyAsync(refreshToken, {secret: config.jwtRefreshKey} );
+    if (!verified || verified.id != id) {
+      throw new InvalidRefreshToken();
+    }    
+    const { data: foundUser } = await this.userService.findOneById(id);
+    const tokenMatch = await compare(refreshToken, foundUser.hashed_refresh_token);
+    if (!tokenMatch) {
+      throw new InvalidRefreshToken();
+    }
+    const access_token = await this.jwtService.signAsync({ id: foundUser.id });
+    const refresh_token = await this.jwtService.signAsync({ id: foundUser.id }, { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn });
+    foundUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(foundUser);
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      maxAge: config.jwtCookieTime,
+    });
+    return new ResData<ILoginData>("User refreshed", HttpStatus.OK, {
+      data: updated,
+      tokens: {access_token, refresh_token},
+    });
   }
 
-  // Update profile
-  async updateProfile(
-    updateProfileDto: UpdateProfileDto,
-    currentUser: User,
-  ): Promise<ResData<User>> {
-    const { data: foundUser } = await this.userService.findOne(currentUser.id);
-
-    const foundByPhoneNumber = await this.userService._findByPhoneNumber(
-      updateProfileDto.phoneNumber,
-    );
-
-    if (
-      foundByPhoneNumber &&
-      foundByPhoneNumber.phoneNumber !== foundUser.phoneNumber
-    ) {
-      throw new UserAlreadyExist();
-    }
-
-    const editedUser = Object.assign(foundUser, updateProfileDto);
-    console.log('editedUser', editedUser);
-
-    const updatedUser = await this.userRepository.update(editedUser);
-
-    return new ResData<User>('updated', 200, updatedUser);
-  }
-
-  // Update password
-  async updatePassword(
-    updatePasswordDto: UpdatePasswordDto,
-    currentUser: User,
-  ): Promise<ResData<User>> {
-    const { data: foundUser } = await this.userService.findOne(currentUser.id);
-
-    const isMatch = await matchPassword(
-      updatePasswordDto.currentPassword,
-      foundUser.password,
-    );
-    if (!isMatch) {
-      throw new AuthIncorrectPassword('Current password is incorrect');
-    }
-
-    if (updatePasswordDto.newPassword !== updatePasswordDto.confirmPassword) {
-      throw new AuthIncorrectPassword(
-        'The new password and confirmation password did not match.',
-      );
-    }
-
-    foundUser.password = await hashPassword(updatePasswordDto.newPassword);
-
-    const updatedUser = await this.userRepository.update(foundUser);
-
-    return new ResData<User>('updated', 200, updatedUser);
+  async createAdminTeacher(dto: CreateAdminTeacherDto, res: Response): Promise<ResData<ILoginData>>{
+    const createdUser = new User();
+    createdUser.firstName = dto.firstName;
+    createdUser.lastName = dto.lastName;
+    createdUser.phoneNumber = dto.phoneNumber;
+    createdUser.gender = dto.gender;
+    createdUser.password = await hashed(dto.password);
+    createdUser.role = dto.role;
+    const savedUser = await this.userRepository.create(createdUser);
+    const access_token = await this.jwtService.signAsync({ id: savedUser.id });
+    const refresh_token = await this.jwtService.signAsync({ id: savedUser.id }, { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn });
+    const { data: foundUser } = await this.userService.findOneById(savedUser.id);
+    foundUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(foundUser);
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      maxAge: config.jwtCookieTime,
+    });
+    return new ResData<ILoginData>("User created successfully", HttpStatus.CREATED, {data: updated, tokens: {access_token, refresh_token}});
+   }
+   
+  async createStudent(dto: CreateStudentDto, res: Response): Promise<ResData<ILoginData>>{
+    const createdUser = new User();
+    createdUser.firstName = dto.firstName;
+    createdUser.lastName = dto.lastName;
+    createdUser.phoneNumber = dto.phoneNumber;
+    createdUser.gender = dto.gender;
+    createdUser.password = await hashed(dto.password);
+    createdUser.role = RoleEnum.STUDENT;
+    const savedUser = await this.userRepository.create(createdUser);
+    const access_token = await this.jwtService.signAsync({ id: savedUser.id });
+    const refresh_token = await this.jwtService.signAsync({ id: savedUser.id }, { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn });
+    const { data: foundUser } = await this.userService.findOneById(savedUser.id);
+    foundUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(foundUser);
+    res.cookie("refresh_token", refresh_token, {
+      httpOnly: true,
+      maxAge: config.jwtCookieTime,
+    });
+    return new ResData<ILoginData>("User created successfully", HttpStatus.CREATED, {data: updated, tokens: {access_token, refresh_token}});
   }
 }

@@ -27,10 +27,4 @@ export class UpdateUserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @ApiProperty({ type: String, enum: RoleEnum })
-  @IsEnum(RoleEnum)
-  @NotEquals(RoleEnum.DIRECTOR)
-  @IsNotEmpty()
-  role: RoleEnum;
 }

@@ -3,10 +3,7 @@ import { BaseEntity } from 'src/common/database/baseEntity';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
 import {
   Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
+  Column
 } from 'typeorm';
 
 @Entity('users')
@@ -29,4 +26,7 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: RoleEnum, nullable: false })
   role: RoleEnum;
+
+  @Column({ name: "hashed_refresh_token", type: 'varchar', nullable: true })
+  hashed_refresh_token: string;
 }

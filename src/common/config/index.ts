@@ -11,5 +11,8 @@ export const config: IConfig = {
   database_port: Number(process.env.DATABASE_PORT) || 5432,
   jwtSecretKey: process.env.JWT_SECRET_KEY,
   jwtExpiredIn: process.env.JWT_EXPIRED_IN,
+  jwtCookieTime: Number(process.env.COOKIE_TIME),
+  jwtRefreshKey: process.env.JWT_REFRESH_SECRET_KEY,
+  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRATION,
   databaseUrl: process.env.DB_URL,
 };

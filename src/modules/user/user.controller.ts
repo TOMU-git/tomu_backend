@@ -1,25 +1,18 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
   Inject,
-  UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { IUserService } from './interfaces/user.service';
-import { CurrentUser } from 'src/common/decorator/CurrentUser.decorator';
-import { User } from './entities/user.entity';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
-import { Roles } from '../auth/decorator/role.decorator';
 import { RoleEnum } from 'src/common/enums/enum';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('user')
 @Controller('user')
@@ -28,42 +21,29 @@ export class UserController {
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
 
-  // READ
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  // *** Getting all available users *** //
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    return await this.userService.findAll();
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  // *** Getting user by id *** //
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.findOneById(id);
   }
 
-  // UPDATE
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @CurrentUser() currentUser: User,
-  ) {
-    return this.userService.update(+id, updateUserDto, currentUser);
+  // Update user by id *** //
+  @Patch('/update/:id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.updateUser(id, updateUserDto);
   }
 
-  // DELETE
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
-  @Delete(':id')
-  delete(@Param('id') id: string, @CurrentUser() currentUser: User) {
-    return this.userService.delete(+id, currentUser);
+  // *** Delete user by id *** //
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Delete('/delete/:id')
+   async delete(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.deleteUser(id);
   }
 }

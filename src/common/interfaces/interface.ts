@@ -7,5 +7,8 @@ export interface IConfig {
   database_port: number;
   jwtSecretKey: string;
   jwtExpiredIn: string;
+  jwtCookieTime: number;
+  jwtRefreshKey: string;
+  jwtRefreshExpiresIn: string;
   databaseUrl: string;
 }

@@ -3,25 +3,20 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   Inject,
-  UseGuards,
+  Res,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { CreateAdminTeacherDto, CreateStudentDto } from '../user/dto/create-users.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+import { PhoneNumberAlreadyExist } from './exception/auth.exception';
+import { CookieGetter } from 'src/common/decorator/cookiGetter';
+import { LoginAuthDto } from './dto/auth.dto';
 import { IUserService } from '../user/interfaces/user.service';
-import { CurrentUser } from 'src/common/decorator/CurrentUser.decorator';
-import { User } from '../user/entities/user.entity';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
-import {
-  LoginAuthDto,
-  UpdatePasswordDto,
-  UpdateProfileDto,
-} from './dto/auth.dto';
+
 
 @ApiTags('auth')
 @Controller('auth')
@@ -31,50 +26,57 @@ export class AuthController {
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
 
-  // Register
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Post('register')
-  register(
-    @Body() createUserDto: CreateUserDto,
-    @CurrentUser() currentUser: User,
+  // **** Login for all users **** //
+
+  @ApiOperation({ summary: "Log In user or admin by phone number and password" })
+  @Post('sign-in')
+  async login(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
+    const found = await this.authService.login(loginDto, res);
+    res.send(found)
+  }
+
+  // **** Regenerate the refresh token **** //
+
+  @Get('refresh/:id')
+  async refresh(
+    @Param('id', ParseIntPipe) id: number,
+    @CookieGetter("refresh_token") refreshToken: string,
+    @Res() res: Response,
   ) {
-    return this.userService.create(createUserDto, currentUser);
+    const refreshed = await this.authService.refreshToken(id, refreshToken, res);
+    res.send(refreshed);
   }
 
-  // Login
-  @Post('login')
-  login(@Body() loginAuthDto: LoginAuthDto) {
-    return this.authService.login(loginAuthDto);
+  // **** Register for students **** //
+
+  @Post('register/students')
+  async registerStudent(@Body() studentCreateDto: CreateStudentDto, @Res() res: Response) {
+    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+      studentCreateDto.phoneNumber
+    );
+
+    if (foundUser) {
+      throw new PhoneNumberAlreadyExist();
+    }
+    const createdUser = await this.authService.createStudent(studentCreateDto, res);
+    res.send(createdUser);
+  }
+  
+    // **** Register for admins and teachers **** //
+
+  @Post('register/admin')
+  async registerAdmin(@Body() adminCreateDto: CreateAdminTeacherDto, @Res() res: Response){
+    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+      adminCreateDto.phoneNumber
+    );
+
+    if (foundUser) {
+      throw new PhoneNumberAlreadyExist();
+    }
+    const createdUser = await this.authService.createStudent(adminCreateDto, res);
+    res.send(createdUser);
+  }
   }
 
-  // Profile
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Get('profile')
-  profile(@CurrentUser() currentUser: User) {
-    return this.authService.profile(currentUser);
-  }
 
-  // Update profile
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Patch('profile')
-  updateProfile(
-    @Body() updateProfileDto: UpdateProfileDto,
-    @CurrentUser() currentUser: User,
-  ) {
-    return this.authService.updateProfile(updateProfileDto, currentUser);
-  }
 
-  // Update password
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Patch('update-password')
-  updatePassword(
-    @Body() updatePasswordDto: UpdatePasswordDto,
-    @CurrentUser() currentUser: User,
-  ) {
-    return this.authService.updatePassword(updatePasswordDto, currentUser);
-  }
-}
