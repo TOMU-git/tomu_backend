@@ -92,16 +92,14 @@ export class LessonController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.findOneById(id);
