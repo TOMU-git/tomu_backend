@@ -19,6 +19,7 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { RolesGuard } from '../shared/guards/role.guard';
 import {
   LoginAuthDto,
+  RegisterOnlyUser,
   UpdatePasswordDto,
   UpdateProfileDto,
 } from './dto/auth.dto';
@@ -31,7 +32,13 @@ export class AuthController {
     @Inject('IUserService') private readonly userService: IUserService,
   ) {}
 
-  // Register
+  // User registration only
+  @Post('/register/only-user')
+  registerOnlyUser(@Body() registerOnlyUser: RegisterOnlyUser) {
+    return this.authService.registerOnlyUser(registerOnlyUser);
+  }
+
+  Register
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Post('register')

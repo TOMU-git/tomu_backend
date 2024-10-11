@@ -1,12 +1,16 @@
 import { IsPhoneNumber } from 'class-validator';
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
+import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
+import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
+import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
 import {
   Entity,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('users')
@@ -29,4 +33,17 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: RoleEnum, nullable: false })
   role: RoleEnum;
+
+  @OneToMany(() => UserTariff, (userTariff) => userTariff.user, {
+    onDelete: 'SET NULL',
+  })
+  userTariffs: UserTariff[];
+
+  @OneToMany(() => UserCourse, (userCourse) => userCourse.user, {
+    onDelete: 'NO ACTION',
+  })
+  userCourses: UserCourse[];
+
+  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  feedbacks: Feedback[];
 }

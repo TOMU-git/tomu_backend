@@ -6,42 +6,76 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Inject,
+  UseGuards,
 } from '@nestjs/common';
-import { UserCoursesService } from './user-courses.service';
+import { ID } from 'src/common/types/type';
 import { CreateUserCourseDto } from './dto/create-user-course.dto';
 import { UpdateUserCourseDto } from './dto/update-user-course.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ResData } from 'src/lib/resData';
+import { UserCourse } from './entities/user-course.entity';
+import { IUserCourseService } from './interfaces/user-course.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../shared/guards/auth.guard';
+import { RolesGuard } from '../shared/guards/role.guard';
+import { RoleEnum } from 'src/common/enums/enum';
+import { Roles } from '../auth/decorator/role.decorator';
 
-@ApiTags('user')
-@Controller('user-courses')
+@ApiTags('user-course')
+@Controller('user-course')
 export class UserCoursesController {
-  constructor(private readonly userCoursesService: UserCoursesService) {}
+  constructor(
+    @Inject('IUserCourseService')
+    private readonly userCourseService: IUserCourseService,
+  ) {}
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Post()
-  create(@Body() createUserCourseDto: CreateUserCourseDto) {
-    return this.userCoursesService.create(createUserCourseDto);
+  async create(
+    @Body() createUserCourseDto: CreateUserCourseDto,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.create(createUserCourseDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
-  findAll() {
-    return this.userCoursesService.findAll();
+  async findAll(): Promise<ResData<Array<UserCourse>>> {
+    return await this.userCourseService.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userCoursesService.findOne(+id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.findOneById(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
     @Body() updateUserCourseDto: UpdateUserCourseDto,
-  ) {
-    return this.userCoursesService.update(+id, updateUserCourseDto);
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.update(id, updateUserCourseDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userCoursesService.remove(+id);
+  async remove(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<UserCourse>> {
+    return await this.userCourseService.delete(id);
   }
 }
