@@ -4,7 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class CreateCourseDto {
   @ApiProperty({
     description: 'Course title',
-    example: 'Introduction to Programming',
+    example: 'Russian language',
   })
   @IsString()
   title: string;

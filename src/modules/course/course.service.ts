@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Course } from './entities/course.entity';
 import { ICourseRepository } from './interfaces/course.repository';
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
@@ -12,6 +11,7 @@ import {
 } from './exception/course.exception';
 import { IFileService } from '../file/interfaces/file.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
+import { Course } from './entities/course.entity';
 
 @Injectable()
 export class CourseService implements ICourseService {
