@@ -14,7 +14,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { PhoneNumberAlreadyExist } from './exception/auth.exception';
 import { CookieGetter } from 'src/common/decorator/cookiGetter';
-import { LoginAuthDto } from './dto/auth.dto';
+import { AccessAuthDto, LoginAuthDto } from './dto/auth.dto';
 import { IUserService } from '../user/interfaces/user.service';
 
 @ApiTags('auth')
@@ -33,6 +33,13 @@ export class AuthController {
     res.send(found)
   }
 
+  // **** Access validation **** //
+
+  @Post('current')
+  async access(@Body() accessDto: AccessAuthDto){
+    return await this.authService.access(accessDto)
+  }
+  
   // **** Regenerate the refresh token **** //
 
   @Get('refresh/:id')
