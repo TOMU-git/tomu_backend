@@ -30,6 +30,8 @@ import { ChatModule } from './modules/chat/chat.module';
 import { Chat } from './modules/chat/entities/chat.entity';
 import { Homework } from './modules/homework/entities/homework.entity';
 import { HomeworkModule } from './modules/homework/homework.module';
+import { HomePage } from './modules/home-page/entities/home-page.entity';
+import { HomePageModule } from './modules/home-page/home-page.module';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { HomeworkModule } from './modules/homework/homework.module';
         Lesson,
         Grammar,
         Homework,
+        HomePage,
         Block,
         Feedback,
         Payment,
@@ -70,6 +73,7 @@ import { HomeworkModule } from './modules/homework/homework.module';
     BlockModule,
     GrammarModule,
     HomeworkModule,
+    HomePageModule,
     CourseModule,
     BlockModule,
     UserModule,

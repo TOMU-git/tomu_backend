@@ -62,7 +62,7 @@ export class CourseController {
     @Body() createCourseDto: CreateCourseDto,
     @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
   ): Promise<ResData<Course>> {
-    // console.log(file)
+  
     // console.log(createCourseDto)
     return await this.courseService.create(createCourseDto, file); // Fayl bilan birga xizmatni chaqirish
   }

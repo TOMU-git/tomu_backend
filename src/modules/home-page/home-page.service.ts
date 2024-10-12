@@ -9,16 +9,22 @@ import {
   HomePageAlreadyExistException,
   HomePageNotFoundException,
 } from './exception/home-page.exception';
+import { IFileService } from '../file/interfaces/file.service';
+import { CreateFileDto } from '../file/dto/create-file.dto';
 
 @Injectable()
 export class HomePageService implements IHomePageService {
   constructor(
     @Inject('IHomePageRepository')
     private readonly homePageRepository: IHomePageRepository,
+
+    @Inject('IFileService')
+    private readonly fileService: IFileService,
   ) {}
 
   async create(
     createHomePageDto: CreateHomePageDto,
+    file?: Express.Multer.File, // Fayl ixtiyoriy
   ): Promise<ResData<HomePage>> {
     const foundData = await this.homePageRepository.findOneByName(
       createHomePageDto.title,
@@ -26,10 +32,29 @@ export class HomePageService implements IHomePageService {
     if (foundData) {
       throw new HomePageAlreadyExistException();
     }
-    let newHomePage = new HomePage();
-    newHomePage = Object.assign(newHomePage, createHomePageDto);
-    const newData = await this.homePageRepository.create(newHomePage);
 
+    let newHomePage = new HomePage();
+
+    // Fayl yuklash jarayoni
+    if (file) {
+      const fileDto = new CreateFileDto();
+      const savedFile = await this.fileService.create(
+        Object.assign(fileDto, {
+          originalname: file.originalname,
+          path: file.path,
+          mimetype: file.mimetype,
+          size: file.size,
+        }),
+      );
+      // Fayl muvaffaqiyatli yuklangan bo'lsa, imageUrl sifatida kursga qo'shamiz
+      newHomePage = Object.assign(newHomePage, createHomePageDto, {
+        imageUrl: savedFile.data.path,
+      });
+    } else {
+      newHomePage = Object.assign(newHomePage, createHomePageDto);
+    }
+
+    const newData = await this.homePageRepository.create(newHomePage);
     return new ResData<HomePage>(
       'Home Page created successfully',
       201,
@@ -68,5 +93,5 @@ export class HomePageService implements IHomePageService {
     const data = await this.homePageRepository.delete(foundData);
 
     return new ResData<HomePage>('Home Page deleted successfully', 200, data);
-}
+  }
 }
