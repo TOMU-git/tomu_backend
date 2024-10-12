@@ -22,7 +22,7 @@ export class Lesson extends BaseEntity {
    */
   order: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, name: 'mime_type' })
   /**
    * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
    * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
