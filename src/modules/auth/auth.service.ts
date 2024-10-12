@@ -1,5 +1,5 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { LoginAuthDto } from './dto/auth.dto';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { AccessAuthDto, LoginAuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { IUserService } from '../user/interfaces/user.service';
 import { hashed, compare } from 'src/lib/bcrypt';
@@ -113,5 +113,14 @@ export class AuthService implements IAuthService {
       maxAge: config.jwtCookieTime,
     });
     return new ResData<ILoginData>("User created successfully", HttpStatus.CREATED, {data: updated, tokens: {access_token, refresh_token}});
+  }
+
+  async access (token: AccessAuthDto): Promise<ResData<User>>{
+    const verified = await this.jwtService.verifyAsync(token.accessToken);
+    if (!verified) {
+      throw new HttpException("Invalid access token", HttpStatus.UNAUTHORIZED);
+    }
+    const { data: foundUser } = await this.userService.findOneById(verified.id);
+    return new ResData<User>("User found successfully", HttpStatus.OK, foundUser);
   }
 }

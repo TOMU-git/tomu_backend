@@ -12,3 +12,10 @@ export class LoginAuthDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class AccessAuthDto {
+  @ApiProperty({ type: String })
+  @IsString()
+  @IsNotEmpty()
+  accessToken: string;
+}
