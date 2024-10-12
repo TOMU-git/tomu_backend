@@ -1,8 +1,8 @@
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
-import { Course } from '../entities/course.entity';
 import { CreateCourseDto } from '../dto/create-course.dto';
 import { UpdateCourseDto } from '../dto/update-course.dto';
+import { Course } from '../entities/course.entity';
 
 export interface ICourseService {
   create(

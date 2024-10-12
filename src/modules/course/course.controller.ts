@@ -16,7 +16,6 @@ import { ID } from 'src/common/types/type';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ResData } from 'src/lib/resData';
-import { Course } from './entities/course.entity';
 import { ICourseService } from './interfaces/course.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../shared/guards/auth.guard';
@@ -26,6 +25,8 @@ import { RoleEnum } from 'src/common/enums/enum';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { fileOption } from 'src/lib/file';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { Course } from './entities/course.entity';
 
 @ApiTags('course')
 @Controller('course')
@@ -35,6 +36,7 @@ export class CourseController {
     private readonly courseService: ICourseService,
   ) {}
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post()
   @UseInterceptors(FileInterceptor('fileName', fileOption))
   @ApiBody({
@@ -62,9 +64,7 @@ export class CourseController {
     @Body() createCourseDto: CreateCourseDto,
     @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
   ): Promise<ResData<Course>> {
-  
-    // console.log(createCourseDto)
-    return await this.courseService.create(createCourseDto, file); // Fayl bilan birga xizmatni chaqirish
+    return await this.courseService.create(createCourseDto, file);
   }
 
   @Get()
@@ -77,9 +77,7 @@ export class CourseController {
     return await this.courseService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
@@ -88,9 +86,7 @@ export class CourseController {
     return await this.courseService.update(id, updateCourseDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Course>> {
     return await this.courseService.delete(id);
