@@ -8,6 +8,6 @@ export class HomePageNotFoundException extends HttpException {
 
 export class HomePageAlreadyExistException extends HttpException {
   constructor() {
-    super('HomePage page already exists', 400);
+    super('This title already exists', 400);
   }
 }

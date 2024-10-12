@@ -4,7 +4,10 @@ import { HomePage } from '../entities/home-page.entity';
 import { CreateHomePageDto } from '../dto/create-home-page.dto';
 
 export interface IHomePageService {
-  create(dto: CreateHomePageDto): Promise<ResData<HomePage>>;
+  create(
+    dto: CreateHomePageDto,
+    file?: Express.Multer.File,
+  ): Promise<ResData<HomePage>>;
   findAll(): Promise<ResData<Array<HomePage>>>;
   findOneById(id: ID): Promise<ResData<HomePage>>;
   update(id: ID, dto: CreateHomePageDto): Promise<ResData<HomePage>>;

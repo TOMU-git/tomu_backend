@@ -3,8 +3,8 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Lesson } from './entities/lesson.entity';
 import { ILessonRepository } from './interfaces/lesson.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
+import { ResData } from '../../lib/resData';
+import { ID } from '../../common/types/type';
 import { ILessonService } from './interfaces/lesson.service';
 import {
   LessonAlreadyExistException,

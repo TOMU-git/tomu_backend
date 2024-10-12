@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
+import { ResData } from '../../../lib/resData';
+import { ID } from '../../../common/types/type';
 import { Lesson } from '../entities/lesson.entity';
-import { CreateLessonDto } from '../dto/create-Lesson.dto';
-import { UpdateLessonDto } from '../dto/update-Lesson.dto';
+import { UpdateLessonDto } from '../dto/update-lesson.dto';
+import { CreateLessonDto } from '../dto/create-lesson.dto';
 
 export interface ILessonService {
   create(
