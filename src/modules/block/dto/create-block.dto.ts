@@ -6,6 +6,7 @@ export class CreateBlockDto {
   @IsString()
   @IsNotEmpty()
   title: string;
+  
 
   @ApiProperty({
     example: 'UUID of the associated course',

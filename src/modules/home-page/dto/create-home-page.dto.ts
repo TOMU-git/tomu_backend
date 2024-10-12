@@ -5,8 +5,8 @@ import {
   IsArray,
   IsUrl,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateHomePageDto {
   @ApiProperty({
@@ -26,13 +26,12 @@ export class CreateHomePageDto {
   @IsString()
   description: string;
 
-  @ApiProperty({
-    description: 'Landing page uchun rasm URL manzili',
-    example: 'https://example.com/image.jpg',
+  @ApiPropertyOptional({
+    type: String,
   })
-  @IsNotEmpty()
-  @IsUrl()
-  image: string;
+  @IsString()
+  @IsOptional()
+  fileName?: string; // Ixtiyoriy qildik
 
   @ApiProperty({
     description: 'Foydalanuvchi afzalliklari',
@@ -41,6 +40,8 @@ export class CreateHomePageDto {
   })
   @IsOptional()
   @IsArray()
-  @Type(() => String) // Array of strings
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.split(',') : value,
+  ) // Stringni massivga ajratish
   preferences?: string[];
 }
