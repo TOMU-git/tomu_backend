@@ -63,12 +63,6 @@ export class LessonController {
         blockId: {
           type: 'number',
         },
-        grammarId: {
-          type: 'number',
-        },
-        homeworkId: {
-          type: 'number',
-        },
         video: {
           // Video faylini yuklash maydoni
           type: 'string',
@@ -103,12 +97,34 @@ export class LessonController {
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
+  @ApiBody({
+    description: "Yuklanadigan video ma'lumotlari va o'zgarishlar",
+    type: UpdateLessonDto,
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        order: { type: 'number' },
+        blockId: { type: 'number' },
+        video: {
+          // Video faylini yuklash maydoni
+          type: 'string',
+          format: 'binary', // Bu maydon fayl yuklash uchun kerak
+        },
+      },
+    },
+  })
   async update(
     @Param('id', ParseIntPipe) id: ID,
     @Body() updateLessonDto: UpdateLessonDto,
+    @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Lesson>> {
-    return await this.lessonService.update(id, updateLessonDto);
+    console.log('Fayl:', file); // Faylni konsolda tekshirish
+    return await this.lessonService.update(id, updateLessonDto, file);
   }
+
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {

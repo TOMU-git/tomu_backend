@@ -70,10 +70,35 @@ export class LessonService implements ILessonService {
     return new ResData<Lesson>('ok', 200, foundData);
   }
 
-  async update(id: ID, dto: UpdateLessonDto): Promise<ResData<Lesson>> {
+  async update(
+    id: ID,
+    dto: UpdateLessonDto,
+    file?: Express.Multer.File,
+  ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
-    const updatedData = Object.assign(foundData, dto);
-    const data = await this.lessonRepository.update(updatedData);
+
+    // Agar fayl bo'lsa, video URL'ini yangilaydi
+    if (file) {
+      console.log('Video fayl yuklanmoqda...', file);
+
+      // Yangi video faylni yuklaydi
+      const videoUrl = await this.vimeoService.uploadVideo(
+        file.buffer,
+        dto.title || foundData.title, // Yangilanishlarda title bo'lmasa eski title'ni saqlab qolish
+        'Dars videosi',
+        file.size,
+      );
+
+      // Eski videoning ma'lumotlarini yangilaydi
+      foundData.video_url = videoUrl;
+      foundData.mimetype = file.mimetype;
+      foundData.size = file.size;
+    }
+
+    // Boshqa maydonlarni yangilash
+    Object.assign(foundData, dto);
+
+    const data = await this.lessonRepository.update(foundData);
 
     return new ResData<Lesson>('Lesson updated successfully', 200, data);
   }
