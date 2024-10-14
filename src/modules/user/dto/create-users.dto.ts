@@ -49,17 +49,6 @@ export class CreateAdminTeacherDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @ApiProperty(
-    { type: String,
-      enum: RoleEnum,
-      example: 'admin',
-      description: 'The role of the admin or teacher.',
- 
-    }
-  )
-  @IsEnum(RoleEnum)
-  role: RoleEnum;
 }
 
 export class CreateStudentDto {

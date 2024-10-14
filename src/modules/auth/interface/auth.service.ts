@@ -6,7 +6,7 @@ import { Response } from 'express';
 
 export interface IAuthService {
   login(dto: LoginAuthDto, res: Response): Promise<ResData<ILoginData>>;
-  createAdminTeacher(dto: CreateAdminTeacherDto, res: Response): Promise<ResData<ILoginData>>;
+  createAdmin(dto: CreateAdminTeacherDto, res: Response): Promise<ResData<ILoginData>>;
   createStudent(dto: CreateStudentDto, res: Response): Promise<ResData<ILoginData>>;
 }
 
