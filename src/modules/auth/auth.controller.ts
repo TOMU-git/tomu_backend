@@ -30,9 +30,16 @@ export class AuthController {
   // **** Login for all users **** //
 
   @ApiOperation({ summary: "Log In user or admin by phone number and password" })
-  @Post('sign-in')
+  @Post('sign-in/users')
   async login(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
     const found = await this.authService.login(loginDto, res);
+    res.send(found)
+  }
+
+  // **** Login for admins, directors and teachers **** //
+  @Post('sign-in/admin-director-teacher')
+  async loginAdminDirectorTeacher(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
+    const found = await this.authService.loginAdminDirectorTeacher(loginDto, res);
     res.send(found)
   }
 

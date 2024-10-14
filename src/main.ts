@@ -5,9 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionsFilter } from './lib/AllExceptionFilters';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { RolesGuard } from './modules/shared/guards/role.guard';
-import { AuthGuard } from './modules/shared/guards/auth.guard';
-import bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -16,9 +13,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-
-  app.useBodyParser('json');
-
+  
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
