@@ -16,11 +16,7 @@ export class FileService {
     newCategory = Object.assign(newCategory, createFileDto);
     const newData = await this.fileRepository.create(newCategory);
 
-    return new ResData<File>(
-      'File was created successfully',
-      201,
-      newData,
-    );
+    return new ResData<File>('File was created successfully', 201, newData);
   }
 
   async multipleCreate(dto1: File, dto2: File) {
@@ -52,6 +48,39 @@ export class FileService {
       throw new FileNotFoundException();
     }
     return new ResData<File>('ok', 200, foundData);
+  }
+
+  async findByImageUrl(imageUrl: string): Promise<File | null> {
+    const foundFile = await this.findByImageUrl(imageUrl);
+    if (!foundFile) {
+      throw new FileNotFoundException();
+    }
+    return await this.fileRepository.findByImageUrl(imageUrl);
+  }
+
+  async removeByImageUrl(imageUrl: string): Promise<ResData<string>> {
+    const foundFile = await this.findByImageUrl(imageUrl);
+
+    // Faylni o'chirish
+    await this.fileRepository.delete(foundFile);
+    const deleteFilePath = foundFile.path; // o'chiriladigan faylning yo'li
+
+    // Faylni tizimdan o'chirish
+    if (existsSync(deleteFilePath)) {
+      unlink(deleteFilePath, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Fayl muvaffaqiyatli o'chirildi");
+        }
+      });
+    }
+
+    return new ResData<string>(
+      "Fayl muvaffaqiyatli o'chirildi",
+      200,
+      deleteFilePath,
+    );
   }
 
   async remove(id: number) {

@@ -47,7 +47,7 @@ export class Course extends BaseEntity {
 
   // Tariflar bilan bog'lanish
   @OneToMany(() => Tariff, (tariff) => tariff.course, {
-    onDelete: 'CASCADE',
+    onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
   })
   tariffs: Tariff[];

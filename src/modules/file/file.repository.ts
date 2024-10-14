@@ -10,10 +10,7 @@ export class FileRepository implements IFileRepository {
     @InjectRepository(File)
     private fileRepository: Repository<File>,
   ) {}
-  async multipleCreate(
-    dto1: File,
-    dto2: File,
-  ): Promise<Array<File>> {
+  async multipleCreate(dto1: File, dto2: File): Promise<Array<File>> {
     const newFile = await this.fileRepository.create([dto1, dto2]);
     await this.fileRepository.save(newFile);
     return newFile;
@@ -34,5 +31,9 @@ export class FileRepository implements IFileRepository {
   }
   async findAll(): Promise<Array<File>> {
     return await this.fileRepository.find();
+  }
+
+  async findByImageUrl(imageUrl: string): Promise<File | null> {
+    return await this.fileRepository.findOne({ where: { path: imageUrl } });
   }
 }

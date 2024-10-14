@@ -9,7 +9,9 @@ export class Block extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   title: string;
 
-  @ManyToOne(() => Course, (course) => course.blocks)
+  @ManyToOne(() => Course, (course) => course.blocks, {
+    onDelete: 'NO ACTION', // Kurs o'chirilganda hech narsa bo'lmaydi
+  })
   @JoinColumn({ name: 'course_id' })
   course: Course; // Kurs bilan bog'liq
 

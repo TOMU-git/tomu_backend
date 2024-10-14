@@ -77,8 +77,31 @@ export class CourseService implements ICourseService {
   async update(
     id: ID,
     updateCourseDto: UpdateCourseDto,
+    file?: Express.Multer.File, // Fayl ixtiyoriy
   ): Promise<ResData<Course>> {
     const { data: foundData } = await this.findOneById(id);
+
+    // Eski faylni o'chirish agar mavjud bo'lsa va yangi fayl yuklangan bo'lsa
+    if (file && foundData.imageUrl) {
+      await this.fileService.removeByImageUrl(foundData.imageUrl);
+    }
+
+    // Yangi faylni yuklash va imageUrl ni yangilash
+    if (file) {
+      const fileDto = new CreateFileDto();
+      const savedFile = await this.fileService.create(
+        Object.assign(fileDto, {
+          originalname: file.originalname,
+          path: file.path,
+          mimetype: file.mimetype,
+          size: file.size,
+        }),
+      );
+      updateCourseDto = Object.assign(updateCourseDto, {
+        imageUrl: savedFile.data.path,
+      });
+    }
+
     const updatedData = Object.assign(foundData, updateCourseDto);
     const data = await this.courseRepository.update(updatedData);
 
@@ -87,6 +110,12 @@ export class CourseService implements ICourseService {
 
   async delete(id: ID): Promise<ResData<Course>> {
     const { data: foundData } = await this.findOneById(id);
+    console.log(foundData);
+    // Eski faylni o'chirish agar mavjud bo'lsa
+    if (foundData.imageUrl) {
+      await this.fileService.removeByImageUrl(foundData.imageUrl);
+    }
+
     const data = await this.courseRepository.delete(foundData);
 
     return new ResData<Course>('Course deleted successfully', 200, data);

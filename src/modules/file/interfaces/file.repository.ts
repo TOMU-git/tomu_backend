@@ -6,4 +6,5 @@ export interface IFileRepository {
   findAll(): Promise<Array<File>>;
   findOneById(id: number): Promise<File | null>;
   delete(entity: File): Promise<File>;
+  findByImageUrl(imageUrl: string): Promise<File | null>;
 }
