@@ -21,6 +21,7 @@ import { RoleEnum } from 'src/common/enums/enum';
 import { Roles } from '../auth/decorator/role.decorator';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { RolesGuard } from '../shared/guards/role.guard';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('block')
 @Controller('block')
@@ -30,9 +31,7 @@ export class BlockController {
     private readonly blockService: IBlockService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   async create(
     @Body() createBlockDto: CreateBlockDto,
@@ -50,9 +49,7 @@ export class BlockController {
     return await this.blockService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
