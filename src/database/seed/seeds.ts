@@ -15,7 +15,7 @@ import { createConnection, DataSource } from "typeorm"
     await queryRunner.startTransaction();
     try {
 
-        // *** Creating director *** //
+        // **** Creating director **** //
 
         const userRepository = queryRunner.manager.getRepository(User);
         const users = await userRepository.find();
