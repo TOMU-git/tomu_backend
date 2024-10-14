@@ -17,8 +17,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(bodyParser.json({ limit: '1000mb' }));
-  app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
+ app.useBodyParser('json');
 
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
