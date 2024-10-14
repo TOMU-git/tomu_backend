@@ -40,7 +40,7 @@ export class VimeoService {
           },
           (uri) => {
             const videoId = uri.split('/').pop();
-            const videoUrl = `https://vimeo.com/${videoId}`;
+            const videoUrl = `https://player.vimeo.com/video/${videoId}`;
             // Vaqtinchalik faylni o'chirish
             fs.unlink(tempFilePath, (err) => {
               if (err) console.error('Error deleting temp file', err);
