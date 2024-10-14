@@ -47,6 +47,7 @@ async function bootstrap() {
     },
   });
 
+
   await app.listen(config.port, () => {
     console.log(`http://localhost:${config.port}`);
     console.log(`http://localhost:${config.port}/docs`);
