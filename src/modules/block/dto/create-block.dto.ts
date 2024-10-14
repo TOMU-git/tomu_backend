@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsUUID, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsArray, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBlockDto {
@@ -6,22 +6,13 @@ export class CreateBlockDto {
   @IsString()
   @IsNotEmpty()
   title: string;
-  
 
   @ApiProperty({
-    example: 'UUID of the associated course',
+    example: 4,
     description: 'Course ID',
+    type: Number,
   })
-  @IsUUID()
+  @IsInt()
   @IsNotEmpty()
-  courseId: string; // Kurs UUID
-
-  @ApiProperty({
-    type: [String],
-    example: ['lesson1-uuid', 'lesson2-uuid', 'lesson3-uuid'],
-    description: 'List of lesson IDs to associate with this block',
-  })
-  @IsArray()
-  @IsUUID(undefined, { each: true })
-  lessons: string[]; // Lesson UUID lar ro'yxati (videolar bilan birga bo'ladi)
+  courseId: number; // Kurs ID (raqam)
 }

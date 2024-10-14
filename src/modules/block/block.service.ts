@@ -33,7 +33,6 @@ export class BlockService implements IBlockService {
     const newBlock = new Block();
     newBlock.title = createBlockDto.title;
     newBlock.course = course;
-    newBlock.lessons = createBlockDto.lessons as any; // To'g'ridan-to'g'ri qo'shamiz
 
     const newData = await this.blockRepository.create(newBlock);
     return new ResData<Block>('Block created successfully', 201, newData);
@@ -63,7 +62,6 @@ export class BlockService implements IBlockService {
 
     // Blokni yangilash, lessonlarni tekshirish shart emas
     block.title = updateBlockDto.title;
-    block.lessons = updateBlockDto.lessons as any; // To'g'ridan-to'g'ri qo'shamiz
 
     const updatedData = await this.blockRepository.update(block);
     return new ResData<Block>('Block updated successfully', 200, updatedData);
