@@ -42,9 +42,9 @@ export class LessonController {
     private readonly lessonService: ILessonService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
@@ -91,8 +91,8 @@ export class LessonController {
     return this.lessonService.create(createLessonDto, file); // Yangi darsni yaratish
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
@@ -105,9 +105,9 @@ export class LessonController {
     return await this.lessonService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
@@ -116,9 +116,9 @@ export class LessonController {
     return await this.lessonService.update(id, updateLessonDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.delete(id);

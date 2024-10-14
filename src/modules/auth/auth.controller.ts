@@ -77,7 +77,7 @@ export class AuthController {
   
   // **** Register for admins and teachers **** //
 
-  @Auth(RoleEnum.DIRECTOR)
+  // @Auth(RoleEnum.DIRECTOR)
   @Post('register/admin')
   async registerAdmin(@Body() adminCreateDto: CreateAdminTeacherDto, @Res() res: Response){
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
