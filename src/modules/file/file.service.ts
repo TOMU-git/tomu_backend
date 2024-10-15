@@ -11,34 +11,15 @@ export class FileService {
   constructor(
     @Inject('IFileRepository') private readonly fileRepository: IFileRepository,
   ) {}
+
   async create(createFileDto: CreateFileDto) {
-    let newCategory = new File();
-    newCategory = Object.assign(newCategory, createFileDto);
+    const newCategory = Object.assign(new File(), createFileDto);
     const newData = await this.fileRepository.create(newCategory);
-
     return new ResData<File>('File was created successfully', 201, newData);
-  }
-
-  async multipleCreate(dto1: File, dto2: File) {
-    console.log(dto1, dto2);
-    const newCategory = new File();
-    const newCategory1 = Object.assign(newCategory, dto1);
-    const newCategory2 = Object.assign(newCategory, dto2);
-    const newData = await this.fileRepository.multipleCreate(
-      newCategory1,
-      newCategory2,
-    );
-
-    return new ResData<Array<File>>(
-      'File was created successfully',
-      201,
-      newData,
-    );
   }
 
   async findAll() {
     const data = await this.fileRepository.findAll();
-
     return new ResData<Array<File>>('ok', 200, data);
   }
 
@@ -51,11 +32,14 @@ export class FileService {
   }
 
   async findByImageUrl(imageUrl: string): Promise<File | null> {
-    const foundFile = await this.findByImageUrl(imageUrl);
+    const foundFile = await this.fileRepository.findByImageUrl(imageUrl);
+    console.log(imageUrl);
+    console.log(foundFile);
     if (!foundFile) {
+      console.log('work here');
       throw new FileNotFoundException();
     }
-    return await this.fileRepository.findByImageUrl(imageUrl);
+    return foundFile;
   }
 
   async removeByImageUrl(imageUrl: string): Promise<ResData<string>> {
@@ -67,13 +51,12 @@ export class FileService {
 
     // Faylni tizimdan o'chirish
     if (existsSync(deleteFilePath)) {
-      unlink(deleteFilePath, (err) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log("Fayl muvaffaqiyatli o'chirildi");
-        }
-      });
+      try {
+        await this.unlinkFile(deleteFilePath);
+        console.log("Fayl muvaffaqiyatli o'chirildi");
+      } catch (err) {
+        console.error("Faylni o'chirishda xatolik:", err);
+      }
     }
 
     return new ResData<string>(
@@ -87,14 +70,27 @@ export class FileService {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.fileRepository.delete(foundData);
     const deleteFile = data.path;
+
     if (existsSync(deleteFile)) {
-      unlink(deleteFile, (err) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log('deleted');
-      });
+      try {
+        await this.unlinkFile(deleteFile);
+        console.log("Fayl muvaffaqiyatli o'chirildi");
+      } catch (err) {
+        console.error("Faylni o'chirishda xatolik:", err);
+      }
     }
+
     return new ResData('success', 200, data);
+  }
+
+  private unlinkFile(filePath: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      unlink(filePath, (err) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
   }
 }

@@ -5,10 +5,6 @@ import { CreateFileDto } from '../dto/create-file.dto';
 
 export interface IFileService {
   create(dto: CreateFileDto): Promise<ResData<File>>;
-  multipleCreate(
-    dto: CreateFileDto,
-    dto2: CreateFileDto,
-  ): Promise<ResData<Array<File>>>;
   findAll(): Promise<ResData<Array<File>>>;
   remove(id: ID): Promise<ResData<File>>;
   findOneById(id: ID): Promise<ResData<File>>;
