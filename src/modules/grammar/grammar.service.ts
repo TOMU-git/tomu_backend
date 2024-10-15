@@ -35,7 +35,7 @@ export class GrammarService implements IGrammarService {
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();
     return new ResData<Array<Grammar>>('ok', 200, data);
-  }
+  } 
 
   async findOneById(id: ID): Promise<ResData<Grammar>> {
     const foundData = await this.grammarRepository.findById(id);

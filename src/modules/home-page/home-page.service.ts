@@ -24,7 +24,6 @@ export class HomePageService implements IHomePageService {
 
   async create(
     createHomePageDto: CreateHomePageDto,
-    file?: Express.Multer.File, // Fayl ixtiyoriy
   ): Promise<ResData<HomePage>> {
     const foundData = await this.homePageRepository.findOneByName(
       createHomePageDto.title,
@@ -33,28 +32,10 @@ export class HomePageService implements IHomePageService {
       throw new HomePageAlreadyExistException();
     }
 
-    let newHomePage = new HomePage();
+        const newHomePage = new HomePage();
+        Object.assign(newHomePage, createHomePageDto);
+        const newData = await this.homePageRepository.create(newHomePage);
 
-    // Fayl yuklash jarayoni
-    if (file) {
-      const fileDto = new CreateFileDto();
-      const savedFile = await this.fileService.create(
-        Object.assign(fileDto, {
-          originalname: file.originalname,
-          path: file.path,
-          mimetype: file.mimetype,
-          size: file.size,
-        }),
-      );
-      // Fayl muvaffaqiyatli yuklangan bo'lsa, imageUrl sifatida kursga qo'shamiz
-      newHomePage = Object.assign(newHomePage, createHomePageDto, {
-        imageUrl: savedFile.data.path,
-      });
-    } else {
-      newHomePage = Object.assign(newHomePage, createHomePageDto);
-    }
-
-    const newData = await this.homePageRepository.create(newHomePage);
     return new ResData<HomePage>(
       'Home Page created successfully',
       201,

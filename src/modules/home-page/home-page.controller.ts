@@ -36,38 +36,10 @@ export class HomePageController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Post()
-  @UseInterceptors(FileInterceptor('fileName', fileOption))
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string', example: 'Yozuvchi va Ularning Ijodi' },
-        description: {
-          type: 'string',
-          example:
-            'Bu yerda yozuvchilar va ularning ijodi haqida ma’lumotlar beriladi.',
-        },
-        fileName: {
-          type: 'string',
-          format: 'binary',
-          description: 'Rasm yoki fayl yuklash',
-        },
-        preferences: {
-          type: 'array',
-          items: { type: 'string' },
-          example: ['afzallik1', 'afzallik2'],
-        },
-      },
-    },
-  })
-  @ApiConsumes('multipart/form-data') // Swagger'da fayl yuklashni ko'rsatish uchun
-  async create(
+  @Post()  async create(
     @Body() createHomePageDto: CreateHomePageDto,
-    @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
   ): Promise<ResData<HomePage>> {
-    console.log(file, createHomePageDto);
-    return await this.homePageService.create(createHomePageDto, file);
+    return await this.homePageService.create(createHomePageDto);
   }
 
   @Get()

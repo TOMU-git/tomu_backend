@@ -9,29 +9,20 @@ import { Transform, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateHomePageDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Landing page sarlavhasi',
     example: 'Yozuvchi va Ularning Ijodi',
   })
-  @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Landing page ta’rifi',
     example:
       'Bu yerda yozuvchilar va ularning ijodi haqida ma’lumotlar beriladi.',
   })
-  @IsNotEmpty()
   @IsString()
   description: string;
-
-  @ApiPropertyOptional({
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  fileName?: string; // Ixtiyoriy qildik
 
   @ApiProperty({
     description: 'Foydalanuvchi afzalliklari',
