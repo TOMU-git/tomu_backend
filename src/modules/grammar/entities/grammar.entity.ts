@@ -4,8 +4,8 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('grammars')
 export class Grammar extends BaseEntity {
-  @Column({ type: 'text' })
-  grammar_text: string;
+  @Column({ type: 'text', name: 'grammar_text' })
+  grammarText: string;
 
   @OneToOne(() => Lesson, (lesson) => lesson.grammar)
   @JoinColumn()

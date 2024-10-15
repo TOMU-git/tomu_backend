@@ -43,22 +43,4 @@ export class CreateLessonDto {
   @IsOptional()
   @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   blockId: number;
-
-  @ApiProperty({
-    description: 'Bog‘lanadigan Grammarning IDsi',
-    example: 2,
-    required: false,
-  })
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
-  grammarId: number;
-
-  @ApiProperty({
-    description: 'Bog‘lanadigan Homeworkning IDsi',
-    example: 3,
-    required: false,
-  })
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
-  homeworkId: number;
 }

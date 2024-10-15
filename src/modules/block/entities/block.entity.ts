@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
-import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
 import { Course } from 'src/modules/course/entities/course.entity';
+import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
+
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('blocks')

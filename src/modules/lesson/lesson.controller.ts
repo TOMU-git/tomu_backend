@@ -33,6 +33,7 @@ import { RolesGuard } from '../shared/guards/role.guard';
 import { RoleEnum } from 'src/common/enums/enum';
 import { Roles } from '../auth/decorator/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('lesson')
 @Controller('lesson')
@@ -41,10 +42,7 @@ export class LessonController {
     @Inject('ILessonService')
     private readonly lessonService: ILessonService,
   ) {}
-
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
@@ -63,12 +61,6 @@ export class LessonController {
           type: 'number',
         },
         blockId: {
-          type: 'number',
-        },
-        grammarId: {
-          type: 'number',
-        },
-        homeworkId: {
           type: 'number',
         },
         video: {
@@ -91,34 +83,49 @@ export class LessonController {
     return this.lessonService.create(createLessonDto, file); // Yangi darsni yaratish
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard) // faqat autentifikatsiya qilingan foydalanuvchilar kirishi mumkin
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
+  @ApiBody({
+    description: "Yuklanadigan video ma'lumotlari va o'zgarishlar",
+    type: UpdateLessonDto,
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        order: { type: 'number' },
+        blockId: { type: 'number' },
+        video: {
+          // Video faylini yuklash maydoni
+          type: 'string',
+          format: 'binary', // Bu maydon fayl yuklash uchun kerak
+        },
+      },
+    },
+  })
   async update(
     @Param('id', ParseIntPipe) id: ID,
     @Body() updateLessonDto: UpdateLessonDto,
+    @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Lesson>> {
-    return await this.lessonService.update(id, updateLessonDto);
+    console.log('Fayl:', file); // Faylni konsolda tekshirish
+    return await this.lessonService.update(id, updateLessonDto, file);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.delete(id);

@@ -32,35 +32,12 @@ import { Homework } from './modules/homework/entities/homework.entity';
 import { HomeworkModule } from './modules/homework/homework.module';
 import { HomePage } from './modules/home-page/entities/home-page.entity';
 import { HomePageModule } from './modules/home-page/home-page.module';
+import { connectionSource } from './common/config/database.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: config.database_host,
-      port: config.database_port,
-      username: config.database_user,
-      password: config.database_password,
-      database: config.database,
-      entities: [
-        User,
-        Course,
-        Lesson,
-        Grammar,
-        Homework,
-        HomePage,
-        Block,
-        Feedback,
-        Payment,
-        Tariff,
-        UserCourse,
-        LiveChat,
-        File,
-        Chat,
-        UserTariff,
-      ],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(connectionSource,
+    ),
     AuthModule,
     CourseModule,
     FeedbackModule,

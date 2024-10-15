@@ -6,8 +6,10 @@ import { IGrammarRepository } from './interfaces/grammar.repository';
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
 import { IGrammarService } from './interfaces/grammar.service';
-import { GrammarAlreadyExistException, GrammarNotFoundException } from './exception/grammar.exception';
-
+import {
+  GrammarAlreadyExistException,
+  GrammarNotFoundException,
+} from './exception/grammar.exception';
 
 @Injectable()
 export class GrammarService implements IGrammarService {
@@ -19,7 +21,7 @@ export class GrammarService implements IGrammarService {
   async create(createGrammarDto: CreateGrammarDto): Promise<ResData<Grammar>> {
     // Qo'shilayotgan grammarnı tekshirish
     const foundData = await this.grammarRepository.findOneByName(
-      createGrammarDto.grammar_text,
+      createGrammarDto.grammarText,
     );
     if (foundData) {
       throw new GrammarAlreadyExistException();
@@ -35,7 +37,7 @@ export class GrammarService implements IGrammarService {
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();
     return new ResData<Array<Grammar>>('ok', 200, data);
-  } 
+  }
 
   async findOneById(id: ID): Promise<ResData<Grammar>> {
     const foundData = await this.grammarRepository.findById(id);

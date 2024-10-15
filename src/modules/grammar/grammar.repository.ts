@@ -35,6 +35,6 @@ export class GrammarRepository implements IGrammarRepository {
   }
 
   async findOneByName(title: string): Promise<Grammar | null> {
-    return await this.grammarRepository.findOneBy({ grammar_text: title });
+    return await this.grammarRepository.findOneBy({ grammarText: title });
   }
 }

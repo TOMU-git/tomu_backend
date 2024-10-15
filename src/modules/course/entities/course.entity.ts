@@ -14,7 +14,7 @@ export class Course extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'image_url' })
   imageUrl: string;
 
   // O'qituvchi User entitisi orqali bog'lanadi
