@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
+import { Block } from 'src/modules/block/entities/block.entity';
 import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity('homeworks')
 export class Homework extends BaseEntity {
@@ -13,4 +14,11 @@ export class Homework extends BaseEntity {
   @OneToOne(() => Lesson, (lesson) => lesson.homework)
   @JoinColumn()
   lesson: Lesson;
+
+  @ManyToOne(() => Block, (block) => block.homeworks, {
+    nullable: true, // Block can be null if homework is not associated with any block
+    onDelete: 'SET NULL', // If a block is deleted, set the block field to null
+  })
+  @JoinColumn() // Establish the join column for the relationship
+  block: Block; // Reference to the block associated with this homework
 }
