@@ -49,11 +49,4 @@ export class Course extends BaseEntity {
     onDelete: 'NO ACTION',
   }) // Course ga bog'langan grammatikalar
   grammars: Grammar[];
-
-  // Tariflar bilan bog'lanish
-  @OneToMany(() => Tariff, (tariff) => tariff.course, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
-  })
-  tariffs: Tariff[];
 }
