@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsInt,
   IsNotEmpty,
@@ -8,11 +8,6 @@ import {
 } from 'class-validator';
 
 export class CreateTariffDto {
-  @ApiProperty({ type: Number })
-  @IsInt()
-  @IsNotEmpty()
-  course_id: number;
-
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
@@ -33,7 +28,7 @@ export class CreateTariffDto {
   @IsNotEmpty()
   description: string;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiPropertyOptional({ type: [String], required: false })
   @IsOptional()
   @IsArray()
   options?: string[];
