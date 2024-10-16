@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Injectable, Inject } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
+import { IProgressService } from './interfaces/progress.service';
 
 @Controller('progress')
 export class ProgressController {
-  constructor(private readonly progressService: ProgressService) {}
+  constructor(
+    @Inject('IProgressService')
+    private readonly progressService: IProgressService,
+  ) {}
 
   @Post()
   create(@Body() createProgressDto: CreateProgressDto) {
@@ -19,16 +23,19 @@ export class ProgressController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.progressService.findOne(+id);
+    return this.progressService.findOneById(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProgressDto: UpdateProgressDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProgressDto: UpdateProgressDto,
+  ) {
     return this.progressService.update(+id, updateProgressDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.progressService.remove(+id);
+    return this.progressService.delete(+id);
   }
 }

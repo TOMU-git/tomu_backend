@@ -4,7 +4,7 @@ import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
 import { Homework } from 'src/modules/homework/entities/homework.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-@Entity('user_video_progress')
+@Entity('progress')
 export class Progress extends BaseEntity {
   @ManyToOne(() => User, (user) => user.videoProgresses)
   @JoinColumn({ name: 'user_id' })
