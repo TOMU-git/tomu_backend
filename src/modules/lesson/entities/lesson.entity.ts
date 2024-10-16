@@ -40,10 +40,6 @@ export class Lesson extends BaseEntity {
   @JoinColumn({ name: 'block_id' })
   block: Block;
 
-  // Bu yerda Grammar bilan bog'lanish
-  @OneToOne(() => Grammar, (grammar) => grammar.lesson)
-  grammar: Grammar;
-
   @OneToOne(() => Homework, (homework) => homework.lesson)
   homework: Homework;
 }

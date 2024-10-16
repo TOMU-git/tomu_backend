@@ -1,10 +1,11 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
+import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
 import { Tariff } from 'src/modules/tariff/entities/tariff.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { User } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, OneToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -43,6 +44,11 @@ export class Course extends BaseEntity {
     nullable: true,
   })
   blocks: Block[];
+
+  @OneToMany(() => Grammar, (grammar) => grammar.course, {
+    onDelete: 'NO ACTION',
+  }) // Course ga bog'langan grammatikalar
+  grammars: Grammar[];
 
   // Tariflar bilan bog'lanish
   @OneToMany(() => Tariff, (tariff) => tariff.course, {
