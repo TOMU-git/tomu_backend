@@ -39,8 +39,7 @@ export class Course extends BaseEntity {
 
   // Blocklar bilan bog'lanish
   @OneToMany(() => Block, (block) => block.course, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
+    onDelete: 'SET NULL', // Course o'chirilganda, block kurs qiymati null bo'ladi
     nullable: true,
   })
   blocks: Block[];

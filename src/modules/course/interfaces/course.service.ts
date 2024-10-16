@@ -11,7 +11,11 @@ export interface ICourseService {
   ): Promise<ResData<Course>>;
   findAll(): Promise<ResData<Array<Course>>>;
   findOneById(id: ID): Promise<ResData<Course>>;
-  update(id: ID, dto: UpdateCourseDto): Promise<ResData<Course>>;
+  update(
+    id: ID,
+    dto: UpdateCourseDto,
+    file: Express.Multer.File,
+  ): Promise<ResData<Course>>;
   create(dto: CreateCourseDto): Promise<ResData<Course>>;
   delete(id: ID): Promise<ResData<Course>>;
 }

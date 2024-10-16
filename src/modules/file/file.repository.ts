@@ -10,11 +10,6 @@ export class FileRepository implements IFileRepository {
     @InjectRepository(File)
     private fileRepository: Repository<File>,
   ) {}
-  async multipleCreate(dto1: File, dto2: File): Promise<Array<File>> {
-    const newFile = await this.fileRepository.create([dto1, dto2]);
-    await this.fileRepository.save(newFile);
-    return newFile;
-  }
 
   async delete(entity: File): Promise<File> {
     return await this.fileRepository.remove(entity);

@@ -27,8 +27,6 @@ export class CourseService implements ICourseService {
     dto: CreateCourseDto,
     file?: Express.Multer.File, // Fayl ixtiyoriy
   ): Promise<ResData<Course>> {
-    console.log(dto);
-    console.log(file);
     const foundData = await this.courseRepository.findOneByName(dto.title);
     if (foundData) {
       throw new CourseAlreadyExistException();
@@ -83,7 +81,16 @@ export class CourseService implements ICourseService {
 
     // Eski faylni o'chirish agar mavjud bo'lsa va yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
-      await this.fileService.removeByImageUrl(foundData.imageUrl);
+      try {
+        const removeResult = await this.fileService.removeByImageUrl(
+          foundData.imageUrl,
+        );
+        if (!removeResult) {
+          console.log('Fayl topilmadi yoki o‘chirilmadi.');
+        }
+      } catch (error) {
+        console.error('Faylni o‘chirishda xatolik yuz berdi:', error);
+      }
     }
 
     // Yangi faylni yuklash va imageUrl ni yangilash
@@ -102,7 +109,10 @@ export class CourseService implements ICourseService {
       });
     }
 
+    // Kurs ma'lumotlarini yangilash uchun eski ma'lumotlarni yangilangan DTO bilan birlashtirish
     const updatedData = Object.assign(foundData, updateCourseDto);
+
+    // Kursni yangilash
     const data = await this.courseRepository.update(updatedData);
 
     return new ResData<Course>('Course updated successfully', 200, data);
@@ -110,7 +120,6 @@ export class CourseService implements ICourseService {
 
   async delete(id: ID): Promise<ResData<Course>> {
     const { data: foundData } = await this.findOneById(id);
-    console.log(foundData);
     // Eski faylni o'chirish agar mavjud bo'lsa
     if (foundData.imageUrl) {
       await this.fileService.removeByImageUrl(foundData.imageUrl);

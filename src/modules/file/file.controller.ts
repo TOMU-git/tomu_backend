@@ -37,7 +37,6 @@ export class FileController {
   })
   @UseInterceptors(FileInterceptor('file', fileOption))
   create(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
     let newFile = new CreateFileDto();
     newFile = Object.assign(newFile, file);
     return this.fileService.create(newFile);
