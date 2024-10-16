@@ -3,7 +3,7 @@ import { Tariff } from 'src/modules/tariff/entities/tariff.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-@Entity('user-tariffs')
+@Entity('user_tariffs')
 export class UserTariff extends BaseEntity {
   @Column({
     name: 'purchase_date',
