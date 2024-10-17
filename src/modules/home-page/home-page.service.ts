@@ -10,7 +10,6 @@ import {
   HomePageNotFoundException,
 } from './exception/home-page.exception';
 import { IFileService } from '../file/interfaces/file.service';
-import { CreateFileDto } from '../file/dto/create-file.dto';
 
 @Injectable()
 export class HomePageService implements IHomePageService {

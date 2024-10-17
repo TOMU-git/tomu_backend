@@ -4,8 +4,6 @@ import { LessonProgress } from '../entities/lesson-progress.entity';
 export interface ILessonProgressRepository {
   create(dto: LessonProgress): Promise<LessonProgress>;
   findAll(): Promise<Array<LessonProgress>>;
-  update(entity: LessonProgress): Promise<LessonProgress>;
-  delete(entity: LessonProgress): Promise<LessonProgress>;
   findById(id: ID): Promise<LessonProgress | null>;
   findOneByUserAndLesson(
     userId: ID,

@@ -8,22 +8,15 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-  UseGuards,
-  UseInterceptors,
-  UploadedFile,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateHomePageDto } from './dto/create-home-page.dto';
 import { ResData } from 'src/lib/resData';
 import { HomePage } from './entities/home-page.entity';
 import { IHomePageService } from './interfaces/home-page.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
-import { Roles } from '../auth/decorator/role.decorator';
+import { ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { fileOption } from 'src/lib/file';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('home-page')
 @Controller('home-page')
@@ -33,10 +26,9 @@ export class HomePageController {
     private readonly homePageService: IHomePageService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Post()  async create(
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Post()
+  async create(
     @Body() createHomePageDto: CreateHomePageDto,
   ): Promise<ResData<HomePage>> {
     return await this.homePageService.create(createHomePageDto);
@@ -52,9 +44,7 @@ export class HomePageController {
     return await this.homePageService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
@@ -63,9 +53,7 @@ export class HomePageController {
     return await this.homePageService.update(id, updateHomePageDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<HomePage>> {
     return await this.homePageService.delete(id);

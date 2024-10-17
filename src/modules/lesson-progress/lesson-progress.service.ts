@@ -4,7 +4,6 @@ import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
 import { LessonProgress } from './entities/lesson-progress.entity';
 import { CreateLessonProgressDto } from './dto/create-lesson-progress.dto';
-import { UpdateLessonProgressDto } from './dto/update-lesson-progress.dto';
 import {
   LessonProgressAlreadyExistException,
   LessonProgressNotFoundException,
@@ -77,31 +76,5 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     return new ResData<LessonProgress>('ok', 200, foundData);
-  }
-
-  async update(
-    id: ID,
-    dto: UpdateLessonProgressDto,
-  ): Promise<ResData<LessonProgress>> {
-    const { data: foundData } = await this.findOneById(id);
-    const updatedData = Object.assign(foundData, dto);
-    const data = await this.lessonProgressRepository.update(updatedData);
-
-    return new ResData<LessonProgress>(
-      'Lesson progress updated successfully',
-      200,
-      data,
-    );
-  }
-
-  async delete(id: ID): Promise<ResData<LessonProgress>> {
-    const { data: foundData } = await this.findOneById(id);
-    const data = await this.lessonProgressRepository.delete(foundData);
-
-    return new ResData<LessonProgress>(
-      'Lesson progress deleted successfully',
-      200,
-      data,
-    );
   }
 }
