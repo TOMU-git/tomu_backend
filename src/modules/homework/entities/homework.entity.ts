@@ -1,12 +1,10 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
-import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
-import { Progress } from 'src/modules/progress/entities/progress.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('homeworks')
 export class Homework extends BaseEntity {
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'video_url' })
   assignment_video_url: string;
 
   @Column({ type: 'text' })
@@ -18,8 +16,4 @@ export class Homework extends BaseEntity {
   })
   @JoinColumn() // Establish the join column for the relationship
   block: Block; // Reference to the block associated with this homework
-
-  // Ushbu uyga vazifaga tegishli progress yozuvlari.
-  @OneToMany(() => Progress, (progress) => progress.homework)
-  progressRecords: Progress[];
 }

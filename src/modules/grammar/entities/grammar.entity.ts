@@ -11,10 +11,6 @@ export class Grammar extends BaseEntity {
   @Column({ type: 'text', name: 'grammar_text' })
   grammarText: string;
 
-  @OneToOne(() => Lesson, (lesson) => lesson.grammar)
-  @JoinColumn({name: 'course_id'})
-  courseId: Lesson;
-
   @ManyToOne(() => Course, (course) => course.grammars, {
     nullable: true, // course maydoni null bo'lishi mumkin
     onDelete: 'SET NULL', // Course o'chirilganda, course maydoni null ga o'rnatiladi
