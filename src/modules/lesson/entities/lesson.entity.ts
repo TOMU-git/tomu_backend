@@ -41,7 +41,7 @@ export class Lesson extends BaseEntity {
   block: Block;
 
   // Bu yerda Grammar bilan bog'lanish
-  @OneToOne(() => Grammar, (grammar) => grammar.lesson)
+  @OneToOne(() => Grammar, (grammar) => grammar.courseId)
   grammar: Grammar;
 
   @OneToOne(() => Homework, (homework) => homework.lesson)

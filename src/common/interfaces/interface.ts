@@ -11,4 +11,5 @@ export interface IConfig {
   jwtRefreshKey: string;
   jwtRefreshExpiresIn: string;
   databaseUrl: string;
+  token: string;
 }
