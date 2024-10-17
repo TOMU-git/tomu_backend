@@ -36,6 +36,9 @@ export class GrammarService implements IGrammarService {
 
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();
+    if (data.length === 0) {
+      return new ResData<Grammar[]>('Not any grammar yet', 200, data);
+    }
     return new ResData<Array<Grammar>>('ok', 200, data);
   }
 

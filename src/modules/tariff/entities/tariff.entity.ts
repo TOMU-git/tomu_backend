@@ -26,8 +26,4 @@ export class Tariff extends BaseEntity {
     onUpdate: 'SET NULL',
   })
   userTariffs: UserTariff[];
-
-  @ManyToOne(() => Course, (course) => course.tariffs)
-  @JoinColumn({ name: 'course_id' })
-  course: Course;
 }

@@ -4,7 +4,7 @@ import { Course } from 'src/modules/course/entities/course.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-@Entity('user-courses')
+@Entity('user_courses')
 export class UserCourse extends BaseEntity {
   @Column({ name: 'purchase_date', type: 'date', nullable: false })
   purchaseDate: Date;

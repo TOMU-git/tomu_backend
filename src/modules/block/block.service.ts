@@ -40,6 +40,11 @@ export class BlockService implements IBlockService {
 
   async findAll(): Promise<ResData<Block[]>> {
     const data = await this.blockRepository.findAll();
+
+    if (data.length === 0) {
+      return new ResData<Block[]>('Not any course yet', 200, data);
+    }
+
     return new ResData<Block[]>('Blocks retrieved successfully', 200, data);
   }
 

@@ -20,6 +20,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
 import { RolesGuard } from '../shared/guards/role.guard';
 import { AuthGuard } from '../shared/guards/auth.guard';
+import { Auth } from 'src/common/decorator/auth.decorator';
 import { Roles } from '../auth/decorator/role.decorator';
 
 @ApiTags('grammar')
@@ -30,10 +31,7 @@ export class GrammarController {
     private readonly grammarService: IGrammarService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.TEACHER, RoleEnum.ADMIN)
-  @Patch(':id')
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   async create(
     @Body() createGrammarDto: CreateGrammarDto,
@@ -57,7 +55,7 @@ export class GrammarController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.TEACHER, RoleEnum.ADMIN)
+  @Roles(RoleEnum.TEACHER, RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
@@ -68,7 +66,7 @@ export class GrammarController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.TEACHER, RoleEnum.ADMIN)
+  @Roles(RoleEnum.TEACHER, RoleEnum.ADMIN, RoleEnum.DIRECTOR  )
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Grammar>> {
     return await this.grammarService.delete(id);

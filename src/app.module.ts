@@ -34,7 +34,7 @@ import { HomePage } from './modules/home-page/entities/home-page.entity';
 import { HomePageModule } from './modules/home-page/home-page.module';
 import { connectionSource } from './common/config/database.config';
 import { BotModule } from './modules/bot/bot.module';
-
+import { ProgressModule } from './modules/progress/progress.module';
 
 @Module({
   imports: [
@@ -59,6 +59,7 @@ import { BotModule } from './modules/bot/bot.module';
     UserTariffModule,
     ChatModule,
     BotModule,
+    ProgressModule,
   ],
 })
 export class AppModule {}

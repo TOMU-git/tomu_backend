@@ -79,11 +79,34 @@ export class CourseController {
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('fileName', fileOption))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', example: 'Introduction to Programming' },
+        description: {
+          type: 'string',
+          example: 'This course covers the basics of programming using Python.',
+        },
+        instructor: {
+          type: 'string',
+          example: '550e8400-e29b-41d4-a716-446655440000',
+        },
+        fileName: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiConsumes('multipart/form-data') // Swagger'da fayl yuklashni ko'rsatish uchun
   async update(
     @Param('id', ParseIntPipe) id: ID,
+    @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
     @Body() updateCourseDto: UpdateCourseDto,
   ): Promise<ResData<Course>> {
-    return await this.courseService.update(id, updateCourseDto);
+    return await this.courseService.update(id, updateCourseDto, file);
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)

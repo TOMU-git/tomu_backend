@@ -6,4 +6,5 @@ export interface ITariffRepository {
   findOneById(id: number): Promise<Tariff>;
   update(entity: Tariff): Promise<Tariff>;
   delete(id: number): Promise<Tariff>;
+  findOneByName(title: string): Promise<Tariff | null>;
 }
