@@ -16,13 +16,6 @@ export class CreateCourseDto {
   @IsString()
   description: string;
 
-  @ApiProperty({
-    description: 'Course instructor ID',
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
-  @IsNotEmpty({ message: "O'qituvchi ID si bo'sh bo'lmasligi kerak" })
-  instructor: string; // o'zgartirildi
-
   @ApiPropertyOptional({
     type: String,
   })
