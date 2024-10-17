@@ -7,7 +7,7 @@ export class TelegramBotService {
   private bot: TelegramBot;
 
   constructor() {
-    this.bot = new TelegramBot(config.token, { polling: true });
+    this.bot = new TelegramBot(config.token, { polling: false });
   }
 // async showMenu(chatId: number) {
 //   await this.bot.sendMessage(chatId, 'Choose an option:', {

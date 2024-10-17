@@ -14,10 +14,12 @@ export class LessonProgress extends BaseEntity {
   lesson: Lesson;
 
   @Column({ type: 'boolean', default: false })
-  /**
-   * Foydalanuvchi videoni ko'rganligini belgilaydi.
-   * `true` bo'lsa, foydalanuvchi ushbu videoni ko'rgan.
-   * `false` bo'lsa, hali ko'rmagan.
-   */
   isWatched: boolean;
+
+  // Yana bir oddiy `userId` va `lessonId` maydonlari qo'shamiz
+  @Column({ name: 'user_id' })
+  userId: string;
+
+  @Column({ name: 'lesson_id' })
+  lessonId: string;
 }
