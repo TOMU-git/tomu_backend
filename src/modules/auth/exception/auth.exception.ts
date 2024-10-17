@@ -16,9 +16,4 @@ export class PhoneNumberAlreadyExist extends HttpException {
   }
 }
 
-export class RoleIsNotAllowed extends HttpException {
-  constructor() {
-    super('You are not allowed to perform this action', HttpStatus.FORBIDDEN);
-  }
-}
 

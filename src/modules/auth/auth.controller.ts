@@ -36,13 +36,6 @@ export class AuthController {
     res.send(found)
   }
 
-  // **** Login for admins, directors and teachers **** //
-  @Post('sign-in/admin-director-teacher')
-  async loginAdminDirectorTeacher(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
-    const found = await this.authService.loginAdminDirectorTeacher(loginDto, res);
-    res.send(found)
-  }
-
   // **** Access validation **** //
 
   @Post('current')
