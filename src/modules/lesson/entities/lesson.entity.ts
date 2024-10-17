@@ -1,8 +1,6 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
 import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
-import { Homework } from 'src/modules/homework/entities/homework.entity';
-import { Progress } from 'src/modules/progress/entities/progress.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('lessons') // Entity nomini belgilash
@@ -40,12 +38,4 @@ export class Lesson extends BaseEntity {
   @ManyToOne(() => Block, (block) => block.lessons)
   @JoinColumn({ name: 'block_id' })
   block: Block;
-
-  // Bu yerda Grammar bilan bog'lanish
-  @OneToOne(() => Grammar, (grammar) => grammar.courseId)
-  grammar: Grammar;
-  
-  // Ushbu darsga tegishli progress yozuvlari.
-  @OneToMany(() => Progress, (progress) => progress.lesson)
-  progressRecords: Progress[];
 }
