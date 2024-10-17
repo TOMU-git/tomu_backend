@@ -1,13 +1,24 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
+import { Course } from 'src/modules/course/entities/course.entity';
 import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('grammars')
 export class Grammar extends BaseEntity {
+  @Column({ type: 'text', name: 'title' })
+  title: string;
+
   @Column({ type: 'text', name: 'grammar_text' })
   grammarText: string;
 
   @OneToOne(() => Lesson, (lesson) => lesson.grammar)
-  @JoinColumn()
-  lesson: Lesson;
+  @JoinColumn({name: 'course_id'})
+  courseId: Lesson;
+
+  @ManyToOne(() => Course, (course) => course.grammars, {
+    nullable: true, // course maydoni null bo'lishi mumkin
+    onDelete: 'SET NULL', // Course o'chirilganda, course maydoni null ga o'rnatiladi
+  })
+  @JoinColumn() // JoinColumn yordamida bog'lanadi
+  course: Course; // Course ga bog'langan grammatikalar
 }

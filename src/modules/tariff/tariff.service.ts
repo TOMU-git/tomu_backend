@@ -13,22 +13,15 @@ export class TariffService implements ITariffService {
   constructor(
     @Inject('ITariffRepository')
     private readonly tariffRepository: ITariffRepository,
-    @Inject('ICourseService')
-    private readonly courseService: ICourseService,
   ) {}
 
   // CREATE
   async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
-    const { data: foundCurse } = await this.courseService.findOneById(
-      createTariffDto.course_id,
-    );
 
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
 
-    newTariff.course = foundCurse;
-
-    // options maydonini kiritamiz
+      // options maydonini kiritamiz
     if (createTariffDto.options) {
       newTariff.options = createTariffDto.options;
     }

@@ -16,6 +16,11 @@ export class TariffRepository implements ITariffRepository {
   async findOneById(id: number): Promise<Tariff> {
     return this.tariffRepository.findOneBy({ id });
   }
+
+  async findOneByName(title: string): Promise<Tariff | null> {
+    return await this.tariffRepository.findOneBy({name: title });
+  }
+
   async update(entity: Tariff): Promise<Tariff> {
     return this.tariffRepository.save(entity);
   }
