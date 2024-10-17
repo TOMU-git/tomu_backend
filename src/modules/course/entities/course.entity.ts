@@ -18,13 +18,6 @@ export class Course extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true, name: 'image_url' })
   imageUrl: string;
 
-  // O'qituvchi User entitisi orqali bog'lanadi
-  @ManyToOne(() => User, (user) => user.courses, {
-    onDelete: 'SET NULL',
-    nullable: true,
-  })
-  instructor: User;
-
   // Foydalanuvchi o'qigan kurslar bilan bog'lanish
   @OneToMany(() => UserCourse, (userCourse) => userCourse.course, {
     onDelete: 'NO ACTION',
