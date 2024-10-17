@@ -11,7 +11,7 @@ import { CreateAdminTeacherDto, CreateStudentDto } from '../user/dto/create-user
 import { RoleEnum } from 'src/common/enums/enum';
 import { config } from 'src/common/config';
 import { Response } from 'express';
-import { InvalidRefreshToken, PhoneOrPasswordWrongException, RoleIsNotAllowed } from './exception/auth.exception';
+import { InvalidRefreshToken, PhoneOrPasswordWrongException } from './exception/auth.exception';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -31,35 +31,6 @@ export class AuthService implements IAuthService {
 
     if (!foundUser) {
       throw new PhoneOrPasswordWrongException();
-    }
-    const compared = await compare(dto.password, foundUser.password);
-    if (!compared) {
-      throw new PhoneOrPasswordWrongException();
-    }
-    const access_token = await this.jwtService.signAsync({ id: foundUser.id }, {secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn});
-    const refresh_token = await this.jwtService.signAsync({ id: foundUser.id }, { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn });
-    foundUser.hashed_refresh_token = await hashed(refresh_token);
-    const updated = await this.userRepository.update(foundUser);
-    res.cookie("refresh_token", refresh_token, {
-      httpOnly: true,
-      maxAge: config.jwtCookieTime,
-    });
-    return new ResData<ILoginData>("User successfully logged in", HttpStatus.OK, {
-      data: foundUser,
-      tokens: {access_token, refresh_token},
-    });
-  }
-
-  // *** Login for only admins, teachers and director *** //
-
-  async loginAdminDirectorTeacher(dto: LoginAuthDto, res: Response ): Promise<ResData<ILoginData>> {
-    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      dto.phoneNumber,
-    );
-    if (!foundUser) {
-      throw new PhoneOrPasswordWrongException();
-    } else if (foundUser.role !== RoleEnum.ADMIN && foundUser.role !== RoleEnum.DIRECTOR && foundUser.role !== RoleEnum.TEACHER) {
-      throw new RoleIsNotAllowed()
     }
     const compared = await compare(dto.password, foundUser.password);
     if (!compared) {

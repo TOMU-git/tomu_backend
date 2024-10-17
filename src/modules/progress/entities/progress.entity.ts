@@ -18,7 +18,7 @@ export class Progress extends BaseEntity {
   @JoinColumn({ name: 'homework_id' })
   homework: Homework;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ name: 'is_watched',type: 'boolean', default: false })
   /**
    * Foydalanuvchi videoni ko'rganligini belgilaydi.
    * `true` bo'lsa, foydalanuvchi ushbu videoni ko'rgan.

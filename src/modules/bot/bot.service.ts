@@ -89,17 +89,17 @@ async init(){
     this.bot.on('message', async (msg)=>{
       const chatId = msg.chat.id;
         await this.bot.sendMessage(chatId, `Salom, ${msg.text}! Iltimos telefon raqamingizni kiriting. Misol uchun: [+998901234567] yoki pastdagi tugmani bosish orqali telefon raqamingizni ulashing.`, contactButton);
+        this.bot.on("contact", async (msg) =>{
+          const chatId = msg.chat.id;
+            await this.bot.sendMessage(chatId, "Tomu online o'quv platformasidan kurs sotib olganmisiz : ", agreement );
+            this.bot.on('message', async (msg) =>{
+              const chatId = msg.chat.id;
+              await this.bot.sendMessage(chatId, "Qaysi til kursi bo'yicha muloqot qilishni tanlang 👇", courseButton)
+            })
+        })
     })
 
-    this.bot.on("contact", async (msg) =>{
-      const chatId = msg.chat.id;
-        await this.bot.sendMessage(chatId, "Tomu online o'quv platformasidan kurs sotib olganmisiz : ", agreement );
-    })
 
-    this.bot.on('message', async (msg) =>{
-      const chatId = msg.chat.id;
-      await this.bot.sendMessage(chatId, "Qaysi til kursi bo'yicha muloqot qilishni tanlang 👇", courseButton)
-    })
 })
 }};
 

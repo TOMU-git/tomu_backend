@@ -3,7 +3,9 @@ import { ProgressService } from './progress.service';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
 import { IProgressService } from './interfaces/progress.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('progress')
 @Controller('progress')
 export class ProgressController {
   constructor(
