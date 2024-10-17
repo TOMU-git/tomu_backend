@@ -28,7 +28,7 @@ async function bootstrap() {
   );
 
   const options = new DocumentBuilder()
-    .setTitle('lms')
+    .setTitle('LMS API Documentation')
     .setDescription('Description')
     .setVersion('1.0.0')
     .addTag('apies')
