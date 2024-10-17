@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('progress')
 export class Progress extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.videoProgresses)
+  @ManyToOne(() => User, (user) => user)
   @JoinColumn({ name: 'user_id' })
   user: User;
 

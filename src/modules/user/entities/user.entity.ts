@@ -1,9 +1,7 @@
 import { IsPhoneNumber } from 'class-validator';
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
-import { Course } from 'src/modules/course/entities/course.entity';
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
-import { Progress } from 'src/modules/progress/entities/progress.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
@@ -47,8 +45,4 @@ export class User extends BaseEntity {
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
-
-  // Foydalanuvchining video progresslarini saqlaydi.
-  @OneToMany(() => Progress, (progress) => progress.user)
-  videoProgresses: Progress[];
 }
