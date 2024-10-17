@@ -15,4 +15,5 @@ export const config: IConfig = {
   jwtRefreshKey: process.env.JWT_REFRESH_SECRET_KEY,
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRATION,
   databaseUrl: process.env.DB_URL,
+  token: process.env.TELEGRAM_BOT_TOKEN,
 };

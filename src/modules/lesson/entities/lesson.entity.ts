@@ -41,6 +41,10 @@ export class Lesson extends BaseEntity {
   @JoinColumn({ name: 'block_id' })
   block: Block;
 
+  // Bu yerda Grammar bilan bog'lanish
+  @OneToOne(() => Grammar, (grammar) => grammar.courseId)
+  grammar: Grammar;
+  
   // Ushbu darsga tegishli progress yozuvlari.
   @OneToMany(() => Progress, (progress) => progress.lesson)
   progressRecords: Progress[];

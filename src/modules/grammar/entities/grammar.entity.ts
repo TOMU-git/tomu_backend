@@ -5,11 +5,15 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'type
 
 @Entity('grammars')
 export class Grammar extends BaseEntity {
-  @Column({ type: 'varchar', length: 255, name: 'title' }) // title ustuni
+  @Column({ type: 'text', name: 'title' })
   title: string;
 
-  @Column({ type: 'text', name: 'grammar_text' }) // grammarText ustuni
+  @Column({ type: 'text', name: 'grammar_text' })
   grammarText: string;
+
+  @OneToOne(() => Lesson, (lesson) => lesson.grammar)
+  @JoinColumn({name: 'course_id'})
+  courseId: Lesson;
 
   @ManyToOne(() => Course, (course) => course.grammars, {
     nullable: true, // course maydoni null bo'lishi mumkin
