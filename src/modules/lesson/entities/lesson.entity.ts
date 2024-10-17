@@ -1,7 +1,14 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
-import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { LessonProgress } from 'src/modules/lesson-progress/entities/lesson-progress.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('lessons') // Entity nomini belgilash
 export class Lesson extends BaseEntity {
@@ -38,4 +45,7 @@ export class Lesson extends BaseEntity {
   @ManyToOne(() => Block, (block) => block.lessons)
   @JoinColumn({ name: 'block_id' })
   block: Block;
+
+  @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
+  lessonProgresses: LessonProgress[];
 }

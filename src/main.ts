@@ -5,11 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionsFilter } from './lib/AllExceptionFilters';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-<<<<<<< HEAD
-import { RolesGuard } from './modules/shared/guards/role.guard';
-import { AuthGuard } from './modules/shared/guards/auth.guard';
-=======
->>>>>>> 94adea2746d8d97f1e43e4b0cdd0729f44d3ff44
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -18,11 +13,6 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> 94adea2746d8d97f1e43e4b0cdd0729f44d3ff44
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
