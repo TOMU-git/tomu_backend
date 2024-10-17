@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'type
 
 @Entity('grammars')
 export class Grammar extends BaseEntity {
-  @Column({ type: 'text', name: 'title' })
+  @Column({ type: 'text'})
   title: string;
 
   @Column({ type: 'text', name: 'grammar_text' })
