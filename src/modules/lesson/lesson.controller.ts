@@ -87,6 +87,14 @@ export class LessonController {
     return await this.lessonService.findOneById(id);
   }
 
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Get('by-block/:blockId')
+  async getByBlockId(
+    @Param('blockId', ParseIntPipe) blockId: number,
+  ): Promise<ResData<Lesson[]>> {
+    return await this.lessonService.getLessonsByBlockId(blockId);
+  }
+
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   @ApiConsumes('multipart/form-data')
