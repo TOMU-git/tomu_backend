@@ -13,5 +13,9 @@ import { SharedModule } from '../shared/shared.module';
     { provide: 'IHomeworkService', useClass: HomeworkService },
     { provide: 'IHomeworkRepository', useClass: HomeworkRepository },
   ],
+  exports: [
+    { provide: 'IHomeworkService', useClass: HomeworkService },
+    { provide: 'IHomeworkRepository', useClass: HomeworkRepository },
+  ],
 })
 export class HomeworkModule {}
