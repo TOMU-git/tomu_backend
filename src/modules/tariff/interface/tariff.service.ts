@@ -16,4 +16,6 @@ export interface ITariffService {
   ): Promise<ResData<Tariff>>;
 
   delete(id: number): Promise<ResData<Tariff>>;
+
+  findByCourseId(courseId: number): Promise<ResData<Tariff[]>>;
 }
