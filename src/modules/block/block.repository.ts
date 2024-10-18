@@ -33,9 +33,15 @@ export class BlockRepository implements IBlockRepository {
   async findById(id: ID): Promise<Block | null> {
     return await this.blockRepository.findOneBy({ id });
   }
-  
 
   async findOneByName(title: string): Promise<Block | null> {
     return await this.blockRepository.findOneBy({ title });
+  }
+
+  async getBlocksByCourseId(courseId: number): Promise<Block[]> {
+    return this.blockRepository.find({
+      where: { course: { id: courseId } },
+      relations: ['course'],
+    });
   }
 }
