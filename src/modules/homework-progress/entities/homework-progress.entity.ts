@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { User } from 'src/modules/user/entities/user.entity';
-import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Homework } from 'src/modules/homework/entities/homework.entity';
 
@@ -17,7 +16,7 @@ export class HomeworkProgress extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   isWatched: boolean;
 
-  // Yana bir oddiy `userId` va `lessonId` maydonlari qo'shamiz
+  // Yana bir oddiy `userId` va `homeworkId` maydonlari qo'shamiz
   @Column({ name: 'user_id' })
   userId: string;
 
