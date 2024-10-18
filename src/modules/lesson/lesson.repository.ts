@@ -26,6 +26,13 @@ export class LessonRepository implements ILessonRepository {
     return this.lessonRepository.findBy({ id: In(ids) }); // TypeORM uchun `In` metodidan foydalaning
   }
 
+  async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
+    return await this.lessonRepository.find({
+      where: {
+        block: { id: blockId }, // Block orqali qidirish
+      },
+    });
+  }
   async update(entity: Lesson): Promise<Lesson> {
     return await this.lessonRepository.save(entity);
   }
