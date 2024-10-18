@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateTariffDto } from './dto/create-tariff.dto';
 import { UpdateTariffDto } from './dto/update-tariff.dto';
 import { ITariffService } from './interface/tariff.service';
 import { ITariffRepository } from './interface/tariff.repository';
@@ -16,7 +15,7 @@ export class TariffService implements ITariffService {
   ) {}
 
   // CREATE
-  async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
+  async create(createTariffDto: UpdateTariffDto): Promise<ResData<Tariff>> {
 
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);

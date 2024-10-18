@@ -9,8 +9,6 @@ import {
   Inject,
   UseGuards,
 } from '@nestjs/common';
-import { TariffService } from './tariff.service';
-import { CreateTariffDto } from './dto/create-tariff.dto';
 import { UpdateTariffDto } from './dto/update-tariff.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ITariffService } from './interface/tariff.service';
@@ -18,6 +16,7 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { RolesGuard } from '../shared/guards/role.guard';
 import { Roles } from '../auth/decorator/role.decorator';
 import { RoleEnum } from 'src/common/enums/enum';
+import { CreateTariffDto } from './dto/create-tariff.dto';
 
 @ApiTags('tariff')
 @Controller('tariff')
