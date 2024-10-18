@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { HomeworkProgress } from 'src/modules/homework-progress/entities/homework-progress.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('homeworks')
 export class Homework extends BaseEntity {
@@ -16,4 +17,7 @@ export class Homework extends BaseEntity {
   })
   @JoinColumn() // Establish the join column for the relationship
   block: Block; // Reference to the block associated with this homework
+
+  @OneToMany(() => HomeworkProgress, (homeworkProgress) => homeworkProgress.homework)
+  homeworkProgresses: HomeworkProgress[];
 }

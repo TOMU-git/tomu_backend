@@ -2,6 +2,7 @@ import { IsPhoneNumber } from 'class-validator';
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
+import { HomeworkProgress } from 'src/modules/homework-progress/entities/homework-progress.entity';
 import { LessonProgress } from 'src/modules/lesson-progress/entities/lesson-progress.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { UserTariff } from 'src/modules/user-tariff/entities/user-tariff.entity';
@@ -49,4 +50,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.user)
   lessonProgresses: LessonProgress[];
+
+  @OneToMany(() => HomeworkProgress, (homeworkProgress) => homeworkProgress.user)
+  homeworkProgresses: HomeworkProgress[];
 }
