@@ -14,12 +14,15 @@ export class Tariff extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @Column({ type: 'text', nullable: false })
-  description: string;
-
-  // Bir nechta variantlarni saqlash uchun JSON massivi maydoni
   @Column({ type: 'json', nullable: true })
   options?: string[];
+
+  // Kurs bilan bog'lanish
+  @ManyToOne(() => Course, (course) => course.tariffs, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'course_id' })
+  course: Course;
 
   @OneToMany(() => UserTariff, (userTariff) => userTariff.tariff, {
     onDelete: 'SET NULL',
