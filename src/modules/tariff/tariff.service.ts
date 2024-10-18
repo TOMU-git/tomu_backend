@@ -16,11 +16,10 @@ export class TariffService implements ITariffService {
 
   // CREATE
   async create(createTariffDto: UpdateTariffDto): Promise<ResData<Tariff>> {
-
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
 
-      // options maydonini kiritamiz
+    // options maydonini kiritamiz
     if (createTariffDto.options) {
       newTariff.options = createTariffDto.options;
     }
@@ -48,6 +47,12 @@ export class TariffService implements ITariffService {
     }
 
     return new ResData<Tariff>('success', 200, foundTariff);
+  }
+
+  // READ
+  async findByCourseId(courseId: number): Promise<ResData<Tariff[]>> {
+    const tariffs = await this.tariffRepository.findByCourseId(courseId);
+    return new ResData<Tariff[]>('success', 200, tariffs);
   }
 
   // UPDATE
