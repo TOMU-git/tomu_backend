@@ -5,6 +5,7 @@ import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
 import { Tariff } from 'src/modules/tariff/entities/tariff.entity'; // Tariffni import qilish
 import { Column, Entity, OneToMany } from 'typeorm';
+import { Alphabet } from 'src/modules/alphabet/entities/alphabet.entity';
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -41,6 +42,11 @@ export class Course extends BaseEntity {
     onDelete: 'NO ACTION',
   })
   grammars: Grammar[];
+
+  @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
+    onDelete: 'NO ACTION',
+  })
+  alphabets: Alphabet[];
 
   // Tariflar bilan bog'lanish
   @OneToMany(() => Tariff, (tariff) => tariff.course, {

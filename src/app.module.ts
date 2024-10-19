@@ -18,6 +18,7 @@ import { connectionSource } from './common/config/database.config';
 import { BotModule } from './modules/bot/bot.module';
 import { LessonProgressModule } from './modules/lesson-progress/lesson-progress.module';
 import { HomeworkProgressModule } from './modules/homework-progress/homework-progress.module';
+import { AlphabetModule } from './modules/alphabet/alphabet.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { HomeworkProgressModule } from './modules/homework-progress/homework-pro
     BotModule,
     LessonProgressModule,
     HomeworkProgressModule,
+    AlphabetModule,
   ],
 })
 export class AppModule {}
