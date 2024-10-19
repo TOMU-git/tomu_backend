@@ -20,9 +20,7 @@ export class FileRepository implements IFileRepository {
   }
 
   async create(entity: File): Promise<File> {
-    const newFile = await this.fileRepository.create(entity);
-    await this.fileRepository.save(newFile);
-    return newFile;
+    return await this.fileRepository.save(entity);
   }
   async findAll(): Promise<Array<File>> {
     return await this.fileRepository.find();

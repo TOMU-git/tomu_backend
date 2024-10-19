@@ -9,7 +9,6 @@ import {
   Inject,
   UploadedFiles,
 } from '@nestjs/common';
-import { CreateFileDto } from './dto/create-file.dto';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { fileOption } from 'src/lib/file';
@@ -23,25 +22,23 @@ export class FileController {
     private readonly fileService: IFileService,
   ) {}
 
-  @Post('upload')
-  @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string' }, // Qo'shimcha input
-        description: { type: 'string' }, // Qo'shimcha input
-        file: { type: 'string', format: 'binary' }, // Fayl yuklash
+        file: {
+          type:'string',
+          format: 'binary',
+        },
       },
-    },
+      required: ['file'],
+    }
   })
+  @Post('upload')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file', fileOption))
-  create(@UploadedFile() file: Express.Multer.File) {
-    let newFile = new CreateFileDto();
-    console.log("file :", file);
-    newFile = Object.assign(newFile, file);
-    console.log("New file: ", newFile);
-    return this.fileService.create(newFile);
+  async create(@UploadedFile() file: Express.Multer.File) {
+    return await this.fileService.create(file);
   }
   @Get()
   findAll() {

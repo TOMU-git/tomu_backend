@@ -12,9 +12,13 @@ export class FileService {
     @Inject('IFileRepository') private readonly fileRepository: IFileRepository,
   ) {}
 
-  async create(createFileDto: CreateFileDto) {
-    const newCategory = Object.assign(new File(), createFileDto);
-    const newData = await this.fileRepository.create(newCategory);
+  async create(createFileDto: Express.Multer.File) {
+    const created = new File();
+    created.mimetype = createFileDto.mimetype;
+    created.originalname = createFileDto.originalname;
+    created.size = createFileDto.size;
+    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`
+    const newData = await this.fileRepository.create(created);
     return new ResData<File>('File was created successfully', 201, newData);
   }
 

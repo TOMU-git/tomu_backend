@@ -1,10 +1,9 @@
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
 import { File } from '../entities/file.entity';
-import { CreateFileDto } from '../dto/create-file.dto';
 
 export interface IFileService {
-  create(dto: CreateFileDto): Promise<ResData<File>>;
+  create(dto: Express.Multer.File): Promise<ResData<File>>;
   findAll(): Promise<ResData<Array<File>>>;
   remove(id: ID): Promise<ResData<File>>;
   findOneById(id: ID): Promise<ResData<File>>;

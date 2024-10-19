@@ -20,9 +20,15 @@ import { connectionSource } from './common/config/database.config';
 import { BotModule } from './modules/bot/bot.module';
 import { LessonProgressModule } from './modules/lesson-progress/lesson-progress.module';
 import { HomeworkProgressModule } from './modules/homework-progress/homework-progress.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload'),
+      serveRoot: '/upload',
+    }),
     TypeOrmModule.forRoot(connectionSource,
     ),
     AuthModule,

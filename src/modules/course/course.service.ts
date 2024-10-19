@@ -36,16 +36,7 @@ export class CourseService implements ICourseService {
 
     // Fayl yuklash jarayoni
     if (file) {
-      const fileDto = new CreateFileDto();
-      const savedFile = await this.fileService.create(
-        Object.assign(fileDto, {
-          originalname: file.originalname,
-          path: file.path,
-          mimetype: file.mimetype,
-          size: file.size,
-        }),
-      );
-      // Fayl muvaffaqiyatli yuklangan bo'lsa, imageUrl sifatida kursga qo'shamiz
+      const savedFile = await this.fileService.create(file);
       newCourse = Object.assign(newCourse, dto, {
         imageUrl: savedFile.data.path,
       });
@@ -95,15 +86,7 @@ export class CourseService implements ICourseService {
 
     // Yangi faylni yuklash va imageUrl ni yangilash
     if (file) {
-      const fileDto = new CreateFileDto();
-      const savedFile = await this.fileService.create(
-        Object.assign(fileDto, {
-          originalname: file.originalname,
-          path: file.path,
-          mimetype: file.mimetype,
-          size: file.size,
-        }),
-      );
+      const savedFile = await this.fileService.create(file);
       updateCourseDto = Object.assign(updateCourseDto, {
         imageUrl: savedFile.data.path,
       });
