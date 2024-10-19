@@ -11,8 +11,11 @@ export class TariffRepository implements ITariffRepository {
     return this.tariffRepository.save(entity);
   }
   async findAll(): Promise<Tariff[]> {
-    return this.tariffRepository.find();
+    return this.tariffRepository.find({
+      relations: ['course'],
+    });
   }
+
   async findOneById(id: number): Promise<Tariff> {
     return this.tariffRepository.findOneBy({ id });
   }
@@ -35,10 +38,10 @@ export class TariffRepository implements ITariffRepository {
     return await this.tariffRepository.find({
       where: {
         course: {
-          id: courseId,
+          id: courseId, // `course` obyekti orqali `id` ga murojaat qiling
         },
       },
-      relations: ['course'], // course ma'lumotlarini ham birga olish
+      relations: ['course'], // Kurs bilan bog'liqlikni ko'rsatish
     });
   }
 }
