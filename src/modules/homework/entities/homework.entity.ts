@@ -18,6 +18,12 @@ export class Homework extends BaseEntity {
   @JoinColumn() // Establish the join column for the relationship
   block: Block; // Reference to the block associated with this homework
 
-  @OneToMany(() => HomeworkProgress, (homeworkProgress) => homeworkProgress.homework)
+  @Column({ name: 'block_id', type: 'int', nullable: false })
+  blockId: number;
+
+  @OneToMany(
+    () => HomeworkProgress,
+    (homeworkProgress) => homeworkProgress.homework,
+  )
   homeworkProgresses: HomeworkProgress[];
 }

@@ -46,6 +46,9 @@ export class Lesson extends BaseEntity {
   @JoinColumn({ name: 'block_id' })
   block: Block;
 
+  @Column({ name: 'block_id', type: 'int', nullable: false })
+  blockId: number;
+
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];
 }

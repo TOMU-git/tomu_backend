@@ -46,5 +46,7 @@ export class Alphabet extends BaseEntity {
   @ManyToOne(() => Course, (course) => course.alphabets)
   @JoinColumn({ name: 'course_id' })
   course: Course;
-  
+
+  @Column({ name: 'course_id', type: 'int', nullable: false }) // Qo'shiladigan ustun
+  courseId: number; // Bu yerda `courseId` qo'shiladi
 }

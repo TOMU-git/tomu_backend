@@ -20,4 +20,7 @@ export class Feedback extends BaseEntity {
     onDelete: 'CASCADE',
   })
   course: Course;
+
+  @Column({ name: 'course_id', type: 'int', nullable: false }) // Qo'shiladigan ustun
+  courseId: number; // Bu yerda `courseId` qo'shiladi
 }
