@@ -7,10 +7,9 @@ import {
   UseInterceptors,
   UploadedFile,
   Inject,
-  UploadedFiles,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { fileOption } from 'src/lib/file';
 import { IFileService } from './interfaces/file.service';
 

@@ -8,7 +8,6 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -17,13 +16,9 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ResData } from 'src/lib/resData';
 import { ICourseService } from './interfaces/course.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
-import { Roles } from '../auth/decorator/role.decorator';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { fileOption } from 'src/lib/file';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Course } from './entities/course.entity';
@@ -47,10 +42,6 @@ export class CourseController {
         description: {
           type: 'string',
           example: 'This course covers the basics of programming using Python.',
-        },
-        instructor: {
-          type: 'string',
-          example: '550e8400-e29b-41d4-a716-446655440000',
         },
         fileName: {
           type: 'string',
@@ -88,10 +79,6 @@ export class CourseController {
         description: {
           type: 'string',
           example: 'This course covers the basics of programming using Python.',
-        },
-        instructor: {
-          type: 'string',
-          example: '550e8400-e29b-41d4-a716-446655440000',
         },
         fileName: {
           type: 'string',

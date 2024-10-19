@@ -8,7 +8,6 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-  UseGuards,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateBlockDto } from './dto/create-block.dto';
@@ -16,11 +15,8 @@ import { UpdateBlockDto } from './dto/update-block.dto';
 import { ResData } from 'src/lib/resData';
 import { Block } from './entities/block.entity';
 import { IBlockService } from './interfaces/block.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
-import { Roles } from '../auth/decorator/role.decorator';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
 import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('block')
@@ -49,6 +45,13 @@ export class BlockController {
     return await this.blockService.findOneById(id);
   }
 
+  @Get('/course/:courseId')
+  async getBlocksByCourseId(
+    @Param('courseId', ParseIntPipe) courseId: ID,
+  ): Promise<Block[]> {
+    return this.blockService.getBlocksByCourseId(courseId);
+  }
+
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   async update(
@@ -58,9 +61,7 @@ export class BlockController {
     return await this.blockService.update(id, updateBlockDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Block>> {
     return await this.blockService.delete(id);

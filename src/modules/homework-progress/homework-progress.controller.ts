@@ -1,34 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { HomeworkProgressService } from './homework-progress.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  ParseIntPipe,
+  Inject,
+} from '@nestjs/common';
+import { ID } from 'src/common/types/type';
+import { ResData } from 'src/lib/resData';
+import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { RoleEnum } from 'src/common/enums/enum';
+import { IHomeworkProgressService } from './interfaces/homework-progress.service';
+import { HomeworkProgress } from './entities/homework-progress.entity';
 import { CreateHomeworkProgressDto } from './dto/create-homework-progress.dto';
-import { UpdateHomeworkProgressDto } from './dto/update-homework-progress.dto';
 
+@ApiTags('homework-progress')
 @Controller('homework-progress')
 export class HomeworkProgressController {
-  constructor(private readonly homeworkProgressService: HomeworkProgressService) {}
+  constructor(
+    @Inject('IHomeworkProgressService')
+    private readonly homeworkProgressService: IHomeworkProgressService,
+  ) {}
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Post()
-  create(@Body() createHomeworkProgressDto: CreateHomeworkProgressDto) {
-    return this.homeworkProgressService.create(createHomeworkProgressDto);
+  async create(
+    @Body() createHomeworkProgressDto: CreateHomeworkProgressDto,
+  ): Promise<ResData<HomeworkProgress>> {
+    return await this.homeworkProgressService.create(createHomeworkProgressDto);
   }
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()
-  findAll() {
-    return this.homeworkProgressService.findAll();
+  async findAll(): Promise<ResData<Array<HomeworkProgress>>> {
+    return await this.homeworkProgressService.findAll();
   }
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homeworkProgressService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomeworkProgressDto: UpdateHomeworkProgressDto) {
-    return this.homeworkProgressService.update(+id, updateHomeworkProgressDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.homeworkProgressService.remove(+id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<HomeworkProgress>> {
+    return await this.homeworkProgressService.findOneById(id);
   }
 }

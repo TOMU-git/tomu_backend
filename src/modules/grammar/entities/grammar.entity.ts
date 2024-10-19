@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'type
 
 @Entity('grammars')
 export class Grammar extends BaseEntity {
-  @Column({ type: 'text'})
+  @Column({ type: 'text' })
   title: string;
 
   @Column({ type: 'text', name: 'grammar_text' })
@@ -17,4 +17,7 @@ export class Grammar extends BaseEntity {
   })
   @JoinColumn() // JoinColumn yordamida bog'lanadi
   course: Course; // Course ga bog'langan grammatikalar
+
+  @Column({ name: 'course_id', type: 'int', nullable: false }) // Qo'shiladigan ustun
+  courseId: number; // Bu yerda `courseId` qo'shiladi
 }

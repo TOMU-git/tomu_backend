@@ -11,6 +11,7 @@ export interface ILessonService {
   ): Promise<ResData<Lesson>>; // 2-tafsirli ko'rinish
   findAll(): Promise<ResData<Lesson[]>>;
   findOneById(id: ID): Promise<ResData<Lesson>>;
+  getLessonsByBlockId(blockId: ID): Promise<ResData<Lesson[]>>;
   update(
     id: ID,
     dto: UpdateLessonDto,

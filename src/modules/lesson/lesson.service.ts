@@ -70,6 +70,15 @@ export class LessonService implements ILessonService {
     return new ResData<Lesson>('ok', 200, foundData);
   }
 
+  async getLessonsByBlockId(blockId: ID): Promise<ResData<Lesson[]>> {
+    const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
+    return new ResData<Lesson[]>(
+      'Lessons by blockId fetched successfully',
+      200,
+      lessons,
+    );
+  }
+
   async update(
     id: ID,
     dto: UpdateLessonDto,

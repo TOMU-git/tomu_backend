@@ -8,10 +8,8 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-  UseGuards,
   UploadedFile,
   UseInterceptors,
-  Req,
   BadRequestException,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
@@ -21,17 +19,11 @@ import { ResData } from 'src/lib/resData';
 import { Lesson } from './entities/lesson.entity';
 import { ILessonService } from './interfaces/lesson.service';
 import {
-  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
 import { RoleEnum } from 'src/common/enums/enum';
-import { Roles } from '../auth/decorator/role.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/common/decorator/auth.decorator';
 
@@ -93,6 +85,14 @@ export class LessonController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.findOneById(id);
+  }
+
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Get('by-block/:blockId')
+  async getByBlockId(
+    @Param('blockId', ParseIntPipe) blockId: number,
+  ): Promise<ResData<Lesson[]>> {
+    return await this.lessonService.getLessonsByBlockId(blockId);
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)

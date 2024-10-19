@@ -1,34 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LessonProgressService } from './lesson-progress.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  ParseIntPipe,
+  Inject,
+} from '@nestjs/common';
+import { ID } from 'src/common/types/type';
 import { CreateLessonProgressDto } from './dto/create-lesson-progress.dto';
-import { UpdateLessonProgressDto } from './dto/update-lesson-progress.dto';
+import { ResData } from 'src/lib/resData';
+import { LessonProgress } from './entities/lesson-progress.entity';
+import { ILessonProgressService } from './interfaces/lesson-progress.service';
+import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { RoleEnum } from 'src/common/enums/enum';
 
+@ApiTags('lesson-progress')
 @Controller('lesson-progress')
 export class LessonProgressController {
-  constructor(private readonly lessonProgressService: LessonProgressService) {}
+  constructor(
+    @Inject('ILessonProgressService')
+    private readonly lessonProgressService: ILessonProgressService,
+  ) {}
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Post()
-  create(@Body() createLessonProgressDto: CreateLessonProgressDto) {
-    return this.lessonProgressService.create(createLessonProgressDto);
+  async create(
+    @Body() createLessonProgressDto: CreateLessonProgressDto,
+  ): Promise<ResData<LessonProgress>> {
+    return await this.lessonProgressService.create(createLessonProgressDto);
   }
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()
-  findAll() {
-    return this.lessonProgressService.findAll();
+  async findAll(): Promise<ResData<Array<LessonProgress>>> {
+    return await this.lessonProgressService.findAll();
   }
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lessonProgressService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLessonProgressDto: UpdateLessonProgressDto) {
-    return this.lessonProgressService.update(+id, updateLessonProgressDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lessonProgressService.remove(+id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: ID,
+  ): Promise<ResData<LessonProgress>> {
+    return await this.lessonProgressService.findOneById(id);
   }
 }

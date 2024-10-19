@@ -2,10 +2,10 @@ import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
 import { Feedback } from 'src/modules/feedback/entities/feedback.entity';
 import { Grammar } from 'src/modules/grammar/entities/grammar.entity';
-import { Tariff } from 'src/modules/tariff/entities/tariff.entity';
 import { UserCourse } from 'src/modules/user-courses/entities/user-course.entity';
-import { User } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Tariff } from 'src/modules/tariff/entities/tariff.entity'; // Tariffni import qilish
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Alphabet } from 'src/modules/alphabet/entities/alphabet.entity';
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -33,13 +33,24 @@ export class Course extends BaseEntity {
 
   // Blocklar bilan bog'lanish
   @OneToMany(() => Block, (block) => block.course, {
-    onDelete: 'SET NULL', // Course o'chirilganda, block kurs qiymati null bo'ladi
+    onDelete: 'SET NULL',
     nullable: true,
   })
   blocks: Block[];
 
   @OneToMany(() => Grammar, (grammar) => grammar.course, {
     onDelete: 'NO ACTION',
-  }) // Course ga bog'langan grammatikalar
+  })
   grammars: Grammar[];
+
+  @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
+    onDelete: 'NO ACTION',
+  })
+  alphabets: Alphabet[];
+  
+  // Tariflar bilan bog'lanish
+  @OneToMany(() => Tariff, (tariff) => tariff.course, {
+    onDelete: 'CASCADE',
+  })
+  tariffs: Tariff[];
 }

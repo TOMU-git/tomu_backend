@@ -3,10 +3,8 @@ import {
   Get,
   Post,
   Body,
-  Param,
   Inject,
   Res,
-  ParseIntPipe,
   Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -14,7 +12,6 @@ import { CreateAdminTeacherDto, CreateStudentDto } from '../user/dto/create-user
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { PhoneNumberAlreadyExist } from './exception/auth.exception';
-import { CookieGetter } from 'src/common/decorator/cookiGetter';
 import { AccessAuthDto, LoginAuthDto } from './dto/auth.dto';
 import { IUserService } from '../user/interfaces/user.service';
 import { Auth } from 'src/common/decorator/auth.decorator';
