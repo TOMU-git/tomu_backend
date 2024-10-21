@@ -89,10 +89,17 @@ export class LessonService implements ILessonService {
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
 
+    if (dto.order && dto.order !== foundData.order) {
+      const isOrderExist = await this.lessonRepository.findOneByOrder(
+        dto.order,
+      );
+      if (isOrderExist) {
+        throw new LessonOrderAlreadyExistException();
+      }
+    }
+
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      console.log('Video fayl yuklanmoqda...', file);
-
       // Yangi video faylni yuklaydi
       const videoUrl = await this.vimeoService.uploadVideo(
         file.buffer,
@@ -111,12 +118,6 @@ export class LessonService implements ILessonService {
     Object.assign(foundData, dto);
 
     const data = await this.lessonRepository.update(foundData);
-    if (dto.order && dto.order !== foundData.order) {
-      const isOrderExist = await this.lessonRepository.findOneByOrder(data.order);
-      if (isOrderExist) {
-        throw new LessonOrderAlreadyExistException();
-      }
-    }
 
     return new ResData<Lesson>('Lesson updated successfully', 200, data);
   }
