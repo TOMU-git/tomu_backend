@@ -44,6 +44,7 @@ export class AlphabetRepository implements IAlphabetRepository {
   async getAlphabetsByCourseId(courseId: ID): Promise<Alphabet[]> {
     return await this.alphabetRepository.find({
       where: { course: { id: courseId } },
+      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
     });
   }
 }
