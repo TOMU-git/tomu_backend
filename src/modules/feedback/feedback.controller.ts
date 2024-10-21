@@ -8,19 +8,16 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-  UseGuards,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { ResData } from 'src/lib/resData';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { IFeedbackService } from '../feedback/interfaces/feedback.service';
 import { CreateFeedbackDto } from '../feedback/dto/create-feedback.dto';
 import { Feedback } from '../feedback/entities/feedback.entity';
 import { UpdateFeedbackDto } from '../feedback/dto/update-feedback.dto';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { RolesGuard } from '../shared/guards/role.guard';
 import { RoleEnum } from 'src/common/enums/enum';
-import { Roles } from '../auth/decorator/role.decorator';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags('feedback')
 @Controller('feedback')
@@ -30,9 +27,7 @@ export class FeedbackController {
     private readonly feedbackService: IFeedbackService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.STUDENT)
+  @Auth(RoleEnum.STUDENT, RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.TEACHER)
   @Post()
   async create(
     @Body() createFeedbackDto: CreateFeedbackDto,
@@ -50,9 +45,7 @@ export class FeedbackController {
     return await this.feedbackService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.STUDENT, RoleEnum.ADMIN)
+  @Auth(RoleEnum.STUDENT, RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.TEACHER)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: ID,
@@ -61,9 +54,7 @@ export class FeedbackController {
     return await this.feedbackService.update(id, updateFeedbackDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.STUDENT, RoleEnum.ADMIN)
+  @Auth(RoleEnum.STUDENT, RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.TEACHER)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Feedback>> {
     return await this.feedbackService.delete(id);

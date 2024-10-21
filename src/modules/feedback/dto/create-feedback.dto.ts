@@ -1,5 +1,6 @@
 import { IsString, IsInt, IsNotEmpty, Min, Max } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class CreateFeedbackDto {
   @ApiProperty({

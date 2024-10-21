@@ -19,6 +19,8 @@ export class FeedbackService implements IFeedbackService {
     createFeedbackDto: CreateFeedbackDto,
   ): Promise<ResData<Feedback>> {
     const newFeedback = new Feedback();
+    newFeedback.courseId = Number(createFeedbackDto.course);
+    newFeedback.userId = Number(createFeedbackDto.user);
     Object.assign(newFeedback, createFeedbackDto);
     const savedFeedback = await this.feedbackRepository.create(newFeedback);
 
