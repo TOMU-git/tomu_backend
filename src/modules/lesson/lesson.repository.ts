@@ -19,7 +19,9 @@ export class LessonRepository implements ILessonRepository {
   }
 
   async findAll(): Promise<Array<Lesson>> {
-    return await this.lessonRepository.find();
+    return await this.lessonRepository.find({
+      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+    });
   }
 
   async findByIds(ids: number[]): Promise<Lesson[]> {
