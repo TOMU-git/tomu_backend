@@ -101,7 +101,17 @@ export class AlphabetService implements IAlphabetService {
       foundData.size = file.size;
     }
 
+    if (dto.order && dto.order !== foundData.order) {
+      const isOrderExist = await this.alphabetRepository.findOneByOrder(
+        dto.order,
+      );
+      if (isOrderExist) {
+        throw new AlphabetAlreadyExistException();
+      }
+    }
+
     // Boshqa maydonlarni yangilash
+
     Object.assign(foundData, dto);
 
     const data = await this.alphabetRepository.update(foundData);
