@@ -19,7 +19,10 @@ export class AlphabetRepository implements IAlphabetRepository {
   }
 
   async findAll(): Promise<Array<Alphabet>> {
-    return await this.alphabetRepository.find();
+    // `order` maydoni bo'yicha oshib boruvchi tartibda qaytarish
+    return await this.alphabetRepository.find({
+      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+    });
   }
 
   async update(entity: Alphabet): Promise<Alphabet> {
@@ -34,13 +37,14 @@ export class AlphabetRepository implements IAlphabetRepository {
     return await this.alphabetRepository.findOneBy({ id });
   }
 
-  async findOneByName(title: string): Promise<Alphabet | null> {
-    return await this.alphabetRepository.findOneBy({ title });
+  async findOneByOrder(order: number): Promise<Alphabet | null> {
+    return await this.alphabetRepository.findOneBy({ order });
   }
 
   async getAlphabetsByCourseId(courseId: ID): Promise<Alphabet[]> {
     return await this.alphabetRepository.find({
       where: { course: { id: courseId } },
+      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
     });
   }
 }

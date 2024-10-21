@@ -16,6 +16,9 @@ export class Feedback extends BaseEntity {
   })
   user: User;
 
+  @Column({ name: 'user_id', type: 'int', nullable: false }) // Qo'shiladigan ustun
+  userId: number; // Bu yerda `courseId` qo'shiladi
+
   @ManyToOne(() => Course, (course) => course.feedbacks, {
     onDelete: 'CASCADE',
   })

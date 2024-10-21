@@ -7,5 +7,4 @@ export interface IFeedbackRepository {
   update(entity: Feedback): Promise<Feedback>;
   delete(entity: Feedback): Promise<Feedback>;
   findById(id: ID): Promise<Feedback | null>;
-  findOneByName(title: string): Promise<Feedback | null>;
 }
