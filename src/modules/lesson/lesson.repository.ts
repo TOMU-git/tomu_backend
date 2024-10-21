@@ -48,4 +48,8 @@ export class LessonRepository implements ILessonRepository {
   async findOneByName(title: string): Promise<Lesson | null> {
     return await this.lessonRepository.findOneBy({ title });
   }
+
+  async findOneByOrder(order: ID): Promise<Lesson | null> {
+    return await this.lessonRepository.findOneBy({ order });
+  }
 }

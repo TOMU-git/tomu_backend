@@ -8,5 +8,6 @@ export interface ILessonRepository {
   delete(entity: Lesson): Promise<Lesson>;
   findById(id: ID): Promise<Lesson | null>;
   findOneByName(title: string): Promise<Lesson | null>;
+  findOneByOrder(order: ID): Promise<Lesson | null>;
   findLessonsByBlockId(blockId: ID): Promise<Lesson[]>;
 }
