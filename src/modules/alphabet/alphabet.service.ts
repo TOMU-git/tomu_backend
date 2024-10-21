@@ -24,8 +24,6 @@ export class AlphabetService implements IAlphabetService {
     dto: CreateAlphabetDto,
     file: Express.Multer.File,
   ): Promise<ResData<Alphabet>> {
-    console.log('in service', file);
-
     const foundData = await this.alphabetRepository.findOneByName(dto.title);
     if (foundData) {
       throw new AlphabetAlreadyExistException();
@@ -89,8 +87,6 @@ export class AlphabetService implements IAlphabetService {
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      console.log('Video fayl yuklanmoqda...', file);
-
       // Yangi video faylni yuklaydi
       const videoUrl = await this.vimeoService.uploadVideo(
         file.buffer,
