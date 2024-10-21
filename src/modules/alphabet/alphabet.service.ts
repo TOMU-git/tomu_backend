@@ -24,7 +24,7 @@ export class AlphabetService implements IAlphabetService {
     dto: CreateAlphabetDto,
     file: Express.Multer.File,
   ): Promise<ResData<Alphabet>> {
-    const foundData = await this.alphabetRepository.findOneByName(dto.title);
+    const foundData = await this.alphabetRepository.findOneByOrder(dto.order);
     if (foundData) {
       throw new AlphabetAlreadyExistException();
     }
