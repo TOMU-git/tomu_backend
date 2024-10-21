@@ -11,3 +11,10 @@ export class LessonAlreadyExistException extends HttpException {
     super('Lesson already exist', 400);
   }
 }
+
+
+export class LessonOrderAlreadyExistException extends HttpException {
+  constructor() {
+    super('This order number is busy, choose another order number', 400);
+  }
+}

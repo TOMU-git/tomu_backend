@@ -9,6 +9,7 @@ import { ILessonService } from './interfaces/lesson.service';
 import {
   LessonAlreadyExistException,
   LessonNotFoundException,
+  LessonOrderAlreadyExistException,
 } from './exception/lesson.exception';
 import { VimeoService } from './vimeo.service';
 
@@ -24,14 +25,16 @@ export class LessonService implements ILessonService {
     dto: CreateLessonDto,
     file: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
-    console.log('in service', file);
-
     const foundData = await this.lessonRepository.findOneByName(dto.title);
     if (foundData) {
       throw new LessonAlreadyExistException();
     }
 
-    // video_url ni yuklanadigan video faylning URL ga aylantirish
+    const isOrderExist = await this.lessonRepository.findOneByOrder(dto.order);
+    if (isOrderExist) {
+      throw new LessonOrderAlreadyExistException();
+    }
+
     const videoUrl = await this.vimeoService.uploadVideo(
       file.buffer, // Faylni buffer orqali yuklash
       dto.title,
@@ -45,7 +48,7 @@ export class LessonService implements ILessonService {
       video_url: videoUrl,
       mimetype: file.mimetype,
       size: file.size,
-    }); // Size ni qo'shish
+    });
 
     const savedLesson = await this.lessonRepository.create(newLesson);
 
@@ -108,6 +111,12 @@ export class LessonService implements ILessonService {
     Object.assign(foundData, dto);
 
     const data = await this.lessonRepository.update(foundData);
+    if (dto.order && dto.order !== foundData.order) {
+      const isOrderExist = await this.lessonRepository.findOneByOrder(data.order);
+      if (isOrderExist) {
+        throw new LessonOrderAlreadyExistException();
+      }
+    }
 
     return new ResData<Lesson>('Lesson updated successfully', 200, data);
   }
