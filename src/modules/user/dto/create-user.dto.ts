@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, isString, IsString } from 'class-validator';
 import { GenderEnum, RoleEnum } from '../../../common/enums/enum';
 
 export class CreateUserDto {
@@ -30,4 +30,15 @@ export class CreateUserDto {
   @ApiProperty({ type: String, enum: RoleEnum })
   @IsEnum(RoleEnum)
   role: RoleEnum;
+}
+
+export class SearchUserByPhoneNumber {
+  @ApiProperty({
+    type: String,
+    example: '+998901234567',
+    description: 'The phone number to search for user.',
+  })
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
 }
