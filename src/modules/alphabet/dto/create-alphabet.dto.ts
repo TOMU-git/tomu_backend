@@ -25,6 +25,7 @@ export class CreateAlphabetDto {
     example: 1,
   })
   @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
   @IsNotEmpty()
   order: number;
 
@@ -35,5 +36,5 @@ export class CreateAlphabetDto {
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   @IsNotEmpty()
-  course_id: number;
+  courseId: number;
 }
