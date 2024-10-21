@@ -19,7 +19,10 @@ export class AlphabetRepository implements IAlphabetRepository {
   }
 
   async findAll(): Promise<Array<Alphabet>> {
-    return await this.alphabetRepository.find();
+    // `order` maydoni bo'yicha oshib boruvchi tartibda qaytarish
+    return await this.alphabetRepository.find({
+      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+    });
   }
 
   async update(entity: Alphabet): Promise<Alphabet> {
