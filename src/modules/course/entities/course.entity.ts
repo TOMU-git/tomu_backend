@@ -18,6 +18,37 @@ export class Course extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true, name: 'image_url' })
   imageUrl: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'video_url' })
+  videoUrl: string;
+
+  @Column({ type: 'varchar', length: 50, name: 'mime_type' })
+  /**
+   * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
+   * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
+   */
+  imageMimetype: string;
+
+  @Column({ type: 'int', name: 'image_size' })
+  /**
+   * Faylning o'lchamini baytlarda ko'rsatadi.
+   * Bu maydon yuklangan faylning hajmini nazorat qilish va foydalanuvchiga ma'lumot berish imkonini beradi.
+   */
+  imageSize: number;
+
+  @Column({ type: 'varchar', length: 50, name: 'video_type' })
+  /**
+   * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
+   * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
+   */
+  videoMimetype: string;
+
+  @Column({ type: 'int', name: 'video_size' })
+  /**
+   * Faylning o'lchamini baytlarda ko'rsatadi.
+   * Bu maydon yuklangan faylning hajmini nazorat qilish va foydalanuvchiga ma'lumot berish imkonini beradi.
+   */
+  videoSize: number;
+
   // Foydalanuvchi o'qigan kurslar bilan bog'lanish
   @OneToMany(() => UserCourse, (userCourse) => userCourse.course, {
     onDelete: 'NO ACTION',
@@ -47,7 +78,7 @@ export class Course extends BaseEntity {
     onDelete: 'NO ACTION',
   })
   alphabets: Alphabet[];
-  
+
   // Tariflar bilan bog'lanish
   @OneToMany(() => Tariff, (tariff) => tariff.course, {
     onDelete: 'CASCADE',
