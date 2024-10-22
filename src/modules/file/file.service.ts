@@ -13,11 +13,12 @@ export class FileService {
   ) {}
 
   async create(createFileDto: Express.Multer.File) {
+    console.log('createFileDto', createFileDto);
     const created = new File();
     created.mimetype = createFileDto.mimetype;
     created.originalname = createFileDto.originalname;
     created.size = createFileDto.size;
-    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`
+    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`;
     const newData = await this.fileRepository.create(created);
     return new ResData<File>('File was created successfully', 201, newData);
   }

@@ -26,6 +26,7 @@ import {
 import { fileOption } from 'src/lib/file';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Course } from './entities/course.entity';
+import { multiPleFilesOption } from 'src/lib/mulipleFiles';
 
 @ApiTags('course')
 @Controller('course')
@@ -41,7 +42,7 @@ export class CourseController {
     FileFieldsInterceptor([
       { name: 'fileName', maxCount: 1 },
       { name: 'video', maxCount: 1 },
-    ]),
+    ], multiPleFilesOption),
   )
   @ApiBody({
     schema: {

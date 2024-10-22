@@ -31,7 +31,7 @@ export class CourseService implements ICourseService {
     file?: Express.Multer.File,
     video?: Express.Multer.File,
   ): Promise<ResData<Course>> {
-    console.log('service', dto, file, video);
+    // console.log('service', dto, file, video);
     const foundData = await this.courseRepository.findOneByName(dto.title);
     if (foundData) {
       throw new CourseAlreadyExistException();
@@ -40,6 +40,7 @@ export class CourseService implements ICourseService {
     // Faylni saqlash
     let imageUrl = null;
     if (file) {
+      console.log("file", file)
       const image = await this.fileService.create(file);
       imageUrl = image.data.path; // Fayl manzilini saqlash
       console.log('image', image);
@@ -54,7 +55,7 @@ export class CourseService implements ICourseService {
         'Dars videosi',
         video.size, // Faylning o'lchamini olish
       );
-      console.log('videoUrl', videoUrl);
+      // console.log('videoUrl', videoUrl);
     }
 
     // Yangi kurs ob'ektini yaratish
@@ -62,7 +63,6 @@ export class CourseService implements ICourseService {
     Object.assign(newCourse, {
       ...dto,
       video_url: videoUrl, // Video URL ni kiritish
-      image_url: imageUrl, // Tasvir URL ni kiritish
       videoMimetype: video ? video.mimetype : null, // Video MIME turi
       videoSize: video ? video.size : null, // Video o'lchami
       imageMimetype: file ? file.mimetype : null, // Fayl MIME turi
@@ -102,7 +102,7 @@ export class CourseService implements ICourseService {
           foundData.imageUrl,
         );
         if (!removeResult) {
-          console.log('Fayl topilmadi yoki o‘chirilmadi.');
+          // console.log('Fayl topilmadi yoki o‘chirilmadi.');
         }
       } catch (error) {
         console.error('Faylni o‘chirishda xatolik yuz berdi:', error);
