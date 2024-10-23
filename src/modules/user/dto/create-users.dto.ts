@@ -98,3 +98,12 @@ export class CreateStudentDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class SearchUserByPhoneNumber{
+  @ApiProperty({
+    type: String,
+    example: '+998901234567',
+    description: 'The phone number to search for user.',
+  })
+  phoneNumber: string;
+}

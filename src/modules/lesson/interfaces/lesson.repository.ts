@@ -7,6 +7,7 @@ export interface ILessonRepository {
   update(entity: Lesson): Promise<Lesson>;
   delete(entity: Lesson): Promise<Lesson>;
   findById(id: ID): Promise<Lesson | null>;
+  findVideosTen(id: number): Promise<Lesson[]>;
   findOneByName(title: string): Promise<Lesson | null>;
   findOneByOrder(order: ID): Promise<Lesson | null>;
   findLessonsByBlockId(blockId: ID): Promise<Lesson[]>;

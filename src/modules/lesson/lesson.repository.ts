@@ -24,6 +24,15 @@ export class LessonRepository implements ILessonRepository {
     });
   }
 
+  async findVideosTen(id: number): Promise<Lesson[]> {
+    return await this.lessonRepository
+      .createQueryBuilder('lessons')
+      .where({blockId: id}) 
+      .orderBy('lessons.order', 'ASC')
+      .limit(10)
+      .getMany()
+  }
+
   async findByIds(ids: number[]): Promise<Lesson[]> {
     return this.lessonRepository.findBy({ id: In(ids) }); // TypeORM uchun `In` metodidan foydalaning
   }

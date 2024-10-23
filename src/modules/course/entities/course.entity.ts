@@ -68,12 +68,7 @@ export class Course extends BaseEntity {
     nullable: true,
   })
   blocks: Block[];
-
-  @OneToMany(() => Grammar, (grammar) => grammar.course, {
-    onDelete: 'NO ACTION',
-  })
-  grammars: Grammar[];
-
+  
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
     onDelete: 'NO ACTION',
   })

@@ -20,3 +20,8 @@ export enum StatusEnum {
   COMPLETED = 'completed',
   FAILED = 'failed',
 }
+
+export enum MeetingStatusEnum {
+  PAID = 'paid',
+  UNPAID = 'unpaid',
+}
