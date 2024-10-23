@@ -39,10 +39,8 @@ export class CourseService implements ICourseService {
     // Faylni saqlash
     let imageUrl = null;
     if (file) {
-      console.log('file', file);
       const image = await this.fileService.create(file);
       imageUrl = image.data.path; // Fayl manzilini saqlash
-      console.log('image', image);
     }
 
     // Yangi kurs ob'ektini yaratish
@@ -51,8 +49,8 @@ export class CourseService implements ICourseService {
       ...dto,
       videoUrl: dto.videoUrl,
       imageUrl,
-      imageMimetype: file ? file.mimetype : null, // Fayl MIME turi
-      imageSize: file ? file.size : null, // Fayl o'lchami
+      mimetype: file ? file.mimetype : null, // Fayl MIME turi
+      size: file ? file.size : null, // Fayl o'lchami
     });
 
     const newData = await this.courseRepository.create(newCourse);
