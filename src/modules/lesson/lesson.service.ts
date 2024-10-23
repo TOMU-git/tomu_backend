@@ -30,31 +30,31 @@ export class LessonService implements ILessonService {
       throw new LessonAlreadyExistException();
     }
 
-    // order va blockId bo'yicha tekshirish
     const orderExist = await this.lessonRepository.findOneByOrder(
       dto.order,
       dto.blockId,
     );
 
-    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
     if (orderExist) {
       throw new LessonOrderAlreadyExistException();
     }
 
-    const videoUrl = await this.vimeoService.uploadVideo(
-      file.buffer, // Faylni buffer orqali yuklash
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
       dto.title,
       'Dars videosi',
-      file.size, // Faylning o'lchamini olish
     );
 
     const newLesson = new Lesson();
     Object.assign(newLesson, {
       ...dto,
+      courseId: dto.courseId,
       video_url: videoUrl,
       mimetype: file.mimetype,
       size: file.size,
+      // duration, // Video davomiyligini saqlash
     });
+    console.log('duration_______', duration);
 
     const savedLesson = await this.lessonRepository.create(newLesson);
 
@@ -117,15 +117,15 @@ export class LessonService implements ILessonService {
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
       // Yangi video faylni yuklaydi
-      const videoUrl = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
-        dto.title || foundData.title, // Yangilanishlarda title bo'lmasa eski title'ni saqlab qolish
+        dto.title,
         'Dars videosi',
-        file.size,
+        // file.size,
       );
 
       // Eski videoning ma'lumotlarini yangilaydi
-      foundData.video_url = videoUrl;
+      foundData.videoUrl = videoUrl;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }

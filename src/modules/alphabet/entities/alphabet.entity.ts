@@ -16,8 +16,8 @@ export class Alphabet extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   title: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  video_url: string;
+  @Column({ type: 'varchar', length: 25, name: 'video_url' })
+  videoUrl: string;
 
   @Column({ type: 'int' })
   /**

@@ -30,11 +30,11 @@ export class AlphabetService implements IAlphabetService {
     }
 
     // video_url ni yuklanadigan video faylning URL ga aylantirish
-    const videoUrl = await this.vimeoService.uploadVideo(
-      file.buffer, // Faylni buffer orqali yuklash
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
       dto.title,
-      'Alifbo videosi',
-      file.size, // Faylning o'lchamini olish
+      'Dars videosi',
+      // file.size,
     );
 
     const newAlphabet = new Alphabet();
@@ -88,15 +88,14 @@ export class AlphabetService implements IAlphabetService {
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
       // Yangi video faylni yuklaydi
-      const videoUrl = await this.vimeoService.uploadVideo(
-        file.buffer,
-        dto.title || foundData.title,
-        'Alifbo videosi',
-        file.size,
-      );
-
+       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+         file.buffer,
+         dto.title,
+         'Dars videosi',
+         // file.size,
+       );
       // Eski videoning ma'lumotlarini yangilaydi
-      foundData.video_url = videoUrl;
+      foundData.videoUrl = videoUrl;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }

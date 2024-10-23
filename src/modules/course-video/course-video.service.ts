@@ -15,12 +15,12 @@ export class CourseVideoService {
   ) {}
 
   async create(file: Express.Multer.File): Promise<ResData<CourseVideo>> {
-    const videoUrl = await this.vimeoService.uploadVideo(
-      file.buffer, // Faylni buffer orqali yuklash
-      file.filename,
-      'Dars videosi',
-      file.size, // Faylning o'lchamini olish
-    );
+     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+       file.buffer,
+       file.filename,
+       'Dars videosi',
+       // file.size,
+     );
 
     const newCourseVideo = new CourseVideo();
     Object.assign(newCourseVideo, {
