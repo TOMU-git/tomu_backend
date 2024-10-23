@@ -8,7 +8,6 @@ export interface ICourseService {
   create(
     dto: CreateCourseDto,
     file?: Express.Multer.File,
-    video?: Express.Multer.File,
   ): Promise<ResData<Course>>;
   findAll(): Promise<ResData<Array<Course>>>;
   findOneById(id: ID): Promise<ResData<Course>>;

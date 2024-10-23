@@ -28,13 +28,14 @@ export const multiPleFilesOption: MulterOptions = {
       file: Express.Multer.File,
       cb: (err: Error | null, filename: string) => void,
     ): void => {
-      // Fayl nomini generatsiya qilish: rasm yoki video + timestamp + original fayl kengaytmasi
-      cb(
-        null,
-        `${file.mimetype.split('/')[0]}_${Date.now()}.${file.originalname
-          .split('.')
-          .pop()}`,
-      );
+      const extension = file.originalname.split('.').pop();
+      const fileType = file.mimetype.split('/')[0];
+
+      if (!extension) {
+        cb(new Error('Invalid file extension'), '');
+      } else {
+        cb(null, `${fileType}_${Date.now()}.${extension}`);
+      }
     },
   }),
   fileFilter: (
@@ -42,15 +43,22 @@ export const multiPleFilesOption: MulterOptions = {
     file: Express.Multer.File,
     cb: (err: Error | null, acceptFile: boolean) => void,
   ) => {
+    const allowedTypes = ['image', 'video'];
     const constFileType = file.mimetype.split('/')[0];
+    const allowedVideoFormats = ['mp4', 'mkv', 'avi'];
 
-    // Faqat rasm va video fayllarini qabul qilish
-    if (constFileType === 'image' || constFileType === 'video') {
+    const extension = file.originalname.split('.').pop();
+
+    if (
+      allowedTypes.includes(constFileType) ||
+      (constFileType === 'video' && allowedVideoFormats.includes(extension))
+    ) {
       cb(null, true);
     } else {
-      // Agar fayl turi rasm yoki video bo'lmasa, xatolik qaytarish
       cb(
-        new FileException(`File type '${constFileType}' is not supported`),
+        new FileException(
+          `File type '${constFileType}' or extension '${extension}' is not supported`,
+        ),
         false,
       );
     }

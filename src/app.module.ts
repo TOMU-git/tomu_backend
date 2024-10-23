@@ -22,6 +22,7 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AlphabetModule } from './modules/alphabet/alphabet.module';
 import { LiveChatModule } from './modules/live-chat/live-chat.module';
+import { CourseVideoModule } from './modules/course-video/course-video.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { LiveChatModule } from './modules/live-chat/live-chat.module';
     HomeworkProgressModule,
     AlphabetModule,
     LiveChatModule,
+    CourseVideoModule,
   ],
 })
 export class AppModule {}

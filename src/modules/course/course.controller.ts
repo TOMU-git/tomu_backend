@@ -38,12 +38,7 @@ export class CourseController {
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post('upload')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'fileName', maxCount: 1 },
-      { name: 'video', maxCount: 1 },
-    ], multiPleFilesOption),
-  )
+  @UseInterceptors(FileInterceptor('fileName', fileOption))
   @ApiBody({
     schema: {
       type: 'object',
@@ -57,9 +52,9 @@ export class CourseController {
           type: 'string',
           format: 'binary',
         },
-        video: {
+        videoUrl: {
           type: 'string',
-          format: 'binary',
+          example: '',
         },
       },
     },
@@ -67,14 +62,10 @@ export class CourseController {
   @ApiConsumes('multipart/form-data') // Swagger'da fayl yuklashni ko'rsatish uchun
   async create(
     @Body() createCourseDto: CreateCourseDto,
-    @UploadedFiles()
-    files: { fileName?: Express.Multer.File[]; video?: Express.Multer.File[] }, // Faylni qabul qilish
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<ResData<Course>> {
-    const file = files.fileName ? files.fileName[0] : null; // fileName faylini olish
-    const video = files.video ? files.video[0] : null; // video faylini olish
-    console.log("ishladi")
 
-    return await this.courseService.create(createCourseDto, file, video);
+    return await this.courseService.create(createCourseDto, file);
   }
 
   @Get()
@@ -98,6 +89,10 @@ export class CourseController {
         description: {
           type: 'string',
           example: 'This course covers the basics of programming using Python.',
+        },
+        videoUrl: {
+          type: 'string',
+          example: '',
         },
         fileName: {
           type: 'string',

@@ -58,7 +58,7 @@ export class LessonController {
           type: 'number',
         },
         video: {
-          // Video faylini yuklash maydoni
+          // Video faylini y  uklash maydoni
           type: 'string',
           format: 'binary', // Bu maydon fayl yuklash uchun kerak
         },
@@ -69,8 +69,6 @@ export class LessonController {
     @Body() createLessonDto: CreateLessonDto,
     @UploadedFile() file: Express.Multer.File, // Yuklangan faylni olish
   ): Promise<ResData<Lesson>> {
-    console.log('working controller');
-    console.log(file); // Fayl obyektini konsolda tekshirish
     if (!file) {
       throw new BadRequestException('Fayl yuklanmadi');
     }
