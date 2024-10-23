@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateLessonDto } from './dto/create-lesson.dto';
@@ -21,6 +22,7 @@ import { ILessonService } from './interfaces/lesson.service';
 import {
   ApiBody,
   ApiConsumes,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
@@ -79,6 +81,17 @@ export class LessonController {
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
+  }
+
+  @ApiQuery({
+    name: 'module_id',
+    required: true,
+    type: Number,
+    description: 'For module id'
+  })
+  @Get('/ten-videos')
+  async findTenVideos(@Query('module_id') module_id: number) {
+    return await this.lessonService.findVideos(module_id);
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)

@@ -8,4 +8,5 @@ export interface IGrammarRepository {
   delete(entity: Grammar): Promise<Grammar>;
   findById(id: ID): Promise<Grammar | null>;
   findOneByName(title: string): Promise<Grammar | null>;
+  findGrammarsByCourseId(id: number): Promise<Grammar[]>;
 }

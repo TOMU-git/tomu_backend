@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Inject,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateGrammarDto } from './dto/create-grammar.dto';
@@ -16,7 +17,7 @@ import { UpdateGrammarDto } from './dto/update-grammar.dto';
 import { ResData } from 'src/lib/resData';
 import { Grammar } from './entities/grammar.entity';
 import { IGrammarService } from './interfaces/grammar.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
 import { Auth } from 'src/common/decorator/auth.decorator';
 
@@ -38,6 +39,17 @@ export class GrammarController {
 
   @Get()
   async findAll(): Promise<ResData<Array<Grammar>>> {
+    return await this.grammarService.findAll();
+  }
+
+  @ApiQuery({
+    name: 'courseId',
+    type: Number,
+    required: true,
+    description: "Getting grammar by course id"
+  })
+  @Get('/courseId')
+  async findGrammarByCourseId(@Query('courseId') courseId: number): Promise<ResData<Array<Grammar>>> {
     return await this.grammarService.findAll();
   }
 

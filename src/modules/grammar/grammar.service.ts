@@ -9,6 +9,7 @@ import { IGrammarService } from './interfaces/grammar.service';
 import {
   GrammarAlreadyExistException,
   GrammarNotFoundException,
+  GrammarsNotFoundByCourseId,
 } from './exception/grammar.exception';
 
 @Injectable()
@@ -32,6 +33,14 @@ export class GrammarService implements IGrammarService {
     const newData = await this.grammarRepository.create(newGrammar);
 
     return new ResData<Grammar>('Grammar created successfully', 201, newData);
+  }
+
+  async findGrammarByCourseId(id: number): Promise<ResData<Grammar[]>> {
+    const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(id);
+    if (foundGrammars.length === 0) {
+      throw new GrammarsNotFoundByCourseId()
+    }
+    return new ResData<Grammar[]>("Grammars found successfully", 200, foundGrammars);
   }
 
   async findAll(): Promise<ResData<Array<Grammar>>> {

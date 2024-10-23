@@ -22,6 +22,9 @@ export class GrammarRepository implements IGrammarRepository {
     return await this.grammarRepository.find();
   }
 
+  async findGrammarsByCourseId(id: number): Promise<Grammar[]> {
+    return await this.grammarRepository.find({ where: { courseId: id } });
+  }
   async update(entity: Grammar): Promise<Grammar> {
     return await this.grammarRepository.save(entity);
   }

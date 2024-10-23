@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateAdminTeacherDto, CreateStudentDto } from './dto/create-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IUserRepository } from './interfaces/user.repository';
 import { IUserService } from './interfaces/user.service';
@@ -8,7 +7,6 @@ import { User } from './entities/user.entity';
 import {
   UserNotFound,
 } from './exception/user.exception';
-import { RoleEnum } from 'src/common/enums/enum';
 import { hashed } from 'src/lib/bcrypt';
 
 @Injectable()
@@ -20,7 +18,9 @@ export class UserService implements IUserService {
  // *** Find user by phone number *** //
 
  async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
-   const foundUserByPhone = await this.userRepository.findByPhoneNumber(phoneNumber)
+   console.log(phoneNumber)
+   const foundUserByPhone = await this.userRepository.findByPhoneNumber(phoneNumber);
+   console.log(this.findOneByPhoneNumber);
    const resData = new ResData<User>("User found successfully", 200, foundUserByPhone)
    if (!foundUserByPhone) {
     resData.message = "User not found by phone number"

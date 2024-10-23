@@ -56,6 +56,11 @@ export class LessonService implements ILessonService {
     );
   }
 
+  async findVideos(id: number): Promise<ResData<Lesson[]>> {
+    const foundVideos = await this.lessonRepository.findVideosTen(id);
+    return new ResData<Lesson[]>("Boshlang'ich 10 ta darslar", 200, foundVideos);
+  }
+
   async findAll(): Promise<ResData<Array<Lesson>>> {
     const data = await this.lessonRepository.findAll();
     return new ResData<Array<Lesson>>('ok', 200, data);

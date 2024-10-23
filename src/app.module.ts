@@ -21,6 +21,7 @@ import { HomeworkProgressModule } from './modules/homework-progress/homework-pro
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AlphabetModule } from './modules/alphabet/alphabet.module';
+import { LiveChatModule } from './modules/live-chat/live-chat.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { AlphabetModule } from './modules/alphabet/alphabet.module';
     LessonProgressModule,
     HomeworkProgressModule,
     AlphabetModule,
+    LiveChatModule,
   ],
 })
 export class AppModule {}
