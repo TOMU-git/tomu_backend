@@ -21,5 +21,12 @@ export class CreateCourseDto {
   })
   @IsString()
   @IsOptional()
+  video?: string; // Ixtiyoriy qildik
+
+  @ApiPropertyOptional({
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
   fileName?: string; // Ixtiyoriy qildik
 }

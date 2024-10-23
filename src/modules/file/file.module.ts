@@ -4,11 +4,13 @@ import { FileService } from './file.service';
 import { FileController } from './file.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileRepository } from './file.repository';
+import { VimeoService } from '../lesson/vimeo.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([File])],
   controllers: [FileController],
   providers: [
+    VimeoService,
     { provide: 'IFileService', useClass: FileService },
     { provide: 'IFileRepository', useClass: FileRepository },
   ],

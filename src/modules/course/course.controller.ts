@@ -10,6 +10,7 @@ import {
   Inject,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ID } from 'src/common/types/type';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -18,10 +19,14 @@ import { ResData } from 'src/lib/resData';
 import { ICourseService } from './interfaces/course.service';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { fileOption } from 'src/lib/file';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { Course } from './entities/course.entity';
+import { multiPleFilesOption } from 'src/lib/mulipleFiles';
 
 @ApiTags('course')
 @Controller('course')
@@ -32,8 +37,13 @@ export class CourseController {
   ) {}
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
-  @Post()
-  @UseInterceptors(FileInterceptor('fileName', fileOption))
+  @Post('upload')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'fileName', maxCount: 1 },
+      { name: 'video', maxCount: 1 },
+    ], multiPleFilesOption),
+  )
   @ApiBody({
     schema: {
       type: 'object',
@@ -47,15 +57,24 @@ export class CourseController {
           type: 'string',
           format: 'binary',
         },
+        video: {
+          type: 'string',
+          format: 'binary',
+        },
       },
     },
   })
   @ApiConsumes('multipart/form-data') // Swagger'da fayl yuklashni ko'rsatish uchun
   async create(
     @Body() createCourseDto: CreateCourseDto,
-    @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
+    @UploadedFiles()
+    files: { fileName?: Express.Multer.File[]; video?: Express.Multer.File[] }, // Faylni qabul qilish
   ): Promise<ResData<Course>> {
-    return await this.courseService.create(createCourseDto, file);
+    const file = files.fileName ? files.fileName[0] : null; // fileName faylini olish
+    const video = files.video ? files.video[0] : null; // video faylini olish
+    console.log("ishladi")
+
+    return await this.courseService.create(createCourseDto, file, video);
   }
 
   @Get()

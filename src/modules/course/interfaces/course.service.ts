@@ -8,6 +8,7 @@ export interface ICourseService {
   create(
     dto: CreateCourseDto,
     file?: Express.Multer.File,
+    video?: Express.Multer.File,
   ): Promise<ResData<Course>>;
   findAll(): Promise<ResData<Array<Course>>>;
   findOneById(id: ID): Promise<ResData<Course>>;
@@ -15,6 +16,7 @@ export interface ICourseService {
     id: ID,
     dto: UpdateCourseDto,
     file: Express.Multer.File,
+    video?: Express.Multer.File,
   ): Promise<ResData<Course>>;
   create(dto: CreateCourseDto): Promise<ResData<Course>>;
   delete(id: ID): Promise<ResData<Course>>;

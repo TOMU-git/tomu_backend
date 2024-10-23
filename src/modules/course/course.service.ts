@@ -12,6 +12,7 @@ import {
 import { IFileService } from '../file/interfaces/file.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { Course } from './entities/course.entity';
+import { VimeoService } from '../lesson/vimeo.service';
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -21,28 +22,52 @@ export class CourseService implements ICourseService {
 
     @Inject('IFileService')
     private readonly fileService: IFileService,
+
+    private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
   async create(
     dto: CreateCourseDto,
-    file?: Express.Multer.File, // Fayl ixtiyoriy
+    file?: Express.Multer.File,
+    video?: Express.Multer.File,
   ): Promise<ResData<Course>> {
+    // console.log('service', dto, file, video);
     const foundData = await this.courseRepository.findOneByName(dto.title);
     if (foundData) {
       throw new CourseAlreadyExistException();
     }
 
-    let newCourse = new Course();
-
-    // Fayl yuklash jarayoni
+    // Faylni saqlash
+    let imageUrl = null;
     if (file) {
-      const savedFile = await this.fileService.create(file);
-      newCourse = Object.assign(newCourse, dto, {
-        imageUrl: savedFile.data.path,
-      });
-    } else {
-      newCourse = Object.assign(newCourse, dto);
+      console.log("file", file)
+      const image = await this.fileService.create(file);
+      imageUrl = image.data.path; // Fayl manzilini saqlash
+      console.log('image', image);
     }
+
+    // Video yuklash
+    let videoUrl = null;
+    if (video) {
+      videoUrl = await this.vimeoService.uploadVideo(
+        video.buffer, // Faylni buffer orqali yuklash
+        dto.title,
+        'Dars videosi',
+        video.size, // Faylning o'lchamini olish
+      );
+      // console.log('videoUrl', videoUrl);
+    }
+
+    // Yangi kurs ob'ektini yaratish
+    const newCourse = new Course();
+    Object.assign(newCourse, {
+      ...dto,
+      video_url: videoUrl, // Video URL ni kiritish
+      videoMimetype: video ? video.mimetype : null, // Video MIME turi
+      videoSize: video ? video.size : null, // Video o'lchami
+      imageMimetype: file ? file.mimetype : null, // Fayl MIME turi
+      imageSize: file ? file.size : null, // Fayl o'lchami
+    });
 
     const newData = await this.courseRepository.create(newCourse);
     return new ResData<Course>('Course created successfully', 201, newData);
@@ -77,7 +102,7 @@ export class CourseService implements ICourseService {
           foundData.imageUrl,
         );
         if (!removeResult) {
-          console.log('Fayl topilmadi yoki o‘chirilmadi.');
+          // console.log('Fayl topilmadi yoki o‘chirilmadi.');
         }
       } catch (error) {
         console.error('Faylni o‘chirishda xatolik yuz berdi:', error);
