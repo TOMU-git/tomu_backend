@@ -27,12 +27,12 @@ export class CreateLessonDto {
   video: any; // Fayl yuklash uchun maydon
 
   @ApiProperty({
-    description: 'Dars tartibi',
+    description: 'Bog‘lanadigan Blockning IDsi',
     example: 1,
+    required: false,
   })
+  @IsOptional()
   @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
-  @IsInt()
-  @IsPositive()
   order: number;
 
   @ApiProperty({
