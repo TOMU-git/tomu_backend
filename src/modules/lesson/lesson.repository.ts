@@ -27,10 +27,10 @@ export class LessonRepository implements ILessonRepository {
   async findVideosTen(id: number): Promise<Lesson[]> {
     return await this.lessonRepository
       .createQueryBuilder('lessons')
-      .where({blockId: id}) 
+      .where({ blockId: id })
       .orderBy('lessons.order', 'ASC')
       .limit(10)
-      .getMany()
+      .getMany();
   }
 
   async findByIds(ids: number[]): Promise<Lesson[]> {
@@ -59,7 +59,12 @@ export class LessonRepository implements ILessonRepository {
     return await this.lessonRepository.findOneBy({ title });
   }
 
-  async findOneByOrder(order: ID): Promise<Lesson | null> {
-    return await this.lessonRepository.findOneBy({ order });
+  async findOneByOrder(order: ID, blockId: ID): Promise<Lesson | null> {
+    return await this.lessonRepository.findOne({
+      where: {
+        order: order,
+        blockId: blockId,
+      },
+    });
   }
 }

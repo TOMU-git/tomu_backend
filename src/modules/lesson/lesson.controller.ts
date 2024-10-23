@@ -19,12 +19,7 @@ import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { ResData } from 'src/lib/resData';
 import { Lesson } from './entities/lesson.entity';
 import { ILessonService } from './interfaces/lesson.service';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/common/decorator/auth.decorator';
@@ -36,6 +31,7 @@ export class LessonController {
     @Inject('ILessonService')
     private readonly lessonService: ILessonService,
   ) {}
+
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -85,7 +81,7 @@ export class LessonController {
     name: 'module_id',
     required: true,
     type: Number,
-    description: 'For module id'
+    description: 'For module id',
   })
   @Get('/ten-videos')
   async findTenVideos(@Query('module_id') module_id: number) {
@@ -132,7 +128,6 @@ export class LessonController {
     @Body() updateLessonDto: UpdateLessonDto,
     @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Lesson>> {
-    console.log('Fayl:', file); // Faylni konsolda tekshirish
     return await this.lessonService.update(id, updateLessonDto, file);
   }
 

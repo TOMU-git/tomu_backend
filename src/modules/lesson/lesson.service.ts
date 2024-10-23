@@ -30,8 +30,14 @@ export class LessonService implements ILessonService {
       throw new LessonAlreadyExistException();
     }
 
-    const orderExist = await this.lessonRepository.findOneByOrder(dto.order);
-    if (dto.order !== foundData.order && dto.blockId === orderExist.blockId) {
+    // order va blockId bo'yicha tekshirish
+    const orderExist = await this.lessonRepository.findOneByOrder(
+      dto.order,
+      dto.blockId,
+    );
+
+    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+    if (orderExist) {
       throw new LessonOrderAlreadyExistException();
     }
 
@@ -61,7 +67,11 @@ export class LessonService implements ILessonService {
 
   async findVideos(id: number): Promise<ResData<Lesson[]>> {
     const foundVideos = await this.lessonRepository.findVideosTen(id);
-    return new ResData<Lesson[]>("Boshlang'ich 10 ta darslar", 200, foundVideos);
+    return new ResData<Lesson[]>(
+      "Boshlang'ich 10 ta darslar",
+      200,
+      foundVideos,
+    );
   }
 
   async findAll(): Promise<ResData<Array<Lesson>>> {
@@ -94,8 +104,13 @@ export class LessonService implements ILessonService {
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
 
-    const orderExist = await this.lessonRepository.findOneByOrder(dto.order);
-    if (dto.order !== foundData.order && dto.blockId === orderExist.blockId) {
+    const orderExist = await this.lessonRepository.findOneByOrder(
+      dto.order,
+      dto.blockId,
+    );
+
+    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+    if (orderExist) {
       throw new LessonOrderAlreadyExistException();
     }
 
