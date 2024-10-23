@@ -9,5 +9,6 @@ export interface ILessonRepository {
   findById(id: ID): Promise<Lesson | null>;
   findVideosTen(id: number): Promise<Lesson[]>;
   findOneByName(title: string): Promise<Lesson | null>;
+  findOneByOrder(order: ID): Promise<Lesson | null>;
   findLessonsByBlockId(blockId: ID): Promise<Lesson[]>;
 }

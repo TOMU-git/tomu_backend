@@ -24,9 +24,7 @@ export class AlphabetService implements IAlphabetService {
     dto: CreateAlphabetDto,
     file: Express.Multer.File,
   ): Promise<ResData<Alphabet>> {
-    console.log('in service', file);
-
-    const foundData = await this.alphabetRepository.findOneByName(dto.title);
+    const foundData = await this.alphabetRepository.findOneByOrder(dto.order);
     if (foundData) {
       throw new AlphabetAlreadyExistException();
     }
@@ -89,8 +87,6 @@ export class AlphabetService implements IAlphabetService {
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      console.log('Video fayl yuklanmoqda...', file);
-
       // Yangi video faylni yuklaydi
       const videoUrl = await this.vimeoService.uploadVideo(
         file.buffer,
@@ -105,7 +101,17 @@ export class AlphabetService implements IAlphabetService {
       foundData.size = file.size;
     }
 
+    if (dto.order && dto.order !== foundData.order) {
+      const isOrderExist = await this.alphabetRepository.findOneByOrder(
+        dto.order,
+      );
+      if (isOrderExist) {
+        throw new AlphabetAlreadyExistException();
+      }
+    }
+
     // Boshqa maydonlarni yangilash
+
     Object.assign(foundData, dto);
 
     const data = await this.alphabetRepository.update(foundData);

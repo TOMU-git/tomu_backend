@@ -19,7 +19,9 @@ export class LessonRepository implements ILessonRepository {
   }
 
   async findAll(): Promise<Array<Lesson>> {
-    return await this.lessonRepository.find();
+    return await this.lessonRepository.find({
+      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+    });
   }
 
   async findVideosTen(id: number): Promise<Lesson[]> {
@@ -37,9 +39,8 @@ export class LessonRepository implements ILessonRepository {
 
   async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
-      where: {
-        block: { id: blockId }, // Block orqali qidirish
-      },
+      where: { block: { id: blockId } },
+      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
     });
   }
   async update(entity: Lesson): Promise<Lesson> {
@@ -56,5 +57,9 @@ export class LessonRepository implements ILessonRepository {
 
   async findOneByName(title: string): Promise<Lesson | null> {
     return await this.lessonRepository.findOneBy({ title });
+  }
+
+  async findOneByOrder(order: ID): Promise<Lesson | null> {
+    return await this.lessonRepository.findOneBy({ order });
   }
 }

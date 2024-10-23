@@ -33,8 +33,4 @@ export class FeedbackRepository implements IFeedbackRepository {
   async findById(id: ID): Promise<Feedback | null> {
     return await this.courseRepository.findOneBy({ id });
   }
-
-  async findOneByName(title: string): Promise<Feedback | null> {
-    return await this.courseRepository.findOneBy({ comment: title });
-  }
 }

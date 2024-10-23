@@ -34,14 +34,14 @@ export class AlphabetController {
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('image')) // 'image' - yuklanayotgan fayl maydoni nomi
+  @UseInterceptors(FileInterceptor('video'))
   @ApiBody({
     description: "Yuklanadigan image ma'lumotlari",
     type: CreateAlphabetDto,
     schema: {
       type: 'object',
       properties: {
-        name: {
+        title: {
           type: 'string',
         },
         order: {
@@ -50,7 +50,7 @@ export class AlphabetController {
         courseId: {
           type: 'number',
         },
-        image: {
+        video: {
           // Image faylini yuklash maydoni
           type: 'string',
           format: 'binary', // Bu maydon fayl yuklash uchun kerak
