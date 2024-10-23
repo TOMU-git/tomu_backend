@@ -30,8 +30,8 @@ export class LessonService implements ILessonService {
       throw new LessonAlreadyExistException();
     }
 
-    const isOrderExist = await this.lessonRepository.findOneByOrder(dto.order);
-    if (isOrderExist) {
+    const orderExist = await this.lessonRepository.findOneByOrder(dto.order);
+    if (dto.order !== foundData.order && dto.blockId === orderExist.blockId) {
       throw new LessonOrderAlreadyExistException();
     }
 
@@ -94,13 +94,9 @@ export class LessonService implements ILessonService {
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
 
-    if (dto.order && dto.order !== foundData.order) {
-      const isOrderExist = await this.lessonRepository.findOneByOrder(
-        dto.order,
-      );
-      if (isOrderExist) {
-        throw new LessonOrderAlreadyExistException();
-      }
+    const orderExist = await this.lessonRepository.findOneByOrder(dto.order);
+    if (dto.order !== foundData.order && dto.blockId === orderExist.blockId) {
+      throw new LessonOrderAlreadyExistException();
     }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
