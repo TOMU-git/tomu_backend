@@ -16,12 +16,9 @@ export class CreateCourseDto {
   @IsString()
   description: string;
 
-  @ApiPropertyOptional({
-    type: String,
-  })
+  @ApiProperty({})
   @IsString()
-  @IsOptional()
-  video?: string; // Ixtiyoriy qildik
+  videoUrl: string;
 
   @ApiPropertyOptional({
     type: String,

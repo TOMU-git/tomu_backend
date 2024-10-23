@@ -10,7 +10,7 @@ export class TelegramBotService {
 
   constructor() {
     this.bot = new TelegramBot(config.token, {
-      polling: true,
+      polling: false,
     });
   }
   hasNumberOrSign(str: string) {

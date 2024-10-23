@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { IUserService } from './interfaces/user.service';
 import { RoleEnum } from 'src/common/enums/enum';
 import { Auth } from 'src/common/decorator/auth.decorator';
-import { SearchUserByPhoneNumber } from './dto/create-user.dto';
+import { SearchUserByPhoneNumber } from './dto/create-users.dto';
 
 @ApiTags('user')
 @Controller('user')
