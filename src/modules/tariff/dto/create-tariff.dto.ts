@@ -1,6 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsInt, IsArray } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsInt,
+  IsArray,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+
+
 
 export class CreateTariffDto {
   @ApiProperty({ example: 'Basic Plan', description: 'Tariff name' })

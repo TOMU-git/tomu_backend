@@ -12,12 +12,17 @@ import {
   LessonOrderAlreadyExistException,
 } from './exception/lesson.exception';
 import { VimeoService } from './vimeo.service';
+import { IBlockRepository } from '../block/interfaces/block.repository';
 
 @Injectable()
 export class LessonService implements ILessonService {
   constructor(
     @Inject('ILessonRepository')
     private readonly lessonRepository: ILessonRepository,
+
+    @Inject('IBlockRepository')
+    private readonly blockRepository: IBlockRepository,
+
     private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
@@ -39,6 +44,8 @@ export class LessonService implements ILessonService {
       throw new LessonOrderAlreadyExistException();
     }
 
+    const block = await this.blockRepository.findById(dto.blockId)
+
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
@@ -48,11 +55,11 @@ export class LessonService implements ILessonService {
     const newLesson = new Lesson();
     Object.assign(newLesson, {
       ...dto,
-      courseId: dto.courseId,
-      video_url: videoUrl,
+      block,
+      videoUrl,
       mimetype: file.mimetype,
       size: file.size,
-      // duration, // Video davomiyligini saqlash
+      duration, // Video davomiyligini saqlash
     });
     console.log('duration_______', duration);
 

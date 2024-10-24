@@ -14,5 +14,9 @@ import { SharedModule } from '../shared/shared.module';
     { provide: 'IBlockService', useClass: BlockService },
     { provide: 'IBlockRepository', useClass: BlockRepository },
   ],
+  exports: [
+    { provide: 'IBlockService', useClass: BlockService },
+    { provide: 'IBlockRepository', useClass: BlockRepository },
+  ],
 })
 export class BlockModule {}

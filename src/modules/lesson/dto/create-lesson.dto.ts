@@ -43,13 +43,4 @@ export class CreateLessonDto {
   @IsOptional()
   @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   blockId: number;
-
-  @ApiProperty({
-    description: 'Bog‘lanadigan Blockning IDsi',
-    example: 1,
-    required: false,
-  })
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
-  courseId: number;
 }

@@ -7,7 +7,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 export class Tariff extends BaseEntity {
   @Column({ type: 'varchar', length: 256, nullable: false })
   name: string;
-  
 
   @Column({ type: 'int', nullable: false })
   duration: number;
@@ -21,13 +20,10 @@ export class Tariff extends BaseEntity {
 
   // Kurs bilan bog'lanish
   @ManyToOne(() => Course, (course) => course.tariffs, {
-    onDelete: 'CASCADE',
+    onDelete: 'NO ACTION',
   })
   @JoinColumn({ name: 'course_id' })
   course: Course;
-
-  @Column({ name: 'course_id', type: 'int', nullable: false }) // Qo'shiladigan ustun
-  courseId: number; // Bu yerda `courseId` qo'shiladi
 
   @OneToMany(() => UserTariff, (userTariff) => userTariff.tariff, {
     onDelete: 'SET NULL',

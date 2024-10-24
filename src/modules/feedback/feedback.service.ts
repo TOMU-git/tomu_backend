@@ -7,20 +7,36 @@ import { IFeedbackService } from './interfaces/feedback.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { Feedback } from './entities/feedback.entity';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { ICourseRepository } from '../course/interfaces/course.repository';
+import { IUserRepository } from '../user/interfaces/user.repository';
 
 @Injectable()
 export class FeedbackService implements IFeedbackService {
   constructor(
     @Inject('IFeedbackRepository')
     private readonly feedbackRepository: IFeedbackRepository,
+
+    @Inject('ICourseRepository')
+    private readonly courseRepository: ICourseRepository,
+
+    @Inject('IUserRepository')
+    private readonly userRepository: IUserRepository,
   ) {}
 
   async create(
     createFeedbackDto: CreateFeedbackDto,
   ): Promise<ResData<Feedback>> {
     const newFeedback = new Feedback();
-    newFeedback.courseId = Number(createFeedbackDto.course);
-    newFeedback.userId = Number(createFeedbackDto.user);
+
+    const course = await this.courseRepository.findById(
+      Number(createFeedbackDto.course),
+    );
+    const user = await this.userRepository.findOneById(
+      Number(createFeedbackDto.user),
+    );
+
+    newFeedback.course = course;
+    newFeedback.user = user;
     Object.assign(newFeedback, createFeedbackDto);
     const savedFeedback = await this.feedbackRepository.create(newFeedback);
 

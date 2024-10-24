@@ -15,11 +15,4 @@ export class HomeworkProgress extends BaseEntity {
 
   @Column({ type: 'boolean', default: false })
   isWatched: boolean;
-
-  // Yana bir oddiy `userId` va `homeworkId` maydonlari qo'shamiz
-  @Column({ name: 'user_id' })
-  userId: string;
-
-  @Column({ name: 'homework_id' })
-  homeworkId: string;
 }

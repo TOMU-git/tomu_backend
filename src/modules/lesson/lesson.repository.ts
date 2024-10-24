@@ -40,9 +40,11 @@ export class LessonRepository implements ILessonRepository {
   async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
       where: { block: { id: blockId } },
+      relations: ['block'], // block bilan bog'liq ma'lumotlarni olish uchun
       order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
     });
   }
+
   async update(entity: Lesson): Promise<Lesson> {
     return await this.lessonRepository.save(entity);
   }
@@ -63,7 +65,7 @@ export class LessonRepository implements ILessonRepository {
     return await this.lessonRepository.findOne({
       where: {
         order: order,
-        blockId: blockId,
+        block: { id: blockId }, // block maydoni orqali blockId ni qidirish
       },
     });
   }

@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
 import { Block } from 'src/modules/block/entities/block.entity';
-import { Course } from 'src/modules/course/entities/course.entity';
 import { LessonProgress } from 'src/modules/lesson-progress/entities/lesson-progress.entity';
 import {
   Column,
@@ -8,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
 } from 'typeorm';
 
 @Entity('lessons') // Entity nomini belgilash
@@ -49,16 +47,6 @@ export class Lesson extends BaseEntity {
   @ManyToOne(() => Block, (block) => block.lessons)
   @JoinColumn({ name: 'block_id' })
   block: Block;
-
-  @ManyToOne(() => Course, (course) => course.lessons)
-  @JoinColumn({ name: 'course_id' })
-  course: Course;
-
-  @Column({ name: 'course_id', type: 'int', nullable: false })
-  courseId: number;
-
-  @Column({ name: 'block_id', type: 'int', nullable: false })
-  blockId: number;
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];

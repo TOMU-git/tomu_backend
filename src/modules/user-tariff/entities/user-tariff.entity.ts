@@ -20,13 +20,7 @@ export class UserTariff extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ name: 'user_id', type: 'int', nullable: false })
-  userId: number;
-
   @ManyToOne(() => Tariff, (tariff) => tariff.userTariffs)
   @JoinColumn({ name: 'tariff_id' })
   tariff: Tariff;
-
-  @Column({ name: 'tariff_id', type: 'int', nullable: false })
-  tariffId: number;
 }

@@ -17,14 +17,8 @@ export class UserCourse extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ name: 'user_id', type: 'int', nullable: false })
-  userId: number;
-
   // Kurs bilan bog'lanish
   @ManyToOne(() => Course, (course) => course.userCourses)
   @JoinColumn({ name: 'course_id' })
   course: Course;
-
-  @Column({ name: 'course_id', type: 'int', nullable: false })
-  courseId: number;
 }
