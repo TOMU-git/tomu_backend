@@ -7,6 +7,6 @@ export interface IAlphabetRepository {
   update(entity: Alphabet): Promise<Alphabet>;
   delete(entity: Alphabet): Promise<Alphabet>;
   findById(id: ID): Promise<Alphabet | null>;
-  findOneByOrder(order: number): Promise<Alphabet | null>;
+  findOneByOrder(order: number, courseId: ID): Promise<Alphabet | null>;
   getAlphabetsByCourseId(courseId: number): Promise<Alphabet[]>;
 }

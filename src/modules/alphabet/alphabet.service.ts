@@ -11,12 +11,18 @@ import {
   AlphabetNotFoundException,
 } from './exception/alphabet.exception';
 import { VimeoService } from '../lesson/vimeo.service';
+import { ICourseRepository } from '../course/interfaces/course.repository';
+import { CourseNotFoundException } from '../course/exception/course.exception';
 
 @Injectable()
 export class AlphabetService implements IAlphabetService {
   constructor(
     @Inject('IAlphabetRepository')
     private readonly alphabetRepository: IAlphabetRepository,
+
+    @Inject('ICourseRepository')
+    private readonly courseRepository: ICourseRepository,
+
     private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
@@ -24,8 +30,18 @@ export class AlphabetService implements IAlphabetService {
     dto: CreateAlphabetDto,
     file: Express.Multer.File,
   ): Promise<ResData<Alphabet>> {
-    const foundData = await this.alphabetRepository.findOneByOrder(dto.order);
-    if (foundData) {
+    const course = await this.courseRepository.findById(dto.courseId);
+
+    if (!course) {
+      throw new CourseNotFoundException();
+    }
+
+    const orderExist = await this.alphabetRepository.findOneByOrder(
+      dto.order,
+      dto.courseId,
+    );
+
+    if (orderExist) {
       throw new AlphabetAlreadyExistException();
     }
 
@@ -40,11 +56,14 @@ export class AlphabetService implements IAlphabetService {
     const newAlphabet = new Alphabet();
     Object.assign(newAlphabet, {
       ...dto,
-      video_url: videoUrl,
+      videoUrl,
+      duration,
+      course,
       mimetype: file.mimetype,
       size: file.size,
     });
 
+    
     const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
 
     return new ResData<Alphabet>(
@@ -85,31 +104,37 @@ export class AlphabetService implements IAlphabetService {
   ): Promise<ResData<Alphabet>> {
     const { data: foundData } = await this.findOneById(id);
 
+    const course = await this.courseRepository.findById(dto.courseId);
+
+    if (!course) {
+      throw new CourseNotFoundException();
+    }
+
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
       // Yangi video faylni yuklaydi
-       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
-         file.buffer,
-         dto.title,
-         'Dars videosi',
-         // file.size,
-       );
+      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+        file.buffer,
+        dto.title,
+        'Dars videosi',
+        // file.size,
+      );
       // Eski videoning ma'lumotlarini yangilaydi
       foundData.videoUrl = videoUrl;
+      foundData.duration = duration;
+      foundData.course = course;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    if (dto.order && dto.order !== foundData.order) {
-      const isOrderExist = await this.alphabetRepository.findOneByOrder(
-        dto.order,
-      );
-      if (isOrderExist) {
-        throw new AlphabetAlreadyExistException();
-      }
-    }
+    const orderExist = await this.alphabetRepository.findOneByOrder(
+      dto.order,
+      dto.courseId,
+    );
 
-    // Boshqa maydonlarni yangilash
+    if (orderExist) {
+      throw new AlphabetAlreadyExistException();
+    }
 
     Object.assign(foundData, dto);
 
