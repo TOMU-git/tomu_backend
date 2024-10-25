@@ -35,7 +35,13 @@ export class CourseRepository implements ICourseRepository {
   async findById(id: ID): Promise<Course | null> {
     return await this.courseRepository.findOne({
       where: { id }, // Qidirilayotgan kurs IDsi
-      relations: ['feedbacks', 'userCourses', 'blocks', 'blocks.lessons'], // Feedbacklar va userCourselar bilan bog'lanish
+      relations: [
+        'feedbacks',
+        'feedbacks.user', // Feedbacklar bilan bog'liq userlarni qo'shish
+        'userCourses',
+        'blocks',
+        'blocks.lessons',
+      ], // Feedbacklar, userCourses va boshqa bog'lanishlar
     });
   }
 

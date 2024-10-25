@@ -11,12 +11,17 @@ import {
   GrammarNotFoundException,
   GrammarsNotFoundByCourseId,
 } from './exception/grammar.exception';
+import { ICourseRepository } from '../course/interfaces/course.repository';
+import { CourseAlreadyExistException } from '../course/exception/course.exception';
 
 @Injectable()
 export class GrammarService implements IGrammarService {
   constructor(
     @Inject('IGrammarRepository')
     private readonly grammarRepository: IGrammarRepository,
+
+    @Inject('ICourseRepository')
+    private readonly courseRepository: ICourseRepository,
   ) {}
 
   async create(createGrammarDto: CreateGrammarDto): Promise<ResData<Grammar>> {
@@ -28,7 +33,15 @@ export class GrammarService implements IGrammarService {
       throw new GrammarAlreadyExistException();
     }
 
+    const course = await this.courseRepository.findById(
+      createGrammarDto.courseId,
+    );
+    if (!course) {
+      throw new CourseAlreadyExistException();
+    }
+
     const newGrammar = new Grammar();
+    newGrammar.course = course;
     Object.assign(newGrammar, createGrammarDto);
     const newData = await this.grammarRepository.create(newGrammar);
 
@@ -36,11 +49,16 @@ export class GrammarService implements IGrammarService {
   }
 
   async findGrammarByCourseId(id: number): Promise<ResData<Grammar[]>> {
-    const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(id);
+    const foundGrammars =
+      await this.grammarRepository.findGrammarsByCourseId(id);
     if (foundGrammars.length === 0) {
-      throw new GrammarsNotFoundByCourseId()
+      throw new GrammarsNotFoundByCourseId();
     }
-    return new ResData<Grammar[]>("Grammars found successfully", 200, foundGrammars);
+    return new ResData<Grammar[]>(
+      'Grammars found successfully',
+      200,
+      foundGrammars,
+    );
   }
 
   async findAll(): Promise<ResData<Array<Grammar>>> {
@@ -64,6 +82,12 @@ export class GrammarService implements IGrammarService {
     updateGrammarDto: UpdateGrammarDto,
   ): Promise<ResData<Grammar>> {
     const { data: foundData } = await this.findOneById(id);
+    const course = await this.courseRepository.findById(
+      updateGrammarDto.courseId,
+    );
+    if (!course) {
+      throw new CourseAlreadyExistException();
+    }
     const updatedData = Object.assign(foundData, updateGrammarDto);
     const data = await this.grammarRepository.update(updatedData);
 
