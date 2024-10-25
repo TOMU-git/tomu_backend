@@ -13,35 +13,36 @@ export class LessonRepository implements ILessonRepository {
   ) {}
 
   async create(dto: Lesson): Promise<Lesson> {
-    const newLesson = await this.lessonRepository.create(dto);
-    await this.lessonRepository.save(newLesson);
-    return newLesson;
+    const newLesson = this.lessonRepository.create(dto);
+    return await this.lessonRepository.save(newLesson);
   }
 
-  async findAll(): Promise<Array<Lesson>> {
-    return await this.lessonRepository.find({
-      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
-    });
-  }
-
-  async findVideosTen(id: number): Promise<Lesson[]> {
+  async findAll(): Promise<Lesson[]> {
     return await this.lessonRepository
-      .createQueryBuilder('lessons')
-      .where({ blockId: id })
-      .orderBy('lessons.order', 'ASC')
-      .limit(10)
+      .createQueryBuilder('lesson')
+      .leftJoin('lesson.block', 'block') // block jadvalini qo'shish
+      .addSelect(['block.id']) // Faqat blockning `id` maydonini tanlash
       .getMany();
   }
 
+  async findVideosTen(blockId: ID): Promise<Lesson[]> {
+    return await this.lessonRepository.find({
+      where: { block: { id: blockId } },
+      relations: ['block'], // Block munosabatini qo'shish
+      order: { order: 'ASC' }, // order bo'yicha tartiblash
+      take: 10, // Faqat 10 ta yozuvni olib kelish
+    });
+  }
+
   async findByIds(ids: number[]): Promise<Lesson[]> {
-    return this.lessonRepository.findBy({ id: In(ids) }); // TypeORM uchun `In` metodidan foydalaning
+    return this.lessonRepository.findBy({ id: In(ids) });
   }
 
   async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
       where: { block: { id: blockId } },
-      relations: ['block'], // block bilan bog'liq ma'lumotlarni olish uchun
-      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
+      relations: ['block'],
+      order: { order: 'ASC' },
     });
   }
 
@@ -61,11 +62,11 @@ export class LessonRepository implements ILessonRepository {
     return await this.lessonRepository.findOneBy({ title });
   }
 
-  async findOneByOrder(order: ID, blockId: ID): Promise<Lesson | null> {
+  async findOneByOrder(order: number, blockId: ID): Promise<Lesson | null> {
     return await this.lessonRepository.findOne({
       where: {
         order: order,
-        block: { id: blockId }, // block maydoni orqali blockId ni qidirish
+        block: { id: blockId },
       },
     });
   }
