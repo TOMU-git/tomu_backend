@@ -6,28 +6,63 @@ import { IHomeworkService } from './interfaces/homework.service';
 import {
   HomeworkAlreadyExistException,
   HomeworkNotFoundException,
+  HomeworkOrderAlreadyExistException,
 } from './exception/homework.exception';
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { Homework } from './entities/homework.entity';
 import { UpdateHomeworkDto } from './dto/update-homework.dto';
+import { IBlockRepository } from '../block/interfaces/block.repository';
+import { BlockNotFoundException } from '../block/exception/block.exception';
+import { VimeoService } from '../lesson/vimeo.service';
 
 @Injectable()
 export class HomeworkService implements IHomeworkService {
   constructor(
     @Inject('IHomeworkRepository')
     private readonly homeworkRepository: IHomeworkRepository,
+
+    @Inject('IBlockRepository')
+    private readonly blockRepository: IBlockRepository,
+
+    private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
   async create(
     createHomeworkDto: CreateHomeworkDto,
+    file: Express.Multer.File,
   ): Promise<ResData<Homework>> {
-    const foundData = await this.homeworkRepository.findOneByName(
-      createHomeworkDto.assignment_video_url,
+    const block = await this.blockRepository.findById(
+      createHomeworkDto.blockId,
     );
-    if (foundData) {
-      throw new HomeworkAlreadyExistException();
+    if (!block) {
+      throw new BlockNotFoundException();
     }
+
+    const orderExist = await this.homeworkRepository.findOneByOrder(
+      createHomeworkDto.order,
+      createHomeworkDto.blockId,
+    );
+
+    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+    if (orderExist) {
+      throw new HomeworkOrderAlreadyExistException();
+    }
+
+    // return new ResData<Homework>('Homework created successfully', 201);
+
+
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
+      createHomeworkDto.description,
+      'Dars videosi',
+    );
+
     let newHomework = new Homework();
+    newHomework.block = block;
+    newHomework.videoUrl = videoUrl;
+    newHomework.mimetype = file.mimetype;
+    newHomework.size = file.size;
+    newHomework.duration = duration;
     newHomework = Object.assign(newHomework, createHomeworkDto);
     const newData = await this.homeworkRepository.create(newHomework);
 
@@ -52,12 +87,53 @@ export class HomeworkService implements IHomeworkService {
   async update(
     id: ID,
     updateHomeworkDto: UpdateHomeworkDto,
+    file: Express.Multer.File,
   ): Promise<ResData<Homework>> {
     const { data: foundData } = await this.findOneById(id);
-    const updatedData = Object.assign(foundData, updateHomeworkDto);
-    const data = await this.homeworkRepository.update(updatedData);
 
-    return new ResData<Homework>('Homework updated successfully', 200, data);
+    const orderExist = await this.homeworkRepository.findOneByOrder(
+      updateHomeworkDto.order,
+      updateHomeworkDto.blockId,
+    );
+
+    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+    if (orderExist) {
+      throw new HomeworkOrderAlreadyExistException();
+    }
+
+    const block = await this.blockRepository.findById(
+      updateHomeworkDto.blockId,
+    );
+    if (!block) {
+      throw new BlockNotFoundException();
+    }
+
+    foundData.order = updateHomeworkDto.order;
+    foundData.description = updateHomeworkDto.description;
+    foundData.block = block;
+
+    if (file) {
+      // Yangi video faylni yuklaydi
+      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+        file.buffer,
+        updateHomeworkDto.description,
+        'Dars videosi',
+        // file.size,
+      );
+
+      foundData.videoUrl = videoUrl;
+      foundData.mimetype = file.mimetype;
+      foundData.size = file.size;
+      foundData.duration = duration;
+    }
+    const updatedData = Object.assign(foundData, updateHomeworkDto)
+    // const data = await this.homeworkRepository.update(foundData);
+
+    return new ResData<Homework>(
+      'Homework updated successfully',
+      200,
+      updatedData,
+    );
   }
 
   async delete(id: ID): Promise<ResData<Homework>> {

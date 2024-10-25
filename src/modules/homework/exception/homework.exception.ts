@@ -11,3 +11,9 @@ export class HomeworkAlreadyExistException extends HttpException {
     super('Homework already exist', 400);
   }
 }
+
+export class HomeworkOrderAlreadyExistException extends HttpException {
+  constructor() {
+    super('Homework order is busy, choose another order number', 400);
+  }
+}

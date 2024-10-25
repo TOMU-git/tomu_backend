@@ -1,14 +1,10 @@
 import { BaseEntity } from 'src/common/database/baseEntity';
-import { Block } from 'src/modules/block/entities/block.entity';
 import { Course } from 'src/modules/course/entities/course.entity';
-import { LessonProgress } from 'src/modules/lesson-progress/entities/lesson-progress.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
 } from 'typeorm';
 
 @Entity('alphabets') // Entity nomini belgilash
