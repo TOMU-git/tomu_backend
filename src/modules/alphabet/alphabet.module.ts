@@ -6,9 +6,10 @@ import { VimeoService } from '../lesson/vimeo.service';
 import { AlphabetService } from './alphabet.service';
 import { AlphabetRepository } from './alphabet.repository';
 import { AlphabetController } from './alphabet.controller';
+import { CourseModule } from '../course/course.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Alphabet]), SharedModule],
+  imports: [TypeOrmModule.forFeature([Alphabet]), SharedModule, CourseModule],
   controllers: [AlphabetController],
   providers: [
     VimeoService,

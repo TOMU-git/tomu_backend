@@ -16,7 +16,7 @@ export class Alphabet extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   title: string;
 
-  @Column({ type: 'varchar', length: 25, name: 'video_url' })
+  @Column({ type: 'varchar', length: 255, name: 'video_url' })
   videoUrl: string;
 
   @Column({ type: 'int' })
@@ -28,6 +28,9 @@ export class Alphabet extends BaseEntity {
    * foydalanuvchilar 1-darsdan 2-darsga, keyin esa 3-darsga o'tishlari mumkin.
    */
   order: number;
+
+  @Column({ type: 'int' })
+  duration: number;
 
   @Column({ type: 'varchar', length: 50, name: 'mime_type' })
   /**

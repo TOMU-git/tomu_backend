@@ -31,7 +31,7 @@ export class AlphabetController {
     private readonly alphabetService: IAlphabetService,
   ) {}
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video'))
@@ -68,19 +68,19 @@ export class AlphabetController {
     return this.alphabetService.create(createAlphabetDto, file);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Alphabet>>> {
     return await this.alphabetService.findAll();
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Alphabet>> {
     return await this.alphabetService.findOneById(id);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get('by-course/:courseId')
   async getByCourseId(
     @Param('courseId', ParseIntPipe) courseId: number,
@@ -88,7 +88,7 @@ export class AlphabetController {
     return await this.alphabetService.getAlphabetsByCourseId(courseId);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(':id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image')) // 'image' - yuklanayotgan fayl maydoni nomi
@@ -117,7 +117,7 @@ export class AlphabetController {
     return await this.alphabetService.update(id, updateAlphabetDto, file);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Alphabet>> {
     return await this.alphabetService.delete(id);
