@@ -61,7 +61,6 @@ export class LessonService implements ILessonService {
       size: file.size,
       duration, // Video davomiyligini saqlash
     });
-    console.log('duration_______', duration);
 
     const savedLesson = await this.lessonRepository.create(newLesson);
 
