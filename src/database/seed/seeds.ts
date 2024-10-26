@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { connectionSource } from "src/common/config/database.config";
-import { GenderEnum, RoleEnum } from "src/common/enums/enum";
-import { hashed } from "src/lib/bcrypt";
-import { User } from "src/modules/user/entities/user.entity";
-import { createConnection, DataSource } from "typeorm";
-=======
 import { connectionSource } from 'src/common/config/database.config';
 import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
 import { hashed } from 'src/lib/bcrypt';
@@ -16,7 +9,6 @@ import { Lesson } from 'src/modules/lesson/entities/lesson.entity';
 import { Tariff } from 'src/modules/tariff/entities/tariff.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { createConnection, DataSource } from 'typeorm';
->>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
 
 (async () => {
   const connection: DataSource = await createConnection(connectionSource);
@@ -31,19 +23,6 @@ import { createConnection, DataSource } from 'typeorm';
     const userRepository = queryRunner.manager.getRepository(User);
     const users = await userRepository.find();
     await userRepository.remove(users);
-<<<<<<< HEAD
-    const newUser = new User();
-    (newUser.firstName = "Ilyosbek"),
-      (newUser.lastName = "Isaqov"),
-      (newUser.phoneNumber = "+998335701001"),
-      (newUser.role = RoleEnum.DIRECTOR),
-      (newUser.gender = GenderEnum.MALE),
-      (newUser.password = await hashed("password"));
-    await userRepository.save<User>(newUser);
-    await queryRunner.commitTransaction();
-  } catch (err) {
-    console.log("error", err);
-=======
 
     const courseRepository = queryRunner.manager.getRepository(Course);
     const courses = await courseRepository.find();
@@ -941,7 +920,6 @@ import { createConnection, DataSource } from 'typeorm';
     await queryRunner.commitTransaction();
   } catch (err) {
     console.log('error', err);
->>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
