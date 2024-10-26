@@ -11,7 +11,6 @@ import {
 } from './exception/course.exception';
 import { IFileService } from '../file/interfaces/file.service';
 import { Course } from './entities/course.entity';
-import { VimeoService } from '../lesson/vimeo.service';
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -22,7 +21,6 @@ export class CourseService implements ICourseService {
     @Inject("IFileService")
     private readonly fileService: IFileService,
 
-    private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
   async create(

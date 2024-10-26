@@ -16,12 +16,6 @@ export class Block extends BaseEntity {
   @JoinColumn({ name: "course_id" })
   course: Course; // Kurs bilan bog'liq
 
-<<<<<<< HEAD
-  @Column({ name: "course_id", type: "int", nullable: false }) // Qo'shiladigan ustun
-  courseId: number; // Bu yerda `courseId` qo'shiladi
-
-=======
->>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
   @OneToMany(() => Homework, (homework) => homework.block)
   homeworks: Homework[];
 

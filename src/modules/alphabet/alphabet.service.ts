@@ -1,133 +1,3 @@
-<<<<<<< HEAD
-import { Inject, Injectable } from "@nestjs/common";
-import { CreateAlphabetDto } from "./dto/create-alphabet.dto";
-import { UpdateAlphabetDto } from "./dto/update-alphabet.dto";
-import { Alphabet } from "./entities/alphabet.entity";
-import { IAlphabetRepository } from "./interfaces/alphabet.repository";
-import { ResData } from "../../lib/resData";
-import { ID } from "../../common/types/type";
-import { IAlphabetService } from "./interfaces/alphabet.service";
-import {
-  AlphabetAlreadyExistException,
-  AlphabetNotFoundException,
-} from "./exception/alphabet.exception";
-import { VimeoService } from "../lesson/vimeo.service";
-
-@Injectable()
-export class AlphabetService implements IAlphabetService {
-  constructor(
-    @Inject("IAlphabetRepository")
-    private readonly alphabetRepository: IAlphabetRepository,
-    private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
-
-  async create(
-    dto: CreateAlphabetDto,
-    file: Express.Multer.File,
-  ): Promise<ResData<Alphabet>> {
-    const foundData = await this.alphabetRepository.findOneByOrder(dto.order);
-    if (foundData) {
-      throw new AlphabetAlreadyExistException();
-    }
-
-    // video_url ni yuklanadigan video faylning URL ga aylantirish
-    const videoUrl = await this.vimeoService.uploadVideo(
-      file.buffer, // Faylni buffer orqali yuklash
-      dto.title,
-      "Alifbo videosi",
-      file.size, // Faylning o'lchamini olish
-    );
-
-    const newAlphabet = new Alphabet();
-    Object.assign(newAlphabet, {
-      ...dto,
-      video_url: videoUrl,
-      mimetype: file.mimetype,
-      size: file.size,
-    });
-
-    const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
-
-    return new ResData<Alphabet>(
-      "Alifbo muvaffaqiyatli yaratildi",
-      201,
-      savedAlphabet,
-    );
-  }
-
-  async findAll(): Promise<ResData<Array<Alphabet>>> {
-    const data = await this.alphabetRepository.findAll();
-    return new ResData<Array<Alphabet>>("ok", 200, data);
-  }
-
-  async findOneById(id: ID): Promise<ResData<Alphabet>> {
-    const foundData = await this.alphabetRepository.findById(id);
-    if (!foundData) {
-      throw new AlphabetNotFoundException();
-    }
-
-    return new ResData<Alphabet>("ok", 200, foundData);
-  }
-
-  async getAlphabetsByCourseId(courseId: ID): Promise<ResData<Alphabet[]>> {
-    const alphabets =
-      await this.alphabetRepository.getAlphabetsByCourseId(courseId);
-    return new ResData<Alphabet[]>(
-      "Alphabets by courseId fetched successfully",
-      200,
-      alphabets,
-    );
-  }
-
-  async update(
-    id: ID,
-    dto: UpdateAlphabetDto,
-    file?: Express.Multer.File,
-  ): Promise<ResData<Alphabet>> {
-    const { data: foundData } = await this.findOneById(id);
-
-    // Agar fayl bo'lsa, video URL'ini yangilaydi
-    if (file) {
-      // Yangi video faylni yuklaydi
-      const videoUrl = await this.vimeoService.uploadVideo(
-        file.buffer,
-        dto.title || foundData.title,
-        "Alifbo videosi",
-        file.size,
-      );
-
-      // Eski videoning ma'lumotlarini yangilaydi
-      foundData.video_url = videoUrl;
-      foundData.mimetype = file.mimetype;
-      foundData.size = file.size;
-    }
-
-    if (dto.order && dto.order !== foundData.order) {
-      const isOrderExist = await this.alphabetRepository.findOneByOrder(
-        dto.order,
-      );
-      if (isOrderExist) {
-        throw new AlphabetAlreadyExistException();
-      }
-    }
-
-    // Boshqa maydonlarni yangilash
-
-    Object.assign(foundData, dto);
-
-    const data = await this.alphabetRepository.update(foundData);
-
-    return new ResData<Alphabet>("Alphabet updated successfully", 200, data);
-  }
-
-  async delete(id: ID): Promise<ResData<Alphabet>> {
-    const { data: foundData } = await this.findOneById(id);
-    const data = await this.alphabetRepository.delete(foundData);
-
-    return new ResData<Alphabet>("Alphabet deleted successfully", 200, data);
-  }
-}
-=======
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateAlphabetDto } from './dto/create-alphabet.dto';
 import { UpdateAlphabetDto } from './dto/update-alphabet.dto';
@@ -136,13 +6,10 @@ import { IAlphabetRepository } from './interfaces/alphabet.repository';
 import { ResData } from '../../lib/resData';
 import { ID } from '../../common/types/type';
 import { IAlphabetService } from './interfaces/alphabet.service';
-import {
-  AlphabetAlreadyExistException,
-  AlphabetNotFoundException,
-} from './exception/alphabet.exception';
 import { VimeoService } from '../lesson/vimeo.service';
 import { ICourseRepository } from '../course/interfaces/course.repository';
 import { CourseNotFoundException } from '../course/exception/course.exception';
+import { AlphabetOrderAlreadyExistException } from './exception/alphabet.exception';
 
 @Injectable()
 export class AlphabetService implements IAlphabetService {
@@ -172,7 +39,7 @@ export class AlphabetService implements IAlphabetService {
     );
 
     if (orderExist) {
-      throw new AlphabetAlreadyExistException();
+      throw new AlphabetOrderAlreadyExistException();
     }
 
     // video_url ni yuklanadigan video faylning URL ga aylantirish
@@ -193,7 +60,6 @@ export class AlphabetService implements IAlphabetService {
       size: file.size,
     });
 
-    
     const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
 
     return new ResData<Alphabet>(
@@ -211,7 +77,7 @@ export class AlphabetService implements IAlphabetService {
   async findOneById(id: ID): Promise<ResData<Alphabet>> {
     const foundData = await this.alphabetRepository.findById(id);
     if (!foundData) {
-      throw new AlphabetNotFoundException();
+      throw new AlphabetOrderAlreadyExistException();
     }
 
     return new ResData<Alphabet>('ok', 200, foundData);
@@ -220,6 +86,11 @@ export class AlphabetService implements IAlphabetService {
   async getAlphabetsByCourseId(courseId: ID): Promise<ResData<Alphabet[]>> {
     const alphabets =
       await this.alphabetRepository.getAlphabetsByCourseId(courseId);
+
+    if (alphabets.length === 0) {
+      return new ResData<Alphabet[]>('Not any data yet', 200, []);
+    }
+
     return new ResData<Alphabet[]>(
       'Alphabets by courseId fetched successfully',
       200,
@@ -234,39 +105,48 @@ export class AlphabetService implements IAlphabetService {
   ): Promise<ResData<Alphabet>> {
     const { data: foundData } = await this.findOneById(id);
 
-    const course = await this.courseRepository.findById(dto.courseId);
+    // Order qiymatini raqamga aylantirish va mavjud bo'lsa tekshirish
+    const order =
+      dto.order !== undefined
+        ? parseInt(dto.order.toString(), 10)
+        : foundData.order;
 
-    if (!course) {
-      throw new CourseNotFoundException();
+    if (isNaN(order)) {
+      throw new Error('Order must be a valid number');
     }
+
+    // Order mavjudligini tekshirish
+    if (dto.order !== undefined && order !== foundData.order) {
+      const orderExist = await this.alphabetRepository.findOneByOrder(
+        order,
+        dto.courseId,
+      );
+      if (orderExist) {
+        throw new AlphabetOrderAlreadyExistException();
+      }
+    }
+
+    const updateData = {
+      order, // Order qiymati
+      title: dto.title === '' ? foundData.title : dto.title || undefined,
+      video: dto.video === '' ? undefined : dto.video || foundData.videoUrl,
+    };
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      // Yangi video faylni yuklaydi
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title,
         'Dars videosi',
-        // file.size,
       );
-      // Eski videoning ma'lumotlarini yangilaydi
+
       foundData.videoUrl = videoUrl;
       foundData.duration = duration;
-      foundData.course = course;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    const orderExist = await this.alphabetRepository.findOneByOrder(
-      dto.order,
-      dto.courseId,
-    );
-
-    if (orderExist) {
-      throw new AlphabetAlreadyExistException();
-    }
-
-    Object.assign(foundData, dto);
+    Object.assign(foundData, updateData);
 
     const data = await this.alphabetRepository.update(foundData);
 
@@ -280,4 +160,3 @@ export class AlphabetService implements IAlphabetService {
     return new ResData<Alphabet>('Alphabet deleted successfully', 200, data);
   }
 }
->>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
