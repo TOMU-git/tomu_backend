@@ -1,22 +1,22 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { config } from './common/config/index';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { AllExceptionsFilter } from './lib/AllExceptionFilters';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpAdapterHost, NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { config } from "./common/config/index";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { AllExceptionsFilter } from "./lib/AllExceptionFilters";
+import { ValidationPipe } from "@nestjs/common";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: true, // Allows all domains
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   });
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix("api");
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -27,20 +27,19 @@ async function bootstrap() {
   );
 
   const options = new DocumentBuilder()
-    .setTitle('LMS API Documentation')
-    .setDescription('Description')
-    .setVersion('1.0.0')
-    .addTag('apies')
+    .setTitle("LMS API Documentation")
+    .setDescription("Description")
+    .setVersion("1.0.0")
+    .addTag("apies")
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document, {
+  SwaggerModule.setup("docs", app, document, {
     swaggerOptions: {
       persistAuthorization: true, // Avtorizatsiyani saqlab qoladi
     },
   });
-
 
   await app.listen(config.port, () => {
     console.log(`http://localhost:${config.port}`);

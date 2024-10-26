@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Alphabet } from '../entities/alphabet.entity';
+import { ID } from "src/common/types/type";
+import { Alphabet } from "../entities/alphabet.entity";
 
 export interface IAlphabetRepository {
   create(dto: Alphabet): Promise<Alphabet>;

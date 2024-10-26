@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { Block } from '../entities/block.entity';
-import { CreateBlockDto } from '../dto/create-block.dto';
-import { UpdateBlockDto } from '../dto/update-block.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { Block } from "../entities/block.entity";
+import { CreateBlockDto } from "../dto/create-block.dto";
+import { UpdateBlockDto } from "../dto/update-block.dto";
 
 export interface IBlockService {
   create(dto: CreateBlockDto): Promise<ResData<Block>>;

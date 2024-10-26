@@ -1,7 +1,7 @@
-import { ResData } from 'src/lib/resData';
-import { UserTariff } from '../entities/user-tariff.entity';
-import { UpdateUserTariffDto } from '../dto/update-user-tariff.dto';
-import { CreateUserTariffDto } from '../dto/create-user-tariff.dto';
+import { ResData } from "src/lib/resData";
+import { UserTariff } from "../entities/user-tariff.entity";
+import { UpdateUserTariffDto } from "../dto/update-user-tariff.dto";
+import { CreateUserTariffDto } from "../dto/create-user-tariff.dto";
 
 export interface IUserTariffService {
   create(

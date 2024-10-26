@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class LoginAuthDto {
   @ApiProperty({ type: String })
@@ -18,4 +18,35 @@ export class AccessAuthDto {
   @IsString()
   @IsNotEmpty()
   accessToken: string;
+}
+
+export class VerifyDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: "123456",
+  })
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: "+998901234567",
+  })
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+}
+
+export class SentSmsDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: "+998901234567",
+  })
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
 }

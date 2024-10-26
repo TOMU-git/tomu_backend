@@ -1,22 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateBlockDto } from './dto/create-block.dto';
-import { UpdateBlockDto } from './dto/update-block.dto';
-import { Block } from './entities/block.entity';
-import { IBlockRepository } from './interfaces/block.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { IBlockService } from './interfaces/block.service';
-import { CourseNotFoundException } from '../course/exception/course.exception';
-import { ICourseRepository } from '../course/interfaces/course.repository';
-import { BlockNotFoundException } from './exception/block.exception';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateBlockDto } from "./dto/create-block.dto";
+import { UpdateBlockDto } from "./dto/update-block.dto";
+import { Block } from "./entities/block.entity";
+import { IBlockRepository } from "./interfaces/block.repository";
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { IBlockService } from "./interfaces/block.service";
+import { CourseNotFoundException } from "../course/exception/course.exception";
+import { ICourseRepository } from "../course/interfaces/course.repository";
+import { BlockNotFoundException } from "./exception/block.exception";
 
 @Injectable()
 export class BlockService implements IBlockService {
   constructor(
-    @Inject('IBlockRepository')
+    @Inject("IBlockRepository")
     private readonly blockRepository: IBlockRepository,
 
-    @Inject('ICourseRepository')
+    @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
   ) {}
 
@@ -35,17 +35,17 @@ export class BlockService implements IBlockService {
     newBlock.course = course;
 
     const newData = await this.blockRepository.create(newBlock);
-    return new ResData<Block>('Block created successfully', 201, newData);
+    return new ResData<Block>("Block created successfully", 201, newData);
   }
 
   async findAll(): Promise<ResData<Block[]>> {
     const data = await this.blockRepository.findAll();
 
     if (data.length === 0) {
-      return new ResData<Block[]>('Not any course yet', 200, data);
+      return new ResData<Block[]>("Not any course yet", 200, data);
     }
 
-    return new ResData<Block[]>('Blocks retrieved successfully', 200, data);
+    return new ResData<Block[]>("Blocks retrieved successfully", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Block>> {
@@ -53,7 +53,7 @@ export class BlockService implements IBlockService {
     if (!foundBlock) {
       throw new BlockNotFoundException();
     }
-    return new ResData<Block>('Block found', 200, foundBlock);
+    return new ResData<Block>("Block found", 200, foundBlock);
   }
 
   async getBlocksByCourseId(courseId: number): Promise<Block[]> {
@@ -79,7 +79,7 @@ export class BlockService implements IBlockService {
     block.title = updateBlockDto.title;
 
     const updatedData = await this.blockRepository.update(block);
-    return new ResData<Block>('Block updated successfully', 200, updatedData);
+    return new ResData<Block>("Block updated successfully", 200, updatedData);
   }
 
   async delete(id: ID): Promise<ResData<Block>> {
@@ -88,6 +88,6 @@ export class BlockService implements IBlockService {
       throw new BlockNotFoundException();
     }
     await this.blockRepository.delete(block);
-    return new ResData<Block>('Block deleted successfully', 200, block);
+    return new ResData<Block>("Block deleted successfully", 200, block);
   }
 }

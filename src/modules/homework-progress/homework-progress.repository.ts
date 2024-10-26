@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { HomeworkProgress } from './entities/homework-progress.entity';
-import { IHomeworkProgressRepository } from './interfaces/homework-progress.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { HomeworkProgress } from "./entities/homework-progress.entity";
+import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
 
 @Injectable()
 export class HomeworkProgressRepository implements IHomeworkProgressRepository {
@@ -13,7 +13,8 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   ) {}
 
   async create(dto: HomeworkProgress): Promise<HomeworkProgress> {
-    const newHomeworkProgress = await this.homeworkProgressRepository.create(dto);
+    const newHomeworkProgress =
+      await this.homeworkProgressRepository.create(dto);
     await this.homeworkProgressRepository.save(newHomeworkProgress);
     return newHomeworkProgress;
   }
@@ -27,7 +28,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
         user: { id: userId },
         homework: { id: homeworkId },
       },
-      relations: ['user', 'homework'],
+      relations: ["user", "homework"],
     });
   }
 

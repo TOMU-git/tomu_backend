@@ -1,4 +1,4 @@
-import { Tariff } from '../entities/tariff.entity';
+import { Tariff } from "../entities/tariff.entity";
 
 export interface ITariffRepository {
   insert(entity: Tariff): Promise<Tariff>;

@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, NotEquals } from 'class-validator';
-import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { GenderEnum, RoleEnum } from "src/common/enums/enum";
 
 export class UpdateUserDto {
   @ApiProperty({ type: String })

@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Lesson } from '../entities/lesson.entity';
+import { ID } from "src/common/types/type";
+import { Lesson } from "../entities/lesson.entity";
 
 export interface ILessonRepository {
   create(dto: Lesson): Promise<Lesson>;

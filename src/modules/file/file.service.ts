@@ -1,15 +1,15 @@
-import { existsSync, unlink } from 'fs';
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateFileDto } from './dto/create-file.dto';
-import { File } from './entities/file.entity';
-import { ResData } from 'src/lib/resData';
-import { IFileRepository } from './interfaces/file.repository';
-import { FileNotFoundException } from './exception/file.exception';
+import { existsSync, unlink } from "fs";
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateFileDto } from "./dto/create-file.dto";
+import { File } from "./entities/file.entity";
+import { ResData } from "src/lib/resData";
+import { IFileRepository } from "./interfaces/file.repository";
+import { FileNotFoundException } from "./exception/file.exception";
 
 @Injectable()
 export class FileService {
   constructor(
-    @Inject('IFileRepository') private readonly fileRepository: IFileRepository,
+    @Inject("IFileRepository") private readonly fileRepository: IFileRepository,
   ) {}
 
   async create(createFileDto: Express.Multer.File) {
@@ -17,14 +17,14 @@ export class FileService {
     created.mimetype = createFileDto.mimetype;
     created.originalname = createFileDto.originalname;
     created.size = createFileDto.size;
-    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`
+    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`;
     const newData = await this.fileRepository.create(created);
-    return new ResData<File>('File was created successfully', 201, newData);
+    return new ResData<File>("File was created successfully", 201, newData);
   }
 
   async findAll() {
     const data = await this.fileRepository.findAll();
-    return new ResData<Array<File>>('ok', 200, data);
+    return new ResData<Array<File>>("ok", 200, data);
   }
 
   async findOneById(id: number) {
@@ -32,7 +32,7 @@ export class FileService {
     if (!foundData) {
       throw new FileNotFoundException();
     }
-    return new ResData<File>('ok', 200, foundData);
+    return new ResData<File>("ok", 200, foundData);
   }
 
   async findByImageUrl(imageUrl: string): Promise<File | null> {
@@ -40,7 +40,7 @@ export class FileService {
     console.log(imageUrl);
     console.log(foundFile);
     if (!foundFile) {
-      console.log('work here');
+      console.log("work here");
       throw new FileNotFoundException();
     }
     return foundFile;
@@ -84,7 +84,7 @@ export class FileService {
       }
     }
 
-    return new ResData('success', 200, data);
+    return new ResData("success", 200, data);
   }
 
   private unlinkFile(filePath: string): Promise<void> {

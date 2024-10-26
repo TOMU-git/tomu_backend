@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { HomePage } from '../entities/home-page.entity';
+import { ID } from "src/common/types/type";
+import { HomePage } from "../entities/home-page.entity";
 
 export interface IHomePageRepository {
   create(dto: HomePage): Promise<HomePage>;

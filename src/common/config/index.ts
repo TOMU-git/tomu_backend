@@ -1,5 +1,5 @@
-import { IConfig } from '../interfaces/interface';
-import * as dotenv from 'dotenv';
+import { IConfig } from "../interfaces/interface";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 export const config: IConfig = {
@@ -16,4 +16,5 @@ export const config: IConfig = {
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRATION,
   databaseUrl: process.env.DB_URL,
   token: process.env.TELEGRAM_BOT_TOKEN,
+  smsApiUrl: process.env.SMS_API_URL,
 };

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateUserTariffDto {
   @ApiProperty({ type: Number })

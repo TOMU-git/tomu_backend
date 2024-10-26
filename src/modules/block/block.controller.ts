@@ -8,22 +8,22 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
-} from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { CreateBlockDto } from './dto/create-block.dto';
-import { UpdateBlockDto } from './dto/update-block.dto';
-import { ResData } from 'src/lib/resData';
-import { Block } from './entities/block.entity';
-import { IBlockService } from './interfaces/block.service';
-import { ApiTags } from '@nestjs/swagger';
-import { RoleEnum } from 'src/common/enums/enum';
-import { Auth } from 'src/common/decorator/auth.decorator';
+} from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { CreateBlockDto } from "./dto/create-block.dto";
+import { UpdateBlockDto } from "./dto/update-block.dto";
+import { ResData } from "src/lib/resData";
+import { Block } from "./entities/block.entity";
+import { IBlockService } from "./interfaces/block.service";
+import { ApiTags } from "@nestjs/swagger";
+import { RoleEnum } from "src/common/enums/enum";
+import { Auth } from "src/common/decorator/auth.decorator";
 
-@ApiTags('block')
-@Controller('block')
+@ApiTags("block")
+@Controller("block")
 export class BlockController {
   constructor(
-    @Inject('IBlockService')
+    @Inject("IBlockService")
     private readonly blockService: IBlockService,
   ) {}
 
@@ -40,30 +40,30 @@ export class BlockController {
     return await this.blockService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Block>> {
+  @Get(":id")
+  async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Block>> {
     return await this.blockService.findOneById(id);
   }
 
-  @Get('/course/:courseId')
+  @Get("/course/:courseId")
   async getBlocksByCourseId(
-    @Param('courseId', ParseIntPipe) courseId: ID,
+    @Param("courseId", ParseIntPipe) courseId: ID,
   ): Promise<Block[]> {
     return this.blockService.getBlocksByCourseId(courseId);
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Patch(':id')
+  @Patch(":id")
   async update(
-    @Param('id', ParseIntPipe) id: ID,
+    @Param("id", ParseIntPipe) id: ID,
     @Body() updateBlockDto: UpdateBlockDto,
   ): Promise<ResData<Block>> {
     return await this.blockService.update(id, updateBlockDto);
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Block>> {
+  @Delete(":id")
+  async remove(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Block>> {
     return await this.blockService.delete(id);
   }
 }

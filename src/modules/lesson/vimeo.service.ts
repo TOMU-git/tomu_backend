@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Vimeo } from 'vimeo';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Injectable } from "@nestjs/common";
+import { Vimeo } from "vimeo";
+import * as fs from "fs";
+import * as path from "path";
 
 @Injectable()
 export class VimeoService {
@@ -23,7 +23,7 @@ export class VimeoService {
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       // Vaqtinchalik fayl nomini yarating
-      const tempFilePath = path.join(__dirname, 'temp_video.mp4');
+      const tempFilePath = path.join(__dirname, "temp_video.mp4");
 
       // Bufferni vaqtinchalik faylga yozing
       fs.writeFile(tempFilePath, fileBuffer, async (err) => {
@@ -39,11 +39,11 @@ export class VimeoService {
             description: description,
           },
           (uri) => {
-            const videoId = uri.split('/').pop();
+            const videoId = uri.split("/").pop();
             const videoUrl = `https://player.vimeo.com/video/${videoId}`;
             // Vaqtinchalik faylni o'chirish
             fs.unlink(tempFilePath, (err) => {
-              if (err) console.error('Error deleting temp file', err);
+              if (err) console.error("Error deleting temp file", err);
             });
             resolve(videoUrl);
           },

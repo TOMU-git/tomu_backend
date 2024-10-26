@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { ILessonRepository } from './interfaces/lesson.repository';
-import { Lesson } from './entities/lesson.entity';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Repository } from "typeorm";
+import { ILessonRepository } from "./interfaces/lesson.repository";
+import { Lesson } from "./entities/lesson.entity";
 
 @Injectable()
 export class LessonRepository implements ILessonRepository {
@@ -20,17 +20,17 @@ export class LessonRepository implements ILessonRepository {
 
   async findAll(): Promise<Array<Lesson>> {
     return await this.lessonRepository.find({
-      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+      order: { order: "ASC" }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
     });
   }
 
   async findVideosTen(id: number): Promise<Lesson[]> {
     return await this.lessonRepository
-      .createQueryBuilder('lessons')
-      .where({blockId: id}) 
-      .orderBy('lessons.order', 'ASC')
+      .createQueryBuilder("lessons")
+      .where({ blockId: id })
+      .orderBy("lessons.order", "ASC")
       .limit(10)
-      .getMany()
+      .getMany();
   }
 
   async findByIds(ids: number[]): Promise<Lesson[]> {
@@ -40,7 +40,7 @@ export class LessonRepository implements ILessonRepository {
   async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
       where: { block: { id: blockId } },
-      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
+      order: { order: "ASC" }, // `order` maydoni bo'yicha tartiblash
     });
   }
   async update(entity: Lesson): Promise<Lesson> {

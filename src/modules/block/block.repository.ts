@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Block } from './entities/block.entity';
-import { IBlockRepository } from './interfaces/block.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Block } from "./entities/block.entity";
+import { IBlockRepository } from "./interfaces/block.repository";
 
 @Injectable()
 export class BlockRepository implements IBlockRepository {
@@ -41,7 +41,7 @@ export class BlockRepository implements IBlockRepository {
   async getBlocksByCourseId(courseId: number): Promise<Block[]> {
     return this.blockRepository.find({
       where: { course: { id: courseId } },
-      relations: ['course'],
+      relations: ["course"],
     });
   }
 }

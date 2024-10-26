@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Alphabet } from './entities/alphabet.entity';
-import { IAlphabetRepository } from './interfaces/alphabet.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Alphabet } from "./entities/alphabet.entity";
+import { IAlphabetRepository } from "./interfaces/alphabet.repository";
 
 @Injectable()
 export class AlphabetRepository implements IAlphabetRepository {
@@ -21,7 +21,7 @@ export class AlphabetRepository implements IAlphabetRepository {
   async findAll(): Promise<Array<Alphabet>> {
     // `order` maydoni bo'yicha oshib boruvchi tartibda qaytarish
     return await this.alphabetRepository.find({
-      order: { order: 'ASC' }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
+      order: { order: "ASC" }, // Bu yerda 'ASC' oshib boruvchi tartibni bildiradi
     });
   }
 
@@ -44,7 +44,7 @@ export class AlphabetRepository implements IAlphabetRepository {
   async getAlphabetsByCourseId(courseId: ID): Promise<Alphabet[]> {
     return await this.alphabetRepository.find({
       where: { course: { id: courseId } },
-      order: { order: 'ASC' }, // `order` maydoni bo'yicha tartiblash
+      order: { order: "ASC" }, // `order` maydoni bo'yicha tartiblash
     });
   }
 }

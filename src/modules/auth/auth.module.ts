@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UserModule } from '../user/user.module';
-import { JwtModule } from '@nestjs/jwt';
-import { config } from 'src/common/config';
+import { Module } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { AuthController } from "./auth.controller";
+import { UserModule } from "../user/user.module";
+import { JwtModule } from "@nestjs/jwt";
+import { config } from "src/common/config";
+import { SmsService } from "src/lib/smsService";
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { config } from 'src/common/config';
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, SmsService],
 })
 export class AuthModule {}

@@ -6,52 +6,62 @@ import {
   Inject,
   Res,
   Query,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateAdminTeacherDto, CreateStudentDto } from '../user/dto/create-users.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
-import { PhoneNumberAlreadyExist } from './exception/auth.exception';
-import { AccessAuthDto, LoginAuthDto } from './dto/auth.dto';
-import { IUserService } from '../user/interfaces/user.service';
-import { Auth } from 'src/common/decorator/auth.decorator';
-import { RoleEnum } from 'src/common/enums/enum';
+} from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import {
+  CreateAdminTeacherDto,
+  CreateStudentDto,
+} from "../user/dto/create-users.dto";
+import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { Response } from "express";
+import { PhoneNumberAlreadyExist } from "./exception/auth.exception";
+import {
+  AccessAuthDto,
+  LoginAuthDto,
+  SentSmsDto,
+  VerifyDto,
+} from "./dto/auth.dto";
+import { IUserService } from "../user/interfaces/user.service";
+import { Auth } from "src/common/decorator/auth.decorator";
+import { RoleEnum } from "src/common/enums/enum";
 
-@ApiTags('auth')
-@Controller('auth')
+@ApiTags("auth")
+@Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    @Inject('IUserService') private readonly userService: IUserService,
+    @Inject("IUserService") private readonly userService: IUserService,
   ) {}
   // **** Login for all users **** //
 
-  @ApiOperation({ summary: "Log In user or admin by phone number and password" })
-  @Post('sign-in/users')
+  @ApiOperation({
+    summary: "Log In user or admin by phone number and password",
+  })
+  @Post("sign-in/users")
   async login(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
     const found = await this.authService.login(loginDto, res);
-    res.send(found)
+    res.send(found);
   }
 
   // **** Access validation **** //
 
-  @Post('current')
-  async access(@Body() accessDto: AccessAuthDto){
-    return await this.authService.access(accessDto)
+  @Post("current")
+  async access(@Body() accessDto: AccessAuthDto) {
+    return await this.authService.access(accessDto);
   }
-  
+
   // **** Regenerate the refresh token **** //
 
   @ApiQuery({
-    name: 'refresh_token',
+    name: "refresh_token",
     required: false,
     type: String,
-    description: 'For regenerating the refresh token'
+    description: "For regenerating the refresh token",
   })
-  @Get('refresh')
+  @Get("refresh")
   async refresh(
-    @Query('refresh_token')  refreshToken: string,
-    @Res() res: Response
+    @Query("refresh_token") refreshToken: string,
+    @Res() res: Response,
   ) {
     const refreshed = await this.authService.refreshToken(refreshToken, res);
     res.send(refreshed);
@@ -59,26 +69,49 @@ export class AuthController {
 
   // **** Register for students **** //
 
-  @Post('register/students')
-  async registerStudent(@Body() studentCreateDto: CreateStudentDto, @Res() res: Response) {
+  @Post("register/students")
+  async registerStudent(
+    @Body() studentCreateDto: CreateStudentDto,
+    @Res() res: Response,
+  ) {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      studentCreateDto.phoneNumber
+      studentCreateDto.phoneNumber,
     );
 
     if (foundUser) {
       throw new PhoneNumberAlreadyExist();
     }
-    const createdUser = await this.authService.createStudent(studentCreateDto, res);
+    const createdUser = await this.authService.createStudent(
+      studentCreateDto,
+      res,
+    );
     res.send(createdUser);
   }
-  
+
+  // **** Verifying code **** //
+
+  @Post("verify-code")
+  async VerifaySmsCode(@Body() verifayCode: VerifyDto) {
+    return await this.authService.verifay(verifayCode);
+  }
+
+  // **** Sending sms to user **** //
+
+  @Post("send-sms")
+  async SentSms(@Body() sentSms: SentSmsDto) {
+    return await this.authService.sentSms(sentSms);
+  }
+
   // **** Register for admins and teachers **** //
 
   @Auth(RoleEnum.DIRECTOR)
-  @Post('register/admin')
-  async registerAdmin(@Body() adminCreateDto: CreateAdminTeacherDto, @Res() res: Response){
+  @Post("register/admin")
+  async registerAdmin(
+    @Body() adminCreateDto: CreateAdminTeacherDto,
+    @Res() res: Response,
+  ) {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      adminCreateDto.phoneNumber
+      adminCreateDto.phoneNumber,
     );
 
     if (foundUser) {
@@ -91,18 +124,22 @@ export class AuthController {
   // **** Create teacher **** //
 
   @Auth(RoleEnum.ADMIN)
-  @Post('register/teacher')
-  async registerTeacher(@Body() teacherCreateDto: CreateAdminTeacherDto, @Res() res: Response){
+  @Post("register/teacher")
+  async registerTeacher(
+    @Body() teacherCreateDto: CreateAdminTeacherDto,
+    @Res() res: Response,
+  ) {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      teacherCreateDto.phoneNumber
+      teacherCreateDto.phoneNumber,
     );
 
     if (foundUser) {
       throw new PhoneNumberAlreadyExist();
     }
-    const createdUser = await this.authService.createTeacher(teacherCreateDto, res);
+    const createdUser = await this.authService.createTeacher(
+      teacherCreateDto,
+      res,
+    );
     res.send(createdUser);
   }
-  }
-
-
+}

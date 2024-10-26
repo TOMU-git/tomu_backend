@@ -1,25 +1,25 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
-import { ICourseRepository } from './interfaces/course.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { ICourseService } from './interfaces/course.service';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateCourseDto } from "./dto/create-course.dto";
+import { UpdateCourseDto } from "./dto/update-course.dto";
+import { ICourseRepository } from "./interfaces/course.repository";
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { ICourseService } from "./interfaces/course.service";
 import {
   CourseAlreadyExistException,
   CourseNotFoundException,
-} from './exception/course.exception';
-import { IFileService } from '../file/interfaces/file.service';
-import { CreateFileDto } from '../file/dto/create-file.dto';
-import { Course } from './entities/course.entity';
+} from "./exception/course.exception";
+import { IFileService } from "../file/interfaces/file.service";
+import { CreateFileDto } from "../file/dto/create-file.dto";
+import { Course } from "./entities/course.entity";
 
 @Injectable()
 export class CourseService implements ICourseService {
   constructor(
-    @Inject('ICourseRepository')
+    @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
 
-    @Inject('IFileService')
+    @Inject("IFileService")
     private readonly fileService: IFileService,
   ) {}
 
@@ -45,13 +45,13 @@ export class CourseService implements ICourseService {
     }
 
     const newData = await this.courseRepository.create(newCourse);
-    return new ResData<Course>('Course created successfully', 201, newData);
+    return new ResData<Course>("Course created successfully", 201, newData);
   }
 
   async findAll(): Promise<ResData<Array<Course>>> {
     const data = await this.courseRepository.findAll();
 
-    return new ResData<Array<Course>>('ok', 200, data);
+    return new ResData<Array<Course>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Course>> {
@@ -60,7 +60,7 @@ export class CourseService implements ICourseService {
       throw new CourseNotFoundException();
     }
 
-    return new ResData<Course>('ok', 200, foundData);
+    return new ResData<Course>("ok", 200, foundData);
   }
 
   async update(
@@ -77,10 +77,10 @@ export class CourseService implements ICourseService {
           foundData.imageUrl,
         );
         if (!removeResult) {
-          console.log('Fayl topilmadi yoki o‘chirilmadi.');
+          console.log("Fayl topilmadi yoki o‘chirilmadi.");
         }
       } catch (error) {
-        console.error('Faylni o‘chirishda xatolik yuz berdi:', error);
+        console.error("Faylni o‘chirishda xatolik yuz berdi:", error);
       }
     }
 
@@ -98,7 +98,7 @@ export class CourseService implements ICourseService {
     // Kursni yangilash
     const data = await this.courseRepository.update(updatedData);
 
-    return new ResData<Course>('Course updated successfully', 200, data);
+    return new ResData<Course>("Course updated successfully", 200, data);
   }
 
   async delete(id: ID): Promise<ResData<Course>> {
@@ -110,6 +110,6 @@ export class CourseService implements ICourseService {
 
     const data = await this.courseRepository.delete(foundData);
 
-    return new ResData<Course>('Course deleted successfully', 200, data);
+    return new ResData<Course>("Course deleted successfully", 200, data);
   }
 }

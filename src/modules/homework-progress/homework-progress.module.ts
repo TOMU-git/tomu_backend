@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { HomeworkProgressService } from './homework-progress.service';
-import { HomeworkProgressController } from './homework-progress.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { HomeworkProgress } from './entities/homework-progress.entity';
-import { SharedModule } from '../shared/shared.module';
-import { HomeworkModule } from '../homework/homework.module';
-import { UserModule } from '../user/user.module';
-import { HomeworkProgressRepository } from './homework-progress.repository';
+import { Module } from "@nestjs/common";
+import { HomeworkProgressService } from "./homework-progress.service";
+import { HomeworkProgressController } from "./homework-progress.controller";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { HomeworkProgress } from "./entities/homework-progress.entity";
+import { SharedModule } from "../shared/shared.module";
+import { HomeworkModule } from "../homework/homework.module";
+import { UserModule } from "../user/user.module";
+import { HomeworkProgressRepository } from "./homework-progress.repository";
 
 @Module({
   imports: [
@@ -17,10 +17,9 @@ import { HomeworkProgressRepository } from './homework-progress.repository';
   ],
   controllers: [HomeworkProgressController],
   providers: [
-    { provide: 'IHomeworkProgressService',
-      useClass: HomeworkProgressService },
+    { provide: "IHomeworkProgressService", useClass: HomeworkProgressService },
     {
-      provide: 'IHomeworkProgressRepository',
+      provide: "IHomeworkProgressRepository",
       useClass: HomeworkProgressRepository,
     },
   ],

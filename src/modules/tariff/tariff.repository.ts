@@ -1,7 +1,7 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { ITariffRepository } from './interface/tariff.repository';
-import { Tariff } from './entities/tariff.entity';
-import { Repository } from 'typeorm';
+import { InjectRepository } from "@nestjs/typeorm";
+import { ITariffRepository } from "./interface/tariff.repository";
+import { Tariff } from "./entities/tariff.entity";
+import { Repository } from "typeorm";
 
 export class TariffRepository implements ITariffRepository {
   constructor(
@@ -12,7 +12,7 @@ export class TariffRepository implements ITariffRepository {
   }
   async findAll(): Promise<Tariff[]> {
     return this.tariffRepository.find({
-      relations: ['course'],
+      relations: ["course"],
     });
   }
 
@@ -41,7 +41,7 @@ export class TariffRepository implements ITariffRepository {
           id: courseId, // `course` obyekti orqali `id` ga murojaat qiling
         },
       },
-      relations: ['course'], // Kurs bilan bog'liqlikni ko'rsatish
+      relations: ["course"], // Kurs bilan bog'liqlikni ko'rsatish
     });
   }
 }

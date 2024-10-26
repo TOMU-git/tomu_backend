@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { IFileRepository } from './interfaces/file.repository';
-import { File } from './entities/file.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { IFileRepository } from "./interfaces/file.repository";
+import { File } from "./entities/file.entity";
 
 @Injectable()
 export class FileRepository implements IFileRepository {

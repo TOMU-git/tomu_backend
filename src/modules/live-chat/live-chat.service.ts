@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLiveChatDto } from './dto/create-live-chat.dto';
-import { UpdateLiveChatDto } from './dto/update-live-chat.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateLiveChatDto } from "./dto/create-live-chat.dto";
+import { UpdateLiveChatDto } from "./dto/update-live-chat.dto";
 
 @Injectable()
 export class LiveChatService {
   async create(createLiveChatDto: CreateLiveChatDto) {
-    return 'This action adds a new liveChat';
+    return "This action adds a new liveChat";
   }
 
   findAll() {

@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { Alphabet } from '../entities/alphabet.entity';
-import { CreateAlphabetDto } from '../dto/create-alphabet.dto';
-import { UpdateAlphabetDto } from '../dto/update-alphabet.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { Alphabet } from "../entities/alphabet.entity";
+import { CreateAlphabetDto } from "../dto/create-alphabet.dto";
+import { UpdateAlphabetDto } from "../dto/update-alphabet.dto";
 
 export interface IAlphabetService {
   create(

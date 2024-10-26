@@ -6,21 +6,21 @@ import {
   Param,
   ParseIntPipe,
   Inject,
-} from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { CreateLessonProgressDto } from './dto/create-lesson-progress.dto';
-import { ResData } from 'src/lib/resData';
-import { LessonProgress } from './entities/lesson-progress.entity';
-import { ILessonProgressService } from './interfaces/lesson-progress.service';
-import { ApiTags } from '@nestjs/swagger';
-import { Auth } from 'src/common/decorator/auth.decorator';
-import { RoleEnum } from 'src/common/enums/enum';
+} from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { CreateLessonProgressDto } from "./dto/create-lesson-progress.dto";
+import { ResData } from "src/lib/resData";
+import { LessonProgress } from "./entities/lesson-progress.entity";
+import { ILessonProgressService } from "./interfaces/lesson-progress.service";
+import { ApiTags } from "@nestjs/swagger";
+import { Auth } from "src/common/decorator/auth.decorator";
+import { RoleEnum } from "src/common/enums/enum";
 
-@ApiTags('lesson-progress')
-@Controller('lesson-progress')
+@ApiTags("lesson-progress")
+@Controller("lesson-progress")
 export class LessonProgressController {
   constructor(
-    @Inject('ILessonProgressService')
+    @Inject("ILessonProgressService")
     private readonly lessonProgressService: ILessonProgressService,
   ) {}
 
@@ -39,9 +39,9 @@ export class LessonProgressController {
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
-  @Get(':id')
+  @Get(":id")
   async findOne(
-    @Param('id', ParseIntPipe) id: ID,
+    @Param("id", ParseIntPipe) id: ID,
   ): Promise<ResData<LessonProgress>> {
     return await this.lessonProgressService.findOneById(id);
   }

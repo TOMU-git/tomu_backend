@@ -1,8 +1,8 @@
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { Request } from 'express';
-import { existsSync, mkdirSync } from 'fs';
-import { diskStorage } from 'multer';
-import { FileException } from 'src/modules/file/exception/file.exception';
+import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { Request } from "express";
+import { existsSync, mkdirSync } from "fs";
+import { diskStorage } from "multer";
+import { FileException } from "src/modules/file/exception/file.exception";
 
 export const fileOption: MulterOptions = {
   limits: {
@@ -14,7 +14,7 @@ export const fileOption: MulterOptions = {
       file: Express.Multer.File,
       cb: (err: Error | null, destination: string) => void,
     ) => {
-      const uploadPath = 'upload';
+      const uploadPath = "upload";
 
       if (!existsSync(uploadPath)) {
         mkdirSync(uploadPath);
@@ -29,8 +29,8 @@ export const fileOption: MulterOptions = {
     ): void => {
       cb(
         null,
-        `${file.mimetype.split('/')[0]}_${Date.now()}.${
-          file.mimetype.split('/')[1]
+        `${file.mimetype.split("/")[0]}_${Date.now()}.${
+          file.mimetype.split("/")[1]
         }`,
       );
     },
@@ -40,9 +40,9 @@ export const fileOption: MulterOptions = {
     file: Express.Multer.File,
     cb: (err: Error | null, acceptfile: boolean) => void,
   ) => {
-    const constFileType = file.mimetype.split('/')[0];
+    const constFileType = file.mimetype.split("/")[0];
 
-    if (constFileType === 'image') {
+    if (constFileType === "image") {
       cb(null, true);
     } else {
       cb(new FileException(constFileType), false);

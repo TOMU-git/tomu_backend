@@ -1,11 +1,11 @@
 // user-course.repository.ts
 
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { IUserCourseRepository } from './interfaces/user-course.repository';
-import { UserCourse } from './entities/user-course.entity';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { IUserCourseRepository } from "./interfaces/user-course.repository";
+import { UserCourse } from "./entities/user-course.entity";
 
 @Injectable()
 export class UserCourseRepository implements IUserCourseRepository {

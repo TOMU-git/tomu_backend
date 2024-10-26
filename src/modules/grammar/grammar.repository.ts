@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Grammar } from './entities/grammar.entity';
-import { IGrammarRepository } from './interfaces/grammar.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Grammar } from "./entities/grammar.entity";
+import { IGrammarRepository } from "./interfaces/grammar.repository";
 
 @Injectable()
 export class GrammarRepository implements IGrammarRepository {

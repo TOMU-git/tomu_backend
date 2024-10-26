@@ -1,11 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MaxLength,
+} from "class-validator";
 
 export class CreateAlphabetDto {
   @ApiProperty({
-    description: 'Alifbo darsining nomi',
-    example: 'Alifbo darsi 1',
+    description: "Alifbo darsining nomi",
+    example: "Alifbo darsi 1",
     maxLength: 255,
   })
   @IsString()
@@ -14,8 +21,8 @@ export class CreateAlphabetDto {
   title: string;
 
   @ApiPropertyOptional({
-    type: 'string',
-    format: 'binary',
+    type: "string",
+    format: "binary",
   })
   @IsOptional()
   video: any; // Fayl yuklash uchun maydon
@@ -30,7 +37,7 @@ export class CreateAlphabetDto {
   order: number;
 
   @ApiProperty({
-    description: 'Dars tegishli bo‘lgan kursning ID raqami.',
+    description: "Dars tegishli bo‘lgan kursning ID raqami.",
     example: 1,
   })
   @IsInt()

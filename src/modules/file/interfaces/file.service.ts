@@ -1,6 +1,6 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { File } from '../entities/file.entity';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { File } from "../entities/file.entity";
 
 export interface IFileService {
   create(dto: Express.Multer.File): Promise<ResData<File>>;

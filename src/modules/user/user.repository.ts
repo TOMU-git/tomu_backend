@@ -1,7 +1,7 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { IUserRepository } from './interfaces/user.repository';
-import { Repository } from 'typeorm';
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "./entities/user.entity";
+import { IUserRepository } from "./interfaces/user.repository";
+import { Repository } from "typeorm";
 
 export class UserRepository implements IUserRepository {
   constructor(
@@ -31,14 +31,14 @@ export class UserRepository implements IUserRepository {
     return await this.userRepository.findOneBy({ phoneNumber });
   }
 
-  // *** Update user by id *** // 
+  // *** Update user by id *** //
 
   async update(entity: User): Promise<User> {
     return await this.userRepository.save(entity);
   }
 
   // *** Delete user by id *** //
-  
+
   async delete(id: number): Promise<User> {
     const foundUser = await this.findOneById(id);
     await this.userRepository.delete({ id });

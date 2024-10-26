@@ -4,23 +4,22 @@ import {
   Inject,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
-import { config } from '../../../common/config/index';
-import { IUserService } from '../../user/interfaces/user.service';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { Request } from "express";
+import { config } from "../../../common/config/index";
+import { IUserService } from "../../user/interfaces/user.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @Inject('IUserService') private readonly userService: IUserService,
+    @Inject("IUserService") private readonly userService: IUserService,
     private jwtService: JwtService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-
 
     if (!token) {
       throw new UnauthorizedException();
@@ -30,10 +29,11 @@ export class AuthGuard implements CanActivate {
         secret: config.jwtSecretKey,
       });
 
+      const { data: foundUser } = await this.userService.findOneById(
+        payload.id,
+      );
 
-      const { data: foundUser } = await this.userService.findOneById(payload.id);
-
-      request['user'] = foundUser;
+      request["user"] = foundUser;
     } catch {
       throw new UnauthorizedException();
     }
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    const [type, token] = request.headers.authorization?.split(" ") ?? [];
+    return type === "Bearer" ? token : undefined;
   }
 }

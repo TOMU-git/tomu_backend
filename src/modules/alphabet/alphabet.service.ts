@@ -1,21 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateAlphabetDto } from './dto/create-alphabet.dto';
-import { UpdateAlphabetDto } from './dto/update-alphabet.dto';
-import { Alphabet } from './entities/alphabet.entity';
-import { IAlphabetRepository } from './interfaces/alphabet.repository';
-import { ResData } from '../../lib/resData';
-import { ID } from '../../common/types/type';
-import { IAlphabetService } from './interfaces/alphabet.service';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateAlphabetDto } from "./dto/create-alphabet.dto";
+import { UpdateAlphabetDto } from "./dto/update-alphabet.dto";
+import { Alphabet } from "./entities/alphabet.entity";
+import { IAlphabetRepository } from "./interfaces/alphabet.repository";
+import { ResData } from "../../lib/resData";
+import { ID } from "../../common/types/type";
+import { IAlphabetService } from "./interfaces/alphabet.service";
 import {
   AlphabetAlreadyExistException,
   AlphabetNotFoundException,
-} from './exception/alphabet.exception';
-import { VimeoService } from '../lesson/vimeo.service';
+} from "./exception/alphabet.exception";
+import { VimeoService } from "../lesson/vimeo.service";
 
 @Injectable()
 export class AlphabetService implements IAlphabetService {
   constructor(
-    @Inject('IAlphabetRepository')
+    @Inject("IAlphabetRepository")
     private readonly alphabetRepository: IAlphabetRepository,
     private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
@@ -33,7 +33,7 @@ export class AlphabetService implements IAlphabetService {
     const videoUrl = await this.vimeoService.uploadVideo(
       file.buffer, // Faylni buffer orqali yuklash
       dto.title,
-      'Alifbo videosi',
+      "Alifbo videosi",
       file.size, // Faylning o'lchamini olish
     );
 
@@ -48,7 +48,7 @@ export class AlphabetService implements IAlphabetService {
     const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
 
     return new ResData<Alphabet>(
-      'Alifbo muvaffaqiyatli yaratildi',
+      "Alifbo muvaffaqiyatli yaratildi",
       201,
       savedAlphabet,
     );
@@ -56,7 +56,7 @@ export class AlphabetService implements IAlphabetService {
 
   async findAll(): Promise<ResData<Array<Alphabet>>> {
     const data = await this.alphabetRepository.findAll();
-    return new ResData<Array<Alphabet>>('ok', 200, data);
+    return new ResData<Array<Alphabet>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Alphabet>> {
@@ -65,14 +65,14 @@ export class AlphabetService implements IAlphabetService {
       throw new AlphabetNotFoundException();
     }
 
-    return new ResData<Alphabet>('ok', 200, foundData);
+    return new ResData<Alphabet>("ok", 200, foundData);
   }
 
   async getAlphabetsByCourseId(courseId: ID): Promise<ResData<Alphabet[]>> {
     const alphabets =
       await this.alphabetRepository.getAlphabetsByCourseId(courseId);
     return new ResData<Alphabet[]>(
-      'Alphabets by courseId fetched successfully',
+      "Alphabets by courseId fetched successfully",
       200,
       alphabets,
     );
@@ -91,7 +91,7 @@ export class AlphabetService implements IAlphabetService {
       const videoUrl = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title || foundData.title,
-        'Alifbo videosi',
+        "Alifbo videosi",
         file.size,
       );
 
@@ -116,13 +116,13 @@ export class AlphabetService implements IAlphabetService {
 
     const data = await this.alphabetRepository.update(foundData);
 
-    return new ResData<Alphabet>('Alphabet updated successfully', 200, data);
+    return new ResData<Alphabet>("Alphabet updated successfully", 200, data);
   }
 
   async delete(id: ID): Promise<ResData<Alphabet>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.alphabetRepository.delete(foundData);
 
-    return new ResData<Alphabet>('Alphabet deleted successfully', 200, data);
+    return new ResData<Alphabet>("Alphabet deleted successfully", 200, data);
   }
 }
