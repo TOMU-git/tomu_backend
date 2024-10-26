@@ -55,7 +55,11 @@ export class LessonRepository implements ILessonRepository {
   }
 
   async findById(id: ID): Promise<Lesson | null> {
-    return await this.lessonRepository.findOneBy({ id });
+    return await this.lessonRepository
+      .createQueryBuilder('lesson')
+      .leftJoinAndSelect('lesson.block', 'block') // block bilan birga yuklash
+      .where('lesson.id = :id', { id })
+      .getOne();
   }
 
   async findOneByName(title: string): Promise<Lesson | null> {

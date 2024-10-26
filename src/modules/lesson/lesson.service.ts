@@ -44,7 +44,7 @@ export class LessonService implements ILessonService {
       throw new LessonOrderAlreadyExistException();
     }
 
-    const block = await this.blockRepository.findById(dto.blockId)
+    const block = await this.blockRepository.findById(dto.blockId);
 
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
@@ -110,34 +110,46 @@ export class LessonService implements ILessonService {
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
 
-    const orderExist = await this.lessonRepository.findOneByOrder(
-      dto.order,
-      dto.blockId,
-    );
+    if(dto.blockId){
+      const block = await this.blockRepository.findById(dto.blockId);
+      foundData.block = block
+    }
 
-    // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
-    if (orderExist) {
-      throw new LessonOrderAlreadyExistException();
+    const updateData = {
+      order: dto.order ? parseInt(dto.order.toString(), 10) : foundData.order,
+      title: dto.title === '' ? foundData.title : dto.title || undefined, // Bo'sh bo'lsa, undefined ga o'zgartirish
+      video: dto.video === '' ? undefined : dto.video || foundData.videoUrl, // Bo'sh bo'lsa, undefined ga o'zgartirish
+    };
+
+    // Faqat order o'zgartirilgan bo'lsa, tekshirish
+    if (updateData.order && updateData.order !== foundData.order) {
+      const orderExist = await this.lessonRepository.findOneByOrder(
+        updateData.order,
+        dto.blockId,
+      );
+
+      // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+      if (orderExist) {
+        throw new LessonOrderAlreadyExistException();
+      }
     }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      // Yangi video faylni yuklaydi
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
-        dto.title,
+        dto.title || foundData.title, // Title ni videoni yuklashda ishlatish
         'Dars videosi',
-        // file.size,
       );
 
-      // Eski videoning ma'lumotlarini yangilaydi
       foundData.videoUrl = videoUrl;
+      foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
     // Boshqa maydonlarni yangilash
-    Object.assign(foundData, dto);
+    Object.assign(foundData, updateData);
 
     const data = await this.lessonRepository.update(foundData);
 
