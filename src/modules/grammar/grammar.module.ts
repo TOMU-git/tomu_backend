@@ -6,11 +6,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { GrammarRepository } from "./grammar.repository";
 import { SharedModule } from "../shared/shared.module";
 import { CourseModule } from '../course/course.module';
+import { VimeoService } from "../lesson/vimeo.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Grammar]), SharedModule, CourseModule],
   controllers: [GrammarController],
   providers: [
+    VimeoService,
     { provide: "IGrammarService", useClass: GrammarService },
     { provide: "IGrammarRepository", useClass: GrammarRepository },
   ],

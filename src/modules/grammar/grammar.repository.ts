@@ -19,7 +19,9 @@ export class GrammarRepository implements IGrammarRepository {
   }
 
   async findAll(): Promise<Array<Grammar>> {
-    return await this.grammarRepository.find();
+    return await this.grammarRepository.find({
+      select: ["id", "title"], // Faqat kerakli maydonlarni tanlang
+    });
   }
 
   async findGrammarsByCourseId(id: number): Promise<Grammar[]> {
@@ -39,9 +41,5 @@ export class GrammarRepository implements IGrammarRepository {
 
   async findById(id: ID): Promise<Grammar | null> {
     return await this.grammarRepository.findOneBy({ id });
-  }
-
-  async findOneByName(title: string): Promise<Grammar | null> {
-    return await this.grammarRepository.findOneBy({ grammarText: title });
   }
 }
