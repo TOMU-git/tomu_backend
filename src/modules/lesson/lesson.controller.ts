@@ -32,7 +32,7 @@ export class LessonController {
     private readonly lessonService: ILessonService,
   ) {}
 
-  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
@@ -71,7 +71,6 @@ export class LessonController {
     return this.lessonService.create(createLessonDto, file); // Yangi darsni yaratish
   }
 
-  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
@@ -88,13 +87,13 @@ export class LessonController {
     return await this.lessonService.findVideos(module_id);
   }
 
-  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Lesson>> {
     return await this.lessonService.findOneById(id);
   }
 
-  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get('by-block/:blockId')
   async getByBlockId(
     @Param('blockId', ParseIntPipe) blockId: number,
