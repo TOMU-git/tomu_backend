@@ -8,9 +8,9 @@ import { ICourseService } from "./interfaces/course.service";
 import {
   CourseAlreadyExistException,
   CourseNotFoundException,
-} from './exception/course.exception';
-import { IFileService } from '../file/interfaces/file.service';
-import { Course } from './entities/course.entity';
+} from "./exception/course.exception";
+import { IFileService } from "../file/interfaces/file.service";
+import { Course } from "./entities/course.entity";
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -20,14 +20,13 @@ export class CourseService implements ICourseService {
 
     @Inject("IFileService")
     private readonly fileService: IFileService,
-
   ) {}
 
   async create(
     dto: CreateCourseDto,
     file?: Express.Multer.File,
   ): Promise<ResData<Course>> {
-    // console.log('service', dto, file, video);
+    // Yangi kurs mavjudligini tekshirish
     const foundData = await this.courseRepository.findOneByName(dto.title);
     if (foundData) {
       throw new CourseAlreadyExistException();
@@ -55,12 +54,14 @@ export class CourseService implements ICourseService {
   }
 
   async findAll(): Promise<ResData<Array<Course>>> {
+    // Barcha kurslarni olish
     const data = await this.courseRepository.findAll();
 
     return new ResData<Array<Course>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Course>> {
+    // ID bo'yicha kursni topish
     const foundData = await this.courseRepository.findById(id);
     if (!foundData) {
       throw new CourseNotFoundException();
@@ -84,10 +85,10 @@ export class CourseService implements ICourseService {
         );
         if (!removeResult) {
           console.log("Fayl topilmadi yoki o‘chirilmadi.");
-
         }
       } catch (error) {
-        console.error("Faylni o‘chirishda xatolik yuz berdi:", error);
+        console.error("Error occurred while deleting the file:", error);
+        throw new Error("An error occurred while deleting the file.");
       }
     }
 
@@ -112,9 +113,15 @@ export class CourseService implements ICourseService {
     const { data: foundData } = await this.findOneById(id);
     // Eski faylni o'chirish agar mavjud bo'lsa
     if (foundData.imageUrl) {
-      await this.fileService.removeByImageUrl(foundData.imageUrl);
+      try {
+        await this.fileService.removeByImageUrl(foundData.imageUrl);
+      } catch (error) {
+        console.error("Error occurred while deleting the file:", error);
+        throw new Error("An error occurred while deleting the file.");
+      }
     }
 
+    // Kursni o'chirish
     const data = await this.courseRepository.delete(foundData);
 
     return new ResData<Course>("Course deleted successfully", 200, data);
