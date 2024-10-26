@@ -1,30 +1,30 @@
-import { IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger"; // Swagger dekoratorini import qilish
+import { IsNotEmpty, IsOptional, IsString, Length, MaxLength } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger"; // Swagger dekoratorini import qilish
+import { Transform } from "class-transformer";
 
 export class CreateGrammarDto {
   @ApiProperty({
-    description: "The title of the grammar", // Swaggerda ko'rsatiladigan tavsif
-    example: "Present Simple Tense", // Misol
+    description: "Darsning sarlavhasi",
+    example: "Ingliz tilida dars",
+    maxLength: 255,
   })
-  @IsNotEmpty({ message: "Title is required" })
-  @IsString({ message: "Title must be a string" })
-  @Length(1, 255, { message: "Title must be between 1 and 255 characters" })
+  @IsString()
+  @MaxLength(255)
   title: string;
 
-  @ApiProperty({
-    description: "The text of the grammar",
-    example:
-      "The present simple tense is used to describe habits and routines.",
+  @ApiPropertyOptional({
+    type: "string",
+    format: "binary",
   })
-  @IsNotEmpty({ message: "Grammar text is required" })
-  @IsString({ message: "Grammar text must be a string" })
-  grammarText: string;
+  @IsOptional()
+  video: any; // Fayl yuklash uchun maydon
 
   @ApiProperty({
     description: "The ID of the associated course, if any",
     example: 1,
     required: false, // Bu maydon ixtiyoriy
   })
+  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   @IsOptional()
   courseId?: number;
 }

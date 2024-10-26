@@ -11,8 +11,9 @@ import {
   GrammarNotFoundException,
   GrammarsNotFoundByCourseId,
 } from "./exception/grammar.exception";
-import { ICourseRepository } from '../course/interfaces/course.repository';
-import { CourseAlreadyExistException } from '../course/exception/course.exception';
+import { ICourseRepository } from "../course/interfaces/course.repository";
+import { CourseNotFoundException } from "../course/exception/course.exception";
+import { VimeoService } from "../lesson/vimeo.service";
 
 @Injectable()
 export class GrammarService implements IGrammarService {
@@ -20,32 +21,50 @@ export class GrammarService implements IGrammarService {
     @Inject("IGrammarRepository")
     private readonly grammarRepository: IGrammarRepository,
 
-    @Inject('ICourseRepository')
+    @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
+
+    private readonly vimeoService: VimeoService,
   ) {}
 
-  async create(createGrammarDto: CreateGrammarDto): Promise<ResData<Grammar>> {
-    // Qo'shilayotgan grammarnı tekshirish
-    const foundData = await this.grammarRepository.findOneByName(
-      createGrammarDto.grammarText,
-    );
-    if (foundData) {
-      throw new GrammarAlreadyExistException();
-    }
-
+  async create(
+    createGrammarDto: CreateGrammarDto,
+    file: Express.Multer.File,
+  ): Promise<ResData<Grammar>> {
+    // Qo'shilayotgan grammarnı nomiga ko'ra tekshirish
+       // Kurs mavjudligini tekshirish
     const course = await this.courseRepository.findById(
       createGrammarDto.courseId,
     );
     if (!course) {
-      throw new CourseAlreadyExistException();
+      throw new CourseNotFoundException();
     }
 
-    const newGrammar = new Grammar();
-    newGrammar.course = course;
-    Object.assign(newGrammar, createGrammarDto);
-    const newData = await this.grammarRepository.create(newGrammar);
+    // Video yuklash
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
+      createGrammarDto.title,
+      "Grammar video",
+    );
 
-    return new ResData<Grammar>("Grammar created successfully", 201, newData);
+    // Yangi grammarnı yaratish
+    const newGrammar = new Grammar();
+    Object.assign(newGrammar, {
+      ...createGrammarDto,
+      course,
+      videoUrl,
+      mimetype: file.mimetype,
+      size: file.size,
+      duration,
+    });
+
+    const savedGrammar = await this.grammarRepository.create(newGrammar);
+
+    return new ResData<Grammar>(
+      "Grammar created successfully",
+      201,
+      savedGrammar,
+    );
   }
 
   async findGrammarByCourseId(id: number): Promise<ResData<Grammar[]>> {
@@ -80,16 +99,43 @@ export class GrammarService implements IGrammarService {
   async update(
     id: ID,
     updateGrammarDto: UpdateGrammarDto,
+    file?: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
     const { data: foundData } = await this.findOneById(id);
-    const course = await this.courseRepository.findById(
-      updateGrammarDto.courseId,
-    );
-    if (!course) {
-      throw new CourseAlreadyExistException();
+
+    if (updateGrammarDto.courseId) {
+      const course = await this.courseRepository.findById(
+        updateGrammarDto.courseId,
+      );
+      if (!course) {
+        throw new CourseNotFoundException();
+      }
+      foundData.course = course;
     }
-    const updatedData = Object.assign(foundData, updateGrammarDto);
-    const data = await this.grammarRepository.update(updatedData);
+
+    // Yangilangan ma'lumotlarni tayyorlash
+    const updateData = {
+      title: updateGrammarDto.title || foundData.title,
+    };
+
+    // Agar fayl bo'lsa, video URL'ini yangilaydi
+    if (file) {
+      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+        file.buffer,
+        updateGrammarDto.title || foundData.title,
+        "Grammar video",
+      );
+
+      foundData.videoUrl = videoUrl;
+      foundData.duration = duration;
+      foundData.mimetype = file.mimetype;
+      foundData.size = file.size;
+    }
+
+    // Boshqa maydonlarni yangilash
+    Object.assign(foundData, updateData);
+
+    const data = await this.grammarRepository.update(foundData);
 
     return new ResData<Grammar>("Grammar updated successfully", 200, data);
   }
