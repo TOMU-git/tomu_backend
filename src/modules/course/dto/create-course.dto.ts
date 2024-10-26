@@ -16,6 +16,10 @@ export class CreateCourseDto {
   @IsString()
   description: string;
 
+  @ApiProperty({})
+  @IsString()
+  videoUrl: string;
+
   @ApiPropertyOptional({
     type: String,
   })

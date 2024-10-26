@@ -10,14 +10,19 @@ import {
   LessonAlreadyExistException,
   LessonNotFoundException,
   LessonOrderAlreadyExistException,
-} from "./exception/lesson.exception";
-import { VimeoService } from "./vimeo.service";
+} from './exception/lesson.exception';
+import { VimeoService } from './vimeo.service';
+import { IBlockRepository } from '../block/interfaces/block.repository';
 
 @Injectable()
 export class LessonService implements ILessonService {
   constructor(
     @Inject("ILessonRepository")
     private readonly lessonRepository: ILessonRepository,
+
+    @Inject('IBlockRepository')
+    private readonly blockRepository: IBlockRepository,
+
     private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
@@ -30,24 +35,31 @@ export class LessonService implements ILessonService {
       throw new LessonAlreadyExistException();
     }
 
-    const isOrderExist = await this.lessonRepository.findOneByOrder(dto.order);
-    if (isOrderExist) {
+    const orderExist = await this.lessonRepository.findOneByOrder(
+      dto.order,
+      dto.blockId,
+    );
+
+    if (orderExist) {
       throw new LessonOrderAlreadyExistException();
     }
 
-    const videoUrl = await this.vimeoService.uploadVideo(
-      file.buffer, // Faylni buffer orqali yuklash
+    const block = await this.blockRepository.findById(dto.blockId);
+
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
       dto.title,
-      "Dars videosi",
-      file.size, // Faylning o'lchamini olish
+      'Dars videosi',
     );
 
     const newLesson = new Lesson();
     Object.assign(newLesson, {
       ...dto,
-      video_url: videoUrl,
+      block,
+      videoUrl,
       mimetype: file.mimetype,
       size: file.size,
+      duration, // Video davomiyligini saqlash
     });
 
     const savedLesson = await this.lessonRepository.create(newLesson);
@@ -98,33 +110,46 @@ export class LessonService implements ILessonService {
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
 
-    if (dto.order && dto.order !== foundData.order) {
-      const isOrderExist = await this.lessonRepository.findOneByOrder(
-        dto.order,
+    if(dto.blockId){
+      const block = await this.blockRepository.findById(dto.blockId);
+      foundData.block = block
+    }
+
+    const updateData = {
+      order: dto.order ? parseInt(dto.order.toString(), 10) : foundData.order,
+      title: dto.title === '' ? foundData.title : dto.title || undefined, // Bo'sh bo'lsa, undefined ga o'zgartirish
+      video: dto.video === '' ? undefined : dto.video || foundData.videoUrl, // Bo'sh bo'lsa, undefined ga o'zgartirish
+    };
+
+    // Faqat order o'zgartirilgan bo'lsa, tekshirish
+    if (updateData.order && updateData.order !== foundData.order) {
+      const orderExist = await this.lessonRepository.findOneByOrder(
+        updateData.order,
+        dto.blockId,
       );
-      if (isOrderExist) {
+
+      // Agar bazada shu order va blockId kombinatsiyasi mavjud bo'lsa, xatolik chiqarish
+      if (orderExist) {
         throw new LessonOrderAlreadyExistException();
       }
     }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      // Yangi video faylni yuklaydi
-      const videoUrl = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
-        dto.title || foundData.title, // Yangilanishlarda title bo'lmasa eski title'ni saqlab qolish
-        "Dars videosi",
-        file.size,
+        dto.title || foundData.title, // Title ni videoni yuklashda ishlatish
+        'Dars videosi',
       );
 
-      // Eski videoning ma'lumotlarini yangilaydi
-      foundData.video_url = videoUrl;
+      foundData.videoUrl = videoUrl;
+      foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
     // Boshqa maydonlarni yangilash
-    Object.assign(foundData, dto);
+    Object.assign(foundData, updateData);
 
     const data = await this.lessonRepository.update(foundData);
 

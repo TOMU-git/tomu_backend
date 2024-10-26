@@ -1,15 +1,15 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { Course } from "../course/entities/course.entity";
-import { LessonController } from "./lesson.controller";
-import { LessonService } from "./lesson.service";
-import { LessonRepository } from "./lesson.repository";
-import { Lesson } from "./entities/lesson.entity";
-import { SharedModule } from "../shared/shared.module";
-import { VimeoService } from "./vimeo.service";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LessonController } from './lesson.controller';
+import { LessonService } from './lesson.service';
+import { LessonRepository } from './lesson.repository';
+import { Lesson } from './entities/lesson.entity';
+import { SharedModule } from '../shared/shared.module';
+import { VimeoService } from './vimeo.service';
+import { BlockModule } from '../block/block.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lesson]), SharedModule],
+  imports: [TypeOrmModule.forFeature([Lesson]), SharedModule, BlockModule],
   controllers: [LessonController],
   providers: [
     VimeoService,

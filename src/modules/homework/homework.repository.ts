@@ -34,6 +34,15 @@ export class HomeworkRepository implements IHomeworkRepository {
     return await this.homeworkRepository.findOneBy({ id });
   }
 
+  async findOneByOrder(order: number, blockId: ID): Promise<Homework | null> {
+    return await this.homeworkRepository.findOne({
+      where: {
+        order: order,
+        block: { id: blockId },
+      },
+    });
+  }
+
   async findOneByName(title: string): Promise<Homework | null> {
     return await this.homeworkRepository.findOneBy({ description: title });
   }

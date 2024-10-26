@@ -37,8 +37,13 @@ export class AlphabetRepository implements IAlphabetRepository {
     return await this.alphabetRepository.findOneBy({ id });
   }
 
-  async findOneByOrder(order: number): Promise<Alphabet | null> {
-    return await this.alphabetRepository.findOneBy({ order });
+  async findOneByOrder(order: number, courseId: ID): Promise<Alphabet | null> {
+    return await this.alphabetRepository.findOne({
+      where: {
+        order: order,
+        course: { id: courseId },
+      },
+    });
   }
 
   async getAlphabetsByCourseId(courseId: ID): Promise<Alphabet[]> {

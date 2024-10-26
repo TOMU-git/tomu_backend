@@ -12,17 +12,17 @@ import {
   UseInterceptors,
   BadRequestException,
   Query,
-} from "@nestjs/common";
-import { ID } from "src/common/types/type";
-import { CreateLessonDto } from "./dto/create-lesson.dto";
-import { UpdateLessonDto } from "./dto/update-lesson.dto";
-import { ResData } from "src/lib/resData";
-import { Lesson } from "./entities/lesson.entity";
-import { ILessonService } from "./interfaces/lesson.service";
-import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { RoleEnum } from "src/common/enums/enum";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { Auth } from "src/common/decorator/auth.decorator";
+} from '@nestjs/common';
+import { ID } from 'src/common/types/type';
+import { CreateLessonDto } from './dto/create-lesson.dto';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { ResData } from 'src/lib/resData';
+import { Lesson } from './entities/lesson.entity';
+import { ILessonService } from './interfaces/lesson.service';
+import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { RoleEnum } from 'src/common/enums/enum';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Auth } from 'src/common/decorator/auth.decorator';
 
 @ApiTags("lesson")
 @Controller("lesson")
@@ -31,6 +31,7 @@ export class LessonController {
     @Inject("ILessonService")
     private readonly lessonService: ILessonService,
   ) {}
+
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
   @ApiConsumes("multipart/form-data")
@@ -53,9 +54,9 @@ export class LessonController {
           type: "number",
         },
         video: {
-          // Video faylini yuklash maydoni
-          type: "string",
-          format: "binary", // Bu maydon fayl yuklash uchun kerak
+          // Video faylini y  uklash maydoni
+          type: 'string',
+          format: 'binary', // Bu maydon fayl yuklash uchun kerak
         },
       },
     },
@@ -64,15 +65,12 @@ export class LessonController {
     @Body() createLessonDto: CreateLessonDto,
     @UploadedFile() file: Express.Multer.File, // Yuklangan faylni olish
   ): Promise<ResData<Lesson>> {
-    console.log("working controller");
-    console.log(file); // Fayl obyektini konsolda tekshirish
     if (!file) {
       throw new BadRequestException("Fayl yuklanmadi");
     }
     return this.lessonService.create(createLessonDto, file); // Yangi darsni yaratish
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Lesson>>> {
     return await this.lessonService.findAll();
@@ -82,7 +80,7 @@ export class LessonController {
     name: "module_id",
     required: true,
     type: Number,
-    description: "For module id",
+    description: 'For module id',
   })
   @Get("/ten-videos")
   async findTenVideos(@Query("module_id") module_id: number) {
@@ -129,7 +127,6 @@ export class LessonController {
     @Body() updateLessonDto: UpdateLessonDto,
     @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Lesson>> {
-    console.log("Fayl:", file); // Faylni konsolda tekshirish
     return await this.lessonService.update(id, updateLessonDto, file);
   }
 

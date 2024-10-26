@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Homework } from "./entities/homework.entity";
 import { HomeworkRepository } from "./homework.repository";
 import { SharedModule } from "../shared/shared.module";
+import { VimeoService } from '../lesson/vimeo.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Homework]), SharedModule],
@@ -12,6 +13,9 @@ import { SharedModule } from "../shared/shared.module";
   providers: [
     { provide: "IHomeworkService", useClass: HomeworkService },
     { provide: "IHomeworkRepository", useClass: HomeworkRepository },
+    VimeoService,
+    { provide: 'IHomeworkService', useClass: HomeworkService },
+    { provide: 'IHomeworkRepository', useClass: HomeworkRepository },
   ],
   exports: [
     { provide: "IHomeworkService", useClass: HomeworkService },

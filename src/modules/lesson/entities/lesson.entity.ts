@@ -7,16 +7,15 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
-} from "typeorm";
+} from 'typeorm';
 
 @Entity("lessons") // Entity nomini belgilash
 export class Lesson extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   title: string;
 
-  @Column({ type: "varchar", length: 255 })
-  video_url: string;
+  @Column({ type: 'varchar', length: 255, name: 'video_url' })
+  videoUrl: string;
 
   @Column({ type: "int" })
   /**
@@ -42,12 +41,12 @@ export class Lesson extends BaseEntity {
    */
   size: number;
 
+  @Column({ type: 'int' })
+  duration: number;
+
   @ManyToOne(() => Block, (block) => block.lessons)
   @JoinColumn({ name: "block_id" })
   block: Block;
-
-  @Column({ name: "block_id", type: "int", nullable: false })
-  blockId: number;
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];

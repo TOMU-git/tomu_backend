@@ -13,6 +13,7 @@ export class FileService {
   ) {}
 
   async create(createFileDto: Express.Multer.File) {
+    console.log('createFileDto', createFileDto);
     const created = new File();
     created.mimetype = createFileDto.mimetype;
     created.originalname = createFileDto.originalname;

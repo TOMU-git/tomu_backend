@@ -19,7 +19,9 @@ export class BlockRepository implements IBlockRepository {
   }
 
   async findAll(): Promise<Array<Block>> {
-    return await this.blockRepository.find();
+    return await this.blockRepository.find({
+      relations: ['lessons']
+    });
   }
 
   async update(entity: Block): Promise<Block> {

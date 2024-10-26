@@ -7,5 +7,6 @@ export interface IHomeworkRepository {
   update(entity: Homework): Promise<Homework>;
   delete(entity: Homework): Promise<Homework>;
   findById(id: ID): Promise<Homework | null>;
+  findOneByOrder(order: ID, blockId: ID): Promise<Homework | null>;
   findOneByName(title: string): Promise<Homework | null>;
 }

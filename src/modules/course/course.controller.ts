@@ -34,6 +34,8 @@ export class CourseController {
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post()
   @UseInterceptors(FileInterceptor("fileName", fileOption))
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('fileName', fileOption))
   @ApiBody({
     schema: {
       type: "object",
@@ -47,14 +49,19 @@ export class CourseController {
           type: "string",
           format: "binary",
         },
+        videoUrl: {
+          type: 'string',
+          example: '',
+        },
       },
     },
   })
   @ApiConsumes("multipart/form-data") // Swagger'da fayl yuklashni ko'rsatish uchun
   async create(
     @Body() createCourseDto: CreateCourseDto,
-    @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<ResData<Course>> {
+
     return await this.courseService.create(createCourseDto, file);
   }
 
@@ -79,6 +86,10 @@ export class CourseController {
         description: {
           type: "string",
           example: "This course covers the basics of programming using Python.",
+        },
+        videoUrl: {
+          type: 'string',
+          example: '',
         },
         fileName: {
           type: "string",

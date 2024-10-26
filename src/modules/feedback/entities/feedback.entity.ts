@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { User } from "src/modules/user/entities/user.entity"; // Foydalanuvchilar
 import { Course } from "src/modules/course/entities/course.entity"; // Kurslar
+=======
+import { BaseEntity } from 'src/common/database/baseEntity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { User } from 'src/modules/user/entities/user.entity'; // Foydalanuvchilar
+import { Course } from 'src/modules/course/entities/course.entity'; // Kurslar
+>>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
 
 @Entity("feedback")
 export class Feedback extends BaseEntity {
@@ -14,8 +21,10 @@ export class Feedback extends BaseEntity {
   @ManyToOne(() => User, (user) => user.feedbacks, {
     onDelete: "CASCADE",
   })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
+<<<<<<< HEAD
   @Column({ name: "user_id", type: "int", nullable: false }) // Qo'shiladigan ustun
   userId: number; // Bu yerda `courseId` qo'shiladi
 
@@ -26,4 +35,11 @@ export class Feedback extends BaseEntity {
 
   @Column({ name: "course_id", type: "int", nullable: false }) // Qo'shiladigan ustun
   courseId: number; // Bu yerda `courseId` qo'shiladi
+=======
+  @ManyToOne(() => Course, (course) => course.feedbacks, {
+    onDelete: 'NO ACTION', // Kurs o'chirilganda hech narsa bo'lmaydi
+  })
+  @JoinColumn({ name: 'course_id' })
+  course: Course; // Kurs bilan bog'liq
+>>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
 }

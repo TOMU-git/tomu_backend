@@ -8,10 +8,10 @@ import { ICourseService } from "./interfaces/course.service";
 import {
   CourseAlreadyExistException,
   CourseNotFoundException,
-} from "./exception/course.exception";
-import { IFileService } from "../file/interfaces/file.service";
-import { CreateFileDto } from "../file/dto/create-file.dto";
-import { Course } from "./entities/course.entity";
+} from './exception/course.exception';
+import { IFileService } from '../file/interfaces/file.service';
+import { Course } from './entities/course.entity';
+import { VimeoService } from '../lesson/vimeo.service';
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -21,28 +21,36 @@ export class CourseService implements ICourseService {
 
     @Inject("IFileService")
     private readonly fileService: IFileService,
+
+    private readonly vimeoService: VimeoService, // Inject VimeoService
   ) {}
 
   async create(
     dto: CreateCourseDto,
-    file?: Express.Multer.File, // Fayl ixtiyoriy
+    file?: Express.Multer.File,
   ): Promise<ResData<Course>> {
+    // console.log('service', dto, file, video);
     const foundData = await this.courseRepository.findOneByName(dto.title);
     if (foundData) {
       throw new CourseAlreadyExistException();
     }
 
-    let newCourse = new Course();
-
-    // Fayl yuklash jarayoni
+    // Faylni saqlash
+    let imageUrl = null;
     if (file) {
-      const savedFile = await this.fileService.create(file);
-      newCourse = Object.assign(newCourse, dto, {
-        imageUrl: savedFile.data.path,
-      });
-    } else {
-      newCourse = Object.assign(newCourse, dto);
+      const image = await this.fileService.create(file);
+      imageUrl = image.data.path; // Fayl manzilini saqlash
     }
+
+    // Yangi kurs ob'ektini yaratish
+    const newCourse = new Course();
+    Object.assign(newCourse, {
+      ...dto,
+      videoUrl: dto.videoUrl,
+      imageUrl,
+      mimetype: file ? file.mimetype : null, // Fayl MIME turi
+      size: file ? file.size : null, // Fayl o'lchami
+    });
 
     const newData = await this.courseRepository.create(newCourse);
     return new ResData<Course>("Course created successfully", 201, newData);
@@ -78,6 +86,7 @@ export class CourseService implements ICourseService {
         );
         if (!removeResult) {
           console.log("Fayl topilmadi yoki o‘chirilmadi.");
+
         }
       } catch (error) {
         console.error("Faylni o‘chirishda xatolik yuz berdi:", error);

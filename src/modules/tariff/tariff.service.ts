@@ -1,30 +1,32 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { UpdateTariffDto } from "./dto/update-tariff.dto";
-import { ITariffService } from "./interface/tariff.service";
-import { ITariffRepository } from "./interface/tariff.repository";
-import { ResData } from "src/lib/resData";
-import { Tariff } from "./entities/tariff.entity";
-import { TariffNotFoundException } from "./exception/tariff.exception";
-import { ICourseService } from "../course/interfaces/course.service";
-import { CreateTariffDto } from "./dto/create-tariff.dto";
+import { Inject, Injectable } from '@nestjs/common';
+import { UpdateTariffDto } from './dto/update-tariff.dto';
+import { ITariffService } from './interface/tariff.service';
+import { ITariffRepository } from './interface/tariff.repository';
+import { ResData } from 'src/lib/resData';
+import { Tariff } from './entities/tariff.entity';
+import { TariffNotFoundException } from './exception/tariff.exception';
+import { ICourseService } from '../course/interfaces/course.service';
+import { CreateTariffDto } from './dto/create-tariff.dto';
+import { ICourseRepository } from '../course/interfaces/course.repository';
 
 @Injectable()
 export class TariffService implements ITariffService {
   constructor(
     @Inject("ITariffRepository")
     private readonly tariffRepository: ITariffRepository,
+
+    @Inject('ICourseRepository')
+    private readonly courseRepository: ICourseRepository,
   ) {}
 
   // CREATE
   async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
-    console.log("Creating tariff with data:", createTariffDto);
-
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
 
     // courseId ni o'rnatish
     const courseId = parseInt(createTariffDto.courseId); // Agar kerak bo'lsa, stringdan int ga aylantirish
-    newTariff.courseId = courseId; // Bu yerda courseId ni o'rnatish
+    newTariff.course = await this.courseRepository.findById(courseId); // Bu yerda courseId ni o'rnatish
 
     // options maydonini kiritamiz
     if (createTariffDto.options) {

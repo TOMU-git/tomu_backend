@@ -19,7 +19,9 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findAll(): Promise<Array<Course>> {
-    return await this.courseRepository.find();
+    return await this.courseRepository.find({
+      relations: ['blocks'], // Bu yerda 'blocks' aloqasini yuklayapmiz
+    });
   }
 
   async update(entity: Course): Promise<Course> {
@@ -31,7 +33,16 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findById(id: ID): Promise<Course | null> {
-    return await this.courseRepository.findOneBy({ id });
+    return await this.courseRepository.findOne({
+      where: { id }, // Qidirilayotgan kurs IDsi
+      relations: [
+        'feedbacks',
+        'feedbacks.user', // Feedbacklar bilan bog'liq userlarni qo'shish
+        'userCourses',
+        'blocks',
+        'blocks.lessons',
+      ], // Feedbacklar, userCourses va boshqa bog'lanishlar
+    });
   }
 
   async findOneByName(title: string): Promise<Course | null> {

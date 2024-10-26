@@ -24,6 +24,7 @@ import { LiveChatModule } from "./modules/live-chat/live-chat.module";
 import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigModule } from "@nestjs/config";
+import { CourseVideoModule } from './modules/course-video/course-video.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { ConfigModule } from "@nestjs/config";
     AlphabetModule,
     LiveChatModule,
     TransactionsModule,
+    CourseVideoModule,
   ],
 })
 export class AppModule {}

@@ -13,6 +13,7 @@ import { FileModule } from "../file/file.module";
   providers: [
     { provide: "ICourseService", useClass: CourseService },
     { provide: "ICourseRepository", useClass: CourseRepository },
+
   ],
   exports: [
     { provide: "ICourseService", useClass: CourseService },
