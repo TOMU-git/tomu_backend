@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { LessonProgress } from './entities/lesson-progress.entity';
-import { ILessonProgressRepository } from './interfaces/lesson-progress.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Repository } from "typeorm";
+import { LessonProgress } from "./entities/lesson-progress.entity";
+import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 
 @Injectable()
 export class LessonProgressRepository implements ILessonProgressRepository {
@@ -27,7 +27,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         user: { id: userId },
         lesson: { id: lessonId },
       },
-      relations: ['user', 'lesson'],
+      relations: ["user", "lesson"],
     });
   }
 

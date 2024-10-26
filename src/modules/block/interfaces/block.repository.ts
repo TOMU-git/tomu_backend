@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Block } from '../entities/block.entity';
+import { ID } from "src/common/types/type";
+import { Block } from "../entities/block.entity";
 
 export interface IBlockRepository {
   create(dto: Block): Promise<Block>;

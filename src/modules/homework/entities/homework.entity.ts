@@ -1,25 +1,31 @@
-import { BaseEntity } from 'src/common/database/baseEntity';
-import { Block } from 'src/modules/block/entities/block.entity';
-import { HomeworkProgress } from 'src/modules/homework-progress/entities/homework-progress.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { BaseEntity } from "src/common/database/baseEntity";
+import { Block } from "src/modules/block/entities/block.entity";
+import { HomeworkProgress } from "src/modules/homework-progress/entities/homework-progress.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
-@Entity('homeworks')
+@Entity("homeworks")
 export class Homework extends BaseEntity {
+  @Column({ type: "varchar", length: 255, name: "video_url" })
+  assignment_video_url: string;
+
+  @Column({ type: "text" })
+  description: string;
+
+  @ManyToOne(() => Block, (block) => block.homeworks, {
+    nullable: true, // Block can be null if homework is not associated with any block
+    onDelete: "SET NULL", // If a block is deleted, set the block field to null
+  })
+  @JoinColumn({name: 'block_id'}) // Establish the join column for the relationship
+  block: Block; // Reference to the block associated with this homework
+
+  @Column({ name: "block_id", type: "int", nullable: false })
+  blockId: number;
   /**
    * Homework video URL manzili.
    * Ushbu maydon homework uchun qo'shilgan video manzilini saqlaydi.
    */
   @Column({ type: 'varchar', length: 255, name: 'video_url' })
   videoUrl: string;
-
-  /**
-   * Homework uchun batafsil tavsif.
-   * Ushbu maydon homework haqida tushuncha beradi va o'quvchilar uchun
-   * vazifalarni yoki yo'riqnomalarni taqdim etadi.
-   */
-  @Column({ type: 'text' })
-  description: string;
-
   /**
    * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
    * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
@@ -48,16 +54,6 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: 'int' })
   duration: number;
-
-  /**
-   * Homework qaysi blokga tegishli ekanligini belgilaydi.
-   * Blok va homework orasidagi munosabatni ifodalaydi.
-   * Har bir homework ma'lum bir blokka tegishli bo'ladi.
-   */
-  @ManyToOne(() => Block, (block) => block.homeworks)
-  @JoinColumn({ name: 'block_id' })
-  block: Block;
-
   /**
    * Homeworkning o'zlashtirilishi (progressi) ro'yxati.
    * Homework va HomeworkProgress o'rtasidagi munosabatni ifodalaydi.

@@ -1,16 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IHomeworkRepository } from './interfaces/homework.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { IHomeworkService } from './interfaces/homework.service';
+import { Inject, Injectable } from "@nestjs/common";
+import { IHomeworkRepository } from "./interfaces/homework.repository";
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { IHomeworkService } from "./interfaces/homework.service";
 import {
-  HomeworkAlreadyExistException,
   HomeworkNotFoundException,
   HomeworkOrderAlreadyExistException,
-} from './exception/homework.exception';
+} from "./exception/homework.exception";
+import { UpdateHomeworkDto } from "./dto/update-homework.dto";
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { Homework } from './entities/homework.entity';
-import { UpdateHomeworkDto } from './dto/update-homework.dto';
 import { IBlockRepository } from '../block/interfaces/block.repository';
 import { BlockNotFoundException } from '../block/exception/block.exception';
 import { VimeoService } from '../lesson/vimeo.service';
@@ -18,7 +17,7 @@ import { VimeoService } from '../lesson/vimeo.service';
 @Injectable()
 export class HomeworkService implements IHomeworkService {
   constructor(
-    @Inject('IHomeworkRepository')
+    @Inject("IHomeworkRepository")
     private readonly homeworkRepository: IHomeworkRepository,
 
     @Inject('IBlockRepository')
@@ -66,13 +65,13 @@ export class HomeworkService implements IHomeworkService {
     newHomework = Object.assign(newHomework, createHomeworkDto);
     const newData = await this.homeworkRepository.create(newHomework);
 
-    return new ResData<Homework>('Homework created successfully', 201, newData);
+    return new ResData<Homework>("Homework created successfully", 201, newData);
   }
 
   async findAll(): Promise<ResData<Array<Homework>>> {
     const data = await this.homeworkRepository.findAll();
 
-    return new ResData<Array<Homework>>('ok', 200, data);
+    return new ResData<Array<Homework>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Homework>> {
@@ -81,7 +80,7 @@ export class HomeworkService implements IHomeworkService {
       throw new HomeworkNotFoundException();
     }
 
-    return new ResData<Homework>('ok', 200, foundData);
+    return new ResData<Homework>("ok", 200, foundData);
   }
 
   async update(
@@ -140,6 +139,6 @@ export class HomeworkService implements IHomeworkService {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.homeworkRepository.delete(foundData);
 
-    return new ResData<Homework>('Homework deleted successfully', 200, data);
+    return new ResData<Homework>("Homework deleted successfully", 200, data);
   }
 }

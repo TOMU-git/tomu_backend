@@ -1,11 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateLessonDto } from './dto/create-lesson.dto';
-import { UpdateLessonDto } from './dto/update-lesson.dto';
-import { Lesson } from './entities/lesson.entity';
-import { ILessonRepository } from './interfaces/lesson.repository';
-import { ResData } from '../../lib/resData';
-import { ID } from '../../common/types/type';
-import { ILessonService } from './interfaces/lesson.service';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateLessonDto } from "./dto/create-lesson.dto";
+import { UpdateLessonDto } from "./dto/update-lesson.dto";
+import { Lesson } from "./entities/lesson.entity";
+import { ILessonRepository } from "./interfaces/lesson.repository";
+import { ResData } from "../../lib/resData";
+import { ID } from "../../common/types/type";
+import { ILessonService } from "./interfaces/lesson.service";
 import {
   LessonAlreadyExistException,
   LessonNotFoundException,
@@ -17,7 +17,7 @@ import { IBlockRepository } from '../block/interfaces/block.repository';
 @Injectable()
 export class LessonService implements ILessonService {
   constructor(
-    @Inject('ILessonRepository')
+    @Inject("ILessonRepository")
     private readonly lessonRepository: ILessonRepository,
 
     @Inject('IBlockRepository')
@@ -65,7 +65,7 @@ export class LessonService implements ILessonService {
     const savedLesson = await this.lessonRepository.create(newLesson);
 
     return new ResData<Lesson>(
-      'Dars muvaffaqiyatli yaratildi',
+      "Dars muvaffaqiyatli yaratildi",
       201,
       savedLesson,
     );
@@ -82,7 +82,7 @@ export class LessonService implements ILessonService {
 
   async findAll(): Promise<ResData<Array<Lesson>>> {
     const data = await this.lessonRepository.findAll();
-    return new ResData<Array<Lesson>>('ok', 200, data);
+    return new ResData<Array<Lesson>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<Lesson>> {
@@ -91,13 +91,13 @@ export class LessonService implements ILessonService {
       throw new LessonNotFoundException();
     }
 
-    return new ResData<Lesson>('ok', 200, foundData);
+    return new ResData<Lesson>("ok", 200, foundData);
   }
 
   async getLessonsByBlockId(blockId: ID): Promise<ResData<Lesson[]>> {
     const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
     return new ResData<Lesson[]>(
-      'Lessons by blockId fetched successfully',
+      "Lessons by blockId fetched successfully",
       200,
       lessons,
     );
@@ -153,13 +153,13 @@ export class LessonService implements ILessonService {
 
     const data = await this.lessonRepository.update(foundData);
 
-    return new ResData<Lesson>('Lesson updated successfully', 200, data);
+    return new ResData<Lesson>("Lesson updated successfully", 200, data);
   }
 
   async delete(id: ID): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.lessonRepository.delete(foundData);
 
-    return new ResData<Lesson>('Lesson deleted successfully', 200, data);
+    return new ResData<Lesson>("Lesson deleted successfully", 200, data);
   }
 }

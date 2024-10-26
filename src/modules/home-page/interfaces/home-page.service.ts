@@ -1,7 +1,7 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { HomePage } from '../entities/home-page.entity';
-import { CreateHomePageDto } from '../dto/create-home-page.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { HomePage } from "../entities/home-page.entity";
+import { CreateHomePageDto } from "../dto/create-home-page.dto";
 
 export interface IHomePageService {
   create(dto: CreateHomePageDto): Promise<ResData<HomePage>>;

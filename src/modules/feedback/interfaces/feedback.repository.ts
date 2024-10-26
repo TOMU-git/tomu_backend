@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Feedback } from '../entities/feedback.entity';
+import { ID } from "src/common/types/type";
+import { Feedback } from "../entities/feedback.entity";
 
 export interface IFeedbackRepository {
   create(dto: Feedback): Promise<Feedback>;

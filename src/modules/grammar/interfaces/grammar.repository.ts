@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Grammar } from '../entities/grammar.entity';
+import { ID } from "src/common/types/type";
+import { Grammar } from "../entities/grammar.entity";
 
 export interface IGrammarRepository {
   create(dto: Grammar): Promise<Grammar>;

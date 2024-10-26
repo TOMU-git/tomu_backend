@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { Homework } from '../entities/homework.entity';
-import { CreateHomeworkDto } from '../dto/create-homework.dto';
-import { UpdateHomeworkDto } from '../dto/update-homework.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { Homework } from "../entities/homework.entity";
+import { CreateHomeworkDto } from "../dto/create-homework.dto";
+import { UpdateHomeworkDto } from "../dto/update-homework.dto";
 
 export interface IHomeworkService {
   create(

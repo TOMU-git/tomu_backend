@@ -1,13 +1,13 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException } from "@nestjs/common";
 
 export class UserCourseNotFoundException extends HttpException {
   constructor() {
-    super('UserCourse not found', 404);
+    super("UserCourse not found", 404);
   }
 }
 
 export class UserCourseAlreadyExistException extends HttpException {
   constructor() {
-    super('UserCourse already exist', 400);
+    super("UserCourse already exist", 400);
   }
 }

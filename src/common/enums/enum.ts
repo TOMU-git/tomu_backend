@@ -1,27 +1,27 @@
 export enum RoleEnum {
-  STUDENT = 'student',
-  DIRECTOR = 'director',
-  ADMIN = 'admin',
-  TEACHER = 'teacher',
+  STUDENT = "student",
+  DIRECTOR = "director",
+  ADMIN = "admin",
+  TEACHER = "teacher",
 }
 
 export enum RedisKey {
-  ALL_USER = 'ALL_USER',
-  ALL_TRANSACTION = 'ALL_TRANSACTION',
+  ALL_USER = "ALL_USER",
+  ALL_TRANSACTION = "ALL_TRANSACTION",
 }
 
 export enum GenderEnum {
-  MALE = 'male',
-  FEMALE = 'female',
+  MALE = "male",
+  FEMALE = "female",
 }
 
 export enum StatusEnum {
-  PANDING = 'pending',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
+  PANDING = "pending",
+  COMPLETED = "completed",
+  FAILED = "failed",
 }
 
 export enum MeetingStatusEnum {
-  PAID = 'paid',
-  UNPAID = 'unpaid',
+  PAID = "paid",
+  UNPAID = "unpaid",
 }

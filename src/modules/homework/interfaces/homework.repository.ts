@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Homework } from '../entities/homework.entity';
+import { ID } from "src/common/types/type";
+import { Homework } from "../entities/homework.entity";
 
 export interface IHomeworkRepository {
   create(dto: Homework): Promise<Homework>;

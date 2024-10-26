@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { Feedback } from '../entities/feedback.entity';
-import { CreateFeedbackDto } from '../dto/create-feedback.dto';
-import { UpdateFeedbackDto } from '../dto/update-feedback.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { Feedback } from "../entities/feedback.entity";
+import { CreateFeedbackDto } from "../dto/create-feedback.dto";
+import { UpdateFeedbackDto } from "../dto/update-feedback.dto";
 
 export interface IFeedbackService {
   create(dto: CreateFeedbackDto): Promise<ResData<Feedback>>;

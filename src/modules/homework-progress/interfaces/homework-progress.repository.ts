@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { HomeworkProgress } from '../entities/homework-progress.entity';
+import { ID } from "src/common/types/type";
+import { HomeworkProgress } from "../entities/homework-progress.entity";
 
 export interface IHomeworkProgressRepository {
   create(dto: HomeworkProgress): Promise<HomeworkProgress>;

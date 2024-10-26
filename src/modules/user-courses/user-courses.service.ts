@@ -1,20 +1,22 @@
 // user-course.service.ts
 
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateUserCourseDto } from './dto/create-user-course.dto';
-import { UpdateUserCourseDto } from './dto/update-user-course.dto';
-import { UserCourse } from './entities/user-course.entity';
-import { IUserCourseRepository } from './interfaces/user-course.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { IUserCourseService } from './interfaces/user-course.service';
-import { UserCourseAlreadyExistException, UserCourseNotFoundException } from './exception/user-course.exception';
-
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateUserCourseDto } from "./dto/create-user-course.dto";
+import { UpdateUserCourseDto } from "./dto/update-user-course.dto";
+import { UserCourse } from "./entities/user-course.entity";
+import { IUserCourseRepository } from "./interfaces/user-course.repository";
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { IUserCourseService } from "./interfaces/user-course.service";
+import {
+  UserCourseAlreadyExistException,
+  UserCourseNotFoundException,
+} from "./exception/user-course.exception";
 
 @Injectable()
 export class UserCourseService implements IUserCourseService {
   constructor(
-    @Inject('IUserCourseRepository')
+    @Inject("IUserCourseRepository")
     private readonly userCourseRepository: IUserCourseRepository,
   ) {}
 
@@ -32,7 +34,7 @@ export class UserCourseService implements IUserCourseService {
     const newData = await this.userCourseRepository.create(newUserCourse);
 
     return new ResData<UserCourse>(
-      'User Course created successfully',
+      "User Course created successfully",
       201,
       newData,
     );
@@ -40,7 +42,7 @@ export class UserCourseService implements IUserCourseService {
 
   async findAll(): Promise<ResData<Array<UserCourse>>> {
     const data = await this.userCourseRepository.findAll();
-    return new ResData<Array<UserCourse>>('ok', 200, data);
+    return new ResData<Array<UserCourse>>("ok", 200, data);
   }
 
   async findOneById(id: ID): Promise<ResData<UserCourse>> {
@@ -48,7 +50,7 @@ export class UserCourseService implements IUserCourseService {
     if (!foundData) {
       throw new UserCourseNotFoundException();
     }
-    return new ResData<UserCourse>('ok', 200, foundData);
+    return new ResData<UserCourse>("ok", 200, foundData);
   }
 
   async update(
@@ -60,7 +62,7 @@ export class UserCourseService implements IUserCourseService {
     const data = await this.userCourseRepository.update(updatedData);
 
     return new ResData<UserCourse>(
-      'User Course updated successfully',
+      "User Course updated successfully",
       200,
       data,
     );
@@ -71,7 +73,7 @@ export class UserCourseService implements IUserCourseService {
     const data = await this.userCourseRepository.delete(foundData.data);
 
     return new ResData<UserCourse>(
-      'User Course deleted successfully',
+      "User Course deleted successfully",
       200,
       data,
     );

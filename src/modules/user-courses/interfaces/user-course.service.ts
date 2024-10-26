@@ -1,8 +1,8 @@
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { UserCourse } from '../entities/user-course.entity';
-import { CreateUserCourseDto } from '../dto/create-user-course.dto';
-import { UpdateUserCourseDto } from '../dto/update-user-course.dto';
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { UserCourse } from "../entities/user-course.entity";
+import { CreateUserCourseDto } from "../dto/create-user-course.dto";
+import { UpdateUserCourseDto } from "../dto/update-user-course.dto";
 
 export interface IUserCourseService {
   create(dto: CreateUserCourseDto): Promise<ResData<UserCourse>>;

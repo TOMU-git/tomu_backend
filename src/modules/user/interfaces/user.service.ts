@@ -1,7 +1,10 @@
-import { ResData } from 'src/lib/resData';
-import { CreateAdminTeacherDto, CreateStudentDto } from '../dto/create-users.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { User } from '../entities/user.entity';
+import { ResData } from "src/lib/resData";
+import {
+  CreateAdminTeacherDto,
+  CreateStudentDto,
+} from "../dto/create-users.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
+import { User } from "../entities/user.entity";
 
 export interface IUserService {
   updateUser(id: number, dto: UpdateUserDto): Promise<ResData<User>>;

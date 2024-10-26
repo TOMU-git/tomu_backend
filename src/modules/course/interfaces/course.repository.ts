@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { Course } from '../entities/course.entity';
+import { ID } from "src/common/types/type";
+import { Course } from "../entities/course.entity";
 
 export interface ICourseRepository {
   create(dto: Course): Promise<Course>;

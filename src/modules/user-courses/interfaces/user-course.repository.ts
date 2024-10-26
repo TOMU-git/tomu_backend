@@ -1,7 +1,7 @@
 // interfaces/user-course.repository.ts
 
-import { ID } from 'src/common/types/type';
-import { UserCourse } from '../entities/user-course.entity';
+import { ID } from "src/common/types/type";
+import { UserCourse } from "../entities/user-course.entity";
 
 export interface IUserCourseRepository {
   create(dto: UserCourse): Promise<UserCourse>;

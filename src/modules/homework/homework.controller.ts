@@ -23,11 +23,11 @@ import { RoleEnum } from 'src/common/enums/enum';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@ApiTags('homework')
-@Controller('homework')
+@ApiTags("homework")
+@Controller("homework")
 export class HomeworkController {
   constructor(
-    @Inject('IHomeworkService')
+    @Inject("IHomeworkService")
     private readonly homeworkService: IHomeworkService,
   ) {}
 
@@ -77,8 +77,8 @@ export class HomeworkController {
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Homework>> {
+  @Get(":id")
+  async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Homework>> {
     return await this.homeworkService.findOneById(id);
   }
 
@@ -117,8 +117,8 @@ export class HomeworkController {
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: ID): Promise<ResData<Homework>> {
+  @Delete(":id")
+  async remove(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Homework>> {
     return await this.homeworkService.delete(id);
   }
 }

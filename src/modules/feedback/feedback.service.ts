@@ -1,19 +1,19 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { IFeedbackRepository } from './interfaces/feedback.repository';
-import { ResData } from 'src/lib/resData';
-import { ID } from 'src/common/types/type';
-import { FeedbackNotFoundException } from './exception/feedback.exception';
-import { IFeedbackService } from './interfaces/feedback.service';
-import { CreateFeedbackDto } from './dto/create-feedback.dto';
-import { Feedback } from './entities/feedback.entity';
-import { UpdateFeedbackDto } from './dto/update-feedback.dto';
+import { Injectable, Inject } from "@nestjs/common";
+import { IFeedbackRepository } from "./interfaces/feedback.repository";
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { FeedbackNotFoundException } from "./exception/feedback.exception";
+import { IFeedbackService } from "./interfaces/feedback.service";
+import { CreateFeedbackDto } from "./dto/create-feedback.dto";
+import { Feedback } from "./entities/feedback.entity";
+import { UpdateFeedbackDto } from "./dto/update-feedback.dto";
 import { ICourseRepository } from '../course/interfaces/course.repository';
 import { IUserRepository } from '../user/interfaces/user.repository';
 
 @Injectable()
 export class FeedbackService implements IFeedbackService {
   constructor(
-    @Inject('IFeedbackRepository')
+    @Inject("IFeedbackRepository")
     private readonly feedbackRepository: IFeedbackRepository,
 
     @Inject('ICourseRepository')
@@ -41,7 +41,7 @@ export class FeedbackService implements IFeedbackService {
     const savedFeedback = await this.feedbackRepository.create(newFeedback);
 
     return new ResData<Feedback>(
-      'Feedback created successfully',
+      "Feedback created successfully",
       201,
       savedFeedback,
     );
@@ -50,7 +50,7 @@ export class FeedbackService implements IFeedbackService {
   async findAll(): Promise<ResData<Feedback[]>> {
     const feedbacks = await this.feedbackRepository.findAll();
 
-    return new ResData<Feedback[]>('ok', 200, feedbacks);
+    return new ResData<Feedback[]>("ok", 200, feedbacks);
   }
 
   async findOneById(id: ID): Promise<ResData<Feedback>> {
@@ -59,7 +59,7 @@ export class FeedbackService implements IFeedbackService {
       throw new FeedbackNotFoundException();
     }
 
-    return new ResData<Feedback>('ok', 200, foundFeedback);
+    return new ResData<Feedback>("ok", 200, foundFeedback);
   }
 
   async update(
@@ -71,7 +71,7 @@ export class FeedbackService implements IFeedbackService {
     const savedFeedback = await this.feedbackRepository.update(updatedFeedback);
 
     return new ResData<Feedback>(
-      'Feedback updated successfully',
+      "Feedback updated successfully",
       200,
       savedFeedback,
     );
@@ -82,7 +82,7 @@ export class FeedbackService implements IFeedbackService {
     const deletedFeedback = await this.feedbackRepository.delete(foundFeedback);
 
     return new ResData<Feedback>(
-      'Feedback deleted successfully',
+      "Feedback deleted successfully",
       200,
       deletedFeedback,
     );

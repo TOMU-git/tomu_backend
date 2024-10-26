@@ -1,4 +1,4 @@
-import { UserTariff } from '../entities/user-tariff.entity';
+import { UserTariff } from "../entities/user-tariff.entity";
 
 export interface IUserTariffRepository {
   insert(entity: UserTariff): Promise<UserTariff>;

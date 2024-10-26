@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Feedback } from './entities/feedback.entity';
-import { IFeedbackRepository } from './interfaces/feedback.repository';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Feedback } from "./entities/feedback.entity";
+import { IFeedbackRepository } from "./interfaces/feedback.repository";
 
 @Injectable()
 export class FeedbackRepository implements IFeedbackRepository {

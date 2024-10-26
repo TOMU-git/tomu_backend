@@ -1,5 +1,5 @@
-import { ID } from 'src/common/types/type';
-import { LessonProgress } from '../entities/lesson-progress.entity';
+import { ID } from "src/common/types/type";
+import { LessonProgress } from "../entities/lesson-progress.entity";
 
 export interface ILessonProgressRepository {
   create(dto: LessonProgress): Promise<LessonProgress>;

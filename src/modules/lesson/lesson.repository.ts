@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { ILessonRepository } from './interfaces/lesson.repository';
-import { Lesson } from './entities/lesson.entity';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Repository } from "typeorm";
+import { ILessonRepository } from "./interfaces/lesson.repository";
+import { Lesson } from "./entities/lesson.entity";
 
 @Injectable()
 export class LessonRepository implements ILessonRepository {

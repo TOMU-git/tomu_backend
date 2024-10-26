@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { IHomePageRepository } from './interfaces/home-page.repository';
-import { HomePage } from './entities/home-page.entity';
+import { Injectable } from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { IHomePageRepository } from "./interfaces/home-page.repository";
+import { HomePage } from "./entities/home-page.entity";
 
 @Injectable()
 export class HomePageRepository implements IHomePageRepository {

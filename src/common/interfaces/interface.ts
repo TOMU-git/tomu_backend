@@ -12,4 +12,14 @@ export interface IConfig {
   jwtRefreshExpiresIn: string;
   databaseUrl: string;
   token: string;
+  smsApiUrl: string;
+}
+
+export interface CustomAxiosResponse<T = any> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: any;
+  request?: any; // Optional property if needed
 }

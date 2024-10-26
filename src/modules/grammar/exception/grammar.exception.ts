@@ -1,19 +1,19 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException } from "@nestjs/common";
 
 export class GrammarNotFoundException extends HttpException {
   constructor() {
-    super('Grammar not found', 404);
+    super("Grammar not found", 404);
   }
 }
 
 export class GrammarAlreadyExistException extends HttpException {
   constructor() {
-    super('Grammar already exist', 400);
+    super("Grammar already exist", 400);
   }
 }
 
 export class GrammarsNotFoundByCourseId extends HttpException {
   constructor() {
-    super('No grammars found for this course', 400);
+    super("No grammars found for this course", 400);
   }
 }

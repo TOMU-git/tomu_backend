@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/common/database/baseEntity';
-import { Block } from 'src/modules/block/entities/block.entity';
-import { LessonProgress } from 'src/modules/lesson-progress/entities/lesson-progress.entity';
+import { BaseEntity } from "src/common/database/baseEntity";
+import { Block } from "src/modules/block/entities/block.entity";
+import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import {
   Column,
   Entity,
@@ -9,15 +9,15 @@ import {
   OneToMany,
 } from 'typeorm';
 
-@Entity('lessons') // Entity nomini belgilash
+@Entity("lessons") // Entity nomini belgilash
 export class Lesson extends BaseEntity {
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: "varchar", length: 255 })
   title: string;
 
   @Column({ type: 'varchar', length: 255, name: 'video_url' })
   videoUrl: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: "int" })
   /**
    * Darsning tartibini belgilaydi.
    * Bu maydon yordamida darslar o'zaro bog'liq ravishda tartiblangan holda ko'rsatiladi.
@@ -27,14 +27,14 @@ export class Lesson extends BaseEntity {
    */
   order: number;
 
-  @Column({ type: 'varchar', length: 50, name: 'mime_type' })
+  @Column({ type: "varchar", length: 50, name: "mime_type" })
   /**
    * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
    * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
    */
   mimetype: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: "int" })
   /**
    * Faylning o'lchamini baytlarda ko'rsatadi.
    * Bu maydon yuklangan faylning hajmini nazorat qilish va foydalanuvchiga ma'lumot berish imkonini beradi.
@@ -45,7 +45,7 @@ export class Lesson extends BaseEntity {
   duration: number;
 
   @ManyToOne(() => Block, (block) => block.lessons)
-  @JoinColumn({ name: 'block_id' })
+  @JoinColumn({ name: "block_id" })
   block: Block;
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)

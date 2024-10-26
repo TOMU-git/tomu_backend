@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { FileController } from './file.controller';
-import { FileService } from './file.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { FileController } from "./file.controller";
+import { FileService } from "./file.service";
 
-describe('FileController', () => {
+describe("FileController", () => {
   let controller: FileController;
 
   beforeEach(async () => {
@@ -14,7 +14,7 @@ describe('FileController', () => {
     controller = module.get<FileController>(FileController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

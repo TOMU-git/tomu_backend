@@ -13,12 +13,12 @@ import { BlockModule } from '../block/block.module';
   controllers: [LessonController],
   providers: [
     VimeoService,
-    { provide: 'ILessonService', useClass: LessonService },
-    { provide: 'ILessonRepository', useClass: LessonRepository },
+    { provide: "ILessonService", useClass: LessonService },
+    { provide: "ILessonRepository", useClass: LessonRepository },
   ],
   exports: [
-    { provide: 'ILessonService', useClass: LessonService },
-    { provide: 'ILessonRepository', useClass: LessonRepository },
+    { provide: "ILessonService", useClass: LessonService },
+    { provide: "ILessonRepository", useClass: LessonRepository },
   ],
 })
 export class LessonModule {}

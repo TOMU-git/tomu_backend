@@ -1,7 +1,7 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { IUserTariffRepository } from './interfaces/user-tariff.repository';
-import { UserTariff } from './entities/user-tariff.entity';
-import { Repository } from 'typeorm';
+import { InjectRepository } from "@nestjs/typeorm";
+import { IUserTariffRepository } from "./interfaces/user-tariff.repository";
+import { UserTariff } from "./entities/user-tariff.entity";
+import { Repository } from "typeorm";
 
 export class UserTariffRepository implements IUserTariffRepository {
   constructor(

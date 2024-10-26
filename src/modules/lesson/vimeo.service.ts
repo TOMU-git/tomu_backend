@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Vimeo } from 'vimeo';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Injectable } from "@nestjs/common";
+import { Vimeo } from "vimeo";
+import * as fs from "fs";
+import * as path from "path";
 
 @Injectable()
 export class VimeoService {
@@ -40,7 +40,7 @@ export class VimeoService {
 
             // Vaqtinchalik faylni o'chirish
             fs.unlink(tempFilePath, (err) => {
-              if (err) console.error('Error deleting temp file', err);
+              if (err) console.error("Error deleting temp file", err);
             });
 
             // Video davomiyligini olish uchun kechikish qo'shing

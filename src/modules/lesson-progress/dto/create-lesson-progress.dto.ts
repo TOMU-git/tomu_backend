@@ -1,10 +1,10 @@
-import { IsBoolean, IsInt, IsNotEmpty } from 'class-validator';
-import { ID } from 'src/common/types/type';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsInt, IsNotEmpty } from "class-validator";
+import { ID } from "src/common/types/type";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateLessonProgressDto {
   @ApiProperty({
-    description: 'Foydalanuvchi IDsi',
+    description: "Foydalanuvchi IDsi",
     type: Number,
   })
   @IsNotEmpty()
@@ -12,7 +12,7 @@ export class CreateLessonProgressDto {
   userId: ID;
 
   @ApiProperty({
-    description: 'Dars IDsi',
+    description: "Dars IDsi",
     type: Number,
   })
   @IsNotEmpty()
