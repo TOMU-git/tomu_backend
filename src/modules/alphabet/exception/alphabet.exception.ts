@@ -6,7 +6,7 @@ export class AlphabetNotFoundException extends HttpException {
   }
 }
 
-export class AlphabetAlreadyExistException extends HttpException {
+export class AlphabetOrderAlreadyExistException extends HttpException {
   constructor() {
     super('This order number is busy, choose another order number', 400);
   }
