@@ -48,7 +48,7 @@ export class BlockController {
   @Get("/course/:courseId")
   async getBlocksByCourseId(
     @Param("courseId", ParseIntPipe) courseId: ID,
-  ): Promise<Block[]> {
+  ): Promise<ResData<Block[]>> {
     return this.blockService.getBlocksByCourseId(courseId);
   }
 

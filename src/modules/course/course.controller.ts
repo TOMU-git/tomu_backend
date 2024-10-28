@@ -10,6 +10,7 @@ import {
   Inject,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { CreateCourseDto } from "./dto/create-course.dto";
@@ -33,9 +34,8 @@ export class CourseController {
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post()
+  @Post("upload")
   @UseInterceptors(FileInterceptor("fileName", fileOption))
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('fileName', fileOption))
   @ApiBody({
     schema: {
       type: "object",
@@ -50,8 +50,8 @@ export class CourseController {
           format: "binary",
         },
         videoUrl: {
-          type: 'string',
-          example: '',
+          type: "string",
+          example: "",
         },
       },
     },
@@ -61,7 +61,9 @@ export class CourseController {
     @Body() createCourseDto: CreateCourseDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<ResData<Course>> {
-
+    if (!file) {
+      throw new BadRequestException("File is required");
+    }
     return await this.courseService.create(createCourseDto, file);
   }
 
@@ -88,13 +90,14 @@ export class CourseController {
           example: "This course covers the basics of programming using Python.",
         },
         videoUrl: {
-          type: 'string',
-          example: '',
+          type: "string",
+          example: "",
         },
         fileName: {
           type: "string",
           format: "binary",
         },
+        isActive: { type: "boolean", example: true },
       },
     },
   })

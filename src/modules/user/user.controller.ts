@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
 } from "@nestjs/common";
+<<<<<<< HEAD
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { Auth } from "src/common/decorator/auth.decorator";
@@ -16,6 +17,14 @@ import { RoleEnum } from 'src/common/enums/enum';
 import { SearchUserByPhoneNumber } from './dto/create-users.dto';
 import { IUserService } from "./interfaces/user.service";
 
+=======
+import { IUserService } from "./interfaces/user.service";
+import { ApiTags } from "@nestjs/swagger";
+import { SearchUserByPhoneNumber } from "./dto/create-users.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { Auth } from "src/common/decorator/auth.decorator";
+import { RoleEnum } from "src/common/enums/enum";
+>>>>>>> 356b137e9ae6021a6c0cb0b886c8045a16fd0fa6
 @ApiTags("user")
 @Controller("user")
 export class UserController {
