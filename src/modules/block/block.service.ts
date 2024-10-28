@@ -56,14 +56,14 @@ export class BlockService implements IBlockService {
     return new ResData<Block>("Block found", 200, foundBlock);
   }
 
-  async getBlocksByCourseId(courseId: number): Promise<Block[]> {
+  async getBlocksByCourseId(courseId: number): Promise<ResData<Block[]>> {
     const blocks = await this.blockRepository.getBlocksByCourseId(courseId);
 
     if (!blocks.length) {
-      throw new BlockNotFoundException();
+      return new ResData<Block[]>("Not any block yet", 200, blocks);
     }
 
-    return blocks;
+     return new ResData<Block[]>("Block found", 200, blocks);
   }
 
   async update(
