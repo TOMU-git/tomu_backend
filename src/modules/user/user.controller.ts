@@ -8,23 +8,13 @@ import {
   Inject,
   ParseIntPipe,
   Post,
-<<<<<<< HEAD
 } from "@nestjs/common";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { ApiTags } from "@nestjs/swagger";
-import { IUserService } from "./interfaces/user.service";
-import { RoleEnum } from "src/common/enums/enum";
 import { Auth } from "src/common/decorator/auth.decorator";
-import { SearchUserByPhoneNumber } from "./dto/create-users.dto";
-=======
-} from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { IUserService } from './interfaces/user.service';
 import { RoleEnum } from 'src/common/enums/enum';
-import { Auth } from 'src/common/decorator/auth.decorator';
 import { SearchUserByPhoneNumber } from './dto/create-users.dto';
->>>>>>> bd5057896ac18570b8a29aec1b48e2fd50c4b1b7
+import { IUserService } from "./interfaces/user.service";
 
 @ApiTags("user")
 @Controller("user")

@@ -25,3 +25,8 @@ export enum MeetingStatusEnum {
   PAID = "paid",
   UNPAID = "unpaid",
 }
+
+export enum HomeworkEnum {
+  HOMEWORK = "homework",
+  LESSON = "lesson",
+}
