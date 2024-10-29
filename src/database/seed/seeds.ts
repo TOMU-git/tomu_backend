@@ -1,5 +1,5 @@
 import { connectionSource } from 'src/common/config/database.config';
-import { GenderEnum, RoleEnum } from 'src/common/enums/enum';
+import { GenderEnum, HomeworkEnum, RoleEnum } from 'src/common/enums/enum';
 import { hashed } from 'src/lib/bcrypt';
 import { Block } from 'src/modules/block/entities/block.entity';
 import { Course } from 'src/modules/course/entities/course.entity';
@@ -639,46 +639,54 @@ import { createConnection, DataSource } from 'typeorm';
 
     const newBlock1 = new Block();
     newBlock1.title = 'Module 1';
+    newBlock1.category = HomeworkEnum.LESSON;
     (newBlock1.course = newCourse1),
       await blockRepository.save<Block>(newBlock1);
 
     const newBlock2 = new Block();
     newBlock2.title = 'Module 2';
+    newBlock2.category = HomeworkEnum.LESSON;
     newBlock2.course = newCourse1;
     await blockRepository.save<Block>(newBlock2);
 
     const newBlock3 = new Block();
     (newBlock3.title = 'Module 3'),
+    newBlock3.category = HomeworkEnum.LESSON;
       (newBlock3.course = newCourse1),
       await blockRepository.save<Block>(newBlock3);
 
     const newBlock4 = new Block();
     (newBlock4.title = 'Module 4'),
+    newBlock4.category = HomeworkEnum.LESSON;
       (newBlock4.course = newCourse1),
       await blockRepository.save<Block>(newBlock4);
 
     const newBlock5 = new Block();
-    (newBlock5.title = 'Module 5'),
+    (newBlock5.title = "Module 5"), 
+    (newBlock5.category = HomeworkEnum.LESSON);
       (newBlock5.course = newCourse1),
       await blockRepository.save<Block>(newBlock5);
 
     const newBlock6 = new Block();
     (newBlock6.title = 'Module 6'),
+    newBlock6.category = HomeworkEnum.LESSON;
       (newBlock6.course = newCourse1),
       await blockRepository.save<Block>(newBlock6);
 
     const newBlock7 = new Block();
-    (newBlock7.title = 'Module 7'),
+    (newBlock7.title = "Module 7"), 
+    (newBlock7.category = HomeworkEnum.LESSON);
       (newBlock7.course = newCourse1),
       await blockRepository.save<Block>(newBlock7);
 
     const newBlock8 = new Block();
-    (newBlock8.title = 'Module 8'),
+    (newBlock8.title = "Module 8"), 
+    (newBlock8.category = HomeworkEnum.LESSON);
       (newBlock8.course = newCourse1),
       await blockRepository.save<Block>(newBlock8);
 
     const newBlock9 = new Block();
-    (newBlock9.title = 'Module 9'),
+    (newBlock9.title = "Module 9"), (newBlock9.category = HomeworkEnum.LESSON);
       (newBlock9.course = newCourse1),
       await blockRepository.save<Block>(newBlock9);
 
