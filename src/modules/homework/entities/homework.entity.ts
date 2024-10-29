@@ -5,9 +5,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("homeworks")
 export class Homework extends BaseEntity {
-  @Column({ type: "varchar", length: 255, name: "video_url" })
-  assignment_video_url: string;
-
   @Column({ type: "text" })
   description: string;
 
