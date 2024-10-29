@@ -159,8 +159,4 @@ export class AlphabetService implements IAlphabetService {
 
     return new ResData<Alphabet>('Alphabet deleted successfully', 200, data);
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 356b137e9ae6021a6c0cb0b886c8045a16fd0fa6
