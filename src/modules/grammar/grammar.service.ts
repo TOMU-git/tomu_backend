@@ -31,6 +31,7 @@ export class GrammarService implements IGrammarService {
     createGrammarDto: CreateGrammarDto,
     file: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
+    console.log(createGrammarDto);
     // Qo'shilayotgan grammarnı nomiga ko'ra tekshirish
        // Kurs mavjudligini tekshirish
     const course = await this.courseRepository.findById(
@@ -49,14 +50,12 @@ export class GrammarService implements IGrammarService {
 
     // Yangi grammarnı yaratish
     const newGrammar = new Grammar();
-    Object.assign(newGrammar, {
-      ...createGrammarDto,
-      course,
-      videoUrl,
-      mimetype: file.mimetype,
-      size: file.size,
-      duration,
-    });
+    newGrammar.duration = duration; 
+    newGrammar.title = createGrammarDto.title;
+    newGrammar.videoUrl = videoUrl;
+    newGrammar.courseId = createGrammarDto.courseId;
+    newGrammar.mimetype = file.mimetype;
+    newGrammar.size = file.size;
 
     const savedGrammar = await this.grammarRepository.create(newGrammar);
 
@@ -67,9 +66,9 @@ export class GrammarService implements IGrammarService {
     );
   }
 
-  async findGrammarByCourseId(id: number): Promise<ResData<Grammar[]>> {
+  async findGrammarByCourseId(courseId: number): Promise<ResData<Grammar[]>> {
     const foundGrammars =
-      await this.grammarRepository.findGrammarsByCourseId(id);
+      await this.grammarRepository.findGrammarsByCourseId(courseId);
     if (foundGrammars.length === 0) {
       throw new GrammarsNotFoundByCourseId();
     }
@@ -107,10 +106,7 @@ export class GrammarService implements IGrammarService {
       const course = await this.courseRepository.findById(
         updateGrammarDto.courseId,
       );
-      if (!course) {
-        throw new CourseNotFoundException();
-      }
-      foundData.course = course;
+      foundData.courseId = updateGrammarDto.courseId;
     }
 
     // Yangilangan ma'lumotlarni tayyorlash

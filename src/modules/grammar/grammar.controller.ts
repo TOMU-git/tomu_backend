@@ -70,15 +70,9 @@ export class GrammarController {
     return await this.grammarService.findAll();
   }
 
-  @ApiQuery({
-    name: "courseId",
-    type: Number,
-    required: true,
-    description: "Kurs ID bo'yicha grammatika olish",
-  })
-  @Get("/by-course/:courseId")
+  @Get("/course/:id")
   async findGrammarByCourseId(
-    @Param("courseId", ParseIntPipe) courseId: number,
+    @Param("id", ParseIntPipe) courseId: number,
   ): Promise<ResData<Array<Grammar>>> {
     return await this.grammarService.findGrammarByCourseId(courseId);
   }

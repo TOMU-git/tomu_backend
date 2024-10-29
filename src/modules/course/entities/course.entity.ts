@@ -1,7 +1,6 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Block } from "src/modules/block/entities/block.entity";
 import { Feedback } from "src/modules/feedback/entities/feedback.entity";
-import { Grammar } from "src/modules/grammar/entities/grammar.entity";
 import { UserCourse } from "src/modules/user-courses/entities/user-course.entity";
 import { Tariff } from "src/modules/tariff/entities/tariff.entity"; // Tariffni import qilish
 import { Column, Entity, OneToMany } from "typeorm";
@@ -57,13 +56,6 @@ export class Course extends BaseEntity {
     nullable: true, // Blocklar bo'sh qoldirilishi mumkin
   })
   blockss: Block[];
-
-  // Grammatikalar bilan bog'lanish
-  @OneToMany(() => Grammar, (grammar) => grammar.course, {
-    onDelete: 'NO ACTION', // Kurs o'chirilganda bog'langan grammatikalar o'chirilmaydi
-    nullable: true, // Grammatikalar bo'sh qoldirilishi mumkin
-  })
-  grammars: Grammar[];
 
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
