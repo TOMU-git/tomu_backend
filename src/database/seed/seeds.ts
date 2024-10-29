@@ -858,7 +858,7 @@ import { createConnection, DataSource } from "typeorm";
             if (!existingLesson) {
               const lesson = new Lesson();
               lesson.title = `${title} bo'limi ${order}`;
-              lesson.videoUrl = "https://player.vimeo.com/video/1022490918";
+              lesson.videoUrl = "https://player.vimeo.com/video/1024292117";
               lesson.order = order; // Order qiymati 1-15 gacha
               lesson.mimetype = "video/mp4";
               lesson.size = 2928407;
