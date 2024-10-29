@@ -56,7 +56,6 @@ export class BlockService implements IBlockService {
     }
     return new ResData<Block>("Block found", 200, foundBlock);
   }
-
   async getBlocksByCourseId(courseId: number): Promise<ResData<Block[]>> {
     const blocks = await this.blockRepository.getBlocksByCourseId(courseId);
 
@@ -78,6 +77,10 @@ export class BlockService implements IBlockService {
 
     // Blokni yangilash, lessonlarni tekshirish shart emas
     block.title = updateBlockDto.title;
+    block.category = updateBlockDto.category;
+    block.course = await this.courseRepository.findById(
+      Number(updateBlockDto.courseId),
+    );
 
     const updatedData = await this.blockRepository.update(block);
     return new ResData<Block>("Block updated successfully", 200, updatedData);
