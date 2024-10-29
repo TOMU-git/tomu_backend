@@ -32,6 +32,7 @@ export class BlockService implements IBlockService {
     // Yangi blokni yaratish, dars videolarini tekshirish shart emas
     const newBlock = new Block();
     newBlock.title = createBlockDto.title;
+    newBlock.category = createBlockDto.category;
     newBlock.course = course;
 
     const newData = await this.blockRepository.create(newBlock);
