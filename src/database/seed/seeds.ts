@@ -66,6 +66,15 @@ import { createConnection, DataSource } from "typeorm";
       (newUser1.password = await hashed("password"));
     await userRepository.save<User>(newUser1);
 
+    const newUser2 = new User();
+    (newUser2.firstName = "Ustoziation"),
+      (newUser2.lastName = "Mr"),
+      (newUser2.phoneNumber = "+998991234567"),
+      (newUser2.role = RoleEnum.TEACHER),
+      (newUser2.gender = GenderEnum.MALE),
+      (newUser2.password = await hashed("password"));
+    await userRepository.save<User>(newUser2);
+
     const firstNameList = [
       "Ilyosbek",
       "Anvar",
