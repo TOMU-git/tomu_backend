@@ -5,9 +5,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("homeworks")
 export class Homework extends BaseEntity {
-  @Column({ type: "varchar", length: 255, name: "video_url" })
-  assignment_video_url: string;
-
   @Column({ type: "text" })
   description: string;
 
@@ -18,14 +15,13 @@ export class Homework extends BaseEntity {
   @JoinColumn({name: 'block_id'}) // Establish the join column for the relationship
   block: Block; // Reference to the block associated with this homework
 
-  @Column({ name: "block_id", type: "int", nullable: false })
-  blockId: number;
   /**
    * Homework video URL manzili.
    * Ushbu maydon homework uchun qo'shilgan video manzilini saqlaydi.
    */
   @Column({ type: 'varchar', length: 255, name: 'video_url' })
   videoUrl: string;
+  
   /**
    * Fayl turini (mimetype) ko'rsatadi, masalan, 'video/mp4', 'video/x-ms-wmv' va hokazo.
    * Bu maydon dars bilan bog'liq faylning turini aniqlashga yordam beradi.
@@ -54,6 +50,7 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: 'int' })
   duration: number;
+
   /**
    * Homeworkning o'zlashtirilishi (progressi) ro'yxati.
    * Homework va HomeworkProgress o'rtasidagi munosabatni ifodalaydi.

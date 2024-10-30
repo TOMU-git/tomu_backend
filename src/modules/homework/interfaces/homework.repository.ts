@@ -8,5 +8,6 @@ export interface IHomeworkRepository {
   delete(entity: Homework): Promise<Homework>;
   findById(id: ID): Promise<Homework | null>;
   findOneByOrder(order: ID, blockId: ID): Promise<Homework | null>;
+  getNextFiveVideos(order: number, blockId: ID): Promise<Array<Homework>>;
   findOneByName(title: string): Promise<Homework | null>;
 }

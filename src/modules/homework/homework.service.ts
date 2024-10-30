@@ -20,7 +20,7 @@ export class HomeworkService implements IHomeworkService {
     @Inject("IHomeworkRepository")
     private readonly homeworkRepository: IHomeworkRepository,
 
-    @Inject('IBlockRepository')
+    @Inject("IBlockRepository")
     private readonly blockRepository: IBlockRepository,
 
     private readonly vimeoService: VimeoService, // Inject VimeoService
@@ -49,11 +49,10 @@ export class HomeworkService implements IHomeworkService {
 
     // return new ResData<Homework>('Homework created successfully', 201);
 
-
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
       createHomeworkDto.description,
-      'Dars videosi',
+      "Dars videosi",
     );
 
     let newHomework = new Homework();
@@ -116,7 +115,7 @@ export class HomeworkService implements IHomeworkService {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateHomeworkDto.description,
-        'Dars videosi',
+        "Dars videosi",
         // file.size,
       );
 
@@ -125,13 +124,29 @@ export class HomeworkService implements IHomeworkService {
       foundData.size = file.size;
       foundData.duration = duration;
     }
-    const updatedData = Object.assign(foundData, updateHomeworkDto)
+    const updatedData = Object.assign(foundData, updateHomeworkDto);
     // const data = await this.homeworkRepository.update(foundData);
 
     return new ResData<Homework>(
-      'Homework updated successfully',
+      "Homework updated successfully",
       200,
       updatedData,
+    );
+  }
+
+  async getNextFiveVideos(
+    order: ID,
+    blockId: ID,
+  ): Promise<ResData<Array<Homework>>> {
+    const data = await this.homeworkRepository.getNextFiveVideos(
+      order,
+      blockId,
+    );
+
+    return new ResData<Array<Homework>>(
+      "Videos fetched successfully",
+      200,
+      data,
     );
   }
 
