@@ -106,7 +106,7 @@ export class CourseController {
     @Param("id", ParseIntPipe) id: ID,
     @UploadedFile() file: Express.Multer.File, // Faylni qabul qilish
     @Body() updateCourseDto: UpdateCourseDto,
-  ): Promise<ResData<Course>> {
+  ): Promise<ResData<Partial<Course>>> {
     return await this.courseService.update(id, updateCourseDto, file);
   }
 

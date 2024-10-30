@@ -73,41 +73,64 @@ export class CourseService implements ICourseService {
   async update(
     id: ID,
     updateCourseDto: UpdateCourseDto,
-    file?: Express.Multer.File, // Fayl ixtiyoriy
-  ): Promise<ResData<Course>> {
+    file?: Express.Multer.File,
+  ): Promise<ResData<Partial<Course>>> {
     const { data: foundData } = await this.findOneById(id);
 
-    // Eski faylni o'chirish agar mavjud bo'lsa va yangi fayl yuklangan bo'lsa
+    // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
       try {
+        // Fayl mavjudligini tekshirish va o'chirish
         const removeResult = await this.fileService.removeByImageUrl(
           foundData.imageUrl,
         );
         if (!removeResult) {
-          console.log("Fayl topilmadi yoki o‘chirilmadi.");
+          console.log("File not found");
         }
       } catch (error) {
-        console.error("Error occurred while deleting the file:", error);
-        throw new Error("An error occurred while deleting the file.");
+        console.error("Error occurred while deleting the file:", error.message);
+        throw new Error("Faylni o'chirishda xato yuz berdi.");
       }
     }
 
-    // Yangi faylni yuklash va imageUrl ni yangilash
+    // Yangi faylni saqlash
     if (file) {
       const savedFile = await this.fileService.create(file);
-      updateCourseDto = Object.assign(updateCourseDto, {
-        imageUrl: savedFile.data.path,
-      });
+      foundData.imageUrl = savedFile.data.path;
     }
 
+    // Yangilanish ma'lumotlari
+    const updateData: Partial<Course> = {};
 
-    // Kurs ma'lumotlarini yangilash uchun eski ma'lumotlarni yangilangan DTO bilan birlashtirish
-    const updatedData = Object.assign(foundData, updateCourseDto);
+    if (updateCourseDto.description !== "") {
+      updateData.description = updateCourseDto.description;
+    }
+
+    if (updateCourseDto.title !== "") {
+      updateData.title = updateCourseDto.title;
+    }
+
+    if (updateCourseDto.videoUrl !== "") {
+      updateData.videoUrl = updateCourseDto.videoUrl;
+    }
+    
+    if (updateCourseDto.isActive) {
+      updateData.isActive = updateCourseDto.isActive;
+    }
+
+    // Yangilangan ma'lumotlarni birlashtirish
+    const updatedData = Object.assign(foundData, updateData);
 
     // Kursni yangilash
     const data = await this.courseRepository.update(updatedData);
 
-    return new ResData<Course>("Course updated successfully", 200, data);
+    // Faqat yangilangan ma'lumotlarni qaytaramiz
+    return new ResData<Partial<Course>>("Course updated successfully", 200, {
+      title: data.title,
+      description: data.description,
+      videoUrl: data.videoUrl,
+      imageUrl: data.imageUrl,
+    });
   }
 
   async delete(id: ID): Promise<ResData<Course>> {

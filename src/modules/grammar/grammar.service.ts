@@ -70,7 +70,7 @@ export class GrammarService implements IGrammarService {
     const foundGrammars =
       await this.grammarRepository.findGrammarsByCourseId(courseId);
     if (foundGrammars.length === 0) {
-      throw new GrammarsNotFoundByCourseId();
+      return new ResData<Grammar[]>("Not any grammar yet", 200, foundGrammars);
     }
     return new ResData<Grammar[]>(
       "Grammars found successfully",
