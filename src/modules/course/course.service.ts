@@ -76,7 +76,7 @@ export class CourseService implements ICourseService {
     file?: Express.Multer.File,
   ): Promise<ResData<Partial<Course>>> {
     const { data: foundData } = await this.findOneById(id);
-
+console.log(updateCourseDto)
     // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
       try {
@@ -92,6 +92,8 @@ export class CourseService implements ICourseService {
         throw new Error("Faylni o'chirishda xato yuz berdi.");
       }
     }
+
+    foundData.isActive = updateCourseDto.isActive;
 
     // Yangi faylni saqlash
     if (file) {
@@ -113,6 +115,7 @@ export class CourseService implements ICourseService {
     if (updateCourseDto.videoUrl !== "") {
       updateData.videoUrl = updateCourseDto.videoUrl;
     }
+
 
     // Yangilangan ma'lumotlarni birlashtirish
     const updatedData = Object.assign(foundData, updateData);
