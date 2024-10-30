@@ -36,12 +36,12 @@ export class UpdateCourseDto {
   fileName?: string;
   
   @ApiPropertyOptional({
+    type: Boolean,
     description: "Kurs faol yoki yo'qligini ko'rsatadi",
     example: true,
     default: true,
   })
   @IsBoolean({ message: "isActive qiymati boolean bo'lishi kerak" })
   @IsOptional()
-  @Transform(({ value }) => value === "true" || value === true)
-  isActive?: boolean = true;
+  isActive: boolean;
 }

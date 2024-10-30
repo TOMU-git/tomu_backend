@@ -32,6 +32,7 @@ export class BlockService implements IBlockService {
     // Yangi blokni yaratish, dars videolarini tekshirish shart emas
     const newBlock = new Block();
     newBlock.title = createBlockDto.title;
+    newBlock.category = createBlockDto.category;
     newBlock.course = course;
 
     const newData = await this.blockRepository.create(newBlock);
@@ -48,6 +49,11 @@ export class BlockService implements IBlockService {
     return new ResData<Block[]>("Blocks retrieved successfully", 200, data);
   }
 
+  async findAllHomeworks(): Promise<ResData<Block[]>> {
+    const HomeworkBlocks = await this.blockRepository.findAllHomeworkBlocks();
+    return new ResData<Block[]>("Homework modules", 200, HomeworkBlocks)
+  }
+
   async findOneById(id: ID): Promise<ResData<Block>> {
     const foundBlock = await this.blockRepository.findById(id);
     if (!foundBlock) {
@@ -55,15 +61,14 @@ export class BlockService implements IBlockService {
     }
     return new ResData<Block>("Block found", 200, foundBlock);
   }
-
-  async getBlocksByCourseId(courseId: number): Promise<Block[]> {
+  async getBlocksByCourseId(courseId: number): Promise<ResData<Block[]>> {
     const blocks = await this.blockRepository.getBlocksByCourseId(courseId);
 
     if (!blocks.length) {
-      throw new BlockNotFoundException();
+      return new ResData<Block[]>("Not any block yet", 200, blocks);
     }
 
-    return blocks;
+     return new ResData<Block[]>("Block found", 200, blocks);
   }
 
   async update(
@@ -77,6 +82,10 @@ export class BlockService implements IBlockService {
 
     // Blokni yangilash, lessonlarni tekshirish shart emas
     block.title = updateBlockDto.title;
+    block.category = updateBlockDto.category;
+    block.course = await this.courseRepository.findById(
+      Number(updateBlockDto.courseId),
+    );
 
     const updatedData = await this.blockRepository.update(block);
     return new ResData<Block>("Block updated successfully", 200, updatedData);

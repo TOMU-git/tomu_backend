@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, Length, MaxLength } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString, Length, MaxLength } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger"; // Swagger dekoratorini import qilish
 import { Transform } from "class-transformer";
 
@@ -20,11 +20,11 @@ export class CreateGrammarDto {
   video: any; // Fayl yuklash uchun maydon
 
   @ApiProperty({
+    type: Number,
     description: "The ID of the associated course, if any",
     example: 1,
     required: false, // Bu maydon ixtiyoriy
   })
-  @Transform(({ value }) => parseInt(value, 10)) // Stringni avtomatik raqamga aylantirish
   @IsOptional()
   courseId?: number;
 }

@@ -39,6 +39,10 @@ export class BlockController {
   async findAll(): Promise<ResData<Array<Block>>> {
     return await this.blockService.findAll();
   }
+  @Get('homework/category')
+  async findAllHomeworkCategory(): Promise<ResData<Array<Block>>> {
+    return await this.blockService.findAll();
+  }
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Block>> {
@@ -48,7 +52,7 @@ export class BlockController {
   @Get("/course/:courseId")
   async getBlocksByCourseId(
     @Param("courseId", ParseIntPipe) courseId: ID,
-  ): Promise<Block[]> {
+  ): Promise<ResData<Block[]>> {
     return this.blockService.getBlocksByCourseId(courseId);
   }
 

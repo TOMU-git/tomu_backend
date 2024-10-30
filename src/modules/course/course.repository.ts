@@ -19,9 +19,7 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findAll(): Promise<Array<Course>> {
-    return await this.courseRepository.find({
-      relations: ['blocks'], // Bu yerda 'blocks' aloqasini yuklayapmiz
-    });
+    return await this.courseRepository.find({});
   }
 
   async update(entity: Course): Promise<Course> {

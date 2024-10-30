@@ -16,7 +16,7 @@ export interface ICourseService {
     dto: UpdateCourseDto,
     file: Express.Multer.File,
     video?: Express.Multer.File,
-  ): Promise<ResData<Course>>;
+  ): Promise<ResData<Partial<Course>>>;
   create(dto: CreateCourseDto): Promise<ResData<Course>>;
   delete(id: ID): Promise<ResData<Course>>;
 }

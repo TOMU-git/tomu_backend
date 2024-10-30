@@ -67,7 +67,6 @@ export class AlphabetController {
     }
     return this.alphabetService.create(createAlphabetDto, file);
   }
-
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Alphabet>>> {
@@ -91,7 +90,7 @@ export class AlphabetController {
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(":id")
   @ApiConsumes("multipart/form-data")
-  @UseInterceptors(FileInterceptor("image")) // 'image' - yuklanayotgan fayl maydoni nomi
+  @UseInterceptors(FileInterceptor("video")) // 'image' - yuklanayotgan fayl maydoni nomi
   @ApiBody({
     description: "Yuklanadigan image ma'lumotlari va o'zgarishlar",
     type: UpdateAlphabetDto,
@@ -101,7 +100,7 @@ export class AlphabetController {
         name: { type: "string" },
         order: { type: "number" },
         courseId: { type: "number" },
-        image: {
+        video: {
           // Image faylini yuklash maydoni
           type: "string",
           format: "binary", // Bu maydon fayl yuklash uchun kerak
@@ -114,6 +113,7 @@ export class AlphabetController {
     @Body() updateAlphabetDto: UpdateAlphabetDto,
     @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Alphabet>> {
+    console.log(file);
     return await this.alphabetService.update(id, updateAlphabetDto, file);
   }
 

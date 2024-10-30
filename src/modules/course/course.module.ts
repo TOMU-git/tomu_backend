@@ -6,11 +6,13 @@ import { CourseController } from "./course.controller";
 import { CourseService } from "./course.service";
 import { SharedModule } from "../shared/shared.module";
 import { FileModule } from "../file/file.module";
+import { VimeoService } from "../lesson/vimeo.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Course]), SharedModule, FileModule],
   controllers: [CourseController],
   providers: [
+  VimeoService,
     { provide: "ICourseService", useClass: CourseService },
     { provide: "ICourseRepository", useClass: CourseRepository },
 

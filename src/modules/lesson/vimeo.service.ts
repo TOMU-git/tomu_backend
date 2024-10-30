@@ -27,7 +27,6 @@ export class VimeoService {
         if (err) {
           return reject(err);
         }
-
         this.vimeoClient.upload(
           tempFilePath,
           {
