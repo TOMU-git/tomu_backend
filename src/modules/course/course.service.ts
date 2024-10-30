@@ -92,16 +92,21 @@ export class CourseService implements ICourseService {
       }
     }
 
-    // Yangi faylni yuklash va imageUrl ni yangilash
+    let imageUrl = null;
     if (file) {
       const savedFile = await this.fileService.create(file);
-      updateCourseDto = Object.assign(updateCourseDto, {
-        imageUrl: savedFile.data.path,
-      });
+      imageUrl = savedFile.data.path;
     }
 
+    const updateData = {
+      description:
+        updateCourseDto.description === "" ? foundData.description : undefined,
+      title: updateCourseDto.title === "" ? foundData.title : undefined,
+      videUrl: updateCourseDto.videoUrl === "" ? foundData.videoUrl : undefined,
+    };
+
     // Kurs ma'lumotlarini yangilash uchun eski ma'lumotlarni yangilangan DTO bilan birlashtirish
-    const updatedData = Object.assign(foundData, updateCourseDto);
+    const updatedData = Object.assign(foundData, updateData, imageUrl);
 
     // Kursni yangilash
     const data = await this.courseRepository.update(updatedData);

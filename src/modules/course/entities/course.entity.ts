@@ -51,12 +51,6 @@ export class Course extends BaseEntity {
   })
   blocks: Block[];
 
-  @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
-    onDelete: 'NO ACTION', // Kurs o'chirilganda bog'langan blocklar o'chirilmaydi
-    nullable: true, // Blocklar bo'sh qoldirilishi mumkin
-  })
-  blockss: Block[];
-
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
     onDelete: 'NO ACTION', // Kurs o'chirilganda bog'langan alifbolar o'chirilmaydi
