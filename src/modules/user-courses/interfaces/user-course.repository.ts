@@ -9,6 +9,6 @@ export interface IUserCourseRepository {
   update(entity: UserCourse): Promise<UserCourse>;
   delete(entity: UserCourse): Promise<UserCourse>;
   findById(id: ID): Promise<UserCourse | null>;
-  findByUserId(userId: ID): Promise<Array<UserCourse>>;
+  findByUserId(userId: ID): Promise<UserCourse>;
   findByCourseId(courseId: ID): Promise<Array<UserCourse>>;
 }

@@ -14,11 +14,8 @@ export class Block extends BaseEntity {
   @Column({ type: "enum", enum: HomeworkEnum, nullable: false})
   category: HomeworkEnum;
 
-  @ManyToOne(() => Course, (course) => course.blocks, {
-    onDelete: "NO ACTION", // Kurs o'chirilganda hech narsa bo'lmaydi
-  })
-  @JoinColumn({ name: "course_id" })
-  course: Course; // Kurs bilan bog'liq
+  @Column({ name: 'course_id', type: 'integer', nullable: false })
+  courseId: number;
 
   @OneToMany(() => Homework, (homework) => homework.block)
   homeworks: Homework[];

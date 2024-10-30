@@ -12,12 +12,16 @@ import {
   UserCourseAlreadyExistException,
   UserCourseNotFoundException,
 } from "./exception/user-course.exception";
+import { ICourseService } from "../course/interfaces/course.service";
+import { IUserService } from "../user/interfaces/user.service";
 
 @Injectable()
 export class UserCourseService implements IUserCourseService {
   constructor(
     @Inject("IUserCourseRepository")
     private readonly userCourseRepository: IUserCourseRepository,
+    @Inject("ICourseService") private readonly courseService: ICourseService,
+    @Inject("IUserService") private readonly userService: IUserService
   ) {}
 
   async create(
@@ -29,6 +33,9 @@ export class UserCourseService implements IUserCourseService {
     if (foundData) {
       throw new UserCourseAlreadyExistException();
     }
+    
+    await this.courseService.findOneById(createUserCourseDto.courseId);
+    await this.userService.findOneById(createUserCourseDto.userId);
     let newUserCourse = new UserCourse();
     newUserCourse = Object.assign(newUserCourse, createUserCourseDto);
     const newData = await this.userCourseRepository.create(newUserCourse);
@@ -60,7 +67,6 @@ export class UserCourseService implements IUserCourseService {
     const foundData = await this.findOneById(id);
     const updatedData = Object.assign(foundData.data, updateUserCourseDto);
     const data = await this.userCourseRepository.update(updatedData);
-
     return new ResData<UserCourse>(
       "User Course updated successfully",
       200,

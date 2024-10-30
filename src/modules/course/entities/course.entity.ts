@@ -44,13 +44,6 @@ export class Course extends BaseEntity {
   })
   feedbacks: Feedback[];
 
-  // Blocklar bilan bog'lanish
-  @OneToMany(() => Block, (block) => block.course, {
-    onDelete: "SET NULL",
-    nullable: true,
-  })
-  blocks: Block[];
-
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {
     onDelete: 'NO ACTION', // Kurs o'chirilganda bog'langan alifbolar o'chirilmaydi

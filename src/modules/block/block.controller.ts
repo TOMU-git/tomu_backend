@@ -39,9 +39,9 @@ export class BlockController {
   async findAll(): Promise<ResData<Array<Block>>> {
     return await this.blockService.findAll();
   }
-  @Get('homework/category')
-  async findAllHomeworkCategory(): Promise<ResData<Array<Block>>> {
-    return await this.blockService.findAll();
+  @Get('course/homework/:courseId')
+  async findAllHomeworkCategory(@Param('courseId', ParseIntPipe) courseId: number): Promise<ResData<Array<Block>>> {
+    return await this.blockService.findAllHomeworks(courseId);
   }
 
   @Get(":id")

@@ -38,12 +38,6 @@ export class User extends BaseEntity {
   })
   userTariffs: UserTariff[];
 
-  // Foydalanuvchi o'qigan kurslar bilan bog'lanish
-  @OneToMany(() => UserCourse, (userCourse) => userCourse.user, {
-    onDelete: "NO ACTION",
-  })
-  userCourses: UserCourse[];
-
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];

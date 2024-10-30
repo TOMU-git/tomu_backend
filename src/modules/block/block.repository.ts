@@ -25,8 +25,8 @@ export class BlockRepository implements IBlockRepository {
     });
   }
 
-  async findAllHomeworkBlocks(): Promise<Block[]>{
-    return await this.blockRepository.find({where : {category: HomeworkEnum.HOMEWORK}})
+  async findAllHomeworkBlocks(id: number): Promise<Block[]>{
+    return await this.blockRepository.find({where : {courseId: id, category: HomeworkEnum.HOMEWORK}})
   }
 
   async update(entity: Block): Promise<Block> {
@@ -45,9 +45,9 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.findOneBy({ title });
   }
 
-  async getBlocksByCourseId(courseId: number): Promise<Block[]> {
+  async getBlocksByCourseId(id: number): Promise<Block[]> {
     return this.blockRepository.find({
-      where: { course: { id: courseId } },
+      where: { courseId: id},
       relations: ["course"],
     });
   }

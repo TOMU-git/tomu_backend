@@ -36,10 +36,9 @@ export class UserCourseRepository implements IUserCourseRepository {
     return await this.userCourseRepository.findOneBy({ id });
   }
 
-  async findByUserId(userId: ID): Promise<Array<UserCourse>> {
-    return await this.userCourseRepository.findBy({ user: { id: userId } });
+  async findByUserId(id: ID): Promise<UserCourse> {
+    return await this.userCourseRepository.findOneBy({userId: id});
   }
-
   async findByCourseId(courseId: ID): Promise<Array<UserCourse>> {
     return await this.userCourseRepository.findBy({ course: { id: courseId } });
   }

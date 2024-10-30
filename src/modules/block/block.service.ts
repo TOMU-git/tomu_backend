@@ -22,18 +22,15 @@ export class BlockService implements IBlockService {
 
   async create(createBlockDto: CreateBlockDto): Promise<ResData<Block>> {
     // Kursni topish
-    const course = await this.courseRepository.findById(
+    await this.courseRepository.findById(
       Number(createBlockDto.courseId),
     );
-    if (!course) {
-      throw new CourseNotFoundException();
-    }
 
     // Yangi blokni yaratish, dars videolarini tekshirish shart emas
     const newBlock = new Block();
     newBlock.title = createBlockDto.title;
     newBlock.category = createBlockDto.category;
-    newBlock.course = course;
+    newBlock.courseId = createBlockDto.courseId;
 
     const newData = await this.blockRepository.create(newBlock);
     return new ResData<Block>("Block created successfully", 201, newData);
@@ -49,8 +46,8 @@ export class BlockService implements IBlockService {
     return new ResData<Block[]>("Blocks retrieved successfully", 200, data);
   }
 
-  async findAllHomeworks(): Promise<ResData<Block[]>> {
-    const HomeworkBlocks = await this.blockRepository.findAllHomeworkBlocks();
+  async findAllHomeworks(id: number): Promise<ResData<Block[]>> {
+    const HomeworkBlocks = await this.blockRepository.findAllHomeworkBlocks(id);
     return new ResData<Block[]>("Homework modules", 200, HomeworkBlocks)
   }
 
@@ -80,12 +77,14 @@ export class BlockService implements IBlockService {
       throw new BlockNotFoundException();
     }
 
+    await this.courseRepository.findById(
+      Number(updateBlockDto.courseId),
+    );
+
     // Blokni yangilash, lessonlarni tekshirish shart emas
     block.title = updateBlockDto.title;
     block.category = updateBlockDto.category;
-    block.course = await this.courseRepository.findById(
-      Number(updateBlockDto.courseId),
-    );
+    block.courseId = updateBlockDto.courseId;
 
     const updatedData = await this.blockRepository.update(block);
     return new ResData<Block>("Block updated successfully", 200, updatedData);
