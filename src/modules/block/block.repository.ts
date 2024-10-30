@@ -47,8 +47,7 @@ export class BlockRepository implements IBlockRepository {
 
   async getBlocksByCourseId(id: number): Promise<Block[]> {
     return this.blockRepository.find({
-      where: { courseId: id},
-      relations: ["course"],
+      where: { courseId: id}
     });
   }
 }
