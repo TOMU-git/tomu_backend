@@ -18,7 +18,7 @@ export class FileService {
     created.mimetype = createFileDto.mimetype;
     created.originalname = createFileDto.originalname;
     created.size = createFileDto.size;
-    created.path = `https://lms.ilyosbekdev.uz/${createFileDto.path}`;
+    created.path = `https://tomubackend.tomu.uz/$%7BcreateFileDto.path%7D`;
     const newData = await this.fileRepository.create(created);
     return new ResData<File>("File was created successfully", 201, newData);
   }
