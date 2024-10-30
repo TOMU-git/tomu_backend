@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Block } from "./entities/block.entity";
 import { IBlockRepository } from "./interfaces/block.repository";
+import { HomeworkEnum } from "src/common/enums/enum";
 
 @Injectable()
 export class BlockRepository implements IBlockRepository {
@@ -22,6 +23,10 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.find({ order: {createdAt: 'ASC'},
       relations: ['lessons']
     });
+  }
+
+  async findAllHomeworkBlocks(): Promise<Block[]>{
+    return await this.blockRepository.find({where : {category: HomeworkEnum.HOMEWORK}})
   }
 
   async update(entity: Block): Promise<Block> {

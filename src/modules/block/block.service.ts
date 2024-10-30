@@ -49,6 +49,11 @@ export class BlockService implements IBlockService {
     return new ResData<Block[]>("Blocks retrieved successfully", 200, data);
   }
 
+  async findAllHomeworks(): Promise<ResData<Block[]>> {
+    const HomeworkBlocks = await this.blockRepository.findAllHomeworkBlocks();
+    return new ResData<Block[]>("Homework modules", 200, HomeworkBlocks)
+  }
+
   async findOneById(id: ID): Promise<ResData<Block>> {
     const foundBlock = await this.blockRepository.findById(id);
     if (!foundBlock) {

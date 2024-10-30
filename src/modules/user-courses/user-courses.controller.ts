@@ -30,8 +30,6 @@ export class UserCoursesController {
     private readonly userCourseService: IUserCourseService,
   ) {}
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
   @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Post()
   async create(

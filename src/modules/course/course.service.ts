@@ -100,6 +100,7 @@ export class CourseService implements ICourseService {
       });
     }
 
+
     // Kurs ma'lumotlarini yangilash uchun eski ma'lumotlarni yangilangan DTO bilan birlashtirish
     const updatedData = Object.assign(foundData, updateCourseDto);
 
