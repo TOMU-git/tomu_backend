@@ -9,4 +9,5 @@ export interface IBlockRepository {
   findById(id: ID): Promise<Block | null>;
   findOneByName(title: string): Promise<Block | null>;
   getBlocksByCourseId(courseId: number): Promise<Block[]>;
+  getBlocksHomeworksByCourseId(courseId: number): Promise<Block[]>;
 }

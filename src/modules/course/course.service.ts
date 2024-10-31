@@ -76,7 +76,6 @@ export class CourseService implements ICourseService {
     file?: Express.Multer.File,
   ): Promise<ResData<Partial<Course>>> {
     const { data: foundData } = await this.findOneById(id);
-console.log(updateCourseDto)
     // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
       try {
@@ -116,7 +115,7 @@ console.log(updateCourseDto)
       updateData.videoUrl = updateCourseDto.videoUrl;
     }
 
-
+   
     // Yangilangan ma'lumotlarni birlashtirish
     const updatedData = Object.assign(foundData, updateData);
 

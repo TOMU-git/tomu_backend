@@ -45,11 +45,18 @@ export class BlockController {
     return await this.blockService.findOneById(id);
   }
 
-  @Get("/course/:courseId")
-  async getBlocksByCourseId(
+  @Get("/course-lesson/:courseId")
+  async getBlocksLessonsByCourseId(
     @Param("courseId", ParseIntPipe) courseId: ID,
   ): Promise<ResData<Block[]>> {
     return this.blockService.getBlocksByCourseId(courseId);
+  }
+
+  @Get("/course-homework/:courseId")
+  async getBlocksHomeworksByCourseId(
+    @Param("courseId", ParseIntPipe) courseId: ID,
+  ): Promise<ResData<Block[]>> {
+    return this.blockService.getBlocksHomeworksByCourseId(courseId);
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
