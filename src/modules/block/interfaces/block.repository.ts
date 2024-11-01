@@ -10,4 +10,5 @@ export interface IBlockRepository {
   findAllHomeworkBlocks(): Promise<Block[]>;
   findOneByName(title: string): Promise<Block | null>;
   getBlocksByCourseId(courseId: number): Promise<Block[]>;
+  getBlocksHomeworksByCourseId(courseId: number): Promise<Block[]>;
 }

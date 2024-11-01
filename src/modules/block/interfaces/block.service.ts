@@ -13,4 +13,5 @@ export interface IBlockService {
   create(dto: CreateBlockDto): Promise<ResData<Block>>;
   delete(id: ID): Promise<ResData<Block>>;
   getBlocksByCourseId(courseId: number): Promise<ResData<Block[]>>;
+  getBlocksHomeworksByCourseId(courseId: number): Promise<ResData<Block[]>>;
 }

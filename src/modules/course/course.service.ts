@@ -76,22 +76,23 @@ export class CourseService implements ICourseService {
     file?: Express.Multer.File,
   ): Promise<ResData<Partial<Course>>> {
     const { data: foundData } = await this.findOneById(id);
+    // // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
+    // if (file && foundData.imageUrl) {
+    //   try {
+    //     // Fayl mavjudligini tekshirish va o'chirish
+    //     const removeResult = await this.fileService.removeByImageUrl(
+    //       foundData.imageUrl,
+    //     );
+    //     if (!removeResult) {
+    //       console.log("File not found");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error occurred while deleting the file:", error.message);
+    //     throw new Error("Faylni o'chirishda xato yuz berdi.");
+    //   }
+    // }
 
-    // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
-    if (file && foundData.imageUrl) {
-      try {
-        // Fayl mavjudligini tekshirish va o'chirish
-        const removeResult = await this.fileService.removeByImageUrl(
-          foundData.imageUrl,
-        );
-        if (!removeResult) {
-          console.log("File not found");
-        }
-      } catch (error) {
-        console.error("Error occurred while deleting the file:", error.message);
-        throw new Error("Faylni o'chirishda xato yuz berdi.");
-      }
-    }
+    foundData.isActive = updateCourseDto.isActive;
 
     // Yangi faylni saqlash
     if (file) {
@@ -135,19 +136,7 @@ export class CourseService implements ICourseService {
 
   async delete(id: ID): Promise<ResData<Course>> {
     const { data: foundData } = await this.findOneById(id);
-    // Eski faylni o'chirish agar mavjud bo'lsa
-    if (foundData.imageUrl) {
-      try {
-        await this.fileService.removeByImageUrl(foundData.imageUrl);
-      } catch (error) {
-        console.error("Error occurred while deleting the file:", error);
-        throw new Error("An error occurred while deleting the file.");
-      }
-    }
-
-    // Kursni o'chirish
     const data = await this.courseRepository.delete(foundData);
-
     return new ResData<Course>("Course deleted successfully", 200, data);
   }
 }

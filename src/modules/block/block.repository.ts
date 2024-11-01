@@ -20,8 +20,9 @@ export class BlockRepository implements IBlockRepository {
   }
 
   async findAll(): Promise<Array<Block>> {
-    return await this.blockRepository.find({ order: {createdAt: 'ASC'},
-      relations: ['lessons']
+    return await this.blockRepository.find({
+      order: { createdAt: "ASC" },
+      relations: ["lessons"],
     });
   }
 
@@ -45,9 +46,22 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.findOneBy({ title });
   }
 
+  async getBlocksHomeworksByCourseId(courseId: number): Promise<Block[]> {
+    return this.blockRepository.find({
+      where: {
+        course: { id: courseId },
+        category: HomeworkEnum.HOMEWORK, // faqat category 'homework' bo'lganlarini olib keladi
+      },
+      relations: ["course"],
+    });
+  }
+
   async getBlocksByCourseId(courseId: number): Promise<Block[]> {
     return this.blockRepository.find({
-      where: { course: { id: courseId } },
+      where: {
+        course: { id: courseId },
+        category: HomeworkEnum.LESSON, // faqat category 'homework' bo'lganlarini olib keladi
+      },
       relations: ["course"],
     });
   }
