@@ -3,26 +3,37 @@ import { HomeworkEnum } from "src/common/enums/enum";
 import { Course } from "src/modules/course/entities/course.entity";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
-
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("blocks")
 export class Block extends BaseEntity {
-  @Column({ type: "varchar", length: 255 })
+  // Blokning sarlavhasi (maksimal uzunligi 255 ta belgi)
+  @Column({ type: "varchar", length: 255, nullable: false })
   title: string;
 
-  @Column({ type: "enum", enum: HomeworkEnum, nullable: false})
+  // Blokning tartib raqami
+  @Column({ type: "int", nullable: false })
+  order: number;
+
+  @Column({ type: "bigint", default: 0 })
+  duration: number;
+
+  // Blokning kategoriyasi (enum: HomeworkEnum dan olinadi, majburiy)
+  @Column({ type: "enum", enum: HomeworkEnum, nullable: false })
   category: HomeworkEnum;
 
+  // Kurs bilan bog'liq ma'lumot (blok qaysi kursga tegishli ekanligini bildiradi)
   @ManyToOne(() => Course, (course) => course.blocks, {
-    onDelete: "NO ACTION", // Kurs o'chirilganda hech narsa bo'lmaydi
+    onDelete: "NO ACTION", // Kurs o'chirilganda hech qanday o'zgarish bo'lmaydi
   })
   @JoinColumn({ name: "course_id" })
-  course: Course; // Kurs bilan bog'liq
+  course: Course; // Kurs modeli bilan bog'lanadi
 
+  // Blokdagi uy vazifalari (Homeworks)
   @OneToMany(() => Homework, (homework) => homework.block)
   homeworks: Homework[];
 
+  // Blokdagi darslar (Lessons)
   @OneToMany(() => Lesson, (lesson) => lesson.block, { onDelete: "NO ACTION" })
-  lessons: Lesson[]; // Darslar bilan bog'liq
+  lessons: Lesson[]; // Darslar modeli bilan bog'lanadi
 }

@@ -48,14 +48,14 @@ export class BlockController {
   @Get("/course-lesson/:courseId")
   async getBlocksLessonsByCourseId(
     @Param("courseId", ParseIntPipe) courseId: ID,
-  ): Promise<ResData<Block[]>> {
-    return this.blockService.getBlocksByCourseId(courseId);
+  ): Promise<ResData<Array<Block>>> {
+    return this.blockService.getBlocksLessonsByCourseId(courseId);
   }
 
   @Get("/course-homework/:courseId")
   async getBlocksHomeworksByCourseId(
     @Param("courseId", ParseIntPipe) courseId: ID,
-  ): Promise<ResData<Block[]>> {
+  ): Promise<ResData<Array<Block>>> {
     return this.blockService.getBlocksHomeworksByCourseId(courseId);
   }
 
