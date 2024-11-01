@@ -45,13 +45,15 @@ export class LessonService implements ILessonService {
     }
 
     const block = await this.blockRepository.findById(dto.blockId);
-
+    
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
       'Dars videosi',
     );
-
+    block.duration = Number(block.duration) + Number(duration);
+    await this.blockRepository.update(block)
+    
     const newLesson = new Lesson();
     Object.assign(newLesson, {
       ...dto,
