@@ -14,7 +14,10 @@ export interface IHomeworkProgressService {
     id: ID,
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>>;
-  getRandomVideos(order: ID): Promise<ResData<Array<HomeworkProgress>>>;
-  getFiveVideos(order: ID): Promise<ResData<Array<HomeworkProgress>>>;
+  getRandomVideos(
+    order: ID,
+    blockId: ID,
+    userId: ID
+  ): Promise<ResData<Array<HomeworkProgress>>>;
   getWatchedHomeworkProgressUpToOrder(order: ID): Promise<ResData<boolean>>;
 }

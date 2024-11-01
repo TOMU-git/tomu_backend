@@ -106,6 +106,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   async getRandomVideos(
     order: number,
+    blockId: ID,
+    userId: ID,
   ): Promise<ResData<Array<HomeworkProgress>>> {
     const currentOrder = order - 5;
 
@@ -113,6 +115,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const checkedVideoList =
       await this.homeworkProgressRepository.getVideosWithWatchCountBetween0And5(
         currentOrder,
+        blockId,
       );
 
     // console.log("checkedVideoList", checkedVideoList);
@@ -140,28 +143,18 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     );
   }
 
-  async getFiveVideos(order: ID): Promise<ResData<Array<HomeworkProgress>>> {
-    const data = await this.homeworkProgressRepository.getFiveVideos(order);
+  async getWatchedHomeworkProgressUpToOrder(
+    order: ID,
+  ): Promise<ResData<boolean>> {
+    const data =
+      await this.homeworkProgressRepository.getWatchedHomeworkProgressUpToOrder(
+        order,
+      );
 
-    return new ResData<Array<HomeworkProgress>>(
-      "Videos fetched successfully",
-      200,
-      data,
-    );
+    // `isWatched` maydonini tekshirish
+    const allWatched = data.every((item) => item.isWatched);
+    // console.log(allWatched);
+
+    return new ResData<boolean>("All videos watched", 200, allWatched);
   }
-
-async getWatchedHomeworkProgressUpToOrder(order: ID): Promise<ResData<boolean>> {
-  const data = await this.homeworkProgressRepository.getWatchedHomeworkProgressUpToOrder(order);
-
-  // `isWatched` maydonini tekshirish
-  const allWatched = data.every((item) => item.isWatched);
-  // console.log(allWatched);
-
-  return new ResData<boolean>(
-    "All videos watched",
-    200,
-    allWatched,
-  );
-}
-
 }

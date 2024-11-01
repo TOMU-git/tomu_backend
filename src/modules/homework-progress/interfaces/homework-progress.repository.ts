@@ -4,7 +4,6 @@ import { HomeworkProgress } from "../entities/homework-progress.entity";
 export interface IHomeworkProgressRepository {
   create(dto: HomeworkProgress): Promise<HomeworkProgress>;
   findAll(): Promise<Array<HomeworkProgress>>;
-  getFiveVideos(order: ID): Promise<Array<HomeworkProgress>>;
   findById(id: ID): Promise<HomeworkProgress | null>;
   findOneByUserAndHomework(
     userId: ID,
@@ -13,6 +12,7 @@ export interface IHomeworkProgressRepository {
   update(dto: HomeworkProgress): Promise<HomeworkProgress>;
   getVideosWithWatchCountBetween0And5(
     order: ID,
+    blockId: ID,
   ): Promise<Array<HomeworkProgress>>;
   getWatchedHomeworkProgressUpToOrder(
     order: ID,

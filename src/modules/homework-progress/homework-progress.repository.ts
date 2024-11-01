@@ -4,7 +4,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
 import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
-
 @Injectable()
 export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   constructor(
@@ -12,6 +11,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     private homeworkProgressRepository: Repository<HomeworkProgress>,
   ) {}
 
+  // Yangi homework progress yozuvi yaratish uchun metod
   async create(dto: HomeworkProgress): Promise<HomeworkProgress> {
     const newHomeworkProgress =
       await this.homeworkProgressRepository.create(dto);
@@ -19,6 +19,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return newHomeworkProgress;
   }
 
+  // Berilgan foydalanuvchi va homework bo'yicha homework progress yozuvini topish uchun metod
   async findOneByUserAndHomework(
     userId: ID,
     homeworkId: ID,
@@ -32,6 +33,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
+  // Barcha homework progress yozuvlarini olish uchun metod
   async findAll(): Promise<HomeworkProgress[]> {
     return await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
@@ -42,48 +44,40 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       .getMany();
   }
 
+  // Homework progress yozuvini yangilash uchun metod
   async update(entity: HomeworkProgress): Promise<HomeworkProgress> {
     return await this.homeworkProgressRepository.save(entity);
   }
 
+  // Berilgan homework progress yozuvini o'chirish uchun metod
   async delete(entity: HomeworkProgress): Promise<HomeworkProgress> {
     return await this.homeworkProgressRepository.remove(entity);
   }
 
+  // Berilgan ID bo'yicha homework progress yozuvini topish uchun metod
   async findById(id: ID): Promise<HomeworkProgress | null> {
     return await this.homeworkProgressRepository.findOneBy({ id });
   }
 
+  // Videolarni olish uchun metod (countWatched 0 dan 5 gacha bo'lganlarini)
   async getVideosWithWatchCountBetween0And5(
-    order: number,
-  ): Promise<HomeworkProgress[]> {
+    order: ID,
+    blockId: ID,
+  ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
-      .leftJoinAndSelect("homeworkProgress.homework", "homework") // homework jadvali bilan bog'lash
-      .leftJoinAndSelect("homework.block", "block") // homework.block orqali bog'lash
-      .leftJoinAndSelect("block.course", "course") // block.course orqali bog'lash
-      .where("homework.order < :order", { order }) // homework.order orqali filtrlash
+      .leftJoinAndSelect("homeworkProgress.homework", "homework")
+      .leftJoinAndSelect("homework.block", "block")
+      .where("homework.order < :order", { order })
       .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
       .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
-      .select([
-        "homeworkProgress", // homeworkProgress yozuvini olish
-        "homework", // homework ma'lumotlarini olish
-        "block.id", // block id ni olish
-        "course.id", // course id ni olish
-      ])
-      .getMany(); // homeworkProgress yozuvlarini barcha kerakli homework, block va course ma'lumotlari bilan qaytarish
+      .andWhere("homework.block.id = :blockId", { blockId })
+      .select(["homeworkProgress", "homework", "block.id"])
+      .getMany();
   }
 
-  async getFiveVideos(order: number): Promise<Array<HomeworkProgress>> {
-    return await this.homeworkProgressRepository
-      .createQueryBuilder("homeworkProgress")
-      .leftJoinAndSelect("homeworkProgress.homework", "homework") // homework jadvalini qo'shish
-      .where("homework.order > :order", { order }) // homework.order bo'yicha filtrlash
-      .orderBy("homework.order", "ASC") // homework.order bo'yicha tartiblash
-      .limit(5) // faqat 5 ta natijani cheklash
-      .getMany(); // Barcha ma'lumotlarni olish
-  }
 
+  // Berilgan ordergacha tomosha qilingan homework progress yozuvlarini olish uchun metod
   async getWatchedHomeworkProgressUpToOrder(
     order: number,
   ): Promise<HomeworkProgress[]> {
