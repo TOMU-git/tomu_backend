@@ -18,6 +18,9 @@ export class Block extends BaseEntity {
   @Column({ type: "bigint", default: 0 })
   duration: number;
 
+  @Column({ type: "bigint",name: "count_videos", default: 0 })
+  countVideos: number;
+
   // Blokning kategoriyasi (enum: HomeworkEnum dan olinadi, majburiy)
   @Column({ type: "enum", enum: HomeworkEnum, nullable: false })
   category: HomeworkEnum;

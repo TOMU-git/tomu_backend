@@ -52,6 +52,7 @@ export class LessonService implements ILessonService {
       'Dars videosi',
     );
     block.duration = Number(block.duration) + Number(duration);
+    block.countVideos = Number(block.countVideos) + 1;
     await this.blockRepository.update(block)
     
     const newLesson = new Lesson();
