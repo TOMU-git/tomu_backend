@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Inject,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { CreateUserTariffDto } from "./dto/create-user-tariff.dto";
 import { UpdateUserTariffDto } from "./dto/update-user-tariff.dto";
 import { IUserTariffService } from "./interfaces/user-tariff.service";
 import { ApiTags } from "@nestjs/swagger";
+import { ID } from "src/common/types/type";
 
 @ApiTags("user-tariff")
 @Controller("user-tariff")
@@ -32,12 +34,20 @@ export class UserTariffController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.userTariffService.findOne(+id);
+  findOne(@Param("id", ParseIntPipe) id: ID) {
+    return this.userTariffService.findOne(id);
+  }
+
+  @Patch(":id")
+  update(
+    @Param("id", ParseIntPipe) id: ID,
+    @Body() updateUserTariffDto: UpdateUserTariffDto,
+  ) {
+    return this.userTariffService.update(id, updateUserTariffDto);
   }
 
   @Delete(":id")
-  delete(@Param("id") id: string) {
-    return this.userTariffService.delete(+id);
+  delete(@Param("id", ParseIntPipe) id: ID) {
+    return this.userTariffService.delete(id);
   }
 }
