@@ -21,6 +21,7 @@ import { AuthGuard } from "../shared/guards/auth.guard";
 import { RolesGuard } from "../shared/guards/role.guard";
 import { RoleEnum } from "src/common/enums/enum";
 import { Roles } from "../auth/decorator/role.decorator";
+import { Auth } from "src/common/decorator/auth.decorator";
 
 @ApiTags("user-course")
 @Controller("user-course")
@@ -30,25 +31,25 @@ export class UserCoursesController {
     private readonly userCourseService: IUserCourseService,
   ) {}
 
+<<<<<<< HEAD
   @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+=======
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+>>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
   @Post()
   async create(
     @Body() createUserCourseDto: CreateUserCourseDto,
-  ): Promise<ResData<UserCourse>> {
+  ): Promise<ResData<Partial<UserCourse>>> {
     return await this.userCourseService.create(createUserCourseDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<UserCourse>>> {
     return await this.userCourseService.findAll();
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(":id")
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
@@ -56,9 +57,15 @@ export class UserCoursesController {
     return await this.userCourseService.findOneById(id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Get("user/:id/courses")
+  async findByUserId(
+    @Param("id", ParseIntPipe) id: ID,
+  ): Promise<ResData<Array<UserCourse>>> {
+    return await this.userCourseService.findOneByUserId(id);
+  }
+
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Patch(":id")
   async update(
     @Param("id", ParseIntPipe) id: ID,
@@ -67,9 +74,7 @@ export class UserCoursesController {
     return await this.userCourseService.update(id, updateUserCourseDto);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+ @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Delete(":id")
   async remove(
     @Param("id", ParseIntPipe) id: ID,

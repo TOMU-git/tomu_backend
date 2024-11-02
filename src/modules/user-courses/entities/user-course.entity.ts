@@ -6,9 +6,6 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity("user_courses")
 export class UserCourse extends BaseEntity {
-  @Column({ name: "purchase_date", type: "date", nullable: false })
-  purchaseDate: Date;
-
   @Column({ type: "enum", enum: StatusEnum, nullable: false })
   status: StatusEnum;
 
