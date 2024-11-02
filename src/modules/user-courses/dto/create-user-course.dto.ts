@@ -30,32 +30,3 @@ export class CreateUserCourseDto {
   courseId: number; // Kurs ID si
 }
 
-
-class UserCourseResponseDto {
-  id: number;
-  status: StatusEnum;
-  user: {
-    id: number;
-    firstName: string;
-    lastName: string;
-  };
-  course: {
-    id: number;
-    title: string;
-  };
-
-  constructor(userCourse: UserCourse) {
-    this.id = userCourse.id;
-    this.status = userCourse.status;
-    this.user = {
-      id: userCourse.user.id,
-      firstName: userCourse.user.firstName,
-      lastName: userCourse.user.lastName,
-    };
-    this.course = {
-      id: userCourse.course.id,
-      title: userCourse.course.title,
-    };
-  }
-}
-
