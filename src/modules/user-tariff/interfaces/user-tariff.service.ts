@@ -2,15 +2,17 @@ import { ResData } from "src/lib/resData";
 import { UserTariff } from "../entities/user-tariff.entity";
 import { UpdateUserTariffDto } from "../dto/update-user-tariff.dto";
 import { CreateUserTariffDto } from "../dto/create-user-tariff.dto";
+import { ID } from "src/common/types/type";
 
 export interface IUserTariffService {
   create(
     createUserTariffDto: CreateUserTariffDto,
   ): Promise<ResData<UserTariff>>;
 
-  findAll(): Promise<ResData<UserTariff[]>>;
+  findAll(): Promise<ResData<Array<UserTariff>>>;
 
-  findOne(id: number): Promise<ResData<UserTariff>>;
+  findOne(id: ID): Promise<ResData<UserTariff>>;
 
-  delete(id: number): Promise<ResData<UserTariff>>;
+  delete(id: ID): Promise<ResData<UserTariff>>;
+  update(id: ID, dto: UpdateUserTariffDto): Promise<ResData<UserTariff>>;
 }
