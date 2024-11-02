@@ -13,16 +13,24 @@ export class BlockRepository implements IBlockRepository {
     private blockRepository: Repository<Block>,
   ) {}
 
+<<<<<<< HEAD
   async create(entity: Block): Promise<Block> {
     return await this.blockRepository.save(entity);
+=======
+  // Yangi Block ma'lumotini yaratish va saqlash
+  async create(dto: Block): Promise<Block> {
+    const newBlock = await this.blockRepository.create(dto);
+    await this.blockRepository.save(newBlock);
+    return newBlock;
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
   }
 
+  // Barcha Block'larni createdAt ustuni bo‘yicha tartiblab olish
   async findAll(): Promise<Array<Block>> {
-    return await this.blockRepository.find({ order: {createdAt: 'ASC'},
-      relations: ['lessons']
-    });
+    return await this.blockRepository.find({});
   }
 
+<<<<<<< HEAD
   async findAllHomeworkBlocks(id: number): Promise<Block[]>{
     return await this.blockRepository.find({where : {courseId: id, category: HomeworkEnum.HOMEWORK}})
   }
@@ -31,25 +39,55 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.find({ where: { courseId: id, category: HomeworkEnum.LESSON } })
   }
 
+=======
+  // Mavjud Block ma'lumotlarini yangilash
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
   async update(entity: Block): Promise<Block> {
     return await this.blockRepository.save(entity);
   }
 
+  // Mavjud Block ma'lumotlarini o'chirish
   async delete(entity: Block): Promise<Block> {
     return await this.blockRepository.remove(entity);
   }
 
+  // ID bo‘yicha Block ma'lumotini topish
   async findById(id: ID): Promise<Block | null> {
     return await this.blockRepository.findOneBy({ id });
   }
 
+  // Nom bo‘yicha Block ma'lumotini topish
   async findOneByName(title: string): Promise<Block | null> {
     return await this.blockRepository.findOneBy({ title });
   }
 
+<<<<<<< HEAD
   async getBlocksByCourseId(id: number): Promise<Block[]> {
     return this.blockRepository.find({
       where: { courseId: id}
+=======
+  // Berilgan courseId va HOMEWORK kategoriyasiga mos Block'larni order bo‘yicha tartiblab olish
+  async getBlocksHomeworksByCourseId(courseId: number): Promise<Array<Block>> {
+    return this.blockRepository.find({
+      where: {
+        course: { id: courseId },
+        category: HomeworkEnum.HOMEWORK,
+      },
+      relations: ["course"],
+      order: { order: "ASC" },
+    });
+  }
+
+  // Berilgan courseId va LESSON kategoriyasiga mos Block'larni order bo‘yicha tartiblab olish
+  async getBlocksLessonsByCourseId(courseId: number): Promise<Array<Block>> {
+    return this.blockRepository.find({
+      where: {
+        course: { id: courseId },
+        category: HomeworkEnum.LESSON,
+      },
+      relations: ["course"],
+      order: { order: "ASC" },
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
     });
   }
 }

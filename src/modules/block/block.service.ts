@@ -29,25 +29,38 @@ export class BlockService implements IBlockService {
     const newBlock = new Block();
     newBlock.title = createBlockDto.title;
     newBlock.category = createBlockDto.category;
+<<<<<<< HEAD
     newBlock.courseId = createBlockDto.courseId;
+=======
+    newBlock.course = course;
+    newBlock.order = createBlockDto.order;
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     const newData = await this.blockRepository.create(newBlock);
     return new ResData<Block>("Block created successfully", 201, newData);
   }
 
+<<<<<<< HEAD
   async findAllLessons(courseId: number): Promise<ResData<Block[]>>{
     const lessons = await this.blockRepository.findAllLessonsBlocks(courseId);
     return new ResData<Block[]>("Lessons retrieved successfully", 200, lessons)
   }
 
   async findAll(): Promise<ResData<Block[]>> {
+=======
+  async findAll(): Promise<ResData<Array<Block>>> {
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
     const data = await this.blockRepository.findAll();
 
     if (data.length === 0) {
-      return new ResData<Block[]>("Not any course yet", 200, data);
+      return new ResData<Array<Block>>("Not any course yet", 200, data);
     }
 
-    return new ResData<Block[]>("Blocks retrieved successfully", 200, data);
+    return new ResData<Array<Block>>(
+      "Blocks retrieved successfully",
+      200,
+      data,
+    );
   }
 
   async findAllHomeworks(id: number): Promise<ResData<Block[]>> {
@@ -62,14 +75,30 @@ export class BlockService implements IBlockService {
     }
     return new ResData<Block>("Block found", 200, foundBlock);
   }
-  async getBlocksByCourseId(courseId: number): Promise<ResData<Block[]>> {
-    const blocks = await this.blockRepository.getBlocksByCourseId(courseId);
+  async getBlocksLessonsByCourseId(
+    courseId: number,
+  ): Promise<ResData<Array<Block>>> {
+    const blocks =
+      await this.blockRepository.getBlocksLessonsByCourseId(courseId);
 
     if (!blocks.length) {
-      return new ResData<Block[]>("Not any block yet", 200, blocks);
+      return new ResData<Array<Block>>("Not any block yet", 200, blocks);
     }
 
-     return new ResData<Block[]>("Block found", 200, blocks);
+    return new ResData<Array<Block>>("Block found", 200, blocks);
+  }
+
+  async getBlocksHomeworksByCourseId(
+    courseId: number,
+  ): Promise<ResData<Array<Block>>> {
+    const blocks =
+      await this.blockRepository.getBlocksHomeworksByCourseId(courseId);
+
+    if (!blocks.length) {
+      return new ResData<Array<Block>>("Not any block yet", 200, blocks);
+    }
+
+    return new ResData<Array<Block>>("Block found", 200, blocks);
   }
 
   async update(
@@ -88,7 +117,14 @@ export class BlockService implements IBlockService {
     // Blokni yangilash, lessonlarni tekshirish shart emas
     block.title = updateBlockDto.title;
     block.category = updateBlockDto.category;
+<<<<<<< HEAD
     block.courseId = updateBlockDto.courseId;
+=======
+    block.order = updateBlockDto.order;
+    block.course = await this.courseRepository.findById(
+      Number(updateBlockDto.courseId),
+    );
+>>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     const updatedData = await this.blockRepository.update(block);
     return new ResData<Block>("Block updated successfully", 200, updatedData);

@@ -10,5 +10,6 @@ export interface IBlockRepository {
   findAllHomeworkBlocks(courseId: number): Promise<Block[]>;
   findAllLessonsBlocks(courseId: number): Promise<Block[]>;
   findOneByName(title: string): Promise<Block | null>;
-  getBlocksByCourseId(courseId: number): Promise<Block[]>;
+  getBlocksLessonsByCourseId(courseId: number): Promise<Array<Block>>;
+  getBlocksHomeworksByCourseId(courseId: number): Promise<Array<Block>>;
 }

@@ -56,6 +56,10 @@ export class HomeworkService implements IHomeworkService {
       'Dars videosi',
     );
 
+    block.duration = Number(block.duration) + Number(duration);
+    block.countVideos = Number(block.countVideos) + 1;
+    await this.blockRepository.update(block);
+
     let newHomework = new Homework();
     newHomework.block = block;
     newHomework.videoUrl = videoUrl;
