@@ -5,9 +5,10 @@ import { CreateUserCourseDto } from "../dto/create-user-course.dto";
 import { UpdateUserCourseDto } from "../dto/update-user-course.dto";
 
 export interface IUserCourseService {
-  create(dto: CreateUserCourseDto): Promise<ResData<UserCourse>>;
+  create(dto: CreateUserCourseDto): Promise<ResData<Partial<UserCourse>>>;
   findAll(): Promise<ResData<Array<UserCourse>>>;
   findOneById(id: ID): Promise<ResData<UserCourse>>;
+  findOneByUserId(id: ID): Promise<ResData<Array<UserCourse>>>;
   update(id: ID, dto: UpdateUserCourseDto): Promise<ResData<UserCourse>>;
   delete(id: ID): Promise<ResData<UserCourse>>;
 }
