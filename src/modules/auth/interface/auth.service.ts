@@ -31,4 +31,5 @@ interface ITokens {
 
 export interface SmsSent {
   status: string;
+  id?: number;
 }

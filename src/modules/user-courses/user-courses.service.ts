@@ -6,37 +6,23 @@ import { IUserCourseRepository } from "./interfaces/user-course.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { IUserCourseService } from "./interfaces/user-course.service";
-<<<<<<< HEAD
-import {
-  UserCourseAlreadyExistException,
-  UserCourseNotFoundException,
-} from "./exception/user-course.exception";
-import { ICourseService } from "../course/interfaces/course.service";
-import { IUserService } from "../user/interfaces/user.service";
-=======
 import { UserCourseNotFoundException } from "./exception/user-course.exception";
 import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { IUserRepository } from "../user/interfaces/user.repository";
 import { UserNotFound } from "../user/exception/user.exception";
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
 
 @Injectable()
 export class UserCourseService implements IUserCourseService {
   constructor(
     @Inject("IUserCourseRepository")
     private readonly userCourseRepository: IUserCourseRepository,
-<<<<<<< HEAD
-    @Inject("ICourseService") private readonly courseService: ICourseService,
-    @Inject("IUserService") private readonly userService: IUserService
-=======
 
     @Inject("IUserRepository")
     private readonly userRepository: IUserRepository,
 
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
   ) {}
 
   /**
@@ -54,11 +40,6 @@ export class UserCourseService implements IUserCourseService {
     if (!foundUser) {
       throw new UserNotFound();
     }
-<<<<<<< HEAD
-    
-    await this.courseService.findOneById(createUserCourseDto.courseId);
-    await this.userService.findOneById(createUserCourseDto.userId);
-=======
 
     const foundCourse = await this.courseRepository.findById(
       createUserCourseDto.courseId,
@@ -67,10 +48,9 @@ export class UserCourseService implements IUserCourseService {
       throw new CourseNotFoundException();
     }
 
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
     let newUserCourse = new UserCourse();
     newUserCourse.course = foundCourse;
-    newUserCourse.user = foundUser;
+    newUserCourse.userId = foundUser.id;
     newUserCourse = Object.assign(newUserCourse, createUserCourseDto);
     const newData = await this.userCourseRepository.create(newUserCourse);
 
@@ -135,11 +115,8 @@ export class UserCourseService implements IUserCourseService {
 
     // Yangilangan UserCourse-ni userCourseRepository orqali saqlaymiz
     const data = await this.userCourseRepository.update(updatedData);
-<<<<<<< HEAD
-=======
 
     // Yangilangan UserCourse haqida muvaffaqiyatli javob qaytaramiz
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
     return new ResData<UserCourse>(
       "User Course updated successfully",
       200,

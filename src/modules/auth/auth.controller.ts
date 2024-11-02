@@ -17,6 +17,7 @@ import { Response } from "express";
 import { PhoneNumberAlreadyExist } from "./exception/auth.exception";
 import {
   AccessAuthDto,
+  ForgotPassword,
   LoginAuthDto,
   SentSmsDto,
   VerifyDto,
@@ -52,6 +53,12 @@ export class AuthController {
 
   // **** Regenerate the refresh token **** //
 
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotDto: ForgotPassword) {
+    return await this.authService.forgotPass(forgotDto)
+  }
+  
   @ApiQuery({
     name: "refresh_token",
     required: false,
