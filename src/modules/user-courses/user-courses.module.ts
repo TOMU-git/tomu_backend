@@ -5,9 +5,10 @@ import { UserCourse } from "./entities/user-course.entity";
 import { UserCourseRepository } from "./user-course.repository";
 import { UserCourseService } from "./user-courses.service";
 import { SharedModule } from "../shared/shared.module";
+import { CourseModule } from "../course/course.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserCourse]), SharedModule],
+  imports: [TypeOrmModule.forFeature([UserCourse]), SharedModule, CourseModule],
   controllers: [UserCoursesController],
   providers: [
     { provide: "IUserCourseService", useClass: UserCourseService },
