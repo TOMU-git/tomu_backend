@@ -35,11 +35,8 @@ export class CourseRepository implements ICourseRepository {
       where: { id }, // Qidirilayotgan kurs IDsi
       relations: [
         'feedbacks',
-        'feedbacks.user', // Feedbacklar bilan bog'liq userlarni qo'shish
-        'userCourses',
-        'blocks',
-        'blocks.lessons',
-      ], // Feedbacklar, userCourses va boshqa bog'lanishlar
+        'feedbacks.user',
+      ]// Feedbacklar bilan bog'liq userlarni qo'shish
     });
   }
 

@@ -13,10 +13,8 @@ export class BlockRepository implements IBlockRepository {
     private blockRepository: Repository<Block>,
   ) {}
 
-  async create(dto: Block): Promise<Block> {
-    const newBlock = await this.blockRepository.create(dto);
-    await this.blockRepository.save(newBlock);
-    return newBlock;
+  async create(entity: Block): Promise<Block> {
+    return await this.blockRepository.save(entity);
   }
 
   async findAll(): Promise<Array<Block>> {
@@ -27,6 +25,10 @@ export class BlockRepository implements IBlockRepository {
 
   async findAllHomeworkBlocks(id: number): Promise<Block[]>{
     return await this.blockRepository.find({where : {courseId: id, category: HomeworkEnum.HOMEWORK}})
+  }
+
+  async findAllLessonsBlocks(id: number): Promise<Block[]> {
+    return await this.blockRepository.find({ where: { courseId: id, category: HomeworkEnum.LESSON } })
   }
 
   async update(entity: Block): Promise<Block> {

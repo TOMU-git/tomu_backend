@@ -44,6 +44,11 @@ export class BlockController {
     return await this.blockService.findAllHomeworks(courseId);
   }
 
+  @Get('course/lesson/:courseId')
+  async findAllLessonModules(@Param('courseId', ParseIntPipe) courseId: number) {
+    return await this.blockService.findAllLessons(courseId);
+    }
+
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Block>> {
     return await this.blockService.findOneById(id);

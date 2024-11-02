@@ -21,5 +21,5 @@ export class Block extends BaseEntity {
   homeworks: Homework[];
 
   @OneToMany(() => Lesson, (lesson) => lesson.block, { onDelete: "NO ACTION" })
-  lessons: Lesson[]; // Darslar bilan bog'liq
+  lessons: Lesson[];
 }

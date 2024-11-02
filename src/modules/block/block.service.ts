@@ -21,7 +21,6 @@ export class BlockService implements IBlockService {
   ) {}
 
   async create(createBlockDto: CreateBlockDto): Promise<ResData<Block>> {
-    // Kursni topish
     await this.courseRepository.findById(
       Number(createBlockDto.courseId),
     );
@@ -34,6 +33,11 @@ export class BlockService implements IBlockService {
 
     const newData = await this.blockRepository.create(newBlock);
     return new ResData<Block>("Block created successfully", 201, newData);
+  }
+
+  async findAllLessons(courseId: number): Promise<ResData<Block[]>>{
+    const lessons = await this.blockRepository.findAllLessonsBlocks(courseId);
+    return new ResData<Block[]>("Lessons retrieved successfully", 200, lessons)
   }
 
   async findAll(): Promise<ResData<Block[]>> {
