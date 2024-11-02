@@ -50,7 +50,7 @@ export class UserCourseService implements IUserCourseService {
 
     let newUserCourse = new UserCourse();
     newUserCourse.course = foundCourse;
-    newUserCourse.user = foundUser.id;
+    newUserCourse.user = foundUser;
     newUserCourse = Object.assign(newUserCourse, createUserCourseDto);
     const newData = await this.userCourseRepository.create(newUserCourse);
 
