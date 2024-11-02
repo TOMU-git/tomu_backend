@@ -649,57 +649,13 @@ import { createConnection, DataSource } from "typeorm";
     const newBlock1 = new Block();
     newBlock1.title = "Module 1";
     newBlock1.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    (newBlock1.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock1);
-=======
     newBlock1.order = 1;
     newBlock1.course = newCourse1;
     await blockRepository.save<Block>(newBlock1);
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     const newBlock2 = new Block();
     newBlock2.title = "Module 2";
     newBlock2.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    newBlock2.courseId = newCourse1.id;
-    await blockRepository.save<Block>(newBlock2);
-
-    const newBlock3 = new Block();
-    (newBlock3.title = "Module 3"), (newBlock3.category = HomeworkEnum.LESSON);
-    (newBlock3.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock3);
-
-    const newBlock4 = new Block();
-    (newBlock4.title = "Module 4"), (newBlock4.category = HomeworkEnum.LESSON);
-    (newBlock4.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock4);
-
-    const newBlock5 = new Block();
-    (newBlock5.title = "Module 5"), (newBlock5.category = HomeworkEnum.LESSON);
-    (newBlock5.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock5);
-
-    const newBlock6 = new Block();
-    (newBlock6.title = "Module 6"), (newBlock6.category = HomeworkEnum.LESSON);
-    (newBlock6.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock6);
-
-    const newBlock7 = new Block();
-    (newBlock7.title = "Module 7"), (newBlock7.category = HomeworkEnum.LESSON);
-    (newBlock7.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock7);
-
-    const newBlock8 = new Block();
-    (newBlock8.title = "Module 8"), (newBlock8.category = HomeworkEnum.LESSON);
-    (newBlock8.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock8);
-
-    const newBlock9 = new Block();
-    (newBlock9.title = "Module 9"), (newBlock9.category = HomeworkEnum.LESSON);
-    (newBlock9.courseId = newCourse1.id),
-      await blockRepository.save<Block>(newBlock9);
-=======
     newBlock2.order = 2;
     newBlock2.course = newCourse1;
     await blockRepository.save<Block>(newBlock2);
@@ -752,7 +708,6 @@ import { createConnection, DataSource } from "typeorm";
     newBlock9.order = 9;
     newBlock9.course = newCourse1;
     await blockRepository.save<Block>(newBlock9);
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     // ------------------
 
@@ -760,63 +715,13 @@ import { createConnection, DataSource } from "typeorm";
     const newBlock10 = new Block();
     newBlock10.title = "Module 1";
     newBlock10.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    newBlock10.courseId = newCourse2.id;
-=======
     newBlock10.order = 1;
     newBlock10.course = newCourse2;
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
     await blockRepository.save<Block>(newBlock10);
 
     const newBlock11 = new Block();
     newBlock11.title = "Module 2";
     newBlock11.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    newBlock11.courseId = newCourse2.id;
-    await blockRepository.save<Block>(newBlock11);
-
-    const newBlock12 = new Block();
-    (newBlock12.title = "Module 3"),
-      (newBlock12.category = HomeworkEnum.LESSON);
-    (newBlock12.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock12);
-
-    const newBlock13 = new Block();
-    (newBlock13.title = "Module 4"),
-      (newBlock13.category = HomeworkEnum.LESSON);
-    (newBlock13.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock13);
-
-    const newBlock14 = new Block();
-    (newBlock14.title = "Module 5"),
-      (newBlock14.category = HomeworkEnum.LESSON);
-    (newBlock14.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock14);
-
-    const newBlock15 = new Block();
-    (newBlock15.title = "Module 6"),
-      (newBlock15.category = HomeworkEnum.LESSON);
-    (newBlock15.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock15);
-
-    const newBlock16 = new Block();
-    (newBlock16.title = "Module 7"),
-      (newBlock16.category = HomeworkEnum.LESSON);
-    (newBlock16.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock16);
-
-    const newBlock17 = new Block();
-    (newBlock17.title = "Module 8"),
-      (newBlock17.category = HomeworkEnum.LESSON);
-    (newBlock17.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock17);
-
-    const newBlock18 = new Block();
-    (newBlock18.title = "Module 9"),
-      (newBlock18.category = HomeworkEnum.LESSON);
-    (newBlock18.courseId = newCourse2.id),
-      await blockRepository.save<Block>(newBlock18);
-=======
     newBlock11.order = 2;
     newBlock11.course = newCourse2;
     await blockRepository.save<Block>(newBlock11);
@@ -869,7 +774,6 @@ import { createConnection, DataSource } from "typeorm";
     newBlock18.order = 9;
     newBlock18.course = newCourse2;
     await blockRepository.save<Block>(newBlock18);
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     // ------------------
 
@@ -877,67 +781,13 @@ import { createConnection, DataSource } from "typeorm";
     const newBlock19 = new Block();
     newBlock19.title = "Module 1";
     newBlock19.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    newBlock19.courseId = newCourse3.id;
-=======
     newBlock19.order = 1;
     newBlock19.course = newCourse3;
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
     await blockRepository.save<Block>(newBlock19);
 
     const newBlock20 = new Block();
     newBlock20.title = "Module 2";
     newBlock20.category = HomeworkEnum.LESSON;
-<<<<<<< HEAD
-    newBlock20.courseId = newCourse3.id;
-    await blockRepository.save<Block>(newBlock20);
-
-    const newBlock21 = new Block();
-    (newBlock21.title = "Module 3"),
-      (newBlock21.category = HomeworkEnum.LESSON);
-    (newBlock21.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock21);
-
-    const newBlock22 = new Block();
-    (newBlock22.title = "Module 4"),
-      (newBlock22.category = HomeworkEnum.LESSON);
-    (newBlock22.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock22);
-
-    const newBlock23 = new Block();
-    (newBlock23.title = "Module 5"),
-      (newBlock23.category = HomeworkEnum.LESSON);
-    (newBlock23.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock23);
-
-    const newBlock24 = new Block();
-    (newBlock24.title = "Module 6"),
-      (newBlock24.category = HomeworkEnum.LESSON);
-    (newBlock24.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock24);
-
-    const newBlock25 = new Block();
-    (newBlock25.title = "Module 7"),
-      (newBlock25.category = HomeworkEnum.LESSON);
-    (newBlock25.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock25);
-
-    const newBlock26 = new Block();
-    (newBlock26.title = "Module 8"),
-      (newBlock26.category = HomeworkEnum.LESSON);
-    (newBlock26.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock26);
-
-    const newBlock27 = new Block();
-    (newBlock27.title = "Module 9"),
-      (newBlock27.category = HomeworkEnum.LESSON);
-    (newBlock27.courseId = newCourse3.id),
-      await blockRepository.save<Block>(newBlock27);
-
-    // youtu.be/Vljna2m3WHI?si=gUbNf6JK_A-kw1T7   rus tilti
-    // youtu.be/d-fvgkbTED0?si=hRhdnfM4XROMaZmP    ingliz tili
-    // youtu.be/wreWaTZC_lg?si=i-fNckYKrIkRq6Bx     arab tili
-=======
     newBlock20.order = 2;
     newBlock20.course = newCourse3;
     await blockRepository.save<Block>(newBlock20);
@@ -990,7 +840,6 @@ import { createConnection, DataSource } from "typeorm";
     newBlock27.order = 9;
     newBlock27.course = newCourse3;
     await blockRepository.save<Block>(newBlock27);
->>>>>>> d0078d75b45fab5585707186afc4491b4e9454cf
 
     const blockList = [
       newBlock1,
