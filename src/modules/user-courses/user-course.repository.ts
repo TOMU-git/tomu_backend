@@ -70,7 +70,7 @@ export class UserCourseRepository implements IUserCourseRepository {
   async findByUserId(userId: ID): Promise<Array<UserCourse>> {
     // User ID bo'yicha UserCourse obyektlarini topish va ular bilan bog'liq kurs ma'lumotlarini olish
     return await this.userCourseRepository.find({
-      where: { id: userId },
+      where: { user: { id: userId } },
       relations: ["course"], // Bog'langan Course obyektini qo'shish
       select: {
         id: true,

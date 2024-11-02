@@ -50,4 +50,10 @@ export class User extends BaseEntity {
     (homeworkProgress) => homeworkProgress.user,
   )
   homeworkProgresses: HomeworkProgress[];
+
+  @OneToMany(
+    () => UserCourse,
+    (userCourse) => userCourse.user,
+  )
+  userCourses: HomeworkProgress[];
 }
