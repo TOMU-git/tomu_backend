@@ -31,11 +31,7 @@ export class UserCoursesController {
     private readonly userCourseService: IUserCourseService,
   ) {}
 
-<<<<<<< HEAD
-  @Roles(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
-=======
  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
   @Post()
   async create(
     @Body() createUserCourseDto: CreateUserCourseDto,

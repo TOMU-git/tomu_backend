@@ -62,11 +62,6 @@ export class UserCourseRepository implements IUserCourseRepository {
     return await this.userCourseRepository.findOneBy({ id });
   }
 
-<<<<<<< HEAD
-  async findByUserId(id: ID): Promise<UserCourse> {
-    return await this.userCourseRepository.findOneBy({userId: id});
-  }
-=======
   /**
    * User ID bo'yicha barcha UserCourse obyektlarini topadi va ular bilan bog'liq kurslar ma'lumotlarini qaytaradi.
    * @param userId Qidirilayotgan User ID'si
@@ -75,7 +70,7 @@ export class UserCourseRepository implements IUserCourseRepository {
   async findByUserId(userId: ID): Promise<Array<UserCourse>> {
     // User ID bo'yicha UserCourse obyektlarini topish va ular bilan bog'liq kurs ma'lumotlarini olish
     return await this.userCourseRepository.find({
-      where: { user: { id: userId } },
+      where: { id: userId },
       relations: ["course"], // Bog'langan Course obyektini qo'shish
       select: {
         id: true,
@@ -94,7 +89,6 @@ export class UserCourseRepository implements IUserCourseRepository {
    * @param courseId Qidirilayotgan Course ID'si
    * @returns Course ID bilan bog'langan UserCourse obyektlari ro'yxati
    */
->>>>>>> 4a279b633edda6bcdf6520321f5768221e891505
   async findByCourseId(courseId: ID): Promise<Array<UserCourse>> {
     // Kurs ID bo'yicha UserCourse obyektlarini topish
     return await this.userCourseRepository.findBy({ course: { id: courseId } });
