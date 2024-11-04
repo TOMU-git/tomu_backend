@@ -10,8 +10,9 @@ export class UserCourse extends BaseEntity {
   status: StatusEnum;
 
   // Foydalanuvchi bilan bog'lanish
-  @Column({ name: 'user_id', type: "integer", nullable: false })
-  userId: number;
+  @ManyToOne(() => User, (user) => user.userCourses)
+  @JoinColumn({ name: "user_id" })
+  user: User;
 
   // Kurs bilan bog'lanish
   @ManyToOne(() => Course, (course) => course.userCourses)

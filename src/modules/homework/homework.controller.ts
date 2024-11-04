@@ -11,17 +11,19 @@ import {
   UploadedFile,
   BadRequestException,
   UseInterceptors,
-} from '@nestjs/common';
-import { ID } from 'src/common/types/type';
-import { CreateHomeworkDto } from './dto/create-homework.dto';
-import { UpdateHomeworkDto } from './dto/update-homework.dto';
-import { ResData } from 'src/lib/resData';
-import { Homework } from './entities/homework.entity';
-import { IHomeworkService } from './interfaces/homework.service';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { RoleEnum } from 'src/common/enums/enum';
-import { Auth } from 'src/common/decorator/auth.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
+  Query,
+} from "@nestjs/common";
+import { ID } from "src/common/types/type";
+import { CreateHomeworkDto } from "./dto/create-homework.dto";
+import { UpdateHomeworkDto } from "./dto/update-homework.dto";
+import { ResData } from "src/lib/resData";
+import { Homework } from "./entities/homework.entity";
+import { IHomeworkService } from "./interfaces/homework.service";
+import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { RoleEnum } from "src/common/enums/enum";
+import { Auth } from "src/common/decorator/auth.decorator";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { get } from "axios";
 
 @ApiTags("homework")
 @Controller("homework")
@@ -33,29 +35,29 @@ export class HomeworkController {
 
   // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("video")) // 'video' - yuklanayotgan fayl maydoni nomi
   @ApiBody({
     description: "Yuklanadigan video ma'lumotlari",
     type: CreateHomeworkDto,
     // Swaggervida yuklanadigan fayl haqida ma\'lumot
     // video maydonini qo'shishingiz mumkin
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         description: {
-          type: 'string',
+          type: "string",
         },
         order: {
-          type: 'number',
+          type: "number",
         },
         blockId: {
-          type: 'number',
+          type: "number",
         },
         video: {
           // Video faylini y  uklash maydoni
-          type: 'string',
-          format: 'binary', // Bu maydon fayl yuklash uchun kerak
+          type: "string",
+          format: "binary", // Bu maydon fayl yuklash uchun kerak
         },
       },
     },
@@ -65,58 +67,66 @@ export class HomeworkController {
     @UploadedFile() file: Express.Multer.File, // Yuklangan faylni olish
   ): Promise<ResData<Homework>> {
     if (!file) {
-      throw new BadRequestException('Fayl yuklanmadi');
+      throw new BadRequestException("Fayl yuklanmadi");
     }
     return this.homeworkService.create(createHomework, file); // Yangi darsni yaratish
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Get("get-five-videos")
+  async getNextFiveVideos(
+    @Query("order", ParseIntPipe) order: ID,
+    @Query("blockId", ParseIntPipe) blockId: ID,
+  ): Promise<ResData<Array<Homework>>> {
+    return await this.homeworkService.getNextFiveVideos(order, blockId);
+  }
+
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get()
   async findAll(): Promise<ResData<Array<Homework>>> {
     return await this.homeworkService.findAll();
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Homework>> {
     return await this.homeworkService.findOneById(id);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Patch(':id')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('video')) // 'video' - yuklanayotgan fayl maydoni nomi
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Patch(":id")
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("video")) // 'video' - yuklanayotgan fayl maydoni nomi
   @ApiBody({
     description: "Yuklanadigan video ma'lumotlari",
     type: CreateHomeworkDto,
     // Swaggervida yuklanadigan fayl haqida ma\'lumot
     // video maydonini qo'shishingiz mumkin
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         order: {
-          type: 'number',
+          type: "number",
         },
         blockId: {
-          type: 'number',
+          type: "number",
         },
         video: {
           // Video faylini y  uklash maydoni
-          type: 'string',
-          format: 'binary', // Bu maydon fayl yuklash uchun kerak
+          type: "string",
+          format: "binary", // Bu maydon fayl yuklash uchun kerak
         },
       },
     },
   })
   async update(
     @Body() updateHomeworkDto: UpdateHomeworkDto,
-    @Param('id', ParseIntPipe) id: ID,
+    @Param("id", ParseIntPipe) id: ID,
     @UploadedFile() file: Express.Multer.File, // Yuklangan faylni olish
   ): Promise<ResData<Homework>> {
     return this.homeworkService.update(id, updateHomeworkDto, file); // Yangi darsni yaratish
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Homework>> {
     return await this.homeworkService.delete(id);
