@@ -1,30 +1,29 @@
-import { IsBoolean, IsInt, IsNotEmpty } from "class-validator";
-import { ID } from "src/common/types/type";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, IsNumber, IsOptional } from "class-validator";
 
 export class CreateHomeworkProgressDto {
   @ApiProperty({
-    description: "Foydalanuvchi IDsi",
     type: Number,
+    description: "ID of the user associated with the progress record",
+    example: "1",
   })
-  @IsNotEmpty()
-  @IsInt()
-  userId: ID;
+  @IsNumber()
+  userId: number;
 
   @ApiProperty({
-    description: "Dars IDsi",
     type: Number,
+    description: "ID of the homework associated with the progress record",
+    example: 1
   })
-  @IsNotEmpty()
-  @IsInt()
-  homeworkId: ID;
+  @IsNumber()
+  homeworkId: number;
 
   @ApiProperty({
     description:
-      "Dars jarayonining holati (masalan, o'rgangan: true, o'rganmagan: false)",
-    type: Boolean,
+      "Indicates if the homework is watched (true - watched, false - not watched)",
+    default: false,
   })
-  @IsNotEmpty()
   @IsBoolean()
-  isWatched: boolean;
+  @IsOptional()
+  isWatched?: boolean;
 }
