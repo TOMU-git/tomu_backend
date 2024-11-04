@@ -2,12 +2,12 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class LoginAuthDto {
-  @ApiProperty({ type: String, example: '+998335701001' })
+  @ApiProperty({ type: String, example: "+998335701001" })
   @IsString()
   @IsNotEmpty()
   phoneNumber: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: "password" })
   @IsString()
   @IsNotEmpty()
   password: string;
@@ -44,6 +44,16 @@ export class SentSmsDto {
   @ApiProperty({
     type: String,
     required: true,
+    example: "+998901234567",
+  })
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+}
+
+export class ForgotPassword{
+  @ApiProperty({
+    type: String,
     example: "+998901234567",
   })
   @IsString()

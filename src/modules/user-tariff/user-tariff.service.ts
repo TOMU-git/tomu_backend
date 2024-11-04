@@ -8,6 +8,7 @@ import { UserTariff } from "./entities/user-tariff.entity";
 import { IUserService } from "../user/interfaces/user.service";
 import { ITariffService } from "../tariff/interface/tariff.service";
 import { UserTariffNotFoundException } from "./exception/user-tariff.exception";
+import { ID } from "src/common/types/type";
 
 @Injectable()
 export class UserTariffService implements IUserTariffService {
@@ -35,13 +36,15 @@ export class UserTariffService implements IUserTariffService {
     newUserTariff.user = foundUser;
     newUserTariff.tariff = foundTariff;
 
-    const purchaseDate = new Date();
-    newUserTariff.purchaseDate = purchaseDate;
+    // Boshlanish sanasini hozirgi sana deb belgilash
+    const startedAt = new Date();
+    newUserTariff.startedAt = startedAt;
 
-    const date = new Date(newUserTariff.purchaseDate);
-    date.setMonth(date.getMonth() + foundTariff.duration);
+    // Tugash sanasini hisoblash uchun startedAt ga duration (kunlarda) qo'shish
+    const endDate = new Date(newUserTariff.startedAt);
+    endDate.setDate(endDate.getDate() + foundTariff.duration);
 
-    newUserTariff.expirationDate = date;
+    newUserTariff.endedAt = endDate;
 
     const createdUserTariff =
       await this.userTariffRepository.insert(newUserTariff);
@@ -54,9 +57,9 @@ export class UserTariffService implements IUserTariffService {
   }
 
   // READ
-  async findAll(): Promise<ResData<UserTariff[]>> {
+  async findAll(): Promise<ResData<Array<UserTariff>>> {
     const data = await this.userTariffRepository.findAll();
-    return new ResData<UserTariff[]>("success", 200, data);
+    return new ResData<Array<UserTariff>>("success", 200, data);
   }
 
   async findOne(id: number): Promise<ResData<UserTariff>> {
@@ -67,6 +70,25 @@ export class UserTariffService implements IUserTariffService {
     }
 
     return new ResData<UserTariff>("success", 200, foundUserTariff);
+  }
+
+  async update(id: ID, dto: UpdateUserTariffDto): Promise<ResData<UserTariff>> {
+    const { data: foundUser } = await this.userService.findOneById(dto.userId);
+    const { data: foundTariff } = await this.tariffService.findOne(
+      dto.tariffId,
+    );
+    const { data: foundUserTariff } = await this.findOne(id);
+
+    let updatedTariff = new UserTariff();
+    updatedTariff = Object.assign(foundUserTariff, dto);
+
+    const data = await this.userTariffRepository.update(updatedTariff);
+
+    return new ResData<UserTariff>(
+      "User-Tariff created successfully",
+      201,
+      data,
+    );
   }
 
   // DELETE

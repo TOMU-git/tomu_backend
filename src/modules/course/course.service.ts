@@ -100,30 +100,24 @@ export class CourseService implements ICourseService {
       foundData.imageUrl = savedFile.data.path;
     }
 
-    // Yangilanish ma'lumotlari
-    const updateData: Partial<Course> = {};
 
     if (updateCourseDto.description !== "") {
-      updateData.description = updateCourseDto.description;
+      foundData.description = updateCourseDto.description;
     }
 
     if (updateCourseDto.title !== "") {
-      updateData.title = updateCourseDto.title;
+      foundData.title = updateCourseDto.title;
     }
 
     if (updateCourseDto.videoUrl !== "") {
-      updateData.videoUrl = updateCourseDto.videoUrl;
+      foundData.videoUrl = updateCourseDto.videoUrl;
     }
     
-    if (updateCourseDto.isActive) {
-      updateData.isActive = updateCourseDto.isActive;
-    }
-
+    foundData.isActive = updateCourseDto.isActive;
     // Yangilangan ma'lumotlarni birlashtirish
-    const updatedData = Object.assign(foundData, updateData);
 
     // Kursni yangilash
-    const data = await this.courseRepository.update(updatedData);
+    const data = await this.courseRepository.update(foundData);
 
     // Faqat yangilangan ma'lumotlarni qaytaramiz
     return new ResData<Partial<Course>>("Course updated successfully", 200, {

@@ -4,9 +4,9 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-} from "@nestjs/common";
-import { HttpAdapterHost } from "@nestjs/core";
-import { ResData } from "./resData";
+} from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
+import { ResData } from './resData';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -17,7 +17,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
 
     const responseBody = new ResData(
-      "",
+      '',
       HttpStatus.INTERNAL_SERVER_ERROR,
       null,
       exception,
@@ -28,7 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
       const response = exception.getResponse() as Error;
 
-      if (typeof response === "string") {
+      if (typeof response === 'string') {
         responseBody.message = response;
       } else {
         responseBody.message = response?.message.toString();

@@ -652,166 +652,197 @@ import { createConnection, DataSource } from "typeorm";
     const newBlock1 = new Block();
     newBlock1.title = "Module 1";
     newBlock1.category = HomeworkEnum.LESSON;
-    (newBlock1.course = newCourse1),
-      await blockRepository.save<Block>(newBlock1);
+    newBlock1.order = 1;
+    newBlock1.course = newCourse1;
+    await blockRepository.save<Block>(newBlock1);
 
     const newBlock2 = new Block();
     newBlock2.title = "Module 2";
     newBlock2.category = HomeworkEnum.LESSON;
+    newBlock2.order = 2;
     newBlock2.course = newCourse1;
     await blockRepository.save<Block>(newBlock2);
 
     const newBlock3 = new Block();
-    (newBlock3.title = "Module 3"), (newBlock3.category = HomeworkEnum.LESSON);
-    (newBlock3.course = newCourse1),
-      await blockRepository.save<Block>(newBlock3);
+    newBlock3.title = "Module 3";
+    newBlock3.category = HomeworkEnum.LESSON;
+    newBlock3.order = 3;
+    newBlock3.course = newCourse1;
+    await blockRepository.save<Block>(newBlock3);
 
     const newBlock4 = new Block();
-    (newBlock4.title = "Module 4"), (newBlock4.category = HomeworkEnum.LESSON);
-    (newBlock4.course = newCourse1),
-      await blockRepository.save<Block>(newBlock4);
+    newBlock4.title = "Module 4";
+    newBlock4.category = HomeworkEnum.LESSON;
+    newBlock4.order = 4;
+    newBlock4.course = newCourse1;
+    await blockRepository.save<Block>(newBlock4);
 
     const newBlock5 = new Block();
-    (newBlock5.title = "Module 5"), (newBlock5.category = HomeworkEnum.LESSON);
-    (newBlock5.course = newCourse1),
-      await blockRepository.save<Block>(newBlock5);
+    newBlock5.title = "Module 5";
+    newBlock5.category = HomeworkEnum.LESSON;
+    newBlock5.order = 5;
+    newBlock5.course = newCourse1;
+    await blockRepository.save<Block>(newBlock5);
 
     const newBlock6 = new Block();
-    (newBlock6.title = "Module 6"), (newBlock6.category = HomeworkEnum.LESSON);
-    (newBlock6.course = newCourse1),
-      await blockRepository.save<Block>(newBlock6);
+    newBlock6.title = "Module 6";
+    newBlock6.category = HomeworkEnum.LESSON;
+    newBlock6.order = 6;
+    newBlock6.course = newCourse1;
+    await blockRepository.save<Block>(newBlock6);
 
     const newBlock7 = new Block();
-    (newBlock7.title = "Module 7"), (newBlock7.category = HomeworkEnum.LESSON);
-    (newBlock7.course = newCourse1),
-      await blockRepository.save<Block>(newBlock7);
+    newBlock7.title = "Module 7";
+    newBlock7.category = HomeworkEnum.LESSON;
+    newBlock7.order = 7;
+    newBlock7.course = newCourse1;
+    await blockRepository.save<Block>(newBlock7);
 
     const newBlock8 = new Block();
-    (newBlock8.title = "Module 8"), (newBlock8.category = HomeworkEnum.LESSON);
-    (newBlock8.course = newCourse1),
-      await blockRepository.save<Block>(newBlock8);
+    newBlock8.title = "Module 8";
+    newBlock8.category = HomeworkEnum.LESSON;
+    newBlock8.order = 8;
+    newBlock8.course = newCourse1;
+    await blockRepository.save<Block>(newBlock8);
 
     const newBlock9 = new Block();
-    (newBlock9.title = "Module 9"), (newBlock9.category = HomeworkEnum.LESSON);
-    (newBlock9.course = newCourse1),
-      await blockRepository.save<Block>(newBlock9);
+    newBlock9.title = "Module 9";
+    newBlock9.category = HomeworkEnum.LESSON;
+    newBlock9.order = 9;
+    newBlock9.course = newCourse1;
+    await blockRepository.save<Block>(newBlock9);
 
-    // ----------------
+    // ------------------
 
+    // 2-kurs uchun modullar
     const newBlock10 = new Block();
     newBlock10.title = "Module 1";
     newBlock10.category = HomeworkEnum.LESSON;
+    newBlock10.order = 1;
     newBlock10.course = newCourse2;
     await blockRepository.save<Block>(newBlock10);
 
     const newBlock11 = new Block();
     newBlock11.title = "Module 2";
     newBlock11.category = HomeworkEnum.LESSON;
+    newBlock11.order = 2;
     newBlock11.course = newCourse2;
     await blockRepository.save<Block>(newBlock11);
 
     const newBlock12 = new Block();
-    (newBlock12.title = "Module 3"),
-      (newBlock12.category = HomeworkEnum.LESSON);
-    (newBlock12.course = newCourse2),
-      await blockRepository.save<Block>(newBlock12);
+    newBlock12.title = "Module 3";
+    newBlock12.category = HomeworkEnum.LESSON;
+    newBlock12.order = 3;
+    newBlock12.course = newCourse2;
+    await blockRepository.save<Block>(newBlock12);
 
     const newBlock13 = new Block();
-    (newBlock13.title = "Module 4"),
-      (newBlock13.category = HomeworkEnum.LESSON);
-    (newBlock13.course = newCourse2),
-      await blockRepository.save<Block>(newBlock13);
+    newBlock13.title = "Module 4";
+    newBlock13.category = HomeworkEnum.LESSON;
+    newBlock13.order = 4;
+    newBlock13.course = newCourse2;
+    await blockRepository.save<Block>(newBlock13);
 
     const newBlock14 = new Block();
-    (newBlock14.title = "Module 5"),
-
-      (newBlock14.category = HomeworkEnum.LESSON);
-    (newBlock14.course = newCourse2),
-      await blockRepository.save<Block>(newBlock14);
+    newBlock14.title = "Module 5";
+    newBlock14.category = HomeworkEnum.LESSON;
+    newBlock14.order = 5;
+    newBlock14.course = newCourse2;
+    await blockRepository.save<Block>(newBlock14);
 
     const newBlock15 = new Block();
-    (newBlock15.title = "Module 6"),
-      (newBlock15.category = HomeworkEnum.LESSON);
-    (newBlock15.course = newCourse2),
-      await blockRepository.save<Block>(newBlock15);
+    newBlock15.title = "Module 6";
+    newBlock15.category = HomeworkEnum.LESSON;
+    newBlock15.order = 6;
+    newBlock15.course = newCourse2;
+    await blockRepository.save<Block>(newBlock15);
 
     const newBlock16 = new Block();
-    (newBlock16.title = "Module 7"),
-      (newBlock16.category = HomeworkEnum.LESSON);
-    (newBlock16.course = newCourse2),
-      await blockRepository.save<Block>(newBlock16);
+    newBlock16.title = "Module 7";
+    newBlock16.category = HomeworkEnum.LESSON;
+    newBlock16.order = 7;
+    newBlock16.course = newCourse2;
+    await blockRepository.save<Block>(newBlock16);
 
     const newBlock17 = new Block();
-    (newBlock17.title = "Module 8"),
-      (newBlock17.category = HomeworkEnum.LESSON);
-    (newBlock17.course = newCourse2),
-      await blockRepository.save<Block>(newBlock17);
+    newBlock17.title = "Module 8";
+    newBlock17.category = HomeworkEnum.LESSON;
+    newBlock17.order = 8;
+    newBlock17.course = newCourse2;
+    await blockRepository.save<Block>(newBlock17);
 
     const newBlock18 = new Block();
-    (newBlock18.title = "Module 9"),
-      (newBlock18.category = HomeworkEnum.LESSON);
-    (newBlock18.course = newCourse2),
-      await blockRepository.save<Block>(newBlock18);
+    newBlock18.title = "Module 9";
+    newBlock18.category = HomeworkEnum.LESSON;
+    newBlock18.order = 9;
+    newBlock18.course = newCourse2;
+    await blockRepository.save<Block>(newBlock18);
 
-    // ----------------
+    // ------------------
 
+    // 3-kurs uchun modullar
     const newBlock19 = new Block();
     newBlock19.title = "Module 1";
     newBlock19.category = HomeworkEnum.LESSON;
+    newBlock19.order = 1;
     newBlock19.course = newCourse3;
     await blockRepository.save<Block>(newBlock19);
 
     const newBlock20 = new Block();
     newBlock20.title = "Module 2";
     newBlock20.category = HomeworkEnum.LESSON;
+    newBlock20.order = 2;
     newBlock20.course = newCourse3;
     await blockRepository.save<Block>(newBlock20);
 
     const newBlock21 = new Block();
-    (newBlock21.title = "Module 3"),
-      (newBlock21.category = HomeworkEnum.LESSON);
-    (newBlock21.course = newCourse3),
-      await blockRepository.save<Block>(newBlock21);
+    newBlock21.title = "Module 3";
+    newBlock21.category = HomeworkEnum.LESSON;
+    newBlock21.order = 3;
+    newBlock21.course = newCourse3;
+    await blockRepository.save<Block>(newBlock21);
 
     const newBlock22 = new Block();
-    (newBlock22.title = "Module 4"),
-      (newBlock22.category = HomeworkEnum.LESSON);
-    (newBlock22.course = newCourse3),
-      await blockRepository.save<Block>(newBlock22);
+    newBlock22.title = "Module 4";
+    newBlock22.category = HomeworkEnum.LESSON;
+    newBlock22.order = 4;
+    newBlock22.course = newCourse3;
+    await blockRepository.save<Block>(newBlock22);
 
     const newBlock23 = new Block();
-    (newBlock23.title = "Module 5"),
-      (newBlock23.category = HomeworkEnum.LESSON);
-    (newBlock23.course = newCourse3),
-      await blockRepository.save<Block>(newBlock23);
+    newBlock23.title = "Module 5";
+    newBlock23.category = HomeworkEnum.LESSON;
+    newBlock23.order = 5;
+    newBlock23.course = newCourse3;
+    await blockRepository.save<Block>(newBlock23);
 
     const newBlock24 = new Block();
-    (newBlock24.title = "Module 6"),
-      (newBlock24.category = HomeworkEnum.LESSON);
-    (newBlock24.course = newCourse3),
-      await blockRepository.save<Block>(newBlock24);
+    newBlock24.title = "Module 6";
+    newBlock24.category = HomeworkEnum.LESSON;
+    newBlock24.order = 6;
+    newBlock24.course = newCourse3;
+    await blockRepository.save<Block>(newBlock24);
 
     const newBlock25 = new Block();
-    (newBlock25.title = "Module 7"),
-      (newBlock25.category = HomeworkEnum.LESSON);
-    (newBlock25.course = newCourse3),
-      await blockRepository.save<Block>(newBlock25);
+    newBlock25.title = "Module 7";
+    newBlock25.category = HomeworkEnum.LESSON;
+    newBlock25.order = 7;
+    newBlock25.course = newCourse3;
+    await blockRepository.save<Block>(newBlock25);
 
     const newBlock26 = new Block();
-    (newBlock26.title = "Module 8"),
-      (newBlock26.category = HomeworkEnum.LESSON);
-    (newBlock26.course = newCourse3),
-      await blockRepository.save<Block>(newBlock26);
+    newBlock26.title = "Module 8";
+    newBlock26.category = HomeworkEnum.LESSON;
+    newBlock26.order = 8;
+    newBlock26.course = newCourse3;
+    await blockRepository.save<Block>(newBlock26);
 
     const newBlock27 = new Block();
-    (newBlock27.title = "Module 9"),
-      (newBlock27.category = HomeworkEnum.LESSON);
-    (newBlock27.course = newCourse3),
-      await blockRepository.save<Block>(newBlock27);
-
-    // youtu.be/Vljna2m3WHI?si=gUbNf6JK_A-kw1T7   rus tilti
-    // youtu.be/d-fvgkbTED0?si=hRhdnfM4XROMaZmP    ingliz tili
-    // youtu.be/wreWaTZC_lg?si=i-fNckYKrIkRq6Bx     arab tili
+    newBlock27.title = "Module 9";
+    newBlock27.category = HomeworkEnum.LESSON;
+    newBlock27.order = 9;
+    newBlock27.course = newCourse3;
+    await blockRepository.save<Block>(newBlock27);
 
     const blockList = [
       newBlock1,
@@ -880,9 +911,6 @@ import { createConnection, DataSource } from "typeorm";
 
               // Darsni bazaga saqlash
               await lessonRepository.save(lesson);
-              console.log(
-                `Yangi dars saqlandi: ${lesson.title}, order: ${order}, block: ${block.id}`,
-              );
             } else {
               console.log(
                 `Order ${order} bilan block ${block.id} va title ${title} uchun dars allaqachon mavjud.`,
@@ -897,58 +925,6 @@ import { createConnection, DataSource } from "typeorm";
         }
       }
     }
-
-    // // feedback
-    // const feedbackCount = 10; // Har bir kurs uchun feedback soni
-    // const coursesList = [newCourse1, newCourse2, newCourse3]; // Kurslar ro'yxati
-
-    // // Har xil izohlar ro'yxati
-    // const comments = [
-    //   "Zo'r kurs ekan, olishni maslahat beraman!",
-    //   "Kurs juda foydali va ma'lumotlar aniq.",
-    //   'Menga bu kurs juda yoqdi!',
-    //   "O'qituvchilar juda professionaldir.",
-    //   "Kursni tugatgach, ko'p narsalarni o'rgandim.",
-    //   "Bu kursda yangi narsalarni o'rganish juda qiziqarli.",
-    //   'Mavzular yaxshi tartibga solingan.',
-    //   'Darslar hayotiy va amaliy misollar bilan boyitilgan.',
-    //   "Bu kursni do'stlarimga ham tavsiya qilaman.",
-    //   "Darslar ko'p ma'lumot beradi, lekin tushunarli!",
-    // ];
-
-    // for (const course of coursesList) {
-    //   for (let i = 0; i < feedbackCount; i++) {
-    //     const feedback = new Feedback();
-    //     feedback.comment =
-    //       comments[Math.floor(Math.random() * comments.length)]; // Tasodifiy izoh tanlash
-    //     feedback.rating = Math.floor(Math.random() * 5) + 1; // 1 dan 5 gacha tasodifiy reyting
-    //     feedback.course = course; // Hozirgi kursga o'rnatish
-    //     feedback.user = newUser1; // Hozirgi kursga o'rnatish
-
-    //     try {
-    //       await lessonRepository.save<Feedback>(feedback);
-    //       console.log(
-    //         `Yangi izoh saqlandi: ${feedback.comment}, reyting: ${feedback.rating}, kurs: ${course.id}`,
-    //       );
-    //     } catch (error) {
-    //       console.error(`Izohni saqlashda xato:`, error);
-    //     }
-    //   }
-    // }
-
-    // await connection.transaction(async (entityManager) => {
-    //   for (const course of coursesList) {
-    //     for (let i = 0; i < feedbackCount; i++) {
-    //       const feedback = new Feedback();
-    //       feedback.comment =
-    //         comments[Math.floor(Math.random() * comments.length)];
-    //       feedback.rating = Math.floor(Math.random() * 5) + 1;
-    //       feedback.course = course;
-
-    //       await entityManager.save(feedback); // entityManager orqali saqlash
-    //     }
-    //   }
-    // });
 
     await queryRunner.commitTransaction();
   } catch (err) {

@@ -27,4 +27,13 @@ export class CreateBlockDto {
   @IsInt()
   @IsNotEmpty()
   courseId: number; // Kurs ID (raqam)
+
+  @ApiProperty({
+    example: 4,
+    description: "Order",
+    type: Number,
+  })
+  @IsInt()
+  @IsNotEmpty()
+  order: number;
 }

@@ -55,6 +55,10 @@ export class HomeworkService implements IHomeworkService {
       "Dars videosi",
     );
 
+    block.duration = Number(block.duration) + Number(duration);
+    block.countVideos = Number(block.countVideos) + 1;
+    await this.blockRepository.update(block);
+
     let newHomework = new Homework();
     newHomework.block = block;
     newHomework.videoUrl = videoUrl;
@@ -153,6 +157,12 @@ export class HomeworkService implements IHomeworkService {
   async delete(id: ID): Promise<ResData<Homework>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.homeworkRepository.delete(foundData);
+
+    const foundBlock = await this.blockRepository.findById(foundData.block.id);
+    foundBlock.duration =
+      Number(foundBlock.duration) - Number(foundData.duration);
+    foundBlock.countVideos = Number(foundBlock.countVideos) - 1;
+    await this.blockRepository.update(foundBlock);
 
     return new ResData<Homework>("Homework deleted successfully", 200, data);
   }
