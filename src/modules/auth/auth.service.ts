@@ -248,11 +248,14 @@ export class AuthService implements IAuthService {
   async verifay(dto: VerifyDto): Promise<ResData<boolean>> {
     let chacked = false;
     const phoneCode = await this.cacheManager.get(dto.phone);
+    const resData = new ResData<boolean>("Code is wrong", 400, chacked)
     if (phoneCode == dto.code) {
-      chacked = true;
-    }
-
-    return new ResData<boolean>("Verifay sms code", 200, chacked);
+      await this.cacheManager.del(dto.phone)
+      resData.data = true;
+      resData.message = "Verified successfully"
+      resData.statusCode = 200
+    } 
+    return resData;
   }
 
   async access(token: AccessAuthDto): Promise<ResData<User>> {
