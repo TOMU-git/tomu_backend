@@ -45,3 +45,4 @@ export class UpdateCourseDto {
   @Transform(({ value }) => value === "true" || value === true)
   isActive?: boolean = true;
 }
+

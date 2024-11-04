@@ -97,7 +97,9 @@ export class CourseController {
           type: "string",
           format: "binary",
         },
-        isActive: { type: "boolean", example: true },
+        isActive: {
+          type: "boolean"
+        },
       },
     },
   })

@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import {
   AccessAuthDto,
+  ForgotPassword,
   LoginAuthDto,
   SentSmsDto,
   VerifyDto,
@@ -188,6 +189,24 @@ export class AuthService implements IAuthService {
     await this.cacheManager.set(sendSmsDto.phone, generatedCode, 120000);
     return new ResData<SmsSent>("Message sent successfully", 200, {
       status: "success",
+    });
+  }
+
+  async forgotPass(dto: ForgotPassword):Promise<ResData<SmsSent>> {
+    const { data: foundUserPhone } = await this.userService.findOneByPhoneNumber(dto.phone);
+    if (!foundUserPhone) {
+      throw new HttpException("This phone number not found", 404)
+    }
+    const generatedCode = generate();
+
+    const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
+
+    await this.smsService.sendSMS(dto.phone, message);
+
+    await this.cacheManager.set(dto.phone, generatedCode, 120000);
+    return new ResData<SmsSent>("Message sent successfully", 200, {
+      status: "success",
+      id: foundUserPhone.id
     });
   }
 

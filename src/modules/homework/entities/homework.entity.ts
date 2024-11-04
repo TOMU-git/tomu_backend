@@ -14,7 +14,6 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: "varchar", length: 255, name: "video_url" })
   videoUrl: string;
-
   /**
    * Fayl turi (mimetype).
    * Masalan, 'video/mp4'.
@@ -42,6 +41,7 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: "int" })
   duration: number;
+
 
   @ManyToOne(() => Block, (block) => block.homeworks, {
     nullable: true, // Block mavjud bo'lmasa null bo'lishi mumkin

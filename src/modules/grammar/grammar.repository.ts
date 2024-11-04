@@ -12,15 +12,13 @@ export class GrammarRepository implements IGrammarRepository {
     private grammarRepository: Repository<Grammar>,
   ) {}
 
-  async create(dto: Grammar): Promise<Grammar> {
-    const newGrammar = await this.grammarRepository.create(dto);
-    await this.grammarRepository.save(newGrammar);
-    return newGrammar;
+  async create(entity: Grammar): Promise<Grammar> {
+    return await this.grammarRepository.save(entity);
   }
 
   async findAll(): Promise<Array<Grammar>> {
     return await this.grammarRepository.find({
-      select: ["id", "title"], // Faqat kerakli maydonlarni tanlang
+      select: ["id", "title"], order: {createdAt: 'ASC'}
     });
   }
 

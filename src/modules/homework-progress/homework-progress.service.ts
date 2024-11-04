@@ -1,8 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
-import { IUserService } from "../user/interfaces/user.service";
-import { IHomeworkService } from "../homework/interfaces/homework.service";
 import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
 import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
@@ -11,6 +9,9 @@ import {
   HomeworkProgressAlreadyExistException,
   HomeworkProgressNotFoundException,
 } from "./exception/homework-progress.exception";
+import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
+import { IUserRepository } from "../user/interfaces/user.repository";
+import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto";
 
 @Injectable()
 export class HomeworkProgressService implements IHomeworkProgressService {
@@ -18,50 +19,58 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     @Inject("IHomeworkProgressRepository")
     private readonly homeworkProgressRepository: IHomeworkProgressRepository,
 
-    @Inject("IUserService") // UserService ni inject qilamiz
-    private readonly userService: IUserService,
+    @Inject("IUserRepository") // UserRepository ni inject qilamiz
+    private readonly userRepository: IUserRepository,
 
-    @Inject("IHomeworkService") // HomeworkService ni inject qilamiz
-    private readonly homeworkService: IHomeworkService,
+    @Inject("IHomeworkRepository") // HomeworkService ni inject qilamiz
+    private readonly homeworkRepository: IHomeworkRepository,
   ) {}
 
   async create(
     dto: CreateHomeworkProgressDto,
-  ): Promise<ResData<HomeworkProgress>> {
-    console.log(
-      "Creating homework progress with userId:",
-      dto.userId,
-      "and homeworkId:",
+  ): Promise<ResData<Partial<HomeworkProgress>>> {
+    // console.log(
+    //   "Creating homework progress with userId:",
+    //   dto.userId,
+    //   "and homeworkId:",
+    //   dto.homeworkId,
+    // );
+
+    // User va homework mavjudligini tekshirish
+    const foundUser = await this.userRepository.findOneById(dto.userId);
+    const foundHomework = await this.homeworkRepository.findById(
       dto.homeworkId,
     );
 
-    // User va homework mavjudligini tekshirish
-    const foundUser = await this.userService.findOneById(dto.userId); // UserService orqali foydalanuvchini topamiz
-    const foundHomework = await this.homeworkService.findOneById(
-      dto.homeworkId,
-    ); // HomeworkService orqali darsni topamiz
-
-    // Darsning foydalanuvchiga bog'langan yozuvi borligini tekshirish
+    // Homework progress mavjudligini tekshirish
     const foundData =
       await this.homeworkProgressRepository.findOneByUserAndHomework(
         dto.userId,
         dto.homeworkId,
       );
-    console.log("foundData", foundData);
     if (foundData) {
       throw new HomeworkProgressAlreadyExistException();
     }
 
+    // Homework progressni yaratish
     let newHomeworkProgress = new HomeworkProgress();
+    newHomeworkProgress.user = foundUser;
+    newHomeworkProgress.homework = foundHomework;
     newHomeworkProgress = Object.assign(newHomeworkProgress, dto);
-    const newData =
+    const createdHomeworkProgress =
       await this.homeworkProgressRepository.create(newHomeworkProgress);
-    console.log("newData:", newData);
 
-    return new ResData<HomeworkProgress>(
+    // Faqat kerakli ma'lumotlarni olish
+    const result = {
+      id: createdHomeworkProgress.id,
+      userId: foundUser.id,
+      homeworkId: foundHomework.id,
+    };
+
+    return new ResData<Partial<HomeworkProgress>>(
       "Homework progress created successfully",
       201,
-      newData,
+      result,
     );
   }
 
@@ -78,5 +87,74 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
 
     return new ResData<HomeworkProgress>("ok", 200, foundData);
+  }
+
+  async update(
+    id: ID,
+    dto: UpdateHomeworkProgressDto,
+  ): Promise<ResData<HomeworkProgress>> {
+    const foundData = await this.homeworkProgressRepository.findById(id);
+    if (!foundData) {
+      throw new HomeworkProgressNotFoundException();
+    }
+    foundData.countWatched = dto.countWatched;
+    foundData.isWatched = dto.isWatched;
+
+    const updatedData = await this.homeworkProgressRepository.update(foundData);
+    return new ResData<HomeworkProgress>("ok", 200, updatedData);
+  }
+
+  async getRandomVideos(
+    order: number,
+    blockId: ID,
+    userId: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    const currentOrder = order - 5;
+
+    // countWatched qiymati 0 dan katta va 5 dan kichik bo'lgan videolarni olish
+    const checkedVideoList =
+      await this.homeworkProgressRepository.getVideosWithWatchCountBetween0And5(
+        currentOrder,
+        blockId,
+      );
+
+    // console.log("checkedVideoList", checkedVideoList);
+
+    // Tasodifiy aralashtirish uchun yordamchi funksiya
+    function shuffleArray(array: HomeworkProgress[]): HomeworkProgress[] {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Tasodifiy aralashtirish va boricha yoki maksimal 15 tasini olish
+    const shuffledVideos = shuffleArray(checkedVideoList).slice(
+      0,
+      Math.min(15, checkedVideoList.length),
+    );
+
+    // console.log("shuffledVideos", shuffledVideos);
+    return new ResData<Array<HomeworkProgress>>(
+      "Random videos fetched successfully",
+      200,
+      shuffledVideos,
+    );
+  }
+
+  async getWatchedHomeworkProgressUpToOrder(
+    order: ID,
+  ): Promise<ResData<boolean>> {
+    const data =
+      await this.homeworkProgressRepository.getWatchedHomeworkProgressUpToOrder(
+        order,
+      );
+
+    // `isWatched` maydonini tekshirish
+    const allWatched = data.every((item) => item.isWatched);
+    // console.log(allWatched);
+
+    return new ResData<boolean>("All videos watched", 200, allWatched);
   }
 }

@@ -50,3 +50,13 @@ export class SentSmsDto {
   @IsNotEmpty()
   phone: string;
 }
+
+export class ForgotPassword{
+  @ApiProperty({
+    type: String,
+    example: "+998901234567",
+  })
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+}

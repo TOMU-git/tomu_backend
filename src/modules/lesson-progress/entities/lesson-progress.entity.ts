@@ -13,6 +13,6 @@ export class LessonProgress extends BaseEntity {
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lesson;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: false, name: 'is_watched' })
   isWatched: boolean;
 }
