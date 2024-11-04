@@ -19,7 +19,14 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findAll(): Promise<Array<Homework>> {
-    return await this.homeworkRepository.find();
+    return await this.homeworkRepository
+      .createQueryBuilder("homework")
+      .leftJoinAndSelect("homework.block", "block") // block bilan bog'lanish
+      .select([
+        "homework", // homework ma'lumotlarini olish
+        "block.id", // faqat block id sini olish
+      ])
+      .getMany(); // barcha homework yozuvlarini olish
   }
 
   async update(entity: Homework): Promise<Homework> {
@@ -31,7 +38,15 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findById(id: ID): Promise<Homework | null> {
-    return await this.homeworkRepository.findOneBy({ id });
+    return await this.homeworkRepository
+      .createQueryBuilder("homework")
+      .leftJoinAndSelect("homework.block", "block") // block ni qo'shish
+      .select([
+        "homework", // homework ma'lumotlarini olish
+        "block.id", // faqat block id sini olish
+      ])
+      .where("homework.id = :id", { id }) // id ga mos keladigan homework ni tanlash
+      .getOne(); // bitta yozuvni olish
   }
 
   async findOneByOrder(order: number, blockId: ID): Promise<Homework | null> {
@@ -41,6 +56,19 @@ export class HomeworkRepository implements IHomeworkRepository {
         block: { id: blockId },
       },
     });
+  }
+
+  async getNextFiveVideos(
+    order: number,
+    blockId: ID,
+  ): Promise<Array<Homework>> {
+    return await this.homeworkRepository
+      .createQueryBuilder("homework")
+      .where("homework.order > :order", { order })
+      .andWhere("homework.block_id = :blockId", { blockId })
+      .orderBy("homework.order", "ASC")
+      .limit(5)
+      .getMany();
   }
 
   async findOneByName(title: string): Promise<Homework | null> {

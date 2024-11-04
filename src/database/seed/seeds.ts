@@ -480,6 +480,7 @@ import { createConnection, DataSource } from "typeorm";
       (newCourse1.videoUrl = "https://player.vimeo.com/video/1022477217"),
       (newCourse1.mimetype = "image/png"),
       (newCourse1.size = 296345);
+    newCourse1.isActive = true;
     await courseRepository.save<Course>(newCourse1);
 
     const newCourse2 = new Course();
@@ -490,6 +491,7 @@ import { createConnection, DataSource } from "typeorm";
       (newCourse2.videoUrl = "https://player.vimeo.com/video/1022477217"),
       (newCourse2.mimetype = "image/png"),
       (newCourse2.size = 346345);
+    newCourse2.isActive = true;
     await courseRepository.save<Course>(newCourse2);
 
     const newCourse3 = new Course();
@@ -500,6 +502,7 @@ import { createConnection, DataSource } from "typeorm";
       (newCourse3.videoUrl = "https://player.vimeo.com/video/1022477217"),
       (newCourse3.mimetype = "image/png"),
       (newCourse3.size = 231110);
+    newCourse3.isActive = true;
     await courseRepository.save<Course>(newCourse3);
 
     // ----------
