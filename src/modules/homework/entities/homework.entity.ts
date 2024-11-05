@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("homeworks")
 export class Homework extends BaseEntity {
-  @Column({ type: "text" })
+  @Column({ type: "text", length: 255 })
   description: string;
 
   /**

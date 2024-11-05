@@ -7,6 +7,7 @@ import { SharedModule } from "../shared/shared.module";
 import { HomeworkModule } from "../homework/homework.module";
 import { UserModule } from "../user/user.module";
 import { HomeworkProgressRepository } from "./homework-progress.repository";
+import { BlockModule } from "../block/block.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { HomeworkProgressRepository } from "./homework-progress.repository";
     SharedModule,
     HomeworkModule,
     UserModule,
+    BlockModule
   ],
   controllers: [HomeworkProgressController],
   providers: [

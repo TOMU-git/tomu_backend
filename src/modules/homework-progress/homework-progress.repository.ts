@@ -20,16 +20,14 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   }
 
   // Berilgan foydalanuvchi va homework bo'yicha homework progress yozuvini topish uchun metod
-  async findOneByUserAndHomework(
+  async findOneByUserId(
     userId: ID,
-    homeworkId: ID,
   ): Promise<HomeworkProgress | null> {
     return this.homeworkProgressRepository.findOne({
       where: {
         user: { id: userId },
-        homework: { id: homeworkId },
       },
-      relations: ["user", "homework"],
+      relations: ["user"],
     });
   }
 
