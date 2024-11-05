@@ -36,6 +36,7 @@ export class HomeworkService implements IHomeworkService {
     if (!block) {
       throw new BlockNotFoundException();
     }
+    console.log(createHomeworkDto)
 
     const orderExist = await this.homeworkRepository.findOneByOrder(
       createHomeworkDto.order,
