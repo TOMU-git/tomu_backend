@@ -2,7 +2,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class PhoneOrPasswordWrongException extends HttpException {
   constructor() {
-    super("Admin Phone or Password Wrong!", HttpStatus.BAD_REQUEST);
+    super("Phone or password is wrong!", HttpStatus.BAD_REQUEST);
   }
 }
 export class InvalidRefreshToken extends HttpException {

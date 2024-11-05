@@ -4,7 +4,9 @@ import { PaymeMethodEnum } from "src/common/enums/payme-enum";
 import { ITransactionService } from "./interfaces/transaction-service";
 import { Response } from "express";
 import { TransactionsService } from "./transactions.service";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Payme-Transactions')
 @Controller("transactions")
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
