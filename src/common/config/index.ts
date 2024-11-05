@@ -17,4 +17,5 @@ export const config: IConfig = {
   databaseUrl: process.env.DB_URL,
   token: process.env.TELEGRAM_BOT_TOKEN,
   smsApiUrl: process.env.SMS_API_URL,
+  
 };
