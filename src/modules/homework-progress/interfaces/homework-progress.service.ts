@@ -12,6 +12,7 @@ export interface IHomeworkProgressService {
   findAll(): Promise<ResData<Array<HomeworkProgress>>>;
 
   findOneById(id: ID): Promise<ResData<HomeworkProgress>>;
+  findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>>;
 
   update(
     id: ID,

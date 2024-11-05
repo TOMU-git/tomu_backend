@@ -44,8 +44,8 @@ export class HomeworkProgressController {
   @Get(":id")
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
-  ): Promise<ResData<HomeworkProgress>> {
-    return await this.homeworkProgressService.findOneById(id);
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    return await this.homeworkProgressService.findByUserId(id);
   }
 
   // Berilgan ID bo'yicha homework progress yozuvini yangilash uchun metod

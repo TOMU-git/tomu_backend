@@ -13,6 +13,9 @@ import { IHomeworkRepository } from "../homework/interfaces/homework.repository"
 import { IUserRepository } from "../user/interfaces/user.repository";
 import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto";
 import { IBlockRepository } from "../block/interfaces/block.repository";
+import { BlockNotFoundException } from "../block/exception/block.exception";
+import { UserNotFound } from "../user/exception/user.exception";
+import { HomeworkNotFoundException } from "../homework/exception/homework.exception";
 
 @Injectable()
 export class HomeworkProgressService implements IHomeworkProgressService {
@@ -42,10 +45,16 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // User va homework mavjudligini tekshirish
     const foundUser = await this.userRepository.findOneById(dto.userId);
+    if (!foundUser) {
+      throw new UserNotFound();
+    }
     const foundHomework = await this.homeworkRepository.findById(
       dto.homeworkId,
     );
 
+    if (!foundHomework) {
+      throw new HomeworkNotFoundException();
+    }
     // Homework progressni yaratish
     let newHomeworkProgress = new HomeworkProgress();
     newHomeworkProgress.user = foundUser;
@@ -83,6 +92,15 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     return new ResData<HomeworkProgress>("ok", 200, foundData);
   }
 
+  async findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>> {
+    const foundData = await this.homeworkProgressRepository.findByUserId(id);
+    if (!foundData) {
+      throw new HomeworkProgressNotFoundException();
+    }
+
+    return new ResData<Array<HomeworkProgress>>("ok", 200, foundData);
+  }
+
   async update(
     id: ID,
     dto: UpdateHomeworkProgressDto,
@@ -106,8 +124,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   }
 
   async checkProgressExist(userId: ID): Promise<boolean> {
-    const progress =
-      await this.homeworkProgressRepository.findOneByUserId(userId);
+    const progress = await this.homeworkProgressRepository.findByUserId(userId);
     return !!progress; // Agar progress bo'lsa, true qaytaramiz, aks holda false
   }
 
@@ -115,83 +132,60 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async createInitialProgress(
     userId: ID,
     blockId: ID,
-  ): Promise<HomeworkProgress[]> {
-    // Block ID orqali bog'langan videolarni olish
-    const block = await this.blockRepository.findById(blockId);
-
-    // Order qiymati 10 yoki undan kichik bo'lgan videolarni tanlash
-    const videosToUse = block.homeworks
-      .filter((video) => video.order <= 10)
-      .map((video) => video.id); // Faqat video ID larini olish
-
-    const progressEntries: HomeworkProgress[] = [];
-
-    // Tanlangan videolar uchun progress yozuvlarini yaratish
-    for (const videoId of videosToUse) {
-      const newProgress = new HomeworkProgress();
-      newProgress.user = { id: userId } as User; // Userni ID bilan bog'lash
-      newProgress.homework = { id: videoId } as Homework; // Homeworkni video ID bilan bog'lash
-      newProgress.isWatched = true; // Ko'rilgan deb belgilash
-      newProgress.countWatched = 0; // Dastlab 0 dan boshlash
-
-      progressEntries.push(newProgress);
+  ): Promise<Array<HomeworkProgress>> {
+    const foundUser = await this.userRepository.findOneById(userId);
+    if (!foundUser) {
+      throw new UserNotFound();
     }
 
-    // Barcha progress yozuvlarini bazaga saqlash
-    return this.homeworkProgressRepository.save(progressEntries);
+    const foundBlock = await this.blockRepository.findById(blockId);
+    if (!foundBlock) {
+      throw new BlockNotFoundException();
+    }
+    const topTenVideos = foundBlock.homeworks
+      .sort((a, b) => a.order - b.order) // order bo'yicha saralash
+      .slice(0, 10) // faqat dastlabki 10 ta videoni tanlash
+      .map((video) => video.id); // faqat id larni olish
+
+    const homeworkProgresses: HomeworkProgress[] = [];
+
+    for (const homeworkId of topTenVideos) {
+      // Homeworkni tekshirish
+      const foundHomework = await this.homeworkRepository.findById(homeworkId);
+      if (!foundHomework) {
+        continue; // Agar homework topilmasa, keyingi video uchun davom etadi
+      }
+
+      // Yangi HomeworkProgress obyektini yaratish
+      let newHomeworkProgress = new HomeworkProgress();
+      newHomeworkProgress.user = foundUser;
+      newHomeworkProgress.homework = foundHomework;
+      newHomeworkProgress.isWatched = true; // Progress yaratishda isWatched true
+      newHomeworkProgress.countWatched = 1; // Odatda 1 martadan ko‘rilgan deb belgilanadi
+
+      // Homework progressni bazaga qo'shish
+      const createdHomeworkProgress =
+        await this.homeworkProgressRepository.create(newHomeworkProgress);
+
+      // Natijani homeworkProgresses massiviga qo'shish
+      homeworkProgresses.push(createdHomeworkProgress);
+    }
+
+    return homeworkProgresses;
   }
 
-  // async getRandomVideos(
-  //   order: number,
-  //   blockId: ID,
-  //   userId: ID,
-  // ): Promise<ResData<Array<HomeworkProgress>>> {
-  //   const currentOrder = order - 5;
+  async checkVideos(userId: ID): Promise<boolean> {
+    const foundData =
+      await this.homeworkProgressRepository.findByUserId(userId);
+    // `isWatched` true bo'lgan yozuvlarni filtrlash va ularning `homework.order` qiymatlarini olish
+    const watchedOrders = foundData
+      .filter((progress) => progress.isWatched && progress.homework !== null)
+      .map((progress) => progress.homework.order);
 
-  //   // countWatched qiymati 0 dan katta va 5 dan kichik bo'lgan videolarni olish
-  //   const checkedVideoList =
-  //     await this.homeworkProgressRepository.getVideosWithWatchCountBetween0And5(
-  //       currentOrder,
-  //       blockId,
-  //     );
+    // Agar `watchedOrders` bo'sh bo'lmasa, eng katta `order` qiymatini olish
+    const maxOrder =
+      watchedOrders.length > 0 ? Math.max(...watchedOrders) : null;
 
-  //   // console.log("checkedVideoList", checkedVideoList);
-
-  //   // Tasodifiy aralashtirish uchun yordamchi funksiya
-  //   function shuffleArray(array: HomeworkProgress[]): HomeworkProgress[] {
-  //     for (let i = array.length - 1; i > 0; i--) {
-  //       const j = Math.floor(Math.random() * (i + 1));
-  //       [array[i], array[j]] = [array[j], array[i]];
-  //     }
-  //     return array;
-  //   }
-
-  //   // Tasodifiy aralashtirish va boricha yoki maksimal 15 tasini olish
-  //   const shuffledVideos = shuffleArray(checkedVideoList).slice(
-  //     0,
-  //     Math.min(15, checkedVideoList.length),
-  //   );
-
-  //   // console.log("shuffledVideos", shuffledVideos);
-  //   return new ResData<Array<HomeworkProgress>>(
-  //     "Random videos fetched successfully",
-  //     200,
-  //     shuffledVideos,
-  //   );
-  // }
-
-  // async getWatchedHomeworkProgressUpToOrder(
-  //   order: ID,
-  // ): Promise<ResData<boolean>> {
-  //   const data =
-  //     await this.homeworkProgressRepository.getWatchedHomeworkProgressUpToOrder(
-  //       order,
-  //     );
-
-  //   // `isWatched` maydonini tekshirish
-  //   const allWatched = data.every((item) => item.isWatched);
-  //   // console.log(allWatched);
-
-  //   return new ResData<boolean>("All videos watched", 200, allWatched);
-  // }
+    return;
+  }
 }

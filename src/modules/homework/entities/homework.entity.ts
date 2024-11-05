@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("homeworks")
 export class Homework extends BaseEntity {
-  @Column({ type: "text", length: 255 })
+  @Column({ type: "varchar", length: 255 })
   description: string;
 
   /**
@@ -41,7 +41,6 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: "int" })
   duration: number;
-
 
   @ManyToOne(() => Block, (block) => block.homeworks, {
     nullable: true, // Block mavjud bo'lmasa null bo'lishi mumkin

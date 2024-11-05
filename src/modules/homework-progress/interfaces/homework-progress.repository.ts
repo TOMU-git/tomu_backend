@@ -5,9 +5,9 @@ export interface IHomeworkProgressRepository {
   create(dto: HomeworkProgress): Promise<HomeworkProgress>;
   findAll(): Promise<Array<HomeworkProgress>>;
   findById(id: ID): Promise<HomeworkProgress | null>;
-  findOneByUserId(
+  findByUserId(
     userId: ID,
-  ): Promise<HomeworkProgress | null>;
+  ): Promise<Array<HomeworkProgress> | null>;
   update(dto: HomeworkProgress): Promise<HomeworkProgress>;
   getVideosWithWatchCountBetween0And5(
     order: ID,
