@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Req } from "@nestjs/common";
+import { Controller, Post, Body, Res, Req, Inject } from "@nestjs/common";
 import { PaymeDto } from "src/common/types/type";
 import { PaymeMethodEnum } from "src/common/enums/payme-method-enum";
 import { ITransactionService } from "./interfaces/transaction-service";
@@ -17,7 +17,7 @@ import {
 @ApiTags("Payme-Transactions")
 @Controller("transactions")
 export class TransactionsController {
-  constructor(private readonly transactionsService: ITransactionService) {}
+  constructor(@Inject("ITransactionServcie") private readonly transactionsService: ITransactionService) {}
 
   @Post("payme")
   async payme(@Res() res: Response, @Req() req: Request) {

@@ -5,10 +5,18 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { TransactionEntity } from "./entities/transaction.entity";
 import { UserModule } from "../user/user.module";
 import { TariffModule } from "../tariff/tariff.module";
+import { TransactionRepository } from "./transactions.repository";
 
 @Module({
 imports: [TypeOrmModule.forFeature([TransactionEntity]), UserModule, TariffModule],
   controllers: [TransactionsController],
-  providers: [TransactionsService],
+  providers: [
+    { provide: "ITransactionServcie", useClass: TransactionsService },
+    { provide: "ITransactionRepository", useClass: TransactionRepository },
+  ],
+  exports: [
+    { provide: "ITransactionServcie", useClass: TransactionsService },
+    { provide: "ITransactionRepository", useClass: TransactionRepository },
+  ],
 })
 export class TransactionsModule {}
