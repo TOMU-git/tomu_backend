@@ -11,6 +11,8 @@ import {
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
+import { IBlockService } from "../block/interfaces/block.service";
+import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -23,19 +25,22 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("ILessonService") // LessonService ni inject qilamiz
     private readonly lessonService: ILessonService,
+
+    @Inject("IBlockService") // LessonService ni inject qilamiz
+    private readonly blockService: IBlockService,
   ) {}
 
   async create(dto: CreateLessonProgressDto): Promise<ResData<LessonProgress>> {
-    console.log(
-      "Creating lesson progress with userId:",
-      dto.userId,
-      "and lessonId:",
-      dto.lessonId,
-    );
-
     // User va lesson mavjudligini tekshirish
-    const foundUser = await this.userService.findOneById(dto.userId); // UserService orqali foydalanuvchini topamiz
-    const foundLesson = await this.lessonService.findOneById(dto.lessonId); // LessonService orqali darsni topamiz
+    const { data: foundUser } = await this.userService.findOneById(dto.userId); // UserService orqali foydalanuvchini topamiz
+
+    const { data: foundLesson } = await this.lessonService.findOneById(
+      dto.lessonId,
+    ); // LessonService orqali darsni topamiz
+
+    const { data: foundBlock } = await this.blockService.findOneById(
+      dto.blockId,
+    ); // BlockService orqali block topamiz
 
     // Darsning foydalanuvchiga bog'langan yozuvi borligini tekshirish
     const foundData =
@@ -49,7 +54,11 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     let newLessonProgress = new LessonProgress();
-    newLessonProgress = Object.assign(newLessonProgress, dto);
+    (newLessonProgress.blockOrder = foundBlock.order),
+      (newLessonProgress.user = foundUser),
+      (newLessonProgress.lesson = foundLesson),
+      (newLessonProgress.lessonOrder = foundLesson.order),
+      (newLessonProgress = Object.assign(newLessonProgress, dto));
     const newData =
       await this.lessonProgressRepository.create(newLessonProgress);
     console.log("newData:", newData);
@@ -67,6 +76,21 @@ export class LessonProgressService implements ILessonProgressService {
     return new ResData<Array<LessonProgress>>("ok", 200, data);
   }
 
+  async test(bId: ID, uId: ID): Promise<ResData<Array<LessonProgress>>> {
+    const check = await this.lessonProgressRepository.findIfAllWatched(
+      1,
+      15,
+      11,
+    );
+    // console.log("check", check);
+    const data = await this.lessonProgressRepository.findByOrderAndUserId(
+      uId,
+      bId,
+    );
+
+    return new ResData<Array<LessonProgress>>("ok", 200, data);
+  }
+
   async findOneById(id: ID): Promise<ResData<LessonProgress>> {
     const foundData = await this.lessonProgressRepository.findById(id);
     if (!foundData) {
@@ -74,5 +98,61 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     return new ResData<LessonProgress>("ok", 200, foundData);
+  }
+
+  async update(
+    id: ID,
+    updateDto: UpdateLessonProgressDto,
+  ): Promise<ResData<LessonProgress>> {
+    // `LessonProgress` obyektini topish
+    const foundLessonProgress =
+      await this.lessonProgressRepository.findById(id);
+    if (!foundLessonProgress) {
+      throw new LessonProgressNotFoundException();
+    }
+
+    // Agar `updateDto` ichida yangi `userId`, `lessonId`, yoki `blockId` berilgan bo'lsa, tegishli ob'ektlarni tekshirish
+    if (updateDto.userId) {
+      const { data: foundUser } = await this.userService.findOneById(
+        updateDto.userId,
+      );
+      if (!foundUser) {
+        throw new Error("User not found");
+      }
+      foundLessonProgress.user = foundUser;
+    }
+
+    if (updateDto.lessonId) {
+      const { data: foundLesson } = await this.lessonService.findOneById(
+        updateDto.lessonId,
+      );
+      if (!foundLesson) {
+        throw new Error("Lesson not found");
+      }
+      foundLessonProgress.lesson = foundLesson;
+      foundLessonProgress.lessonOrder = foundLesson.order;
+    }
+
+    if (updateDto.blockId) {
+      const { data: foundBlock } = await this.blockService.findOneById(
+        updateDto.blockId,
+      );
+      if (!foundBlock) {
+        throw new Error("Block not found");
+      }
+      foundLessonProgress.blockOrder = foundBlock.order;
+    }
+
+    // Barcha yangilanishlarni `Object.assign` yordamida `foundLessonProgress`ga qo'llash
+    Object.assign(foundLessonProgress, updateDto);
+
+    // Yangilangan `LessonProgress` obyektini saqlash
+    const updatedData = await this.lessonProgressRepository.update(foundLessonProgress);
+
+    return new ResData<LessonProgress>(
+      "Lesson progress updated successfully",
+      200,
+      updatedData,
+    );
   }
 }

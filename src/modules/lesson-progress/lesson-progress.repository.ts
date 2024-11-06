@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { In, Repository } from "typeorm";
+import { In, LessThanOrEqual, Repository } from "typeorm";
 import { LessonProgress } from "./entities/lesson-progress.entity";
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 
@@ -29,6 +29,37 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       },
       relations: ["user", "lesson"],
     });
+  }
+
+  async findByOrderAndUserId(
+    order: ID,
+    userId: ID,
+  ): Promise<Array<LessonProgress | null>> {
+    return this.lessonProgressRepository.find({
+      where: {
+        blockOrder: order,
+        userId: userId, // user_ID o'rniga userId ishlatamiz
+      },
+      relations: ["lesson"], // lesson bilan bog'lanish
+    });
+  }
+
+  async findIfAllWatched(
+    blockOrder: ID,
+    lessonOrder: ID,
+    userId: ID,
+  ): Promise<boolean> {
+    const lessonProgresses = await this.lessonProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        lessonOrder: LessThanOrEqual(lessonOrder),
+        user: { id: userId },
+      },
+      select: ["isWatched"],
+    });
+
+    // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
+    return lessonProgresses.every((progress) => progress.isWatched);
   }
 
   async findAll(): Promise<Array<LessonProgress>> {

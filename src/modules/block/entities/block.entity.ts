@@ -2,6 +2,7 @@ import { BaseEntity } from "src/common/database/baseEntity";
 import { HomeworkEnum } from "src/common/enums/enum";
 import { Course } from "src/modules/course/entities/course.entity";
 import { Homework } from "src/modules/homework/entities/homework.entity";
+import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
@@ -18,7 +19,7 @@ export class Block extends BaseEntity {
   @Column({ type: "bigint", default: 0 })
   duration: number;
 
-  @Column({ type: "bigint",name: "count_videos", default: 0 })
+  @Column({ type: "bigint", name: "count_videos", default: 0 })
   countVideos: number;
 
   // Blokning kategoriyasi (enum: HomeworkEnum dan olinadi, majburiy)

@@ -6,6 +6,8 @@ import {
   Param,
   ParseIntPipe,
   Inject,
+  Query,
+  Patch,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { CreateLessonProgressDto } from "./dto/create-lesson-progress.dto";
@@ -15,6 +17,7 @@ import { ILessonProgressService } from "./interfaces/lesson-progress.service";
 import { ApiTags } from "@nestjs/swagger";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
+import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 
 @ApiTags("lesson-progress")
 @Controller("lesson-progress")
@@ -38,11 +41,27 @@ export class LessonProgressController {
     return await this.lessonProgressService.findAll();
   }
 
+  @Get("test")
+  async test(
+    @Query("userId", ParseIntPipe) userId: ID,
+    @Query("blockOrder", ParseIntPipe) blockOrder: ID,
+  ): Promise<ResData<Array<LessonProgress>>> {
+    return await this.lessonProgressService.test(userId, blockOrder);
+  }
+
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get(":id")
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
   ): Promise<ResData<LessonProgress>> {
     return await this.lessonProgressService.findOneById(id);
+  }
+
+  @Patch(":id")
+  async update(
+    @Param("id", ParseIntPipe) id: ID,
+    @Body() updateDto: UpdateLessonProgressDto, // updateDto ni qabul qilamiz
+  ): Promise<ResData<LessonProgress>> {
+    return await this.lessonProgressService.update(id, updateDto);
   }
 }
