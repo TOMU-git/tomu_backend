@@ -7,6 +7,8 @@ export interface IBlockRepository {
   update(entity: Block): Promise<Block>;
   delete(entity: Block): Promise<Block>;
   findById(id: ID): Promise<Block | null>;
+  findByIdWithHomeworks(id: ID): Promise<Block | null>;
+  findByIdWithLessons(id: ID): Promise<Block | null>;
   findOneByName(title: string): Promise<Block | null>;
   getBlocksLessonsByCourseId(courseId: number): Promise<Array<Block>>;
   getBlocksHomeworksByCourseId(courseId: number): Promise<Array<Block>>;
