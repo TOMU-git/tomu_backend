@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FeedbackModule } from "./modules/feedback/feedback.module";
 import { PaymentModule } from "./modules/payment/payment.module";
@@ -25,6 +25,8 @@ import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigModule } from "@nestjs/config";
 import { CourseVideoModule } from './modules/course-video/course-video.module';
+import { CheckTokenMiddleware } from "./common/middleware/transaction-middleware";
+import { TransactionsController } from "./modules/transactions/transactions.controller";
 
 @Module({
   imports: [
@@ -67,7 +69,10 @@ import { CourseVideoModule } from './modules/course-video/course-video.module';
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply()
-      .forRoutes('cats');
+      .apply(CheckTokenMiddleware)
+      .exclude(
+        {path: "transactions", method: RequestMethod.POST}
+      )
+      .forRoutes(TransactionsController);
   }
 }

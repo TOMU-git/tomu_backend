@@ -6,7 +6,7 @@ export interface ICheckTransactionDto {
   cancel_time: number;
   transaction: string;
   state: TransactionStateEnum;
-  reason: number;
+  reason: number | null;
 }
 
 export interface ICreateTransactionDto {
@@ -32,7 +32,7 @@ export interface IGetStatementTransactionDto {
   amount: number;
   account: {
     user_id: number;
-    meta_id: number;
+    tariff_id: number;
   };
   create_time: number;
   perform_time: number;

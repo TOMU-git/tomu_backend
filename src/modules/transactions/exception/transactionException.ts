@@ -13,7 +13,7 @@ export class TransactionError<TData> extends HttpException {
 		id: number | string,
         data?: TData,
 	) {
-		super(transactionError.message, transactionError.code);
+		super(transactionError.name, transactionError.code);
 		this.transactionErrorCode = transactionError.code;
 		this.transactionErrorMessage = transactionError.message;
 		this.transactionData = data;
