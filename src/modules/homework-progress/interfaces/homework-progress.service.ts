@@ -19,6 +19,10 @@ export interface IHomeworkProgressService {
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>>;
 
-  getVideos(userID: ID, blockId: ID): Promise<ResData<Array<HomeworkProgress>>>;
+  delete(id: ID): Promise<ResData<HomeworkProgress>>;
 
+  getVideos(
+    userID: ID,
+    blockId: ID,
+  ): Promise<ResData<Array<HomeworkProgress> | boolean>>;
 }

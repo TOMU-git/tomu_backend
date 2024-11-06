@@ -116,16 +116,52 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     return new ResData<HomeworkProgress>("ok", 200, updatedData);
   }
 
+  async delete(id: ID): Promise<ResData<HomeworkProgress>> {
+    const foundData = await this.homeworkProgressRepository.findById(id);
+    if (!foundData) {
+      throw new HomeworkProgressNotFoundException();
+    }
+
+    const data = await this.homeworkProgressRepository.delete(foundData);
+
+    return new ResData<HomeworkProgress>("ok", 200, data);
+  }
+
   async getVideos(
-    userID: ID,
+    userId: ID,
     blockId: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>> {
-    return;
+  ): Promise<ResData<Array<HomeworkProgress> | boolean>> {
+    let data = null;
+    const progressExist = await this.checkProgressExist(userId);
+    if (progressExist) {
+      data = true;
+      return new ResData<Array<HomeworkProgress> | boolean>(
+        "progress exist",
+        200,
+        data,
+      );
+    }
+    // checkprogressExist - progress bor yo'qligini tekshirish ✅
+
+    const generateProgress = await this.createInitialProgress(userId, blockId);
+    return new ResData<Array<HomeworkProgress> | boolean>(
+      "10 progress yaratilda",
+      200,
+      generateProgress,
+    );
+    // agar checkprogress false bo'lsa 10 progress create qilamiz ✅
+
+    const checkVideosIsWatched = await this.checkVideos(userId)
   }
 
   async checkProgressExist(userId: ID): Promise<boolean> {
+    let result = false;
     const progress = await this.homeworkProgressRepository.findByUserId(userId);
-    return !!progress; // Agar progress bo'lsa, true qaytaramiz, aks holda false
+    if (progress.length > 0) {
+      result = true;
+    }
+
+    return result; // Agar progress bo'lsa, true qaytaramiz, aks holda false
   }
 
   // Progress yozuvlarini yaratish
@@ -142,6 +178,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     if (!foundBlock) {
       throw new BlockNotFoundException();
     }
+
+    // console.log("foundBlock", foundBlock);
     const topTenVideos = foundBlock.homeworks
       .sort((a, b) => a.order - b.order) // order bo'yicha saralash
       .slice(0, 10) // faqat dastlabki 10 ta videoni tanlash
@@ -170,6 +208,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // Natijani homeworkProgresses massiviga qo'shish
       homeworkProgresses.push(createdHomeworkProgress);
     }
+
+    // console.log(homeworkProgresses);
 
     return homeworkProgresses;
   }

@@ -9,6 +9,7 @@ export interface IHomeworkProgressRepository {
     userId: ID,
   ): Promise<Array<HomeworkProgress> | null>;
   update(dto: HomeworkProgress): Promise<HomeworkProgress>;
+  delete(dto: HomeworkProgress): Promise<HomeworkProgress>;
   getVideosWithWatchCountBetween0And5(
     order: ID,
     blockId: ID,
