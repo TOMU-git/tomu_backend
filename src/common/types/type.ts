@@ -1,4 +1,4 @@
-import { PaymeMethodEnum } from "../enums/payme-enum";
+import { PaymeMethodEnum } from "../enums/payme-method-enum";
 
 export type ID = number;
 
@@ -13,7 +13,7 @@ export type AxiosResponse<T = any> = {
 
 export type PaymeAccount = {
   user_id: string;
-  meta_id: string;
+  tariff_id: string;
 };
 
 export type PaymeParams = {

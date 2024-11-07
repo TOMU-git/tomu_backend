@@ -9,8 +9,8 @@ export class TransactionEntity {
   @Column({ name: "user_id", type: "integer", nullable: false })
   userId: number;
 
-  @Column({ name: "course_id", type: "integer", nullable: false })
-  courseId: number;
+  @Column({ name: "tariff_id", type: "integer", nullable: false })
+  tariffId: number;
 
   @Column({
     name: "state",

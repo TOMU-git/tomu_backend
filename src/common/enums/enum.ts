@@ -30,3 +30,8 @@ export enum HomeworkEnum {
   HOMEWORK = "homework",
   LESSON = "lesson",
 }
+
+export enum PaymeDataEnum {
+	USER_ID = "user_id",
+	PRODUCT_ID = "product_id",
+}
