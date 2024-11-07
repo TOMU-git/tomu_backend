@@ -40,15 +40,18 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         blockOrder: order,
         userId: userId, // user_ID o'rniga userId ishlatamiz
       },
-      select: ["lesson"],
+      relations: ["lesson"], // "lesson"ni to'liq olish uchun relations qo'shish
+      select: ["lesson"], // Agar faqat lessonni tanlamoqchi bo'lsangiz
     });
   }
+
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
   async findHighestLessonOrderByUserAndBlock(
     blockOrder: ID,
     userId: ID,
   ): Promise<number | null> {
-    const result = await this.lessonProgressRepository.createQueryBuilder("lessonProgress")
+    const result = await this.lessonProgressRepository
+      .createQueryBuilder("lessonProgress")
       .select("lessonProgress.lessonOrder", "lessonOrder")
       .where("lessonProgress.blockOrder = :blockOrder", { blockOrder })
       .andWhere("lessonProgress.userId = :userId", { userId })
