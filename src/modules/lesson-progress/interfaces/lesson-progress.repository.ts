@@ -19,4 +19,8 @@ export interface ILessonProgressRepository {
     lessonId: ID,
   ): Promise<LessonProgress | null>;
   update(dto: LessonProgress): Promise<LessonProgress>;
+  findHighestLessonOrderByUserAndBlock(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<number | null>;
 }

@@ -40,7 +40,22 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         blockOrder: order,
         userId: userId, // user_ID o'rniga userId ishlatamiz
       },
+      select: ["lesson"],
     });
+  }
+  // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
+  async findHighestLessonOrderByUserAndBlock(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<number | null> {
+    const result = await this.lessonProgressRepository.createQueryBuilder("lessonProgress")
+      .select("lessonProgress.lessonOrder", "lessonOrder")
+      .where("lessonProgress.blockOrder = :blockOrder", { blockOrder })
+      .andWhere("lessonProgress.userId = :userId", { userId })
+      .orderBy("lessonProgress.lessonOrder", "DESC")
+      .getRawOne();
+
+    return result ? result.lessonOrder : null;
   }
 
   async findIfAllWatched(
