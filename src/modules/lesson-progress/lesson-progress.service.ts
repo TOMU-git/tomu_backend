@@ -48,7 +48,6 @@ export class LessonProgressService implements ILessonProgressService {
         dto.userId,
         dto.lessonId,
       );
-    console.log("foundData", foundData);
     if (foundData) {
       throw new LessonProgressAlreadyExistException();
     }
@@ -147,12 +146,81 @@ export class LessonProgressService implements ILessonProgressService {
     Object.assign(foundLessonProgress, updateDto);
 
     // Yangilangan `LessonProgress` obyektini saqlash
-    const updatedData = await this.lessonProgressRepository.update(foundLessonProgress);
+    const updatedData =
+      await this.lessonProgressRepository.update(foundLessonProgress);
 
     return new ResData<LessonProgress>(
       "Lesson progress updated successfully",
       200,
       updatedData,
+    );
+  }
+
+  async getVideos(
+    userId: ID,
+    blockId: ID,
+    blockOrder: ID
+  ): Promise<ResData<Array<LessonProgress>>> {
+    const progressExist = await this.lessonProgressRepository.findAll();
+    if (progressExist.length < 1) {
+      const tenProgress = await this.generateTenProgress(userId, blockId)
+      return tenProgress
+    }
+
+    return;
+  }
+
+  async generateTenProgress(
+    userId: ID,
+    blockId: ID,
+  ): Promise<ResData<LessonProgress[]>> {
+    // Blokni olish
+    const { data: block } = await this.blockService.findOneById(blockId);
+    if (!block) {
+      throw new Error("Block not found");
+    }
+
+    // Blokdagi barcha darslarni olish
+    const { data: lessons } =
+      await this.lessonService.getLessonsByBlockId(blockId);
+    if (lessons.length < 10) {
+      throw new Error("Block does not contain enough lessons");
+    }
+
+    // Faqat 10 ta darsni olish
+    const lessonsToProcess = lessons.slice(0, 10);
+    const newProgressList: LessonProgress[] = [];
+
+    // Har bir dars uchun yangi progress yaratish
+    for (const lesson of lessonsToProcess) {
+      // User va lesson kombinatsiyasi uchun progress mavjudligini tekshirish
+      const existingProgress =
+        await this.lessonProgressRepository.findOneByUserAndLesson(
+          userId,
+          lesson.id,
+        );
+      if (existingProgress) {
+        throw new LessonProgressAlreadyExistException();
+      }
+
+      // Yangi LessonProgress obyektini yaratamiz va kerakli maydonlarni to'ldiramiz
+      const newLessonProgress = new LessonProgress();
+      newLessonProgress.user = { id: userId } as any; // userni id bilan bog'lash
+      newLessonProgress.userId = userId;
+      newLessonProgress.lesson = lesson;
+      newLessonProgress.blockOrder = block.order;
+      newLessonProgress.lessonOrder = lesson.order;
+
+      // Yangi progressni bazaga saqlaymiz
+      const savedProgress =
+        await this.lessonProgressRepository.create(newLessonProgress);
+      newProgressList.push(savedProgress);
+    }
+
+    return new ResData<LessonProgress[]>(
+      "Ten lesson progress records created successfully",
+      201,
+      newProgressList,
     );
   }
 }

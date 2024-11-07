@@ -27,7 +27,7 @@ export class LessonProgressController {
     private readonly lessonProgressService: ILessonProgressService,
   ) {}
 
-  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Post()
   async create(
     @Body() createLessonProgressDto: CreateLessonProgressDto,
@@ -35,7 +35,7 @@ export class LessonProgressController {
     return await this.lessonProgressService.create(createLessonProgressDto);
   }
 
-  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     return await this.lessonProgressService.findAll();
@@ -49,7 +49,7 @@ export class LessonProgressController {
     return await this.lessonProgressService.test(userId, blockOrder);
   }
 
-  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get(":id")
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
