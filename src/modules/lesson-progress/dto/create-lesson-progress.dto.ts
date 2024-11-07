@@ -12,6 +12,14 @@ export class CreateLessonProgressDto {
   userId: ID;
 
   @ApiProperty({
+    description: "Foydalanuvchi IDsi",
+    type: Number,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  blockId: ID;
+
+  @ApiProperty({
     description: "Dars IDsi",
     type: Number,
   })
