@@ -54,7 +54,6 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.findOne({
       where: { id },
       relations: ["lesson"], // lesson bilan bog'liq ma'lumotlarni olish
->>>>>>> 98859791e9004951be5c3f6aaf1ec41e1b78beb7
     });
   }
 
