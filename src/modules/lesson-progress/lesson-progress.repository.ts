@@ -40,7 +40,6 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         blockOrder: order,
         userId: userId, // user_ID o'rniga userId ishlatamiz
       },
-      relations: ["lesson"], // lesson bilan bog'lanish
     });
   }
 

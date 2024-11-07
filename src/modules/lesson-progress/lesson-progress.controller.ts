@@ -41,12 +41,17 @@ export class LessonProgressController {
     return await this.lessonProgressService.findAll();
   }
 
-  @Get("test")
-  async test(
+  @Get("get-videos")
+  async getVideos(
     @Query("userId", ParseIntPipe) userId: ID,
+    @Query("blockId", ParseIntPipe) blockId: ID,
     @Query("blockOrder", ParseIntPipe) blockOrder: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
-    return await this.lessonProgressService.test(userId, blockOrder);
+    return await this.lessonProgressService.getVideos(
+      userId,
+      blockId,
+      blockOrder,
+    );
   }
 
   // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)

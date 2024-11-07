@@ -159,14 +159,13 @@ export class LessonProgressService implements ILessonProgressService {
   async getVideos(
     userId: ID,
     blockId: ID,
-    blockOrder: ID
+    blockOrder: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
     const progressExist = await this.lessonProgressRepository.findAll();
-    if (progressExist.length < 1) {
-      const tenProgress = await this.generateTenProgress(userId, blockId)
-      return tenProgress
+    if (progressExist.length < 1 || progressExist.length % 10 === 0) {
+      const tenProgress = await this.generateTenProgress(userId, blockId);
+      return tenProgress;
     }
-
     return;
   }
 
@@ -191,8 +190,26 @@ export class LessonProgressService implements ILessonProgressService {
     const lessonsToProcess = lessons.slice(0, 10);
     const newProgressList: LessonProgress[] = [];
 
+    // User va blockOrder bo'yicha mavjud progresslarni olish
+    const existingProgresses =
+      await this.lessonProgressRepository.findByOrderAndUserId(
+        block.order,
+        userId,
+      );
+
+    // Agar barchasida `isWatched: true` bo'lsa, yangi progresslarni yaratish
+    const allWatched = existingProgresses.every(
+      (progress) => progress.isWatched === true,
+    );
+
+    if (!allWatched) {
+      throw new Error("Not all lessons have been watched yet.");
+    }
+
     // Har bir dars uchun yangi progress yaratish
-    for (const lesson of lessonsToProcess) {
+    for (let i = 0; i < lessonsToProcess.length; i++) {
+      const lesson = lessonsToProcess[i];
+
       // User va lesson kombinatsiyasi uchun progress mavjudligini tekshirish
       const existingProgress =
         await this.lessonProgressRepository.findOneByUserAndLesson(
@@ -211,16 +228,26 @@ export class LessonProgressService implements ILessonProgressService {
       newLessonProgress.blockOrder = block.order;
       newLessonProgress.lessonOrder = lesson.order;
 
+      // Birinchi dars uchun `isWatched` true, qolganlari uchun false
+      newLessonProgress.isWatched = i === 0;
+
       // Yangi progressni bazaga saqlaymiz
       const savedProgress =
         await this.lessonProgressRepository.create(newLessonProgress);
       newProgressList.push(savedProgress);
     }
 
+    // Yangi progresslar yaratib bo'lgach, barcha progresslarni olish
+    const allProgresses =
+      await this.lessonProgressRepository.findByOrderAndUserId(
+        block.order,
+        userId,
+      );
+
     return new ResData<LessonProgress[]>(
-      "Ten lesson progress records created successfully",
+      "Fetch videos successfully",
       201,
-      newProgressList,
+      allProgresses, // Yangi progresslar va avvalgi progresslar bilan birga barcha progresslarni qaytarish
     );
   }
 }
