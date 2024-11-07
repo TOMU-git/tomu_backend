@@ -2,7 +2,7 @@ type messageLang = "uz" | "ru" | "en";
 type errors =
   | "InvalidAmount"
   | "UserNotFound"
-  | "ProductNotFound"
+  | "TariffNotFound"
   | "CantDoOperation"
   | "TransactionNotFound"
   | "AlreadyDone"
@@ -35,13 +35,13 @@ export const PaymeError: Record<errors, IPaymeErrorData> = {
       en: "We couldn't find your account",
     },
   },
-  ProductNotFound: {
-    name: "ProductNotFound",
+  TariffNotFound: {
+    name: "TariffNotFound",
     code: -31050,
     message: {
-      uz: "Biz mahsulotni topolmadik.",
-      ru: "Нам не удалось найти товар.",
-      en: "We could not find the product.",
+      uz: "Biz tariffni topolmadik.",
+      ru: "Тариф нам найти не удалось.",
+      en: "We could not find the tariff.",
     },
   },
   CantDoOperation: {

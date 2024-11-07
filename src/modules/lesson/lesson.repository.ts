@@ -19,17 +19,17 @@ export class LessonRepository implements ILessonRepository {
 
   async findAll(): Promise<Lesson[]> {
     return await this.lessonRepository
-      .createQueryBuilder('lesson')
-      .leftJoin('lesson.block', 'block') // block jadvalini qo'shish
-      .addSelect(['block.id']) // Faqat blockning `id` maydonini tanlash
+      .createQueryBuilder("lesson")
+      .leftJoin("lesson.block", "block") // block jadvalini qo'shish
+      .addSelect(["block.id"]) // Faqat blockning `id` maydonini tanlash
       .getMany();
   }
 
   async findVideosTen(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
       where: { block: { id: blockId } },
-      relations: ['block'], // Block munosabatini qo'shish
-      order: { order: 'ASC' }, // order bo'yicha tartiblash
+      relations: ["block"], // Block munosabatini qo'shish
+      order: { order: "ASC" }, // order bo'yicha tartiblash
       take: 10, // Faqat 10 ta yozuvni olib kelish
     });
   }
@@ -41,8 +41,8 @@ export class LessonRepository implements ILessonRepository {
   async findLessonsByBlockId(blockId: ID): Promise<Lesson[]> {
     return await this.lessonRepository.find({
       where: { block: { id: blockId } },
-      relations: ['block'],
-      order: { order: 'ASC' },
+      relations: ["block"],
+      order: { order: "ASC" },
     });
   }
 
@@ -56,14 +56,27 @@ export class LessonRepository implements ILessonRepository {
 
   async findById(id: ID): Promise<Lesson | null> {
     return await this.lessonRepository
-      .createQueryBuilder('lesson')
-      .leftJoinAndSelect('lesson.block', 'block') // block bilan birga yuklash
-      .where('lesson.id = :id', { id })
+      .createQueryBuilder("lesson")
+      .leftJoinAndSelect("lesson.block", "block") // block bilan birga yuklash
+      .where("lesson.id = :id", { id })
       .getOne();
   }
 
   async findOneByName(title: string): Promise<Lesson | null> {
     return await this.lessonRepository.findOneBy({ title });
+  }
+
+  async findNextTenLessonsAfterOrder(
+    lastLessonOrder: number,
+    blockId: ID,
+  ): Promise<Array<Lesson>> {
+    return this.lessonRepository
+      .createQueryBuilder("lesson")
+      .where("lesson.order > :lastLessonOrder", { lastLessonOrder })
+      .andWhere("lesson.block_id = :blockId", { blockId }) // blockId o'rniga block_id deb yozamiz
+      .orderBy("lesson.order", "ASC")
+      .limit(10)
+      .getMany();
   }
 
   async findOneByOrder(order: number, blockId: ID): Promise<Lesson | null> {
