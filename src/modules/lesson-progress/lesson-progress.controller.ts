@@ -27,7 +27,7 @@ export class LessonProgressController {
     private readonly lessonProgressService: ILessonProgressService,
   ) {}
 
-  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Post()
   async create(
     @Body() createLessonProgressDto: CreateLessonProgressDto,
@@ -35,12 +35,13 @@ export class LessonProgressController {
     return await this.lessonProgressService.create(createLessonProgressDto);
   }
 
-  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     return await this.lessonProgressService.findAll();
   }
-
+  
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get("get-videos")
   async getVideos(
     @Query("userId", ParseIntPipe) userId: ID,
@@ -55,14 +56,15 @@ export class LessonProgressController {
     );
   }
 
-  // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get(":id")
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
   ): Promise<ResData<LessonProgress>> {
     return await this.lessonProgressService.findOneById(id);
   }
-
+  
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Patch(":id")
   async update(
     @Param("id", ParseIntPipe) id: ID,
