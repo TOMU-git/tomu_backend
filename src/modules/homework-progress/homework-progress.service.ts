@@ -130,101 +130,97 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async getVideos(
     userId: ID,
     blockId: ID,
-  ): Promise<ResData<Array<HomeworkProgress> | boolean>> {
-    let data = null;
-    const progressExist = await this.checkProgressExist(userId);
-    if (progressExist) {
-      data = true;
-      return new ResData<Array<HomeworkProgress> | boolean>(
-        "progress exist",
-        200,
-        data,
+    blockOrder: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    const existingProgress =
+      await this.homeworkProgressRepository.findByOrderAndUserId(
+        userId,
+        blockOrder,
       );
-    }
-    // checkprogressExist - progress bor yo'qligini tekshirish ✅
 
-    const generateProgress = await this.createInitialProgress(userId, blockId);
-    return new ResData<Array<HomeworkProgress> | boolean>(
-      "10 progress yaratilda",
-      200,
-      generateProgress,
-    );
-    // agar checkprogress false bo'lsa 10 progress create qilamiz ✅
+    // Faqat isWatched: true bo'lgan progresslarni sanash
+    const watchedProgressCount = existingProgress.filter(
+      (progress) => progress.isWatched === true,
+    ).length;
 
-    const checkVideosIsWatched = await this.checkVideos(userId)
+    // Faqat isWatched: false bo'lgan progresslarni sanash
+    const notWatchedProgressCount = existingProgress.filter(
+      (progress) => progress.isWatched === false,
+    ).length;
+
+    return;
   }
 
-  async checkProgressExist(userId: ID): Promise<boolean> {
-    let result = false;
-    const progress = await this.homeworkProgressRepository.findByUserId(userId);
-    if (progress.length > 0) {
-      result = true;
-    }
-
-    return result; // Agar progress bo'lsa, true qaytaramiz, aks holda false
-  }
-
-  // Progress yozuvlarini yaratish
-  async createInitialProgress(
+  async generateTenProgress(
     userId: ID,
     blockId: ID,
-  ): Promise<Array<HomeworkProgress>> {
-    const foundUser = await this.userRepository.findOneById(userId);
-    if (!foundUser) {
-      throw new UserNotFound();
+    blockOrder: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    // Blokni olish
+    const block = await this.blockRepository.findById(blockId);
+    if (!block) {
+      throw new Error("Block not found");
     }
 
-    const foundBlock = await this.blockRepository.findById(blockId);
-    if (!foundBlock) {
-      throw new BlockNotFoundException();
+    const lastHomeworkOrder =
+      await this.homeworkProgressRepository.findHighestLessonOrderByUserAndBlock(
+        blockOrder,
+        userId,
+      );
+
+    // lastHomeworkOrder dan keyingi 10 darsni olish
+    const homeworks =
+      await this.homeworkRepository.findNextTenHomeworksAfterOrder(
+        lastHomeworkOrder || 0, // Agar progress yo'q bo'lsa, 0 dan boshlash
+        blockId,
+      );
+
+    if (homeworks.length < 1) {
+      throw new Error("No more homeworks available in this block");
     }
 
-    // console.log("foundBlock", foundBlock);
-    const topTenVideos = foundBlock.homeworks
-      .sort((a, b) => a.order - b.order) // order bo'yicha saralash
-      .slice(0, 10) // faqat dastlabki 10 ta videoni tanlash
-      .map((video) => video.id); // faqat id larni olish
+    if (homeworks.length < 1) {
+      throw new Error("No more homeworks available in this block");
+    }
 
-    const homeworkProgresses: HomeworkProgress[] = [];
+    const newProgressList: HomeworkProgress[] = [];
 
-    for (const homeworkId of topTenVideos) {
-      // Homeworkni tekshirish
-      const foundHomework = await this.homeworkRepository.findById(homeworkId);
-      if (!foundHomework) {
-        continue; // Agar homework topilmasa, keyingi video uchun davom etadi
+    for (let i = 0; i < homeworks.length; i++) {
+      const homework = homeworks[i];
+
+      // User va homework kombinatsiyasi uchun progress mavjudligini tekshirish
+      const existingProgress =
+        await this.homeworkProgressRepository.findOneByUserAndHomework(
+          userId,
+          homework.id,
+        );
+      if (existingProgress) {
+        throw new HomeworkProgressAlreadyExistException();
       }
 
       // Yangi HomeworkProgress obyektini yaratish
-      let newHomeworkProgress = new HomeworkProgress();
-      newHomeworkProgress.user = foundUser;
-      newHomeworkProgress.homework = foundHomework;
-      newHomeworkProgress.isWatched = true; // Progress yaratishda isWatched true
-      newHomeworkProgress.countWatched = 1; // Odatda 1 martadan ko‘rilgan deb belgilanadi
+      const newHomeworkProgress = new HomeworkProgress();
+      newHomeworkProgress.user = { id: userId } as any; // userni id bilan bog'lash
+      newHomeworkProgress.userId = userId;
+      newHomeworkProgress.homework = homework;
+      newHomeworkProgress.blockOrder = block.order;
+      newHomeworkProgress.homeworkOrder = homework.order;
 
-      // Homework progressni bazaga qo'shish
-      const createdHomeworkProgress =
+      // Birinchi dars uchun `isWatched` true, qolganlari uchun false
+      newHomeworkProgress.isWatched = i === 0;
+
+      // Yangi progressni bazaga saqlash
+      const savedProgress =
         await this.homeworkProgressRepository.create(newHomeworkProgress);
-
-      // Natijani homeworkProgresses massiviga qo'shish
-      homeworkProgresses.push(createdHomeworkProgress);
+      newProgressList.push(savedProgress);
     }
 
-    // console.log(homeworkProgresses);
-
-    return homeworkProgresses;
-  }
-
-  async checkVideos(userId: ID): Promise<boolean> {
-    const foundData =
-      await this.homeworkProgressRepository.findByUserId(userId);
-    // `isWatched` true bo'lgan yozuvlarni filtrlash va ularning `homework.order` qiymatlarini olish
-    const watchedOrders = foundData
-      .filter((progress) => progress.isWatched && progress.homework !== null)
-      .map((progress) => progress.homework.order);
-
-    // Agar `watchedOrders` bo'sh bo'lmasa, eng katta `order` qiymatini olish
-    const maxOrder =
-      watchedOrders.length > 0 ? Math.max(...watchedOrders) : null;
+    // Yangi progresslar yaratib bo'lgach, barcha progresslarni olish
+    const allProgresses =
+      await this.homeworkProgressRepository.findByOrderAndUserId(
+        block.order,
+        userId,
+      );
 
     return;
   }

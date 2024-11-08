@@ -55,16 +55,18 @@ export class HomeworkProgressController {
     return await this.homeworkProgressService.findByUserId(id);
   }
 
-  @Get("videos")
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Get("get-videos")
   async getVideos(
-    @Query() query: GetVideosQueryDto,
-  ): Promise<ResData<Array<HomeworkProgress> | boolean>> {
-    const parsedBlockId = Number(query.blockId);
-    const parsedUserId = Number(query.userId);
-
+    @Query("userId", ParseIntPipe) userId: ID,
+    @Query("blockId", ParseIntPipe) blockId: ID,
+    @Query("blockOrder", ParseIntPipe) blockOrder: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    console.log("controller");
     return await this.homeworkProgressService.getVideos(
-      parsedUserId,
-      parsedBlockId,
+      userId,
+      blockId,
+      blockOrder,
     );
   }
 

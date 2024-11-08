@@ -58,6 +58,19 @@ export class HomeworkRepository implements IHomeworkRepository {
     });
   }
 
+  async findNextTenHomeworksAfterOrder(
+    lastHomeworkOrder: number,
+    blockId: ID,
+  ): Promise<Array<Homework>> {
+    return this.homeworkRepository
+      .createQueryBuilder("homework")
+      .where("homework.order > :lastHomeworkOrder", { lastHomeworkOrder })
+      .andWhere("homework.block_id = :blockId", { blockId }) // blockId o'rniga block_id deb yozamiz
+      .orderBy("homework.order", "ASC")
+      .limit(10)
+      .getMany();
+  }
+
   async getNextFiveVideos(
     order: number,
     blockId: ID,

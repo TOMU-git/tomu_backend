@@ -10,4 +10,8 @@ export interface IHomeworkRepository {
   findOneByOrder(order: ID, blockId: ID): Promise<Homework | null>;
   getNextFiveVideos(order: number, blockId: ID): Promise<Array<Homework>>;
   findOneByName(title: string): Promise<Homework | null>;
+  findNextTenHomeworksAfterOrder(
+    lastHomeworkOrder: number,
+    blockId: ID,
+  ): Promise<Array<Homework>>;
 }

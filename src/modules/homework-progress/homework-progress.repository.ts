@@ -44,6 +44,47 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async update(entity: HomeworkProgress): Promise<HomeworkProgress> {
     return await this.homeworkProgressRepository.save(entity);
   }
+  async findOneByUserAndHomework(
+    userId: ID,
+    homeworkId: ID,
+  ): Promise<HomeworkProgress | null> {
+    return this.homeworkProgressRepository.findOne({
+      where: {
+        user: { id: userId },
+        homework: { id: homeworkId },
+      },
+      relations: ["user", "homework"],
+    });
+  }
+
+  async findByOrderAndUserId(
+    order: ID,
+    userId: ID,
+  ): Promise<Array<HomeworkProgress | null>> {
+    return this.homeworkProgressRepository.find({
+      where: {
+        blockOrder: order,
+        userId: userId, // user_ID o'rniga userId ishlatamiz
+      },
+      relations: ["homework"], // "lesson"ni to'liq olish uchun relations qo'shish
+      select: ["homework"], // Agar faqat lessonni tanlamoqchi bo'lsangiz
+    });
+  }
+
+  async findHighestLessonOrderByUserAndBlock(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<number | null> {
+    const result = await this.homeworkProgressRepository
+      .createQueryBuilder("homeworkProgress")
+      .select("homeworkProgress.lessonOrder", "lessonOrder")
+      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+      .andWhere("homeworkProgress.userId = :userId", { userId })
+      .orderBy("homeworkProgress.lessonOrder", "DESC")
+      .getRawOne();
+
+    return result ? result.lessonOrder : null;
+  }
 
   // Berilgan homework progress yozuvini o'chirish uchun metod
   async delete(entity: HomeworkProgress): Promise<HomeworkProgress> {
@@ -58,17 +99,16 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   // Videolarni olish uchun metod (countWatched 0 dan 5 gacha bo'lganlarini)
   async getVideosWithWatchCountBetween0And5(
     order: ID,
-    blockId: ID,
+    blockOrder: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
       .leftJoinAndSelect("homeworkProgress.homework", "homework")
-      .leftJoinAndSelect("homework.block", "block")
       .where("homework.order < :order", { order })
       .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
       .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
-      .andWhere("homework.block.id = :blockId", { blockId })
-      .select(["homeworkProgress", "homework", "block.id"])
+      .andWhere("homeworkProgress.blockOrder = :blockOrder", { blockOrder }) // blockOrder orqali filtrlash
+      .select(["homeworkProgress", "homework"])
       .getMany();
   }
 
