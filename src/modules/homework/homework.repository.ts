@@ -58,7 +58,7 @@ export class HomeworkRepository implements IHomeworkRepository {
     });
   }
 
-  async findNextTenHomeworksAfterOrder(
+  async findNextFiveHomeworksAfterOrder(
     lastHomeworkOrder: number,
     blockId: ID,
   ): Promise<Array<Homework>> {
@@ -67,7 +67,7 @@ export class HomeworkRepository implements IHomeworkRepository {
       .where("homework.order > :lastHomeworkOrder", { lastHomeworkOrder })
       .andWhere("homework.block_id = :blockId", { blockId }) // blockId o'rniga block_id deb yozamiz
       .orderBy("homework.order", "ASC")
-      .limit(10)
+      .limit(5)
       .getMany();
   }
 

@@ -20,11 +20,6 @@ export interface IHomeworkProgressService {
   ): Promise<ResData<HomeworkProgress>>;
 
   delete(id: ID): Promise<ResData<HomeworkProgress>>;
-  generateTenProgress(
-    userId: ID,
-    blockId: ID,
-    blockOrder: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>>
   getVideos(
     userID: ID,
     blockId: ID,

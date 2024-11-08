@@ -13,10 +13,9 @@ export interface IHomeworkProgressRepository {
     userId: ID,
   ): Promise<Array<HomeworkProgress | null>>;
   getVideosWithWatchCountBetween0And5(
-    order: ID,
     blockOrder: ID,
   ): Promise<Array<HomeworkProgress>>;
-  findHighestLessonOrderByUserAndBlock(
+  findHighestHomeworkOrderByUserAndBlock(
     blockOrder: ID,
     userId: ID,
   ): Promise<number | null>;

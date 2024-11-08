@@ -1,3 +1,4 @@
+// src/modules/homework-progress/homework-progress.module.ts
 import { Module } from "@nestjs/common";
 import { HomeworkProgressService } from "./homework-progress.service";
 import { HomeworkProgressController } from "./homework-progress.controller";
@@ -15,7 +16,7 @@ import { BlockModule } from "../block/block.module";
     SharedModule,
     HomeworkModule,
     UserModule,
-    BlockModule
+    BlockModule,
   ],
   controllers: [HomeworkProgressController],
   providers: [
