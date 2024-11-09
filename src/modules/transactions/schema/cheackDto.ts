@@ -1,5 +1,5 @@
 import { ObjectSchema } from "joi";
-import { TransactionError } from "../exception/transactionException";
+import { TransactionErrorException } from "../exception/transactionException";
 import { PaymeError } from "src/common/error/message";
 import { PaymeDataEnum } from "src/common/enums/enum";
 export function checkTransactionDto<DTO>(
@@ -10,7 +10,7 @@ export function checkTransactionDto<DTO>(
 	const result = schema.validate(dto);
 
 	if (result.error) {
-		throw new TransactionError<PaymeDataEnum>(
+		throw new TransactionErrorException<PaymeDataEnum>(
 			{
 				...PaymeError.BadRequest,
 				message: {

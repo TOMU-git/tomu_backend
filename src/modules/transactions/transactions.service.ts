@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { PaymeParams } from "src/common/types/type";
 import { IUserService } from "../user/interfaces/user.service";
 import { ITariffService } from "../tariff/interface/tariff.service";
@@ -6,7 +6,7 @@ import { ITransactionRepo } from "./interfaces/transaction-repo";
 import { ITransactionService } from "./interfaces/transaction-service";
 import { IUserRepository } from "../user/interfaces/user.repository";
 import { ITariffRepository } from "../tariff/interface/tariff.repository";
-import { TransactionError } from "./exception/transactionException";
+import { TransactionErrorException } from "./exception/transactionException";
 import { PaymeError } from "src/common/error/message";
 import {
   ICancelTransactionDto,
@@ -37,21 +37,21 @@ export class TransactionsService implements ITransactionService {
 
     const foundUser = await this.userRepository.findOneById(Number(userId));
     if (!foundUser) {
-      throw new TransactionError(PaymeError.UserNotFound, id);
+      throw new TransactionErrorException(PaymeError.UserNotFound, id, HttpStatus.NOT_FOUND);
     }
     const foundTariff = await this.tariffRepository.findOneById(
       Number(tariffId),
     );
     if (!foundTariff) {
-      throw new TransactionError(PaymeError.TariffNotFound, id);
+      throw new TransactionErrorException(PaymeError.TariffNotFound, id);
     }
 
     let { amount } = params;
 
     amount = Math.floor(amount / 100);
 
-    if (amount !== foundTariff.price) {
-      throw new TransactionError(PaymeError.InvalidAmount, id);
+    if (amount !== Math.floor(foundTariff.price / 100)) {
+      throw new TransactionErrorException(PaymeError.InvalidAmount, id);
     }
   }
   async checkTransaction(
@@ -63,7 +63,7 @@ export class TransactionsService implements ITransactionService {
     );
 
     if (!foundTransaction) {
-      throw new TransactionError(PaymeError.TransactionNotFound, id);
+      throw new TransactionErrorException(PaymeError.TransactionNotFound, id);
     }
 
     return {
@@ -72,7 +72,7 @@ export class TransactionsService implements ITransactionService {
       cancel_time: Number(foundTransaction.cancelTime),
       transaction: foundTransaction.id,
       state: foundTransaction.state,
-      reason: foundTransaction.reason,
+      reason: Number(foundTransaction.reason),
     };
   }
   async createTransaction(
@@ -89,7 +89,7 @@ export class TransactionsService implements ITransactionService {
     let transaction = await this.transactionRepository.getOneById(params.id);
     if (transaction) {
       if (transaction.state !== TransactionStateEnum.PENDING) {
-        throw new TransactionError(PaymeError.CantDoOperation, id);
+        throw new TransactionErrorException(PaymeError.CantDoOperation, id);
       }
 
       const currentTime = Date.now();
@@ -100,7 +100,7 @@ export class TransactionsService implements ITransactionService {
         transaction.state = TransactionStateEnum.PENDING_CANCELED;
         transaction.reason = 4;
         await this.transactionRepository.updateTransaction(transaction);
-        throw new TransactionError(PaymeError.CantDoOperation, id);
+        throw new TransactionErrorException(PaymeError.CantDoOperation, id);
       }
 
       return {
@@ -112,10 +112,10 @@ export class TransactionsService implements ITransactionService {
     transaction = await this.transactionRepository.getByFilter(Number(userId), Number(tariffId));
     if (transaction) { 
       if (transaction.state === TransactionStateEnum.PAID) {
-        throw new TransactionError(PaymeError.AlreadyDone, id); 
+        throw new TransactionErrorException(PaymeError.AlreadyDone, id); 
       }
       if (transaction.state === TransactionStateEnum.PENDING) {
-        throw new TransactionError(PaymeError.Pending, id);
+        throw new TransactionErrorException(PaymeError.Pending, id);
       }
     }
 
@@ -141,11 +141,11 @@ export class TransactionsService implements ITransactionService {
     const currentTime = Date.now();
     const transaction = await this.transactionRepository.getOneById(params.id);
     if (!transaction) {
-      throw new TransactionError(PaymeError.TransactionNotFound, id);
+      throw new TransactionErrorException(PaymeError.TransactionNotFound, id);
     }
     if (transaction.state !== TransactionStateEnum.PENDING) {
       if (transaction.state !== TransactionStateEnum.PAID) {
-        throw new TransactionError(PaymeError.CantDoOperation, id);
+        throw new TransactionErrorException(PaymeError.CantDoOperation, id);
       }
       return {
         perform_time: Number(transaction.performTime),
@@ -161,7 +161,7 @@ export class TransactionsService implements ITransactionService {
       transaction.reason = 4;
       transaction.cancelTime = currentTime;
       await this.transactionRepository.updateTransaction(transaction);
-      throw new TransactionError(PaymeError.CantDoOperation, id);
+      throw new TransactionErrorException(PaymeError.CantDoOperation, id);
     }
 
     transaction.state = TransactionStateEnum.PAID;
@@ -177,7 +177,7 @@ export class TransactionsService implements ITransactionService {
   async cancelTransaction(params: PaymeParams, id: number): Promise<ICancelTransactionDto> {
     const transaction = await this.transactionRepository.getOneById(params.id);
     if (!transaction) {
-      throw new TransactionError(PaymeError.TransactionNotFound, id);
+      throw new TransactionErrorException(PaymeError.TransactionNotFound, id);
     }
     const currentTime = Date.now();
     if (transaction.state > 0) {

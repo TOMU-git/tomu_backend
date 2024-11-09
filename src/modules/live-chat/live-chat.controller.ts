@@ -6,40 +6,63 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Inject,
 } from "@nestjs/common";
 import { LiveChatService } from "./live-chat.service";
 import { CreateLiveChatDto } from "./dto/create-live-chat.dto";
 import { UpdateLiveChatDto } from "./dto/update-live-chat.dto";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ParseDatePipe } from "src/common/pipes/date-check";
 
+@ApiTags('live-chat')
 @Controller("live-chat")
 export class LiveChatController {
-  constructor(private readonly liveChatService: LiveChatService) {}
+  constructor(@Inject("ILiveChatService") private readonly liveChatService: LiveChatService) {}
 
-  @Post()
-  create(@Body() createLiveChatDto: CreateLiveChatDto) {
-    return this.liveChatService.create(createLiveChatDto);
+//// *** Create live-chat form *** ////
+
+  @ApiOperation({summary: "Create a new live-chat form"})
+  @Post('create')
+  async create(
+    @Body('selectedDay', ParseDatePipe) selectedDate: Date,
+    @Body() createLiveChatDto: CreateLiveChatDto
+  ) {
+    return await this.liveChatService.create(selectedDate, createLiveChatDto);
   }
 
+//// *** Get all live-chat forms *** ////
+
+  @ApiOperation({summary: "Get all live-chat forms"})
   @Get()
-  findAll() {
-    return this.liveChatService.findAll();
+  async findAll() {
+    return await this.liveChatService.findAll();
   }
 
+
+  //// *** Get single live-chat form by id *** ////
+  @ApiOperation({summary: "Get a live-chat form by id"})
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.liveChatService.findOne(+id);
+  findOne(@Param("id", ParseIntPipe) id: number) {
+    return this.liveChatService.findOne(id);
   }
 
-  @Patch(":id")
-  update(
-    @Param("id") id: string,
+//// *** Update live-chat form by id *** ////  
+  @ApiOperation({summary: "Update a live-chat form by id"})
+  @Patch("update/:id")
+  async update(
+    @Param("id", ParseIntPipe) id: number,
+    @Body('selectedDay', ParseDatePipe) selectedDay: Date,
     @Body() updateLiveChatDto: UpdateLiveChatDto,
   ) {
-    return this.liveChatService.update(+id, updateLiveChatDto);
+    return await this.liveChatService.update(id, selectedDay, updateLiveChatDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.liveChatService.remove(+id);
+//// *** Delete live-chat form by id *** ////
+
+  @ApiOperation({summary: "Delete a live-chat form by id"})
+  @Delete("delete/:id")
+  async remove(@Param("id", ParseIntPipe) id: number) {
+    return await this.liveChatService.remove(id);
   }
 }
