@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { HttpException, Inject, Injectable } from "@nestjs/common";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { IUserRepository } from "./interfaces/user.repository";
 import { IUserService } from "./interfaces/user.service";
@@ -6,6 +6,8 @@ import { ResData } from "src/lib/resData";
 import { User } from "./entities/user.entity";
 import { UserNotFound } from "./exception/user.exception";
 import { hashed } from "src/lib/bcrypt";
+import { GenderEnum } from "src/common/enums/enum";
+import { PhoneNumberAlreadyExist } from "../auth/exception/auth.exception";
 
 @Injectable()
 export class UserService implements IUserService {
@@ -52,7 +54,7 @@ export class UserService implements IUserService {
     if (dto.firstName) {
       foundUser.firstName = dto.firstName;
     }
-    if (dto.lastName) {
+    if (dto.lastName)  {
       foundUser.lastName = dto.lastName;
     }
     if (dto.phoneNumber) {

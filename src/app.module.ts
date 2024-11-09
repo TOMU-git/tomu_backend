@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FeedbackModule } from "./modules/feedback/feedback.module";
 import { PaymentModule } from "./modules/payment/payment.module";
@@ -12,7 +12,6 @@ import { LessonModule } from "./modules/lesson/lesson.module";
 import { GrammarModule } from "./modules/grammar/grammar.module";
 import { UserModule } from "./modules/user/user.module";
 import { UserTariffModule } from "./modules/user-tariff/user-tariff.module";
-import { HomeworkModule } from "./modules/homework/homework.module";
 import { HomePageModule } from "./modules/home-page/home-page.module";
 import { connectionSource } from "./common/config/database.config";
 import { LessonProgressModule } from "./modules/lesson-progress/lesson-progress.module";
@@ -25,6 +24,9 @@ import { TransactionsModule } from "./modules/transactions/transactions.module";
 import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigModule } from "@nestjs/config";
 import { CourseVideoModule } from './modules/course-video/course-video.module';
+import { CheckTokenMiddleware } from "./common/middleware/transaction-middleware";
+import { TransactionsController } from "./modules/transactions/transactions.controller";
+import { HomeworkModule } from "./modules/homework/homework.module";
 
 @Module({
   imports: [
@@ -32,9 +34,7 @@ import { CourseVideoModule } from './modules/course-video/course-video.module';
       isGlobal: true,
       envFilePath: [".env", ".development.env"],
     }),
-    CacheModule.register({
-      isGlobal: true,
-    }),
+    CacheModule.register({isGlobal: true}),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "upload"),
       serveRoot: "/upload",
@@ -64,4 +64,11 @@ import { CourseVideoModule } from './modules/course-video/course-video.module';
     CourseVideoModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CheckTokenMiddleware)
+      .exclude({ path: "transactions", method: RequestMethod.POST })
+      .forRoutes(TransactionsController);
+  }
+}

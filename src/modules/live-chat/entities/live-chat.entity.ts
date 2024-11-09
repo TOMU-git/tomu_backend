@@ -1,11 +1,14 @@
-import { GenderEnum, MeetingStatusEnum } from "src/common/enums/enum";
+import { GenderEnum, LiveChatDurationEnum, MeetingStatusEnum } from "src/common/enums/enum";
 import { BaseEntity } from "../../../common/database/baseEntity";
 import { Column, Entity } from "typeorm";
 
 @Entity("live_chat")
 export class LiveChatEntity extends BaseEntity {
-  @Column({ name: "fullname", type: "varchar", nullable: false })
-  fullname: string;
+  @Column({ name: "first_name", type: "varchar", nullable: false })
+  firstName: string;
+
+  @Column({ name: "last_name", type: "varchar", nullable: false })
+  lastName: string;
 
   @Column({ name: "gender", type: "varchar", nullable: false })
   gender: string;
@@ -13,14 +16,20 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: "phone_number", type: "varchar", nullable: false })
   phoneNumber: string;
 
-  @Column({ name: "course_purchased", type: "varchar", nullable: false })
-  coursePurchased: string;
+  @Column({ name: 'duration', type: 'int',  nullable: false })
+  duration: number;
+
+  @Column({ name: 'price', type: 'numeric', nullable: false })
+  price: number;
+
+  @Column({ name: "user_id", type: "int", nullable: false })
+  userId: number;
 
   @Column({ name: "selected_meeting_course", type: "varchar", nullable: false })
   selectedMeetingCourse: string;
 
-  @Column({ name: "selected_day", type: "varchar", nullable: false })
-  selectedDay: string;
+  @Column({ name: "selected_day", type: "date", nullable: false })
+  selectedDay: Date;
 
   @Column({ name: "selected_time", type: "varchar", nullable: false })
   selectedTime: string;

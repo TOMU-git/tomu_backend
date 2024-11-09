@@ -1,6 +1,13 @@
-import { PartialType } from "@nestjs/swagger";
-import { CreateLessonProgressDto } from "./create-lesson-progress.dto";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, IsNotEmpty } from "class-validator";
 
-export class UpdateLessonProgressDto extends PartialType(
-  CreateLessonProgressDto,
-) {}
+export class UpdateLessonProgressDto {
+  @ApiProperty({
+    description:
+      "Dars jarayonining holati (masalan, o'rgangan: true, o'rganmagan: false)",
+    type: Boolean,
+  })
+  @IsNotEmpty()
+  @IsBoolean()
+  isWatched: boolean;
+}

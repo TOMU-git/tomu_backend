@@ -1,30 +1,30 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString, IsOptional} from "class-validator";
 import { GenderEnum, RoleEnum } from "src/common/enums/enum";
 
 export class UpdateUserDto {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String})
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   firstName: string;
 
   @ApiProperty({ type: String })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   lastName: string;
 
   @ApiProperty({ type: String })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   phoneNumber: string;
 
   @ApiProperty({ type: String, enum: GenderEnum })
+  @IsOptional()
   @IsEnum(GenderEnum)
-  @IsNotEmpty()
   gender: GenderEnum;
 
   @ApiProperty({ type: String })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   password: string;
 }

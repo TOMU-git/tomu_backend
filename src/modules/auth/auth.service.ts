@@ -121,13 +121,16 @@ export class AuthService implements IAuthService {
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
     createdUser.role = RoleEnum.ADMIN;
+    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    if (foundPhoneNumber) {
+      throw new HttpException("This number already registered", 400)
+    }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
     const refresh_token = await this.jwtService.signAsync(
       { id: savedUser.id },
       { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
     );
-    console.log(refresh_token);
     const { data: foundUser } = await this.userService.findOneById(
       savedUser.id,
     );
@@ -157,6 +160,10 @@ export class AuthService implements IAuthService {
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
     createdUser.role = RoleEnum.STUDENT;
+    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    if (foundPhoneNumber) {
+      throw new HttpException("This number already registered", 400)
+    }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
     const refresh_token = await this.jwtService.signAsync(
@@ -223,6 +230,10 @@ export class AuthService implements IAuthService {
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
     createdUser.role = RoleEnum.TEACHER;
+    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    if (foundPhoneNumber) {
+      throw new HttpException("This number already registered", 400)
+    }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
     const refresh_token = await this.jwtService.signAsync(
@@ -248,11 +259,14 @@ export class AuthService implements IAuthService {
   async verifay(dto: VerifyDto): Promise<ResData<boolean>> {
     let chacked = false;
     const phoneCode = await this.cacheManager.get(dto.phone);
+    const resData = new ResData<boolean>("Code is wrong", 400, chacked)
     if (phoneCode == dto.code) {
-      chacked = true;
-    }
-
-    return new ResData<boolean>("Verifay sms code", 200, chacked);
+      await this.cacheManager.del(dto.phone)
+      resData.data = true;
+      resData.message = "Verified successfully"
+      resData.statusCode = 200
+    } 
+    return resData;
   }
 
   async access(token: AccessAuthDto): Promise<ResData<User>> {

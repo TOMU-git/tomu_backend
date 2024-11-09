@@ -11,6 +11,9 @@ export interface IConfig {
   jwtRefreshKey: string;
   jwtRefreshExpiresIn: string;
   databaseUrl: string;
+  paymeMerchantKey: string;
+  paymeMerchantId: string;
+  paymeTestKey: string;
   token: string;
   smsApiUrl: string;
 }
