@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Repository, LessThanOrEqual } from "typeorm";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
-import { LessThanOrEqual } from "typeorm";
 import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
+
 @Injectable()
 export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   constructor(
@@ -12,7 +12,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     private homeworkProgressRepository: Repository<HomeworkProgress>,
   ) {}
 
-  // Yangi homework progress yozuvi yaratish uchun metod
+  /**
+   * Yangi HomeworkProgress yozuvini yaratadi.
+   * @param dto - HomeworkProgress uchun ma'lumotlar
+   * @returns Yangi yaratilgan HomeworkProgress yozuvi
+   */
   async create(dto: HomeworkProgress): Promise<HomeworkProgress> {
     const newHomeworkProgress =
       await this.homeworkProgressRepository.create(dto);
@@ -20,31 +24,48 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return newHomeworkProgress;
   }
 
-  // Berilgan foydalanuvchi va homework bo'yicha homework progress yozuvini topish uchun metod
+  /**
+   * Berilgan foydalanuvchi va homework bo'yicha HomeworkProgress yozuvlarini topadi.
+   * @param userId - Foydalanuvchi ID
+   * @returns Foydalanuvchi bilan bog'liq HomeworkProgress yozuvlari ro'yxati
+   */
   async findByUserId(userId: ID): Promise<Array<HomeworkProgress>> {
     return this.homeworkProgressRepository.find({
       where: {
-        user: { id: userId }, // user jadvalidagi id bilan solishtiriladi
+        user: { id: userId },
       },
       relations: ["user", "homework"],
     });
   }
 
-  // Barcha homework progress yozuvlarini olish uchun metod
+  /**
+   * Hamma HomeworkProgress yozuvlarini olish uchun metod.
+   * @returns Hamma HomeworkProgress yozuvlarining ro'yxati
+   */
   async findAll(): Promise<HomeworkProgress[]> {
     return await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
-      .leftJoin("homeworkProgress.user", "user") // user jadvalini qo'shish
-      .leftJoin("homeworkProgress.homework", "homework") // homework jadvalini qo'shish
-      .addSelect(["user.id"]) // Faqat userning `id` maydonini tanlash
-      .addSelect(["homework.id"]) // Faqat homeworkning `id` maydonini tanlash
+      .leftJoin("homeworkProgress.user", "user")
+      .leftJoin("homeworkProgress.homework", "homework")
+      .addSelect(["user.id", "homework.id"])
       .getMany();
   }
 
-  // Homework progress yozuvini yangilash uchun metod
+  /**
+   * HomeworkProgress yozuvini yangilash.
+   * @param entity - Yangilanadigan HomeworkProgress yozuvi
+   * @returns Yangilangan HomeworkProgress yozuvi
+   */
   async update(entity: HomeworkProgress): Promise<HomeworkProgress> {
     return await this.homeworkProgressRepository.save(entity);
   }
+
+  /**
+   * Berilgan foydalanuvchi va homework ID orqali HomeworkProgress yozuvini topadi.
+   * @param userId - Foydalanuvchi ID
+   * @param homeworkId - Homework ID
+   * @returns Topilgan HomeworkProgress yozuvi yoki null
+   */
   async findOneByUserAndHomework(
     userId: ID,
     homeworkId: ID,
@@ -58,6 +79,12 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
+  /**
+   * Homework progresslarni block tartibi va foydalanuvchi ID orqali topish.
+   * @param order - Homework tartibi
+   * @param userId - Foydalanuvchi ID
+   * @returns Topilgan HomeworkProgress yozuvlarining ro'yxati yoki null
+   */
   async findByOrderAndUserId(
     order: ID,
     userId: ID,
@@ -65,13 +92,19 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return this.homeworkProgressRepository.find({
       where: {
         blockOrder: order,
-        userId: userId, // user_ID o'rniga userId ishlatamiz
+        userId: userId,
       },
-      relations: ["homework"], // "homework"ni to'liq olish uchun relations qo'shish
-      select: ["homework"], // Agar faqat homeworkni tanlamoqchi bo'lsangiz
+      relations: ["homework"],
+      select: ["homework"],
     });
   }
 
+  /**
+   * Foydalanuvchi va block tartibi bo'yicha eng yuqori Homework tartibini topish.
+   * @param blockOrder - Block tartibi
+   * @param userId - Foydalanuvchi ID
+   * @returns Eng yuqori Homework tartibi yoki null
+   */
   async findHighestHomeworkOrderByUserAndBlock(
     blockOrder: ID,
     userId: ID,
@@ -87,16 +120,30 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return result ? result.homeworkOrder : null;
   }
 
-  // Berilgan homework progress yozuvini o'chirish uchun metod
+  /**
+   * HomeworkProgress yozuvini o'chirish.
+   * @param entity - O'chiriladigan HomeworkProgress yozuvi
+   * @returns O'chirilgan HomeworkProgress yozuvi
+   */
   async delete(entity: HomeworkProgress): Promise<HomeworkProgress> {
     return await this.homeworkProgressRepository.remove(entity);
   }
 
-  // Berilgan ID bo'yicha homework progress yozuvini topish uchun metod
+  /**
+   * ID orqali HomeworkProgress yozuvini topish.
+   * @param id - HomeworkProgress ID
+   * @returns Topilgan HomeworkProgress yozuvi yoki null
+   */
   async findById(id: ID): Promise<HomeworkProgress | null> {
     return await this.homeworkProgressRepository.findOneBy({ id });
   }
 
+  /**
+   * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Homework tartibini topish.
+   * @param userId - Foydalanuvchi ID
+   * @param blockOrder - Block tartibi
+   * @returns Oxirgi ko'rilgan Homework tartibi yoki null
+   */
   async findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
     userId: ID,
     blockOrder: number,
@@ -105,41 +152,49 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       where: {
         userId: userId,
         isWatched: true,
-        blockOrder: LessThanOrEqual(blockOrder), // blockOrder qiymatini tekshirish uchun LessThanOrEqual dan foydalanamiz
+        blockOrder: LessThanOrEqual(blockOrder),
       },
       order: {
-        blockOrder: "DESC", // Oxirgi `isWatched: true` bo'lgan yozuvni olish uchun tartiblaymiz
+        blockOrder: "DESC",
       },
-      relations: ["homework"], // Homework ni olish uchun relation qo'shamiz
-      select: ["homework"], // Homeworkdan faqat kerakli maydonni tanlaymiz
+      relations: ["homework"],
+      select: ["homework"],
     });
 
-    // Agar isWatched true bo'lgan process topilmasa, null qaytaradi
     return lastWatchedProgress ? lastWatchedProgress.homework.order : null;
   }
 
+  /**
+   * Berilgan tartib va foydalanuvchi ID bo'yicha barcha HomeworkProgress yozuvlari kuzatilganligini tekshirish.
+   * @param order - Homework tartibi
+   * @param userId - Foydalanuvchi ID
+   * @returns Hamma yozuvlar kuzatilgan bo'lsa, true qaytaradi
+   */
   async areAllWatchedByOrderAndUserId(order: ID, userId: ID): Promise<boolean> {
     const homeworkProgresses = await this.homeworkProgressRepository.find({
       where: {
         blockOrder: order,
         userId: userId,
       },
-      select: ["isWatched"], // Faqat isWatched maydonini tanlaymiz
+      select: ["isWatched"],
     });
 
-    // Hamma yozuvlarda isWatched true bo'lsa, true qaytaradi
     return homeworkProgresses.every((progress) => progress.isWatched === true);
   }
 
-  // Videolarni olish uchun metod (countWatched 0 dan 5 gacha bo'lganlarini)
+  /**
+   * Kuzatish soni 0 dan 5 gacha bo'lgan videolarni olish.
+   * @param blockOrder - Block tartibi
+   * @returns Kuzatish soni 0 va 5 oralig'ida bo'lgan HomeworkProgress yozuvlarining ro'yxati
+   */
   async getVideosWithWatchCountBetween0And5(
     blockOrder: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
       .leftJoinAndSelect("homeworkProgress.homework", "homework")
-      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder }) // Birinchi blockOrder bo'yicha qidirish
-      .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true }) // Keyin isWatched = true bo'yicha qidirish
+      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+      .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true })
       .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
       .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
       .select(["homeworkProgress", "homework"])
