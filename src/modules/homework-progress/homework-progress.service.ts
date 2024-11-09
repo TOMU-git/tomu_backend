@@ -157,6 +157,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     foundData.countWatched = dto.countWatched;
     foundData.isWatched = dto.isWatched;
 
+    // Keyingi progress ni isWatchedini true qilish 
+    await this.homeworkProgressRepository.markHomeworkAsWatched(
+      dto.homeworkOrder,
+      dto.userId,
+      dto.blockOrder,
+    );
+
     // Yangilangan progressni saqlash
     const updatedData = await this.homeworkProgressRepository.update(foundData);
 
