@@ -212,7 +212,6 @@ export class TransactionsService implements ITransactionService {
         : null,
       receivers: [],
     }));
-    
     return mappedData;
   }
 }
