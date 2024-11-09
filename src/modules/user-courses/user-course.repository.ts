@@ -19,7 +19,7 @@ export class UserCourseRepository implements IUserCourseRepository {
    */
   async create(dto: UserCourse): Promise<UserCourse> {
     // Yangi UserCourse obyektini yaratish
-    const newUserCourse = await this.userCourseRepository.save(dto);    
+    const newUserCourse = await this.userCourseRepository.save(dto);
     return newUserCourse; // Saqlangan obyektni qaytaradi
   }
 
@@ -58,8 +58,11 @@ export class UserCourseRepository implements IUserCourseRepository {
    * @returns Topilgan UserCourse yoki null
    */
   async findById(id: ID): Promise<UserCourse | null> {
-    // Berilgan ID bo'yicha UserCourse obyektini topish
-    return await this.userCourseRepository.findOneBy({ id });
+    // Berilgan ID bo'yicha UserCourse obyektini topish va bog'langan course va user ma'lumotlarini olish
+    return await this.userCourseRepository.findOne({
+      where: { id },
+      relations: ["course", "user"], // course va user bilan bog'lanishni ko'rsatamiz
+    });
   }
 
   /**
@@ -79,6 +82,7 @@ export class UserCourseRepository implements IUserCourseRepository {
           id: true,
           title: true,
           imageUrl: true,
+          description: true,
         },
       },
     });
