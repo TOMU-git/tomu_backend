@@ -139,6 +139,40 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   }
 
   /**
+   * Berilgan `homeworkOrder`, `userId` va `blockOrder` bo'yicha `HomeworkProgress` yozuvini topib,
+   * uning `isWatched` maydonini `true` ga o'zgartiradi va `countWatched` ni oshiradi.
+   *
+   * @param homeworkOrder - Homeworkning tartib raqami
+   * @param userId - Foydalanuvchi ID si
+   * @param blockOrder - Blokning tartib raqami
+   * @returns Yangilangan `HomeworkProgress` yozuvi
+   * @throws Error Agar `HomeworkProgress` topilmasa
+   */
+  async markHomeworkAsWatched(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<HomeworkProgress> {
+    // homeworkOrder, userId, va blockOrder bo'yicha homework progress yozuvini topamiz
+    const homeworkProgress = await this.homeworkProgressRepository.findOne({
+      where: { homeworkOrder, userId, blockOrder },
+      relations: ["user", "homework"], // agar user va homework bog'lanishini olishni xohlasangiz
+    });
+
+    if (homeworkProgress) {
+      // Agar topilgan bo'lsa, isWatched ni true qilamiz
+      homeworkProgress.isWatched = true;
+      homeworkProgress.countWatched += 1; // Agar ko'rilgan sanashni xohlasangiz
+
+      // O'zgartirilgan homeworkProgressni saqlaymiz va qaytaramiz
+      return await this.homeworkProgressRepository.save(homeworkProgress);
+    } else {
+      // Agar topilmasa, xato tashlaymiz
+      throw new Error("HomeworkProgress not found");
+    }
+  }
+
+  /**
    * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Homework tartibini topish.
    * @param userId - Foydalanuvchi ID
    * @param blockOrder - Block tartibi

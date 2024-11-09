@@ -3,8 +3,7 @@ import { IsBoolean, IsNumber, IsOptional } from "class-validator";
 
 export class UpdateHomeworkProgressDto {
   @ApiProperty({
-    description:
-      "Indicates if the homework is watched (true - watched, false - not watched)",
+    type: Boolean,
     default: false,
   })
   @IsBoolean()
@@ -12,7 +11,34 @@ export class UpdateHomeworkProgressDto {
   isWatched?: boolean;
 
   @ApiProperty({
-    description: "The count of how many times the homework has been watched",
+    type: Number,
+    example: 3,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional()
+  userId?: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 3,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional()
+  blockOrder?: number;
+
+  @ApiProperty({
+    type: Number,
+    example: 3,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional()
+  homeworkOrder?: number;
+
+  @ApiProperty({
+    type: Number,
     example: 3,
     default: 0,
   })

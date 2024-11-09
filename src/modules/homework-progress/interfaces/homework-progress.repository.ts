@@ -30,6 +30,13 @@ export interface IHomeworkProgressRepository {
     blockOrder: number,
   ): Promise<number | null>;
 
+  // Foydalanuvchi ko'rayotgan videodan keyingi proccessni isWatched ni true qiladi
+  markHomeworkAsWatched(
+    homeworkOrder: number,
+    userId: number,
+    blockOrder: number,
+  ): Promise<HomeworkProgress>;
+
   // Berilgan order va userId bo'yicha HomeworkProgress yozuvlarini qaytaradi
   findByOrderAndUserId(
     order: ID,
