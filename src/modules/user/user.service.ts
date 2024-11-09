@@ -50,12 +50,6 @@ export class UserService implements IUserService {
   // *** Update users by id *** //
 
   async updateUser(id: number, dto: UpdateUserDto): Promise<ResData<User>> {
-    if (dto.phoneNumber) {
-      const { data: foundPhoneNumber } = await this.findOneByPhoneNumber(dto.phoneNumber);
-      if (foundPhoneNumber) {
-        throw new PhoneNumberAlreadyExist();
-      }
-    }
     const { data: foundUser } = await this.findOneById(id);
     if (dto.firstName) {
       foundUser.firstName = dto.firstName;
