@@ -7,6 +7,7 @@ import { LessonProgressRepository } from "./lesson-progress.repository";
 import { SharedModule } from "../shared/shared.module";
 import { LessonModule } from "../lesson/lesson.module";
 import { UserModule } from "../user/user.module";
+import { BlockModule } from "../block/block.module";
 
 @Module({
   imports: [
@@ -14,9 +15,17 @@ import { UserModule } from "../user/user.module";
     SharedModule,
     LessonModule,
     UserModule,
+    BlockModule,
   ],
   controllers: [LessonProgressController],
   providers: [
+    { provide: "ILessonProgressService", useClass: LessonProgressService },
+    {
+      provide: "ILessonProgressRepository",
+      useClass: LessonProgressRepository,
+    },
+  ],
+  exports: [
     { provide: "ILessonProgressService", useClass: LessonProgressService },
     {
       provide: "ILessonProgressRepository",

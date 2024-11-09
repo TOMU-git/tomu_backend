@@ -8,16 +8,21 @@ export interface IHomeworkProgressService {
   create(
     dto: CreateHomeworkProgressDto,
   ): Promise<ResData<Partial<HomeworkProgress>>>;
+
   findAll(): Promise<ResData<Array<HomeworkProgress>>>;
+
   findOneById(id: ID): Promise<ResData<HomeworkProgress>>;
+  findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>>;
+
   update(
     id: ID,
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>>;
-  getRandomVideos(
-    order: ID,
+
+  delete(id: ID): Promise<ResData<HomeworkProgress>>;
+  getVideos(
+    userID: ID,
     blockId: ID,
-    userId: ID
+    blockOrder: ID,
   ): Promise<ResData<Array<HomeworkProgress>>>;
-  getWatchedHomeworkProgressUpToOrder(order: ID): Promise<ResData<boolean>>;
 }
