@@ -3,6 +3,7 @@ import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
+import { LessThanOrEqual } from "typeorm";
 import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
 @Injectable()
 export class HomeworkProgressRepository implements IHomeworkProgressRepository {
@@ -96,6 +97,40 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return await this.homeworkProgressRepository.findOneBy({ id });
   }
 
+  async findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
+    userId: ID,
+    blockOrder: number,
+  ): Promise<number | null> {
+    const lastWatchedProgress = await this.homeworkProgressRepository.findOne({
+      where: {
+        userId: userId,
+        isWatched: true,
+        blockOrder: LessThanOrEqual(blockOrder), // blockOrder qiymatini tekshirish uchun LessThanOrEqual dan foydalanamiz
+      },
+      order: {
+        blockOrder: "DESC", // Oxirgi `isWatched: true` bo'lgan yozuvni olish uchun tartiblaymiz
+      },
+      relations: ["homework"], // Homework ni olish uchun relation qo'shamiz
+      select: ["homework"], // Homeworkdan faqat kerakli maydonni tanlaymiz
+    });
+
+    // Agar isWatched true bo'lgan process topilmasa, null qaytaradi
+    return lastWatchedProgress ? lastWatchedProgress.homework.order : null;
+  }
+
+  async areAllWatchedByOrderAndUserId(order: ID, userId: ID): Promise<boolean> {
+    const homeworkProgresses = await this.homeworkProgressRepository.find({
+      where: {
+        blockOrder: order,
+        userId: userId,
+      },
+      select: ["isWatched"], // Faqat isWatched maydonini tanlaymiz
+    });
+
+    // Hamma yozuvlarda isWatched true bo'lsa, true qaytaradi
+    return homeworkProgresses.every((progress) => progress.isWatched === true);
+  }
+
   // Videolarni olish uchun metod (countWatched 0 dan 5 gacha bo'lganlarini)
   async getVideosWithWatchCountBetween0And5(
     blockOrder: ID,
@@ -109,17 +144,5 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
       .select(["homeworkProgress", "homework"])
       .getMany();
-  }
-
-  // Berilgan ordergacha tomosha qilingan homework progress yozuvlarini olish uchun metod
-  async getWatchedHomeworkProgressUpToOrder(
-    order: number,
-  ): Promise<HomeworkProgress[]> {
-    return await this.homeworkProgressRepository
-      .createQueryBuilder("homeworkProgress")
-      .leftJoinAndSelect("homeworkProgress.homework", "homework") // homework jadvalini qo'shish
-      .where("homework.order <= :order", { order }) // homework.order qiymati kiritilgan qiymatdan kichik yoki teng bo'lsa filtrlanadi
-      .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true }) // isWatched qiymati true bo'lgan yozuvlarni filtrlaydi
-      .getMany(); // barcha mos yozuvlarni qaytaradi
   }
 }

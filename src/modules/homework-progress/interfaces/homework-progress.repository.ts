@@ -8,6 +8,11 @@ export interface IHomeworkProgressRepository {
   findByUserId(userId: ID): Promise<Array<HomeworkProgress> | null>;
   update(dto: HomeworkProgress): Promise<HomeworkProgress>;
   delete(dto: HomeworkProgress): Promise<HomeworkProgress>;
+  areAllWatchedByOrderAndUserId(order: ID, userId: ID): Promise<boolean>;
+  findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
+    userId: ID,
+    blockOrder: number,
+  ): Promise<number | null>;
   findByOrderAndUserId(
     order: ID,
     userId: ID,
@@ -19,12 +24,8 @@ export interface IHomeworkProgressRepository {
     blockOrder: ID,
     userId: ID,
   ): Promise<number | null>;
-  getWatchedHomeworkProgressUpToOrder(
-    order: ID,
-  ): Promise<Array<HomeworkProgress>>;
   findOneByUserAndHomework(
     userId: ID,
     homeworkId: ID,
   ): Promise<HomeworkProgress | null>;
-  
 }

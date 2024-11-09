@@ -16,8 +16,9 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { UserNotFound } from "../user/exception/user.exception";
 import { HomeworkNotFoundException } from "../homework/exception/homework.exception";
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager'; // ! Don't forget this import
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager"; // ! Don't forget this import
+import { ILessonProgressRepository } from "../lesson-progress/interfaces/lesson-progress.repository";
 @Injectable()
 export class HomeworkProgressService implements IHomeworkProgressService {
   constructor(
@@ -29,6 +30,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     @Inject("IHomeworkRepository") // HomeworkService ni inject qilamiz
     private readonly homeworkRepository: IHomeworkRepository,
+
+    @Inject("ILessonProgressRepository") // LessonProgressService ni inject qilamiz
+    private readonly lessonProgressRepository: ILessonProgressRepository,
 
     @Inject("IBlockRepository") // BlockService ni inject qilamiz
     private readonly blockRepository: IBlockRepository,
@@ -135,32 +139,54 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     blockId: ID,
     blockOrder: ID,
   ): Promise<ResData<Array<HomeworkProgress>>> {
-    console.log("service")
+    console.log("service");
     const existingProgress =
-    await this.homeworkProgressRepository.findByOrderAndUserId(
-      userId,
-      blockOrder,
-    );
+      await this.homeworkProgressRepository.findByOrderAndUserId(
+        userId,
+        blockOrder,
+      );
     console.log("existingProgress", existingProgress);
-    
+
     const key = `progress:${userId}:${blockOrder}`;
-    
-    if (existingProgress.length < 15 && existingProgress.length > 1) {
+
+    if (existingProgress.length < 5 && existingProgress.length > 1) {
       return new ResData<Array<HomeworkProgress>>("ok", 200, existingProgress);
     }
-    
+
     const watchedProgressCount = existingProgress.filter(
       (progress) => progress.isWatched === true,
     ).length;
     const notWatchedProgressCount = existingProgress.filter(
       (progress) => progress.isWatched === false,
     ).length;
-    
+
+    const isWatchedAllHomework =
+      await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
+        userId,
+        blockOrder,
+      );
+
+    const lastWatchedHomework =
+      await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
+        userId,
+        blockOrder,
+      );
+
+    const isWatchedAllLesson =
+      await this.lessonProgressRepository.findIfAllWatched(
+        blockOrder,
+        lastWatchedHomework,
+        userId,
+      );
+
     if (
-      (watchedProgressCount % 5 === 0 && notWatchedProgressCount === 0) ||
+      (watchedProgressCount % 5 === 0 &&
+        notWatchedProgressCount === 0 &&
+        isWatchedAllHomework &&
+        isWatchedAllLesson) ||
       existingProgress.length === 0
     ) {
-      console.log("if ni ichi")
+      console.log("if ni ichi");
       const fiveProgress = await this.generateFiveProgress(
         userId,
         blockId,
@@ -218,7 +244,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     blockOrder: ID,
   ): Promise<Array<HomeworkProgress>> {
     const block = await this.blockRepository.findById(blockId);
-    console.log("blockOrder", block.order)
+    console.log("blockOrder", block.order);
     if (!block) throw new BlockNotFoundException();
 
     const lastHomeworkOrder =

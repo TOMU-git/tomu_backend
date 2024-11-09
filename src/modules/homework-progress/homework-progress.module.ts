@@ -9,6 +9,7 @@ import { HomeworkModule } from "../homework/homework.module";
 import { UserModule } from "../user/user.module";
 import { HomeworkProgressRepository } from "./homework-progress.repository";
 import { BlockModule } from "../block/block.module";
+import { LessonProgressModule } from "../lesson-progress/lesson-progress.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { BlockModule } from "../block/block.module";
     HomeworkModule,
     UserModule,
     BlockModule,
+    LessonProgressModule
   ],
   controllers: [HomeworkProgressController],
   providers: [
