@@ -35,3 +35,11 @@ export enum PaymeDataEnum {
 	USER_ID = "user_id",
 	PRODUCT_ID = "product_id",
 }
+
+export enum LiveChatDurationEnum {
+  TWENTY_MINUTES = 20,
+  FOURTY_MINUTES = 40,
+  ONE_HOUR = 60,
+  ONE_AND_HALF_HOUR = 90,
+  TWO_HOURS = 120,
+}
