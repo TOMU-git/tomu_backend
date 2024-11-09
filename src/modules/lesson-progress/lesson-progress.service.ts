@@ -162,10 +162,6 @@ export class LessonProgressService implements ILessonProgressService {
   ): Promise<Array<LessonProgress>> {
     // Blokni olish
     const { data: block } = await this.blockService.findOneById(blockId);
-    if (!block) {
-      throw new Error("Block not found");
-    }
-
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =

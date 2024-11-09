@@ -8,16 +8,29 @@ import {
   ParseIntPipe,
   Inject,
   Query,
+  Delete,
+  BadRequestException,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { ResData } from "src/lib/resData";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
 import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
 import { CreateHomeworkProgressDto } from "./dto/create-homework-progress.dto";
 import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto"; // Yangilash DTO sini import qiling
+import { IsNumberString } from "class-validator";
+
+export class GetVideosQueryDto {
+  @ApiProperty({ description: "Block ID raqamda kiritilishi kerak" })
+  @IsNumberString({}, { message: "blockId raqam bo‘lishi kerak" })
+  blockId: string;
+
+  @ApiProperty({ description: "User ID raqamda kiritilishi kerak" })
+  @IsNumberString({}, { message: "userId raqam bo‘lishi kerak" })
+  userId: string;
+}
 @ApiTags("homework-progress")
 @Controller("homework-progress")
 export class HomeworkProgressController {
@@ -34,18 +47,33 @@ export class HomeworkProgressController {
     return await this.homeworkProgressService.create(createHomeworkProgressDto);
   }
 
+  // Berilgan ID bo'yicha bitta homework progress yozuvini olish uchun metod
+  @Get("findOne/:id")
+  async findOne(
+    @Param("id", ParseIntPipe) id: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    return await this.homeworkProgressService.findByUserId(id);
+  }
+
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Get("get-videos")
+  async getVideos(
+    @Query("userId", ParseIntPipe) userId: ID,
+    @Query("blockId", ParseIntPipe) blockId: ID,
+    @Query("blockOrder", ParseIntPipe) blockOrder: ID,
+  ): Promise<ResData<Array<HomeworkProgress>>> {
+    console.log("controller");
+    return await this.homeworkProgressService.getVideos(
+      userId,
+      blockId,
+      blockOrder,
+    );
+  }
+
   // Barcha homework progress yozuvlarini olish uchun metod
   @Get()
   async findAll(): Promise<ResData<Array<HomeworkProgress>>> {
     return await this.homeworkProgressService.findAll();
-  }
-
-  // Berilgan ID bo'yicha bitta homework progress yozuvini olish uchun metod
-  @Get(":id")
-  async findOne(
-    @Param("id", ParseIntPipe) id: ID,
-  ): Promise<ResData<HomeworkProgress>> {
-    return await this.homeworkProgressService.findOneById(id);
   }
 
   // Berilgan ID bo'yicha homework progress yozuvini yangilash uchun metod
@@ -60,28 +88,12 @@ export class HomeworkProgressController {
     );
   }
 
-  // Tasodifiy videolarni olish uchun metod
-  @Get("random-videos")
-  async getRandomVideos(
-    @Query("order", ParseIntPipe) order: ID,
-    @Query("blockId", ParseIntPipe) blockId: ID,
-    @Query("userId", ParseIntPipe) userId: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>> {
-    console.log(order);
-    return await this.homeworkProgressService.getRandomVideos(
-      order,
-      blockId,
-      userId,
-    );
+  @Delete(":id")
+  async delete(
+    @Param("id", ParseIntPipe) id: ID,
+  ): Promise<ResData<HomeworkProgress>> {
+    return await this.homeworkProgressService.delete(id);
   }
 
-  // Berilgan order bo'yicha tomosha qilingan videolarni tekshirish uchun metod
-  @Get("check-videos/:order")
-  async checkWatchedVideos(
-    @Param("order", ParseIntPipe) order: ID,
-  ): Promise<ResData<boolean>> {
-    return await this.homeworkProgressService.getWatchedHomeworkProgressUpToOrder(
-      order,
-    );
-  }
+  // Videolarni olish
 }

@@ -15,10 +15,17 @@ import { BlockModule } from "../block/block.module";
     SharedModule,
     LessonModule,
     UserModule,
-    BlockModule
+    BlockModule,
   ],
   controllers: [LessonProgressController],
   providers: [
+    { provide: "ILessonProgressService", useClass: LessonProgressService },
+    {
+      provide: "ILessonProgressRepository",
+      useClass: LessonProgressRepository,
+    },
+  ],
+  exports: [
     { provide: "ILessonProgressService", useClass: LessonProgressService },
     {
       provide: "ILessonProgressRepository",
