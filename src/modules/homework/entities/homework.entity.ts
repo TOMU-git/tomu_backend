@@ -28,6 +28,9 @@ export class Homework extends BaseEntity {
   @Column({ type: "int" })
   size: number;
 
+
+
+
   /**
    * Tartib raqami.
    * Homework ko'rsatish tartibi.

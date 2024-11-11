@@ -33,6 +33,5 @@ export interface IHomeworkProgressService {
   getVideos(
     userID: ID,
     blockId: ID,
-    blockOrder: ID,
   ): Promise<ResData<Array<HomeworkProgress>>>;
 }
