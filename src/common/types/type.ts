@@ -13,7 +13,7 @@ export type AxiosResponse<T = any> = {
 
 export type PaymeAccount = {
   user_id: string;
-  tariff_id: string;
+  order_id: string;
 };
 
 export type PaymeParams = {

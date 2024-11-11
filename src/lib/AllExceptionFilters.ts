@@ -10,17 +10,17 @@ import { HttpAdapterHost } from "@nestjs/core";
 import { ResData } from "./resData";
 import { TransactionErrorException } from "src/modules/transactions/exception/transactionException";
 import { Response } from "express";
+import { PaymeDataEnum } from "src/common/enums/enum";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   res: Response;
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-  catch(exception: any, host: ArgumentsHost): void {
-    console.log("Exception :", exception);
-
+  catch(exception: any, host: ArgumentsHost): void | Response {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
+    const response1 = ctx.getResponse<Response>();
 
     const responseBody = new ResData(
       "",
@@ -29,7 +29,17 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception,
     );
     if (exception instanceof HttpException) {
-      console.log("exception :", exception);
+      if (exception instanceof TransactionErrorException) {
+        return response1.status(HttpStatus.OK).json({
+          error: {
+            code: exception.transactionErrorCode,
+            message: exception.transactionErrorMessage,
+            data: exception.transactionData as PaymeDataEnum,
+          },
+          id: exception.transactionId,
+        });
+      }
+
       responseBody.statusCode = exception.getStatus();
 
       const response = exception.getResponse() as Error;
@@ -40,7 +50,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         responseBody.message = response?.message.toString();
       }
     } else {
-      console.log(3);
       responseBody.message = exception.message;
     }
 
