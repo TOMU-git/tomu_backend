@@ -17,6 +17,9 @@ import {
 } from "./dto/response.dto";
 import { TransactionStateEnum } from "src/common/enums/transaction";
 import { TransactionEntity } from "./entities/transaction.entity";
+import { IOrderService } from "../orders/interfaces/service-interface";
+import { OrderStatus } from "src/common/enums/order-status";
+import { IOrderRepository } from "../orders/interfaces/repository-interface";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -24,33 +27,34 @@ export class TransactionsService implements ITransactionService {
     @Inject("ITransactionRepository")
     private readonly transactionRepository: ITransactionRepo,
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
-    @Inject("ITariffRepository")
-    private readonly tariffRepository: ITariffRepository,
-  ) { }
-  
-  //// *** Checking 
+    @Inject("IOrderService") private readonly orderService: IOrderService,
+    @Inject("IOrderRepository")
+    private readonly orderRepository: IOrderRepository,
+  ) {}
+
+  //// *** Checking
 
   async checkPerformTransaction(params: PaymeParams, id: number) {
     const {
-      account: { user_id: userId, tariff_id: tariffId },
+      account: { user_id: userId, order_id: orderId },
     } = params;
 
     const foundUser = await this.userRepository.findOneById(Number(userId));
     if (!foundUser) {
-      throw new TransactionErrorException(PaymeError.UserNotFound, id, HttpStatus.NOT_FOUND);
+      throw new TransactionErrorException(PaymeError.UserNotFound, id);
     }
-    const foundTariff = await this.tariffRepository.findOneById(
-      Number(tariffId),
+    const { data: foundOrder } = await this.orderService.getOrderById(
+      Number(orderId),
     );
-    if (!foundTariff) {
-      throw new TransactionErrorException(PaymeError.TariffNotFound, id);
+    if (!foundOrder) {
+      throw new TransactionErrorException(PaymeError.OrderNotFound, id);
     }
 
     let { amount } = params;
 
     amount = Math.floor(amount / 100);
 
-    if (amount !== Math.floor(foundTariff.price / 100)) {
+    if (amount !== Number(foundOrder.totalPrice)) {
       throw new TransactionErrorException(PaymeError.InvalidAmount, id);
     }
   }
@@ -72,21 +76,29 @@ export class TransactionsService implements ITransactionService {
       cancel_time: Number(foundTransaction.cancelTime),
       transaction: foundTransaction.id,
       state: foundTransaction.state,
-      reason: Number(foundTransaction.reason),
+      reason: foundTransaction.reason,
     };
   }
   async createTransaction(
     params: PaymeParams,
     id: number,
   ): Promise<ICreateTransactionDto> {
-    const { account: {user_id: userId, tariff_id: tariffId}, time } = params;
+    const {
+      account: { user_id: userId, order_id: orderId },
+      time,
+    } = params;
     let { amount } = params;
 
     amount = Math.floor(amount / 100);
 
     await this.checkPerformTransaction(params, id);
 
-    let transaction = await this.transactionRepository.getOneById(params.id);
+    const transaction = await this.transactionRepository.getOneById(params.id);
+
+    const { data: foundOrder } = await this.orderService.getOrderById(
+      Number(orderId),
+    );
+
     if (transaction) {
       if (transaction.state !== TransactionStateEnum.PENDING) {
         throw new TransactionErrorException(PaymeError.CantDoOperation, id);
@@ -95,11 +107,16 @@ export class TransactionsService implements ITransactionService {
       const currentTime = Date.now();
 
       const expirationTime =
-        (currentTime - Number(transaction.createTime)) / (1000 * 60 * 60) > 12; /// Agar transaction yaratilganiga 12 soatdan ko'p bo'lgan bo'lsa transactionni cancel qilib yuboramiz
+        (currentTime - Number(transaction.createTime)) / 60000 < 12; // 12m
       if (!expirationTime) {
         transaction.state = TransactionStateEnum.PENDING_CANCELED;
-        transaction.reason = 4;
-        await this.transactionRepository.updateTransaction(transaction);
+        await this.transactionRepository.updateTransaction(
+          transaction.id,
+          transaction,
+        );
+
+        foundOrder.status = OrderStatus.TIMEOUT;
+        await this.orderRepository.update(foundOrder);
         throw new TransactionErrorException(PaymeError.CantDoOperation, id);
       }
 
@@ -109,30 +126,41 @@ export class TransactionsService implements ITransactionService {
         state: TransactionStateEnum.PENDING,
       };
     }
-    transaction = await this.transactionRepository.getByFilter(Number(userId), Number(tariffId));
-    if (transaction) { 
-      if (transaction.state === TransactionStateEnum.PAID) {
-        throw new TransactionErrorException(PaymeError.AlreadyDone, id); 
+    const transactionPaidOrPending =
+      await this.transactionRepository.getByFilter(
+        Number(userId),
+        Number(orderId),
+      );
+
+    if (transactionPaidOrPending) {
+      if (transactionPaidOrPending.state === TransactionStateEnum.PAID) {
+        throw new TransactionErrorException(PaymeError.AlreadyDone, id);
       }
-      if (transaction.state === TransactionStateEnum.PENDING) {
+      if (transactionPaidOrPending.state === TransactionStateEnum.PENDING) {
         throw new TransactionErrorException(PaymeError.Pending, id);
       }
     }
 
-      const newTransaction = new TransactionEntity();
-      newTransaction.id = params.id;
-      newTransaction.userId = Number(userId);
-      newTransaction.tariffId = Number(tariffId);
-      newTransaction.state = TransactionStateEnum.PENDING;
-      newTransaction.createTime = time;
-      newTransaction.amount = amount;
-      const createdTransaction = await this.transactionRepository.createTransaction(newTransaction)
+    const newTransaction = new TransactionEntity();
+    newTransaction.id = params.id;
+    newTransaction.userId = Number(userId);
+    newTransaction.orderId = Number(orderId);
+    newTransaction.state = TransactionStateEnum.PENDING;
+    newTransaction.createTime = time;
+    newTransaction.amount = amount;
+    (newTransaction.reason = null), (newTransaction.cancelTime = 0);
+    newTransaction.performTime = 0;
+    const createdTransaction =
+      await this.transactionRepository.createTransaction(newTransaction);
+
+    foundOrder.status = OrderStatus.PENDING;
+    await this.orderRepository.update(foundOrder);
 
     return {
       create_time: Number(createdTransaction.createTime),
       transaction: params.id,
       state: TransactionStateEnum.PENDING,
-    }
+    };
   }
   async performTransaction(
     params: PaymeParams,
@@ -153,20 +181,35 @@ export class TransactionsService implements ITransactionService {
         state: TransactionStateEnum.PAID,
       };
     }
+    const { data: foundOrder } = await this.orderService.getOrderById(
+      Number(transaction.orderId),
+    );
 
     const expirationTime =
-      (currentTime - Number(transaction.createTime)) / (1000 * 60 * 60) > 12; /// Agar transaction yaratilganiga 12 soatdan ko'p bo'lgan bo'lsa transactionni cancel qilib yuboramiz
+      (currentTime - Number(transaction.createTime)) / 60000 < 12; // 12m
     if (!expirationTime) {
       transaction.state = TransactionStateEnum.PENDING_CANCELED;
       transaction.reason = 4;
       transaction.cancelTime = currentTime;
-      await this.transactionRepository.updateTransaction(transaction);
+      await this.transactionRepository.updateTransaction(
+        transaction.id,
+        transaction,
+      );
+
+      foundOrder.status = OrderStatus.TIMEOUT;
+      await this.orderRepository.update(foundOrder);
       throw new TransactionErrorException(PaymeError.CantDoOperation, id);
     }
 
     transaction.state = TransactionStateEnum.PAID;
     transaction.performTime = currentTime;
-    await this.transactionRepository.updateTransaction(transaction);
+    await this.transactionRepository.updateTransaction(
+      transaction.id,
+      transaction,
+    );
+
+    foundOrder.status = OrderStatus.PAID;
+    await this.orderRepository.update(foundOrder);
 
     return {
       perform_time: currentTime,
@@ -174,44 +217,61 @@ export class TransactionsService implements ITransactionService {
       state: TransactionStateEnum.PAID,
     };
   }
-  async cancelTransaction(params: PaymeParams, id: number): Promise<ICancelTransactionDto> {
+  async cancelTransaction(
+    params: PaymeParams,
+    id: number,
+  ): Promise<ICancelTransactionDto> {
     const transaction = await this.transactionRepository.getOneById(params.id);
     if (!transaction) {
       throw new TransactionErrorException(PaymeError.TransactionNotFound, id);
     }
+    const { data: foundOrder } = await this.orderService.getOrderById(
+      Number(transaction.orderId),
+    );
     const currentTime = Date.now();
     if (transaction.state > 0) {
       transaction.state = -Math.abs(transaction.state);
       transaction.reason = params.reason;
       transaction.cancelTime = currentTime;
-      await this.transactionRepository.updateTransaction(transaction);
-		}
-		return {
-			cancel_time: Number(transaction.cancelTime) || currentTime,
-			transaction: transaction.id,
-			state: -Math.abs(transaction.state),
-		};
+      await this.transactionRepository.updateTransaction(
+        transaction.id,
+        transaction,
+      );
+      foundOrder.status = OrderStatus.CANCELED;
+      await this.orderRepository.update(foundOrder);
+    }
+    foundOrder.status = OrderStatus.CANCELED;
+    await this.orderRepository.update(foundOrder);
+    return {
+      cancel_time: Number(transaction.cancelTime) || currentTime,
+      transaction: transaction.id,
+      state: -Math.abs(transaction.state),
+    };
   }
-  async getStatement(params: PaymeParams, id: number): Promise<Array<IGetStatementTransactionDto>> {
-    const transactions: Array<TransactionEntity> = await this.transactionRepository.getTransactionInPeriod(
-      Number(params.from),
-      Number(params.to),
+  async getStatement(
+    params: PaymeParams,
+    id: number,
+  ): Promise<Array<IGetStatementTransactionDto>> {
+    const transactions: Array<TransactionEntity> =
+      await this.transactionRepository.getTransactionInPeriod(
+        Number(params.from),
+        Number(params.to),
+      );
+    const mappedData: Array<IGetStatementTransactionDto> = transactions.map(
+      (tr: TransactionEntity) => ({
+        id: tr.id,
+        time: Number(tr.createTime),
+        amount: Number(tr.amount) * 100,
+        account: { order_id: tr.orderId, user_id: tr.userId },
+        create_time: Number(tr.createTime),
+        perform_time: Number(tr.createTime),
+        cancel_time: Number(tr.createTime),
+        transaction: Number(id),
+        state: Number(tr.createTime),
+        reason: Number(tr.createTime) ? Number(tr.createTime) : null,
+        receivers: [],
+      }),
     );
-    const mappedData: Array<IGetStatementTransactionDto> = transactions.map((tr: TransactionEntity) => ({
-      id: tr.id,
-      time: Number(tr.createTime),
-      amount: Number(tr.amount) * 100,
-      account: { tariff_id: tr.tariffId, user_id: tr.userId },
-      create_time: Number(tr.createTime),
-      perform_time: Number(tr.createTime),
-      cancel_time: Number(tr.createTime),
-      transaction: Number(tr.id),
-      state: Number(tr.createTime),
-      reason: Number(tr.createTime)
-        ? Number(tr.createTime)
-        : null,
-      receivers: [],
-    }));
     return mappedData;
   }
 }

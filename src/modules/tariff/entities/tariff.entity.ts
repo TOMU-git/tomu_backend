@@ -11,7 +11,7 @@ export class Tariff extends BaseEntity {
   @Column({ type: "int", nullable: false })
   duration: number;
 
-  @Column({ type: "int", nullable: false })
+  @Column({ type: "bigint", nullable: false })
   price: number;
 
   // Bir nechta variantlarni saqlash uchun JSON massivi maydoni

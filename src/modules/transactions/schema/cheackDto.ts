@@ -8,7 +8,6 @@ export function checkTransactionDto<DTO>(
 	id: number,
 ): void {
 	const result = schema.validate(dto);
-
 	if (result.error) {
 		throw new TransactionErrorException<PaymeDataEnum>(
 			{
