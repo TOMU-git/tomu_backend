@@ -66,7 +66,7 @@ export class LessonRepository implements ILessonRepository {
     return await this.lessonRepository.findOneBy({ title });
   }
 
-  async findNextTenLessonsAfterOrder(
+  async findNextFiveLessonsAfterOrder(
     lastLessonOrder: number,
     blockId: ID,
   ): Promise<Array<Lesson>> {
@@ -75,7 +75,7 @@ export class LessonRepository implements ILessonRepository {
       .where("lesson.order > :lastLessonOrder", { lastLessonOrder })
       .andWhere("lesson.block_id = :blockId", { blockId }) // blockId o'rniga block_id deb yozamiz
       .orderBy("lesson.order", "ASC")
-      .limit(10)
+      .limit(5)
       .getMany();
   }
 
