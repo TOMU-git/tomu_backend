@@ -135,12 +135,12 @@ export class LessonProgressService implements ILessonProgressService {
     ).length;
 
 
-    // Agar isWatched true bo'lgan progresslar soni 10 ga bo'linmasa va isWatched false progresslar bo'lmasa
+    // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
     if (
-      (watchedProgressCount % 10 == 0 && notWatchedProgressCount === 0) ||
+      (watchedProgressCount % 5 == 0 && notWatchedProgressCount === 0) ||
       existingProgresses.length === 0
     ) {
-      const tenProgress = await this.generateTenProgress(
+      const fiveProgress = await this.generateFiveProgress(
         userId,
         blockId,
         blockOrder,
@@ -148,14 +148,14 @@ export class LessonProgressService implements ILessonProgressService {
       return new ResData<Array<LessonProgress>>(
         "Lesson fetched successfully",
         200,
-        tenProgress,
+        fiveProgress,
       );
     }
 
     return new ResData<Array<LessonProgress>>("ok", 200, existingProgresses);
   }
 
-  async generateTenProgress(
+  async generateFiveProgress(
     userId: ID,
     blockId: ID,
     blockOrder: ID,
@@ -170,8 +170,8 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
       );
 
-    // lastLessonOrder dan keyingi 10 darsni olish
-    const lessons = await this.lessonRepository.findNextTenLessonsAfterOrder(
+    // lastLessonOrder dan keyingi 5 darsni olish
+    const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(
       lastLessonOrder || 0, // Agar progress yo'q bo'lsa, 0 dan boshlash
       blockId,
     );

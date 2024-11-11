@@ -138,6 +138,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   /**
    * Homework progressini yangilash.
+   * Redisdagi ma'lumotni ham update qilish
    * @param id - Yangilanishi kerak bo'lgan Homework progress ID
    * @param dto - Yangilanish uchun kerakli ma'lumotlar
    * @returns Yangilangan Homework progress
@@ -157,8 +158,35 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     foundData.countWatched = dto.countWatched;
     foundData.isWatched = dto.isWatched;
 
+    // Keyingi progressni `isWatched` qilib yangilash
+    await this.homeworkProgressRepository.markHomeworkAsWatched(
+      dto.homeworkOrder,
+      dto.userId,
+      dto.blockOrder,
+    );
+
     // Yangilangan progressni saqlash
     const updatedData = await this.homeworkProgressRepository.update(foundData);
+
+    // Redis'dagi ma'lumotni yangilash
+    const key = `progress:${dto.userId}:${dto.blockOrder}`;
+    const cachedProgressList = (await this.cacheManager.get(key)) as
+      | HomeworkProgress[]
+      | null;
+
+    if (cachedProgressList) {
+      const progressIndex = cachedProgressList.findIndex(
+        (progress) => progress.id === id,
+      );
+
+      if (progressIndex !== -1) {
+        // Yangilangan ma'lumotni keshdagi ro'yxatga qo'yish
+        cachedProgressList[progressIndex] = updatedData;
+
+        // Yangilangan progress ro'yxatini keshga qayta yozish
+        await this.cacheManager.set(key, cachedProgressList);
+      }
+    }
 
     // Yangilangan homework progress qaytariladi
     return new ResData<HomeworkProgress>("ok", 200, updatedData);
