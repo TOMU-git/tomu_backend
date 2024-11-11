@@ -4,11 +4,10 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +16,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - run: npm i
+      - run: npm install
       - run: npm run build
-      - run: npm run start:dev
+      - run: npm test
