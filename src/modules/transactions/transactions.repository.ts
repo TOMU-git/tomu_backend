@@ -15,21 +15,21 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.save(entity);
   }
 
-  async getOneById(id: string): Promise<TransactionEntity> {
-    return await this.repository.findOneBy({ id });
+  async getOneById(transactionId: string): Promise<TransactionEntity> {
+    return await this.repository.findOneBy({ id: transactionId });
   }
 
   async updateTransaction(
-    entity: TransactionEntity,
-  ): Promise<TransactionEntity> {
-    return await this.repository.save(entity);
+    id: string, entity: TransactionEntity,
+  ): Promise<any> {
+    return await this.repository.update(id, entity);
   }
 
   async getByFilter(
     userId: number,
-    tariffId: number,
+    orderId: number,
   ): Promise<TransactionEntity> {
-    return await this.repository.findOne({ where: [{ userId }, { tariffId }] });
+    return await this.repository.findOne({ where: [{ userId }, { orderId }] });
   }
 
   async getTransactionInPeriod(
@@ -38,7 +38,7 @@ export class TransactionRepository implements ITransactionRepo {
   ): Promise<TransactionEntity[]> {
     return await this.repository
       .createQueryBuilder("transactions")
-      .where("transactions.createTime BEYTWEEN :from AND :to", { from, to })
+      .where("transactions.createTime BETWEEN :from AND :to", { from, to })
       .getMany();
   }
 }

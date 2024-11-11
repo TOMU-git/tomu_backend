@@ -1,4 +1,4 @@
-import { GenderEnum, LiveChatDurationEnum, MeetingStatusEnum } from "src/common/enums/enum";
+import { GenderEnum, MeetingStatusEnum } from "src/common/enums/enum";
 import { BaseEntity } from "../../../common/database/baseEntity";
 import { Column, Entity } from "typeorm";
 
@@ -19,7 +19,7 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: 'duration', type: 'int',  nullable: false })
   duration: number;
 
-  @Column({ name: 'price', type: 'numeric', nullable: false })
+  @Column({ name: 'price', type: 'bigint', nullable: false })
   price: number;
 
   @Column({ name: "user_id", type: "int", nullable: false })

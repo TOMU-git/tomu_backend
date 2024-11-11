@@ -3,7 +3,6 @@ import { CreateLiveChatDto } from "./create-live-chat.dto";
 import { IsDate, IsEnum, IsInt, IsOptional, IsString } from "class-validator";
 import {
   GenderEnum,
-  LiveChatDurationEnum,
   MeetingStatusEnum,
 } from "src/common/enums/enum";
 

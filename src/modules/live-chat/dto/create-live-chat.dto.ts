@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString } from "class-validator";
-import { GenderEnum, LiveChatDurationEnum } from "src/common/enums/enum";
+import { GenderEnum } from "src/common/enums/enum";
 
 export class CreateLiveChatDto {
   @ApiProperty({

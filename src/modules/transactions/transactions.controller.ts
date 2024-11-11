@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Res, Req, Inject, HttpCode, HttpStatus } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  Req,
+  Inject,
+  HttpCode,
+  HttpStatus,
+} from "@nestjs/common";
 import { PaymeDto } from "src/common/types/type";
 import { PaymeMethodEnum } from "src/common/enums/payme-method-enum";
 import { ITransactionService } from "./interfaces/transaction-service";
@@ -13,51 +22,59 @@ import {
   paymeGetStatementTrSchema,
   paymePerformTrSchema,
 } from "./schema/trans-joi-schema";
+import { PaymeDataEnum } from "src/common/enums/enum";
 
 @ApiTags("Payme-Transactions")
 @Controller("transactions")
 export class TransactionsController {
-  constructor(@Inject("ITransactionServcie") private readonly transactionsService: ITransactionService) {}
+  constructor(
+    @Inject("ITransactionServcie")
+    private readonly transactionsService: ITransactionService,
+  ) {}
 
   @Post("payme")
   async payme(@Res() res: Response, @Req() req: Request) {
-      const { method, params, id }: PaymeDto = req.body;
-      if (method === PaymeMethodEnum.CHECK_PERFORM_TRANSACTION) {
-        checkTransactionDto(paymeCheckPerformTrSchema, params, id);
-        await this.transactionsService.checkPerformTransaction(params, id);
-        return res.status(HttpStatus.OK).json({ result: { allow: true } });
-      } else if (method === PaymeMethodEnum.CHECK_TRANSACTION) {
-        checkTransactionDto(paymeCheckTrSchema, params, id);
-        const result = await this.transactionsService.checkTransaction(
-          params,
-          id,
-        );
-        return res.status(HttpStatus.OK).json({result, id});
-      } else if (method === PaymeMethodEnum.CREATE_TRANSACTION) {
-        checkTransactionDto(paymeCreateTrSchema, params, id);
-        const result = await this.transactionsService.createTransaction(
-          params,
-          id,
-        );
-        return res.status(HttpStatus.OK).json({result, id});
-      } else if (method === PaymeMethodEnum.PERFORM_TRANSACTION) {
-        checkTransactionDto(paymePerformTrSchema, params, id);
-        const result = await this.transactionsService.performTransaction(
-          params,
-          id,
-        );
-        return res.json(result);
-      } else if (method === PaymeMethodEnum.CANCEL_TRANSACTION) {
-        checkTransactionDto(paymeCancelTrSchema, params, id);
-        const result = await this.transactionsService.cancelTransaction(
-          params,
-          id,
-        );
-        return res.status(HttpStatus.OK).json({result, id});
-      } else if (method === PaymeMethodEnum.GET_STATEMENT) {
-        checkTransactionDto(paymeGetStatementTrSchema, params, id);
-        const result = await this.transactionsService.getStatement(params, id);
-        return res.json(result);
-      }
+    const { method, params, id }: PaymeDto = req.body;
+    if (method === PaymeMethodEnum.CHECK_PERFORM_TRANSACTION) {
+      checkTransactionDto(paymeCheckPerformTrSchema, params, id);
+      await this.transactionsService.checkPerformTransaction(params, id);
+      return res.status(HttpStatus.OK).json({ result: { allow: true } });
+    } else if (method === PaymeMethodEnum.CHECK_TRANSACTION) {
+      checkTransactionDto(paymeCheckTrSchema, params, id);
+      const result = await this.transactionsService.checkTransaction(
+        params,
+        id,
+      );
+      return res.status(HttpStatus.OK).json({ result, id });
+    } else if (method === PaymeMethodEnum.CREATE_TRANSACTION) {
+      checkTransactionDto(paymeCreateTrSchema, params, id);
+      const result = await this.transactionsService.createTransaction(
+        params,
+        id,
+      );
+      return res.status(HttpStatus.OK).json({ result, id });
+    } else if (method === PaymeMethodEnum.PERFORM_TRANSACTION) {
+      checkTransactionDto(paymePerformTrSchema, params, id);
+      const result = await this.transactionsService.performTransaction(
+        params,
+        id,
+      );
+      return res.status(HttpStatus.OK).json({ result, id });
+    } else if (method === PaymeMethodEnum.CANCEL_TRANSACTION) {
+      checkTransactionDto(paymeCancelTrSchema, params, id);
+      const result = await this.transactionsService.cancelTransaction(
+        params,
+        id,
+      );
+      return res.status(HttpStatus.OK).json({ result, id });
+    } else if (method === PaymeMethodEnum.GET_STATEMENT) {
+      checkTransactionDto(paymeGetStatementTrSchema, params, id);
+      const result = await this.transactionsService.getStatement(params, id);
+      return res.status(HttpStatus.OK).json({
+        result: {
+          transactions: result,
+        },
+      });
+    }
   }
 }

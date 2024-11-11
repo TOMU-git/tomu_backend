@@ -9,8 +9,8 @@ export class TransactionEntity {
   @Column({ name: "user_id", type: "integer", nullable: false })
   userId: number;
 
-  @Column({ name: "tariff_id", type: "integer", nullable: false })
-  tariffId: number;
+  @Column({ name: "order_id", type: "integer", nullable: false })
+  orderId: number;
 
   @Column({
     name: "state",
@@ -22,7 +22,7 @@ export class TransactionEntity {
 
   @Column({
     name: "amount",
-    type: "numeric",
+    type: "bigint",
     nullable: false,
   })
   amount: number;
@@ -36,7 +36,7 @@ export class TransactionEntity {
   @Column({ name: "cancel_time", type: "bigint", default: 0 })
   cancelTime: number;
 
-  @Column({ name: "reason", type: "numeric", default: null })
+  @Column({ name: "reason", type: "int", default: null })
   reason: number;
 
   @CreateDateColumn({
@@ -53,3 +53,5 @@ export class TransactionEntity {
   })
   lastUpdatedAt: Date;
 }
+
+

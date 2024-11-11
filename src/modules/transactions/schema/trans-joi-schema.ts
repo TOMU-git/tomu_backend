@@ -3,7 +3,7 @@ import { PaymeAccount } from 'src/common/types/type';
 
 const paymeAccountSchema = Joi.object<PaymeAccount, true>({
 	user_id: Joi.string().required(),
-	tariff_id: Joi.string().required(),
+	order_id: Joi.string().required(),
 });
 
 export const paymeCheckPerformTrSchema = Joi.object({
