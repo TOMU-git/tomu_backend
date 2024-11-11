@@ -86,16 +86,20 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Topilgan HomeworkProgress yozuvlarining ro'yxati yoki null
    */
   async findByOrderAndUserId(
-    order: ID,
+    blockOrder: ID,
     userId: ID,
-  ): Promise<Array<HomeworkProgress | null>> {
-    return this.homeworkProgressRepository.find({
+  ): Promise<Array<HomeworkProgress>> {
+    console.log("Qidirilayotgan blockOrder va userId:", blockOrder, userId);
+
+    return await this.homeworkProgressRepository.find({
       where: {
-        blockOrder: order,
+        blockOrder: blockOrder,
         userId: userId,
       },
-      relations: ["homework"],
-      select: ["homework"],
+      relations: ["homework"], // 'homework' bilan bog'liqliklar olinadi
+      order: {
+        homeworkOrder: "ASC", // homeworkOrder bo'yicha o'sish tartibida saralash
+      },
     });
   }
 
@@ -180,7 +184,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    */
   async findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
     userId: ID,
-    blockOrder: number,
+    blockOrder: ID,
   ): Promise<number | null> {
     const lastWatchedProgress = await this.homeworkProgressRepository.findOne({
       where: {
@@ -189,7 +193,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
         blockOrder: LessThanOrEqual(blockOrder),
       },
       order: {
-        blockOrder: "DESC",
+        homeworkOrder: "DESC",
       },
       relations: ["homework"],
       select: ["homework"],
@@ -204,10 +208,13 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param userId - Foydalanuvchi ID
    * @returns Hamma yozuvlar kuzatilgan bo'lsa, true qaytaradi
    */
-  async areAllWatchedByOrderAndUserId(order: ID, userId: ID): Promise<boolean> {
+  async areAllWatchedByOrderAndUserId(
+    areAllWatchedByOrderAndUserId: ID,
+    userId: ID,
+  ): Promise<boolean> {
     const homeworkProgresses = await this.homeworkProgressRepository.find({
       where: {
-        blockOrder: order,
+        blockOrder: areAllWatchedByOrderAndUserId,
         userId: userId,
       },
       select: ["isWatched"],

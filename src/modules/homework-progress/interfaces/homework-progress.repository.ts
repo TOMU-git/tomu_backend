@@ -22,7 +22,7 @@ export interface IHomeworkProgressRepository {
   delete(dto: HomeworkProgress): Promise<HomeworkProgress>;
 
   // Berilgan order va userId bo'yicha barcha HomeworkProgress yozuvlarida isWatched maydoni true yoki yo'qligini tekshiradi
-  areAllWatchedByOrderAndUserId(order: ID, userId: ID): Promise<boolean>;
+  areAllWatchedByOrderAndUserId(blockOrder: ID, userId: ID): Promise<boolean>;
 
   // Foydalanuvchi va blockOrder bo'yicha oxirgi isWatched true bo'lgan HomeworkProgress yozuvining homework.order qiymatini qaytaradi
   findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
@@ -39,7 +39,7 @@ export interface IHomeworkProgressRepository {
 
   // Berilgan order va userId bo'yicha HomeworkProgress yozuvlarini qaytaradi
   findByOrderAndUserId(
-    order: ID,
+    blockOrder: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress | null>>;
 

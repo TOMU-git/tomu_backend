@@ -16,7 +16,7 @@ export class HomeworkProgress extends BaseEntity {
    * homework tartib raqami.
    * Ushbu maydon, homeworknig tartib raqamini ifodalaydi.
    */
-  @Column({ type: "int", name: "homework_order", nullable: true })
+  @Column({ type: "int", unique: true, name: "homework_order", nullable: true })
   homeworkOrder: Number;
 
   /**
