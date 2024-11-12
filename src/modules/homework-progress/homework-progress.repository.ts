@@ -72,10 +72,10 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   ): Promise<HomeworkProgress | null> {
     return this.homeworkProgressRepository.findOne({
       where: {
-        user: { id: userId },
-        homework: { id: homeworkId },
+        userId: userId, // user id si bilan solishtirish
+        homeworkOrder: homeworkId, // homework order bilan solishtirish
       },
-      relations: ["user", "homework"],
+      relations: ["homework"], // faqat homeworkni yuklash
     });
   }
 
@@ -89,7 +89,6 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     blockOrder: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>> {
-
     return await this.homeworkProgressRepository.find({
       where: {
         blockOrder: blockOrder,
@@ -229,19 +228,20 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Kuzatish soni 0 va 5 oralig'ida bo'lgan HomeworkProgress yozuvlarining ro'yxati
    */
-  async getVideosWithWatchCountBetween0And5(
-    blockOrder: ID,
-  ): Promise<Array<HomeworkProgress>> {
-    return await this.homeworkProgressRepository
-      .createQueryBuilder("homeworkProgress")
-      .leftJoinAndSelect("homeworkProgress.homework", "homework")
-      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
-      .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true })
-      .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
-      .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
-      .select(["homeworkProgress", "homework"])
-      .getMany();
-  }
+async getVideosWithWatchCountBetween0And5(
+  blockOrder: ID,
+): Promise<Array<HomeworkProgress>> {
+  return await this.homeworkProgressRepository
+    .createQueryBuilder("homeworkProgress")
+    .leftJoinAndSelect("homeworkProgress.homework", "homework")
+    .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+    .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true })
+    .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
+    .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
+    .select(["homeworkProgress", "homework"]) // Faol ma'lumotlar tanlanadi
+    .getMany();
+}
+
 
   async existsHomeworkProgress(
     homeworkOrder: ID,

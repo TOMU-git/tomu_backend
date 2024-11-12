@@ -1,0 +1,26 @@
+import { ID } from "src/common/types/type";
+import { UserHomeworkProgress } from "../entities/user-homework-progress.entity";
+
+// UserHomeworkProgress ma'lumotlarini boshqarish uchun interfeys
+export interface IUserHomeworkProgressRepository {
+  bulkCreate(
+    userHomeworkProgresses: UserHomeworkProgress[],
+  ): Promise<UserHomeworkProgress[]>;
+  findByBlockOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<UserHomeworkProgress[]>;
+  findByUserIdBlockOrderAndHomeworkOrder(
+    userId: ID,
+    blockOrder: number,
+    homeworkOrder: number,
+  ): Promise<UserHomeworkProgress[]>;
+  deleteAll(userId: ID, blockOrder: number): Promise<boolean>;
+  updateProgressByUserIdBlockOrderAndHomeworkOrder(
+    userId: number,
+    blockOrder: number,
+    homeworkOrder: number,
+    updateData: Partial<UserHomeworkProgress>,
+  ): Promise<UserHomeworkProgress[]>;
+}
+
