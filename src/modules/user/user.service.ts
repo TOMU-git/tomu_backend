@@ -54,7 +54,7 @@ export class UserService implements IUserService {
     if (dto.firstName) {
       foundUser.firstName = dto.firstName;
     }
-    if (dto.lastName)  {
+    if (dto.lastName) {
       foundUser.lastName = dto.lastName;
     }
     if (dto.phoneNumber) {
@@ -65,6 +65,10 @@ export class UserService implements IUserService {
     }
     if (dto.password) {
       foundUser.password = await hashed(dto.password);
+    }
+
+    if (dto.password) {
+      foundUser.unhashedPassword = dto.password;
     }
     const updated = await this.userRepository.update(foundUser);
     return new ResData<User>("User updated successfully", 200, updated);

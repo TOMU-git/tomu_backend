@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { LessonProgressService } from "./lesson-progress.service";
 import { LessonProgressController } from "./lesson-progress.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -8,6 +8,7 @@ import { SharedModule } from "../shared/shared.module";
 import { LessonModule } from "../lesson/lesson.module";
 import { UserModule } from "../user/user.module";
 import { BlockModule } from "../block/block.module";
+import { HomeworkProgressModule } from "../homework-progress/homework-progress.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BlockModule } from "../block/block.module";
     LessonModule,
     UserModule,
     BlockModule,
+    forwardRef(() => HomeworkProgressModule), // forwardRef() bilan import qilingan
   ],
   controllers: [LessonProgressController],
   providers: [

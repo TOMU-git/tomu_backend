@@ -1,5 +1,4 @@
-// src/modules/homework-progress/homework-progress.module.ts
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { HomeworkProgressService } from "./homework-progress.service";
 import { HomeworkProgressController } from "./homework-progress.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -18,10 +17,17 @@ import { LessonProgressModule } from "../lesson-progress/lesson-progress.module"
     HomeworkModule,
     UserModule,
     BlockModule,
-    LessonProgressModule
+    forwardRef(() => LessonProgressModule), // forwardRef() bilan import qilingan
   ],
   controllers: [HomeworkProgressController],
   providers: [
+    { provide: "IHomeworkProgressService", useClass: HomeworkProgressService },
+    {
+      provide: "IHomeworkProgressRepository",
+      useClass: HomeworkProgressRepository,
+    },
+  ],
+  exports: [
     { provide: "IHomeworkProgressService", useClass: HomeworkProgressService },
     {
       provide: "IHomeworkProgressRepository",

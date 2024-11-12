@@ -6,7 +6,7 @@ export interface ILessonProgressRepository {
   findAll(): Promise<Array<LessonProgress>>;
   findById(id: ID): Promise<LessonProgress | null>;
   findByOrderAndUserId(
-    order: ID,
+    blockOrder: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>>;
   findIfAllWatched(
@@ -22,5 +22,9 @@ export interface ILessonProgressRepository {
   findHighestLessonOrderByUserAndBlock(
     blockOrder: ID,
     userId: ID,
+  ): Promise<number | null>;
+  findLastWatchedLessonOrderByUserIdAndBlockOrder(
+    userId: ID,
+    blockOrder: ID,
   ): Promise<number | null>;
 }

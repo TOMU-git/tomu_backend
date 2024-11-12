@@ -209,17 +209,20 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Hamma yozuvlar kuzatilgan bo'lsa, true qaytaradi
    */
   async areAllWatchedByOrderAndUserId(
-    areAllWatchedByOrderAndUserId: ID,
+    blockOrder: ID,
     userId: ID,
   ): Promise<boolean> {
     const homeworkProgresses = await this.homeworkProgressRepository.find({
       where: {
-        blockOrder: areAllWatchedByOrderAndUserId,
+        blockOrder: blockOrder,
         userId: userId,
       },
       select: ["isWatched"],
     });
 
+    if(homeworkProgresses.length === 0){
+      return false
+    }
     return homeworkProgresses.every((progress) => progress.isWatched === true);
   }
 
