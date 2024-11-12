@@ -32,17 +32,43 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   async findByOrderAndUserId(
-    order: ID,
+    blockOrder: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>> {
     return this.lessonProgressRepository.find({
       where: {
-        blockOrder: order,
-        userId: userId, // user_ID o'rniga userId ishlatamiz
+        blockOrder: blockOrder,
+        userId: userId,
       },
       relations: ["lesson"], // "lesson"ni to'liq olish uchun relations qo'shish
       select: ["lesson"], // Agar faqat lessonni tanlamoqchi bo'lsangiz
     });
+  }
+
+  /**
+   * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Homework tartibini topish.
+   * @param userId - Foydalanuvchi ID
+   * @param blockOrder - Block tartibi
+   * @returns Oxirgi ko'rilgan Homework tartibi yoki null
+   */
+  async findLastWatchedLessonOrderByUserIdAndBlockOrder(
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<number | null> {
+    const lastWatchedProgress = await this.lessonProgressRepository.findOne({
+      where: {
+        userId: userId,
+        isWatched: true,
+        blockOrder: LessThanOrEqual(blockOrder),
+      },
+      order: {
+        lessonOrder: "DESC",
+      },
+      relations: ["lesson"],
+      select: ["lesson"],
+    });
+
+    return lastWatchedProgress ? lastWatchedProgress.lesson.order : null;
   }
 
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish

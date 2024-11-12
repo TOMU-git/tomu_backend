@@ -14,6 +14,7 @@ import { ILessonService } from "../lesson/interfaces/lesson.service";
 import { IBlockService } from "../block/interfaces/block.service";
 import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 import { ILessonRepository } from "../lesson/interfaces/lesson.repository";
+import { IHomeworkProgressRepository } from "../homework-progress/interfaces/homework-progress.repository";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -29,6 +30,9 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("ILessonRepository") // LessonRepository ni inject qilamiz
     private readonly lessonRepository: ILessonRepository,
+
+    @Inject("IHomeworkProgressRepository") // HomeworkRepository ni inject qilamiz
+    private readonly homeworkProgressRepository: IHomeworkProgressRepository,
 
     @Inject("IBlockService") // LessonService ni inject qilamiz
     private readonly blockService: IBlockService,
@@ -78,7 +82,6 @@ export class LessonProgressService implements ILessonProgressService {
     return new ResData<Array<LessonProgress>>("ok", 200, data);
   }
 
-
   async findOneById(id: ID): Promise<ResData<LessonProgress>> {
     const foundData = await this.lessonProgressRepository.findById(id);
     if (!foundData) {
@@ -116,13 +119,37 @@ export class LessonProgressService implements ILessonProgressService {
   async getVideos(
     userId: ID,
     blockId: ID,
-    blockOrder: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
+    // block service dagi metod orqali id bo'yicha ma'lumotni topamiz
+    const foundData = await this.blockService.findOneById(blockId);
+
+    // topilgan ma'lumotni ResData formatda qaytadi uni ichidagi data dan orderni blockOrder o'zgaruvchisiga beramiz
+    const blockOrder = foundData.data.order;
+
     const existingProgresses =
       await this.lessonProgressRepository.findByOrderAndUserId(
         blockOrder,
         userId,
       );
+
+    // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
+    // hozircha kerak emas ekan 
+    const lastWatchedLessonForCheckHomeworkProgress =
+      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+        userId,
+        blockOrder,
+      );
+    console.log(
+      "lastWatchedLessonForCheckHomeworkProgress",
+      lastWatchedLessonForCheckHomeworkProgress,
+    );
+
+    const isWatchedHomework =
+      await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
+        blockOrder,
+        userId,
+      );
+    console.log("isWatchedHomework", isWatchedHomework);
 
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
@@ -133,7 +160,6 @@ export class LessonProgressService implements ILessonProgressService {
     const notWatchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === false,
     ).length;
-
 
     // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
     if (
@@ -218,7 +244,6 @@ export class LessonProgressService implements ILessonProgressService {
         block.order,
         userId,
       );
-
 
     return allProgresses;
   }

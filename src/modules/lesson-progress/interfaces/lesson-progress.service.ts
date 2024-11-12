@@ -13,5 +13,5 @@ export interface ILessonProgressService {
     dto: UpdateLessonProgressDto,
   ): Promise<ResData<LessonProgress>>;
 
-  getVideos(userId: ID, blockId: ID, blockOrder: ID): Promise<ResData<Array<LessonProgress>>>;
+  getVideos(userId: ID, blockId: ID): Promise<ResData<Array<LessonProgress>>>;
 }

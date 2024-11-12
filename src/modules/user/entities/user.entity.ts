@@ -26,6 +26,9 @@ export class User extends BaseEntity {
   @Column({ type: "text", nullable: false })
   password: string;
 
+  @Column({ type: "text", name: 'unhashed_password', nullable: false })
+  unhashedPassword: string;
+
   @Column({ type: "enum", enum: RoleEnum, nullable: false })
   role: RoleEnum;
 
@@ -51,9 +54,6 @@ export class User extends BaseEntity {
   )
   homeworkProgresses: HomeworkProgress[];
 
-  @OneToMany(
-    () => UserCourse,
-    (userCourse) => userCourse.user,
-  )
+  @OneToMany(() => UserCourse, (userCourse) => userCourse.user)
   userCourses: HomeworkProgress[];
 }

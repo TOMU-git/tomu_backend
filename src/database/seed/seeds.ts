@@ -54,6 +54,7 @@ import { createConnection, DataSource } from "typeorm";
       (newUser.phoneNumber = "+998335701001"),
       (newUser.role = RoleEnum.DIRECTOR),
       (newUser.gender = GenderEnum.MALE),
+      (newUser.unhashedPassword = "password"),
       (newUser.password = await hashed("password"));
     await userRepository.save<User>(newUser);
 
@@ -63,6 +64,7 @@ import { createConnection, DataSource } from "typeorm";
       (newUser1.phoneNumber = "+998901234567"),
       (newUser1.role = RoleEnum.ADMIN),
       (newUser1.gender = GenderEnum.MALE),
+      (newUser1.unhashedPassword = "password"),
       (newUser1.password = await hashed("password"));
     await userRepository.save<User>(newUser1);
 
@@ -72,6 +74,7 @@ import { createConnection, DataSource } from "typeorm";
       (newUser2.phoneNumber = "+998991234567"),
       (newUser2.role = RoleEnum.TEACHER),
       (newUser2.gender = GenderEnum.MALE),
+      (newUser2.unhashedPassword = "password"),
       (newUser2.password = await hashed("password"));
     await userRepository.save<User>(newUser2);
 
@@ -445,6 +448,7 @@ import { createConnection, DataSource } from "typeorm";
         lastNameList[Math.floor(Math.random() * lastNameList.length)];
       newUser.phoneNumber = `+998${(100000000 + i).toString().padStart(9, "0")}`;
       newUser.role = RoleEnum.STUDENT;
+      newUser.unhashedPassword = "password";
       newUser.gender = i % 2 === 0 ? GenderEnum.MALE : GenderEnum.FEMALE;
       newUser.password = await hashed("password");
       await userRepository.save<User>(newUser);
@@ -460,6 +464,7 @@ import { createConnection, DataSource } from "typeorm";
       newUser.lastName =
         lastNameList[Math.floor(Math.random() * lastNameList.length)];
       newUser.phoneNumber = `+998${(100000000 + i).toString().padStart(9, "0")}`;
+      newUser.unhashedPassword = "password";
       newUser.role = RoleEnum.TEACHER; // TEACHER roli
       newUser.gender = i % 2 === 0 ? GenderEnum.MALE : GenderEnum.FEMALE; // Har ikkinchi o'qituvchi ayol
       newUser.password = await hashed("password");
@@ -843,6 +848,71 @@ import { createConnection, DataSource } from "typeorm";
     newBlock27.order = 9;
     newBlock27.course = newCourse3;
     await blockRepository.save<Block>(newBlock27);
+
+    //----------------------------------------
+    // 1-kurs uchun module
+    const newBlock28 = new Block();
+    newBlock28.title = "Module 1";
+    newBlock28.category = HomeworkEnum.HOMEWORK;
+    newBlock28.order = 1;
+    newBlock28.course = newCourse1;
+    await blockRepository.save<Block>(newBlock28);
+
+    const newBlock29 = new Block();
+    newBlock29.title = "Module 2";
+    newBlock29.category = HomeworkEnum.HOMEWORK;
+    newBlock29.order = 2;
+    newBlock29.course = newCourse1;
+    await blockRepository.save<Block>(newBlock29);
+
+    const newBlock30 = new Block();
+    newBlock30.title = "Module 3";
+    newBlock30.category = HomeworkEnum.HOMEWORK;
+    newBlock30.order = 3;
+    newBlock30.course = newCourse1;
+    await blockRepository.save<Block>(newBlock30);
+
+    const newBlock31 = new Block();
+    newBlock31.title = "Module 4";
+    newBlock31.category = HomeworkEnum.HOMEWORK;
+    newBlock31.order = 4;
+    newBlock31.course = newCourse1;
+    await blockRepository.save<Block>(newBlock31);
+
+    const newBlock32 = new Block();
+    newBlock32.title = "Module 5";
+    newBlock32.category = HomeworkEnum.HOMEWORK;
+    newBlock32.order = 5;
+    newBlock32.course = newCourse1;
+    await blockRepository.save<Block>(newBlock32);
+
+    const newBlock33 = new Block();
+    newBlock33.title = "Module 6";
+    newBlock33.category = HomeworkEnum.HOMEWORK;
+    newBlock33.order = 6;
+    newBlock33.course = newCourse1;
+    await blockRepository.save<Block>(newBlock33);
+
+    const newBlock34 = new Block();
+    newBlock34.title = "Module 7";
+    newBlock34.category = HomeworkEnum.HOMEWORK;
+    newBlock34.order = 7;
+    newBlock34.course = newCourse1;
+    await blockRepository.save<Block>(newBlock34);
+
+    const newBlock35 = new Block();
+    newBlock35.title = "Module 8";
+    newBlock35.category = HomeworkEnum.HOMEWORK;
+    newBlock35.order = 8;
+    newBlock35.course = newCourse1;
+    await blockRepository.save<Block>(newBlock35);
+
+    const newBlock36 = new Block();
+    newBlock36.title = "Module 9";
+    newBlock36.category = HomeworkEnum.HOMEWORK;
+    newBlock36.order = 9;
+    newBlock36.course = newCourse1;
+    await blockRepository.save<Block>(newBlock36);
 
     const blockList = [
       newBlock1,
