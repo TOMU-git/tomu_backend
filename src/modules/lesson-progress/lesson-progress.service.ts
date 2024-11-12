@@ -102,6 +102,30 @@ export class LessonProgressService implements ILessonProgressService {
       throw new LessonProgressNotFoundException();
     }
 
+    const lastWatchedLessonOrder =
+      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+
+    const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
+
+    const existingProgress =
+      await this.lessonProgressRepository.existsLessonProgress(
+        nextLessonOrder,
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+
+    if (existingProgress) {
+      // Keyingi progressni `isWatched` qilib yangilash
+      await this.lessonProgressRepository.markLessonAsWatched(
+        nextLessonOrder,
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+    }
+
     // Barcha yangilanishlarni `Object.assign` yordamida `foundLessonProgress`ga qo'llash
     Object.assign(foundLessonProgress, updateDto);
 
@@ -133,16 +157,13 @@ export class LessonProgressService implements ILessonProgressService {
       );
 
     // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
-    // hozircha kerak emas ekan 
-    const lastWatchedLessonForCheckHomeworkProgress =
+    // hozircha kerak emas ekan
+    const lastWatchedLessonOrder =
       await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
         userId,
         blockOrder,
       );
-    console.log(
-      "lastWatchedLessonForCheckHomeworkProgress",
-      lastWatchedLessonForCheckHomeworkProgress,
-    );
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
 
     const isWatchedHomework =
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
@@ -248,3 +269,15 @@ export class LessonProgressService implements ILessonProgressService {
     return allProgresses;
   }
 }
+
+// INSERT INTO homeworks (description, video_url, mime_type, size, "order", duration, block_id)
+// SELECT
+//     'Generated description for homework ' || i,
+//     'https://player.vimeo.com/video/1028316276',
+//     'video/mp4',
+//     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
+//     i,  -- Order ketma-ketlikda oshib boradi
+//     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
+//     30  -- block_id
+// FROM
+//     generate_series(1, 100) AS s(i);

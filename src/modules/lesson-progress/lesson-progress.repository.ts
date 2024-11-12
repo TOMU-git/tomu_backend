@@ -46,10 +46,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   /**
-   * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Homework tartibini topish.
+   * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Lessonk tartibini topish.
    * @param userId - Foydalanuvchi ID
    * @param blockOrder - Block tartibi
-   * @returns Oxirgi ko'rilgan Homework tartibi yoki null
+   * @returns Oxirgi ko'rilgan Lessonk tartibi yoki null
    */
   async findLastWatchedLessonOrderByUserIdAndBlockOrder(
     userId: ID,
@@ -87,7 +87,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return result ? result.lessonOrder : null;
   }
 
-  async findIfAllWatched(
+  async isAllLessonWatched(
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,
@@ -100,6 +100,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       },
       select: ["isWatched"],
     });
+
+    if (lessonProgresses.length < 5) {
+      return false;
+    }
 
     // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
     return lessonProgresses.every((progress) => progress.isWatched);
@@ -120,4 +124,53 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async findById(id: ID): Promise<LessonProgress | null> {
     return await this.lessonProgressRepository.findOneBy({ id });
   }
+
+  async existsLessonProgress(
+    lessonOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<boolean> {
+    // lessonOrder, userId, va blockOrder bo'yicha lesson progress yozuvini qidiramiz
+    const lessonProgress = await this.lessonProgressRepository.findOne({
+      where: { lessonOrder, userId, blockOrder },
+    });
+
+    // Ma'lumot mavjud bo'lsa true, bo'lmasa false qaytaradi
+    return !!lessonProgress;
+  }
+
+  /**
+   * Berilgan `lessonOrder`, `userId` va `blockOrder` bo'yicha `LessonkProgress` yozuvini topib,
+   * uning `isWatched` maydonini `true` ga o'zgartiradi va `countWatched` ni oshiradi.
+   *
+   * @param lessonOrder - Lessonkning tartib raqami
+   * @param userId - Foydalanuvchi ID si
+   * @param blockOrder - Blokning tartib raqami
+   * @returns Yangilangan `LessonkProgress` yozuvi
+   * @throws Error Agar `LessonkProgress` topilmasa
+   */
+  async markLessonAsWatched(
+    lessonOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<LessonProgress> {
+    // lessonOrder, userId, va blockOrder bo'yicha lesson progress yozuvini topamiz
+    const lessonProgress = await this.lessonProgressRepository.findOne({
+      where: { lessonOrder, userId, blockOrder },
+      relations: ["user", "lesson"], // agar user va lesson bog'lanishini olishni xohlasangiz
+    });
+
+    if (lessonProgress) {
+      // Agar topilgan bo'lsa, faqat isWatched ni true qilamiz
+      lessonProgress.isWatched = true;
+
+      // O'zgartirilgan lessonProgressni saqlaymiz va qaytaramiz
+      return await this.lessonProgressRepository.save(lessonProgress);
+    } else {
+      // Agar topilmasa, xato tashlaymiz
+      throw new Error("LessonkProgress not found");
+    }
+  }
+
+  
 }

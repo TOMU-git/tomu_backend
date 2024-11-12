@@ -9,6 +9,7 @@ import { UserModule } from "../user/user.module";
 import { HomeworkProgressRepository } from "./homework-progress.repository";
 import { BlockModule } from "../block/block.module";
 import { LessonProgressModule } from "../lesson-progress/lesson-progress.module";
+import { UserHomeworkProgressModule } from "../user-homework-progress/user-homework-progress.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LessonProgressModule } from "../lesson-progress/lesson-progress.module"
     HomeworkModule,
     UserModule,
     BlockModule,
+    UserHomeworkProgressModule,
     forwardRef(() => LessonProgressModule), // forwardRef() bilan import qilingan
   ],
   controllers: [HomeworkProgressController],

@@ -3,14 +3,6 @@ import { IsBoolean, IsNumber, IsOptional } from "class-validator";
 
 export class UpdateHomeworkProgressDto {
   @ApiProperty({
-    type: Boolean,
-    default: false,
-  })
-  @IsBoolean()
-  @IsOptional()
-  isWatched?: boolean;
-
-  @ApiProperty({
     type: Number,
     example: 3,
     default: 0,
@@ -36,13 +28,4 @@ export class UpdateHomeworkProgressDto {
   @IsNumber()
   @IsOptional()
   homeworkOrder?: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  countWatched?: number;
 }
