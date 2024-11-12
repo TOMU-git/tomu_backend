@@ -9,7 +9,7 @@ export interface ILessonProgressRepository {
     blockOrder: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>>;
-  findIfAllWatched(
+  isAllLessonWatched(
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,

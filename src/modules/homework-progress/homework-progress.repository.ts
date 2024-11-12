@@ -85,11 +85,10 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param userId - Foydalanuvchi ID
    * @returns Topilgan HomeworkProgress yozuvlarining ro'yxati yoki null
    */
-  async findByOrderAndUserId(
+  async findByBlockOrderAndUserId(
     blockOrder: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>> {
-    console.log("Qidirilayotgan blockOrder va userId:", blockOrder, userId);
 
     return await this.homeworkProgressRepository.find({
       where: {
@@ -164,9 +163,8 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
 
     if (homeworkProgress) {
-      // Agar topilgan bo'lsa, isWatched ni true qilamiz
+      // Agar topilgan bo'lsa, faqat isWatched ni true qilamiz
       homeworkProgress.isWatched = true;
-      homeworkProgress.countWatched += 1; // Agar ko'rilgan sanashni xohlasangiz
 
       // O'zgartirilgan homeworkProgressni saqlaymiz va qaytaramiz
       return await this.homeworkProgressRepository.save(homeworkProgress);
@@ -220,8 +218,8 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       select: ["isWatched"],
     });
 
-    if(homeworkProgresses.length === 0){
-      return false
+    if (homeworkProgresses.length < 5) {
+      return false;
     }
     return homeworkProgresses.every((progress) => progress.isWatched === true);
   }
@@ -243,5 +241,19 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
       .select(["homeworkProgress", "homework"])
       .getMany();
+  }
+
+  async existsHomeworkProgress(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<boolean> {
+    // homeworkOrder, userId, va blockOrder bo'yicha homework progress yozuvini qidiramiz
+    const homeworkProgress = await this.homeworkProgressRepository.findOne({
+      where: { homeworkOrder, userId, blockOrder },
+    });
+
+    // Ma'lumot mavjud bo'lsa true, bo'lmasa false qaytaradi
+    return !!homeworkProgress;
   }
 }

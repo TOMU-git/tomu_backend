@@ -87,7 +87,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return result ? result.lessonOrder : null;
   }
 
-  async findIfAllWatched(
+  async isAllLessonWatched(
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,
@@ -100,6 +100,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       },
       select: ["isWatched"],
     });
+
+    if(lessonProgresses.length < 5){
+      return false
+    }
 
     // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
     return lessonProgresses.every((progress) => progress.isWatched);

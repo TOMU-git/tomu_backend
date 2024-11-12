@@ -38,7 +38,7 @@ export interface IHomeworkProgressRepository {
   ): Promise<HomeworkProgress>;
 
   // Berilgan order va userId bo'yicha HomeworkProgress yozuvlarini qaytaradi
-  findByOrderAndUserId(
+  findByBlockOrderAndUserId(
     blockOrder: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress | null>>;
@@ -59,4 +59,11 @@ export interface IHomeworkProgressRepository {
     userId: ID,
     homeworkId: ID,
   ): Promise<HomeworkProgress | null>;
+
+  // shunga mos progress bor yoki yo'qligini tekshiradi, keyingi progressni isWatched ni true qilish uchun
+  existsHomeworkProgress(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<boolean>;
 }
