@@ -20,6 +20,8 @@ import { TransactionEntity } from "./entities/transaction.entity";
 import { IOrderService } from "../orders/interfaces/service-interface";
 import { OrderStatus } from "src/common/enums/order-status";
 import { IOrderRepository } from "../orders/interfaces/repository-interface";
+import { ILiveChatRepository } from "../live-chat/interfaces/repository-interface";
+import { MeetingStatusEnum } from "src/common/enums/enum";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -28,8 +30,8 @@ export class TransactionsService implements ITransactionService {
     private readonly transactionRepository: ITransactionRepo,
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
     @Inject("IOrderService") private readonly orderService: IOrderService,
-    @Inject("IOrderRepository")
-    private readonly orderRepository: IOrderRepository,
+    @Inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
+    @Inject("ILiveChatRepository") private readonly liveChatRepository: ILiveChatRepository
   ) {}
 
   //// *** Checking
@@ -207,6 +209,16 @@ export class TransactionsService implements ITransactionService {
       transaction.id,
       transaction,
     );
+
+    if (foundOrder.liveChatId) {
+      const foundLiveChat = await this.liveChatRepository.findLiveChatById(Number(foundOrder.liveChatId));
+      foundLiveChat.status = MeetingStatusEnum.PAID,
+      await this.liveChatRepository.updateLiveChat(foundLiveChat);
+    }
+
+    if (foundOrder.tariffId) {
+      
+    }
 
     foundOrder.status = OrderStatus.PAID;
     await this.orderRepository.update(foundOrder);

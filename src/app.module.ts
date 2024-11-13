@@ -28,6 +28,7 @@ import { CheckTokenMiddleware } from "./common/middleware/transaction-middleware
 import { TransactionsController } from "./modules/transactions/transactions.controller";
 import { HomeworkModule } from "./modules/homework/homework.module";
 import { OrdersModule } from './modules/orders/orders.module';
+import { UserLivechatsModule } from './modules/user-livechats/user-livechats.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     TransactionsModule,
     CourseVideoModule,
     OrdersModule,
+    UserLivechatsModule,
   ],
 })
 export class AppModule implements NestModule {
