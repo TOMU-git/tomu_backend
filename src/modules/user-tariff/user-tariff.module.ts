@@ -14,5 +14,9 @@ import { TariffModule } from "../tariff/tariff.module";
     { provide: "IUserTariffService", useClass: UserTariffService },
     { provide: "IUserTariffRepository", useClass: UserTariffRepository },
   ],
+  exports: [
+    { provide: "IUserTariffService", useClass: UserTariffService },
+    { provide: "IUserTariffRepository", useClass: UserTariffRepository },
+  ],
 })
 export class UserTariffModule {}
