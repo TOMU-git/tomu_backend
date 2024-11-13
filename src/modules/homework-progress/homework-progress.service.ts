@@ -188,7 +188,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.userId,
         dto.blockOrder,
       );
-    console.log("before update",existingTemproraryProgress);
+    console.log("before update", existingTemproraryProgress);
     if (existingTemproraryProgress) {
       await this.userHomeworkProgressRepository.markHomeworkAsWatched(
         nextHomeworkOrder,
@@ -202,7 +202,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.userId,
           dto.blockOrder,
         );
-      console.log("after update", existingTemproraryProgress, "////////////////////////");
+      console.log(
+        "after update",
+        existingTemproraryProgress,
+        "////////////////////////",
+      );
     }
 
     // Yangilangan homework progress qaytariladi
@@ -308,24 +312,24 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
 
     // agar hamma ochiq lesson larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish
-    // if (
-    //   (watchedProgressCount % 5 === 0 &&
-    //     notWatchedProgressCount === 0 &&
-    //     isWatchedAllHomework &&
-    //     !isWatchedAllLesson) ||
-    //   existingProgress.length === 0
-    // ) {
-    //   const temporaryProgress =
-    //     await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-    //       blockOrder,
-    //       userId,
-    //     );
-    //   return new ResData<Array<HomeworkProgress>>(
-    //     "You must have seen all the lessons before ",
-    //     200,
-    //     temporaryProgress,
-    //   );
-    // }
+    if (
+      (watchedProgressCount % 5 === 0 &&
+        notWatchedProgressCount === 0 &&
+        isWatchedAllHomework &&
+        !isWatchedAllLesson) ||
+      existingProgress.length === 0
+    ) {
+      const temporaryProgress =
+        await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+          blockOrder,
+          userId,
+        );
+      return new ResData<Array<Partial<HomeworkProgress>>>(
+        "You must have seen all the lessons before ",
+        200,
+        temporaryProgress,
+      );
+    }
 
     // agar hamma ochiq homework larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish
     if (
@@ -352,15 +356,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     if (
       watchedProgressCount % 5 === 0 &&
       notWatchedProgressCount === 0 &&
-      isWatchedAllHomework
+      isWatchedAllHomework &&
+      isWatchedAllLesson
       // isWatchedAllLesson
     ) {
       // Agar barcha shartlar to'g'ri bo'lsa, yangi 5ta progress yaratish
-      await this.generateFiveProgress(
-        userId,
-        blockId,
-        blockOrder,
-      );
+      await this.generateFiveProgress(userId, blockId, blockOrder);
 
       const lastFiveProgress =
         await this.homeworkProgressRepository.findTopFiveByBlockOrderAndUserId(
