@@ -21,7 +21,7 @@ export class UserLivechatsService implements IUserLiveChatService {
     const newUserLiveChat = new UserLivechatEntity();
     newUserLiveChat.liveChatId = foundLiveChat.id;
     newUserLiveChat.teacherId = dto.teacherId;
-    newUserLiveChat.courseName = foundLiveChat.selectedMeetingCourse;
+    newUserLiveChat.courseId = foundLiveChat.selectedCourseId;
     newUserLiveChat.isAccepted = true;
     newUserLiveChat.meetingDate = foundLiveChat.selectedDay;
     newUserLiveChat.meetingTime = foundLiveChat.selectedTime;
@@ -42,8 +42,8 @@ export class UserLivechatsService implements IUserLiveChatService {
   }
   
   async getUserLiveChatsByTeacherId(teacherId: number): Promise<ResData<UserLivechatEntity[]>>{
-    await this.userService.findOneById(teacherId);
-    const foundUserLiveChatsByTeacherId = await this.userLiveChatRepository.getByTeacherId(teacherId);
+    const { data: foundTeacher } = await this.userService.findOneById(teacherId);
+    const foundUserLiveChatsByTeacherId = await this.userLiveChatRepository.getByTeacherId(teacherId, foundTeacher.courseId);
     return new ResData<UserLivechatEntity[]>("Accepted teacher live chats", 200, foundUserLiveChatsByTeacherId);
   }
 }
