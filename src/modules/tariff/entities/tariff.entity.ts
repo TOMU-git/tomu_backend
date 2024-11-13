@@ -24,10 +24,4 @@ export class Tariff extends BaseEntity {
   })
   @JoinColumn({ name: "course_id" })
   course: Course;
-
-  @OneToMany(() => UserTariff, (userTariff) => userTariff.tariff, {
-    onDelete: "SET NULL",
-    onUpdate: "SET NULL",
-  })
-  userTariffs: UserTariff[];
 }
