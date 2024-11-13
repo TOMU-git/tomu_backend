@@ -62,6 +62,12 @@ export class UserTariffService implements IUserTariffService {
     return new ResData<Array<UserTariff>>("success", 200, data);
   }
 
+  async findAllByUserId(userId: number): Promise<ResData<UserTariff[]>> {
+    await this.userService.findOneById(userId);
+    const foundUserTariffs = await this.userTariffRepository.findByUserId(userId);
+    return new ResData<UserTariff[]>("success", 200, foundUserTariffs);
+  }
+
   async findOne(id: number): Promise<ResData<UserTariff>> {
     const foundUserTariff = await this.userTariffRepository.findOneById(id);
 

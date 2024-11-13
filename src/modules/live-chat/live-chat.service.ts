@@ -11,7 +11,7 @@ import { MeetingStatusEnum } from "src/common/enums/enum";
 @Injectable()
 export class LiveChatService implements ILiveChatService {
   constructor(
-    @Inject("ILiveChatRepositroy")
+    @Inject("ILiveChatRepository")
     private readonly liveChatRepository: ILiveChatRepository,
     @Inject("IUserService") private readonly userService: IUserService,
   ) {}

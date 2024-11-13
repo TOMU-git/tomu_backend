@@ -37,7 +37,7 @@ export class OrdersService implements IOrderService {
     newOrder.status = OrderStatus.PENDING;
     const callBackUrl = 'https://www.tomu.uz/';
     const createdOrder = await this.orderRepository.create(newOrder);
-    const url = buildPaymeApi(orderDto.userId, createdOrder.id, createdOrder.totalPrice, callBackUrl);
+    const url = buildPaymeApi(orderDto.userId, createdOrder.id, Number(createdOrder.totalPrice), callBackUrl);
     return new ResData<IOrderCreateReturn>("Order created successfully", 201, {order: createdOrder, url: url});
   }
   async getAllOrders(): Promise<ResData<OrderEntity[]>> {

@@ -24,30 +24,35 @@ export class UserTariffController {
   ) {}
 
   @Post()
-  create(@Body() createUserTariffDto: CreateUserTariffDto) {
-    return this.userTariffService.create(createUserTariffDto);
+  async create(@Body() createUserTariffDto: CreateUserTariffDto) {
+    return await this.userTariffService.create(createUserTariffDto);
   }
 
   @Get()
-  findAll() {
-    return this.userTariffService.findAll();
+  async findAll() {
+    return await this.userTariffService.findAll();
+  }
+
+  @Get("/user/:userId")
+  async findByUserId(@Param("userId", ParseIntPipe) userId: number) {
+    return await this.userTariffService.findAllByUserId(userId);
   }
 
   @Get(":id")
-  findOne(@Param("id", ParseIntPipe) id: ID) {
-    return this.userTariffService.findOne(id);
+  async findOne(@Param("id", ParseIntPipe) id: ID) {
+    return await this.userTariffService.findOne(id);
   }
 
-  @Patch(":id")
-  update(
+  @Patch("update/:id")
+  async update(
     @Param("id", ParseIntPipe) id: ID,
     @Body() updateUserTariffDto: UpdateUserTariffDto,
   ) {
-    return this.userTariffService.update(id, updateUserTariffDto);
+    return await this.userTariffService.update(id, updateUserTariffDto);
   }
 
-  @Delete(":id")
-  delete(@Param("id", ParseIntPipe) id: ID) {
-    return this.userTariffService.delete(id);
+  @Delete("delete/:id")
+  async delete(@Param("id", ParseIntPipe) id: ID) {
+    return await this.userTariffService.delete(id);
   }
 }

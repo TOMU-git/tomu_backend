@@ -10,7 +10,7 @@ export const buildPaymeApi = (
   const account = encode(
     `m=${
       config.paymeMerchantId
-    };ac.user_id=${userId};ac.meta_id=${orderId};a=${price};c=${callBackurl}`,
+    };ac.user_id=${userId};ac.order_id=${orderId};a=${BigInt(price) * BigInt(100)};c=${callBackurl}`,
   );
 
   return `https://checkout.paycom.uz/${account}`;
