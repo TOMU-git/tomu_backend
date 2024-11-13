@@ -14,6 +14,7 @@ import { SmsService } from "src/lib/smsService";
       signOptions: { expiresIn: config.jwtExpiredIn },
     }),
     UserModule,
+    CourseModule
   ],
   controllers: [AuthController],
   providers: [AuthService, SmsService],

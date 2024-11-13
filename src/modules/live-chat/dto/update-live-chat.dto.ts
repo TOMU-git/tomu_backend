@@ -52,13 +52,12 @@ export class UpdateLiveChatDto {
   duration: number;
 
   @ApiPropertyOptional({
-    type: String,
-    description: "Selected meeting course",
-    example: "English",
+    type: Number,
+    description: "Selected meeting course id",
   })
-  @IsString()
+  @IsInt()
   @IsOptional()
-  selectedMeetingCourse: string;
+  selectedCourseId: number;
 
   @ApiPropertyOptional({
     type: String,

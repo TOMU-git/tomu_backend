@@ -26,8 +26,8 @@ export class LiveChatRepository implements ILiveChatRepository {
         return this.repository.find({ where: { selectedDay: day } });
     }
     
-    async updateLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
-        return this.repository.save(entity);
+    async updateLiveChat(id: number, entity: LiveChatEntity): Promise<any> {
+        return this.repository.update(id, entity);
     }
     
     async deleteLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
