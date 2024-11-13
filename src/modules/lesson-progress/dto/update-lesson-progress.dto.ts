@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty } from "class-validator";
+import { IsBoolean, IsInt, IsNotEmpty } from "class-validator";
 
 export class UpdateLessonProgressDto {
   @ApiProperty({
@@ -10,4 +10,18 @@ export class UpdateLessonProgressDto {
   @IsNotEmpty()
   @IsBoolean()
   isWatched: boolean;
+
+  @ApiProperty({
+    type: Number,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+
+  @ApiProperty({
+    type: Number,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  blockOrder: number;
 }

@@ -120,10 +120,12 @@ export class AuthService implements IAuthService {
     createdUser.phoneNumber = dto.phoneNumber;
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
+    createdUser.unhashedPassword = dto.password;
     createdUser.role = RoleEnum.ADMIN;
-    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    const { data: foundPhoneNumber } =
+      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
-      throw new HttpException("This number already registered", 400)
+      throw new HttpException("This number already registered", 400);
     }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
@@ -159,10 +161,12 @@ export class AuthService implements IAuthService {
     createdUser.phoneNumber = dto.phoneNumber;
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
+    createdUser.unhashedPassword = dto.password;
     createdUser.role = RoleEnum.STUDENT;
-    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    const { data: foundPhoneNumber } =
+      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
-      throw new HttpException("This number already registered", 400)
+      throw new HttpException("This number already registered", 400);
     }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
@@ -199,10 +203,11 @@ export class AuthService implements IAuthService {
     });
   }
 
-  async forgotPass(dto: ForgotPassword):Promise<ResData<SmsSent>> {
-    const { data: foundUserPhone } = await this.userService.findOneByPhoneNumber(dto.phone);
+  async forgotPass(dto: ForgotPassword): Promise<ResData<SmsSent>> {
+    const { data: foundUserPhone } =
+      await this.userService.findOneByPhoneNumber(dto.phone);
     if (!foundUserPhone) {
-      throw new HttpException("This phone number not found", 404)
+      throw new HttpException("This phone number not found", 404);
     }
     const generatedCode = generate();
 
@@ -213,7 +218,7 @@ export class AuthService implements IAuthService {
     await this.cacheManager.set(dto.phone, generatedCode, 120000);
     return new ResData<SmsSent>("Message sent successfully", 200, {
       status: "success",
-      id: foundUserPhone.id
+      id: foundUserPhone.id,
     });
   }
 
@@ -229,10 +234,12 @@ export class AuthService implements IAuthService {
     createdUser.phoneNumber = dto.phoneNumber;
     createdUser.gender = dto.gender;
     createdUser.password = await hashed(dto.password);
+    createdUser.unhashedPassword = dto.password;
     createdUser.role = RoleEnum.TEACHER;
-    const { data: foundPhoneNumber } = await this.userService.findOneByPhoneNumber(dto.phoneNumber)
+    const { data: foundPhoneNumber } =
+      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
-      throw new HttpException("This number already registered", 400)
+      throw new HttpException("This number already registered", 400);
     }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
@@ -259,13 +266,13 @@ export class AuthService implements IAuthService {
   async verifay(dto: VerifyDto): Promise<ResData<boolean>> {
     let chacked = false;
     const phoneCode = await this.cacheManager.get(dto.phone);
-    const resData = new ResData<boolean>("Code is wrong", 400, chacked)
+    const resData = new ResData<boolean>("Code is wrong", 400, chacked);
     if (phoneCode == dto.code) {
-      await this.cacheManager.del(dto.phone)
+      await this.cacheManager.del(dto.phone);
       resData.data = true;
-      resData.message = "Verified successfully"
-      resData.statusCode = 200
-    } 
+      resData.message = "Verified successfully";
+      resData.statusCode = 200;
+    }
     return resData;
   }
 

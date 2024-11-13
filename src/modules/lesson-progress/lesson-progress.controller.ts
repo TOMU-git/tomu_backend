@@ -46,13 +46,10 @@ export class LessonProgressController {
   async getVideos(
     @Query("userId", ParseIntPipe) userId: ID,
     @Query("blockId", ParseIntPipe) blockId: ID,
-    @Query("blockOrder", ParseIntPipe) blockOrder: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
-    console.log("controller")
     return await this.lessonProgressService.getVideos(
       userId,
       blockId,
-      blockOrder,
     );
   }
 

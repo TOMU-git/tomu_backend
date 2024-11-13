@@ -29,6 +29,7 @@ import { TransactionsController } from "./modules/transactions/transactions.cont
 import { HomeworkModule } from "./modules/homework/homework.module";
 import { OrdersModule } from './modules/orders/orders.module';
 import { UserLivechatsModule } from './modules/user-livechats/user-livechats.module';
+import { UserHomeworkProgressModule } from "./modules/user-homework-progress/user-homework-progress.module";
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { UserLivechatsModule } from './modules/user-livechats/user-livechats.mod
     CourseVideoModule,
     OrdersModule,
     UserLivechatsModule,
+    UserHomeworkProgressModule,
   ],
 })
 export class AppModule implements NestModule {

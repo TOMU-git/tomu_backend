@@ -6,10 +6,10 @@ export interface ILessonProgressRepository {
   findAll(): Promise<Array<LessonProgress>>;
   findById(id: ID): Promise<LessonProgress | null>;
   findByOrderAndUserId(
-    order: ID,
+    blockOrder: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>>;
-  findIfAllWatched(
+  isAllLessonWatched(
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,
@@ -23,4 +23,20 @@ export interface ILessonProgressRepository {
     blockOrder: ID,
     userId: ID,
   ): Promise<number | null>;
+  findLastWatchedLessonOrderByUserIdAndBlockOrder(
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<number | null>;
+
+  existsLessonProgress(
+    lessonOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<boolean>;
+
+  markLessonAsWatched(
+    lessonOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<LessonProgress>;
 }

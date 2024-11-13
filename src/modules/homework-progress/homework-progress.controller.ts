@@ -64,13 +64,11 @@ export class HomeworkProgressController {
   async getVideos(
     @Query("userId", ParseIntPipe) userId: ID,
     @Query("blockId", ParseIntPipe) blockId: ID,
-    @Query("blockOrder", ParseIntPipe) blockOrder: ID,
   ): Promise<ResData<Array<HomeworkProgress>>> {
     console.log("controller");
     return await this.homeworkProgressService.getVideos(
       userId,
       blockId,
-      blockOrder,
     );
   }
 

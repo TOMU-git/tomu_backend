@@ -14,6 +14,7 @@ import { ILessonService } from "../lesson/interfaces/lesson.service";
 import { IBlockService } from "../block/interfaces/block.service";
 import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 import { ILessonRepository } from "../lesson/interfaces/lesson.repository";
+import { IHomeworkProgressRepository } from "../homework-progress/interfaces/homework-progress.repository";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -29,6 +30,9 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("ILessonRepository") // LessonRepository ni inject qilamiz
     private readonly lessonRepository: ILessonRepository,
+
+    @Inject("IHomeworkProgressRepository") // HomeworkRepository ni inject qilamiz
+    private readonly homeworkProgressRepository: IHomeworkProgressRepository,
 
     @Inject("IBlockService") // LessonService ni inject qilamiz
     private readonly blockService: IBlockService,
@@ -78,7 +82,6 @@ export class LessonProgressService implements ILessonProgressService {
     return new ResData<Array<LessonProgress>>("ok", 200, data);
   }
 
-
   async findOneById(id: ID): Promise<ResData<LessonProgress>> {
     const foundData = await this.lessonProgressRepository.findById(id);
     if (!foundData) {
@@ -99,6 +102,30 @@ export class LessonProgressService implements ILessonProgressService {
       throw new LessonProgressNotFoundException();
     }
 
+    const lastWatchedLessonOrder =
+      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+
+    const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
+
+    const existingProgress =
+      await this.lessonProgressRepository.existsLessonProgress(
+        nextLessonOrder,
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+
+    if (existingProgress) {
+      // Keyingi progressni `isWatched` qilib yangilash
+      await this.lessonProgressRepository.markLessonAsWatched(
+        nextLessonOrder,
+        updateDto.userId,
+        updateDto.blockOrder,
+      );
+    }
+
     // Barcha yangilanishlarni `Object.assign` yordamida `foundLessonProgress`ga qo'llash
     Object.assign(foundLessonProgress, updateDto);
 
@@ -116,13 +143,34 @@ export class LessonProgressService implements ILessonProgressService {
   async getVideos(
     userId: ID,
     blockId: ID,
-    blockOrder: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
+    // block service dagi metod orqali id bo'yicha ma'lumotni topamiz
+    const foundData = await this.blockService.findOneById(blockId);
+
+    // topilgan ma'lumotni ResData formatda qaytadi uni ichidagi data dan orderni blockOrder o'zgaruvchisiga beramiz
+    const blockOrder = foundData.data.order;
+
     const existingProgresses =
       await this.lessonProgressRepository.findByOrderAndUserId(
         blockOrder,
         userId,
       );
+
+    // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
+    // hozircha kerak emas ekan
+    const lastWatchedLessonOrder =
+      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+        userId,
+        blockOrder,
+      );
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
+
+    const isWatchedHomework =
+      await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
+        blockOrder,
+        userId,
+      );
+    console.log("isWatchedHomework", isWatchedHomework);
 
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
@@ -133,7 +181,6 @@ export class LessonProgressService implements ILessonProgressService {
     const notWatchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === false,
     ).length;
-
 
     // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
     if (
@@ -219,7 +266,18 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
       );
 
-
     return allProgresses;
   }
 }
+
+// INSERT INTO homeworks (description, video_url, mime_type, size, "order", duration, block_id)
+// SELECT
+//     'Generated description for homework ' || i,
+//     'https://player.vimeo.com/video/1028316276',
+//     'video/mp4',
+//     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
+//     i,  -- Order ketma-ketlikda oshib boradi
+//     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
+//     30  -- block_id
+// FROM
+//     generate_series(1, 100) AS s(i);
