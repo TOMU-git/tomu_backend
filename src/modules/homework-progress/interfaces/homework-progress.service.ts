@@ -21,17 +21,11 @@ export interface IHomeworkProgressService {
   findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>>;
 
   // ID va DTO bo'yicha HomeworkProgress yozuvini yangilaydi
-  update(
-    id: ID,
-    dto: UpdateHomeworkProgressDto,
-  ): Promise<ResData<HomeworkProgress>>;
+  update(dto: UpdateHomeworkProgressDto): Promise<ResData<HomeworkProgress>>;
 
   // ID bo'yicha HomeworkProgress yozuvini o'chiradi
   delete(id: ID): Promise<ResData<HomeworkProgress>>;
 
   // Foydalanuvchi ID, block ID va blockOrder bo'yicha HomeworkProgress yozuvlarini qaytaradi
-  getVideos(
-    userID: ID,
-    blockId: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>>;
+  getVideos(userID: ID, blockId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>>;
 }
