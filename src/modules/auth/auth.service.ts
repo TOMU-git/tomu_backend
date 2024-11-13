@@ -14,7 +14,7 @@ import { IAuthService, ILoginData, SmsSent } from "./interface/auth.service";
 import { User } from "../user/entities/user.entity";
 import { IUserRepository } from "../user/interfaces/user.repository";
 import {
-  CreateAdminTeacherDto,
+  CreateAdminDto,
   CreateStudentDto,
   CreateTeacherDto,
 } from "../user/dto/create-users.dto";
@@ -28,6 +28,7 @@ import {
 import { Cache } from "cache-manager";
 import { generate } from "../../lib/genearotorCode";
 import { SmsService } from "../../lib/smsService";
+import { ICourseService } from "../course/interfaces/course.service";
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -36,6 +37,7 @@ export class AuthService implements IAuthService {
     @Inject("IUserService") private readonly userService: IUserService,
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
     @Inject("CACHE_MANAGER") private cacheManager: Cache,
+    @Inject("ICourseService") private readonly courseService: ICourseService,
     private readonly smsService: SmsService,
   ) {}
 
@@ -112,9 +114,14 @@ export class AuthService implements IAuthService {
   // *** Admin register only *** //
 
   async createAdmin(
-    dto: CreateAdminTeacherDto,
+    dto: CreateAdminDto,
     res: Response,
   ): Promise<ResData<ILoginData>> {
+    const { data: foundPhoneNumber } =
+      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
+    if (foundPhoneNumber) {
+      throw new HttpException("This number already registered", 400);
+    }
     const createdUser = new User();
     createdUser.firstName = dto.firstName;
     createdUser.lastName = dto.lastName;
@@ -123,11 +130,6 @@ export class AuthService implements IAuthService {
     createdUser.password = await hashed(dto.password);
     createdUser.unhashedPassword = dto.password;
     createdUser.role = RoleEnum.ADMIN;
-    const { data: foundPhoneNumber } =
-      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
-    if (foundPhoneNumber) {
-      throw new HttpException("This number already registered", 400);
-    }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
     const refresh_token = await this.jwtService.signAsync(
@@ -156,6 +158,11 @@ export class AuthService implements IAuthService {
     dto: CreateStudentDto,
     res: Response,
   ): Promise<ResData<ILoginData>> {
+    const { data: foundPhoneNumber } =
+      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
+    if (foundPhoneNumber) {
+      throw new HttpException("This number already registered", 400);
+    }
     const createdUser = new User();
     createdUser.firstName = dto.firstName;
     createdUser.lastName = dto.lastName;
@@ -164,11 +171,6 @@ export class AuthService implements IAuthService {
     createdUser.password = await hashed(dto.password);
     createdUser.unhashedPassword = dto.password;
     createdUser.role = RoleEnum.STUDENT;
-    const { data: foundPhoneNumber } =
-      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
-    if (foundPhoneNumber) {
-      throw new HttpException("This number already registered", 400);
-    }
     const savedUser = await this.userRepository.create(createdUser);
     const access_token = await this.jwtService.signAsync({ id: savedUser.id });
     const refresh_token = await this.jwtService.signAsync(
@@ -234,7 +236,7 @@ export class AuthService implements IAuthService {
     if (foundPhoneNumber) {
       throw new HttpException("This number already registered", 400);
     }
-    const foundCourse = await this.
+    await this.courseService.findOneById(dto.courseId);
     const createdUser = new User();
     createdUser.firstName = dto.firstName;
     createdUser.lastName = dto.lastName;
