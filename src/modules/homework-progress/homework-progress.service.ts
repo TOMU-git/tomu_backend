@@ -252,7 +252,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         userId,
       );
 
-    if (existingProgress.length === 0) {
+    if (
+      existingProgress.length === 0 ||
+      existingProgress.length === 10 ||
+      existingProgress.length === 15
+    ) {
       await this.generateFiveProgress(userId, blockId, blockOrder);
 
       const existingProgress =
