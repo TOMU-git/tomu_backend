@@ -64,12 +64,8 @@ export class HomeworkProgressController {
   async getVideos(
     @Query("userId", ParseIntPipe) userId: ID,
     @Query("blockId", ParseIntPipe) blockId: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>> {
-    console.log("controller");
-    return await this.homeworkProgressService.getVideos(
-      userId,
-      blockId,
-    );
+  ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    return await this.homeworkProgressService.getVideos(userId, blockId);
   }
 
   /**
@@ -87,15 +83,11 @@ export class HomeworkProgressController {
    * @param updateHomeworkProgressDto - Yangilash uchun kerakli ma'lumotlar
    * @returns Yangilangan homework progress
    */
-  @Put(":id")
+  @Put("update")
   async update(
-    @Param("id", ParseIntPipe) id: ID,
     @Body() updateHomeworkProgressDto: UpdateHomeworkProgressDto, // Yangilash DTO sini oling
   ): Promise<ResData<HomeworkProgress>> {
-    return await this.homeworkProgressService.update(
-      id,
-      updateHomeworkProgressDto,
-    );
+    return await this.homeworkProgressService.update(updateHomeworkProgressDto);
   }
 
   /**

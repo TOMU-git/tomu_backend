@@ -6,6 +6,7 @@ export interface IUserHomeworkProgressRepository {
   bulkCreate(
     userHomeworkProgresses: UserHomeworkProgress[],
   ): Promise<UserHomeworkProgress[]>;
+  findAll(): Promise<UserHomeworkProgress[]>;
   findByBlockOrderAndUserId(
     blockOrder: ID,
     userId: ID,
@@ -14,13 +15,20 @@ export interface IUserHomeworkProgressRepository {
     userId: ID,
     blockOrder: number,
     homeworkOrder: number,
-  ): Promise<UserHomeworkProgress[]>;
+  ): Promise<UserHomeworkProgress>;
   deleteAll(userId: ID, blockOrder: number): Promise<boolean>;
-  updateProgressByUserIdBlockOrderAndHomeworkOrder(
-    userId: number,
-    blockOrder: number,
-    homeworkOrder: number,
-    updateData: Partial<UserHomeworkProgress>,
-  ): Promise<UserHomeworkProgress[]>;
-}
+  updateProgress(
+    updateData: UserHomeworkProgress,
+  ): Promise<UserHomeworkProgress>;
+  findHomeworkProgress(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<UserHomeworkProgress | null>;
 
+  markHomeworkAsWatched(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<UserHomeworkProgress>;
+}

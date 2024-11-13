@@ -60,10 +60,15 @@ export interface IHomeworkProgressRepository {
     homeworkId: ID,
   ): Promise<HomeworkProgress | null>;
 
-  // shunga mos progress bor yoki yo'qligini tekshiradi, keyingi progressni isWatched ni true qilish uchun
-  existsHomeworkProgress(
+  // shunga mos progress bor yoki yo'qligini tekshiradi
+  getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
-  ): Promise<boolean>;
+  ): Promise<HomeworkProgress | null>;
+
+  findTopFiveByBlockOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<Array<HomeworkProgress>>;
 }
