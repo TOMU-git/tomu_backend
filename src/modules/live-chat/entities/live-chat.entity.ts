@@ -25,8 +25,8 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: "user_id", type: "int", nullable: false })
   userId: number;
 
-  @Column({ name: "selected_meeting_course", type: "varchar", nullable: false })
-  selectedMeetingCourse: string;
+  @Column({ name: "selected_course_id", type: "int", nullable: false })
+  selectedCourseId: number;
 
   @Column({ name: "selected_day", type: "date", nullable: false })
   selectedDay: Date;

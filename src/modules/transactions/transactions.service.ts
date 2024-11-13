@@ -22,6 +22,8 @@ import { OrderStatus } from "src/common/enums/order-status";
 import { IOrderRepository } from "../orders/interfaces/repository-interface";
 import { ILiveChatRepository } from "../live-chat/interfaces/repository-interface";
 import { MeetingStatusEnum } from "src/common/enums/enum";
+import { UserTariff } from "../user-tariff/entities/user-tariff.entity";
+import { IUserTariffRepository } from "../user-tariff/interfaces/user-tariff.repository";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -30,8 +32,14 @@ export class TransactionsService implements ITransactionService {
     private readonly transactionRepository: ITransactionRepo,
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
     @Inject("IOrderService") private readonly orderService: IOrderService,
-    @Inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
-    @Inject("ILiveChatRepository") private readonly liveChatRepository: ILiveChatRepository
+    @Inject("IOrderRepository")
+    private readonly orderRepository: IOrderRepository,
+    @Inject("ILiveChatRepository")
+    private readonly liveChatRepository: ILiveChatRepository,
+    @Inject("ITariffRepository")
+    private readonly tariffRepository: ITariffRepository,
+    @Inject("IUserTariffRepository")
+    private readonly userTariffRepository: IUserTariffRepository,
   ) {}
 
   //// *** Checking
@@ -211,13 +219,27 @@ export class TransactionsService implements ITransactionService {
     );
 
     if (foundOrder.liveChatId) {
-      const foundLiveChat = await this.liveChatRepository.findLiveChatById(Number(foundOrder.liveChatId));
-      foundLiveChat.status = MeetingStatusEnum.PAID,
-      await this.liveChatRepository.updateLiveChat(foundLiveChat);
+      const foundLiveChat = await this.liveChatRepository.findLiveChatById(
+        Number(foundOrder.liveChatId),
+      );
+      (foundLiveChat.status = MeetingStatusEnum.PAID),
+        await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
     }
 
     if (foundOrder.tariffId) {
-      
+      const foundTariff = await this.tariffRepository.findOneById(
+        Number(foundOrder.tariffId),
+      );
+      const newUserTariff = new UserTariff();
+      newUserTariff.isActive = true;
+      newUserTariff.startedAt = new Date();
+      const now = new Date();
+      const expiryDate = new Date(now);
+      expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
+      newUserTariff.endedAt = expiryDate;
+      newUserTariff.userId = foundOrder.userId;
+      newUserTariff.tariffId = foundOrder.tariffId;
+      await this.userTariffRepository.insert(newUserTariff);
     }
 
     foundOrder.status = OrderStatus.PAID;
@@ -251,6 +273,20 @@ export class TransactionsService implements ITransactionService {
       );
       foundOrder.status = OrderStatus.CANCELED;
       await this.orderRepository.update(foundOrder);
+    }
+    if (foundOrder.tariffId) {
+      const foundTariff = await this.tariffRepository.findOneById(
+        Number(foundOrder.tariffId),
+      );
+      await this.tariffRepository.delete(foundTariff.id);
+    }
+    
+    if (foundOrder.liveChatId) {
+      const foundLiveChat = await this.liveChatRepository.findLiveChatById(
+        Number(foundOrder.liveChatId),
+      );
+      foundLiveChat.status = MeetingStatusEnum.UNPAID;
+      await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
     }
     foundOrder.status = OrderStatus.CANCELED;
     await this.orderRepository.update(foundOrder);

@@ -5,9 +5,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { LiveChatEntity } from "./entities/live-chat.entity";
 import { UserModule } from "../user/user.module";
 import { LiveChatRepository } from "./live-chat.repository";
+import { CourseModule } from "../course/course.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LiveChatEntity]), UserModule],
+  imports: [TypeOrmModule.forFeature([LiveChatEntity]), UserModule, CourseModule],
   controllers: [LiveChatController],
   providers: [
     { provide: "ILiveChatService", useClass: LiveChatService },

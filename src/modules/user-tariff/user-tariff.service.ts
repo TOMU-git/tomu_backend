@@ -33,8 +33,8 @@ export class UserTariffService implements IUserTariffService {
     let newUserTariff = new UserTariff();
     newUserTariff = Object.assign(newUserTariff, createUserTariffDto);
 
-    newUserTariff.user = foundUser;
-    newUserTariff.tariff = foundTariff;
+    newUserTariff.userId = foundUser.id;
+    newUserTariff.tariffId = foundTariff.id;
 
     // Boshlanish sanasini hozirgi sana deb belgilash
     const startedAt = new Date();
