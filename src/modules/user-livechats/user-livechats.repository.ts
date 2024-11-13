@@ -14,10 +14,14 @@ export class UserLiveChatRepository implements IUserLiveChatRepository {
   }
 
   async getAll(): Promise<UserLivechatEntity[]> {
-    return await this.repository.find({where: {isAccepted: true}});
+    return await this.repository.find({ where: { isAccepted: true } });
   }
 
   async getByUserId(userId: number): Promise<UserLivechatEntity[]> {
     return await this.repository.find({ where: { userId } });
+  }
+
+  async getByTeacherId(teacherId: number): Promise<UserLivechatEntity[]> {
+    return await this.repository.find({ where: { teacherId } });
   }
 }

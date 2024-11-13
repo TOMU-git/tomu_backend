@@ -39,5 +39,11 @@ export class UserLivechatsService implements IUserLiveChatService {
     await this.userService.findOneById(userId);
     const foundUserLiveChatsByUserId = await this.userLiveChatRepository.getByUserId(userId);
     return new ResData<UserLivechatEntity[]>("Accepted user live chats", 200, foundUserLiveChatsByUserId);
-}
+  }
+  
+  async getUserLiveChatsByTeacherId(teacherId: number): Promise<ResData<UserLivechatEntity[]>>{
+    await this.userService.findOneById(teacherId);
+    const foundUserLiveChatsByTeacherId = await this.userLiveChatRepository.getByTeacherId(teacherId);
+    return new ResData<UserLivechatEntity[]>("Accepted teacher live chats", 200, foundUserLiveChatsByTeacherId);
+  }
 }
