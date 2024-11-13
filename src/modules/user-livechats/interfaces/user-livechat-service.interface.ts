@@ -6,4 +6,5 @@ export interface IUserLiveChatService {
     createUserLiveChat(dto: CreateUserLivechatDto): Promise<ResData<UserLivechatEntity>>;
     getAllUserLiveChats(): Promise<ResData<UserLivechatEntity[]>>;
     getUserLiveChatsByUserId(userId: number): Promise<ResData<UserLivechatEntity[]>>;
+    getUserLiveChatsByTeacherId(teacherId: number): Promise<ResData<UserLivechatEntity[]>>;
 }
