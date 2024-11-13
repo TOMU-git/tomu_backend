@@ -156,21 +156,34 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
       );
 
+    if (existingProgresses.length === 0) {
+      await this.generateFiveProgress(userId, blockId, blockOrder);
+      const existingProgress =
+        await this.lessonProgressRepository.findByOrderAndUserId(
+          blockOrder,
+          userId,
+        );
+
+      return new ResData<Array<LessonProgress>>(
+        "Lesson fetched successfully",
+        200,
+        existingProgress,
+      );
+    }
+
     // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
     // hozircha kerak emas ekan
-    const lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
-        userId,
-        blockOrder,
-      );
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
+    // const lastWatchedLessonOrder =
+    //   await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+    //     userId,
+    //     blockOrder,
+    //   );
 
     const isWatchedHomework =
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
         blockOrder,
         userId,
       );
-    console.log("isWatchedHomework", isWatchedHomework);
 
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
@@ -182,20 +195,42 @@ export class LessonProgressService implements ILessonProgressService {
       (progress) => progress.isWatched === false,
     ).length;
 
-    // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
+    /* agar hamma lesson larni ko'rgan bo'lsa ammo homeworklarni hammasini ko'rmagan bo'lsa bazada bor lessonProgreslarni qaytaramiz error message bilan birga, error messga orqali front user ga siz oldin hamma homeworklar ko'rib tugatishingiz kerak degan yozuv chiqaradi
+     */
     if (
-      (watchedProgressCount % 5 == 0 && notWatchedProgressCount === 0) ||
-      existingProgresses.length === 0
+      watchedProgressCount % 5 == 0 &&
+      notWatchedProgressCount === 0 &&
+      !isWatchedHomework
     ) {
-      const fiveProgress = await this.generateFiveProgress(
-        userId,
-        blockId,
-        blockOrder,
+      const existingProgress =
+        await this.lessonProgressRepository.findByOrderAndUserId(
+          blockOrder,
+          userId,
+        );
+
+      return new ResData<Array<LessonProgress>>(
+        "You must have seen all the homework before",
+        200,
+        existingProgress,
       );
+    }
+    if (
+      watchedProgressCount % 5 == 0 &&
+      notWatchedProgressCount === 0 &&
+      isWatchedHomework
+    ) {
+      // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
+      await this.generateFiveProgress(userId, blockId, blockOrder);
+
+      const existingProgresses =
+        await this.lessonProgressRepository.findByOrderAndUserId(
+          blockOrder,
+          userId,
+        );
       return new ResData<Array<LessonProgress>>(
         "Lesson fetched successfully",
         200,
-        fiveProgress,
+        existingProgresses,
       );
     }
 
