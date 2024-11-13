@@ -23,8 +23,9 @@ export class UserHomeworkProgress extends BaseEntity {
    * User id si.
    * Ushbu maydon, User videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
-  @Column({ type: "int", name: "user_idx", nullable: true })
+  @Column({ type: "int", name: "user_id", nullable: true })
   userId: Number;
+  
 
   // Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan)
   @Column({
@@ -38,11 +39,6 @@ export class UserHomeworkProgress extends BaseEntity {
   // Homework qancha marta ko'rilganligini hisoblaydigan ustun (0 dan 5 gacha qiymatlarni olishi mumkin)
   @Column({ type: "int", name: "count_watched", default: 0 })
   countWatched: number;
-
-  // Foydalanuvchiga tegishli homework_progress yozuvi
-  @ManyToOne(() => User, (user) => user.homeworkProgresses)
-  @JoinColumn({ name: "user_id" })
-  user: User;
 
   // Ushbu homework uchun progress yozuvi
   @ManyToOne(() => Homework, (homework) => homework.homeworkProgresses)

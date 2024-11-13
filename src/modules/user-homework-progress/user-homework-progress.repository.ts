@@ -60,38 +60,76 @@ export class UserHomeworkProgressRepository
     userId: number,
     blockOrder: number,
     homeworkOrder: number,
-  ): Promise<UserHomeworkProgress[]> {
-    return await this.userHomeworkProgressRepository.find({
+  ): Promise<UserHomeworkProgress> {
+    return await this.userHomeworkProgressRepository.findOne({
       where: { userId, blockOrder, homeworkOrder },
     });
   }
 
-  /**
-   * userId, blockOrder va homeworkOrder bo'yicha progressni yangilash
-   * @param userId - Foydalanuvchi ID
-   * @param blockOrder - Block tartibi
-   * @param homeworkOrder - Homework tartibi
-   * @param updateData - Yangilanish ma'lumotlari
-   * @returns Yangilangan UserHomeworkProgress yozuvlari
-   */
-  async updateProgressByUserIdBlockOrderAndHomeworkOrder(
-    userId: number,
-    blockOrder: number,
-    homeworkOrder: number,
-    updateData: Partial<UserHomeworkProgress>, // bu yerda faqat yangilash kerak bo'lgan ma'lumotlar yuboriladi
-  ): Promise<UserHomeworkProgress[]> {
-    // Yangi ma'lumotlarni yangilash
-    await this.userHomeworkProgressRepository.update(
-      { userId, blockOrder, homeworkOrder },
-      updateData,
-    );
+  async markHomeworkAsWatched(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<UserHomeworkProgress> {
+    try {
+      // homeworkOrder, userId (user_idx ustuniga bog'lanadi) va blockOrder bo'yicha homework progress yozuvini topamiz
+      const homeworkProgress =
+        await this.userHomeworkProgressRepository.findOne({
+          where: { homeworkOrder, userId, blockOrder }, // userId bilan qidiramiz
+          relations: ["homework"], // agar user va homework bog'lanishini olishni xohlasangiz
+        });
 
-    // Yangilangan yozuvni qaytarish
-    return this.findByUserIdBlockOrderAndHomeworkOrder(
-      userId,
-      blockOrder,
-      homeworkOrder,
-    );
+      if (homeworkProgress) {
+        // Agar topilgan bo'lsa, faqat isWatched ni true qilamiz
+        homeworkProgress.isWatched = true;
+
+        // O'zgartirilgan homeworkProgressni saqlaymiz va qaytaramiz
+        return await this.userHomeworkProgressRepository.save(homeworkProgress);
+      } else {
+        // Agar topilmasa, xato haqida aniq ma'lumot beramiz
+        console.error(
+          `Homework progress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockOrder: ${blockOrder}`,
+        );
+        throw new Error(
+          `UserHomeworkProgress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockOrder: ${blockOrder}`,
+        );
+      }
+    } catch (error) {
+      console.error("Error in markHomeworkAsWatched method:", error);
+      throw new Error("An error occurred while marking homework as watched");
+    }
+  }
+
+  async findAll(): Promise<UserHomeworkProgress[]> {
+    return await this.userHomeworkProgressRepository.find({});
+  }
+
+  async findHomeworkProgress(
+    homeworkOrder: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<UserHomeworkProgress | null> {
+    try {
+      // homeworkOrder, userId (user_idx ustuniga bog'lanadi) va blockOrder bo'yicha homework progress yozuvini topamiz
+      const homeworkProgress =
+        await this.userHomeworkProgressRepository.findOne({
+          where: { homeworkOrder, userId, blockOrder }, // Berilgan parametrlar bo'yicha qidiramiz
+          relations: ["homework"], // Agar homework bilan bog'lanishni olishni xohlasangiz
+        });
+
+      // Agar topilgan bo'lsa, qaytarish
+      return homeworkProgress;
+    } catch (error) {
+      // Xatolikni log qilish yoki xabar yuborish
+      console.error("Find error:", error);
+      throw new Error("Error while fetching HomeworkProgress");
+    }
+  }
+
+  async updateProgress(
+    updateData: UserHomeworkProgress,
+  ): Promise<UserHomeworkProgress> {
+    return await this.userHomeworkProgressRepository.save(updateData);
   }
 
   /**

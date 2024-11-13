@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, LessThanOrEqual } from "typeorm";
+import { Repository, LessThanOrEqual, Between } from "typeorm";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
 import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
 
@@ -98,6 +98,23 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       order: {
         homeworkOrder: "ASC", // homeworkOrder bo'yicha o'sish tartibida saralash
       },
+    });
+  }
+
+  async findTopFiveByBlockOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+  ): Promise<Array<HomeworkProgress>> {
+    return await this.homeworkProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        userId: userId,
+      },
+      relations: ["homework"], // 'homework' bilan bog'lanishlar olinadi
+      order: {
+        homeworkOrder: "DESC", // homeworkOrder bo'yicha kamayish tartibida saralash
+      },
+      take: 5, // faqat eng katta 5 ta yozuvni olish
     });
   }
 
@@ -228,32 +245,33 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Kuzatish soni 0 va 5 oralig'ida bo'lgan HomeworkProgress yozuvlarining ro'yxati
    */
-async getVideosWithWatchCountBetween0And5(
-  blockOrder: ID,
-): Promise<Array<HomeworkProgress>> {
-  return await this.homeworkProgressRepository
-    .createQueryBuilder("homeworkProgress")
-    .leftJoinAndSelect("homeworkProgress.homework", "homework")
-    .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
-    .andWhere("homeworkProgress.isWatched = :isWatched", { isWatched: true })
-    .andWhere("homeworkProgress.countWatched > :minCount", { minCount: 0 })
-    .andWhere("homeworkProgress.countWatched < :maxCount", { maxCount: 5 })
-    .select(["homeworkProgress", "homework"]) // Faol ma'lumotlar tanlanadi
-    .getMany();
-}
+  async getVideosWithWatchCountBetween0And5(
+    blockOrder: ID,
+  ): Promise<Array<HomeworkProgress>> {
+    return await this.homeworkProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        isWatched: true,
+        countWatched: Between(0, 5), // countWatched 0 va 5 orasida bo'lishi kerak
+      },
+      relations: ["homework"], // 'homework' bilan bog'liqliklar olinadi
+      order: {
+        homeworkOrder: "ASC", // homeworkOrder bo'yicha o'sish tartibida saralash
+      },
+    });
+  }
 
-
-  async existsHomeworkProgress(
+  async getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
-  ): Promise<boolean> {
-    // homeworkOrder, userId, va blockOrder bo'yicha homework progress yozuvini qidiramiz
+  ): Promise<HomeworkProgress | null> {
+    // homeworkOrder, userId va blockOrder bo'yicha homework progress yozuvini qidiramiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
       where: { homeworkOrder, userId, blockOrder },
     });
 
-    // Ma'lumot mavjud bo'lsa true, bo'lmasa false qaytaradi
-    return !!homeworkProgress;
+    // homeworkProgress mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
+    return homeworkProgress || null;
   }
 }
