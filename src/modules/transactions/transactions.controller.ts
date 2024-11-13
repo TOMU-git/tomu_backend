@@ -70,11 +70,9 @@ export class TransactionsController {
     } else if (method === PaymeMethodEnum.GET_STATEMENT) {
       checkTransactionDto(paymeGetStatementTrSchema, params, id);
       const result = await this.transactionsService.getStatement(params, id);
-      return res.status(HttpStatus.OK).json({
-        result: {
-          transactions: result,
-        },
-      });
+      return res
+        .status(HttpStatus.OK)
+        .json({ result: { transaction: result } });
     }
   }
 }

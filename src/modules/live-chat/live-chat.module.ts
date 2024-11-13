@@ -11,11 +11,11 @@ import { LiveChatRepository } from "./live-chat.repository";
   controllers: [LiveChatController],
   providers: [
     { provide: "ILiveChatService", useClass: LiveChatService },
-    { provide: "ILiveChatRepositroy", useClass: LiveChatRepository },
+    { provide: "ILiveChatRepository", useClass: LiveChatRepository },
   ],
   exports: [
     { provide: "ILiveChatService", useClass: LiveChatService },
-    { provide: "ILiveChatRepositroy", useClass: LiveChatRepository },
+    { provide: "ILiveChatRepository", useClass: LiveChatRepository },
   ],
 })
 export class LiveChatModule {}

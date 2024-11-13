@@ -11,6 +11,8 @@ export interface IUserTariffService {
 
   findAll(): Promise<ResData<Array<UserTariff>>>;
 
+  findAllByUserId(userId: number): Promise<ResData<UserTariff[]>>;
+
   findOne(id: ID): Promise<ResData<UserTariff>>;
 
   delete(id: ID): Promise<ResData<UserTariff>>;
