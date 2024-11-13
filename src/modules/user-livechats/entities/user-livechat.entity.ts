@@ -13,8 +13,8 @@ export class UserLivechatEntity extends BaseEntity {
     @Column({ name: 'teacher_id', type: 'int', nullable: false })
     teacherId: number;
 
-    @Column({ name: 'course_name', type: 'varchar', nullable: false })
-    courseName: string;
+    @Column({ name: 'course_id', type: 'varchar', nullable: false })
+    courseId: number;
 
     @Column({ name: 'is_accepted', type: 'boolean', nullable: false })
     isAccepted: boolean;
