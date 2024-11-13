@@ -21,7 +21,7 @@ export class UserLivechatsService implements IUserLiveChatService {
     const newUserLiveChat = new UserLivechatEntity();
     newUserLiveChat.liveChatId = foundLiveChat.id;
     newUserLiveChat.teacherId = dto.teacherId;
-    newUserLiveChat.userId = newUserLiveChat.userId;
+    newUserLiveChat.userId = foundLiveChat.userId;
     newUserLiveChat.courseId = foundLiveChat.selectedCourseId;
     newUserLiveChat.isAccepted = true;
     newUserLiveChat.meetingDate = foundLiveChat.selectedDay;
