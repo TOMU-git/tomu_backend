@@ -374,8 +374,22 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         );
       const randomVideos = await this.getRandomVideos(blockOrder);
       let progressList = [...lastFiveProgress, ...randomVideos];
-      // console.log("random videos____________", randomVideos);
-      // console.log("progressList", progressList);
+
+      // randomVideos massivini homeworkOrder qiymatiga ko'ra tartiblash
+      const sortedRandomVideos = randomVideos.sort(
+        (a, b) => Number(a.homeworkOrder) - Number(b.homeworkOrder), // Number() bilan number turiga o'tkazish
+      );
+
+      // Eng kichik homeworkOrder qiymatiga ega bo'lgan ma'lumotni topish va yangilash
+      for (let i = 0; i < sortedRandomVideos.length; i++) {
+        const video = sortedRandomVideos[i];
+
+        // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
+        video.isWatched = i === 0 ? true : false;
+
+        // Database yangilash
+        await this.homeworkProgressRepository.update(video);
+      } 
 
       // Random qilingan ma'lumotni bazadan olish
       const isExistTemporaryProgress =

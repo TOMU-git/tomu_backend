@@ -172,5 +172,18 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     }
   }
 
-  
+  /**
+   * Foydalanuvchining barcha ko'rilgan (isWatched = true) dars progresslarini topish.
+   *
+   * @param userId - Foydalanuvchi ID
+   * @returns isWatched = true bo'lgan barcha LessonProgress yozuvlari
+   */
+  async findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]> {
+    return await this.lessonProgressRepository.find({
+      where: {
+        user: { id: userId },
+        isWatched: true,
+      },
+    });
+  }
 }

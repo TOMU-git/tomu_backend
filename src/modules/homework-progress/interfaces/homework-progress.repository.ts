@@ -71,4 +71,6 @@ export interface IHomeworkProgressRepository {
     blockOrder: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>>;
+
+  findAllWatchedHomeworkByUser(userId: ID): Promise<HomeworkProgress[]>;
 }
