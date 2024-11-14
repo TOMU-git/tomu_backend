@@ -151,16 +151,13 @@ export class LessonProgressService implements ILessonProgressService {
     const blockOrder = foundData.data.order;
 
     const existingProgresses =
-      await this.lessonProgressRepository.findByOrderAndUserId(
-        blockOrder,
-        userId,
-      );
+      await this.lessonProgressRepository.findByOrderAndUserId(blockId, userId);
 
     if (existingProgresses.length === 0) {
       await this.generateFiveProgress(userId, blockId, blockOrder);
       const existingProgress =
         await this.lessonProgressRepository.findByOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
 
@@ -204,7 +201,7 @@ export class LessonProgressService implements ILessonProgressService {
     ) {
       const existingProgress =
         await this.lessonProgressRepository.findByOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
 
@@ -224,7 +221,7 @@ export class LessonProgressService implements ILessonProgressService {
 
       const existingProgresses =
         await this.lessonProgressRepository.findByOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
       return new ResData<Array<LessonProgress>>(
@@ -281,6 +278,7 @@ export class LessonProgressService implements ILessonProgressService {
       const newLessonProgress = new LessonProgress();
       newLessonProgress.user = { id: userId } as any; // userni id bilan bog'lash
       newLessonProgress.userId = userId;
+      newLessonProgress.blockId = blockId;
       newLessonProgress.lesson = lesson;
       newLessonProgress.blockOrder = block.order;
       newLessonProgress.lessonOrder = lesson.order;
@@ -296,10 +294,7 @@ export class LessonProgressService implements ILessonProgressService {
 
     // Yangi progresslar yaratib bo'lgach, barcha progresslarni olish
     const allProgresses =
-      await this.lessonProgressRepository.findByOrderAndUserId(
-        block.order,
-        userId,
-      );
+      await this.lessonProgressRepository.findByOrderAndUserId(blockId, userId);
 
     return allProgresses;
   }

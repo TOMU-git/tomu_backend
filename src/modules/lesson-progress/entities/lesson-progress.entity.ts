@@ -27,6 +27,13 @@ export class LessonProgress extends BaseEntity {
   userId: Number;
 
   /**
+   * block id si.
+   * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   */
+  @Column({ type: "int", name: "block_id", nullable: true })
+  blockId: Number;
+
+  /**
    * Tomosha qilinganligini bildiruvchi holat.
    * Agar dars tomosha qilingan bo'lsa true, aks holda false qiymat saqlanadi.
    */
