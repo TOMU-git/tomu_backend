@@ -24,7 +24,7 @@ export class LiveChatService implements ILiveChatService {
     const { data: foundUser } = await this.userService.findOneById(
       createLiveChatDto.userId,
     );
-    await this.courseService.findOneById(createLiveChatDto.selectedCourseId);
+    const { data: foundCourse } = await this.courseService.findOneById(createLiveChatDto.selectedCourseId);
     const newLiveChat = new LiveChatEntity();
     newLiveChat.firstName = createLiveChatDto.firstName;
     newLiveChat.lastName = createLiveChatDto.lastName;
@@ -37,6 +37,7 @@ export class LiveChatService implements ILiveChatService {
     newLiveChat.selectedDay = selectedDate;
     newLiveChat.selectedTime = createLiveChatDto.selectedTime;
     newLiveChat.status = MeetingStatusEnum.UNPAID;
+    newLiveChat.selectedCourseName = foundCourse.title;
     const createdLiveChat =
       await this.liveChatRepository.createLiveChat(newLiveChat);
     return new ResData<LiveChatEntity>(
@@ -65,7 +66,7 @@ export class LiveChatService implements ILiveChatService {
     updateLiveChatDto: UpdateLiveChatDto,
   ): Promise<ResData<LiveChatEntity>> {
     const { data: foundLiveChat } = await this.findOne(id);
-    await this.courseService.findOneById(updateLiveChatDto.selectedCourseId);
+    const { data: foundCourse } = await this.courseService.findOneById(updateLiveChatDto.selectedCourseId);
     foundLiveChat.firstName = updateLiveChatDto.firstName;
     foundLiveChat.lastName = updateLiveChatDto.lastName;
     foundLiveChat.gender = updateLiveChatDto.gender;
@@ -76,6 +77,7 @@ export class LiveChatService implements ILiveChatService {
     foundLiveChat.selectedDay = selectedDay;
     foundLiveChat.selectedTime = updateLiveChatDto.selectedTime;
     foundLiveChat.status = updateLiveChatDto.status;
+    foundLiveChat.selectedCourseName = foundCourse.title;
     const updatedLiveChat = await this.liveChatRepository.updateLiveChat(id, foundLiveChat);
     return new ResData<LiveChatEntity>(
       "Live chat updated successfully",

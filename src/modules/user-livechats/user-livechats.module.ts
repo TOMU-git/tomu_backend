@@ -6,9 +6,10 @@ import { UserLivechatEntity } from './entities/user-livechat.entity';
 import { UserModule } from '../user/user.module';
 import { LiveChatModule } from '../live-chat/live-chat.module';
 import { UserLiveChatRepository } from './user-livechats.repository';
+import { CourseModule } from '../course/course.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserLivechatEntity]), UserModule, LiveChatModule],
+  imports: [TypeOrmModule.forFeature([UserLivechatEntity]), UserModule, LiveChatModule, CourseModule],
   controllers: [UserLivechatsController],
   providers: [
     { provide: "IUserLiveChatService", useClass: UserLivechatsService },
