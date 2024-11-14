@@ -39,9 +39,9 @@ export interface IHomeworkProgressRepository {
 
   // Berilgan order va userId bo'yicha HomeworkProgress yozuvlarini qaytaradi
   findByBlockOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
-  ): Promise<Array<HomeworkProgress | null>>;
+  ): Promise<Array<HomeworkProgress>>;
 
   // Berilgan blockOrder qiymati bo'yicha isWatched qiymati 0 dan 5 gacha bo'lgan HomeworkProgress yozuvlarini qaytaradi
   getVideosWithWatchCountBetween0And5(

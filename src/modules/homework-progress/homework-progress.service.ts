@@ -248,7 +248,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     // Foydalanuvchining progressini order bo'yicha olish
     const existingProgress =
       await this.homeworkProgressRepository.findByBlockOrderAndUserId(
-        blockOrder,
+        blockId,
         userId,
       );
 
@@ -261,7 +261,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
       const existingProgress =
         await this.homeworkProgressRepository.findByBlockOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
 
@@ -325,7 +325,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     ) {
       const temporaryProgress =
         await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
       return new ResData<Array<Partial<HomeworkProgress>>>(
@@ -345,7 +345,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     ) {
       const temporaryProgress =
         await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
 
@@ -394,7 +394,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // Random qilingan ma'lumotni bazadan olish
       const isExistTemporaryProgress =
         await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-          blockOrder,
+          blockId,
           userId,
         );
       if (isExistTemporaryProgress) {
@@ -415,7 +415,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     // Random qilingan ma'lumotlarni olish
     const temporaryProgress =
       await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-        blockOrder,
+        blockId,
         userId,
       );
 
@@ -519,6 +519,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       newHomeworkProgress.user = user;
       newHomeworkProgress.userId = userId;
       newHomeworkProgress.homework = homework;
+      newHomeworkProgress.blockId = blockId;
       newHomeworkProgress.blockOrder = block.order;
       newHomeworkProgress.homeworkOrder = homework.order;
       newHomeworkProgress.isWatched = i === 0;

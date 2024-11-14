@@ -86,12 +86,12 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Topilgan HomeworkProgress yozuvlarining ro'yxati yoki null
    */
   async findByBlockOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository.find({
       where: {
-        blockOrder: blockOrder,
+        blockId: blockId,
         userId: userId,
       },
       relations: ["homework"], // 'homework' bilan bog'liqliklar olinadi
