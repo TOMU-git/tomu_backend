@@ -28,6 +28,9 @@ export class UserLivechatEntity extends BaseEntity {
   @Column({ name: "gender", type: "enum", enum: GenderEnum, nullable: false })
   gender: GenderEnum;
 
+  @Column({ name: "price", type: "bigint", nullable: false })
+  price: number;
+
   @Column({ name: "selected_course_name", type: "varchar", nullable: false })
   selectedCourseName: string;
 
@@ -37,11 +40,11 @@ export class UserLivechatEntity extends BaseEntity {
   @Column({ name: "is_accepted", type: "boolean", nullable: false })
   isAccepted: boolean;
 
-  @Column({ name: "meeting_date", type: "date", nullable: false })
-  meetingDate: Date;
+  @Column({ name: "selected_day", type: "date", nullable: false })
+  selectedDay: Date;
 
-  @Column({ name: "meeting_time", type: "varchar", nullable: false })
-  meetingTime: string;
+  @Column({ name: "selected_time", type: "varchar", nullable: false })
+  selectedTime: string;
 
   @Column({ name: "meeting_url", type: "varchar", nullable: false })
   meetingUrl: string;
