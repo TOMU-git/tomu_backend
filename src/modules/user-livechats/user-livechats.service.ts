@@ -27,8 +27,8 @@ export class UserLivechatsService implements IUserLiveChatService {
     newUserLiveChat.userId = foundLiveChat.userId;
     newUserLiveChat.courseId = foundLiveChat.selectedCourseId;
     newUserLiveChat.isAccepted = true;
-    newUserLiveChat.meetingDate = foundLiveChat.selectedDay;
-    newUserLiveChat.meetingTime = foundLiveChat.selectedTime;
+    newUserLiveChat.selectedDay= foundLiveChat.selectedDay;
+    newUserLiveChat.selectedTime = foundLiveChat.selectedTime;
     newUserLiveChat.meetingUrl = dto.meetingUrl;
     newUserLiveChat.phoneNumber = foundLiveChat.phoneNumber;
     newUserLiveChat.firstName = foundLiveChat.firstName;
@@ -36,6 +36,7 @@ export class UserLivechatsService implements IUserLiveChatService {
     newUserLiveChat.duration = foundLiveChat.duration;
     newUserLiveChat.gender = foundLiveChat.gender;
     newUserLiveChat.selectedCourseName = foundCourse.title;
+    newUserLiveChat.price = foundLiveChat.price;
     const createdUserLiveChat = await this.userLiveChatRepository.create(newUserLiveChat);
     return new ResData<UserLivechatEntity>("User live chat created successfully", 201, createdUserLiveChat);
   }
