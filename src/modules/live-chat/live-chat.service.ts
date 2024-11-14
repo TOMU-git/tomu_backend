@@ -38,6 +38,7 @@ export class LiveChatService implements ILiveChatService {
     newLiveChat.selectedTime = createLiveChatDto.selectedTime;
     newLiveChat.status = MeetingStatusEnum.UNPAID;
     newLiveChat.selectedCourseName = foundCourse.title;
+    newLiveChat.isAccepted = false;
     const createdLiveChat =
       await this.liveChatRepository.createLiveChat(newLiveChat);
     return new ResData<LiveChatEntity>(
