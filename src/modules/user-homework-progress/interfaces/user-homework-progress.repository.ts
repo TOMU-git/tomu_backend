@@ -8,7 +8,7 @@ export interface IUserHomeworkProgressRepository {
   ): Promise<UserHomeworkProgress[]>;
   findAll(): Promise<UserHomeworkProgress[]>;
   findByBlockOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<UserHomeworkProgress[]>;
   findByUserIdBlockOrderAndHomeworkOrder(

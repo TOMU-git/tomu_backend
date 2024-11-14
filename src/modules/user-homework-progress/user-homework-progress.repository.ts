@@ -34,12 +34,12 @@ export class UserHomeworkProgressRepository
    * @returns UserHomeworkProgress yozuvlari
    */
   async findByBlockOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<UserHomeworkProgress[]> {
     return await this.userHomeworkProgressRepository.find({
       where: {
-        blockOrder: blockOrder,
+        blockId: blockId,
         userId: userId,
       },
       relations: ["homework"],
