@@ -6,18 +6,21 @@ import { IUserService } from '../user/interfaces/user.service';
 import { ResData } from 'src/lib/resData';
 import { UserLivechatEntity } from './entities/user-livechat.entity';
 import { ILiveChatService } from '../live-chat/interfaces/service-interface';
+import { ICourseService } from '../course/interfaces/course.service';
 
 @Injectable()
 export class UserLivechatsService implements IUserLiveChatService {
   constructor(
     @Inject("IUserLiveChatRepository") private readonly userLiveChatRepository: IUserLiveChatRepository,
     @Inject('ILiveChatService') private readonly liveChatService: ILiveChatService,
-    @Inject('IUserService') private readonly userService: IUserService
+    @Inject('IUserService') private readonly userService: IUserService,
+    @Inject("ICourseService") private readonly courseService: ICourseService,
   ){}
   async createUserLiveChat(dto: CreateUserLivechatDto): Promise<ResData<UserLivechatEntity>> {
     const { data: foundLiveChat } = await this.liveChatService.findOne(dto.liveChatId);
     await this.userService.findOneById(foundLiveChat.userId);
     await this.userService.findOneById(dto.teacherId);
+    const { data: foundCourse } = await this.courseService.findOneById(Number(foundLiveChat.selectedCourseId));
     const newUserLiveChat = new UserLivechatEntity();
     newUserLiveChat.liveChatId = foundLiveChat.id;
     newUserLiveChat.teacherId = dto.teacherId;
@@ -27,6 +30,12 @@ export class UserLivechatsService implements IUserLiveChatService {
     newUserLiveChat.meetingDate = foundLiveChat.selectedDay;
     newUserLiveChat.meetingTime = foundLiveChat.selectedTime;
     newUserLiveChat.meetingUrl = dto.meetingUrl;
+    newUserLiveChat.phoneNumber = foundLiveChat.phoneNumber;
+    newUserLiveChat.firstName = foundLiveChat.firstName;
+    newUserLiveChat.lastName = foundLiveChat.lastName;
+    newUserLiveChat.duration = foundLiveChat.duration;
+    newUserLiveChat.gender = foundLiveChat.gender;
+    newUserLiveChat.selectedCourseName = foundCourse.title;
     const createdUserLiveChat = await this.userLiveChatRepository.create(newUserLiveChat);
     return new ResData<UserLivechatEntity>("User live chat created successfully", 201, createdUserLiveChat);
   }
