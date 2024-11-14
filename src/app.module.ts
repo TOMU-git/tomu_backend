@@ -30,6 +30,7 @@ import { HomeworkModule } from "./modules/homework/homework.module";
 import { OrdersModule } from './modules/orders/orders.module';
 import { UserLivechatsModule } from './modules/user-livechats/user-livechats.module';
 import { UserHomeworkProgressModule } from "./modules/user-homework-progress/user-homework-progress.module";
+import { UserProgressModule } from './modules/user-progress/user-progress.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { UserHomeworkProgressModule } from "./modules/user-homework-progress/use
     OrdersModule,
     UserLivechatsModule,
     UserHomeworkProgressModule,
+    UserProgressModule,
   ],
 })
 export class AppModule implements NestModule {
