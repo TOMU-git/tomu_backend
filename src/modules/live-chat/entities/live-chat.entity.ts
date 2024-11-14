@@ -31,6 +31,9 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: 'selected_course_name', type: 'varchar', nullable: false })
   selectedCourseName: string;
 
+  @Column({ name: 'is_accepted', type: 'boolean', nullable: false })
+  isAccepted: boolean;
+
   @Column({ name: "selected_day", type: "date", nullable: false })
   selectedDay: Date;
 
