@@ -1,6 +1,5 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Tariff } from "src/modules/tariff/entities/tariff.entity";
-import { User } from "src/modules/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity("user_tariffs")
@@ -22,13 +21,9 @@ export class UserTariff extends BaseEntity {
   @Column({ type: "bool", name: "is_active", default: true })
   isActive: Boolean;
 
-  // User entiteti bilan bog'lanish; ushbu tariffga ega bo'lgan foydalanuvchini ifodalaydi
-  @ManyToOne(() => User, (user) => user.userTariffs)
-  @JoinColumn({ name: "user_id" })
-  user: User;
+  @Column({ name: "user_id", type: 'int', nullable: false})
+  userId: number;
 
-  // Tariff entiteti bilan bog'lanish; foydalanuvchiga tegishli bo'lgan aniq tariffni ifodalaydi
-  @ManyToOne(() => Tariff, (tariff) => tariff.userTariffs)
-  @JoinColumn({ name: "tariff_id" })
-  tariff: Tariff;
+  @Column({ name: "tariff_id", type: 'int', nullable: false })
+  tariffId: number;
 }

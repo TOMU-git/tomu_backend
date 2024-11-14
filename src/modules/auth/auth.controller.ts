@@ -9,8 +9,9 @@ import {
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
-  CreateAdminTeacherDto,
+  CreateAdminDto,
   CreateStudentDto,
+  CreateTeacherDto,
 } from "../user/dto/create-users.dto";
 import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
@@ -114,7 +115,7 @@ export class AuthController {
   @Auth(RoleEnum.DIRECTOR)
   @Post("register/admin")
   async registerAdmin(
-    @Body() adminCreateDto: CreateAdminTeacherDto,
+    @Body() adminCreateDto: CreateAdminDto,
     @Res() res: Response,
   ) {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
@@ -133,7 +134,7 @@ export class AuthController {
   @Auth(RoleEnum.ADMIN)
   @Post("register/teacher")
   async registerTeacher(
-    @Body() teacherCreateDto: CreateAdminTeacherDto,
+    @Body() teacherCreateDto: CreateTeacherDto,
     @Res() res: Response,
   ) {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(

@@ -10,8 +10,8 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: "last_name", type: "varchar", nullable: false })
   lastName: string;
 
-  @Column({ name: "gender", type: "varchar", nullable: false })
-  gender: string;
+  @Column({ name: "gender", type: 'enum', enum: GenderEnum,  nullable: false })
+  gender: GenderEnum;
 
   @Column({ name: "phone_number", type: "varchar", nullable: false })
   phoneNumber: string;
@@ -25,8 +25,11 @@ export class LiveChatEntity extends BaseEntity {
   @Column({ name: "user_id", type: "int", nullable: false })
   userId: number;
 
-  @Column({ name: "selected_meeting_course", type: "varchar", nullable: false })
-  selectedMeetingCourse: string;
+  @Column({ name: "selected_course_id", type: "int", nullable: false })
+  selectedCourseId: number;
+
+  @Column({ name: 'selected_course_name', type: 'varchar', nullable: false })
+  selectedCourseName: string;
 
   @Column({ name: "selected_day", type: "date", nullable: false })
   selectedDay: Date;

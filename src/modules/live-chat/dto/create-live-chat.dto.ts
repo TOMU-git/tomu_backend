@@ -57,13 +57,12 @@ export class CreateLiveChatDto {
   userId: number;
 
   @ApiProperty({
-    type: String,
-    description: "Selected meeting course",
-    example: "English",
+    type: Number,
+    description: "Selected meeting course id",
   })
-  @IsString()
+  @IsInt()
   @IsNotEmpty()
-  selectedMeetingCourse: string;
+  selectedCourseId: number;
 
   @ApiProperty({
     type: String,

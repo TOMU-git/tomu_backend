@@ -32,14 +32,11 @@ export class User extends BaseEntity {
   @Column({ type: "enum", enum: RoleEnum, nullable: false })
   role: RoleEnum;
 
+  @Column({name: 'course_id', type: 'int', nullable: true, default: null})
+  courseId: number;
+
   @Column({ name: "hashed_refresh_token", type: "varchar", nullable: true })
   hashed_refresh_token: string;
-
-  // Foydalanuvchi tariflari
-  @OneToMany(() => UserTariff, (userTariff) => userTariff.user, {
-    onDelete: "SET NULL",
-  })
-  userTariffs: UserTariff[];
 
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)

@@ -6,6 +6,6 @@ export interface ILiveChatRepository {
     findLiveChatById(id: number): Promise<LiveChatEntity | null>;
     findLiveChatByUserId(userId: number): Promise<Array<LiveChatEntity>>;
     findLiveChatByDay(day: Date): Promise<Array<LiveChatEntity>>;
-    updateLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity>;
+    updateLiveChat(id: number, entity: LiveChatEntity): Promise<LiveChatEntity>;
     deleteLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity>;
 }

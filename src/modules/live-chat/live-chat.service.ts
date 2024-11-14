@@ -7,6 +7,7 @@ import { ILiveChatService } from "./interfaces/service-interface";
 import { ILiveChatRepository } from "./interfaces/repository-interface";
 import { IUserService } from "../user/interfaces/user.service";
 import { MeetingStatusEnum } from "src/common/enums/enum";
+import { ICourseService } from "../course/interfaces/course.service";
 
 @Injectable()
 export class LiveChatService implements ILiveChatService {
@@ -14,6 +15,7 @@ export class LiveChatService implements ILiveChatService {
     @Inject("ILiveChatRepository")
     private readonly liveChatRepository: ILiveChatRepository,
     @Inject("IUserService") private readonly userService: IUserService,
+    @Inject("ICourseService") private readonly courseService: ICourseService
   ) {}
   async create(
     selectedDate: Date,
@@ -22,6 +24,7 @@ export class LiveChatService implements ILiveChatService {
     const { data: foundUser } = await this.userService.findOneById(
       createLiveChatDto.userId,
     );
+    const { data: foundCourse } = await this.courseService.findOneById(createLiveChatDto.selectedCourseId);
     const newLiveChat = new LiveChatEntity();
     newLiveChat.firstName = createLiveChatDto.firstName;
     newLiveChat.lastName = createLiveChatDto.lastName;
@@ -30,10 +33,11 @@ export class LiveChatService implements ILiveChatService {
     newLiveChat.phoneNumber = createLiveChatDto.phoneNumber;
     newLiveChat.duration = createLiveChatDto.duration;
     newLiveChat.userId = foundUser.id;
-    newLiveChat.selectedMeetingCourse = createLiveChatDto.selectedMeetingCourse;
+    newLiveChat.selectedCourseId = createLiveChatDto.selectedCourseId;
     newLiveChat.selectedDay = selectedDate;
     newLiveChat.selectedTime = createLiveChatDto.selectedTime;
     newLiveChat.status = MeetingStatusEnum.UNPAID;
+    newLiveChat.selectedCourseName = foundCourse.title;
     const createdLiveChat =
       await this.liveChatRepository.createLiveChat(newLiveChat);
     return new ResData<LiveChatEntity>(
@@ -62,17 +66,19 @@ export class LiveChatService implements ILiveChatService {
     updateLiveChatDto: UpdateLiveChatDto,
   ): Promise<ResData<LiveChatEntity>> {
     const { data: foundLiveChat } = await this.findOne(id);
+    const { data: foundCourse } = await this.courseService.findOneById(updateLiveChatDto.selectedCourseId);
     foundLiveChat.firstName = updateLiveChatDto.firstName;
     foundLiveChat.lastName = updateLiveChatDto.lastName;
     foundLiveChat.gender = updateLiveChatDto.gender;
     foundLiveChat.phoneNumber = updateLiveChatDto.phoneNumber;
     foundLiveChat.duration = updateLiveChatDto.duration;
     foundLiveChat.price = updateLiveChatDto.duration * 2000;
-    foundLiveChat.selectedMeetingCourse = updateLiveChatDto.selectedMeetingCourse;
+    foundLiveChat.selectedCourseId = updateLiveChatDto.selectedCourseId;
     foundLiveChat.selectedDay = selectedDay;
     foundLiveChat.selectedTime = updateLiveChatDto.selectedTime;
     foundLiveChat.status = updateLiveChatDto.status;
-    const updatedLiveChat = await this.liveChatRepository.updateLiveChat(foundLiveChat);
+    foundLiveChat.selectedCourseName = foundCourse.title;
+    const updatedLiveChat = await this.liveChatRepository.updateLiveChat(id, foundLiveChat);
     return new ResData<LiveChatEntity>(
       "Live chat updated successfully",
       200,

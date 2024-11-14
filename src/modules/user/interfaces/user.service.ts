@@ -1,8 +1,4 @@
 import { ResData } from "src/lib/resData";
-import {
-  CreateAdminTeacherDto,
-  CreateStudentDto,
-} from "../dto/create-users.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { User } from "../entities/user.entity";
 

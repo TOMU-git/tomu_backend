@@ -8,9 +8,10 @@ import { TariffModule } from "../tariff/tariff.module";
 import { TransactionRepository } from "./transactions.repository";
 import { OrdersModule } from "../orders/orders.module";
 import { LiveChatModule } from "../live-chat/live-chat.module";
+import { UserTariffModule } from "../user-tariff/user-tariff.module";
 
 @Module({
-imports: [TypeOrmModule.forFeature([TransactionEntity]), UserModule,  OrdersModule, LiveChatModule],
+imports: [TypeOrmModule.forFeature([TransactionEntity]), UserModule,  OrdersModule, LiveChatModule, TariffModule, UserTariffModule],
   controllers: [TransactionsController],
   providers: [
     { provide: "ITransactionServcie", useClass: TransactionsService },

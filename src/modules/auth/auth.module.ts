@@ -5,6 +5,7 @@ import { UserModule } from "../user/user.module";
 import { JwtModule } from "@nestjs/jwt";
 import { config } from "src/common/config";
 import { SmsService } from "src/lib/smsService";
+import { CourseModule } from "../course/course.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SmsService } from "src/lib/smsService";
       signOptions: { expiresIn: config.jwtExpiredIn },
     }),
     UserModule,
+    CourseModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, SmsService],
