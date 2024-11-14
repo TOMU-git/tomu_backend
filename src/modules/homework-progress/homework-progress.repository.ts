@@ -274,4 +274,19 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     // homeworkProgress mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
     return homeworkProgress || null;
   }
+
+  /**
+   * Foydalanuvchining barcha ko'rilgan (isWatched = true) homework progresslarini topish.
+   *
+   * @param userId - Foydalanuvchi ID
+   * @returns isWatched = true bo'lgan barcha HomeworkProgress yozuvlari
+   */
+  async findAllWatchedHomeworkByUser(userId: ID): Promise<HomeworkProgress[]> {
+    return await this.homeworkProgressRepository.find({
+      where: {
+        user: { id: userId },
+        isWatched: true,
+      }
+    });
+  }
 }

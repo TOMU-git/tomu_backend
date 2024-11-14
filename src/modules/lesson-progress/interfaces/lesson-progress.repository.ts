@@ -39,4 +39,6 @@ export interface ILessonProgressRepository {
     userId: ID,
     blockOrder: ID,
   ): Promise<LessonProgress>;
+
+  findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]>;
 }
