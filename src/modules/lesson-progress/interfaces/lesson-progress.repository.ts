@@ -6,7 +6,7 @@ export interface ILessonProgressRepository {
   findAll(): Promise<Array<LessonProgress>>;
   findById(id: ID): Promise<LessonProgress | null>;
   findByOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>>;
   isAllLessonWatched(

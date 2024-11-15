@@ -32,12 +32,12 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   async findByOrderAndUserId(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>> {
     return this.lessonProgressRepository.find({
       where: {
-        blockOrder: blockOrder,
+        blockId: blockId,
         userId: userId,
       },
       relations: ["lesson"], // "lesson"ni to'liq olish uchun relations qo'shish

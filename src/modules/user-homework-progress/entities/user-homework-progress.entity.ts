@@ -25,7 +25,13 @@ export class UserHomeworkProgress extends BaseEntity {
    */
   @Column({ type: "int", name: "user_id", nullable: true })
   userId: Number;
-  
+
+  /**
+   * block id si.
+   * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   */
+  @Column({ type: "int", name: "block_id", nullable: true })
+  blockId: Number;
 
   // Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan)
   @Column({
