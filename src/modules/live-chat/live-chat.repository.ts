@@ -2,7 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ILiveChatRepository } from "./interfaces/repository-interface";
 import { LiveChatEntity } from "./entities/live-chat.entity";
 import { Repository } from "typeorm";
-import { MeetingStatusEnum } from "src/common/enums/enum";
+import { GenderEnum, MeetingStatusEnum } from "src/common/enums/enum";
 
 export class LiveChatRepository implements ILiveChatRepository {
     constructor(@InjectRepository(LiveChatEntity) private readonly repository: Repository<LiveChatEntity>) { }
@@ -13,6 +13,10 @@ export class LiveChatRepository implements ILiveChatRepository {
     
     async findAllLiveChats(): Promise<Array<LiveChatEntity>> {
         return this.repository.find({where: {status: MeetingStatusEnum.PAID}});
+    }
+
+    async findLiveChatsByCourseIdAndGender(courseId: number, gender: GenderEnum): Promise<LiveChatEntity[]> {
+        return await this.repository.find({ where: [{ selectedCourseId: courseId }, { gender }] })
     }
     
     async findLiveChatById(id: number): Promise<LiveChatEntity | null> {
