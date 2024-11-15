@@ -9,16 +9,16 @@ import {
   ParseIntPipe,
   Inject,
 } from "@nestjs/common";
-import { LiveChatService } from "./live-chat.service";
 import { CreateLiveChatDto } from "./dto/create-live-chat.dto";
 import { UpdateLiveChatDto } from "./dto/update-live-chat.dto";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ParseDatePipe } from "src/common/pipes/date-check";
+import { ILiveChatService } from "./interfaces/service-interface";
 
 @ApiTags('live-chat')
 @Controller("live-chat")
 export class LiveChatController {
-  constructor(@Inject("ILiveChatService") private readonly liveChatService: LiveChatService) {}
+  constructor(@Inject("ILiveChatService") private readonly liveChatService: ILiveChatService) {}
 
 //// *** Create live-chat form *** ////
 
@@ -39,8 +39,16 @@ export class LiveChatController {
     return await this.liveChatService.findAll();
   }
 
+  @ApiOperation({ summary: "Find all live chats by teacher id and gender" })
+  @Get('teacher/:teacherId')
+    async foundTeacherLiveChats(
+      @Param("teacherId", ParseIntPipe) teacherId: number,
+    ) {
+      return await this.liveChatService.findTeacherLivechats(teacherId);
+    }
 
-  //// *** Get single live-chat form by id *** ////
+
+//// *** Get single live-chat form by id *** ////
   @ApiOperation({summary: "Get a live-chat form by id"})
   @Get(":id")
   findOne(@Param("id", ParseIntPipe) id: number) {
