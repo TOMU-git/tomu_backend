@@ -5,37 +5,43 @@ import { Repository } from "typeorm";
 import { GenderEnum, MeetingStatusEnum } from "src/common/enums/enum";
 
 export class LiveChatRepository implements ILiveChatRepository {
-    constructor(@InjectRepository(LiveChatEntity) private readonly repository: Repository<LiveChatEntity>) { }
-    
-    async createLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
-        return this.repository.save(entity);
-    }
-    
-    async findAllLiveChats(): Promise<Array<LiveChatEntity>> {
-        return this.repository.find({where: {status: MeetingStatusEnum.PAID}});
-    }
+  constructor(
+    @InjectRepository(LiveChatEntity)
+    private readonly repository: Repository<LiveChatEntity>,
+  ) {}
 
-    async findLiveChatsByCourseIdAndGender(courseId: number, gender: GenderEnum): Promise<LiveChatEntity[]> {
-        return await this.repository.find({ where: [{ selectedCourseId: courseId }, { gender }] })
-    }
-    
-    async findLiveChatById(id: number): Promise<LiveChatEntity | null> {
-        return this.repository.findOneBy({ id });
-    }
-    
-    async findLiveChatByUserId(userId: number): Promise<Array<LiveChatEntity>> {
-        return this.repository.find({ where: { userId } });
-    }
-    
-    async findLiveChatByDay(day: Date): Promise<Array<LiveChatEntity>> {
-        return this.repository.find({ where: { selectedDay: day } });
-    }
-    
-    async updateLiveChat(id: number, entity: LiveChatEntity): Promise<any> {
-        return this.repository.update(id, entity);
-    }
-    
-    async deleteLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
-        return this.repository.remove(entity);
-    }
+  async createLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
+    return this.repository.save(entity);
+  }
+
+  async findAllLiveChats(): Promise<Array<LiveChatEntity>> {
+    return this.repository.find({ where: { status: MeetingStatusEnum.PAID } });
+  }
+
+  async findLiveChatsByCourseIdAndGender(
+    courseId: number,
+    genderr: GenderEnum,
+  ): Promise<LiveChatEntity[]> {
+      return await this.repository.find({ where: [{ selectedCourseId: courseId, gender: genderr, isAccepted: false, status: MeetingStatusEnum.PAID}]})
+  }
+
+  async findLiveChatById(id: number): Promise<LiveChatEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async findLiveChatByUserId(userId: number): Promise<Array<LiveChatEntity>> {
+    return this.repository.find({ where: { userId } });
+  }
+
+  async findLiveChatByDay(day: Date): Promise<Array<LiveChatEntity>> {
+    return this.repository.find({ where: { selectedDay: day } });
+  }
+
+  async updateLiveChat(id: number, entity: LiveChatEntity): Promise<any> {
+    return this.repository.update(id, entity);
+  }
+
+  async deleteLiveChat(entity: LiveChatEntity): Promise<LiveChatEntity> {
+    return this.repository.remove(entity);
+  }
 }

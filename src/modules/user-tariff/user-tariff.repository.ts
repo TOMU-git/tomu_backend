@@ -22,6 +22,10 @@ export class UserTariffRepository implements IUserTariffRepository {
   async findByUserId(userId: number): Promise<UserTariff[]> {
     return await this.userTariffRepository.find({where: {userId}})
   }
+
+  async findOneByTariffId(tarifId: number): Promise<UserTariff> {
+    return await this.userTariffRepository.findOneBy({ tariffId: tarifId });
+  }
   async findOneById(id: number): Promise<UserTariff> {
     return this.userTariffRepository.findOneBy({ id });
   }
@@ -32,9 +36,10 @@ export class UserTariffRepository implements IUserTariffRepository {
   }
 
   // DELETE
-  async delete(id: number): Promise<UserTariff> {
-    const foundUserTariff = await this.findOneById(id);
-    await this.userTariffRepository.delete({ id });
-    return foundUserTariff;
+  async delete(entity: UserTariff): Promise<any> {
+    const entityId = entity.id;
+    const deleted = await this.userTariffRepository.remove(entity);
+    deleted.id = entityId;
+    return deleted;
   }
 }

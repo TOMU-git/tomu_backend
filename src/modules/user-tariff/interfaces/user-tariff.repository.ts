@@ -6,5 +6,6 @@ export interface IUserTariffRepository {
   findOneById(id: number): Promise<UserTariff>;
   findByUserId(userId: number): Promise<UserTariff[]>;
   update(entity: UserTariff): Promise<UserTariff>;
-  delete(id: number): Promise<UserTariff>;
+  delete(entity: UserTariff): Promise<any>;
+  findOneByTariffId(id: number): Promise<UserTariff>;
 }

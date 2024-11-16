@@ -53,6 +53,6 @@ export class UserTariffController {
 
   @Delete("delete/:id")
   async delete(@Param("id", ParseIntPipe) id: ID) {
-    return await this.userTariffService.delete(id);
+    return await this.userTariffService.remove(id);
   }
 }

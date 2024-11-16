@@ -98,9 +98,9 @@ export class UserTariffService implements IUserTariffService {
   }
 
   // DELETE
-  async delete(id: number): Promise<ResData<UserTariff>> {
-    await this.findOne(id);
-    const deletedUserTariff = await this.userTariffRepository.delete(id);
+  async remove(id: number): Promise<ResData<UserTariff>> {
+    const { data: foundUserTariff } = await this.findOne(id);
+    const deletedUserTariff = await this.userTariffRepository.delete(foundUserTariff);
     return new ResData<UserTariff>(
       "User Tariff deleted successfully",
       200,
