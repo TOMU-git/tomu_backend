@@ -11,3 +11,9 @@ export class BlockAlreadyExistException extends HttpException {
     super("Block already exist", 400);
   }
 }
+
+export class BlockOrderExistException extends HttpException {
+  constructor() {
+    super("Block order already exist", 400);
+  }
+}

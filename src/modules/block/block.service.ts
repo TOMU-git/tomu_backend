@@ -8,7 +8,10 @@ import { ID } from "src/common/types/type";
 import { IBlockService } from "./interfaces/block.service";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { ICourseRepository } from "../course/interfaces/course.repository";
-import { BlockNotFoundException } from "./exception/block.exception";
+import {
+  BlockNotFoundException,
+  BlockOrderExistException,
+} from "./exception/block.exception";
 
 @Injectable()
 export class BlockService implements IBlockService {
@@ -27,6 +30,16 @@ export class BlockService implements IBlockService {
     );
     if (!course) {
       throw new CourseNotFoundException();
+    }
+
+    const orderExist = await this.blockRepository.findByOderCourseIdAndCategory(
+      course.id,
+      createBlockDto.category,
+      createBlockDto.order,
+    );
+
+    if (orderExist) {
+      throw new BlockOrderExistException();
     }
 
     // Yangi blokni yaratish, dars videolarini tekshirish shart emas
@@ -94,6 +107,15 @@ export class BlockService implements IBlockService {
     const block = await this.blockRepository.findById(id);
     if (!block) {
       throw new BlockNotFoundException();
+    }
+
+    const orderExist = await this.blockRepository.findByOderCourseIdAndCategory(
+      updateBlockDto.courseId,
+      updateBlockDto.category,
+      updateBlockDto.order,
+    );
+    if (orderExist) {
+      throw new BlockOrderExistException();
     }
 
     // Blokni yangilash, lessonlarni tekshirish shart emas

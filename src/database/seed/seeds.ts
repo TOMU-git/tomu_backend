@@ -482,7 +482,7 @@ import { createConnection, DataSource } from "typeorm";
         "Bu kursda siz ingliz tilini noldan o'rganasiz"),
       (newCourse1.imageUrl =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuw4SisfKz7VDl50u52ZTV5DN0dPlkF4FCDg&s"),
-      (newCourse1.videoUrl = "https://player.vimeo.com/video/1022477217"),
+      (newCourse1.videoUrl = "https://player.vimeo.com/videos/1029577409"),
       (newCourse1.mimetype = "image/png"),
       (newCourse1.size = 296345);
     newCourse1.isActive = true;
@@ -493,7 +493,7 @@ import { createConnection, DataSource } from "typeorm";
       (newCourse2.description = "Bu kursda siz Arab tilini noldan o'rganasiz"),
       (newCourse2.imageUrl =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbrFmJFjnSqocKv6BweSGHkzxuQ1OSjx0TiA&s"),
-      (newCourse2.videoUrl = "https://player.vimeo.com/video/1022477217"),
+      (newCourse2.videoUrl = "https://player.vimeo.com/videos/1029577409"),
       (newCourse2.mimetype = "image/png"),
       (newCourse2.size = 346345);
     newCourse2.isActive = true;
@@ -504,7 +504,7 @@ import { createConnection, DataSource } from "typeorm";
       (newCourse3.description = "Bu kursda siz Rus tilini noldan o'rganasiz"),
       (newCourse3.imageUrl =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTszlTQupC4fixin_ZRwLE4w3HkdP1Yg5j_Nw&s"),
-      (newCourse3.videoUrl = "https://player.vimeo.com/video/1022477217"),
+      (newCourse3.videoUrl = "https://player.vimeo.com/videos/1029577409"),
       (newCourse3.mimetype = "image/png"),
       (newCourse3.size = 231110);
     newCourse3.isActive = true;
