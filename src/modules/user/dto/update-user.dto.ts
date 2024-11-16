@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsString, IsOptional} from "class-validator";
+import { IsEnum, IsNotEmpty, IsString, IsOptional, IsInt} from "class-validator";
 import { GenderEnum, RoleEnum } from "src/common/enums/enum";
 
 export class UpdateUserDto {
@@ -27,4 +27,12 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   password: string;
+
+  @ApiProperty({
+    type: Number,
+    description: 'For only teacher role'
+  })
+  @IsOptional()
+  @IsInt()
+  courseId: number;
 }

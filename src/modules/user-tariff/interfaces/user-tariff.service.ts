@@ -15,6 +15,6 @@ export interface IUserTariffService {
 
   findOne(id: ID): Promise<ResData<UserTariff>>;
 
-  delete(id: ID): Promise<ResData<UserTariff>>;
+  remove(id: ID): Promise<ResData<UserTariff>>;
   update(id: ID, dto: UpdateUserTariffDto): Promise<ResData<UserTariff>>;
 }

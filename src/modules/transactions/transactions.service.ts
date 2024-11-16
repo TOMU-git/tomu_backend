@@ -249,7 +249,7 @@ export class TransactionsService implements ITransactionService {
       perform_time: currentTime,
       transaction: transaction.id,
       state: TransactionStateEnum.PAID,
-    };
+    }
   }
   async cancelTransaction(
     params: PaymeParams,
@@ -273,20 +273,18 @@ export class TransactionsService implements ITransactionService {
       );
       foundOrder.status = OrderStatus.CANCELED;
       await this.orderRepository.update(foundOrder);
-    }
-    if (foundOrder.tariffId) {
-      const foundTariff = await this.tariffRepository.findOneById(
-        Number(foundOrder.tariffId),
-      );
-      await this.tariffRepository.delete(foundTariff.id);
-    }
-    
+    }    
     if (foundOrder.liveChatId) {
       const foundLiveChat = await this.liveChatRepository.findLiveChatById(
         Number(foundOrder.liveChatId),
       );
       foundLiveChat.status = MeetingStatusEnum.UNPAID;
       await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
+    }
+
+    if (foundOrder.tariffId) {
+      const foundUserTariff = await this.userTariffRepository.findOneByTariffId(foundOrder.tariffId);
+      await this.userTariffRepository.delete(foundUserTariff);
     }
     foundOrder.status = OrderStatus.CANCELED;
     await this.orderRepository.update(foundOrder);
