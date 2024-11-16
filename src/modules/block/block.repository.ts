@@ -62,6 +62,20 @@ export class BlockRepository implements IBlockRepository {
     return await this.blockRepository.findOneBy({ title });
   }
 
+  async findByOderCourseIdAndCategory(
+    courseId: number,
+    category: HomeworkEnum,
+    order: number,
+  ): Promise<Block> {
+    return this.blockRepository.findOne({
+      where: {
+        course: { id: courseId },
+        category: category,
+        order: order,
+      },
+    });
+  }
+
   // Berilgan courseId va HOMEWORK kategoriyasiga mos Block'larni order bo‘yicha tartiblab olish
   async getBlocksHomeworksByCourseId(courseId: number): Promise<Array<Block>> {
     return this.blockRepository.find({
