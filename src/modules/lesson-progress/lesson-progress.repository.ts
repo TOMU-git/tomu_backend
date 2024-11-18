@@ -51,13 +51,15 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Oxirgi ko'rilgan Lessonk tartibi yoki null
    */
-  async findLastWatchedLessonOrderByUserIdAndBlockOrder(
+  async findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
     userId: ID,
+    courseId: ID,
     blockOrder: ID,
   ): Promise<number | null> {
     const lastWatchedProgress = await this.lessonProgressRepository.findOne({
       where: {
         userId: userId,
+        courseId: courseId,
         isWatched: true,
         blockOrder: LessThanOrEqual(blockOrder),
       },
@@ -72,15 +74,17 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
-  async findHighestLessonOrderByUserAndBlock(
+  async findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
     blockOrder: ID,
     userId: ID,
+    courseId: ID,
   ): Promise<number | null> {
     const result = await this.lessonProgressRepository
       .createQueryBuilder("lessonProgress")
       .select("lessonProgress.lessonOrder", "lessonOrder")
       .where("lessonProgress.blockOrder = :blockOrder", { blockOrder })
       .andWhere("lessonProgress.userId = :userId", { userId })
+      .andWhere("lessonProgress.courseId = :courseId", { courseId })
       .orderBy("lessonProgress.lessonOrder", "DESC")
       .getRawOne();
 

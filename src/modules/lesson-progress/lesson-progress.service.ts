@@ -103,8 +103,9 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     const lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
+      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
         updateDto.userId,
+        updateDto.courseId,
         updateDto.blockOrder,
       );
 
@@ -244,9 +245,10 @@ export class LessonProgressService implements ILessonProgressService {
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =
-      await this.lessonProgressRepository.findHighestLessonOrderByUserAndBlock(
+      await this.lessonProgressRepository.findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
         blockOrder,
         userId,
+        block.course.id,
       );
 
     // lastLessonOrder dan keyingi 5 darsni olish
@@ -280,6 +282,7 @@ export class LessonProgressService implements ILessonProgressService {
       newLessonProgress.userId = userId;
       newLessonProgress.blockId = blockId;
       newLessonProgress.lesson = lesson;
+      newLessonProgress.courseId = block.course.id;
       newLessonProgress.blockOrder = block.order;
       newLessonProgress.lessonOrder = lesson.order;
 

@@ -19,14 +19,16 @@ export interface ILessonProgressRepository {
     lessonId: ID,
   ): Promise<LessonProgress | null>;
   update(dto: LessonProgress): Promise<LessonProgress>;
-  findHighestLessonOrderByUserAndBlock(
+  findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
     blockOrder: ID,
     userId: ID,
-  ): Promise<number | null>;
-  findLastWatchedLessonOrderByUserIdAndBlockOrder(
+    courseId: ID,
+  ): Promise<number | null>
+  findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
     userId: ID,
+    courseId: ID,
     blockOrder: ID,
-  ): Promise<number | null>;
+  ): Promise<number | null>
 
   existsLessonProgress(
     lessonOrder: ID,

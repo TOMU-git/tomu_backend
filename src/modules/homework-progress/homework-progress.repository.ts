@@ -261,7 +261,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
-  // something
+  //
 
   async getHomeworkProgress(
     homeworkOrder: ID,
