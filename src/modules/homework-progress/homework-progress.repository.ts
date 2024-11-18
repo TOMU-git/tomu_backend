@@ -261,6 +261,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
+<<<<<<< Updated upstream
+=======
+  //
+
+>>>>>>> Stashed changes
   async getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
