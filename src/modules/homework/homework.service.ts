@@ -126,7 +126,7 @@ export class HomeworkService implements IHomeworkService {
       updateHomeworkDto.order,
       updateHomeworkDto.blockId,
     );
-    if (orderExist) {
+    if (orderExist && foundData.order !== updateHomeworkDto.order ) { 
       throw new HomeworkOrderAlreadyExistException();
     }
 
