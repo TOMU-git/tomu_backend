@@ -18,4 +18,5 @@ export interface IHomeworkService {
   ): Promise<ResData<Homework>>;
   getNextFiveVideos(order: ID, blockId: ID): Promise<ResData<Array<Homework>>>;
   delete(id: ID): Promise<ResData<Homework>>;
+  getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>>;
 }
