@@ -59,7 +59,7 @@ export class HomeworkService implements IHomeworkService {
     // Video faylni yuklaydi va tegishli ma'lumotlarni saqlaydi
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
-      createHomeworkDto.description,
+      createHomeworkDto.title,
       "Dars videosi",
     );
 
@@ -140,14 +140,14 @@ export class HomeworkService implements IHomeworkService {
 
     // Homework ma'lumotlarini yangilaydi
     foundData.order = updateHomeworkDto.order;
-    foundData.description = updateHomeworkDto.description;
+    foundData.title = updateHomeworkDto.title;
     foundData.block = block;
 
     // Yangi video fayl mavjud bo'lsa, yuklaydi
     if (file) {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
-        updateHomeworkDto.description,
+        updateHomeworkDto.title,
         "Dars videosi",
       );
 
@@ -164,6 +164,20 @@ export class HomeworkService implements IHomeworkService {
       updatedData,
     );
   }
+
+    /**
+   * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
+   * @param blockId Blok ID'si
+   * @returns Blokga tegishli darslar
+   */
+    async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
+      const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+      return new ResData<Homework[]>(
+        "Homeworks by blockId fetched successfully",
+        200,
+        homeworks,
+      );
+    }
 
   /**
    * Keyingi 5 ta videoni oladi.

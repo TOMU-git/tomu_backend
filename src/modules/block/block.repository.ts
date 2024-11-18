@@ -43,20 +43,6 @@ export class BlockRepository implements IBlockRepository {
     });
   }
 
-  async findByIdWithHomeworks(id: ID): Promise<Block | null> {
-    return await this.blockRepository.findOne({
-      where: { id },
-      relations: ["homeworks"], // homework bilan bog'liq ma'lumotlarni olish
-    });
-  }
-
-  async findByIdWithLessons(id: ID): Promise<Block | null> {
-    return await this.blockRepository.findOne({
-      where: { id },
-      relations: ["lesson"], // lesson bilan bog'liq ma'lumotlarni olish
-    });
-  }
-
   // Nom bo‘yicha Block ma'lumotini topish
   async findOneByName(title: string): Promise<Block | null> {
     return await this.blockRepository.findOneBy({ title });
