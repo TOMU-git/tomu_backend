@@ -133,6 +133,13 @@ export class LessonService implements ILessonService {
    */
   async getLessonsByBlockId(blockId: ID): Promise<ResData<Lesson[]>> {
     const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
+    if(lessons.length === 0){
+      return new ResData<Lesson[]>(
+        `No any videos in this blockId: ${blockId} `,
+        200,
+        lessons,
+      );
+    }
     return new ResData<Lesson[]>(
       "Lessons by blockId fetched successfully",
       200,
