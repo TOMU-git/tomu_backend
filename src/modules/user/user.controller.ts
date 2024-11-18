@@ -25,11 +25,6 @@ export class UserController {
   ) {}
   // *** Getting all available users *** //
   // @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
-  @Get()
-  async findAll() {
-    return await this.userService.findAll();
-  }
-
   @ApiQuery({
     name: 'search',
     required: false,
@@ -48,9 +43,9 @@ export class UserController {
     type: Number,
     description: 'For page'
   })
-  @Get("/phone-number")
-  async findUsersByPhoneNumber(@Query('search') search: string, @Query('limit') limit: number, @Query('page') page: number) {
-    return await this.userService.findByPhoneNumber(search, limit, page);
+  @Get()
+  async findAll(@Query('search') search: string, @Query('limit') limit: number, @Query('page') page: number) {
+    return await this.userService.findAll(search, limit, page);
   }
 
   // *** Getting user by id *** //

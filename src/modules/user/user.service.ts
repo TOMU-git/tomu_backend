@@ -15,25 +15,6 @@ export class UserService implements IUserService {
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
   ) {}
 
-  // *** Find user by phone number *** //
-
-  async findByPhoneNumber(search: string, limit: number, page: number): Promise<ResData<User[]>> {
-    limit = limit > 0 ? limit : 10;
-    page = page > 0 ? page : 1;
-    page = (page - 1) * limit;
-    const foundUserByPhone = await this.userRepository.findByPhoneNumber(search, limit, page);
-    const resData = new ResData<User[]>(
-      "User found successfully",
-      200,
-      foundUserByPhone,
-    );
-    if (!foundUserByPhone) {
-      resData.message = "User not found by phone number";
-      resData.statusCode = 400;
-    }
-    return resData;
-  }
-
   // *** Find user by phone number (only returns one) *** //
 
   async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
@@ -51,8 +32,11 @@ export class UserService implements IUserService {
   }
   // *** Find all available users *** //
 
-  async findAll(): Promise<ResData<User[]>> {
-    const foundUsers = await this.userRepository.findAll();
+  async findAll(search: string, limit: number, page: number): Promise<ResData<User[]>> {
+    limit = limit > 0 ? limit : 10;
+    page = page > 0 ? page : 1;
+    page = (page - 1) * limit;
+    const foundUsers = await this.userRepository.findAll(search, limit, page);
     return new ResData<User[]>("Users found successfully", 200, foundUsers);
   }
 
