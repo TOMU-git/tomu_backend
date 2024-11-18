@@ -6,7 +6,7 @@ export class UpdateHomeworkDto {
   @ApiPropertyOptional({})
   @IsString()
   @IsOptional()
-  description?: string;
+  title?: string;
 
   @ApiPropertyOptional({
     type: 'string',

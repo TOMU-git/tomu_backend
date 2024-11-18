@@ -5,7 +5,7 @@ import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateHomeworkDto {
   @ApiProperty({})
   @IsString()
-  description: string;
+  title: string;
 
   @ApiPropertyOptional({
     type: 'string',
