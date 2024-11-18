@@ -3,7 +3,6 @@ import { ILessonProgressService } from "./interfaces/lesson-progress.service";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { LessonProgress } from "./entities/lesson-progress.entity";
-import { CreateLessonProgressDto } from "./dto/create-lesson-progress.dto";
 import {
   LessonProgressAlreadyExistException,
   LessonProgressNotFoundException,
@@ -38,44 +37,6 @@ export class LessonProgressService implements ILessonProgressService {
     private readonly blockService: IBlockService,
   ) {}
 
-  async create(dto: CreateLessonProgressDto): Promise<ResData<LessonProgress>> {
-    // User va lesson mavjudligini tekshirish
-    const { data: foundUser } = await this.userService.findOneById(dto.userId); // UserService orqali foydalanuvchini topamiz
-
-    const { data: foundLesson } = await this.lessonService.findOneById(
-      dto.lessonId,
-    ); // LessonService orqali darsni topamiz
-
-    const { data: foundBlock } = await this.blockService.findOneById(
-      dto.blockId,
-    ); // BlockService orqali block topamiz
-
-    // Darsning foydalanuvchiga bog'langan yozuvi borligini tekshirish
-    const foundData =
-      await this.lessonProgressRepository.findOneByUserAndLesson(
-        dto.userId,
-        dto.lessonId,
-      );
-    if (foundData) {
-      throw new LessonProgressAlreadyExistException();
-    }
-
-    let newLessonProgress = new LessonProgress();
-    (newLessonProgress.blockOrder = foundBlock.order),
-      (newLessonProgress.user = foundUser),
-      (newLessonProgress.lesson = foundLesson),
-      (newLessonProgress.lessonOrder = foundLesson.order),
-      (newLessonProgress = Object.assign(newLessonProgress, dto));
-    const newData =
-      await this.lessonProgressRepository.create(newLessonProgress);
-
-    return new ResData<LessonProgress>(
-      "Lesson progress created successfully",
-      201,
-      newData,
-    );
-  }
-
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     const data = await this.lessonProgressRepository.findAll();
 
@@ -103,7 +64,7 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     const lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
+      await this.lessonProgressRepository.findLastWatchedLesson(
         updateDto.userId,
         updateDto.courseId,
         updateDto.blockOrder,
@@ -115,7 +76,7 @@ export class LessonProgressService implements ILessonProgressService {
       await this.lessonProgressRepository.existsLessonProgress(
         nextLessonOrder,
         updateDto.userId,
-        updateDto.blockOrder,
+        updateDto.courseId,
       );
 
     if (existingProgress) {
@@ -123,7 +84,7 @@ export class LessonProgressService implements ILessonProgressService {
       await this.lessonProgressRepository.markLessonAsWatched(
         nextLessonOrder,
         updateDto.userId,
-        updateDto.blockOrder,
+        updateDto.blockId
       );
     }
 
@@ -245,7 +206,7 @@ export class LessonProgressService implements ILessonProgressService {
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =
-      await this.lessonProgressRepository.findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
+      await this.lessonProgressRepository.findMaxLessonOrder(
         blockOrder,
         userId,
         block.course.id,

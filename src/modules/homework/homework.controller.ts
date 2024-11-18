@@ -92,6 +92,13 @@ export class HomeworkController {
     return await this.homeworkService.findOneById(id);
   }
 
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
+  @Get("by-block/:blockId")
+  async getByBlockId(
+    @Param("blockId", ParseIntPipe) blockId: number,
+  ): Promise<ResData<Homework[]>> {
+    return await this.homeworkService.getHomeworksByBlockId(blockId);
+  }
   // @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Patch(":id")
   @ApiConsumes("multipart/form-data")

@@ -13,34 +13,35 @@ export interface ILessonProgressRepository {
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,
-  ): Promise<boolean>;
+    courseId: ID,
+  ): Promise<boolean>
   findOneByUserAndLesson(
     userId: ID,
     lessonId: ID,
   ): Promise<LessonProgress | null>;
   update(dto: LessonProgress): Promise<LessonProgress>;
-  findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
+  findMaxLessonOrder(
     blockOrder: ID,
     userId: ID,
     courseId: ID,
-  ): Promise<number | null>
-  findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
+  ): Promise<number | null>;
+  findLastWatchedLesson(
     userId: ID,
     courseId: ID,
     blockOrder: ID,
-  ): Promise<number | null>
+  ): Promise<number | null>;
 
   existsLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    courseId: ID,
   ): Promise<boolean>;
 
   markLessonAsWatched(
     lessonOrder: ID,
     userId: ID,
-    blockOrder: ID,
-  ): Promise<LessonProgress>;
+    blockId: ID,
+  ): Promise<LessonProgress> 
 
   findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]>;
 }

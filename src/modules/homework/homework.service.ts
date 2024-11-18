@@ -59,7 +59,7 @@ export class HomeworkService implements IHomeworkService {
     // Video faylni yuklaydi va tegishli ma'lumotlarni saqlaydi
     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
       file.buffer,
-      createHomeworkDto.description,
+      createHomeworkDto.title,
       "Dars videosi",
     );
 
@@ -126,7 +126,7 @@ export class HomeworkService implements IHomeworkService {
       updateHomeworkDto.order,
       updateHomeworkDto.blockId,
     );
-    if (orderExist) {
+    if (orderExist && foundData.order !== updateHomeworkDto.order ) { 
       throw new HomeworkOrderAlreadyExistException();
     }
 
@@ -140,14 +140,14 @@ export class HomeworkService implements IHomeworkService {
 
     // Homework ma'lumotlarini yangilaydi
     foundData.order = updateHomeworkDto.order;
-    foundData.description = updateHomeworkDto.description;
+    foundData.title = updateHomeworkDto.title;
     foundData.block = block;
 
     // Yangi video fayl mavjud bo'lsa, yuklaydi
     if (file) {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
-        updateHomeworkDto.description,
+        updateHomeworkDto.title,
         "Dars videosi",
       );
 
@@ -158,12 +158,34 @@ export class HomeworkService implements IHomeworkService {
     }
 
     const updatedData = Object.assign(foundData, updateHomeworkDto);
+    const data = await this.homeworkRepository.update(updatedData)
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
-      updatedData,
+      data,
     );
   }
+
+    /**
+   * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
+   * @param blockId Blok ID'si
+   * @returns Blokga tegishli darslar
+   */
+    async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
+      const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+      if(homeworks.length === 0){
+        return new ResData<Homework[]>(
+          `No any videos in this blockId: ${blockId} `,
+          200,
+          homeworks,
+        );
+      }
+      return new ResData<Homework[]>(
+        "Homeworks by blockId fetched successfully",
+        200,
+        homeworks,
+      );
+    }
 
   /**
    * Keyingi 5 ta videoni oladi.

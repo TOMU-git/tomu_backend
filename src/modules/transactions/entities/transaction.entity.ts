@@ -12,6 +12,12 @@ export class TransactionEntity {
   @Column({ name: "order_id", type: "integer", nullable: false })
   orderId: number;
 
+  @Column({ name: 'livechat_id', type: 'int', nullable: true, default: null })
+  liveChatId: number;
+
+  @Column({ name: 'tariff_id', type: 'int', nullable: true, default: null })
+  tariffId: number;
+
   @Column({
     name: "state",
     type: "enum",

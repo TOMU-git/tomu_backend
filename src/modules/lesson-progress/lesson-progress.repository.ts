@@ -18,6 +18,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return newLessonProgress;
   }
 
+  // berilgan userId va lessonId ga mos lessonProgressni topish
   async findOneByUserAndLesson(
     userId: ID,
     lessonId: ID,
@@ -31,6 +32,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     });
   }
 
+  // berilgan userId va blockId ga mos lessonProgressnilarni topish
   async findByOrderAndUserId(
     blockId: ID,
     userId: ID,
@@ -51,7 +53,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Oxirgi ko'rilgan Lessonk tartibi yoki null
    */
-  async findLastWatchedLessonOrderByUserIdAndBlockOrderAndCourseId(
+  async findLastWatchedLesson(
     userId: ID,
     courseId: ID,
     blockOrder: ID,
@@ -74,7 +76,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
-  async findHighestLessonOrderByUserIdAndBlockOrderAndCourseId(
+  async findMaxLessonOrder(
     blockOrder: ID,
     userId: ID,
     courseId: ID,
@@ -95,10 +97,12 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     blockOrder: ID,
     lessonOrder: ID,
     userId: ID,
+    courseId: ID,
   ): Promise<boolean> {
     const lessonProgresses = await this.lessonProgressRepository.find({
       where: {
         blockOrder: blockOrder,
+        courseId: courseId,
         lessonOrder: LessThanOrEqual(lessonOrder),
         user: { id: userId },
       },
@@ -132,11 +136,11 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async existsLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    courseId: ID,
   ): Promise<boolean> {
-    // lessonOrder, userId, va blockOrder bo'yicha lesson progress yozuvini qidiramiz
+    // lessonOrder, userId, va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockOrder },
+      where: { lessonOrder, userId, courseId },
     });
 
     // Ma'lumot mavjud bo'lsa true, bo'lmasa false qaytaradi
@@ -149,19 +153,18 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    *
    * @param lessonOrder - Lessonkning tartib raqami
    * @param userId - Foydalanuvchi ID si
-   * @param blockOrder - Blokning tartib raqami
+   * @param blockId - Blokning tartib raqami
    * @returns Yangilangan `LessonkProgress` yozuvi
    * @throws Error Agar `LessonkProgress` topilmasa
    */
   async markLessonAsWatched(
     lessonOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<LessonProgress> {
-    // lessonOrder, userId, va blockOrder bo'yicha lesson progress yozuvini topamiz
+    // lessonOrder, userId, va blockId bo'yicha lesson progress yozuvini topamiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockOrder },
-      relations: ["user", "lesson"], // agar user va lesson bog'lanishini olishni xohlasangiz
+      where: { lessonOrder, userId, blockId },
     });
 
     if (lessonProgress) {

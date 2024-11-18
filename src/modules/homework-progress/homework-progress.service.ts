@@ -305,6 +305,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockOrder,
         lastWatchedHomeworkOrder,
         userId,
+        foundBlock.course.id
       );
     // Agar mavjud progress 5 dan kam, lekin 1 dan katta bo'lsa, cache'dan olish
     if (existingProgress.length < 5 && existingProgress.length > 1) {

@@ -37,6 +37,14 @@ export class HomeworkRepository implements IHomeworkRepository {
     return await this.homeworkRepository.remove(entity);
   }
 
+  async findHomeworksByBlockId(blockId: ID): Promise<Homework[]> {
+    return await this.homeworkRepository.find({
+      where: { block: { id: blockId } },
+      relations: ["block"],
+      order: { order: "ASC" },
+    });
+  }
+
   async findById(id: ID): Promise<Homework | null> {
     return await this.homeworkRepository
       .createQueryBuilder("homework")
@@ -85,6 +93,6 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findOneByName(title: string): Promise<Homework | null> {
-    return await this.homeworkRepository.findOneBy({ description: title });
+    return await this.homeworkRepository.findOneBy({ title: title });
   }
 }

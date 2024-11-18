@@ -31,4 +31,11 @@ export class UpdateLessonProgressDto {
   @IsNotEmpty()
   @IsInt()
   courseId: number;
+
+  @ApiProperty({
+    type: Number,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  blockId: number;
 }
