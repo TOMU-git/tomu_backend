@@ -7,7 +7,7 @@ export class UserLivechatEntity extends BaseEntity {
   @Column({ name: "user_id", type: "int", nullable: false })
   userId: number;
 
-  @Column({ name: "live_chat_id", type: "int", nullable: false })
+  @Column({ name: "live_chat_id", type: "int", nullable: false, unique: true })
   liveChatId: number;
 
   @Column({ name: "teacher_id", type: "int", nullable: false })
