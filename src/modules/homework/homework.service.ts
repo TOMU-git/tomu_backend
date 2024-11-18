@@ -172,6 +172,13 @@ export class HomeworkService implements IHomeworkService {
    */
     async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
       const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+      if(homeworks.length === 0){
+        return new ResData<Homework[]>(
+          `No any videos in this blockId: ${blockId} `,
+          200,
+          homeworks,
+        );
+      }
       return new ResData<Homework[]>(
         "Homeworks by blockId fetched successfully",
         200,
