@@ -8,10 +8,11 @@ import {
   Inject,
   ParseIntPipe,
   Post,
+  Query,
 } from "@nestjs/common";
 
 import { IUserService } from "./interfaces/user.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiQuery, ApiTags } from "@nestjs/swagger";
 import { SearchUserByPhoneNumber } from "./dto/create-users.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Auth } from "src/common/decorator/auth.decorator";
@@ -29,9 +30,27 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Post("/phone-number")
-  async findUsersByPhoneNumber(@Body() data: SearchUserByPhoneNumber) {
-    return await this.userService.findOneByPhoneNumber(data.phoneNumber);
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'For search'
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'For limit'
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'For page'
+  })
+  @Get("/phone-number")
+  async findUsersByPhoneNumber(@Query('search') search: string, @Query('limit') limit: number, @Query('page') page: number) {
+    return await this.userService.findByPhoneNumber(search, limit, page);
   }
 
   // *** Getting user by id *** //

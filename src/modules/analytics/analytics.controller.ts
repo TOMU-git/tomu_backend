@@ -1,9 +1,10 @@
 import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { AnalyticsService } from './analytics.service';
 import { Auth } from 'src/common/decorator/auth.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RoleEnum } from 'src/common/enums/enum';
 
+@ApiTags('analytics')
 @Controller('analytics')
 export class AnalyticsController {
   constructor(@Inject("IAnalyticsService") private readonly analyticsService: AnalyticsService) {}

@@ -5,6 +5,7 @@ import { User } from "../entities/user.entity";
 export interface IUserService {
   updateUser(id: number, dto: UpdateUserDto): Promise<ResData<User>>;
   findOneById(id: number): Promise<ResData<User>>;
+  findByPhoneNumber(search: string, limit: number, page: number): Promise<ResData<User[]>>;
   findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>>;
   findAll(): Promise<ResData<User[]>>;
   deleteUser(id: number): Promise<ResData<User>>;

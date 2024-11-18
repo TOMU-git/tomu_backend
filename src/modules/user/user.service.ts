@@ -17,10 +17,12 @@ export class UserService implements IUserService {
 
   // *** Find user by phone number *** //
 
-  async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
-    const foundUserByPhone =
-      await this.userRepository.findByPhoneNumber(phoneNumber);
-    const resData = new ResData<User>(
+  async findByPhoneNumber(search: string, limit: number, page: number): Promise<ResData<User[]>> {
+    limit = limit > 0 ? limit : 10;
+    page = page > 0 ? page : 1;
+    page = (page - 1) * limit;
+    const foundUserByPhone = await this.userRepository.findByPhoneNumber(search, limit, page);
+    const resData = new ResData<User[]>(
       "User found successfully",
       200,
       foundUserByPhone,
@@ -30,6 +32,13 @@ export class UserService implements IUserService {
       resData.statusCode = 400;
     }
     return resData;
+  }
+
+  // *** Find user by phone number (only returns one) *** //
+
+  async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
+    const foundUser = await this.userRepository.getOntByPhoneNumber(phoneNumber);
+    return new ResData<User>('found user by phone', 200, foundUser);
   }
   // *** Find one by id *** //
 

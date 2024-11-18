@@ -1,7 +1,7 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { IUserRepository } from "./interfaces/user.repository";
-import { Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 
 export class UserRepository implements IUserRepository {
   constructor(
@@ -27,7 +27,16 @@ export class UserRepository implements IUserRepository {
 
   // *** Find one user by phone number *** //
 
-  async findByPhoneNumber(phoneNumber: string): Promise<User> {
+  async findByPhoneNumber(search: string, limit: number, offset: number): Promise<User[]> {
+    let whereCondition = {};
+    if (search && search.trim() !== "") {
+      whereCondition = { phoneNumber: ILike(`%${search}%`) };
+      const foundUsers = await this.userRepository.find({ skip: offset, take: limit, where: whereCondition });
+      return foundUsers;
+    }
+  }
+  
+  async getOntByPhoneNumber(phoneNumber: string): Promise<User> {
     return await this.userRepository.findOneBy({ phoneNumber });
   }
 
