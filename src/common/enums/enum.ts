@@ -40,3 +40,4 @@ export enum PaymentTypeEnum {
   LIVE_CHAT = "livechat",
   TARIFF = "tariff",
 }
+

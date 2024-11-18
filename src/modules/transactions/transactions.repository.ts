@@ -32,6 +32,10 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.findOne({ where: [{ userId }, { orderId }] });
   }
 
+  async getAll(): Promise<TransactionEntity[]> {
+    return await this.repository.find();
+  }
+
   async getTransactionInPeriod(
     from: number,
     to: number,

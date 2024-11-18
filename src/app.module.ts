@@ -32,6 +32,7 @@ import { UserLivechatsModule } from './modules/user-livechats/user-livechats.mod
 import { UserHomeworkProgressModule } from "./modules/user-homework-progress/user-homework-progress.module";
 import { UserProgressModule } from './modules/user-progress/user-progress.module';
 import { LivechatPriceModule } from './modules/livechat-price/livechat-price.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { LivechatPriceModule } from './modules/livechat-price/livechat-price.mod
     UserHomeworkProgressModule,
     UserProgressModule,
     LivechatPriceModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule implements NestModule {
