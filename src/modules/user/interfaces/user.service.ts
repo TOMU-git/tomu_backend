@@ -6,6 +6,6 @@ export interface IUserService {
   updateUser(id: number, dto: UpdateUserDto): Promise<ResData<User>>;
   findOneById(id: number): Promise<ResData<User>>;
   findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>>;
-  findAll(): Promise<ResData<User[]>>;
+  findAll(search: string, limit: number, page: number): Promise<ResData<User[]>>;
   deleteUser(id: number): Promise<ResData<User>>;
 }
