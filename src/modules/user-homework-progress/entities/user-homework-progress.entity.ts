@@ -9,29 +9,37 @@ export class UserHomeworkProgress extends BaseEntity {
    * Blokning tartib raqami.
    * Ushbu maydon, darsning qaysi blokda ekanligini ifodalaydi.
    */
-  @Column({ type: "int", name: "block_order", nullable: true })
+  @Column({ type: "int", name: "block_order", nullable: false })
   blockOrder: Number;
 
   /**
    * homework tartib raqami.
    * Ushbu maydon, homeworknig tartib raqamini ifodalaydi.
    */
-  @Column({ type: "int", name: "homework_order", nullable: true })
+  @Column({ type: "int", name: "homework_order", nullable: false })
   homeworkOrder: Number;
 
   /**
    * User id si.
    * Ushbu maydon, User videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
-  @Column({ type: "int", name: "user_id", nullable: true })
+  @Column({ type: "int", name: "user_id", nullable: false })
   userId: Number;
 
   /**
    * block id si.
    * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
-  @Column({ type: "int", name: "block_id", nullable: true })
+  @Column({ type: "int", name: "block_id", nullable: false })
   blockId: Number;
+
+  
+  /**
+   * course id si.
+   * Ushbu maydon, course videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   */
+  @Column({ type: "int", name: "course_id", nullable: false })
+  courseId: Number;
 
   // Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan)
   @Column({
