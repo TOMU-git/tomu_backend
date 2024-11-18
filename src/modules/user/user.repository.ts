@@ -16,18 +16,7 @@ export class UserRepository implements IUserRepository {
 
   // *** Find all available users *** //
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
-  // *** Find one user by id *** //
-
-  async findOneById(id: number): Promise<User> {
-    return await this.userRepository.findOneBy({ id });
-  }
-
-  // *** Find one user by phone number *** //
-
-  async findByPhoneNumber(search: string, limit: number, offset: number): Promise<User[]> {
+  async findAll(search: string, limit: number, offset: number): Promise<User[]> {
     let whereCondition = {};
     if (search && search.trim() !== "") {
       whereCondition = { phoneNumber: ILike(`%${search}%`) };
@@ -35,6 +24,12 @@ export class UserRepository implements IUserRepository {
       return foundUsers;
     }
   }
+  // *** Find one user by id *** //
+
+  async findOneById(id: number): Promise<User> {
+    return await this.userRepository.findOneBy({ id });
+  }
+
   
   async getOntByPhoneNumber(phoneNumber: string): Promise<User> {
     return await this.userRepository.findOneBy({ phoneNumber });
