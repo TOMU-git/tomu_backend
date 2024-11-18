@@ -93,6 +93,6 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findOneByName(title: string): Promise<Homework | null> {
-    return await this.homeworkRepository.findOneBy({ description: title });
+    return await this.homeworkRepository.findOneBy({ title: title });
   }
 }
