@@ -1,7 +1,7 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { ITransactionRepo } from "./interfaces/transaction-repo";
 import { TransactionEntity } from "./entities/transaction.entity";
-import { Repository } from "typeorm";
+import { Repository,  Not, IsNull} from "typeorm";
 
 export class TransactionRepository implements ITransactionRepo {
   constructor(
@@ -32,8 +32,11 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.findOne({ where: [{ userId }, { orderId }] });
   }
 
-  async getAll(): Promise<TransactionEntity[]> {
-    return await this.repository.find();
+  async getAllByTariffId(): Promise<any> {
+    return await this.repository.find({ where: { tariffId: Not(IsNull()) }, select: ['amount'] });
+  }
+  async getAllByLiveChatId(): Promise<TransactionEntity[]> {
+    return await this.repository.find({ where: { liveChatId: Not(IsNull()) }, select: { amount: true } });
   }
 
   async getTransactionInPeriod(
