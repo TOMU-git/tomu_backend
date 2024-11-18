@@ -7,6 +7,7 @@ import { ResData } from "src/lib/resData";
 import { UserLivechatEntity } from "./entities/user-livechat.entity";
 import { ILiveChatService } from "../live-chat/interfaces/service-interface";
 import { ICourseService } from "../course/interfaces/course.service";
+import { ILiveChatRepository } from "../live-chat/interfaces/repository-interface";
 
 @Injectable()
 export class UserLivechatsService implements IUserLiveChatService {
@@ -16,6 +17,7 @@ export class UserLivechatsService implements IUserLiveChatService {
     @Inject("ILiveChatService")
     private readonly liveChatService: ILiveChatService,
     @Inject("IUserService") private readonly userService: IUserService,
+    @Inject("ILiveChatRepository") private readonly liveChatRepository: ILiveChatRepository,
     @Inject("ICourseService") private readonly courseService: ICourseService,
   ) {}
   async createUserLiveChat(
@@ -47,6 +49,8 @@ export class UserLivechatsService implements IUserLiveChatService {
     newUserLiveChat.price = foundLiveChat.price;
     const createdUserLiveChat =
       await this.userLiveChatRepository.create(newUserLiveChat);
+    foundLiveChat.isAccepted = true;
+    await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
     return new ResData<UserLivechatEntity>(
       "User live chat created successfully",
       201,
