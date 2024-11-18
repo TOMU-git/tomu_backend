@@ -165,6 +165,20 @@ export class HomeworkService implements IHomeworkService {
     );
   }
 
+    /**
+   * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
+   * @param blockId Blok ID'si
+   * @returns Blokga tegishli darslar
+   */
+    async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
+      const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+      return new ResData<Homework[]>(
+        "Homeworks by blockId fetched successfully",
+        200,
+        homeworks,
+      );
+    }
+
   /**
    * Keyingi 5 ta videoni oladi.
    * @param order Hozirgi Homework order
