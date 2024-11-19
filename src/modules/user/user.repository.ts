@@ -1,7 +1,8 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
-import { IUserRepository } from "./interfaces/user.repository";
+import { IUserCount, IUserRepository } from "./interfaces/user.repository";
 import { ILike, Repository } from "typeorm";
+import { RoleEnum } from "src/common/enums/enum";
 
 export class UserRepository implements IUserRepository {
   constructor(
@@ -16,24 +17,111 @@ export class UserRepository implements IUserRepository {
 
   // *** Find all available users *** //
 
-  async findAll(search: string, limit: number, offset: number): Promise<User[]> {
+  async findAll(
+    search: string,
+    limit: number,
+    offset: number,
+  ): Promise<IUserCount> {
     let whereCondition = {};
     if (search && search.trim() !== "") {
-      whereCondition = { phoneNumber: ILike(`%${search}%`) };
-      const foundUsers = await this.userRepository.find({ skip: offset, take: limit, where: whereCondition });
-      return foundUsers;
+      whereCondition = {
+        phoneNumber: ILike(`%${search}%`),
+        role: RoleEnum.STUDENT,
+      };
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: whereCondition,
+      });
+      const count = foundUsers.length;
+      return { users: foundUsers, count };
     } else {
-      const foundUsers = await this.userRepository.find({ skip: offset, take: limit });
-      return foundUsers;
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: { role: RoleEnum.STUDENT },
+      });
+      const count = await this.userRepository
+        .createQueryBuilder("users")
+        .where({role: RoleEnum.STUDENT})
+        .select("COUNT(*) count")
+        .getRawOne();
+      return { users: foundUsers, count: parseInt(count.count, 10) };
     }
   }
+
+  async findAllAdmins(
+    search: string,
+    limit: number,
+    offset: number,
+  ): Promise<IUserCount> {
+    let whereCondition = {};
+    if (search && search.trim() !== "") {
+      whereCondition = {
+        phoneNumber: ILike(`%${search}%`),
+        role: RoleEnum.ADMIN,
+      };
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: whereCondition,
+      });
+      const count = foundUsers.length;
+      return { users: foundUsers, count };
+    } else {
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: { role: RoleEnum.ADMIN },
+      });
+      const count = await this.userRepository
+        .createQueryBuilder("users")
+        .where({role: RoleEnum.ADMIN})
+        .select("COUNT(*) count")
+        .getRawOne();
+      return { users: foundUsers, count: parseInt(count.count, 10) };
+    }
+  }
+
+  async findAllTeachers(
+    search: string,
+    limit: number,
+    offset: number,
+  ): Promise<IUserCount> {
+    let whereCondition = {};
+    if (search && search.trim() !== "") {
+      whereCondition = {
+        phoneNumber: ILike(`%${search}%`),
+        role: RoleEnum.TEACHER,
+      };
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: whereCondition,
+      });
+      const count = foundUsers.length;
+      return { users: foundUsers, count };
+    } else {
+      const foundUsers = await this.userRepository.find({
+        skip: offset,
+        take: limit,
+        where: { role: RoleEnum.TEACHER },
+      });
+      const count = await this.userRepository
+        .createQueryBuilder("users")
+        .where({role: RoleEnum.TEACHER})
+        .select("COUNT(*) count")
+        .getRawOne();
+      return { users: foundUsers, count: parseInt(count.count, 10) };
+    }
+  }
+
   // *** Find one user by id *** //
 
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOneBy({ id });
   }
 
-  
   async getOntByPhoneNumber(phoneNumber: string): Promise<User> {
     return await this.userRepository.findOneBy({ phoneNumber });
   }

@@ -7,7 +7,11 @@ export class LiveChatPriceRepository implements ILiveChatPriceRepository {
   constructor(
     @InjectRepository(LivechatPriceEntity)
     private readonly repository: Repository<LivechatPriceEntity>,
-  ) {}
+  ) { }
+  
+  async findAll(): Promise<LivechatPriceEntity[]> {
+    return await this.repository.find();
+  }
 
   async getOneById(id: number): Promise<LivechatPriceEntity> {
     return this.repository.findOneBy({ id });
