@@ -17,7 +17,7 @@ export class CheckTokenMiddleware implements NestMiddleware {
         throw new TransactionErrorException(PaymeError.InvalidAuthorization, id);
       }
       const data = decode(token);
-      if (!data.includes(config.paymeTestKey)) {
+      if (!data.includes(config.paymeMerchantKey)) {
         throw new TransactionErrorException(PaymeError.InvalidAuthorization, id);
       }
       next();
