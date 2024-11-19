@@ -22,10 +22,10 @@ export class UserProgressService {
     private readonly homeworkRepository: IHomeworkRepository,
   ) {}
 
-  async getWatchedHomeworksCount(userId: ID): Promise<Number> {
+  async getWatchedHomeworksCount(userId: ID, courseId: ID): Promise<Number> {
     const watchedVideosCount =
       await this.homeworkProgressRepository.findAllWatchedHomeworkByUser(
-        userId,
+        userId, courseId
       );
 
     return Number(watchedVideosCount.length);
@@ -46,9 +46,9 @@ export class UserProgressService {
     return allVideosCount;
   }
 
-  async getProgressData(userId: ID): Promise<any> {
+  async getProgressData(userId: ID, courseId: ID): Promise<any> {
     const allVideosCount = await this.getVideosCount();
-    const homeworkCount = await this.getWatchedHomeworksCount(userId);
+    const homeworkCount = await this.getWatchedHomeworksCount(userId, courseId);
     const lessonCount = await this.getWatchedLessonsCount(userId);
     const watchedVideosCount = Number(homeworkCount) + Number(lessonCount);
 

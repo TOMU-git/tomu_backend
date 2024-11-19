@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { UserProgressService } from "./user-progress.service";
 import { ApiTags } from "@nestjs/swagger";
 import { RoleEnum } from "src/common/enums/enum";
@@ -12,7 +12,11 @@ export class UserProgressController {
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
   @Get(":id")
-  async findOne(@Param("id", ParseIntPipe) id: ID): Promise<any> {
-    return await this.userProgressService.getProgressData(id);
+  async findOne(
+    @Query("userId", ParseIntPipe) userId: ID,
+    @Query("courseId", ParseIntPipe) courseId: ID
+  
+  ): Promise<any> {
+    return await this.userProgressService.getProgressData(userId, courseId);
   }
 }

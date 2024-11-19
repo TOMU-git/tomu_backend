@@ -29,6 +29,6 @@ export interface IUserHomeworkProgressRepository {
   markHomeworkAsWatched(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<UserHomeworkProgress>;
 }
