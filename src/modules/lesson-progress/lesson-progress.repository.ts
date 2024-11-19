@@ -56,14 +56,14 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async findLastWatchedLesson(
     userId: ID,
     courseId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<number | null> {
     const lastWatchedProgress = await this.lessonProgressRepository.findOne({
       where: {
         userId: userId,
         courseId: courseId,
         isWatched: true,
-        blockOrder: LessThanOrEqual(blockOrder),
+        blockId: LessThanOrEqual(blockId),
       },
       order: {
         lessonOrder: "DESC",

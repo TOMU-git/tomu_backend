@@ -28,7 +28,7 @@ export interface ILessonProgressRepository {
   findLastWatchedLesson(
     userId: ID,
     courseId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<number | null>;
 
   existsLessonProgress(

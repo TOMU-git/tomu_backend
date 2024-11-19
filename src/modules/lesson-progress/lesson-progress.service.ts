@@ -10,10 +10,10 @@ import {
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
-import { IBlockService } from "../block/interfaces/block.service";
 import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 import { ILessonRepository } from "../lesson/interfaces/lesson.repository";
 import { IHomeworkProgressRepository } from "../homework-progress/interfaces/homework-progress.repository";
+import { IBlockRepository } from "../block/interfaces/block.repository";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -33,8 +33,8 @@ export class LessonProgressService implements ILessonProgressService {
     @Inject("IHomeworkProgressRepository") // HomeworkRepository ni inject qilamiz
     private readonly homeworkProgressRepository: IHomeworkProgressRepository,
 
-    @Inject("IBlockService") // LessonService ni inject qilamiz
-    private readonly blockService: IBlockService,
+    @Inject("IBlockRepository") // LessonRepository ni inject qilamiz
+    private readonly blockRepository: IBlockRepository,
   ) {}
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
@@ -67,7 +67,7 @@ export class LessonProgressService implements ILessonProgressService {
       await this.lessonProgressRepository.findLastWatchedLesson(
         updateDto.userId,
         updateDto.courseId,
-        updateDto.blockOrder,
+        updateDto.blockId,
       );
 
     const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
@@ -84,7 +84,7 @@ export class LessonProgressService implements ILessonProgressService {
       await this.lessonProgressRepository.markLessonAsWatched(
         nextLessonOrder,
         updateDto.userId,
-        updateDto.blockId
+        updateDto.blockId,
       );
     }
 
@@ -107,16 +107,18 @@ export class LessonProgressService implements ILessonProgressService {
     blockId: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
     // block service dagi metod orqali id bo'yicha ma'lumotni topamiz
-    const foundData = await this.blockService.findOneById(blockId);
+    const foundData = await this.blockRepository.findById(blockId);
+    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
 
     // topilgan ma'lumotni ResData formatda qaytadi uni ichidagi data dan orderni blockOrder o'zgaruvchisiga beramiz
-    const blockOrder = foundData.data.order;
+    const blockOrder = foundData.order;
 
     const existingProgresses =
       await this.lessonProgressRepository.findByOrderAndUserId(blockId, userId);
 
     if (existingProgresses.length === 0) {
-      await this.generateFiveProgress(userId, blockId, blockOrder);
+      await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
+      // console.log("working")
       const existingProgress =
         await this.lessonProgressRepository.findByOrderAndUserId(
           blockId,
@@ -142,6 +144,7 @@ export class LessonProgressService implements ILessonProgressService {
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
         blockOrder,
         userId,
+        courseId,
       );
 
     // Faqat isWatched: true bo'lgan progresslarni sanash
@@ -179,7 +182,7 @@ export class LessonProgressService implements ILessonProgressService {
       isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
-      await this.generateFiveProgress(userId, blockId, blockOrder);
+      await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
 
       const existingProgresses =
         await this.lessonProgressRepository.findByOrderAndUserId(
@@ -200,17 +203,20 @@ export class LessonProgressService implements ILessonProgressService {
     userId: ID,
     blockId: ID,
     blockOrder: ID,
+    courseId: ID,
   ): Promise<Array<LessonProgress>> {
     // Blokni olish
-    const { data: block } = await this.blockService.findOneById(blockId);
+    const block = await this.blockRepository.findById(blockId);
+    console.log("courseId", courseId);
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =
       await this.lessonProgressRepository.findMaxLessonOrder(
         blockOrder,
         userId,
-        block.course.id,
+        courseId,
       );
+    console.log("lastLessonOrder", lastLessonOrder);
 
     // lastLessonOrder dan keyingi 5 darsni olish
     const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(
@@ -243,7 +249,7 @@ export class LessonProgressService implements ILessonProgressService {
       newLessonProgress.userId = userId;
       newLessonProgress.blockId = blockId;
       newLessonProgress.lesson = lesson;
-      newLessonProgress.courseId = block.course.id;
+      newLessonProgress.courseId = courseId;
       newLessonProgress.blockOrder = block.order;
       newLessonProgress.lessonOrder = lesson.order;
 

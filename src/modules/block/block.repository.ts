@@ -85,4 +85,15 @@ export class BlockRepository implements IBlockRepository {
       order: { order: "ASC" },
     });
   }
+
+  async getCourseIdByBlockId(blockId: number): Promise<number | null> {
+    const block = await this.blockRepository
+      .createQueryBuilder("block")
+      .leftJoinAndSelect("block.course", "course")
+      .select("course.id", "courseId")
+      .where("block.id = :blockId", { blockId })
+      .getRawOne();
+
+    return block?.courseId ?? null;
+  }
 }
