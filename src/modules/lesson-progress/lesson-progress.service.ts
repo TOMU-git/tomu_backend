@@ -147,6 +147,7 @@ export class LessonProgressService implements ILessonProgressService {
         courseId,
       );
 
+    // console.log(isWatchedHomework);
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === true,
@@ -159,27 +160,27 @@ export class LessonProgressService implements ILessonProgressService {
 
     /* agar hamma lesson larni ko'rgan bo'lsa ammo homeworklarni hammasini ko'rmagan bo'lsa bazada bor lessonProgreslarni qaytaramiz error message bilan birga, error messga orqali front user ga siz oldin hamma homeworklar ko'rib tugatishingiz kerak degan yozuv chiqaradi
      */
-    if (
-      watchedProgressCount % 5 == 0 &&
-      notWatchedProgressCount === 0 &&
-      !isWatchedHomework
-    ) {
-      const existingProgress =
-        await this.lessonProgressRepository.findByOrderAndUserId(
-          blockId,
-          userId,
-        );
+    // if (
+    //   watchedProgressCount % 5 == 0 &&
+    //   notWatchedProgressCount === 0 &&
+    //   !isWatchedHomework
+    // ) {
+    //   const existingProgress =
+    //     await this.lessonProgressRepository.findByOrderAndUserId(
+    //       blockId,
+    //       userId,
+    //     );
 
-      return new ResData<Array<LessonProgress>>(
-        "You must have seen all the homework before",
-        200,
-        existingProgress,
-      );
-    }
+    //   return new ResData<Array<LessonProgress>>(
+    //     "You must have seen all the homework before",
+    //     200,
+    //     existingProgress,
+    //   );
+    // }
     if (
       watchedProgressCount % 5 == 0 &&
-      notWatchedProgressCount === 0 &&
-      isWatchedHomework
+      notWatchedProgressCount === 0 
+      // && isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -216,11 +217,15 @@ export class LessonProgressService implements ILessonProgressService {
         courseId,
       );
 
+      // console.log("lastLessonOrder",lastLessonOrder)
+
     // lastLessonOrder dan keyingi 5 darsni olish
     const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(
       lastLessonOrder || 0, // Agar progress yo'q bo'lsa, 0 dan boshlash
       blockId,
     );
+
+    // console.log("lessons", lessons)
 
     if (lessons.length < 1) {
       throw new Error("No more lessons available in this block");
@@ -268,14 +273,14 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-  // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
-  // SELECT
-  //     'Generated description for homework ' || i,
-  //     'https://player.vimeo.com/video/1031009633',
-  //     'video/mp4',
-  //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
-  //     i,  -- Order ketma-ketlikda oshib boradi
-  //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-  //     40  -- block_id
-  // FROM
-  //     generate_series(1, 30) AS s(i);
+// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
+// SELECT
+//     'Generated description for homework ' || i,
+//     'https://player.vimeo.com/video/1031009633',
+//     'video/mp4',
+//     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
+//     i,  -- Order ketma-ketlikda oshib boradi
+//     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
+//     40  -- block_id
+// FROM
+//     generate_series(1, 30) AS s(i);
