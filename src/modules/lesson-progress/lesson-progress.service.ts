@@ -207,7 +207,6 @@ export class LessonProgressService implements ILessonProgressService {
   ): Promise<Array<LessonProgress>> {
     // Blokni olish
     const block = await this.blockRepository.findById(blockId);
-    console.log("courseId", courseId);
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =
@@ -216,7 +215,6 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
         courseId,
       );
-    console.log("lastLessonOrder", lastLessonOrder);
 
     // lastLessonOrder dan keyingi 5 darsni olish
     const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(

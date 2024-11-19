@@ -119,7 +119,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         nextHomeworkOrder,
         dto.userId,
         dto.blockOrder,
-        dto.courseId
+        dto.courseId,
       );
 
     if (existingProgress) {
@@ -195,7 +195,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     blockId: ID,
   ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
     const foundBlock = await this.blockRepository.findById(blockId);
-    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId)
+    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     const blockOrder = foundBlock.order;
     // Foydalanuvchining progressini order bo'yicha olish
     const existingProgress =
@@ -239,7 +239,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
         blockOrder,
         userId,
-        courseId
+        courseId,
       );
 
     // So'nggi ko'rilgan homeworkni olish
@@ -258,9 +258,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockOrder,
         lastWatchedHomeworkOrder,
         userId,
-        courseId
+        courseId,
       );
-    // Agar mavjud progress 5 dan kam, lekin 1 dan katta bo'lsa, cache'dan olish
+
+    // Agar mavjud progress 5 dan kam yoki teng bo'lsa, lekin 1 dan katta bo'lsa, cache'dan olish
     if (existingProgress.length < 5 && existingProgress.length > 1) {
       return new ResData<Array<HomeworkProgress>>(
         "Homework fetched successfully",
@@ -282,10 +283,20 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           blockId,
           userId,
         );
+      console.log(temporaryProgress)
+
+      if (temporaryProgress.length > 1) {
+        return new ResData<Array<Partial<HomeworkProgress>>>(
+          "You must have seen all the lessons before ",
+          200,
+          temporaryProgress,
+        );
+      }
+
       return new ResData<Array<Partial<HomeworkProgress>>>(
         "You must have seen all the lessons before ",
         200,
-        temporaryProgress,
+        existingProgress,
       );
     }
 
@@ -432,7 +443,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     blockId: ID,
   ): Promise<Array<HomeworkProgress>> {
     const block = await this.blockRepository.findById(blockId);
-    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId)
+    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     if (!block) throw new BlockNotFoundException();
 
     const user = await this.userRepository.findOneById(userId);
