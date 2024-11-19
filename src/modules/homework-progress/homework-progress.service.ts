@@ -517,12 +517,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         );
       if (existingProgress) throw new HomeworkProgressAlreadyExistException();
 
-      const isProgressExist =
-        await this.homeworkProgressRepository.findByBlocIdAndUserId(
-          blockId,
-          userId,
-        );
-
       const newHomeworkProgress = new HomeworkProgress();
       newHomeworkProgress.user = user;
       newHomeworkProgress.userId = userId;
@@ -531,9 +525,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       newHomeworkProgress.courseId = courseId;
       newHomeworkProgress.blockOrder = block.order;
       newHomeworkProgress.homeworkOrder = homework.order;
-      if (isProgressExist.length < 1) {
-        newHomeworkProgress.isWatched = i === 0;
-      }
+      newHomeworkProgress.isWatched = i === 0;
 
       // Yangi progressni saqlash
       const savedProgress =
