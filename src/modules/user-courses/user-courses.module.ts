@@ -14,5 +14,9 @@ import { CourseModule } from "../course/course.module";
     { provide: "IUserCourseService", useClass: UserCourseService },
     { provide: "IUserCourseRepository", useClass: UserCourseRepository },
   ],
+  exports: [
+    { provide: "IUserCourseService", useClass: UserCourseService },
+    { provide: "IUserCourseRepository", useClass: UserCourseRepository },
+  ],
 })
 export class UserCoursesModule {}

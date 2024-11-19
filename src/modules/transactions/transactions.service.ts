@@ -21,9 +21,12 @@ import { IOrderService } from "../orders/interfaces/service-interface";
 import { OrderStatus } from "src/common/enums/order-status";
 import { IOrderRepository } from "../orders/interfaces/repository-interface";
 import { ILiveChatRepository } from "../live-chat/interfaces/repository-interface";
-import { MeetingStatusEnum } from "src/common/enums/enum";
+import { MeetingStatusEnum, StatusEnum } from "src/common/enums/enum";
 import { UserTariff } from "../user-tariff/entities/user-tariff.entity";
 import { IUserTariffRepository } from "../user-tariff/interfaces/user-tariff.repository";
+import { UserCourse } from "../user-courses/entities/user-course.entity";
+import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { ICourseRepository } from "../course/interfaces/course.repository";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -40,6 +43,8 @@ export class TransactionsService implements ITransactionService {
     private readonly tariffRepository: ITariffRepository,
     @Inject("IUserTariffRepository")
     private readonly userTariffRepository: IUserTariffRepository,
+    @Inject("IUserCourseRepository") private readonly userCourseRepository: IUserCourseRepository,
+    @Inject("ICourseRepository") private readonly courseRepository: ICourseRepository
   ) {}
 
   //// *** Checking
@@ -242,6 +247,14 @@ export class TransactionsService implements ITransactionService {
       newUserTariff.userId = foundOrder.userId;
       newUserTariff.tariffId = foundOrder.tariffId;
       await this.userTariffRepository.insert(newUserTariff);
+
+      const foundUser = await this.userRepository.findOneById(Number(foundOrder.userId));
+      const foundCourse = await this.courseRepository.findById(Number(foundTariff.course));
+      const newUserCourse = new UserCourse();
+      newUserCourse.status = StatusEnum.PANDING;
+      newUserCourse.user = foundUser;
+      newUserCourse.course = foundCourse;
+      await this.userCourseRepository.create(newUserCourse);
     }
 
     foundOrder.status = OrderStatus.PAID;
