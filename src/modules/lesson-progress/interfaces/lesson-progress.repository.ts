@@ -31,11 +31,11 @@ export interface ILessonProgressRepository {
     blockId: ID,
   ): Promise<number | null>;
 
-  existsLessonProgress(
+  getLessonProgress(
     lessonOrder: ID,
     userId: ID,
     courseId: ID,
-  ): Promise<boolean>;
+  ): Promise<LessonProgress | null> 
 
   markLessonAsWatched(
     lessonOrder: ID,

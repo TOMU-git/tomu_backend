@@ -57,8 +57,7 @@ export class LessonProgressController {
   @Patch(":id")
   async update(
     @Param("id", ParseIntPipe) id: ID,
-    @Body() updateDto: UpdateLessonProgressDto, // updateDto ni qabul qilamiz
   ): Promise<ResData<LessonProgress>> {
-    return await this.lessonProgressService.update(id, updateDto);
+    return await this.lessonProgressService.update(id);
   }
 }
