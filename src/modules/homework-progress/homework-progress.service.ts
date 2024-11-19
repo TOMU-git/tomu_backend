@@ -480,43 +480,46 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const block = await this.blockRepository.findById(blockId);
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     if (!block) throw new BlockNotFoundException();
-
+  
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
       throw new UserNotFound();
     }
+  
+    // Mavjud progresslarni blok va foydalanuvchi bo‘yicha tekshirish
+    const existingProgress =
+      await this.homeworkProgressRepository.findByBlocIdAndUserId(blockId, userId);
 
     // So'nggi homework orderini olish
-    let lastHomeworkOrder =
-      await this.homeworkProgressRepository.findHighestHomeworkOrderByUserAndBlock(
-        blockId,
-        userId,
-      );
-
-    if (!lastHomeworkOrder) {
-      lastHomeworkOrder = 0;
+    let lastHomeworkOrder = 0;
+    if (existingProgress.length > 0) {
+      lastHomeworkOrder =
+        await this.homeworkProgressRepository.findHighestHomeworkOrderByUserAndBlock(
+          blockId,
+          userId,
+        );
     }
-
+  
     // Keyingi 5ta homeworkni olish
     const homeworks =
       await this.homeworkRepository.findNextFiveHomeworksAfterOrder(
         lastHomeworkOrder || 0,
         blockId,
       );
-
+  
     if (homeworks.length < 1)
       throw new Error("No more homeworks available in this block");
-
+  
     // Yangi progresslarni yaratish
     const newProgressList: HomeworkProgress[] = [];
     for (const [i, homework] of homeworks.entries()) {
-      const existingProgress =
+      const progressExists =
         await this.homeworkProgressRepository.findOneByUserAndHomework(
           userId,
           homework.id,
         );
-      if (existingProgress) throw new HomeworkProgressAlreadyExistException();
-
+      if (progressExists) throw new HomeworkProgressAlreadyExistException();
+  
       const newHomeworkProgress = new HomeworkProgress();
       newHomeworkProgress.user = user;
       newHomeworkProgress.userId = userId;
@@ -525,13 +528,17 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       newHomeworkProgress.courseId = courseId;
       newHomeworkProgress.blockOrder = block.order;
       newHomeworkProgress.homeworkOrder = homework.order;
-      newHomeworkProgress.isWatched = i === 0;
-
+  
+      // isWatched faqat mavjud progress bo‘lmaganda birinchi element uchun true bo‘ladi
+      newHomeworkProgress.isWatched = existingProgress.length === 0 && i === 0;
+  
       // Yangi progressni saqlash
       const savedProgress =
         await this.homeworkProgressRepository.create(newHomeworkProgress);
       newProgressList.push(savedProgress);
     }
+  
     return newProgressList;
   }
+  
 }
