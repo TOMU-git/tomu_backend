@@ -16,4 +16,5 @@ export interface IBlockRepository {
     category: HomeworkEnum,
     order: number,
   ): Promise<Block>;
+  getCourseIdByBlockId(blockId: number): Promise<number | null>;
 }

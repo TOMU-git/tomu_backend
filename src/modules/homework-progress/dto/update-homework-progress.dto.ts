@@ -20,6 +20,27 @@ export class UpdateHomeworkProgressDto {
   @IsOptional()
   blockOrder?: number;
 
+
+  @ApiProperty({
+    type: Number,
+    example: 3,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional()
+  blockId?: number;
+
+
+  @ApiProperty({
+    type: Number,
+    example: 3,
+    default: 0,
+  })
+  @IsNumber()
+  @IsOptional()
+  courseId?: number;
+
+
   @ApiProperty({
     type: Number,
     example: 3,

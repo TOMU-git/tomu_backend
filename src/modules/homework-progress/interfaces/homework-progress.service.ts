@@ -1,16 +1,10 @@
 import { ResData } from "../../../lib/resData";
 import { ID } from "../../../common/types/type";
 import { HomeworkProgress } from "../entities/homework-progress.entity";
-import { CreateHomeworkProgressDto } from "../dto/create-homework-progress.dto";
 import { UpdateHomeworkProgressDto } from "../dto/update-homework-progress.dto"; // Update DTO importi
 
 // HomeworkProgress xizmatlari uchun interfeys
 export interface IHomeworkProgressService {
-  // Yangi HomeworkProgress yozuvini yaratadi
-  create(
-    dto: CreateHomeworkProgressDto,
-  ): Promise<ResData<Partial<HomeworkProgress>>>;
-
   // Barcha HomeworkProgress yozuvlarini qaytaradi
   findAll(): Promise<ResData<Array<HomeworkProgress>>>;
 

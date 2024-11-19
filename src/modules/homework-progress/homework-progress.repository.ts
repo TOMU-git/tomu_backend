@@ -85,7 +85,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param userId - Foydalanuvchi ID
    * @returns Topilgan HomeworkProgress yozuvlarining ro'yxati yoki null
    */
-  async findByBlockOrderAndUserId(
+  async findByBlocIdAndUserId(
     blockId: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>> {
@@ -101,13 +101,13 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
-  async findTopFiveByBlockOrderAndUserId(
-    blockOrder: ID,
+  async findTopFiveByBlockIdAndUserId(
+    blockId: ID,
     userId: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository.find({
       where: {
-        blockOrder: blockOrder,
+        blockId: blockId,
         userId: userId,
       },
       relations: ["homework"], // 'homework' bilan bog'lanishlar olinadi
@@ -125,13 +125,13 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Eng yuqori Homework tartibi yoki null
    */
   async findHighestHomeworkOrderByUserAndBlock(
-    blockOrder: ID,
+    blockId: ID,
     userId: ID,
   ): Promise<number | null> {
     const result = await this.homeworkProgressRepository
       .createQueryBuilder("homeworkProgress")
       .select("homeworkProgress.homeworkOrder", "homeworkOrder")
-      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+      .where("homeworkProgress.blockId = :blockId", { blockId })
       .andWhere("homeworkProgress.userId = :userId", { userId })
       .orderBy("homeworkProgress.homeworkOrder", "DESC")
       .getRawOne();
@@ -170,11 +170,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async markHomeworkAsWatched(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<HomeworkProgress> {
-    // homeworkOrder, userId, va blockOrder bo'yicha homework progress yozuvini topamiz
+    // homeworkOrder, userId, va blockId bo'yicha homework progress yozuvini topamiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
-      where: { homeworkOrder, userId, blockOrder },
+      where: { homeworkOrder, userId, blockId },
       relations: ["user", "homework"], // agar user va homework bog'lanishini olishni xohlasangiz
     });
 
@@ -190,21 +190,17 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     }
   }
 
-  /**
-   * Foydalanuvchi va block tartibiga ko'ra oxirgi ko'rilgan Homework tartibini topish.
-   * @param userId - Foydalanuvchi ID
-   * @param blockOrder - Block tartibi
-   * @returns Oxirgi ko'rilgan Homework tartibi yoki null
-   */
+  //  Foydalanuvchi va blockId ga ko'ra oxirgi ko'rilgan Homework tartibini topish.
+
   async findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<number | null> {
     const lastWatchedProgress = await this.homeworkProgressRepository.findOne({
       where: {
         userId: userId,
         isWatched: true,
-        blockOrder: LessThanOrEqual(blockOrder),
+        blockId: LessThanOrEqual(blockId),
       },
       order: {
         homeworkOrder: "DESC",
@@ -225,10 +221,12 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async areAllWatchedByOrderAndUserId(
     blockOrder: ID,
     userId: ID,
+    courseId: ID,
   ): Promise<boolean> {
     const homeworkProgresses = await this.homeworkProgressRepository.find({
       where: {
         blockOrder: blockOrder,
+        courseId: courseId,
         userId: userId,
       },
       select: ["isWatched"],
@@ -246,11 +244,12 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Kuzatish soni 0 va 5 oralig'ida bo'lgan HomeworkProgress yozuvlarining ro'yxati
    */
   async getVideosWithWatchCountBetween0And5(
-    blockOrder: ID,
+    blockOrder: ID, courseId: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository.find({
       where: {
         blockOrder: blockOrder,
+        courseId: courseId,
         isWatched: true,
         countWatched: Between(0, 5), // countWatched 0 va 5 orasida bo'lishi kerak
       },
@@ -261,16 +260,15 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
-  // something
-
   async getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
+    courseId: ID
   ): Promise<HomeworkProgress | null> {
     // homeworkOrder, userId va blockOrder bo'yicha homework progress yozuvini qidiramiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
-      where: { homeworkOrder, userId, blockOrder },
+      where: { homeworkOrder, userId, blockOrder, courseId },
     });
 
     // homeworkProgress mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
@@ -283,10 +281,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @param userId - Foydalanuvchi ID
    * @returns isWatched = true bo'lgan barcha HomeworkProgress yozuvlari
    */
-  async findAllWatchedHomeworkByUser(userId: ID): Promise<HomeworkProgress[]> {
+  async findAllWatchedHomeworkByUser(userId: ID, courseId: ID): Promise<HomeworkProgress[]> {
     return await this.homeworkProgressRepository.find({
       where: {
         user: { id: userId },
+        courseId: courseId,
         isWatched: true,
       }
     });

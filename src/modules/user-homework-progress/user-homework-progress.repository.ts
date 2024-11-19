@@ -69,13 +69,13 @@ export class UserHomeworkProgressRepository
   async markHomeworkAsWatched(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<UserHomeworkProgress> {
     try {
-      // homeworkOrder, userId (user_idx ustuniga bog'lanadi) va blockOrder bo'yicha homework progress yozuvini topamiz
+      // homeworkOrder, userId (user_idx ustuniga bog'lanadi) va blockId bo'yicha homework progress yozuvini topamiz
       const homeworkProgress =
         await this.userHomeworkProgressRepository.findOne({
-          where: { homeworkOrder, userId, blockOrder }, // userId bilan qidiramiz
+          where: { homeworkOrder, userId, blockId }, // userId bilan qidiramiz
           relations: ["homework"], // agar user va homework bog'lanishini olishni xohlasangiz
         });
 
@@ -88,10 +88,10 @@ export class UserHomeworkProgressRepository
       } else {
         // Agar topilmasa, xato haqida aniq ma'lumot beramiz
         console.error(
-          `Homework progress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockOrder: ${blockOrder}`,
+          `Homework progress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockId: ${blockId}`,
         );
         throw new Error(
-          `UserHomeworkProgress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockOrder: ${blockOrder}`,
+          `UserHomeworkProgress not found for homeworkOrder: ${homeworkOrder}, userId: ${userId}, blockId: ${blockId}`,
         );
       }
     } catch (error) {

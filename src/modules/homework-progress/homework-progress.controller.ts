@@ -17,7 +17,6 @@ import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
 import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
-import { CreateHomeworkProgressDto } from "./dto/create-homework-progress.dto";
 import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto"; // Yangilash DTO sini import qiling
 
 @ApiTags("homework-progress")
@@ -27,18 +26,6 @@ export class HomeworkProgressController {
     @Inject("IHomeworkProgressService")
     private readonly homeworkProgressService: IHomeworkProgressService,
   ) {}
-
-  /**
-   * Yangi homework progress yozuvi yaratish.
-   * @param createHomeworkProgressDto - Yangi homework progress yaratish uchun kerakli ma'lumotlarni o'z ichiga olgan DTO.
-   * @returns Yangi yaratilingan homework progress
-   */
-  @Post()
-  async create(
-    @Body() createHomeworkProgressDto: CreateHomeworkProgressDto,
-  ): Promise<ResData<Partial<HomeworkProgress>>> {
-    return await this.homeworkProgressService.create(createHomeworkProgressDto);
-  }
 
   /**
    * Berilgan ID bo'yicha bitta homework progress yozuvini olish.

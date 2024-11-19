@@ -10,7 +10,6 @@ import {
   Patch,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
-import { CreateLessonProgressDto } from "./dto/create-lesson-progress.dto";
 import { ResData } from "src/lib/resData";
 import { LessonProgress } from "./entities/lesson-progress.entity";
 import { ILessonProgressService } from "./interfaces/lesson-progress.service";
@@ -27,13 +26,6 @@ export class LessonProgressController {
     private readonly lessonProgressService: ILessonProgressService,
   ) {}
 
-  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
-  @Post()
-  async create(
-    @Body() createLessonProgressDto: CreateLessonProgressDto,
-  ): Promise<ResData<LessonProgress>> {
-    return await this.lessonProgressService.create(createLessonProgressDto);
-  }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()

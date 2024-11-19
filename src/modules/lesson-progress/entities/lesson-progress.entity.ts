@@ -9,29 +9,36 @@ export class LessonProgress extends BaseEntity {
    * Blokning tartib raqami.
    * Ushbu maydon, darsning qaysi blokda ekanligini ifodalaydi.
    */
-  @Column({ type: "int", name: "block_order", nullable: true })
+  @Column({ type: "int", name: "block_order", nullable: false })
   blockOrder: Number;
 
   /**
    * Lesson tartib raqami.
    * Ushbu maydon, lessonnig tartib raqamini ifodalaydi.
    */
-  @Column({ type: "int", name: "lesson_order", nullable: true })
+  @Column({ type: "int", name: "lesson_order", nullable: false })
   lessonOrder: Number;
 
   /**
    * User id si.
    * Ushbu maydon, User videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
-  @Column({ type: "int", name: "user_idx", nullable: true })
+  @Column({ type: "int", name: "user_idx", nullable: false })
   userId: Number;
 
   /**
    * block id si.
    * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
-  @Column({ type: "int", name: "block_id", nullable: true })
+  @Column({ type: "int", name: "block_id", nullable: false })
   blockId: Number;
+
+  /**
+   * course id si.
+   * Ushbu maydon, course videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   */
+  @Column({ type: "int", name: "course_id", nullable: false })
+  courseId: Number;
 
   /**
    * Tomosha qilinganligini bildiruvchi holat.

@@ -126,7 +126,7 @@ export class HomeworkService implements IHomeworkService {
       updateHomeworkDto.order,
       updateHomeworkDto.blockId,
     );
-    if (orderExist) {
+    if (orderExist && foundData.order !== updateHomeworkDto.order ) { 
       throw new HomeworkOrderAlreadyExistException();
     }
 
@@ -158,10 +158,11 @@ export class HomeworkService implements IHomeworkService {
     }
 
     const updatedData = Object.assign(foundData, updateHomeworkDto);
+    const data = await this.homeworkRepository.update(updatedData)
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
-      updatedData,
+      data,
     );
   }
 
