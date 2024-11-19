@@ -207,7 +207,6 @@ export class LessonProgressService implements ILessonProgressService {
   ): Promise<Array<LessonProgress>> {
     // Blokni olish
     const block = await this.blockRepository.findById(blockId);
-    console.log("courseId", courseId);
 
     // Eng oxirgi lessonOrderni olish
     const lastLessonOrder =
@@ -216,7 +215,6 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
         courseId,
       );
-    console.log("lastLessonOrder", lastLessonOrder);
 
     // lastLessonOrder dan keyingi 5 darsni olish
     const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(
@@ -270,14 +268,14 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
-// SELECT
-//     'Generated description for homework ' || i,
-//     'https://player.vimeo.com/video/1031009633',
-//     'video/mp4',
-//     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
-//     i,  -- Order ketma-ketlikda oshib boradi
-//     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     41  -- block_id
-// FROM
-//     generate_series(1, 100) AS s(i);
+  // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
+  // SELECT
+  //     'Generated description for homework ' || i,
+  //     'https://player.vimeo.com/video/1031009633',
+  //     'video/mp4',
+  //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
+  //     i,  -- Order ketma-ketlikda oshib boradi
+  //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
+  //     40  -- block_id
+  // FROM
+  //     generate_series(1, 30) AS s(i);

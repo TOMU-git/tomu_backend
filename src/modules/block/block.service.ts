@@ -114,7 +114,7 @@ export class BlockService implements IBlockService {
       updateBlockDto.category,
       updateBlockDto.order,
     );
-    if (orderExist) {
+    if (orderExist && block.order !== updateBlockDto.order) {
       throw new BlockOrderExistException();
     }
 
