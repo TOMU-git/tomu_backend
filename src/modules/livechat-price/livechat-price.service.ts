@@ -10,7 +10,12 @@ export class LivechatPriceService implements ILiveChatPriceService {
   constructor(
     @Inject("ILiveChatPriceRepository")
     private readonly liveChatRepository: ILiveChatPriceRepository,
-  ) {}
+  ) { }
+  
+  async findAll(): Promise<ResData<LivechatPriceEntity[]>> {
+    const foundLiveChatPrice = await this.liveChatRepository.findAll();
+    return new ResData<LivechatPriceEntity[]>("Found live chat price", 200, foundLiveChatPrice);
+  }
 
   async findOneById(id: number): Promise<ResData<LivechatPriceEntity>> {
     const foundPrice = await this.liveChatRepository.getOneById(id);

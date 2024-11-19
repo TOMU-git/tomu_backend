@@ -1,7 +1,7 @@
 import { HttpException, Inject, Injectable } from "@nestjs/common";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { IUserRepository } from "./interfaces/user.repository";
-import { IUserService } from "./interfaces/user.service";
+import { IUserEntityCount, IUserService } from "./interfaces/user.service";
 import { ResData } from "src/lib/resData";
 import { User } from "./entities/user.entity";
 import { UserNotFound } from "./exception/user.exception";
@@ -32,12 +32,23 @@ export class UserService implements IUserService {
   }
   // *** Find all available users *** //
 
-  async findAll(search: string, limit: number, page: number): Promise<ResData<User[]>> {
+  async findAll(search: string, limit: number, page: number, role: string): Promise<ResData<IUserEntityCount>> {
     limit = limit > 0 ? limit : 10;
     page = page > 0 ? page : 1;
     page = (page - 1) * limit;
-    const foundUsers = await this.userRepository.findAll(search, limit, page);
-    return new ResData<User[]>("Users found successfully", 200, foundUsers);
+    if (role === 'teacher') {
+      const foundUsers = await this.userRepository.findAllTeachers(search, limit, page);
+      const totalPage = foundUsers.count / 10;
+      return new ResData<IUserEntityCount>("Teachers found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
+    } else if (role === 'admin') {
+      const foundUsers = await this.userRepository.findAllAdmins(search, limit, page)
+      const totalPage = foundUsers.count / 10;
+      return new ResData<IUserEntityCount>("Admins found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
+    } else {
+      const foundUsers = await this.userRepository.findAll(search, limit, page);
+      const totalPage = foundUsers.count / 10;
+      return new ResData<IUserEntityCount>("Users found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
+    }
   }
 
   // *** Update users by id *** //

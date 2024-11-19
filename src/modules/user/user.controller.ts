@@ -43,9 +43,15 @@ export class UserController {
     type: Number,
     description: 'For page'
   })
+  @ApiQuery({
+    name: 'role',
+    required: false,
+    type: String,
+    description: 'For role'
+  })
   @Get()
-  async findAll(@Query('search') search: string, @Query('limit') limit: number, @Query('page') page: number) {
-    return await this.userService.findAll(search, limit, page);
+  async findAll(@Query('search') search: string, @Query('limit') limit: number, @Query('page') page: number, @Query('role') role: string) {
+    return await this.userService.findAll(search, limit, page, role);
   }
 
   // *** Getting user by id *** //
