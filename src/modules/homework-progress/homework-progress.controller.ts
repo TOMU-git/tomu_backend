@@ -4,11 +4,11 @@ import {
   Post,
   Body,
   Param,
-  Put,
   ParseIntPipe,
   Inject,
   Query,
   Delete,
+  Patch,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { ResData } from "src/lib/resData";
@@ -70,7 +70,7 @@ export class HomeworkProgressController {
    * @param updateHomeworkProgressDto - Yangilash uchun kerakli ma'lumotlar
    * @returns Yangilangan homework progress
    */
-  @Put("update")
+  @Patch("update")
   async update(
     @Body() updateHomeworkProgressDto: UpdateHomeworkProgressDto, // Yangilash DTO sini oling
   ): Promise<ResData<HomeworkProgress>> {

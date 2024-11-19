@@ -270,14 +270,14 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-// INSERT INTO homeworks (description, video_url, mime_type, size, "order", duration, block_id)
+// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
-//     'https://player.vimeo.com/video/1028316276',
+//     'https://player.vimeo.com/video/1031009633',
 //     'video/mp4',
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     30  -- block_id
+//     41  -- block_id
 // FROM
 //     generate_series(1, 100) AS s(i);
