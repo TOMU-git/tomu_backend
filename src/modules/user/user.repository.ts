@@ -22,6 +22,9 @@ export class UserRepository implements IUserRepository {
       whereCondition = { phoneNumber: ILike(`%${search}%`) };
       const foundUsers = await this.userRepository.find({ skip: offset, take: limit, where: whereCondition });
       return foundUsers;
+    } else {
+      const foundUsers = await this.userRepository.find({ skip: offset, take: limit });
+      return foundUsers;
     }
   }
   // *** Find one user by id *** //
