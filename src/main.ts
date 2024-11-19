@@ -35,11 +35,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup("docs", app, document, {
-    swaggerOptions: {
-      persistAuthorization: true, // Avtorizatsiyani saqlab qoladi
-    },
-  });
+  SwaggerModule.setup("docs", app, document);
 
   await app.listen(config.port, () => {
     console.log(`http://localhost:${config.port}`);

@@ -57,11 +57,4 @@ export class Course extends BaseEntity {
     nullable: true, // Alifbolar bo'sh qoldirilishi mumkin
   })
   alphabets: Alphabet[];
-
-  // Tariflar bilan bog'lanish
-  @OneToMany(() => Tariff, (tariff) => tariff.course, {
-    onDelete: "NO ACTION", // Kurs o'chirilganda bog'langan tariflar o'chirilmaydi
-    nullable: true, // Tariflar bo'sh qoldirilishi mumkin
-  })
-  tariffs: Tariff[];
 }

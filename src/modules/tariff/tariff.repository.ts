@@ -36,12 +36,7 @@ export class TariffRepository implements ITariffRepository {
   // Course ID orqali tariflarni topish metodi
   async findByCourseId(courseId: number): Promise<Tariff[]> {
     return await this.tariffRepository.find({
-      where: {
-        course: {
-          id: courseId, // `course` obyekti orqali `id` ga murojaat qiling
-        },
-      },
-      relations: ["course"], // Kurs bilan bog'liqlikni ko'rsatish
+      where: {courseId}
     });
   }
 }
