@@ -27,6 +27,10 @@ import { IUserTariffRepository } from "../user-tariff/interfaces/user-tariff.rep
 import { UserCourse } from "../user-courses/entities/user-course.entity";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
 import { ICourseRepository } from "../course/interfaces/course.repository";
+import { ICoursePaymentRepository } from "../course-payment-history/interfaces/course-payment-repository.interface";
+import { CoursePaymentHistoryEntity } from "../course-payment-history/entities/course-payment-history.entity";
+import { LivechatPaymentHistoryEntity } from "../livechat-payment-history/entities/livechat-payment-history.entity";
+import { ILiveChatPaymentRepository } from "../livechat-payment-history/interfaces/livechat-payment-repository.interface";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -44,7 +48,9 @@ export class TransactionsService implements ITransactionService {
     @Inject("IUserTariffRepository")
     private readonly userTariffRepository: IUserTariffRepository,
     @Inject("IUserCourseRepository") private readonly userCourseRepository: IUserCourseRepository,
-    @Inject("ICourseRepository") private readonly courseRepository: ICourseRepository
+    @Inject("ICourseRepository") private readonly courseRepository: ICourseRepository,
+    @Inject("ICoursePaymentRepository") private readonly coursePaymentRepository: ICoursePaymentRepository,
+    @Inject("ILiveChatPaymentRepository") private readonly liveChatPaymentRepository: ILiveChatPaymentRepository
   ) {}
 
   //// *** Checking
@@ -231,6 +237,13 @@ export class TransactionsService implements ITransactionService {
       );
       (foundLiveChat.status = MeetingStatusEnum.PAID),
         await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
+      const newLiveChatPayment = new LivechatPaymentHistoryEntity();
+      newLiveChatPayment.fullName = foundLiveChat.firstName + ' ' + foundLiveChat.lastName;
+      newLiveChatPayment.courseName = foundLiveChat.selectedCourseName;
+      newLiveChatPayment.paymentAmount = foundLiveChat.price;
+      newLiveChatPayment.gender = foundLiveChat.gender;
+      newLiveChatPayment.liveChatId = foundLiveChat.id;
+      await this.liveChatPaymentRepository.create(newLiveChatPayment);
     }
 
     if (foundOrder.tariffId) {
@@ -249,12 +262,20 @@ export class TransactionsService implements ITransactionService {
       await this.userTariffRepository.insert(newUserTariff);
 
       const foundUser = await this.userRepository.findOneById(Number(foundOrder.userId));
-      const foundCourse = await this.courseRepository.findById(Number(foundTariff.course));
+      const foundCourse = await this.courseRepository.findById(Number(foundTariff.courseId));
       const newUserCourse = new UserCourse();
       newUserCourse.status = StatusEnum.PANDING;
       newUserCourse.user = foundUser;
       newUserCourse.course = foundCourse;
       await this.userCourseRepository.create(newUserCourse);
+
+      const newCoursePayment = new CoursePaymentHistoryEntity()
+      newCoursePayment.courseId = foundCourse.id;
+      newCoursePayment.fullName = foundUser.firstName + " " + foundUser.lastName;
+      newCoursePayment.gender = foundUser.gender;
+      newCoursePayment.paymentAmount = foundOrder.totalPrice;
+      newCoursePayment.courseName = foundCourse.title;
+      await this.coursePaymentRepository.create(newCoursePayment);
     }
 
     foundOrder.status = OrderStatus.PAID;

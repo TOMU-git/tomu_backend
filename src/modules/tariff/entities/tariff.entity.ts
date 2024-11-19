@@ -18,10 +18,6 @@ export class Tariff extends BaseEntity {
   @Column({ type: "json", nullable: true })
   options?: string[];
 
-  // Kurs bilan bog'lanish
-  @ManyToOne(() => Course, (course) => course.tariffs, {
-    onDelete: 'NO ACTION',
-  })
-  @JoinColumn({ name: "course_id" })
-  course: Course;
+  @Column({ name: 'course_id', type: 'int', nullable: false })
+  courseId: number;
 }

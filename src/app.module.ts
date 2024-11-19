@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FeedbackModule } from "./modules/feedback/feedback.module";
-import { PaymentModule } from "./modules/payment/payment.module";
 import { TariffModule } from "./modules/tariff/tariff.module";
 import { UserCoursesModule } from "./modules/user-courses/user-courses.module";
 import { FileModule } from "./modules/file/file.module";
@@ -33,6 +32,8 @@ import { UserHomeworkProgressModule } from "./modules/user-homework-progress/use
 import { UserProgressModule } from './modules/user-progress/user-progress.module';
 import { LivechatPriceModule } from './modules/livechat-price/livechat-price.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { CoursePaymentHistoryModule } from './modules/course-payment-history/course-payment-history.module';
+import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history/livechat-payment-history.module';
 
 @Module({
   imports: [
@@ -49,7 +50,6 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     AuthModule,
     CourseModule,
     FeedbackModule,
-    PaymentModule,
     TariffModule,
     UserCoursesModule,
     FileModule,
@@ -74,6 +74,8 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     UserProgressModule,
     LivechatPriceModule,
     AnalyticsModule,
+    CoursePaymentHistoryModule,
+    LivechatPaymentHistoryModule,
   ],
 })
 export class AppModule implements NestModule {

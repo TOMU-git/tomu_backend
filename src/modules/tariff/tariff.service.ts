@@ -23,12 +23,8 @@ export class TariffService implements ITariffService {
   async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
-
-    // courseId ni o'rnatish
-    const courseId = parseInt(createTariffDto.courseId); // Agar kerak bo'lsa, stringdan int ga aylantirish
-    newTariff.course = await this.courseRepository.findById(courseId); // Bu yerda courseId ni o'rnatish
-
-    // options maydonini kiritamiz
+    const foundCourse = await this.courseRepository.findById(createTariffDto.courseId);
+    newTariff.courseId = foundCourse.id;
     if (createTariffDto.options) {
       newTariff.options = createTariffDto.options;
     }

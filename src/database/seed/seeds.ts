@@ -515,7 +515,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff = new Tariff();
     (newTariff.name = "1 oylik tarif"),
       (newTariff.duration = 30),
-      (newTariff.course = newCourse1),
+      (newTariff.courseId = newCourse1.id),
       (newTariff.price = 100.0),
       (newTariff.options = [
         "O'qituvchi bilan muloqot",
@@ -530,7 +530,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff1 = new Tariff();
     (newTariff1.name = "2 oylik tarif"),
       (newTariff1.duration = 60),
-      (newTariff1.course = newCourse1),
+      (newTariff1.courseId= newCourse1.id),
       (newTariff1.price = 200.0),
       (newTariff1.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -546,7 +546,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff3 = new Tariff();
     (newTariff3.name = "3 oylik tarif"),
       (newTariff3.duration = 90),
-      (newTariff3.course = newCourse1),
+      (newTariff3.courseId = newCourse1.id),
       (newTariff3.price = 300.0),
       (newTariff3.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -562,7 +562,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff4 = new Tariff();
     (newTariff4.name = "1 oylik tarif"),
       (newTariff4.duration = 30),
-      (newTariff4.course = newCourse2),
+      (newTariff4.courseId = newCourse2.id),
       (newTariff4.price = 100.0),
       (newTariff4.options = [
         "O'qituvchi bilan muloqot",
@@ -577,7 +577,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff5 = new Tariff();
     (newTariff5.name = "2 oylik tarif"),
       (newTariff5.duration = 60),
-      (newTariff5.course = newCourse2),
+      (newTariff5.courseId = newCourse2.id),
       (newTariff5.price = 200.0),
       (newTariff5.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -593,7 +593,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff6 = new Tariff();
     (newTariff6.name = "3 oylik tarif"),
       (newTariff6.duration = 90),
-      (newTariff6.course = newCourse2),
+      (newTariff6.courseId = newCourse2.id),
       (newTariff6.price = 300.0),
       (newTariff6.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -609,7 +609,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff7 = new Tariff();
     (newTariff7.name = "1 oylik tarif"),
       (newTariff7.duration = 30),
-      (newTariff7.course = newCourse3),
+      (newTariff7.courseId = newCourse3.id),
       (newTariff7.price = 100.0),
       (newTariff7.options = [
         "O'qituvchi bilan muloqot",
@@ -624,7 +624,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff8 = new Tariff();
     (newTariff8.name = "2 oylik tarif"),
       (newTariff8.duration = 60),
-      (newTariff8.course = newCourse3),
+      (newTariff8.courseId = newCourse3.id),
       (newTariff8.price = 200.0),
       (newTariff8.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -639,7 +639,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff9 = new Tariff();
     (newTariff9.name = "3 oylik tarif"),
       (newTariff9.duration = 90),
-      (newTariff9.course = newCourse3),
+      (newTariff9.courseId = newCourse3.id),
       (newTariff9.price = 300.0),
       (newTariff9.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
