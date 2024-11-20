@@ -104,25 +104,29 @@ export class UserHomeworkProgressRepository
     return await this.userHomeworkProgressRepository.find({});
   }
 
-  async findHomeworkProgress(
-    homeworkOrder: ID,
+  async findNextHomeworkProgress(
+    currentHomeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
   ): Promise<UserHomeworkProgress | null> {
     try {
-      // homeworkOrder, userId (user_idx ustuniga bog'lanadi) va blockOrder bo'yicha homework progress yozuvini topamiz
-      const homeworkProgress =
-        await this.userHomeworkProgressRepository.findOne({
-          where: { homeworkOrder, userId, blockOrder }, // Berilgan parametrlar bo'yicha qidiramiz
-          relations: ["homework"], // Agar homework bilan bog'lanishni olishni xohlasangiz
-        });
+      // homeworkOrder'dan katta birinchi yozuvni topish uchun QueryBuilder ishlatamiz
+      const homeworkProgress = await this.userHomeworkProgressRepository
+        .createQueryBuilder("progress")
+        .where("progress.homeworkOrder > :currentHomeworkOrder", {
+          currentHomeworkOrder,
+        })
+        .andWhere("progress.userId = :userId", { userId })
+        .andWhere("progress.blockOrder = :blockOrder", { blockOrder })
+        .orderBy("progress.homeworkOrder", "ASC") // Homework order bo'yicha tartib
+        .getOne(); // Faqat bitta yozuvni qaytarish
 
-      // Agar topilgan bo'lsa, qaytarish
+      // Topilgan yozuvni qaytarish
       return homeworkProgress;
     } catch (error) {
-      // Xatolikni log qilish yoki xabar yuborish
+      // Xatolikni log qilish
       console.error("Find error:", error);
-      throw new Error("Error while fetching HomeworkProgress");
+      throw new Error("Error while fetching next HomeworkProgress");
     }
   }
 
@@ -137,12 +141,12 @@ export class UserHomeworkProgressRepository
    * @returns true - Agar o'chirish muvaffaqiyatli bo'lsa
    * @returns false - Agar xatolik yuz bersa
    */
-  async deleteAll(userId: ID, blockOrder: number): Promise<boolean> {
+  async deleteAll(userId: ID, blockId: ID): Promise<boolean> {
     try {
-      // Faqat berilgan userId va blockOrder bo'yicha yozuvlarni o'chirish
+      // Faqat berilgan userId va blockId bo'yicha yozuvlarni o'chirish
       const result = await this.userHomeworkProgressRepository.delete({
         userId: userId,
-        blockOrder: blockOrder,
+        blockId: blockId,
       });
 
       // Agar hech qanday yozuv o'chirilmagan bo'lsa, false qaytariladi

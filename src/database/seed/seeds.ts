@@ -530,7 +530,7 @@ import { createConnection, DataSource } from "typeorm";
     const newTariff1 = new Tariff();
     (newTariff1.name = "2 oylik tarif"),
       (newTariff1.duration = 60),
-      (newTariff1.courseId= newCourse1.id),
+      (newTariff1.courseId = newCourse1.id),
       (newTariff1.price = 200.0),
       (newTariff1.options = [
         "O'qituvchi bilan to'g'ridan-to'g'ri muloqot",
@@ -972,7 +972,7 @@ import { createConnection, DataSource } from "typeorm";
             if (!existingLesson) {
               const lesson = new Lesson();
               lesson.title = `${title} bo'limi ${order}`;
-              lesson.videoUrl = "https://player.vimeo.com/video/1024292117";
+              lesson.videoUrl = "https://player.vimeo.com/video/1031009633";
               lesson.order = order; // Order qiymati 1-15 gacha
               lesson.mimetype = "video/mp4";
               lesson.size = 2928407;

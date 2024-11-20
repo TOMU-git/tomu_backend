@@ -16,12 +16,12 @@ export interface IUserHomeworkProgressRepository {
     blockOrder: number,
     homeworkOrder: number,
   ): Promise<UserHomeworkProgress>;
-  deleteAll(userId: ID, blockOrder: number): Promise<boolean>;
+  deleteAll(userId: ID, blockId: ID): Promise<boolean> 
   updateProgress(
     updateData: UserHomeworkProgress,
   ): Promise<UserHomeworkProgress>;
-  findHomeworkProgress(
-    homeworkOrder: ID,
+  findNextHomeworkProgress(
+    currentHomeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
   ): Promise<UserHomeworkProgress | null>;
