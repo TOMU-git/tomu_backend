@@ -32,6 +32,18 @@ export class UserCourseRepository implements IUserCourseRepository {
     return await this.userCourseRepository.find();
   }
 
+  async findByTariffIdAndUserId(
+    userId: number,
+    courseId: number,
+  ): Promise<UserCourse | null> {
+    return await this.userCourseRepository.findOne({
+      where: {
+        user: { id: userId },
+        course: { id: courseId },
+      },
+    });
+  }
+
   /**
    * Berilgan UserCourse obyektini yangilaydi va qaytaradi.
    * @param entity Yangilanadigan UserCourse obyekti

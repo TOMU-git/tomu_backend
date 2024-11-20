@@ -254,25 +254,39 @@ export class TransactionsService implements ITransactionService {
       const foundTariff = await this.tariffRepository.findOneById(
         Number(foundOrder.tariffId),
       );
-      const newUserTariff = new UserTariff();
-      newUserTariff.isActive = true;
-      newUserTariff.startedAt = new Date();
-      const now = new Date();
-      const expiryDate = new Date(now);
-      expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
-      newUserTariff.endedAt = expiryDate;
-      newUserTariff.userId = foundOrder.userId;
-      newUserTariff.tariffId = foundOrder.tariffId;
-      await this.userTariffRepository.insert(newUserTariff);
-
+      const foundUserTariff = await this.userTariffRepository.findByTariffIdAndUserId(foundOrder.tariffId, foundOrder.userId);
+      if (foundUserTariff) {
+        foundUserTariff.startedAt = new Date();
+        const now = new Date();
+        const expiryDate = new Date(now);
+        expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
+        foundUserTariff.endedAt = expiryDate;
+        foundUserTariff.isActive = true;
+        await this.userTariffRepository.update(foundUserTariff);
+      } else {
+        const newUserTariff = new UserTariff();
+        newUserTariff.isActive = true;
+        newUserTariff.startedAt = new Date();
+        const now = new Date();
+        const expiryDate = new Date(now);
+        expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
+        newUserTariff.endedAt = expiryDate;
+        newUserTariff.userId = foundOrder.userId;
+        newUserTariff.tariffId = foundOrder.tariffId;
+        await this.userTariffRepository.insert(newUserTariff);
+      }
       const foundUser = await this.userRepository.findOneById(Number(foundOrder.userId));
       const foundCourse = await this.courseRepository.findById(Number(foundTariff.courseId));
-      const newUserCourse = new UserCourse();
-      newUserCourse.status = StatusEnum.PANDING;
-      newUserCourse.user = foundUser;
-      newUserCourse.course = foundCourse;
-      await this.userCourseRepository.create(newUserCourse);
-
+      const foundUserCourse = await this.userCourseRepository.findByTariffIdAndUserId(Number(foundOrder.userId), Number(foundCourse.id));
+      if (foundUserCourse) {
+        await this.userCourseRepository.update(foundUserCourse);
+      } else {
+        const newUserCourse = new UserCourse();
+        newUserCourse.status = StatusEnum.PANDING;
+        newUserCourse.user = foundUser;
+        newUserCourse.course = foundCourse;
+        await this.userCourseRepository.create(newUserCourse);
+      }
       const newCoursePayment = new CoursePaymentHistoryEntity()
       newCoursePayment.courseId = foundCourse.id;
       newCoursePayment.fullName = foundUser.firstName + " " + foundUser.lastName;
