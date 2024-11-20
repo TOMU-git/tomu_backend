@@ -91,8 +91,8 @@ export class UserRepository implements IUserRepository {
     let whereCondition = {};
     if (search && search.trim() !== "") {
       whereCondition = {
-        phoneNumber: ILike(`%${search}%`),
         role: RoleEnum.TEACHER,
+        phoneNumber: ILike(`%${search}%`)
       };
       const foundUsers = await this.userRepository.find({
         skip: offset,

@@ -13,9 +13,22 @@ import { UserCoursesModule } from "../user-courses/user-courses.module";
 import { CourseModule } from "../course/course.module";
 import { CoursePaymentHistoryModule } from "../course-payment-history/course-payment-history.module";
 import { LivechatPaymentHistoryModule } from "../livechat-payment-history/livechat-payment-history.module";
+import { UserLivechatsModule } from "../user-livechats/user-livechats.module";
 
 @Module({
-imports: [TypeOrmModule.forFeature([TransactionEntity]), UserModule,  OrdersModule, LiveChatModule, TariffModule, UserTariffModule, UserCoursesModule, CourseModule, CoursePaymentHistoryModule, LivechatPaymentHistoryModule],
+  imports: [
+    TypeOrmModule.forFeature([TransactionEntity]),
+    UserModule,
+    OrdersModule,
+    LiveChatModule,
+    TariffModule,
+    UserTariffModule,
+    UserCoursesModule,
+    CourseModule,
+    CoursePaymentHistoryModule,
+    LivechatPaymentHistoryModule,
+    UserLivechatsModule
+  ],
   controllers: [TransactionsController],
   providers: [
     { provide: "ITransactionServcie", useClass: TransactionsService },

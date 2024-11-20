@@ -1,7 +1,5 @@
-import { HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { PaymeParams } from "src/common/types/type";
-import { IUserService } from "../user/interfaces/user.service";
-import { ITariffService } from "../tariff/interface/tariff.service";
 import { ITransactionRepo } from "./interfaces/transaction-repo";
 import { ITransactionService } from "./interfaces/transaction-service";
 import { IUserRepository } from "../user/interfaces/user.repository";
@@ -31,6 +29,7 @@ import { ICoursePaymentRepository } from "../course-payment-history/interfaces/c
 import { CoursePaymentHistoryEntity } from "../course-payment-history/entities/course-payment-history.entity";
 import { LivechatPaymentHistoryEntity } from "../livechat-payment-history/entities/livechat-payment-history.entity";
 import { ILiveChatPaymentRepository } from "../livechat-payment-history/interfaces/livechat-payment-repository.interface";
+import { IUserLiveChatRepository } from "../user-livechats/interfaces/user-livechat.repository.interface";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -50,7 +49,8 @@ export class TransactionsService implements ITransactionService {
     @Inject("IUserCourseRepository") private readonly userCourseRepository: IUserCourseRepository,
     @Inject("ICourseRepository") private readonly courseRepository: ICourseRepository,
     @Inject("ICoursePaymentRepository") private readonly coursePaymentRepository: ICoursePaymentRepository,
-    @Inject("ILiveChatPaymentRepository") private readonly liveChatPaymentRepository: ILiveChatPaymentRepository
+    @Inject("ILiveChatPaymentRepository") private readonly liveChatPaymentRepository: ILiveChatPaymentRepository,
+    @Inject("IUserLiveChatRepository") private readonly userLiveChatRepository: IUserLiveChatRepository
   ) {}
 
   //// *** Checking
@@ -237,12 +237,16 @@ export class TransactionsService implements ITransactionService {
       );
       (foundLiveChat.status = MeetingStatusEnum.PAID),
         await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
+      const foundUserLiveChat = await this.userLiveChatRepository.getByLiveChatId(Number(foundLiveChat.id));
+      const foundTeacher = await this.userRepository.findOneById(Number(foundUserLiveChat.teacherId));
       const newLiveChatPayment = new LivechatPaymentHistoryEntity();
       newLiveChatPayment.fullName = foundLiveChat.firstName + ' ' + foundLiveChat.lastName;
       newLiveChatPayment.courseName = foundLiveChat.selectedCourseName;
       newLiveChatPayment.paymentAmount = foundLiveChat.price;
       newLiveChatPayment.gender = foundLiveChat.gender;
       newLiveChatPayment.liveChatId = foundLiveChat.id;
+      newLiveChatPayment.teacherName = foundTeacher.firstName + ' ' + foundTeacher.lastName;
+      newLiveChatPayment.teacherPhoneNumber = foundTeacher.phoneNumber;
       await this.liveChatPaymentRepository.create(newLiveChatPayment);
     }
 

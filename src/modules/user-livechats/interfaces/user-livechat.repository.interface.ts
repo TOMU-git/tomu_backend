@@ -5,4 +5,5 @@ export interface IUserLiveChatRepository {
     getAll(): Promise<UserLivechatEntity[]>;
     getByUserId(userId: number): Promise<UserLivechatEntity[]>;
     getByTeacherId(teacherId: number, courseId: number): Promise<UserLivechatEntity[]>;
+    getByLiveChatId(liveChatId: number): Promise<UserLivechatEntity>;
 }
