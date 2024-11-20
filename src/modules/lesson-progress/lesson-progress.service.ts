@@ -87,7 +87,7 @@ export class LessonProgressService implements ILessonProgressService {
       );
     console.log("existingProgress", existingProgress);
 
-    let checkOrder =
+    const checkOrder =
       Number(existingProgress.lessonOrder) - Number(foundLessonProgress.lessonOrder);
     console.log("checkOrder", checkOrder);
 
@@ -289,6 +289,6 @@ export class LessonProgressService implements ILessonProgressService {
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     40  -- block_id
+//     30  -- block_id
 // FROM
 //     generate_series(1, 30) AS s(i);
