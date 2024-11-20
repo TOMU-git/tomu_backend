@@ -17,6 +17,10 @@ export class UserLiveChatRepository implements IUserLiveChatRepository {
     return await this.repository.find({ where: { isAccepted: true } });
   }
 
+  async getByLiveChatId(id: number): Promise<UserLivechatEntity>{
+    return await this.repository.findOneBy({ liveChatId: id });
+  }
+
   async getByUserId(userId: number): Promise<UserLivechatEntity[]> {
     return await this.repository.find({ where: { userId } });
   }
