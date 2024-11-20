@@ -175,7 +175,6 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     // homeworkOrder, userId, va blockId bo'yicha homework progress yozuvini topamiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
       where: { homeworkOrder, userId, blockId },
-      relations: ["user", "homework"], // agar user va homework bog'lanishini olishni xohlasangiz
     });
 
     if (homeworkProgress) {
@@ -244,7 +243,8 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
    * @returns Kuzatish soni 0 va 5 oralig'ida bo'lgan HomeworkProgress yozuvlarining ro'yxati
    */
   async getVideosWithWatchCountBetween0And5(
-    blockOrder: ID, courseId: ID,
+    blockOrder: ID,
+    courseId: ID,
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository.find({
       where: {
@@ -264,7 +264,7 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     homeworkOrder: ID,
     userId: ID,
     blockOrder: ID,
-    courseId: ID
+    courseId: ID,
   ): Promise<HomeworkProgress | null> {
     // homeworkOrder, userId va blockOrder bo'yicha homework progress yozuvini qidiramiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
@@ -275,19 +275,45 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return homeworkProgress || null;
   }
 
+  async getHighestHomeworkProgress(
+    userId: ID,
+    blockOrder: ID,
+    courseId: ID,
+  ): Promise<HomeworkProgress | null> {
+    try {
+      // homeworkOrder bo'yicha eng katta yozuvni topish
+      const homeworkProgress = await this.homeworkProgressRepository
+        .createQueryBuilder("progress")
+        .where("progress.userId = :userId", { userId })
+        .andWhere("progress.blockOrder = :blockOrder", { blockOrder })
+        .andWhere("progress.courseId = :courseId", { courseId })
+        .orderBy("progress.homeworkOrder", "DESC") // Eng katta homeworkOrder bo'yicha tartib
+        .getOne(); // Faqat eng katta yozuvni qaytaradi
+
+      // Yozuvni qaytarish (null bo'lsa, null qaytariladi)
+      return homeworkProgress || null;
+    } catch (error) {
+      console.error("Error fetching max HomeworkProgress:", error);
+      throw new Error("Error while fetching HomeworkProgress");
+    }
+  }
+
   /**
    * Foydalanuvchining barcha ko'rilgan (isWatched = true) homework progresslarini topish.
    *
    * @param userId - Foydalanuvchi ID
    * @returns isWatched = true bo'lgan barcha HomeworkProgress yozuvlari
    */
-  async findAllWatchedHomeworkByUser(userId: ID, courseId: ID): Promise<HomeworkProgress[]> {
+  async findAllWatchedHomeworkByUser(
+    userId: ID,
+    courseId: ID,
+  ): Promise<HomeworkProgress[]> {
     return await this.homeworkProgressRepository.find({
       where: {
         user: { id: userId },
         courseId: courseId,
         isWatched: true,
-      }
+      },
     });
   }
 }

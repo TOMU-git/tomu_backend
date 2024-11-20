@@ -11,3 +11,9 @@ export class HomeworkProgressAlreadyExistException extends HttpException {
     super("HomeworkProgress already exist", 400);
   }
 }
+
+export class NotFoundNextProgress extends HttpException {
+  constructor() {
+    super("Not found next progress, before you should generate new progresses", 400);
+  }
+}

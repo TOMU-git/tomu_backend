@@ -82,4 +82,10 @@ export interface IHomeworkProgressRepository {
     userId: ID,
     courseId: ID,
   ): Promise<HomeworkProgress[]>;
+
+  getHighestHomeworkProgress(
+    userId: ID,
+    blockOrder: ID,
+    courseId: ID,
+  ): Promise<HomeworkProgress | null> 
 }

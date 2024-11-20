@@ -25,16 +25,16 @@ export interface ILessonProgressRepository {
     userId: ID,
     courseId: ID,
   ): Promise<number | null>;
-  findLastWatchedLesson(
+  findLastWatchedLessonProgress(
     userId: ID,
     courseId: ID,
     blockId: ID,
-  ): Promise<number | null>;
+  ): Promise<LessonProgress | null> 
 
   getLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<LessonProgress | null> 
 
   markLessonAsWatched(

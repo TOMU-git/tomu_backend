@@ -54,41 +54,46 @@ export class LessonProgressService implements ILessonProgressService {
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
     // `LessonProgress` obyektini topish
+    console.log("id", id);
     const foundLessonProgress =
       await this.lessonProgressRepository.findById(id);
     if (!foundLessonProgress) {
       throw new LessonProgressNotFoundException();
     }
 
+    console.log("foundLessonProgress", foundLessonProgress);
     const userId = Number(foundLessonProgress.userId);
     const courseId = Number(foundLessonProgress.courseId);
     const blockId = Number(foundLessonProgress.blockId);
 
+    console.log(userId, courseId, blockId)
     let lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLesson(
+      await this.lessonProgressRepository.findLastWatchedLessonProgress(
         userId,
         courseId,
         blockId,
       );
 
+    console.log("lastWatchedLesson",lastWatchedLessonOrder);
     if (!lastWatchedLessonOrder) {
-      lastWatchedLessonOrder = 0;
+      lastWatchedLessonOrder.lessonOrder = 0;
     }
 
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder.lessonOrder);
 
-    const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
+    const nextLessonOrder = Number(lastWatchedLessonOrder.lessonOrder) + 1;
 
     const existingProgress =
       await this.lessonProgressRepository.getLessonProgress(
         nextLessonOrder,
         userId,
-        courseId,
+        blockId,
       );
     console.log("existingProgress", existingProgress);
 
-    let checkOrder =
-      Number(existingProgress.lessonOrder) - Number(foundLessonProgress.lessonOrder);
+    const checkOrder =
+      Number(existingProgress.lessonOrder) -
+      Number(foundLessonProgress.lessonOrder);
     console.log("checkOrder", checkOrder);
 
     if (existingProgress && checkOrder <= 1) {
@@ -142,7 +147,7 @@ export class LessonProgressService implements ILessonProgressService {
 
     // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
     // hozircha kerak emas ekan
-    // const lastWatchedLessonOrder =
+    // const lastWatchedLessonOrder.lessonOrder =
     //   await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
     //     userId,
     //     blockOrder,
@@ -168,27 +173,27 @@ export class LessonProgressService implements ILessonProgressService {
 
     /* agar hamma lesson larni ko'rgan bo'lsa ammo homeworklarni hammasini ko'rmagan bo'lsa bazada bor lessonProgreslarni qaytaramiz error message bilan birga, error messga orqali front user ga siz oldin hamma homeworklar ko'rib tugatishingiz kerak degan yozuv chiqaradi
      */
-    // if (
-    //   watchedProgressCount % 5 == 0 &&
-    //   notWatchedProgressCount === 0 &&
-    //   !isWatchedHomework
-    // ) {
-    //   const existingProgress =
-    //     await this.lessonProgressRepository.findByOrderAndUserId(
-    //       blockId,
-    //       userId,
-    //     );
+    if (
+      watchedProgressCount % 5 == 0 &&
+      notWatchedProgressCount === 0 &&
+      !isWatchedHomework
+    ) {
+      const existingProgress =
+        await this.lessonProgressRepository.findByOrderAndUserId(
+          blockId,
+          userId,
+        );
 
-    //   return new ResData<Array<LessonProgress>>(
-    //     "You must have seen all the homework before",
-    //     200,
-    //     existingProgress,
-    //   );
-    // }
+      return new ResData<Array<LessonProgress>>(
+        "Keyingi darslarni ko'rish uchun oldin uyga vazifanlarni ko'rishingiz kerak",
+        200,
+        existingProgress,
+      );
+    }
     if (
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0
-      // && isWatchedHomework
+      && isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -289,6 +294,6 @@ export class LessonProgressService implements ILessonProgressService {
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     40  -- block_id
+//     41  -- block_id
 // FROM
 //     generate_series(1, 30) AS s(i);
