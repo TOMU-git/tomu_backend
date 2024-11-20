@@ -133,18 +133,18 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return await this.lessonProgressRepository.findOneBy({ id });
   }
 
-  async existsLessonProgress(
+  async getLessonProgress(
     lessonOrder: ID,
     userId: ID,
     courseId: ID,
-  ): Promise<boolean> {
+  ): Promise<LessonProgress | null> {
     // lessonOrder, userId, va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
       where: { lessonOrder, userId, courseId },
     });
 
-    // Ma'lumot mavjud bo'lsa true, bo'lmasa false qaytaradi
-    return !!lessonProgress;
+    // Ma'lumot mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
+    return lessonProgress || null;
   }
 
   /**

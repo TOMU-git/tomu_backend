@@ -8,7 +8,6 @@ export interface ILessonProgressService {
   findOneById(id: ID): Promise<ResData<LessonProgress>>;
   update(
     id: ID,
-    dto: UpdateLessonProgressDto,
   ): Promise<ResData<LessonProgress>>;
 
   getVideos(userId: ID, blockId: ID): Promise<ResData<Array<LessonProgress>>>;

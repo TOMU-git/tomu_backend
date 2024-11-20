@@ -52,10 +52,7 @@ export class LessonProgressService implements ILessonProgressService {
     return new ResData<LessonProgress>("ok", 200, foundData);
   }
 
-  async update(
-    id: ID,
-    updateDto: UpdateLessonProgressDto,
-  ): Promise<ResData<LessonProgress>> {
+  async update(id: ID): Promise<ResData<LessonProgress>> {
     // `LessonProgress` obyektini topish
     const foundLessonProgress =
       await this.lessonProgressRepository.findById(id);
@@ -63,42 +60,53 @@ export class LessonProgressService implements ILessonProgressService {
       throw new LessonProgressNotFoundException();
     }
 
-    const lastWatchedLessonOrder =
+    const userId = Number(foundLessonProgress.userId);
+    const courseId = Number(foundLessonProgress.courseId);
+    const blockId = Number(foundLessonProgress.blockId);
+
+    let lastWatchedLessonOrder =
       await this.lessonProgressRepository.findLastWatchedLesson(
-        updateDto.userId,
-        updateDto.courseId,
-        updateDto.blockId,
+        userId,
+        courseId,
+        blockId,
       );
+
+    if (!lastWatchedLessonOrder) {
+      lastWatchedLessonOrder = 0;
+    }
+
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
 
     const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
 
     const existingProgress =
-      await this.lessonProgressRepository.existsLessonProgress(
+      await this.lessonProgressRepository.getLessonProgress(
         nextLessonOrder,
-        updateDto.userId,
-        updateDto.courseId,
+        userId,
+        courseId,
       );
+    console.log("existingProgress", existingProgress);
 
-    if (existingProgress) {
+    let checkOrder =
+      Number(existingProgress.lessonOrder) - Number(foundLessonProgress.lessonOrder);
+    console.log("checkOrder", checkOrder);
+
+    if (existingProgress && checkOrder <= 1) {
       // Keyingi progressni `isWatched` qilib yangilash
-      await this.lessonProgressRepository.markLessonAsWatched(
+      const data = await this.lessonProgressRepository.markLessonAsWatched(
         nextLessonOrder,
-        updateDto.userId,
-        updateDto.blockId,
+        userId,
+        blockId,
       );
+      console.log("data", data);
     }
 
     // Barcha yangilanishlarni `Object.assign` yordamida `foundLessonProgress`ga qo'llash
-    Object.assign(foundLessonProgress, updateDto);
-
-    // Yangilangan `LessonProgress` obyektini saqlash
-    const updatedData =
-      await this.lessonProgressRepository.update(foundLessonProgress);
 
     return new ResData<LessonProgress>(
       "Lesson progress updated successfully",
       200,
-      updatedData,
+      foundLessonProgress,
     );
   }
 
@@ -147,6 +155,7 @@ export class LessonProgressService implements ILessonProgressService {
         courseId,
       );
 
+    // console.log(isWatchedHomework);
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === true,
@@ -159,27 +168,27 @@ export class LessonProgressService implements ILessonProgressService {
 
     /* agar hamma lesson larni ko'rgan bo'lsa ammo homeworklarni hammasini ko'rmagan bo'lsa bazada bor lessonProgreslarni qaytaramiz error message bilan birga, error messga orqali front user ga siz oldin hamma homeworklar ko'rib tugatishingiz kerak degan yozuv chiqaradi
      */
-    if (
-      watchedProgressCount % 5 == 0 &&
-      notWatchedProgressCount === 0 &&
-      !isWatchedHomework
-    ) {
-      const existingProgress =
-        await this.lessonProgressRepository.findByOrderAndUserId(
-          blockId,
-          userId,
-        );
+    // if (
+    //   watchedProgressCount % 5 == 0 &&
+    //   notWatchedProgressCount === 0 &&
+    //   !isWatchedHomework
+    // ) {
+    //   const existingProgress =
+    //     await this.lessonProgressRepository.findByOrderAndUserId(
+    //       blockId,
+    //       userId,
+    //     );
 
-      return new ResData<Array<LessonProgress>>(
-        "You must have seen all the homework before",
-        200,
-        existingProgress,
-      );
-    }
+    //   return new ResData<Array<LessonProgress>>(
+    //     "You must have seen all the homework before",
+    //     200,
+    //     existingProgress,
+    //   );
+    // }
     if (
       watchedProgressCount % 5 == 0 &&
-      notWatchedProgressCount === 0 &&
-      isWatchedHomework
+      notWatchedProgressCount === 0
+      // && isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -216,11 +225,15 @@ export class LessonProgressService implements ILessonProgressService {
         courseId,
       );
 
+    // console.log("lastLessonOrder",lastLessonOrder)
+
     // lastLessonOrder dan keyingi 5 darsni olish
     const lessons = await this.lessonRepository.findNextFiveLessonsAfterOrder(
       lastLessonOrder || 0, // Agar progress yo'q bo'lsa, 0 dan boshlash
       blockId,
     );
+
+    // console.log("lessons", lessons)
 
     if (lessons.length < 1) {
       throw new Error("No more lessons available in this block");
@@ -268,14 +281,14 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-  // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
-  // SELECT
-  //     'Generated description for homework ' || i,
-  //     'https://player.vimeo.com/video/1031009633',
-  //     'video/mp4',
-  //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
-  //     i,  -- Order ketma-ketlikda oshib boradi
-  //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-  //     40  -- block_id
-  // FROM
-  //     generate_series(1, 30) AS s(i);
+// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
+// SELECT
+//     'Generated description for homework ' || i,
+//     'https://player.vimeo.com/video/1031009633',
+//     'video/mp4',
+//     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
+//     i,  -- Order ketma-ketlikda oshib boradi
+//     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
+//     40  -- block_id
+// FROM
+//     generate_series(1, 30) AS s(i);
