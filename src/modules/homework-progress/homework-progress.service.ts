@@ -385,7 +385,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       }
 
       return new ResData<Array<Partial<HomeworkProgress>>>(
-        "You must have seen all the lessons before ",
+        "Keyingi videolarni ko'rish uchun oldin hamma dars videolarini ko'rishingiz kerak ",
         200,
         existingProgress,
       );
