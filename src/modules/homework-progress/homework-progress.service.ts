@@ -158,13 +158,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.blockOrder,
           dto.courseId,
         );
-        const order = Number(exitsNextProgress.homeworkOrder);
-        // console.log("order,", order)
-        // console.log("exitsNextProgress Bomi if (nextTemprorayProgress) ichida", exitsNextProgress)
-        console.log("exitsNextProgress:", exitsNextProgress);
-        if (exitsNextProgress) {
-          // console.log("ishladi (nextTemprorayProgress) ichida")
-          
+      const order = Number(exitsNextProgress.homeworkOrder);
+      // console.log("order,", order)
+      // console.log("exitsNextProgress Bomi if (nextTemprorayProgress) ichida", exitsNextProgress)
+      console.log("exitsNextProgress:", exitsNextProgress);
+      if (exitsNextProgress) {
+        // console.log("ishladi (nextTemprorayProgress) ichida")
+
         const d = await this.homeworkProgressRepository.markHomeworkAsWatched(
           order,
           dto.userId,
@@ -179,7 +179,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
         console.log("markHomeworkAsWatched", d),
           (foundData.countWatched = Number(foundData.countWatched) + 1);
-        await this.homeworkProgressRepository.update(foundData);  
+        await this.homeworkProgressRepository.update(foundData);
       }
 
       const afterNextProgress =
@@ -198,7 +198,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.userId,
           dto.blockOrder,
         );
-
 
       // console.log(
       //   "after update",
@@ -364,69 +363,66 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
 
     // // agar hamma ochiq lesson larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish
-    // if (
-    //   (watchedProgressCount % 5 === 0 &&
-    //     notWatchedProgressCount === 0
-    //     && isWatchedAllHomework
-    //     && !isWatchedAllLesson
-    //   )
-    // ) {
-    //   console.log(
-    //     " // agar hamma ochiq lesson larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
-    //   );
-    //   const temporaryProgress =
-    //     await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-    //       blockId,
-    //       userId,
-    //     );
-    //   console.log("temporaryProgress", temporaryProgress);
+    if (
+      watchedProgressCount % 5 === 0 &&
+      notWatchedProgressCount === 0 &&
+      isWatchedAllHomework &&
+      !isWatchedAllLesson
+    ) {
+      console.log(
+        " // agar hamma ochiq lesson larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
+      );
+      const temporaryProgress =
+        await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+          blockId,
+          userId,
+        );
+      console.log("temporaryProgress", temporaryProgress);
 
-    //   if (temporaryProgress.length > 1) {
-    //     return new ResData<Array<Partial<HomeworkProgress>>>(
-    //       "You must have seen all the lessons before DATA from temproraryProgress",
-    //       200,
-    //       temporaryProgress,
-    //     );
-    //   }
+      if (temporaryProgress.length > 1) {
+        return new ResData<Array<Partial<HomeworkProgress>>>(
+          "Keyingi videolarni ko'rish uchun oldin hamma dars videolarini ko'rishingiz kerak",
+          200,
+          temporaryProgress,
+        );
+      }
 
-    //   return new ResData<Array<Partial<HomeworkProgress>>>(
-    //     "You must have seen all the lessons before ",
-    //     200,
-    //     existingProgress,
-    //   );
-    // }
+      return new ResData<Array<Partial<HomeworkProgress>>>(
+        "You must have seen all the lessons before ",
+        200,
+        existingProgress,
+      );
+    }
 
     // agar hamma ochiq homework larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish
-    // if (
-    //   (watchedProgressCount % 5 === 0 &&
-    //     notWatchedProgressCount === 0
-    //     // && !isWatchedAllHomework
+    if (
+      (watchedProgressCount % 5 === 0 &&
+        notWatchedProgressCount === 0 &&
+        !isWatchedAllHomework) ||
+      existingProgress.length === 0
+    ) {
+      console.log(
+        " // agar hamma ochiq homework larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
+      );
+      const temporaryProgress =
+        await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+          blockId,
+          userId,
+        );
 
-    //   ) ||
-    //   existingProgress.length === 0
-    // ) {
-    //   console.log(
-    //     " // agar hamma ochiq homework larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
-    //   );
-    //   const temporaryProgress =
-    //     await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
-    //       blockId,
-    //       userId,
-    //     );
-
-    //   return new ResData<Array<Partial<HomeworkProgress>>>(
-    //     "You must have seen all the homework before DATA from temproraryProgress",
-    //     200,
-    //     temporaryProgress,
-    //   );
-    // }
+      return new ResData<Array<Partial<HomeworkProgress>>>(
+        "DATA from temproraryProgress",
+        200,
+        temporaryProgress,
+      );
+    }
 
     // agar ochiq homework va ochiq lesson larni hammasini ko'rgan bo'lsa progress yaratish
     if (
       watchedProgressCount % 5 === 0 &&
       notWatchedProgressCount === 0 &&
-      isWatchedAllHomework
-      // && isWatchedAllLesson
+      isWatchedAllHomework &&
+      isWatchedAllLesson
     ) {
       // Agar barcha shartlar to'g'ri bo'lsa, yangi 5ta progress yaratish
       console.log(
@@ -484,8 +480,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           await this.homeworkProgressRepository.update(video);
         }
 
-        const temporaryProgress =
-          await this.userHomeworkProgressRepository.bulkCreate(progressList);
+        await this.userHomeworkProgressRepository.bulkCreate(progressList);
 
         const data =
           await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(

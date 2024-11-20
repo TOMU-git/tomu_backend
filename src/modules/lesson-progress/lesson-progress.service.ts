@@ -180,7 +180,7 @@ export class LessonProgressService implements ILessonProgressService {
     //     );
 
     //   return new ResData<Array<LessonProgress>>(
-    //     "You must have seen all the homework before",
+    //     "Keyingi darslarni ko'rish uchun oldin uyga vazifanlarni ko'rishingiz kerak",
     //     200,
     //     existingProgress,
     //   );
@@ -289,6 +289,6 @@ export class LessonProgressService implements ILessonProgressService {
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     30  -- block_id
+//     41  -- block_id
 // FROM
 //     generate_series(1, 30) AS s(i);

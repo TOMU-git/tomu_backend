@@ -33,6 +33,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   // berilgan userId va blockId ga mos lessonProgressnilarni topish
+  // berilgan userId va blockId ga mos lessonProgressnilarni topish
   async findByOrderAndUserId(
     blockId: ID,
     userId: ID,
@@ -43,6 +44,9 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         userId: userId,
       },
       relations: ["lesson"], // "lesson"ni to'liq olish uchun relations qo'shish
+      order: {
+        lessonOrder: "ASC", // lessonOrder bo'yicha o'sish tartibida saralash
+      },
       select: ["lesson"], // Agar faqat lessonni tanlamoqchi bo'lsangiz
     });
   }
