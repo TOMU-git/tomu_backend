@@ -66,8 +66,8 @@ export class CreateLiveChatDto {
 
   @ApiProperty({
     type: String,
-    description: "Select should be 'YYYY-MM-DD' or 'DD/MM/YYYY' format.",
-    example: "25/11/2024 or 2024-11-25",
+    description: "Select should be 'YYYY-MM-DD'",
+    example: "2024-11-25",
   })
   @IsString()
   @IsNotEmpty()

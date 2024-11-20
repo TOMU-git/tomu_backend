@@ -2,6 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ITransactionRepo } from "./interfaces/transaction-repo";
 import { TransactionEntity } from "./entities/transaction.entity";
 import { Repository, Not, IsNull } from "typeorm";
+import { TransactionStateEnum } from "src/common/enums/transaction";
 
 export class TransactionRepository implements ITransactionRepo {
   constructor(
@@ -30,17 +31,21 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.findOne({ where: { userId, orderId } });
   }
 
-  async getAllByTariffId(): Promise<any> {
-    return await this.repository.find({
-      where: { tariffId: Not(IsNull()) },
-      select: ["amount"],
-    });
+  async getAllByTariffId(start: number, end: number): Promise<any> {
+    return await this.repository
+      .createQueryBuilder('transactions')
+      .where("transactions.tariffId IS NOT NULL AND transactions.state = :state", {state: TransactionStateEnum.PAID})
+      .andWhere("transactions.createTime BETWEEN :start AND :end", { start, end })
+      .select("transactions.amount", 'amount')
+      .getRawMany();
   }
-  async getAllByLiveChatId(): Promise<TransactionEntity[]> {
-    return await this.repository.find({
-      where: { liveChatId: Not(IsNull()) },
-      select: { amount: true },
-    });
+  async getAllByLiveChatId(start: number, end: number): Promise<TransactionEntity[]> {
+    return await this.repository
+      .createQueryBuilder('transactions')
+      .where("transactions.liveChatId IS NOT NULL AND transactions.state = :state", {state: TransactionStateEnum.PAID})
+      .andWhere("transactions.createTime BETWEEN :start AND :end", { start, end })
+      .select("transactions.amount", 'amount')
+      .getRawMany();
   }
 
   async getTransactionInPeriod(

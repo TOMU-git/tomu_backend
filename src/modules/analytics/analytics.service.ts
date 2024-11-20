@@ -8,14 +8,14 @@ export class AnalyticsService {
   constructor(
     @Inject("ITransactionRepository") private readonly transactionsRepository: ITransactionRepo 
   ) {}
-  async findAll(): Promise<IResponseData>{
-    const foundLiveChatAmount = await this.transactionsRepository.getAllByLiveChatId()
+  async findAll(from: number, to: number): Promise<IResponseData> {
+    const foundLiveChatAmount = await this.transactionsRepository.getAllByLiveChatId(from, to)
     let liveChatAmount = 0;
     for (let index = 0; index < foundLiveChatAmount.length; index++) {
       const element = foundLiveChatAmount[index];
       liveChatAmount = liveChatAmount + Number(element.amount)
     }
-    const foundTariffAmount = await this.transactionsRepository.getAllByTariffId()
+    const foundTariffAmount = await this.transactionsRepository.getAllByTariffId(from, to)
     let tariffAmount = 0;
     for (let index = 0; index < foundTariffAmount.length; index++) {
       const element = foundTariffAmount[index];
