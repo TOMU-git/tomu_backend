@@ -123,9 +123,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       );
     // console.log("nextProgress", nextProgress);
 
-    if (!nextProgress) {
-      throw new NotFoundNextProgress();
-    }
 
     const checkOrder =
       Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
