@@ -19,6 +19,10 @@ export class UserTariffRepository implements IUserTariffRepository {
     return this.userTariffRepository.find();
   }
 
+  async findByTariffIdAndUserId(tariffId: number, userId: number): Promise<UserTariff> {
+    return await this.userTariffRepository.findOneBy({ tariffId, userId });
+  }
+
   async findByUserId(userId: number): Promise<UserTariff[]> {
     return await this.userTariffRepository.find({where: {userId}})
   }
