@@ -591,7 +591,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockId,
       );
 
-    console.log("homeworks__________________", homeworks);
+    console.log("homeworks__________________", homeworks.length);
 
     if (homeworks.length < 1)
       throw new Error("No more homeworks available in this block");
