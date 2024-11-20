@@ -173,27 +173,27 @@ export class LessonProgressService implements ILessonProgressService {
 
     /* agar hamma lesson larni ko'rgan bo'lsa ammo homeworklarni hammasini ko'rmagan bo'lsa bazada bor lessonProgreslarni qaytaramiz error message bilan birga, error messga orqali front user ga siz oldin hamma homeworklar ko'rib tugatishingiz kerak degan yozuv chiqaradi
      */
-    // if (
-    //   watchedProgressCount % 5 == 0 &&
-    //   notWatchedProgressCount === 0 &&
-    //   !isWatchedHomework
-    // ) {
-    //   const existingProgress =
-    //     await this.lessonProgressRepository.findByOrderAndUserId(
-    //       blockId,
-    //       userId,
-    //     );
+    if (
+      watchedProgressCount % 5 == 0 &&
+      notWatchedProgressCount === 0 &&
+      !isWatchedHomework
+    ) {
+      const existingProgress =
+        await this.lessonProgressRepository.findByOrderAndUserId(
+          blockId,
+          userId,
+        );
 
-    //   return new ResData<Array<LessonProgress>>(
-    //     "Keyingi darslarni ko'rish uchun oldin uyga vazifanlarni ko'rishingiz kerak",
-    //     200,
-    //     existingProgress,
-    //   );
-    // }
+      return new ResData<Array<LessonProgress>>(
+        "Keyingi darslarni ko'rish uchun oldin uyga vazifanlarni ko'rishingiz kerak",
+        200,
+        existingProgress,
+      );
+    }
     if (
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0
-      // && isWatchedHomework
+      && isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
