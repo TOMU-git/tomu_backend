@@ -106,7 +106,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       select: ["isWatched"],
     });
 
-    if (lessonProgresses.length < 5) {
+    if (lessonProgresses.length < 5 || lessonProgresses.length < lessonOrder) {
       return false;
     }
 
