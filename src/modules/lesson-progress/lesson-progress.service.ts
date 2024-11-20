@@ -54,41 +54,46 @@ export class LessonProgressService implements ILessonProgressService {
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
     // `LessonProgress` obyektini topish
+    console.log("id", id);
     const foundLessonProgress =
       await this.lessonProgressRepository.findById(id);
     if (!foundLessonProgress) {
       throw new LessonProgressNotFoundException();
     }
 
+    console.log("foundLessonProgress", foundLessonProgress);
     const userId = Number(foundLessonProgress.userId);
     const courseId = Number(foundLessonProgress.courseId);
     const blockId = Number(foundLessonProgress.blockId);
 
+    console.log(userId, courseId, blockId)
     let lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLesson(
+      await this.lessonProgressRepository.findLastWatchedLessonProgress(
         userId,
         courseId,
         blockId,
       );
 
+    console.log("lastWatchedLesson",lastWatchedLessonOrder);
     if (!lastWatchedLessonOrder) {
-      lastWatchedLessonOrder = 0;
+      lastWatchedLessonOrder.lessonOrder = 0;
     }
 
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder.lessonOrder);
 
-    const nextLessonOrder = Number(lastWatchedLessonOrder) + 1;
+    const nextLessonOrder = Number(lastWatchedLessonOrder.lessonOrder) + 1;
 
     const existingProgress =
       await this.lessonProgressRepository.getLessonProgress(
         nextLessonOrder,
         userId,
-        courseId,
+        blockId,
       );
     console.log("existingProgress", existingProgress);
 
     const checkOrder =
-      Number(existingProgress.lessonOrder) - Number(foundLessonProgress.lessonOrder);
+      Number(existingProgress.lessonOrder) -
+      Number(foundLessonProgress.lessonOrder);
     console.log("checkOrder", checkOrder);
 
     if (existingProgress && checkOrder <= 1) {
@@ -142,7 +147,7 @@ export class LessonProgressService implements ILessonProgressService {
 
     // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
     // hozircha kerak emas ekan
-    // const lastWatchedLessonOrder =
+    // const lastWatchedLessonOrder.lessonOrder =
     //   await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
     //     userId,
     //     blockOrder,

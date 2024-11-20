@@ -57,26 +57,19 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Oxirgi ko'rilgan Lessonk tartibi yoki null
    */
-  async findLastWatchedLesson(
+  async findLastWatchedLessonProgress(
     userId: ID,
     courseId: ID,
     blockId: ID,
-  ): Promise<number | null> {
-    const lastWatchedProgress = await this.lessonProgressRepository.findOne({
-      where: {
-        userId: userId,
-        courseId: courseId,
-        isWatched: true,
-        blockId: LessThanOrEqual(blockId),
-      },
-      order: {
-        lessonOrder: "DESC",
-      },
-      relations: ["lesson"],
-      select: ["lesson"],
-    });
-
-    return lastWatchedProgress ? lastWatchedProgress.lesson.order : null;
+  ): Promise<LessonProgress | null> {
+    return await this.lessonProgressRepository
+      .createQueryBuilder("lessonProgress")
+      .where("lessonProgress.userId = :userId", { userId })
+      .andWhere("lessonProgress.courseId = :courseId", { courseId })
+      .andWhere("lessonProgress.blockId = :blockId", { blockId })
+      .andWhere("lessonProgress.isWatched = :isWatched", { isWatched: true })
+      .orderBy("lessonProgress.lessonOrder", "DESC")
+      .getOne();
   }
 
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
@@ -140,11 +133,11 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async getLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<LessonProgress | null> {
     // lessonOrder, userId, va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, courseId },
+      where: { lessonOrder, userId, blockId },
     });
 
     // Ma'lumot mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
