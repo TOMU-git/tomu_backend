@@ -28,22 +28,17 @@ export class FeedbackService implements IFeedbackService {
   ): Promise<ResData<Feedback>> {
     const newFeedback = new Feedback();
 
-    const course = await this.courseRepository.findById(
-      Number(createFeedbackDto.course),
-    );
-    const userId = await this.userRepository.findOneById(
-      Number(createFeedbackDto.user),
-    );
+    const course = await this.courseRepository.findById(createFeedbackDto.course);
+    const user = await this.userRepository.findOneById(createFeedbackDto.user);
 
     newFeedback.course = course;
-    newFeedback.user = userId;
+    newFeedback.user = user;
     Object.assign(newFeedback, createFeedbackDto);
     const savedFeedback = await this.feedbackRepository.create(newFeedback);
 
     return new ResData<Feedback>(
       "Feedback created successfully",
       201,
-      savedFeedback,
     );
   }
 
