@@ -107,7 +107,7 @@ export class UserHomeworkProgressRepository
   async findNextHomeworkProgress(
     currentHomeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<UserHomeworkProgress | null> {
     try {
       // homeworkOrder'dan katta birinchi yozuvni topish uchun QueryBuilder ishlatamiz
@@ -117,7 +117,7 @@ export class UserHomeworkProgressRepository
           currentHomeworkOrder,
         })
         .andWhere("progress.userId = :userId", { userId })
-        .andWhere("progress.blockOrder = :blockOrder", { blockOrder })
+        .andWhere("progress.blockId = :blockId", { blockId })
         .orderBy("progress.homeworkOrder", "ASC") // Homework order bo'yicha tartib
         .getOne(); // Faqat bitta yozuvni qaytarish
 

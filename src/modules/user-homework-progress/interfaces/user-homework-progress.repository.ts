@@ -23,8 +23,8 @@ export interface IUserHomeworkProgressRepository {
   findNextHomeworkProgress(
     currentHomeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
-  ): Promise<UserHomeworkProgress | null>;
+    blockId: ID,
+  ): Promise<UserHomeworkProgress | null>
 
   markHomeworkAsWatched(
     homeworkOrder: ID,

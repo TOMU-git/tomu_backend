@@ -51,6 +51,7 @@ export interface IHomeworkProgressRepository {
   getVideosWithWatchCountBetween0And5(
     blockOrder: ID,
     courseId: ID,
+    userId: ID
   ): Promise<Array<HomeworkProgress>>;
 
   // Berilgan blockOrder va userId bo'yicha eng yuqori homework.order qiymatini qaytaradi

@@ -190,4 +190,24 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       },
     });
   }
+
+  async areAllWatchedByOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+  ): Promise<boolean> {
+    const lessonProgress = await this.lessonProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        courseId: courseId,
+        userId: userId,
+      },
+      select: ["isWatched"],
+    });
+
+    if (lessonProgress.length < 5) {
+      return false;
+    }
+    return lessonProgress.every((progress) => progress.isWatched === true);
+  }
 }
