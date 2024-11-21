@@ -69,8 +69,7 @@ export interface IHomeworkProgressRepository {
   getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<HomeworkProgress | null>;
 
   findTopFiveByBlockIdAndUserId(
@@ -87,5 +86,5 @@ export interface IHomeworkProgressRepository {
     userId: ID,
     blockOrder: ID,
     courseId: ID,
-  ): Promise<HomeworkProgress | null> 
+  ): Promise<HomeworkProgress | null>;
 }

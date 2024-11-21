@@ -8,9 +8,6 @@ export class Feedback extends BaseEntity {
   @Column({ type: "text" })
   comment: string;
 
-  @Column({ type: "int" })
-  rating: number; // 1 dan 5 gacha bo'lgan reyting
-
   @ManyToOne(() => User, (user) => user.feedbacks, {
     onDelete: "CASCADE",
   })

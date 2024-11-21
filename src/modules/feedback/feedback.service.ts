@@ -8,7 +8,7 @@ import { CreateFeedbackDto } from "./dto/create-feedback.dto";
 import { Feedback } from "./entities/feedback.entity";
 import { UpdateFeedbackDto } from "./dto/update-feedback.dto";
 import { ICourseRepository } from '../course/interfaces/course.repository';
-import { IUserRepository } from '../user/interfaces/user.repository';
+import { IUserRepository } from "../user/interfaces/user.repository";
 
 @Injectable()
 export class FeedbackService implements IFeedbackService {
@@ -28,12 +28,8 @@ export class FeedbackService implements IFeedbackService {
   ): Promise<ResData<Feedback>> {
     const newFeedback = new Feedback();
 
-    const course = await this.courseRepository.findById(
-      Number(createFeedbackDto.course),
-    );
-    const user = await this.userRepository.findOneById(
-      Number(createFeedbackDto.user),
-    );
+    const course = await this.courseRepository.findById(createFeedbackDto.course);
+    const user = await this.userRepository.findOneById(createFeedbackDto.user);
 
     newFeedback.course = course;
     newFeedback.user = user;
@@ -43,7 +39,6 @@ export class FeedbackService implements IFeedbackService {
     return new ResData<Feedback>(
       "Feedback created successfully",
       201,
-      savedFeedback,
     );
   }
 

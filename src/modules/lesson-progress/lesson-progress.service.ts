@@ -10,7 +10,6 @@ import {
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
-import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 import { ILessonRepository } from "../lesson/interfaces/lesson.repository";
 import { IHomeworkProgressRepository } from "../homework-progress/interfaces/homework-progress.repository";
 import { IBlockRepository } from "../block/interfaces/block.repository";
@@ -53,20 +52,16 @@ export class LessonProgressService implements ILessonProgressService {
   }
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
-    // `LessonProgress` obyektini topish
-    console.log("id", id);
     const foundLessonProgress =
       await this.lessonProgressRepository.findById(id);
     if (!foundLessonProgress) {
       throw new LessonProgressNotFoundException();
     }
 
-    console.log("foundLessonProgress", foundLessonProgress);
     const userId = Number(foundLessonProgress.userId);
     const courseId = Number(foundLessonProgress.courseId);
     const blockId = Number(foundLessonProgress.blockId);
 
-    console.log(userId, courseId, blockId)
     let lastWatchedLessonOrder =
       await this.lessonProgressRepository.findLastWatchedLessonProgress(
         userId,
@@ -74,12 +69,9 @@ export class LessonProgressService implements ILessonProgressService {
         blockId,
       );
 
-    console.log("lastWatchedLesson",lastWatchedLessonOrder);
     if (!lastWatchedLessonOrder) {
       lastWatchedLessonOrder.lessonOrder = 0;
     }
-
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder.lessonOrder);
 
     const nextLessonOrder = Number(lastWatchedLessonOrder.lessonOrder) + 1;
 
@@ -89,24 +81,28 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
         blockId,
       );
-    console.log("existingProgress", existingProgress);
 
-    const checkOrder =
+    if (!existingProgress) {
+      return new ResData<LessonProgress>(
+        "No further lessons are available to update progress.",
+        404,
+        foundLessonProgress,
+      );
+    }
+
+    // hozirgi va keyingi lesson lar orasidagi farq
+    const orderDistance =
       Number(existingProgress.lessonOrder) -
       Number(foundLessonProgress.lessonOrder);
-    console.log("checkOrder", checkOrder);
 
-    if (existingProgress && checkOrder <= 1) {
+    if (existingProgress && orderDistance <= 1) {
       // Keyingi progressni `isWatched` qilib yangilash
-      const data = await this.lessonProgressRepository.markLessonAsWatched(
+      await this.lessonProgressRepository.markLessonAsWatched(
         nextLessonOrder,
         userId,
         blockId,
       );
-      console.log("data", data);
     }
-
-    // Barcha yangilanishlarni `Object.assign` yordamida `foundLessonProgress`ga qo'llash
 
     return new ResData<LessonProgress>(
       "Lesson progress updated successfully",
@@ -144,14 +140,6 @@ export class LessonProgressService implements ILessonProgressService {
         existingProgress,
       );
     }
-
-    // user homeworkdagi hozirgi ordergacha bo'lgan hamma videolarni ko'rdimi yo'qmi tekshirish uchun ohirgi isWatched true bo'lgan lesson ni orderi
-    // hozircha kerak emas ekan
-    // const lastWatchedLessonOrder.lessonOrder =
-    //   await this.lessonProgressRepository.findLastWatchedLessonOrderByUserIdAndBlockOrder(
-    //     userId,
-    //     blockOrder,
-    //   );
 
     const isWatchedHomework =
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
@@ -192,8 +180,8 @@ export class LessonProgressService implements ILessonProgressService {
     }
     if (
       watchedProgressCount % 5 == 0 &&
-      notWatchedProgressCount === 0
-      && isWatchedHomework
+      notWatchedProgressCount === 0 &&
+      isWatchedHomework
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -286,7 +274,7 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
+// INSERT INTO lessons (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
 //     'https://player.vimeo.com/video/1031009633',
@@ -294,6 +282,6 @@ export class LessonProgressService implements ILessonProgressService {
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     41  -- block_id
+//     24  -- block_id
 // FROM
-//     generate_series(1, 30) AS s(i);
+//     generate_series(16, 50) AS s(i);

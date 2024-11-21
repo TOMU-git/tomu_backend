@@ -263,12 +263,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<HomeworkProgress | null> {
     // homeworkOrder, userId va blockOrder bo'yicha homework progress yozuvini qidiramiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
-      where: { homeworkOrder, userId, blockOrder, courseId },
+      where: { homeworkOrder, userId, blockId },
     });
 
     // homeworkProgress mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
