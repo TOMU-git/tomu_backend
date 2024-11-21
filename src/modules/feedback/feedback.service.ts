@@ -8,7 +8,7 @@ import { CreateFeedbackDto } from "./dto/create-feedback.dto";
 import { Feedback } from "./entities/feedback.entity";
 import { UpdateFeedbackDto } from "./dto/update-feedback.dto";
 import { ICourseRepository } from '../course/interfaces/course.repository';
-import { IUserRepository } from '../user/interfaces/user.repository';
+import { IUserRepository } from "../user/interfaces/user.repository";
 
 @Injectable()
 export class FeedbackService implements IFeedbackService {
@@ -31,12 +31,12 @@ export class FeedbackService implements IFeedbackService {
     const course = await this.courseRepository.findById(
       Number(createFeedbackDto.course),
     );
-    const user = await this.userRepository.findOneById(
+    const userId = await this.userRepository.findOneById(
       Number(createFeedbackDto.user),
     );
 
     newFeedback.course = course;
-    newFeedback.user = user;
+    newFeedback.user = userId;
     Object.assign(newFeedback, createFeedbackDto);
     const savedFeedback = await this.feedbackRepository.create(newFeedback);
 
