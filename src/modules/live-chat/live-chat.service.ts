@@ -20,7 +20,6 @@ export class LiveChatService implements ILiveChatService {
     @Inject("ILiveChatPriceService") private readonly priceService: ILiveChatPriceService
   ) {}
   async create(
-    selectedDate: Date,
     createLiveChatDto: CreateLiveChatDto,
   ): Promise<ResData<LiveChatEntity>> {
     const { data: foundUser } = await this.userService.findOneById(
@@ -38,7 +37,7 @@ export class LiveChatService implements ILiveChatService {
     newLiveChat.duration = createLiveChatDto.duration;
     newLiveChat.userId = foundUser.id;
     newLiveChat.selectedCourseId = createLiveChatDto.selectedCourseId;
-    newLiveChat.selectedDay = selectedDate;
+    newLiveChat.selectedDay = createLiveChatDto.selectedDay;
     newLiveChat.selectedTime = createLiveChatDto.selectedTime;
     newLiveChat.status = MeetingStatusEnum.UNPAID;
     newLiveChat.selectedCourseName = foundCourse.title;
@@ -63,6 +62,12 @@ export class LiveChatService implements ILiveChatService {
       throw new HttpException("Live chat not found", HttpStatus.NOT_FOUND);
     }
     return new ResData<LiveChatEntity>("Live chat found", 200, foundLiveChat);
+  }
+
+  async getTimesByDay(day: Date, courseId: number): Promise<ResData<string[]>> {
+    await this.courseService.findOneById(courseId);
+    const foundTimes = await this.liveChatRepository.findByTimesByDayAndCourseId(day, courseId);
+    return new ResData<string[]>("Live chat times found", 200, foundTimes);
   }
   
   async findTeacherLivechats(teacherId: number): Promise<ResData<LiveChatEntity[]>> {
