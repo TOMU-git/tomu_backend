@@ -26,8 +26,14 @@ export class AnalyticsController {
     type: String,
     description: "Ending date, should be like this format YYYY-MM-DD",
   })
+  @ApiQuery({
+    name: "year",
+    required: false,
+    type: String,
+    description: "It should be current year",
+  })
   @Get()
-  async findAll(@Query("from") from: Date, @Query("to") to: Date) {
+  async findAll(@Query("from") from: Date, @Query("to") to: Date, @Query("year") year: string) {
     const dateFrom = new Date(from);
     const dateTo = new Date(to);
     const timestampFrom = dateFrom.getTime(); 
