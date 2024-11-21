@@ -123,9 +123,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       );
     // console.log("nextProgress", nextProgress);
 
-    if (!nextProgress) {
-      throw new NotFoundNextProgress();
-    }
 
     const checkOrder =
       Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
@@ -388,7 +385,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       }
 
       return new ResData<Array<Partial<HomeworkProgress>>>(
-        "You must have seen all the lessons before ",
+        "Keyingi videolarni ko'rish uchun oldin hamma dars videolarini ko'rishingiz kerak ",
         200,
         existingProgress,
       );
@@ -594,7 +591,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockId,
       );
 
-    console.log("homeworks__________________", homeworks);
+    console.log("homeworks__________________", homeworks.length);
 
     if (homeworks.length < 1)
       throw new Error("No more homeworks available in this block");
