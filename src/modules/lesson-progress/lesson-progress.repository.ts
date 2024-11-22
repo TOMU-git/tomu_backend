@@ -34,7 +34,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
 
   // berilgan userId va blockId ga mos lessonProgressnilarni topish
   // berilgan userId va blockId ga mos lessonProgressnilarni topish
-  async findByOrderAndUserId(
+  async findByBlockIdAndUserId(
     blockId: ID,
     userId: ID,
   ): Promise<Array<LessonProgress | null>> {
@@ -57,19 +57,22 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @param blockOrder - Block tartibi
    * @returns Oxirgi ko'rilgan Lessonk tartibi yoki null
    */
-  async findLastWatchedLessonProgress(
+  async findLastWatchedLessonOrder(
     userId: ID,
     courseId: ID,
-    blockId: ID,
-  ): Promise<LessonProgress | null> {
-    return await this.lessonProgressRepository
+    blockOrder: ID,
+  ): Promise<number | null> {
+    const result = await this.lessonProgressRepository
       .createQueryBuilder("lessonProgress")
+      .select("lessonProgress.lessonOrder", "lessonOrder") // faqat lessonOrder tanlash
       .where("lessonProgress.userId = :userId", { userId })
       .andWhere("lessonProgress.courseId = :courseId", { courseId })
-      .andWhere("lessonProgress.blockId = :blockId", { blockId })
+      .andWhere("lessonProgress.blockOrder = :blockOrder", { blockOrder })
       .andWhere("lessonProgress.isWatched = :isWatched", { isWatched: true })
       .orderBy("lessonProgress.lessonOrder", "DESC")
-      .getOne();
+      .getRawOne();
+
+    return result ? result.lessonOrder : null; // agar topilmasa, null qaytarish
   }
 
   // blockOrder va userId bo'yicha eng katta lessonOrder qiymatini topish
@@ -189,25 +192,5 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         isWatched: true,
       },
     });
-  }
-
-  async areAllWatchedByOrderAndUserId(
-    blockOrder: ID,
-    userId: ID,
-    courseId: ID,
-  ): Promise<boolean> {
-    const lessonProgress = await this.lessonProgressRepository.find({
-      where: {
-        blockOrder: blockOrder,
-        courseId: courseId,
-        userId: userId,
-      },
-      select: ["isWatched"],
-    });
-
-    if (lessonProgress.length < 5) {
-      return false;
-    }
-    return lessonProgress.every((progress) => progress.isWatched === true);
   }
 }
