@@ -121,9 +121,14 @@ export class LessonProgressService implements ILessonProgressService {
 
     // topilgan ma'lumotni ResData formatda qaytadi uni ichidagi data dan orderni blockOrder o'zgaruvchisiga beramiz
     const blockOrder = foundData.order;
+    console.log(
+      "________________________________________________________lessonProgress",
+    );
+    console.log("blockOrder", blockOrder);
 
     const existingProgresses =
       await this.lessonProgressRepository.findByOrderAndUserId(blockId, userId);
+    console.log("existingProgresses.length", existingProgresses.length);
 
     if (existingProgresses.length === 0) {
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -141,14 +146,41 @@ export class LessonProgressService implements ILessonProgressService {
       );
     }
 
-    const isWatchedHomework =
+    const isWatchedAllHomework =
       await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
         blockOrder,
         userId,
         courseId,
       );
+    console.log("blockOrder, userId, courseId", blockOrder, userId, courseId);
+    console.log("isWatchedAllHomework", isWatchedAllHomework);
 
-    // console.log(isWatchedHomework);
+    // Barcha homework progressi ko'rilganligini tekshirish
+    const isWatchedAllLesson =
+      await this.lessonProgressRepository.areAllWatchedByOrderAndUserId(
+        blockOrder,
+        userId,
+        courseId,
+      );
+    console.log("isWatchedAllLesson", isWatchedAllLesson);
+
+    let lastWatchedLessonOrder =
+      await this.lessonProgressRepository.findLastWatchedLessonProgress(
+        userId,
+        courseId,
+        blockId,
+      );
+
+    const lastWatchedHomeworkOrder =
+      await this.homeworkProgressRepository.findLastWatchedHomework(
+        courseId,
+        userId,
+        blockOrder,
+      );
+ 
+    const orderDistance = Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder)
+      
+
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === true,
@@ -164,7 +196,7 @@ export class LessonProgressService implements ILessonProgressService {
     if (
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0 &&
-      !isWatchedHomework
+      !isWatchedAllHomework
     ) {
       const existingProgress =
         await this.lessonProgressRepository.findByOrderAndUserId(
@@ -181,7 +213,8 @@ export class LessonProgressService implements ILessonProgressService {
     if (
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0 &&
-      isWatchedHomework
+      isWatchedAllHomework &&
+      orderDistance < 5
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
@@ -274,7 +307,7 @@ export class LessonProgressService implements ILessonProgressService {
   }
 }
 
-// INSERT INTO lessons (title, video_url, mime_type, size, "order", duration, block_id)
+// INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
 //     'https://player.vimeo.com/video/1031009633',
@@ -282,6 +315,6 @@ export class LessonProgressService implements ILessonProgressService {
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     24  -- block_id
+//     30  -- block_id
 // FROM
-//     generate_series(16, 50) AS s(i);
+//     generate_series(1, 50) AS s(i);
