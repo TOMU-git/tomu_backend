@@ -169,7 +169,8 @@ export class TransactionsService implements ITransactionService {
     newTransaction.state = TransactionStateEnum.PENDING;
     newTransaction.createTime = time;
     newTransaction.liveChatId = foundOrder.liveChatId ? foundOrder.liveChatId : null;
-    newTransaction.tariffId = foundOrder.tariffId = foundOrder.tariffId ? foundOrder.tariffId : null;
+    newTransaction.tariffId = foundOrder.tariffId ? foundOrder.tariffId : null;
+    newTransaction.courseId = foundOrder.courseId ? foundOrder.courseId : null;
     newTransaction.amount = amount;
     (newTransaction.reason = null), (newTransaction.cancelTime = 0);
     newTransaction.performTime = 0;

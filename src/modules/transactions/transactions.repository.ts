@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { ITransactionRepo } from "./interfaces/transaction-repo";
+import { IResponse, ITransactionRepo } from "./interfaces/transaction-repo";
 import { TransactionEntity } from "./entities/transaction.entity";
 import { Repository, Not, IsNull } from "typeorm";
 import { TransactionStateEnum } from "src/common/enums/transaction";
@@ -31,20 +31,68 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.findOne({ where: { userId, orderId } });
   }
 
+  async getAllByCourseId(
+    from: number,
+    to: number,
+    courseId: number,
+  ): Promise<IResponse> {
+    const count = await this.repository
+      .createQueryBuilder("transactions")
+      .where(
+        "transactions.courseId = :courseId AND transactions.state = :state",
+        { courseId, state: "active" },
+      )
+      .andWhere("transactions.createTime BETWEEN :start AND :end", {
+        start: from,
+        end: to,
+      })
+      .getCount();
+
+    const data = await this.repository
+      .createQueryBuilder("transactions")
+      .where(
+        "transactions.courseId = :courseId AND transactions.state = :state",
+        { courseId, state: "active" },
+      )
+      .andWhere("transactions.createTime BETWEEN :start AND :end", {
+        start: from,
+        end: to,
+      })
+      .select(["transactions.amount", "transactions.createTime"])
+      .getRawMany();
+
+    return { count, data };
+  }
+
   async getAllByTariffId(start: number, end: number): Promise<any> {
     return await this.repository
-      .createQueryBuilder('transactions')
-      .where("transactions.tariffId IS NOT NULL AND transactions.state = :state", {state: TransactionStateEnum.PAID})
-      .andWhere("transactions.createTime BETWEEN :start AND :end", { start, end })
-      .select("transactions.amount", 'amount')
+      .createQueryBuilder("transactions")
+      .where(
+        "transactions.tariffId IS NOT NULL AND transactions.state = :state",
+        { state: TransactionStateEnum.PAID },
+      )
+      .andWhere("transactions.createTime BETWEEN :start AND :end", {
+        start,
+        end,
+      })
+      .select("transactions.amount", "amount")
       .getRawMany();
   }
-  async getAllByLiveChatId(start: number, end: number): Promise<TransactionEntity[]> {
+  async getAllByLiveChatId(
+    start: number,
+    end: number,
+  ): Promise<TransactionEntity[]> {
     return await this.repository
-      .createQueryBuilder('transactions')
-      .where("transactions.liveChatId IS NOT NULL AND transactions.state = :state", {state: TransactionStateEnum.PAID})
-      .andWhere("transactions.createTime BETWEEN :start AND :end", { start, end })
-      .select("transactions.amount", 'amount')
+      .createQueryBuilder("transactions")
+      .where(
+        "transactions.liveChatId IS NOT NULL AND transactions.state = :state",
+        { state: TransactionStateEnum.PAID },
+      )
+      .andWhere("transactions.createTime BETWEEN :start AND :end", {
+        start,
+        end,
+      })
+      .select("transactions.amount", "amount")
       .getRawMany();
   }
 
