@@ -13,6 +13,9 @@ export class CoursePaymentHistoryEntity extends BaseEntity {
   @Column({ name: "payment", type: "bigint", nullable: false })
   paymentAmount: number;
 
+  @Column({ name: 'user_phone_number', type: 'varchar', nullable: false })
+  userPhoneNumber: string;
+
   @Column({ name: "gender", type: "enum", enum: GenderEnum, nullable: false })
   gender: GenderEnum;
 

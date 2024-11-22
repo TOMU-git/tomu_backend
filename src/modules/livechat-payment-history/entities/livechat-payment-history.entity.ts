@@ -19,6 +19,18 @@ export class LivechatPaymentHistoryEntity extends BaseEntity {
   @Column({ name: 'teacher_phone_number', type: 'varchar', nullable: false })
   teacherPhoneNumber: string;
 
+  @Column({ name: 'user_phone_number', type: 'varchar', nullable: false })
+  userPhoneNumber: string;
+
+  @Column({ name: 'duration', type: 'int',  nullable: false })
+  duration: number;
+
+  @Column({ name: "selected_day", type: "date", nullable: false })
+  selectedDay: Date;
+
+  @Column({ name: "selected_time", type: "varchar", nullable: false })
+  selectedTime: string;
+
   @Column({ name: "gender", type: "enum", enum: GenderEnum, nullable: false })
   gender: GenderEnum;
 

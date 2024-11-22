@@ -265,6 +265,10 @@ export class TransactionsService implements ITransactionService {
       newLiveChatPayment.teacherName =
         foundTeacher.firstName + " " + foundTeacher.lastName;
       newLiveChatPayment.teacherPhoneNumber = foundTeacher.phoneNumber;
+      newLiveChatPayment.userPhoneNumber = foundUserLiveChat.phoneNumber;
+      newLiveChatPayment.duration = foundLiveChat.duration;
+      newLiveChatPayment.selectedDay = foundLiveChat.selectedDay;
+      newLiveChatPayment.selectedTime = foundLiveChat.selectedTime;
       await this.liveChatPaymentRepository.create(newLiveChatPayment);
     }
 
@@ -312,6 +316,7 @@ export class TransactionsService implements ITransactionService {
       newCoursePayment.gender = foundUser.gender;
       newCoursePayment.paymentAmount = foundOrder.totalPrice;
       newCoursePayment.courseName = foundCourse.title;
+      newCoursePayment.userPhoneNumber = foundUser.phoneNumber;
       await this.coursePaymentRepository.create(newCoursePayment);
     }
 
