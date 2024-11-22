@@ -18,6 +18,9 @@ export class TransactionEntity {
   @Column({ name: 'tariff_id', type: 'int', nullable: true, default: null })
   tariffId: number;
 
+  @Column({ name: 'course_id', type: 'int', nullable: true, default: null })
+  courseId: number;
+
   @Column({
     name: "state",
     type: "enum",

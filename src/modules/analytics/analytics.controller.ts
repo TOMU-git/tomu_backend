@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Param, Query } from "@nestjs/common";
+import { Controller, Get, Inject, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { AnalyticsService } from "./analytics.service";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
@@ -41,8 +41,24 @@ export class AnalyticsController {
     return await this.analyticsService.findAll(timestampFrom, timestampTo);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.analyticsService.findOne(+id);
+  @ApiQuery({
+    name: "from",
+    required: false,
+    type: String,
+    description: "Starting date, should be like this format 'YYYY-MM-DD",
+  })
+  @ApiQuery({
+    name: "to",
+    required: false,
+    type: String,
+    description: "Ending date, should be like this format YYYY-MM-DD",
+  })
+  @Get("course/:id")
+  findOne(@Param("id", ParseIntPipe) id: number, @Query('from') from: Date, @Query('to') to: Date) {
+      const dateFrom = new Date(from);
+      const dateTo = new Date(to);
+      const timestampFrom = dateFrom.getTime(); 
+      const timestampTo = dateTo.getTime();
+      return this.analyticsService.findOne(timestampFrom, timestampTo, id);
   }
 }

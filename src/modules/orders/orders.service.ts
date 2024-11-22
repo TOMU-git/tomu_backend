@@ -9,6 +9,7 @@ import { OrderStatus } from 'src/common/enums/order-status';
 import { ITariffService } from '../tariff/interface/tariff.service';
 import { ILiveChatService } from '../live-chat/interfaces/service-interface';
 import { buildPaymeApi } from 'src/lib/urlBuild';
+import { ICourseService } from '../course/interfaces/course.service';
 
 @Injectable()
 export class OrdersService implements IOrderService {
@@ -16,22 +17,26 @@ export class OrdersService implements IOrderService {
     @Inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
     @Inject("IUserService") private readonly userService : IUserService,
     @Inject("ITariffService") private readonly tariffService : ITariffService,
-    @Inject("ILiveChatService") private readonly liveChatService : ILiveChatService,
+    @Inject("ILiveChatService") private readonly liveChatService: ILiveChatService,
+    @Inject("ICourseService") private readonly courseService: ICourseService
   ) { }
   
   async createOrder(orderDto: CreateOrderDto): Promise<ResData<IOrderCreateReturn>> {
     const foundUser = await this.userService.findOneById(orderDto.userId);
+    const foundCourse = await this.courseService.findOneById(orderDto.courseId);
     const newOrder = new OrderEntity();
     newOrder.userId = orderDto.userId;
     newOrder.type = orderDto.paymentType;
     if (orderDto.tariffId) {
       const { data: foundTariff } = await this.tariffService.findOne(orderDto.tariffId);
       newOrder.tariffId = orderDto.tariffId;
+      newOrder.courseId = foundTariff.courseId;
       newOrder.totalPrice = foundTariff.price;
     }
     if (orderDto.liveChatId) {
       const { data: foundLiveChat } = await this.liveChatService.findOne(orderDto.liveChatId);
       newOrder.liveChatId = orderDto.liveChatId;
+      newOrder.courseId = foundLiveChat.selectedCourseId;
       newOrder.totalPrice = foundLiveChat.price;
     }
     newOrder.status = OrderStatus.PENDING;
