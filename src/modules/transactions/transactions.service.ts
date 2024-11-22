@@ -69,7 +69,7 @@ export class TransactionsService implements ITransactionService {
     if (!foundUser) {
       throw new TransactionErrorException(PaymeError.UserNotFound, id);
     }
-    const { data: foundOrder } = await this.orderService.getOrderById(
+    const foundOrder = await this.orderRepository.findOneById(
       Number(orderId),
     );
     if (!foundOrder) {
@@ -293,6 +293,7 @@ export class TransactionsService implements ITransactionService {
         await this.userCourseRepository.update(foundUserCourse);
       } else {
         const newUserCourse = new UserCourse();
+        newUserCourse.status = StatusEnum.PANDING;
         newUserCourse.isActive = true;
         newUserCourse.startedAt = new Date();
         const now = new Date();
