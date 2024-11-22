@@ -335,4 +335,29 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return result ? result.homeworkOrder : null;
   }
 
+
+  async areAllHomeworksWatchedUpToOrder(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+    homeworkOrder: ID, // homeworkOrder ni qabul qilish
+  ): Promise<boolean> {
+    const homeworkProgresses = await this.homeworkProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        userId: userId,
+        courseId: courseId,
+        homeworkOrder: LessThanOrEqual(homeworkOrder), // homeworkOrder dan kichik yoki teng bo'lganlarni olish
+      },
+      select: ["isWatched"],
+    });
+  
+    if (homeworkProgresses.length === 0) {
+      return false; // Agar progresslar topilmasa, false qaytarish
+    }
+  
+    return homeworkProgresses.every((progress) => progress.isWatched === true);
+  }
+  
+
 }

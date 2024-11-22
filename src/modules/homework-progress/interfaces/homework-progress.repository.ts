@@ -94,4 +94,11 @@ export interface IHomeworkProgressRepository {
     userId: ID,
     blockOrder: ID,
   ): Promise<number | null>;
+  
+  areAllHomeworksWatchedUpToOrder(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+    homeworkOrder: ID, // homeworkOrder ni qabul qilish
+  ): Promise<boolean>;
 }
