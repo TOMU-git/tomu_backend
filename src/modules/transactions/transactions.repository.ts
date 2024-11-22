@@ -1,7 +1,7 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { IResponse, ITransactionRepo } from "./interfaces/transaction-repo";
 import { TransactionEntity } from "./entities/transaction.entity";
-import { Repository, Not, IsNull } from "typeorm";
+import { Repository, Not, IsNull, Between } from "typeorm";
 import { TransactionStateEnum } from "src/common/enums/transaction";
 
 export class TransactionRepository implements ITransactionRepo {
@@ -15,6 +15,10 @@ export class TransactionRepository implements ITransactionRepo {
   ): Promise<TransactionEntity> {
     return await this.repository.save(entity);
   }
+
+  // findAll(): Promise<TransactionEntity> {
+  //   return await this.repository.find({where: {createTime: Between()}});
+  // }
 
   async getOneById(transactionId: string): Promise<TransactionEntity> {
     return await this.repository.findOneBy({ id: transactionId });

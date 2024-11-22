@@ -8,11 +8,12 @@ import {
   Delete,
   ParseIntPipe,
   Inject,
+  Query,
 } from "@nestjs/common";
 import { CoursePaymentHistoryService } from "./course-payment-history.service";
 import { RoleEnum } from "src/common/enums/enum";
 import { Auth } from "src/common/decorator/auth.decorator";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiQuery, ApiTags } from "@nestjs/swagger";
 import { ICoursePaymentService } from "./interfaces/course-payment-service.interface";
 
 @ApiTags("course-payment-history")
@@ -23,10 +24,22 @@ export class CoursePaymentHistoryController {
     private readonly coursePaymentHistoryService: ICoursePaymentService,
   ) {}
 
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'For limit'
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'For page'
+  })
   @Auth(RoleEnum.ADMIN)
   @Get()
-  findAll() {
-    return this.coursePaymentHistoryService.findAll();
+  findAll(@Query('limit') limit: number, @Query('page') page: number) {
+    return this.coursePaymentHistoryService.findAll(limit, page);
   }
 
   @Get(":id")

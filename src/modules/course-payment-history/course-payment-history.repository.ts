@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { ICoursePaymentRepository } from "./interfaces/course-payment-repository.interface";
+import { ICourseCount, ICoursePaymentRepository } from "./interfaces/course-payment-repository.interface";
 import { CoursePaymentHistoryEntity } from "./entities/course-payment-history.entity";
 import { Repository } from "typeorm";
 
@@ -9,8 +9,13 @@ export class CoursePaymentRepository implements ICoursePaymentRepository {
     private readonly coursePaymentRepository: Repository<CoursePaymentHistoryEntity>,
   ) {}
 
-  async getAll(): Promise<CoursePaymentHistoryEntity[]> {
-    return await this.coursePaymentRepository.find();
+  async getAll(limit: number, offset: number): Promise<ICourseCount> {
+    const foundCoursesPayments = await this.coursePaymentRepository.find({ take: limit, skip: offset });
+    const count = await this.coursePaymentRepository
+    .createQueryBuilder("course_payment")
+    .select("COUNT(*) count")
+    .getRawOne();
+    return {count, data: foundCoursesPayments}
   }
 
   async getOne(id: number): Promise<CoursePaymentHistoryEntity> {

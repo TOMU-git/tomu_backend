@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CoursePaymentHistoryEntity } from './entities/course-payment-history.entity';
-import { ICoursePaymentService } from './interfaces/course-payment-service.interface';
+import { ICourseEntityCount, ICoursePaymentService } from './interfaces/course-payment-service.interface';
 import { ResData } from 'src/lib/resData';
 import { ICoursePaymentRepository } from './interfaces/course-payment-repository.interface';
 
@@ -9,12 +9,13 @@ export class CoursePaymentHistoryService implements ICoursePaymentService  {
   constructor(
     @Inject("ICoursePaymentRepository") private readonly coursePaymentRepository: ICoursePaymentRepository
   ) {}
-  async findAll(): Promise<ResData<CoursePaymentHistoryEntity[]>> {
-    const foundAllCoursePayments = await this.coursePaymentRepository.getAll();
-    return new ResData<CoursePaymentHistoryEntity[]>(
+  async findAll(limit: number, page: number): Promise<ResData<ICourseEntityCount>> {
+    const foundAllCoursePayments = await this.coursePaymentRepository.getAll(limit, page);
+    const totalPage = foundAllCoursePayments.count / 10;
+    return new ResData<ICourseEntityCount>(
       "All available course payments",
       200,
-      foundAllCoursePayments
+      {count: foundAllCoursePayments.count, data: foundAllCoursePayments.data, total_page: totalPage}
     );
   }
 
