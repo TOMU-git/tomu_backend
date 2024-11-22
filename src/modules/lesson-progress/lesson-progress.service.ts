@@ -218,7 +218,7 @@ export class LessonProgressService implements ILessonProgressService {
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0 &&
       isWatchedAllHomework &&
-      orderDistance < 5
+      orderDistance <= 5
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);
