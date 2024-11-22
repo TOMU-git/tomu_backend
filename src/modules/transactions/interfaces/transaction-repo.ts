@@ -2,7 +2,7 @@ import { ResData } from "src/lib/resData";
 import { TransactionEntity } from "../entities/transaction.entity";
 
 export interface ITransactionRepo {
-    // findAll(): Promise<TransactionEntity>;
+    findAll(year: number): Promise<TransactionEntity[]>;
     getAllByTariffId(start: number, end: number): Promise<TransactionEntity[]>;
     getAllByLiveChatId(start: number, end: number): Promise<TransactionEntity[]>;
     createTransaction(entity: TransactionEntity): Promise<TransactionEntity>;

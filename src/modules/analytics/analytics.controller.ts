@@ -22,13 +22,17 @@ export class AnalyticsController {
   })
   @Get()
   async findAll(@Query("year") year: string) {
+    const from = `${Number(year)}-01-01`;
+    const to = `${Number(year)}-12-31`;
+    const dateFrom = new Date(from);
+    const dateTo = new Date(to);
+    const timestampFrom = dateFrom.getTime(); 
+    const timestampTo = dateTo.getTime();
     const currentYear = new Date().getFullYear().toString();
-    let from = 1;
-    let to = 2;
     if (year !== currentYear) {
       return [];
     } else {
-      return await this.analyticsService.findAll(from, to, year);
+      return await this.analyticsService.findAll(timestampFrom, timestampTo, Number(year));
     }
   }
 

@@ -4,9 +4,10 @@ export interface IAnalyticsService {
 }
 
 export interface IResponseData {
-    livechat_total: number;
-    course_total: number;
-    total_profit: number;
+    data: {},
+    totalLiveChatAmount: number;
+    totalTariffAmount: number;
+    totalProfit: number;
 }
 
 export interface IResponseCourse {
@@ -14,3 +15,4 @@ export interface IResponseCourse {
     totalCount: number;
     totalProfit: number;
 } 
+
