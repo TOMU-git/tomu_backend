@@ -12,6 +12,7 @@ export class AnalyticsService {
     @Inject("ICourseService") private readonly courseService: ICourseService,
   ) {}
   async findAll(from: number, to: number, year: string): Promise<IResponseData> {
+    
     const foundLiveChatAmount =
       await this.transactionsRepository.getAllByLiveChatId(from, to);
     let liveChatAmount = 0;
