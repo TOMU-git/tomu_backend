@@ -46,11 +46,16 @@ export class TransactionsService implements ITransactionService {
     private readonly tariffRepository: ITariffRepository,
     @Inject("IUserTariffRepository")
     private readonly userTariffRepository: IUserTariffRepository,
-    @Inject("IUserCourseRepository") private readonly userCourseRepository: IUserCourseRepository,
-    @Inject("ICourseRepository") private readonly courseRepository: ICourseRepository,
-    @Inject("ICoursePaymentRepository") private readonly coursePaymentRepository: ICoursePaymentRepository,
-    @Inject("ILiveChatPaymentRepository") private readonly liveChatPaymentRepository: ILiveChatPaymentRepository,
-    @Inject("IUserLiveChatRepository") private readonly userLiveChatRepository: IUserLiveChatRepository
+    @Inject("IUserCourseRepository")
+    private readonly userCourseRepository: IUserCourseRepository,
+    @Inject("ICourseRepository")
+    private readonly courseRepository: ICourseRepository,
+    @Inject("ICoursePaymentRepository")
+    private readonly coursePaymentRepository: ICoursePaymentRepository,
+    @Inject("ILiveChatPaymentRepository")
+    private readonly liveChatPaymentRepository: ILiveChatPaymentRepository,
+    @Inject("IUserLiveChatRepository")
+    private readonly userLiveChatRepository: IUserLiveChatRepository,
   ) {}
 
   //// *** Checking
@@ -168,7 +173,9 @@ export class TransactionsService implements ITransactionService {
     newTransaction.orderId = Number(orderId);
     newTransaction.state = TransactionStateEnum.PENDING;
     newTransaction.createTime = time;
-    newTransaction.liveChatId = foundOrder.liveChatId ? foundOrder.liveChatId : null;
+    newTransaction.liveChatId = foundOrder.liveChatId
+      ? foundOrder.liveChatId
+      : null;
     newTransaction.tariffId = foundOrder.tariffId ? foundOrder.tariffId : null;
     newTransaction.courseId = foundOrder.courseId ? foundOrder.courseId : null;
     newTransaction.amount = amount;
@@ -237,16 +244,26 @@ export class TransactionsService implements ITransactionService {
         Number(foundOrder.liveChatId),
       );
       (foundLiveChat.status = MeetingStatusEnum.PAID),
-        await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
-      const foundUserLiveChat = await this.userLiveChatRepository.getByLiveChatId(Number(foundLiveChat.id));
-      const foundTeacher = await this.userRepository.findOneById(Number(foundUserLiveChat.teacherId));
+        await this.liveChatRepository.updateLiveChat(
+          foundLiveChat.id,
+          foundLiveChat,
+        );
+      const foundUserLiveChat =
+        await this.userLiveChatRepository.getByLiveChatId(
+          Number(foundLiveChat.id),
+        );
+      const foundTeacher = await this.userRepository.findOneById(
+        Number(foundUserLiveChat.teacherId),
+      );
       const newLiveChatPayment = new LivechatPaymentHistoryEntity();
-      newLiveChatPayment.fullName = foundLiveChat.firstName + ' ' + foundLiveChat.lastName;
+      newLiveChatPayment.fullName =
+        foundLiveChat.firstName + " " + foundLiveChat.lastName;
       newLiveChatPayment.courseName = foundLiveChat.selectedCourseName;
       newLiveChatPayment.paymentAmount = foundLiveChat.price;
       newLiveChatPayment.gender = foundLiveChat.gender;
       newLiveChatPayment.liveChatId = foundLiveChat.id;
-      newLiveChatPayment.teacherName = foundTeacher.firstName + ' ' + foundTeacher.lastName;
+      newLiveChatPayment.teacherName =
+        foundTeacher.firstName + " " + foundTeacher.lastName;
       newLiveChatPayment.teacherPhoneNumber = foundTeacher.phoneNumber;
       await this.liveChatPaymentRepository.create(newLiveChatPayment);
     }
@@ -255,9 +272,17 @@ export class TransactionsService implements ITransactionService {
       const foundTariff = await this.tariffRepository.findOneById(
         Number(foundOrder.tariffId),
       );
-      const foundUser = await this.userRepository.findOneById(Number(foundOrder.userId));
-      const foundCourse = await this.courseRepository.findById(Number(foundTariff.courseId));
-      const foundUserCourse = await this.userCourseRepository.findByTariffIdAndUserId(Number(foundOrder.userId), Number(foundTariff.courseId));
+      const foundUser = await this.userRepository.findOneById(
+        Number(foundOrder.userId),
+      );
+      const foundCourse = await this.courseRepository.findById(
+        Number(foundTariff.courseId),
+      );
+      const foundUserCourse =
+        await this.userCourseRepository.findByTariffIdAndUserId(
+          Number(foundOrder.userId),
+          Number(foundTariff.courseId),
+        );
       if (foundUserCourse) {
         foundUserCourse.startedAt = new Date();
         const now = new Date();
@@ -279,9 +304,10 @@ export class TransactionsService implements ITransactionService {
         newUserCourse.tariffId = foundOrder.tariffId;
         await this.userCourseRepository.create(newUserCourse);
       }
-      const newCoursePayment = new CoursePaymentHistoryEntity()
+      const newCoursePayment = new CoursePaymentHistoryEntity();
       newCoursePayment.courseId = foundCourse.id;
-      newCoursePayment.fullName = foundUser.firstName + " " + foundUser.lastName;
+      newCoursePayment.fullName =
+        foundUser.firstName + " " + foundUser.lastName;
       newCoursePayment.gender = foundUser.gender;
       newCoursePayment.paymentAmount = foundOrder.totalPrice;
       newCoursePayment.courseName = foundCourse.title;
@@ -295,7 +321,7 @@ export class TransactionsService implements ITransactionService {
       perform_time: currentTime,
       transaction: transaction.id,
       state: TransactionStateEnum.PAID,
-    }
+    };
   }
   async cancelTransaction(
     params: PaymeParams,
@@ -319,17 +345,22 @@ export class TransactionsService implements ITransactionService {
       );
       foundOrder.status = OrderStatus.CANCELED;
       await this.orderRepository.update(foundOrder);
-    }    
+    }
     if (foundOrder.liveChatId) {
       const foundLiveChat = await this.liveChatRepository.findLiveChatById(
         Number(foundOrder.liveChatId),
       );
       foundLiveChat.status = MeetingStatusEnum.UNPAID;
-      await this.liveChatRepository.updateLiveChat(foundLiveChat.id, foundLiveChat);
+      await this.liveChatRepository.updateLiveChat(
+        foundLiveChat.id,
+        foundLiveChat,
+      );
     }
 
     if (foundOrder.tariffId) {
-      const foundUserTariff = await this.userTariffRepository.findOneByTariffId(foundOrder.tariffId);
+      const foundUserTariff = await this.userTariffRepository.findOneByTariffId(
+        foundOrder.tariffId,
+      );
       await this.userTariffRepository.delete(foundUserTariff);
     }
     foundOrder.status = OrderStatus.CANCELED;
