@@ -9,12 +9,27 @@ export class UserCourse extends BaseEntity {
   @Column({ type: "enum", enum: StatusEnum, nullable: false })
   status: StatusEnum;
 
-  // Foydalanuvchi bilan bog'lanish
   @ManyToOne(() => User, (user) => user.userCourses)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  // Kurs bilan bog'lanish
+  @Column({ type: "bool", name: "is_active", default: true })
+  isActive: Boolean;
+  
+  @Column({ name: "tariff_id", type: 'int', nullable: false })
+  tariffId: number;
+
+  @Column({
+    name: "started_at",
+    type: "date",
+    nullable: false,
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  startedAt: Date;
+
+  @Column({ name: "ended_at", type: "date", nullable: false })
+  endedAt: Date;
+
   @ManyToOne(() => Course, (course) => course.userCourses)
   @JoinColumn({ name: "course_id" })
   course: Course;
