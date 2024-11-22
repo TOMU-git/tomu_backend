@@ -15,30 +15,19 @@ export class AnalyticsController {
   @ApiOperation({ summary: "All profits from live chat and courses" })
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @ApiQuery({
-    name: "from",
-    required: false,
-    type: String,
-    description: "Starting date, should be like this format 'YYYY-MM-DD",
-  })
-  @ApiQuery({
-    name: "to",
-    required: false,
-    type: String,
-    description: "Ending date, should be like this format YYYY-MM-DD",
-  })
-  @ApiQuery({
     name: "year",
     required: false,
     type: String,
     description: "It should be current year",
   })
   @Get()
-  async findAll(@Query("from") from: Date, @Query("to") to: Date, @Query("year") year: string) {
-    const dateFrom = new Date(from);
-    const dateTo = new Date(to);
-    const timestampFrom = dateFrom.getTime(); 
-    const timestampTo = dateTo.getTime();
-    return await this.analyticsService.findAll(timestampFrom, timestampTo);
+  async findAll(@Query("year") year: string) {
+    const currentYear = new Date().getFullYear().toString();
+    if (year !== currentYear) {
+      return [];
+    } else {
+      return await this.analyticsService.findAll(+year);
+    }
   }
 
   @ApiQuery({
