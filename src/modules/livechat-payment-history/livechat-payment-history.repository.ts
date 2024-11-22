@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { ILiveChatPaymentRepository } from "./interfaces/livechat-payment-repository.interface";
+import { ILiveChatCount, ILiveChatPaymentRepository } from "./interfaces/livechat-payment-repository.interface";
 import { LivechatPaymentHistoryEntity } from "./entities/livechat-payment-history.entity";
 import { Repository } from "typeorm";
 
@@ -9,8 +9,13 @@ export class LiveChatPaymentRepository implements ILiveChatPaymentRepository {
     private readonly repository: Repository<LivechatPaymentHistoryEntity>,
   ) {}
 
-  async getAll(): Promise<LivechatPaymentHistoryEntity[]> {
-    return this.repository.find();
+  async getAll(limit: number, offset: number): Promise<ILiveChatCount> {
+    const foundLiveChatPayments = await this.repository.find({ take: limit, skip: offset });
+    const count = await this.repository
+    .createQueryBuilder("users")
+    .select("COUNT(*) count")
+    .getRawOne();
+  return { data: foundLiveChatPayments, count: parseInt(count.count, 10) };
   }
 
   async getOne(id: number): Promise<LivechatPaymentHistoryEntity> {

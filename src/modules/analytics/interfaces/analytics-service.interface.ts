@@ -1,5 +1,5 @@
 export interface IAnalyticsService {
-    findAll(): Promise<IResponseData>;
+    findAll(year: string): Promise<IResponseData>;
     findOne(courseId: number): Promise<IResponseCourse>;
 }
 

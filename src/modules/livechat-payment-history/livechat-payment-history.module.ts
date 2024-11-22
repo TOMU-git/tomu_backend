@@ -4,9 +4,10 @@ import { LivechatPaymentHistoryController } from './livechat-payment-history.con
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LivechatPaymentHistoryEntity } from './entities/livechat-payment-history.entity';
 import { LiveChatPaymentRepository } from './livechat-payment-history.repository';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([LivechatPaymentHistoryEntity])],
+  imports: [TypeOrmModule.forFeature([LivechatPaymentHistoryEntity]), UserModule],
   controllers: [LivechatPaymentHistoryController],
   providers: [
     { provide: "ILiveChatPaymentService", useClass: LivechatPaymentHistoryService },
