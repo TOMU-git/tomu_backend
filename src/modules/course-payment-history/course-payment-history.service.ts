@@ -10,12 +10,15 @@ export class CoursePaymentHistoryService implements ICoursePaymentService  {
     @Inject("ICoursePaymentRepository") private readonly coursePaymentRepository: ICoursePaymentRepository
   ) {}
   async findAll(limit: number, page: number): Promise<ResData<ICourseEntityCount>> {
+    limit = limit > 0 ? limit : 10;
+    page = page > 0 ? page : 1;
+    page = (page - 1) * limit;
     const foundAllCoursePayments = await this.coursePaymentRepository.getAll(limit, page);
     const totalPage = foundAllCoursePayments.count / 10;
     return new ResData<ICourseEntityCount>(
       "All available course payments",
       200,
-      {count: foundAllCoursePayments.count, data: foundAllCoursePayments.data, total_page: totalPage}
+      {count: foundAllCoursePayments.count, data: foundAllCoursePayments.data, total_page: Math.ceil(totalPage)}
     );
   }
 

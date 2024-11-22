@@ -15,7 +15,7 @@ export class CoursePaymentRepository implements ICoursePaymentRepository {
     .createQueryBuilder("course_payment")
     .select("COUNT(*) count")
     .getRawOne();
-    return {count, data: foundCoursesPayments}
+    return {count: parseInt(count.count, 10) , data: foundCoursesPayments}
   }
 
   async getOne(id: number): Promise<CoursePaymentHistoryEntity> {
