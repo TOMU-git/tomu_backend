@@ -121,7 +121,9 @@ export class LessonProgressService implements ILessonProgressService {
 
     // topilgan ma'lumotni ResData formatda qaytadi uni ichidagi data dan orderni blockOrder o'zgaruvchisiga beramiz
     const blockOrder = foundData.order;
-    console.log("________________________________________________________lessonProgress");
+    console.log(
+      "________________________________________________________lessonProgress",
+    );
     console.log("blockOrder", blockOrder);
 
     const existingProgresses =
@@ -162,6 +164,23 @@ export class LessonProgressService implements ILessonProgressService {
       );
     console.log("isWatchedAllLesson", isWatchedAllLesson);
 
+    let lastWatchedLessonOrder =
+      await this.lessonProgressRepository.findLastWatchedLessonProgress(
+        userId,
+        courseId,
+        blockId,
+      );
+
+    const lastWatchedHomeworkOrder =
+      await this.homeworkProgressRepository.findLastWatchedHomework(
+        courseId,
+        userId,
+        blockOrder,
+      );
+ 
+    const orderDistance = Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder)
+      
+
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === true,
@@ -194,7 +213,8 @@ export class LessonProgressService implements ILessonProgressService {
     if (
       watchedProgressCount % 5 == 0 &&
       notWatchedProgressCount === 0 &&
-      isWatchedAllHomework
+      isWatchedAllHomework &&
+      orderDistance < 5
     ) {
       // Agar isWatched true bo'lgan progresslar soni 5 ga bo'linmasa va isWatched false progresslar bo'lmasa
       await this.generateFiveProgress(userId, blockId, blockOrder, courseId);

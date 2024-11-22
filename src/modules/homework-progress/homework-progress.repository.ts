@@ -317,4 +317,22 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       },
     });
   }
+
+  async findLastWatchedHomework(
+    courseId: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<number | null> {
+    const result = await this.homeworkProgressRepository
+      .createQueryBuilder("homeworkProgress")
+      .select("homeworkProgress.homeworkOrder", "homeworkOrder")
+      .andWhere("homeworkProgress.courseId = :courseId", { courseId })
+      .andWhere("homeworkProgress.userId = :userId", { userId })
+      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+      .orderBy("homeworkProgress.homeworkOrder", "DESC")
+      .getRawOne();
+
+    return result ? result.homeworkOrder : null;
+  }
+
 }
