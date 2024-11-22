@@ -170,6 +170,7 @@ export class LessonProgressService implements ILessonProgressService {
         courseId,
         blockId,
       );
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
 
     const lastWatchedHomeworkOrder =
       await this.homeworkProgressRepository.findLastWatchedHomework(
@@ -177,9 +178,12 @@ export class LessonProgressService implements ILessonProgressService {
         userId,
         blockOrder,
       );
- 
-    const orderDistance = Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder)
-      
+    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
+
+    const orderDistance =
+      Number(lastWatchedLessonOrder.lessonOrder) -
+      Number(lastWatchedHomeworkOrder);
+    console.log("orderDistance", orderDistance);
 
     // Faqat isWatched: true bo'lgan progresslarni sanash
     const watchedProgressCount = existingProgresses.filter(
