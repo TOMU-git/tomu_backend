@@ -17,7 +17,7 @@ import { BlockNotFoundException } from "../block/exception/block.exception";
 import { UserNotFound } from "../user/exception/user.exception";
 import { HomeworkNotFoundException } from "../homework/exception/homework.exception";
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Cache } from "cache-manager"; // ! Don't forget this import
+import { Cache } from "cache-manager";
 import { ILessonProgressRepository } from "../lesson-progress/interfaces/lesson-progress.repository";
 import { IUserHomeworkProgressRepository } from "../user-homework-progress/interfaces/user-homework-progress.repository";
 @Injectable()
@@ -100,40 +100,50 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async update(
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>> {
-    console.log("dto", dto);
     // Berilgan ID bo'yicha homework progressni qidirish
     const foundData = await this.homeworkProgressRepository.getHomeworkProgress(
       dto.homeworkOrder,
       dto.userId,
-      dto.blockOrder,
-      dto.courseId,
+      dto.blockId,
     );
+
+    console.log("________________________________update homeworkProgress");
+
+    if (!foundData) {
+      throw new HomeworkNotFoundException();
+    }
 
     // keyingi homeworkni orderi
     const nextHomeworkOrder = Number(dto.homeworkOrder) + 1;
     console.log("nextHomeworkOrder", nextHomeworkOrder);
 
-    // berilgan homeworkOrder userId va blockOrder bo'yicha progressni topish
+    // berilgan homeworkOrder userId va blockId bo'yicha progressni topish
     const nextProgress =
       await this.homeworkProgressRepository.getHomeworkProgress(
         nextHomeworkOrder,
         dto.userId,
-        dto.blockOrder,
-        dto.courseId,
+        dto.blockId,
       );
-    // console.log("nextProgress", nextProgress);
-
+    if (!nextProgress) {
+      return new ResData<HomeworkProgress>(
+        "No further homeworks are available to update progress.",
+        404,
+        foundData,
+      );
+    }
+    console.log("nextProgress", nextProgress);
 
     const checkOrder =
       Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
-    // console.log("checkOrder", checkOrder);
+    console.log("checkOrder", checkOrder);
 
     const nextTemprorayProgress =
       await this.userHomeworkProgressRepository.findNextHomeworkProgress(
         dto.homeworkOrder,
         dto.userId,
-        dto.blockOrder,
+        dto.blockId,
       );
+    console.log("nextTemporaryProgress:", nextTemprorayProgress);
     const nextTemporaryProgressOrder = Number(nextProgress.homeworkOrder);
     console.log("nextTemporaryProgressOrder:", nextTemporaryProgressOrder);
 
@@ -141,7 +151,21 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     //   "before update keyingi temproray progress data",
     //   nextTemprorayProgress,
     // );
-    if (nextTemprorayProgress) {
+
+    const foundTemproraryData =
+      await this.userHomeworkProgressRepository.findByUserIdBlockIdAndHomeworkOrder(
+        dto.userId,
+        dto.blockId,
+        dto.homeworkOrder,
+      );
+
+    const temporaryProgressExist =
+      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
+        dto.blockId,
+        dto.userId,
+      );
+
+    if (nextTemprorayProgress && foundTemproraryData) {
       await this.userHomeworkProgressRepository.markHomeworkAsWatched(
         nextTemporaryProgressOrder,
         dto.userId,
@@ -152,8 +176,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         await this.homeworkProgressRepository.getHomeworkProgress(
           nextTemporaryProgressOrder,
           dto.userId,
-          dto.blockOrder,
-          dto.courseId,
+          dto.blockId,
         );
       const order = Number(exitsNextProgress.homeworkOrder);
       // console.log("order,", order)
@@ -167,15 +190,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.userId,
           dto.blockId,
         );
-        console.log(
-          "Params for markHomeworkAsWatched:",
-          nextTemporaryProgressOrder,
-          dto.userId,
-          dto.blockId,
-        );
 
-        console.log("markHomeworkAsWatched", d),
-          (foundData.countWatched = Number(foundData.countWatched) + 1);
+        foundData.countWatched = Number(foundData.countWatched) + 1;
         await this.homeworkProgressRepository.update(foundData);
       }
 
@@ -183,8 +199,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         await this.homeworkProgressRepository.getHomeworkProgress(
           nextTemporaryProgressOrder,
           dto.userId,
-          dto.blockOrder,
-          dto.courseId,
+          dto.blockId,
         );
 
       console.log("after update process", afterNextProgress);
@@ -193,7 +208,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         await this.userHomeworkProgressRepository.findNextHomeworkProgress(
           dto.homeworkOrder,
           dto.userId,
-          dto.blockOrder,
+          dto.blockId,
         );
 
       // console.log(
@@ -205,8 +220,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       const data = await this.homeworkProgressRepository.getHomeworkProgress(
         nextTemporaryProgressOrder,
         dto.userId,
-        dto.blockOrder,
-        dto.courseId,
+        dto.blockId,
       );
       // Yangilangan homework progress qaytariladi
       return new ResData<HomeworkProgress>(
@@ -215,8 +229,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         data,
       );
     }
-
-    console.log("errorrrrrrrrrrrrrrrrrrrrrr");
 
     // Progressni yangilash
 
@@ -237,8 +249,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const data = await this.homeworkProgressRepository.getHomeworkProgress(
       nextHomeworkOrder,
       dto.userId,
-      dto.blockOrder,
-      dto.courseId,
+      dto.blockId,
     );
     // Yangilangan homework progress qaytariladi
     return new ResData<HomeworkProgress>(
@@ -282,17 +293,20 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     const blockOrder = foundBlock.order;
     // Foydalanuvchining progressini order bo'yicha olish
-    const existingProgress =
+    const existingProgresses =
       await this.homeworkProgressRepository.findByBlocIdAndUserId(
         blockId,
         userId,
       );
-    console.log("existingProgress1____length", existingProgress.length);
+    console.log(
+      "_________________________________________________________getVieos HomeworkProgress",
+    );
+    console.log("existingProgresses1____length", existingProgresses.length);
 
-    if (existingProgress.length === 0) {
+    if (existingProgresses.length === 0) {
       await this.generateFiveProgress(userId, blockId);
 
-      const existingProgress =
+      const existingProgresses =
         await this.homeworkProgressRepository.findByBlocIdAndUserId(
           blockId,
           userId,
@@ -301,18 +315,18 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       return new ResData<Array<HomeworkProgress>>(
         "Homework fetched successfully",
         200,
-        existingProgress,
+        existingProgresses,
       );
     }
 
     // Ko'rilgan homeworklar soni
-    const watchedProgressCount = existingProgress.filter(
+    const watchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === true,
     ).length;
     console.log("watchedProgressCount", watchedProgressCount);
 
     // Ko'rilmagan homeworklar soni
-    const notWatchedProgressCount = existingProgress.filter(
+    const notWatchedProgressCount = existingProgresses.filter(
       (progress) => progress.isWatched === false,
     ).length;
     console.log("notWatchedProgressCount", notWatchedProgressCount);
@@ -337,6 +351,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
     console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
 
+    // const higestOrderLessonProgress
+
     // berilgan ordergacha bo'lgan lessonlarni tekshirish
     const isWatchedAllLesson =
       await this.lessonProgressRepository.isAllLessonWatched(
@@ -348,14 +364,14 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     console.log("isWatchedAllLesson", isWatchedAllLesson);
 
     // Agar mavjud progress 5 dan kam yoki teng bo'lsa, lekin 1 dan katta bo'lsa, cache'dan olish
-    if (existingProgress.length < 5 && existingProgress.length > 1) {
+    if (existingProgresses.length < 5 && existingProgresses.length > 1) {
       console.log(
         " // Agar mavjud progress 5 dan kam yoki teng bo'lsa, lekin 1 dan katta bo'lsa, cache'dan olish",
       );
       return new ResData<Array<HomeworkProgress>>(
         "Homework fetched successfully",
         200,
-        existingProgress,
+        existingProgresses,
       );
     }
 
@@ -370,7 +386,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         " // agar hamma ochiq lesson larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
       );
       const temporaryProgress =
-        await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+        await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
           blockId,
           userId,
         );
@@ -387,7 +403,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       return new ResData<Array<Partial<HomeworkProgress>>>(
         "Keyingi videolarni ko'rish uchun oldin hamma dars videolarini ko'rishingiz kerak ",
         200,
-        existingProgress,
+        existingProgresses,
       );
     }
 
@@ -396,13 +412,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       (watchedProgressCount % 5 === 0 &&
         notWatchedProgressCount === 0 &&
         !isWatchedAllHomework) ||
-      existingProgress.length === 0
+      existingProgresses.length === 0
     ) {
       console.log(
         " // agar hamma ochiq homework larni ko'rmagan bo'lsa error message bilan oldingi progresslarni jo'natish",
       );
       const temporaryProgress =
-        await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+        await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
           blockId,
           userId,
         );
@@ -427,21 +443,21 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       );
       await this.generateFiveProgress(userId, blockId);
 
-      const existingProgress =
+      const existingProgresses =
         await this.homeworkProgressRepository.findByBlocIdAndUserId(
           blockId,
           userId,
         );
 
-      if (existingProgress.length < 20) {
+      if (existingProgresses.length < 20) {
         return new ResData<Array<HomeworkProgress>>(
           "Homework fetched successfully",
           200,
-          existingProgress,
+          existingProgresses,
         );
       }
 
-      if (existingProgress.length >= 20) {
+      if (existingProgresses.length >= 20) {
         // Eng kichik homeworkOrder qiymatiga ega bo'lgan ma'lumotni topish va yangilash
         const lastFiveProgress =
           await this.homeworkProgressRepository.findTopFiveByBlockIdAndUserId(
@@ -449,12 +465,24 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             userId,
           );
         console.log("lastFiveProgress", lastFiveProgress.length);
-        const randomVideos = await this.getRandomVideos(blockOrder, courseId);
+        const randomVideos = await this.getRandomVideos(
+          blockOrder,
+          courseId,
+          userId,
+        );
+        console.log(
+          "-------------------------------------------------------------------------------------------------------",
+        );
+        console.log("randomVideos.length", randomVideos.length);
         let progressList = [...lastFiveProgress, ...randomVideos];
+        console.log(
+          "-------------------------------------------------------------------------------------------------------",
+        );
+        console.log(",progressList", progressList.length);
 
         // Random qilingan ma'lumotni bazadan olish
         const isExistTemporaryProgress =
-          await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+          await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
             blockId,
             userId,
           );
@@ -462,13 +490,14 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           await this.userHomeworkProgressRepository.deleteAll(userId, blockId);
         }
 
-        // randomVideos massivini homeworkOrder qiymatiga ko'ra tartiblash
-        const sortedRandomVideos = randomVideos.sort(
+        // progresslistni massivini homeworkOrder qiymatiga ko'ra tartiblash
+        const sortedProgressList = progressList.sort(
           (a, b) => Number(a.homeworkOrder) - Number(b.homeworkOrder), // Number() bilan number turiga o'tkazish
         );
 
-        for (let i = 0; i < sortedRandomVideos.length; i++) {
-          const video = sortedRandomVideos[i];
+        for (let i = 0; i < sortedProgressList.length; i++) {
+          const video = sortedProgressList[i];
+          console.log("sortedProgressList[i]:", sortedProgressList[i]);
 
           // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
           video.isWatched = i === 0 ? true : false;
@@ -477,13 +506,23 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           await this.homeworkProgressRepository.update(video);
         }
 
-        await this.userHomeworkProgressRepository.bulkCreate(progressList);
+        await this.userHomeworkProgressRepository.bulkCreate(
+          sortedProgressList,
+        );
 
         const data =
-          await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+          await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
             blockId,
             userId,
           );
+
+        console.log(
+          "-------------------------------------------------------------------------------------------------------",
+        );
+        console.log(
+          "________________________________________________________________________temproraryData.length",
+        );
+        console.log(data.length);
 
         return new ResData<Array<Partial<HomeworkProgress>>>(
           "Homework fetched successfully DATA from temproraryProgress",
@@ -495,7 +534,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // Random qilingan ma'lumotlarni olish
     const temporaryProgress =
-      await this.userHomeworkProgressRepository.findByBlockOrderAndUserId(
+      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
         blockId,
         userId,
       );
@@ -504,7 +543,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       return new ResData<Array<HomeworkProgress>>(
         "Homework fetched successfully",
         200,
-        existingProgress,
+        existingProgresses,
       );
     }
     return new ResData<Array<Partial<HomeworkProgress>>>(
@@ -516,17 +555,19 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   /**
    * Tasodifiy videolarni olish.
-   * @param blockOrder - Block tartibi
+   * @param blockId - Block tartibi
    * @returns Tasodifiy videolar ro'yxati
    */
   private async getRandomVideos(
     blockOrder: ID,
     courseId: ID,
+    userId: ID,
   ): Promise<Array<HomeworkProgress>> {
     const randomVideos =
       await this.homeworkProgressRepository.getVideosWithWatchCountBetween0And5(
         blockOrder,
         courseId,
+        userId,
       );
     // 15 tasini tasodifiy tanlash
     return this.shuffleArray(randomVideos).slice(0, 15);
@@ -590,8 +631,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         lastHomeworkOrder || 0,
         blockId,
       );
-
-    console.log("homeworks__________________", homeworks.length);
 
     if (homeworks.length < 1)
       throw new Error("No more homeworks available in this block");

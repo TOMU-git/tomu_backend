@@ -1,4 +1,4 @@
-import { IsString, IsInt, IsNotEmpty, Min, Max } from "class-validator";
+import { IsString, IsInt, IsNotEmpty, Min, Max, IsIn } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 
@@ -12,27 +12,20 @@ export class CreateFeedbackDto {
   comment: string;
 
   @ApiProperty({
-    description: "Course rating (1 to 5)",
-    example: 5,
+    type: Number,
+    description: "User ID associated with the feedback",
+    example: "user",
   })
   @IsInt()
-  @Min(1)
-  @Max(5)
-  rating: number;
-
-  @ApiProperty({
-    description: "User ID associated with the feedback",
-    example: "user-id-here",
-  })
-  @IsString()
   @IsNotEmpty()
-  user: string;
+  user: number;
 
   @ApiProperty({
+    type: Number,
     description: "Course ID associated with the feedback",
-    example: "course-id-here",
+    example: "course-here",
   })
-  @IsString()
+  @IsInt()
   @IsNotEmpty()
-  course: string;
+  course: number;
 }

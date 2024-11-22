@@ -51,6 +51,7 @@ export interface IHomeworkProgressRepository {
   getVideosWithWatchCountBetween0And5(
     blockOrder: ID,
     courseId: ID,
+    userId: ID,
   ): Promise<Array<HomeworkProgress>>;
 
   // Berilgan blockOrder va userId bo'yicha eng yuqori homework.order qiymatini qaytaradi
@@ -69,8 +70,7 @@ export interface IHomeworkProgressRepository {
   getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<HomeworkProgress | null>;
 
   findTopFiveByBlockIdAndUserId(
@@ -87,5 +87,11 @@ export interface IHomeworkProgressRepository {
     userId: ID,
     blockOrder: ID,
     courseId: ID,
-  ): Promise<HomeworkProgress | null> 
+  ): Promise<HomeworkProgress | null>;
+
+  findLastWatchedHomework(
+    courseId: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<number | null>;
 }

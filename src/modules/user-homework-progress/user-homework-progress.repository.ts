@@ -33,7 +33,7 @@ export class UserHomeworkProgressRepository
    * @param blockOrder - Block tartibi
    * @returns UserHomeworkProgress yozuvlari
    */
-  async findByBlockOrderAndUserId(
+  async findByBlockIdAndUserId(
     blockId: ID,
     userId: ID,
   ): Promise<UserHomeworkProgress[]> {
@@ -56,13 +56,13 @@ export class UserHomeworkProgressRepository
    * @param homeworkOrder - Homework tartibi
    * @returns UserHomeworkProgress yozuvlari
    */
-  async findByUserIdBlockOrderAndHomeworkOrder(
-    userId: number,
-    blockOrder: number,
-    homeworkOrder: number,
+  async findByUserIdBlockIdAndHomeworkOrder(
+    userId: ID,
+    blockId: ID,
+    homeworkOrder: ID,
   ): Promise<UserHomeworkProgress> {
     return await this.userHomeworkProgressRepository.findOne({
-      where: { userId, blockOrder, homeworkOrder },
+      where: { userId, blockId, homeworkOrder },
     });
   }
 
@@ -107,7 +107,7 @@ export class UserHomeworkProgressRepository
   async findNextHomeworkProgress(
     currentHomeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
+    blockId: ID,
   ): Promise<UserHomeworkProgress | null> {
     try {
       // homeworkOrder'dan katta birinchi yozuvni topish uchun QueryBuilder ishlatamiz
@@ -117,7 +117,7 @@ export class UserHomeworkProgressRepository
           currentHomeworkOrder,
         })
         .andWhere("progress.userId = :userId", { userId })
-        .andWhere("progress.blockOrder = :blockOrder", { blockOrder })
+        .andWhere("progress.blockId = :blockId", { blockId })
         .orderBy("progress.homeworkOrder", "ASC") // Homework order bo'yicha tartib
         .getOne(); // Faqat bitta yozuvni qaytarish
 

@@ -72,10 +72,10 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   ): Promise<HomeworkProgress | null> {
     return this.homeworkProgressRepository.findOne({
       where: {
-        userId: userId, // user id si bilan solishtirish
-        homeworkOrder: homeworkId, // homework order bilan solishtirish
+        userId: userId, // user id bilan solishtirish
+        homework: { id: homeworkId }, // homework id bilan solishtirish
       },
-      relations: ["homework"], // faqat homeworkni yuklash
+      relations: ["homework"], // homework bog'langan ma'lumotni yuklash
     });
   }
 
@@ -225,8 +225,8 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     const homeworkProgresses = await this.homeworkProgressRepository.find({
       where: {
         blockOrder: blockOrder,
-        courseId: courseId,
         userId: userId,
+        courseId: courseId,
       },
       select: ["isWatched"],
     });
@@ -245,10 +245,12 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async getVideosWithWatchCountBetween0And5(
     blockOrder: ID,
     courseId: ID,
+    userId: ID
   ): Promise<Array<HomeworkProgress>> {
     return await this.homeworkProgressRepository.find({
       where: {
         blockOrder: blockOrder,
+        userId: userId,
         courseId: courseId,
         isWatched: true,
         countWatched: Between(0, 5), // countWatched 0 va 5 orasida bo'lishi kerak
@@ -263,12 +265,11 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
   async getHomeworkProgress(
     homeworkOrder: ID,
     userId: ID,
-    blockOrder: ID,
-    courseId: ID,
+    blockId: ID,
   ): Promise<HomeworkProgress | null> {
     // homeworkOrder, userId va blockOrder bo'yicha homework progress yozuvini qidiramiz
     const homeworkProgress = await this.homeworkProgressRepository.findOne({
-      where: { homeworkOrder, userId, blockOrder, courseId },
+      where: { homeworkOrder, userId, blockId },
     });
 
     // homeworkProgress mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
@@ -316,4 +317,22 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
       },
     });
   }
+
+  async findLastWatchedHomework(
+    courseId: ID,
+    userId: ID,
+    blockOrder: ID,
+  ): Promise<number | null> {
+    const result = await this.homeworkProgressRepository
+      .createQueryBuilder("homeworkProgress")
+      .select("homeworkProgress.homeworkOrder", "homeworkOrder")
+      .andWhere("homeworkProgress.courseId = :courseId", { courseId })
+      .andWhere("homeworkProgress.userId = :userId", { userId })
+      .where("homeworkProgress.blockOrder = :blockOrder", { blockOrder })
+      .orderBy("homeworkProgress.homeworkOrder", "DESC")
+      .getRawOne();
+
+    return result ? result.homeworkOrder : null;
+  }
+
 }

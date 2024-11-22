@@ -956,8 +956,8 @@ import { createConnection, DataSource } from "typeorm";
       for (let i = startBlock - 1; i < endBlock; i++) {
         const block = blockList[i];
 
-        // Har bir order uchun 1 dan 15 gacha
-        for (let order = 1; order <= 15; order++) {
+        // Har bir order uchun 1 dan 100 gacha
+        for (let order = 1; order <= 100; order++) {
           try {
             // Bazada shu order va block bilan bog'langan dars bormi?
             const existingLesson = await lessonRepository.findOne({
