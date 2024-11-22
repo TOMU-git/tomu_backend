@@ -12,6 +12,14 @@ export class CreateOrderDto {
     userId: number;
 
     @ApiProperty({
+        type: Number,
+        description: "Course id"
+    })
+    @IsInt()
+    @IsNotEmpty()
+    courseId: number;
+
+    @ApiProperty({
         type: String,
         enum: PaymentTypeEnum,
         description: "to'lov haqida ya'ni livechat yoki tariff uchun"

@@ -7,9 +7,10 @@ import { UserModule } from '../user/user.module';
 import { OrderRepository } from './orders.repository';
 import { TariffModule } from '../tariff/tariff.module';
 import { LiveChatModule } from '../live-chat/live-chat.module';
+import { CourseModule } from '../course/course.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OrderEntity]), UserModule, TariffModule, LiveChatModule],
+  imports: [TypeOrmModule.forFeature([OrderEntity]), UserModule, TariffModule, LiveChatModule, CourseModule],
   controllers: [OrdersController],
   providers: [
     { provide: "IOrderService", useClass: OrdersService },
