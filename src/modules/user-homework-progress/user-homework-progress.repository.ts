@@ -33,7 +33,7 @@ export class UserHomeworkProgressRepository
    * @param blockOrder - Block tartibi
    * @returns UserHomeworkProgress yozuvlari
    */
-  async findByBlockOrderAndUserId(
+  async findByBlockIdAndUserId(
     blockId: ID,
     userId: ID,
   ): Promise<UserHomeworkProgress[]> {
@@ -56,13 +56,13 @@ export class UserHomeworkProgressRepository
    * @param homeworkOrder - Homework tartibi
    * @returns UserHomeworkProgress yozuvlari
    */
-  async findByUserIdBlockOrderAndHomeworkOrder(
-    userId: number,
-    blockOrder: number,
-    homeworkOrder: number,
+  async findByUserIdBlockIdAndHomeworkOrder(
+    userId: ID,
+    blockId: ID,
+    homeworkOrder: ID,
   ): Promise<UserHomeworkProgress> {
     return await this.userHomeworkProgressRepository.findOne({
-      where: { userId, blockOrder, homeworkOrder },
+      where: { userId, blockId, homeworkOrder },
     });
   }
 

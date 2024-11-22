@@ -7,14 +7,14 @@ export interface IUserHomeworkProgressRepository {
     userHomeworkProgresses: UserHomeworkProgress[],
   ): Promise<UserHomeworkProgress[]>;
   findAll(): Promise<UserHomeworkProgress[]>;
-  findByBlockOrderAndUserId(
+  findByBlockIdAndUserId(
     blockId: ID,
     userId: ID,
   ): Promise<UserHomeworkProgress[]>;
-  findByUserIdBlockOrderAndHomeworkOrder(
+  findByUserIdBlockIdAndHomeworkOrder(
     userId: ID,
-    blockOrder: number,
-    homeworkOrder: number,
+    blockId: ID,
+    homeworkOrder: ID,
   ): Promise<UserHomeworkProgress>;
   deleteAll(userId: ID, blockId: ID): Promise<boolean> 
   updateProgress(
