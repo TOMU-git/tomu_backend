@@ -40,7 +40,7 @@ export class OrdersService implements IOrderService {
       newOrder.totalPrice = foundLiveChat.price;
     }
     newOrder.status = OrderStatus.PENDING;
-    const callBackUrl = 'https://www.tomu.uz/';
+    const callBackUrl = `https://tomubackend.tomu.uz/api/user-course/user/${orderDto.userId}/courses`;
     const createdOrder = await this.orderRepository.create(newOrder);
     const url = buildPaymeApi(orderDto.userId, createdOrder.id, Number(createdOrder.totalPrice), callBackUrl);
     return new ResData<IOrderCreateReturn>("Order created successfully", 201, {order: createdOrder, url: url});
