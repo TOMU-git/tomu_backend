@@ -303,10 +303,19 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         courseId,
         blockOrder,
       );
-
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
+    
     if (lastWatchedLessonOrder < 5) {
       throw new LessonNotWatchedException();
     }
+    
+    let lastWatchedHomeworkOrder =
+    await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
+      userId,
+      blockId,
+    );
+    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
+
     // Foydalanuvchining progressini order bo'yicha olish
     const existingProgresses =
       await this.homeworkProgressRepository.findByBlocIdAndUserId(
@@ -328,6 +337,22 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         "Homework fetched successfully",
         200,
         existingProgresses,
+      );
+    }
+
+    const existingTemproraryProgress =
+      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
+        blockId,
+        userId,
+      );
+    if (
+      existingTemproraryProgress &&
+      lastWatchedHomeworkOrder < lastWatchedLessonOrder
+    ) {
+      return new ResData<Array<Partial<HomeworkProgress>>>(
+        "Homework fetched successfully DATA from temproraryProgress",
+        200,
+        existingTemproraryProgress,
       );
     }
 
@@ -353,11 +378,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     console.log("isWatchedAllHomework", isWatchedAllHomework);
 
     // So'nggi ko'rilgan homeworkni olish
-    let lastWatchedHomeworkOrder =
-      await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
-        userId,
-        blockId,
-      );
+
     if (lastWatchedHomeworkOrder === null) {
       lastWatchedHomeworkOrder = 0;
     }
@@ -385,13 +406,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
       if (temporaryProgress.length > 1) {
         return new ResData<Array<Partial<HomeworkProgress>>>(
-          "To watch the next videos, you must first watch all the lesson videos.",
+          "To watch the next videos, you must first watch all the lesson videos",
           200,
           temporaryProgress,
         );
       }
       return new ResData<Array<Partial<HomeworkProgress>>>(
-        "To watch the next videos, you must first watch all the lesson videos.",
+        "To watch the next videos, you must first watch all the lesson videos",
         200,
         existingProgresses,
       );
@@ -411,7 +432,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     if (temporaryProgress.length > 1) {
       return new ResData<Array<Partial<HomeworkProgress>>>(
-        "To watch the next videos, you must first watch all the lesson videos.",
+        "To watch the next videos, you must first watch all the lesson videos",
         200,
         temporaryProgress,
       );

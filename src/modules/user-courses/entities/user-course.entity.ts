@@ -17,7 +17,7 @@ export class UserCourse extends BaseEntity {
   isActive: boolean;
   
   @Column({ name: "tariff_id", type: 'int', nullable: false })
-  tariffId: number;
+  tariffId: number;20
 
   @Column({
     name: "started_at",
