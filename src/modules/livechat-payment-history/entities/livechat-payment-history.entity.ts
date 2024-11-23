@@ -13,12 +13,6 @@ export class LivechatPaymentHistoryEntity extends BaseEntity {
   @Column({ name: "payment", type: "bigint", nullable: false })
   paymentAmount: number;
 
-  @Column({ name: 'teacher_name', type: 'varchar', nullable: false })
-  teacherName: string;
-
-  @Column({ name: 'teacher_phone_number', type: 'varchar', nullable: false })
-  teacherPhoneNumber: string;
-
   @Column({ name: 'user_phone_number', type: 'varchar', nullable: false })
   userPhoneNumber: string;
 
