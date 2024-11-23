@@ -160,4 +160,24 @@ export class UserHomeworkProgressRepository
       return false; // Xatolik yuz bersa
     }
   }
+
+  async areAllWatchedByOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+  ): Promise<boolean> {
+    const userHomeworkProgresses = await this.userHomeworkProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        userId: userId,
+        courseId: courseId,
+      },
+      select: ["isWatched"],
+    });
+
+    if (userHomeworkProgresses.length < 5) {
+      return false;
+    }
+    return userHomeworkProgresses.every((progress) => progress.isWatched === true);
+  }
 }

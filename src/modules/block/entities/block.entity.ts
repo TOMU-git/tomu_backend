@@ -4,7 +4,13 @@ import { Course } from "src/modules/course/entities/course.entity";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
 @Entity("blocks")
 export class Block extends BaseEntity {
