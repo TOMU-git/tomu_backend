@@ -11,37 +11,36 @@ export class HomeworkProgress extends BaseEntity {
    * Ushbu maydon, darsning qaysi blokda ekanligini ifodalaydi.
    */
   @Column({ type: "int", name: "block_order", nullable: false })
-  blockOrder: Number;
+  blockOrder: number;
 
   /**
-   * homework tartib raqami.
-   * Ushbu maydon, homeworknig tartib raqamini ifodalaydi.
+   * Homework tartib raqami.
+   * Ushbu maydon, homeworkning tartib raqamini ifodalaydi.
    */
   @Column({ type: "int", name: "homework_order", nullable: false })
-  homeworkOrder: Number;
+  homeworkOrder: number;
 
   /**
-   * User id si.
-   * Ushbu maydon, User videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   * Foydalanuvchi ID'si.
    */
-  @Column({ type: "int", name: "user_idx", nullable: false })
-  userId: Number;
+  @Column({ type: "int", name: "user_id", nullable: false })
+  userId: number;
 
   /**
-   * block id si.
-   * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+   * Block ID'si.
    */
   @Column({ type: "int", name: "block_id", nullable: false })
-  blockId: Number;
+  blockId: number;
 
-    /**
-   * block id si.
-   * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
+  /**
+   * Kurs ID'si.
    */
-    @Column({ type: "int", name: "course_id", nullable: false })
-    courseId: Number;
+  @Column({ type: "int", name: "course_id", nullable: false })
+  courseId: number;
 
-  // Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan)
+  /**
+   * Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan).
+   */
   @Column({
     type: "boolean",
     default: true,
@@ -50,16 +49,22 @@ export class HomeworkProgress extends BaseEntity {
   })
   isWatched: boolean;
 
-  // Homework qancha marta ko'rilganligini hisoblaydigan ustun (0 dan 5 gacha qiymatlarni olishi mumkin)
+  /**
+   * Homework qancha marta ko'rilganligini hisoblaydigan ustun.
+   */
   @Column({ type: "int", name: "count_watched", default: 0 })
   countWatched: number;
 
-  // Foydalanuvchiga tegishli homework_progress yozuvi
+  /**
+   * Foydalanuvchiga tegishli homework_progress yozuvi.
+   */
   @ManyToOne(() => User, (user) => user.homeworkProgresses)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  // Ushbu homework uchun progress yozuvi
+  /**
+   * Ushbu homework uchun progress yozuvi.
+   */
   @ManyToOne(() => Homework, (homework) => homework.homeworkProgresses)
   @JoinColumn({ name: "homework_id" })
   homework: Homework;

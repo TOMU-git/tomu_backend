@@ -3,7 +3,6 @@ import { Course } from "src/modules/course/entities/course.entity";
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
 
 @Entity("alphabets") // Entity nomini belgilash
-@Unique(["course", "order"])
 export class Alphabet extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   title: string;

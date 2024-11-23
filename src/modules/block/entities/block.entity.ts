@@ -14,7 +14,6 @@ import {
 } from "typeorm";
 
 @Entity("blocks")
-@Unique(["course", "order", "category"])
 export class Block extends BaseEntity {
   // Blokning sarlavhasi (maksimal uzunligi 255 ta belgi)
   @Column({ type: "varchar", length: 255, nullable: false })

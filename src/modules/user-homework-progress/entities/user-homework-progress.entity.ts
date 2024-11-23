@@ -4,43 +4,41 @@ import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 
 @Entity("user_homework_progress")
-@Unique(["userId", "courseId", "blockId", "homeworkOrder"])
 export class UserHomeworkProgress extends BaseEntity {
   /**
    * Blokning tartib raqami.
    * Ushbu maydon, darsning qaysi blokda ekanligini ifodalaydi.
    */
   @Column({ type: "int", name: "block_order", nullable: false })
-  blockOrder: Number;
+  blockOrder: number;
 
   /**
    * homework tartib raqami.
    * Ushbu maydon, homeworknig tartib raqamini ifodalaydi.
    */
   @Column({ type: "int", name: "homework_order", nullable: false })
-  homeworkOrder: Number;
+  homeworkOrder: number;
 
   /**
    * User id si.
    * Ushbu maydon, User videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
   @Column({ type: "int", name: "user_id", nullable: false })
-  userId: Number;
+  userId: number;
 
   /**
    * block id si.
    * Ushbu maydon, block videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
   @Column({ type: "int", name: "block_id", nullable: false })
-  blockId: Number;
+  blockId: number;
 
-  
   /**
    * course id si.
    * Ushbu maydon, course videolarini ko'rgan yoki ko'rmaganligini aniqlash uchun yordam beradi.
    */
   @Column({ type: "int", name: "course_id", nullable: false })
-  courseId: Number;
+  courseId: number;
 
   // Homework ko'rilganligini bildiruvchi ustun (true - ko'rilgan, false - ko'rilmagan)
   @Column({

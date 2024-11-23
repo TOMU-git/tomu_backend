@@ -4,7 +4,6 @@ import { HomeworkProgress } from "src/modules/homework-progress/entities/homewor
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
 
 @Entity("homeworks")
-@Unique(["block", "order"])
 export class Homework extends BaseEntity {
   @Column({ type: "varchar", length: 500, nullable: true })
   title: string;
@@ -33,7 +32,7 @@ export class Homework extends BaseEntity {
    * Tartib raqami.
    * Homework ko'rsatish tartibi.
    */
-  @Column({ type: "int", unique: true, nullable: false })
+  @Column({ type: "int", nullable: false })
   order: number;
 
   /**

@@ -11,7 +11,6 @@ import {
 } from "typeorm";
 
 @Entity("lessons") // Entity nomini belgilash
-@Unique(["block", "order"])
 export class Lesson extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   title: string;
