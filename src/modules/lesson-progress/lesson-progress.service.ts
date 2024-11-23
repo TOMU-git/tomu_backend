@@ -127,7 +127,7 @@ export class LessonProgressService implements ILessonProgressService {
       console.log("tushdi")
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<LessonProgress>(
-        "To view the next lessons, you must first view the homework assignments.",
+        "To view the next lessons, you must first view the homework assignments",
         200,
         foundLessonProgress,
       );
@@ -143,7 +143,7 @@ export class LessonProgressService implements ILessonProgressService {
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<LessonProgress>(
-        "To view the next lessons, you must first view the homework assignments.",
+        "To view the next lessons, you must first view the homework assignments",
         200,
         foundLessonProgress,
       );
@@ -160,7 +160,7 @@ export class LessonProgressService implements ILessonProgressService {
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<LessonProgress>(
-        "To view the next lessons, you must first view the homework assignments.",
+        "To view the next lessons, you must first view the homework assignments",
         200,
         foundLessonProgress,
       );
@@ -246,7 +246,7 @@ export class LessonProgressService implements ILessonProgressService {
     if (lastWatchedLessonOrder % 5 === 0 && !checkAllHomework) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<Array<LessonProgress>>(
-        "To view the next lessons, you must first view the homework assignments.",
+        "To view the next lessons, you must first view the homework assignments",
         200,
         existingProgresses,
       );
@@ -260,7 +260,7 @@ export class LessonProgressService implements ILessonProgressService {
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<Array<LessonProgress>>(
-        "To view the next lessons, you must first view the homework assignments.",
+        "To view the next lessons, you must first view the homework assignments",
         200,
         existingProgresses,
       );
