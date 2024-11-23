@@ -11,7 +11,7 @@ export class Lesson extends BaseEntity {
   @Column({ type: "varchar", length: 255, name: "video_url" })
   videoUrl: string;
 
-  @Column({ type: "int", unique: true })
+  @Column({ type: "int"})
   /**
    * Darsning tartibini belgilaydi.
    * Bu maydon yordamida darslar o'zaro bog'liq ravishda tartiblangan holda ko'rsatiladi.
