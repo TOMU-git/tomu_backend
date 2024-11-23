@@ -1,8 +1,9 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Course } from "src/modules/course/entities/course.entity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
 
 @Entity("alphabets") // Entity nomini belgilash
+@Unique(["course", "order"])
 export class Alphabet extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   title: string;
@@ -10,7 +11,7 @@ export class Alphabet extends BaseEntity {
   @Column({ type: "varchar", length: 255, name: "video_url" })
   videoUrl: string;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: false })
   /**
    * Darsning tartibini belgilaydi.
    * Bu maydon yordamida darslar o'zaro bog'liq ravishda tartiblangan holda ko'rsatiladi.

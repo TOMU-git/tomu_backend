@@ -1,9 +1,10 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Block } from "src/modules/block/entities/block.entity";
 import { HomeworkProgress } from "src/modules/homework-progress/entities/homework-progress.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
 
 @Entity("homeworks")
+@Unique(["block", "order"])
 export class Homework extends BaseEntity {
   @Column({ type: "varchar", length: 500, nullable: true })
   title: string;
@@ -28,14 +29,11 @@ export class Homework extends BaseEntity {
   @Column({ type: "int" })
   size: number;
 
-
-
-
   /**
    * Tartib raqami.
    * Homework ko'rsatish tartibi.
    */
-  @Column({ type: "int" })
+  @Column({ type: "int", unique: true, nullable: false })
   order: number;
 
   /**

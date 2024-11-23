@@ -4,9 +4,17 @@ import { Course } from "src/modules/course/entities/course.entity";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Unique,
+} from "typeorm";
 
 @Entity("blocks")
+@Unique(["course", "order", "category"])
 export class Block extends BaseEntity {
   // Blokning sarlavhasi (maksimal uzunligi 255 ta belgi)
   @Column({ type: "varchar", length: 255, nullable: false })
