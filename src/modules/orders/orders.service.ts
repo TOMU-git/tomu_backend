@@ -10,6 +10,8 @@ import { ITariffService } from '../tariff/interface/tariff.service';
 import { ILiveChatService } from '../live-chat/interfaces/service-interface';
 import { buildPaymeApi } from 'src/lib/urlBuild';
 import { ICourseService } from '../course/interfaces/course.service';
+import { config } from 'src/common/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class OrdersService implements IOrderService {
@@ -18,7 +20,8 @@ export class OrdersService implements IOrderService {
     @Inject("IUserService") private readonly userService : IUserService,
     @Inject("ITariffService") private readonly tariffService : ITariffService,
     @Inject("ILiveChatService") private readonly liveChatService: ILiveChatService,
-    @Inject("ICourseService") private readonly courseService: ICourseService
+    @Inject("ICourseService") private readonly courseService: ICourseService,
+    private jwtService: JwtService,
   ) { }
   
   async createOrder(orderDto: CreateOrderDto): Promise<ResData<IOrderCreateReturn>> {

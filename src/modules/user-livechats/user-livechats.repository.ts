@@ -26,6 +26,6 @@ export class UserLiveChatRepository implements IUserLiveChatRepository {
   }
 
   async getByTeacherId(teacherId: number, courseId: number): Promise<UserLivechatEntity[]> {
-    return await this.repository.find({ where: [{teacherId}, {courseId}] });
+    return await this.repository.find({ where: { teacherId, courseId } });
   }
 }
