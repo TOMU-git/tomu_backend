@@ -31,4 +31,10 @@ export interface IUserHomeworkProgressRepository {
     userId: ID,
     blockId: ID,
   ): Promise<UserHomeworkProgress>;
+
+  areAllWatchedByOrderAndUserId(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+  ): Promise<boolean>
 }
