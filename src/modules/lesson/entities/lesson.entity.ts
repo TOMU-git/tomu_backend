@@ -7,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  Unique,
 } from "typeorm";
 
 @Entity("lessons") // Entity nomini belgilash

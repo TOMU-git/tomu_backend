@@ -1,10 +1,9 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { User } from "src/modules/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 
 @Entity("homework_progress")
-@Unique(["userId", "courseId", "blockId", "homeworkOrder"])
 export class HomeworkProgress extends BaseEntity {
   /**
    * Blokning tartib raqami.

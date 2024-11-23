@@ -1,6 +1,6 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { User } from "src/modules/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 
 @Entity("user_homework_progress")

@@ -1,7 +1,7 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { User } from "src/modules/user/entities/user.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity("lesson_progress")
 export class LessonProgress extends BaseEntity {
@@ -16,7 +16,7 @@ export class LessonProgress extends BaseEntity {
    * Lesson tartib raqami.
    * Ushbu maydon, lessonnig tartib raqamini ifodalaydi.
    */
-  @Column({ type: "int", name: "lesson_order", nullable: false, unique: true })
+  @Column({ type: "int", name: "lesson_order", nullable: false })
   lessonOrder: number;
 
   /**

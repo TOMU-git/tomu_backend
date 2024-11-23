@@ -1,6 +1,6 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Course } from "src/modules/course/entities/course.entity";
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity("alphabets") // Entity nomini belgilash
 export class Alphabet extends BaseEntity {

@@ -385,9 +385,14 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockId,
         userId,
       );
+    console.log(
+      "existingTemproraryProgress",
+      existingTemproraryProgress.length,
+    );
     if (
-      existingTemproraryProgress &&
-      lastWatchedHomeworkOrder < lastWatchedLessonOrder
+      existingTemproraryProgress.length > 1 &&
+      lastWatchedHomeworkOrder < lastWatchedLessonOrder &&
+      !isAllUserHomeworkProgressWatched
     ) {
       return new ResData<Array<Partial<HomeworkProgress>>>(
         "Homework fetched successfully DATA from temproraryProgress",
@@ -420,21 +425,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       );
     }
 
-    const temporaryProgress =
-      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-        blockId,
-        userId,
-      );
-    console.log("temporaryProgress", temporaryProgress.length);
-
-    if (temporaryProgress.length > 1) {
-      return new ResData<Array<Partial<HomeworkProgress>>>(
-        "To watch the next videos, you must first watch all the lesson videos",
-        200,
-        temporaryProgress,
-      );
-    }
-
     // agar ochiq homework va ochiq lesson larni hammasini ko'rgan bo'lsa progress yaratish
     if (isWatchedAllHomework && isAllLessonWatched) {
       // Agar barcha shartlar to'g'ri bo'lsa, yangi 5ta progress yaratish
@@ -457,7 +447,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         );
       }
 
-      if (existingProgresses.length >= 20 && !isAllUserHomeworkProgressWatched) {
+      if (
+        existingProgresses.length >= 20 &&
+        !isAllUserHomeworkProgressWatched
+      ) {
         // Eng kichik homeworkOrder qiymatiga ega bo'lgan ma'lumotni topish va yangilash
         const lastFiveProgress =
           await this.homeworkProgressRepository.findTopFiveByBlockIdAndUserId(
@@ -470,17 +463,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           courseId,
           userId,
         );
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
         console.log("randomVideos.length", randomVideos.length);
+        
         let progressList = [...lastFiveProgress, ...randomVideos];
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
         console.log(",progressList", progressList.length);
-
-
 
         // progresslistni massivini homeworkOrder qiymatiga ko'ra tartiblash
         const sortedProgressList = progressList.sort(
@@ -489,7 +475,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
         for (let i = 0; i < sortedProgressList.length; i++) {
           const video = sortedProgressList[i];
-          console.log("sortedProgressList[i]:", sortedProgressList[i]);
 
           // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
           video.isWatched = i === 0 ? true : false;
@@ -598,17 +583,18 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       }
     }
 
-    if (temporaryProgress.length === 0) {
+    if (existingTemproraryProgress.length === 0) {
       return new ResData<Array<HomeworkProgress>>(
         "Homework fetched successfully",
         200,
         existingProgresses,
       );
     }
+    console.log("downnnnnnnnnnnnn");
     return new ResData<Array<Partial<HomeworkProgress>>>(
       "Homework fetched successfully DATA from temprorayProgress",
       200,
-      temporaryProgress,
+      existingTemproraryProgress,
     );
   }
 
@@ -725,9 +711,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     return newProgressList;
   }
 
-  async generator(userId: ID,
-    blockId: ID,
-  ): Promise<Array<HomeworkProgress>>{
-    return
+  async generator(userId: ID, blockId: ID): Promise<Array<HomeworkProgress>> {
+    return;
   }
 }

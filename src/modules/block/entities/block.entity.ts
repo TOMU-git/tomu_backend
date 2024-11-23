@@ -10,7 +10,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  Unique,
 } from "typeorm";
 
 @Entity("blocks")
