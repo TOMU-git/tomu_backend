@@ -16,9 +16,9 @@ export class TransactionRepository implements ITransactionRepo {
     return await this.repository.save(entity);
   }
 
-  // findAll(): Promise<TransactionEntity> {
-  //   return await this.repository.find({where: {createTime: Between()}});
-  // }
+  async findAll(year: number): Promise<TransactionEntity[]> {
+    return await this.repository.find({where: {createTime: Between(new Date(`${year}-01-01`).getTime(), new Date(`${year}-12-31`).getTime()), state: TransactionStateEnum.PAID}});
+  }
 
   async getOneById(transactionId: string): Promise<TransactionEntity> {
     return await this.repository.findOneBy({ id: transactionId });
