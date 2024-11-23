@@ -1,13 +1,7 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Block } from "src/modules/block/entities/block.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("lessons") // Entity nomini belgilash
 export class Lesson extends BaseEntity {
@@ -18,6 +12,7 @@ export class Lesson extends BaseEntity {
   videoUrl: string;
 
   @Column({ type: "int", nullable: false })
+
   /**
    * Darsning tartibini belgilaydi.
    * Bu maydon yordamida darslar o'zaro bog'liq ravishda tartiblangan holda ko'rsatiladi.

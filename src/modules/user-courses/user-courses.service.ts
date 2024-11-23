@@ -64,6 +64,17 @@ export class UserCourseService implements IUserCourseService {
     );
   }
 
+  async findByDate(id: number, day: Date, courseId: number): Promise<ResData<{isActive: boolean}>> {
+    const foundUserCourse = await this.userCourseRepository.findByTariffIdAndUserId(id, courseId);
+    if (!foundUserCourse) {
+      throw new UserCourseNotFoundException();
+    }
+    if (foundUserCourse.endedAt < day) {
+      foundUserCourse.isActive = false;
+    }
+    return new ResData<{isActive: boolean}>("User course", 200, {isActive: foundUserCourse.isActive});
+  }
+
   /**
    * Hamma UserCourse-larni oladi.
    * @returns Hamma UserCourse-lar ro'yxati

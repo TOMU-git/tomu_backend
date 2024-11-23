@@ -248,24 +248,13 @@ export class TransactionsService implements ITransactionService {
           foundLiveChat.id,
           foundLiveChat,
         );
-      const foundUserLiveChat =
-        await this.userLiveChatRepository.getByLiveChatId(
-          Number(foundLiveChat.id),
-        );
-      const foundTeacher = await this.userRepository.findOneById(
-        Number(foundUserLiveChat.teacherId),
-      );
       const newLiveChatPayment = new LivechatPaymentHistoryEntity();
-      newLiveChatPayment.fullName =
-        foundLiveChat.firstName + " " + foundLiveChat.lastName;
+      newLiveChatPayment.fullName = foundLiveChat.firstName + " " + foundLiveChat.lastName;
       newLiveChatPayment.courseName = foundLiveChat.selectedCourseName;
       newLiveChatPayment.paymentAmount = foundLiveChat.price;
       newLiveChatPayment.gender = foundLiveChat.gender;
       newLiveChatPayment.liveChatId = foundLiveChat.id;
-      newLiveChatPayment.teacherName =
-        foundTeacher.firstName + " " + foundTeacher.lastName;
-      newLiveChatPayment.teacherPhoneNumber = foundTeacher.phoneNumber;
-      newLiveChatPayment.userPhoneNumber = foundUserLiveChat.phoneNumber;
+      newLiveChatPayment.userPhoneNumber = foundLiveChat.phoneNumber;
       newLiveChatPayment.duration = foundLiveChat.duration;
       newLiveChatPayment.selectedDay = foundLiveChat.selectedDay;
       newLiveChatPayment.selectedTime = foundLiveChat.selectedTime;
