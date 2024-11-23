@@ -67,7 +67,12 @@ export class LiveChatService implements ILiveChatService {
   async getTimesByDay(day: Date, courseId: number): Promise<ResData<string[]>> {
     await this.courseService.findOneById(courseId);
     const foundTimes = await this.liveChatRepository.findByTimesByDayAndCourseId(day, courseId);
-    return new ResData<string[]>("Live chat times found", 200, foundTimes);
+    const resData = new ResData<string[]>("Live chat times found", 200, foundTimes);
+    if (foundTimes.length === 0) {
+      resData.message = "No live chat times found"
+      resData.statusCode = 400;
+    }
+    return resData;
   }
   
   async findTeacherLivechats(teacherId: number): Promise<ResData<LiveChatEntity[]>> {
