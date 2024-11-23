@@ -107,7 +107,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       dto.userId,
       dto.blockId,
     );
-
+    
     console.log("________________________________update homeworkProgress");
 
     if (!foundData) {
@@ -145,13 +145,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.blockId,
       );
     console.log("nextTemporaryProgress:", nextTemprorayProgress);
-    const nextTemporaryProgressOrder = Number(nextProgress.homeworkOrder);
+    const nextTemporaryProgressOrder = Number(nextTemprorayProgress.homeworkOrder);
     console.log("nextTemporaryProgressOrder:", nextTemporaryProgressOrder);
 
-    // console.log(
-    //   "before update keyingi temproray progress data",
-    //   nextTemprorayProgress,
-    // );
+    console.log(
+      "before update keyingi temproray progress data",
+      nextTemprorayProgress,
+    );
 
     const foundTemproraryData =
       await this.userHomeworkProgressRepository.findByUserIdBlockIdAndHomeworkOrder(
@@ -160,13 +160,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.homeworkOrder,
       );
 
-    const temporaryProgressExist =
-      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-        dto.blockId,
-        dto.userId,
-      );
-
     if (nextTemprorayProgress && foundTemproraryData) {
+      console.log("work");
       await this.userHomeworkProgressRepository.markHomeworkAsWatched(
         nextTemporaryProgressOrder,
         dto.userId,
@@ -180,13 +175,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.blockId,
         );
       const order = Number(exitsNextProgress.homeworkOrder);
-      // console.log("order,", order)
+      console.log("order,", order);
       // console.log("exitsNextProgress Bomi if (nextTemprorayProgress) ichida", exitsNextProgress)
       console.log("exitsNextProgress:", exitsNextProgress);
       if (exitsNextProgress) {
         // console.log("ishladi (nextTemprorayProgress) ichida")
 
-        const d = await this.homeworkProgressRepository.markHomeworkAsWatched(
+        await this.homeworkProgressRepository.markHomeworkAsWatched(
           order,
           dto.userId,
           dto.blockId,
@@ -195,28 +190,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         foundData.countWatched = Number(foundData.countWatched) + 1;
         await this.homeworkProgressRepository.update(foundData);
       }
-
-      const afterNextProgress =
-        await this.homeworkProgressRepository.getHomeworkProgress(
-          nextTemporaryProgressOrder,
-          dto.userId,
-          dto.blockId,
-        );
-
-      console.log("after update process", afterNextProgress);
-
-      const nextTemprorayProgress =
-        await this.userHomeworkProgressRepository.findNextHomeworkProgress(
-          dto.homeworkOrder,
-          dto.userId,
-          dto.blockId,
-        );
-
-      // console.log(
-      //   "after update",
-      //   nextTemprorayProgress,
-      //   "////////////////////////",
-      // );
 
       const data = await this.homeworkProgressRepository.getHomeworkProgress(
         nextTemporaryProgressOrder,
@@ -464,7 +437,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           userId,
         );
         console.log("randomVideos.length", randomVideos.length);
-        
+
         let progressList = [...lastFiveProgress, ...randomVideos];
         console.log(",progressList", progressList.length);
 
