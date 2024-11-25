@@ -101,18 +101,30 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async update(
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>> {
+    console.log("________________________________update homeworkProgress");
     // Berilgan ID bo'yicha homework progressni qidirish
     const foundData = await this.homeworkProgressRepository.getHomeworkProgress(
       dto.homeworkOrder,
       dto.userId,
       dto.blockId,
     );
-    
-    console.log("________________________________update homeworkProgress");
-
     if (!foundData) {
       throw new NotFoundNextProgressException();
     }
+
+
+    // oxirgi ko'rilgan lessonProgress ni orderi
+    const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(dto.userId, dto.courseId, dto.blockOrder)
+    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder)
+    // oxirgi ko'rilgan homeworkProgress ni orderi
+    const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(dto.courseId, dto.userId, dto.blockOrder)
+    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder)
+
+    // agar lesson dagi ko'rilgan videolar soni homework dagi ko'rilgan videolar sonidan ko'p bo'lmasa error qaytaradi
+    if(lastWatchedHomeworkOrder >= lastWatchedLessonOrder){
+      throw new LessonNotWatchedException()
+    }
+    
 
     // keyingi homeworkni orderi
     const nextHomeworkOrder = Number(dto.homeworkOrder) + 1;
@@ -134,25 +146,30 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
     console.log("nextProgress", nextProgress);
 
+    // hozirgi va update bo'lishi kerak bo'lgan progresslar orderlari orasidagi masofa
     const checkOrder =
       Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
     console.log("checkOrder", checkOrder);
 
+    // bu function temprorary dataBaza dan current progressdan keyingi progress ni topib homeworkOrder ini qaytaradi
+     
     const nextTemprorayProgress =
       await this.userHomeworkProgressRepository.findNextHomeworkProgress(
         dto.homeworkOrder,
         dto.userId,
         dto.blockId,
       );
+
+    // agar temprorary dataBaza da current progressdan keyingi progress mavjud bo'lsa uni homeworkOrder ini o'zgaruvchiga olamiz
+    let nextTemporaryProgressOrder = 0;
+    if(nextTemprorayProgress){
+      const nextTemporaryProgressOrder = Number(nextTemprorayProgress.homeworkOrder);
+      console.log("nextTemporaryProgressOrder:", nextTemporaryProgressOrder);
+    }
     console.log("nextTemporaryProgress:", nextTemprorayProgress);
-    const nextTemporaryProgressOrder = Number(nextTemprorayProgress.homeworkOrder);
-    console.log("nextTemporaryProgressOrder:", nextTemporaryProgressOrder);
+    
 
-    console.log(
-      "before update keyingi temproray progress data",
-      nextTemprorayProgress,
-    );
-
+    // agar temprorary dataBaza da kelayotgan datalarga mos data bo'lsa temprorary bazadagi data ham update bo'ladi
     const foundTemproraryData =
       await this.userHomeworkProgressRepository.findByUserIdBlockIdAndHomeworkOrder(
         dto.userId,
@@ -160,6 +177,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.homeworkOrder,
       );
 
+    /* agar temprorary dataBaza da keyingi va current progress bo'lsa temprorary dataBaza dagi hamda homeworkProgress baza dagi porgresslarni update qiladi
+    */
     if (nextTemprorayProgress && foundTemproraryData) {
       console.log("work");
       await this.userHomeworkProgressRepository.markHomeworkAsWatched(
@@ -168,30 +187,31 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.blockId,
       );
 
+      // homeworkProgress bazada keyingi ya'ni update bo'lishi kerak bo'lgan progressni topish
       const exitsNextProgress =
         await this.homeworkProgressRepository.getHomeworkProgress(
           nextTemporaryProgressOrder,
           dto.userId,
           dto.blockId,
         );
-      const order = Number(exitsNextProgress.homeworkOrder);
-      console.log("order,", order);
-      // console.log("exitsNextProgress Bomi if (nextTemprorayProgress) ichida", exitsNextProgress)
+      const nextProgressOrder = Number(exitsNextProgress.homeworkOrder);
       console.log("exitsNextProgress:", exitsNextProgress);
+      
+      // agar homeworkProgress bazada keyingi ya'ni update bo'lishi kerak bo'lgan progress topilsa update qilinadi
       if (exitsNextProgress) {
-        // console.log("ishladi (nextTemprorayProgress) ichida")
-
         await this.homeworkProgressRepository.markHomeworkAsWatched(
-          order,
+          nextProgressOrder,
           dto.userId,
           dto.blockId,
         );
 
+        // current progressni homeworkProgress baza dan countWatched ini 1 ga oshiramiz
         foundData.countWatched = Number(foundData.countWatched) + 1;
         await this.homeworkProgressRepository.update(foundData);
       }
 
-      const data = await this.homeworkProgressRepository.getHomeworkProgress(
+      // Yangilangan homework progress olish
+      const updatedNextProgress = await this.homeworkProgressRepository.getHomeworkProgress(
         nextTemporaryProgressOrder,
         dto.userId,
         dto.blockId,
@@ -200,12 +220,14 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       return new ResData<HomeworkProgress>(
         "OK, next order information below from the progressDatabase",
         200,
-        data,
+        updatedNextProgress,
       );
     }
 
-    // Progressni yangilash
+    // agar temprorary bazada ma'lumotlar bo'lmasa quyidagi kodlar ishlashni boshlaydi
 
+
+    // homeworkProgress dagi keyingi progress bor bo'lsa hamda keyingi va current progress lar orderlari orasidagi masofa 1 ga teng yoki kichik bo'lsa va ham temprorary baza da ma'lumot bo'lmasa, homeworkPorgress baza dagi progress update qilinadi
     if (nextProgress && checkOrder <= 1 && !nextTemprorayProgress) {
       // Keyingi progressni `isWatched` qilib yangilash
       console.log("progressni update qilish");
@@ -217,10 +239,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       foundData.countWatched = Number(foundData.countWatched) + 1;
       await this.homeworkProgressRepository.update(foundData);
     }
-    // Yangilangan progressni saqlash
-    // console.log("updatedData", updatedData);
 
-    const data = await this.homeworkProgressRepository.getHomeworkProgress(
+    // homeworkProgress baza dagi progress update qilingandan so'ng, update qilingan progress data larini olish
+    const updatedNextProgress = await this.homeworkProgressRepository.getHomeworkProgress(
       nextHomeworkOrder,
       dto.userId,
       dto.blockId,
@@ -229,7 +250,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     return new ResData<HomeworkProgress>(
       "OK, next order information below from the progressDatabase",
       200,
-      data,
+      updatedNextProgress,
     );
   }
 
@@ -246,7 +267,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       throw new HomeworkProgressNotFoundException();
     }
 
-    // Progressni o'chirisheyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyMDc5ODMwLCJleHAiOjE3MzIxNjYyMzB9.GwdxzJkmzzWew-mX6036emghr_PNO5AJhhBsEmKS0yE
+    // Progressni o'chirish
     const data = await this.homeworkProgressRepository.delete(foundData);
 
     // O'chirilgan homework progress qaytariladi
@@ -263,6 +284,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     userId: ID,
     blockId: ID,
   ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    // block ma'lumotlarini topish
     const foundBlock = await this.blockRepository.findById(blockId);
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     const blockOrder = foundBlock.order;
