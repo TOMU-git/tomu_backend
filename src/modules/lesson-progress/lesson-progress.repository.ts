@@ -193,4 +193,22 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       },
     });
   }
+
+  async checkAllLessonsWatched(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+  ): Promise<boolean> {
+    const lessonProgresses = await this.lessonProgressRepository.find({
+      where: {
+        blockOrder: blockOrder,
+        courseId: courseId,
+        user: { id: userId },
+      },
+      select: ["isWatched"],
+    });
+
+    // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
+    return lessonProgresses.every((progress) => progress.isWatched);
+  }
 }
