@@ -41,7 +41,6 @@ export class TariffController {
 
   @Get("course/:courseId")
   findByCourseId(@Param("courseId") courseId: string) {
-    console.log("controller", courseId);
     return this.tariffService.findByCourseId(+courseId);
   }
 

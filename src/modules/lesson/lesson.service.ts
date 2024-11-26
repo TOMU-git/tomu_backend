@@ -39,7 +39,6 @@ export class LessonService implements ILessonService {
     dto: CreateLessonDto,
     file: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
-    console.log("working");
     const foundData = await this.lessonRepository.findOneByName(dto.title);
     if (foundData) {
       throw new LessonAlreadyExistException();

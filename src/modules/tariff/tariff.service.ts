@@ -1,13 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { UpdateTariffDto } from './dto/update-tariff.dto';
-import { ITariffService } from './interface/tariff.service';
-import { ITariffRepository } from './interface/tariff.repository';
-import { ResData } from 'src/lib/resData';
-import { Tariff } from './entities/tariff.entity';
-import { TariffNotFoundException } from './exception/tariff.exception';
-import { ICourseService } from '../course/interfaces/course.service';
-import { CreateTariffDto } from './dto/create-tariff.dto';
-import { ICourseRepository } from '../course/interfaces/course.repository';
+import { Inject, Injectable } from "@nestjs/common";
+import { UpdateTariffDto } from "./dto/update-tariff.dto";
+import { ITariffService } from "./interface/tariff.service";
+import { ITariffRepository } from "./interface/tariff.repository";
+import { ResData } from "src/lib/resData";
+import { Tariff } from "./entities/tariff.entity";
+import { TariffNotFoundException } from "./exception/tariff.exception";
+import { ICourseService } from "../course/interfaces/course.service";
+import { CreateTariffDto } from "./dto/create-tariff.dto";
+import { ICourseRepository } from "../course/interfaces/course.repository";
 
 @Injectable()
 export class TariffService implements ITariffService {
@@ -15,7 +15,7 @@ export class TariffService implements ITariffService {
     @Inject("ITariffRepository")
     private readonly tariffRepository: ITariffRepository,
 
-    @Inject('ICourseRepository')
+    @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
   ) {}
 
@@ -23,7 +23,9 @@ export class TariffService implements ITariffService {
   async create(createTariffDto: CreateTariffDto): Promise<ResData<Tariff>> {
     let newTariff = new Tariff();
     newTariff = Object.assign(newTariff, createTariffDto);
-    const foundCourse = await this.courseRepository.findById(createTariffDto.courseId);
+    const foundCourse = await this.courseRepository.findById(
+      createTariffDto.courseId,
+    );
     newTariff.courseId = foundCourse.id;
     if (createTariffDto.options) {
       newTariff.options = createTariffDto.options;
@@ -56,9 +58,7 @@ export class TariffService implements ITariffService {
 
   // READ
   async findByCourseId(courseId: number): Promise<ResData<Tariff[]>> {
-    console.log("service", courseId);
     const tariffs = await this.tariffRepository.findByCourseId(courseId);
-    console.log("tariffs", tariffs);
     return new ResData<Tariff[]>("success", 200, tariffs);
   }
 

@@ -45,7 +45,6 @@ export class HomeworkService implements IHomeworkService {
     if (!block) {
       throw new BlockNotFoundException();
     }
-    console.log(createHomeworkDto)
 
     // Berilgan order ID bilan Homework mavjudligini tekshiradi
     const orderExist = await this.homeworkRepository.findOneByOrder(

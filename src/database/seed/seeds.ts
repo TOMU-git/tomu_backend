@@ -998,7 +998,6 @@ import { createConnection, DataSource } from "typeorm";
 
     await queryRunner.commitTransaction();
   } catch (err) {
-    console.log("error", err);
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
