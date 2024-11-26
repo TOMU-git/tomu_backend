@@ -47,9 +47,15 @@ export class FileService {
   async removeByImageUrl(imageUrl: string): Promise<ResData<string>> {
     const foundFile = await this.findByImageUrl(imageUrl);
 
-    // Faylni o'chirish
-    await this.fileRepository.delete(foundFile);
-    const deleteFilePath = foundFile.path; // o'chiriladigan faylning yo'li
+    // Fayl yo'lini `upload` so'zidan boshlab olish
+    const keyword = "upload";
+    const deleteFilePathIndex = foundFile.path.indexOf(keyword);
+
+    if (deleteFilePathIndex === -1) {
+      throw new Error('Invalid file path: "upload" keyword not found.');
+    }
+
+    const deleteFilePath = foundFile.path.substring(deleteFilePathIndex); // O'chiriladigan faylning to'g'ri yo'li
 
     // Faylni tizimdan o'chirish
     if (existsSync(deleteFilePath)) {
@@ -58,6 +64,8 @@ export class FileService {
       } catch (err) {
         console.error("Faylni o'chirishda xatolik:", err);
       }
+    } else {
+      console.warn("Fayl tizimda mavjud emas:", deleteFilePath);
     }
 
     return new ResData<string>(
