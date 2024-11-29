@@ -21,6 +21,7 @@ export class NotFoundNextProgressException extends HttpException {
   }
 }
 
+
 export class LessonNotWatchedException extends HttpException {
   constructor() {
     super("You must watch the lesson videos first.", 400);

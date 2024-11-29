@@ -29,7 +29,7 @@ export interface ILessonProgressRepository {
     userId: ID,
     courseId: ID,
     blockOrder: ID,
-  ): Promise<number | null> ;
+  ): Promise<number | null>;
 
   getLessonProgress(
     lessonOrder: ID,
@@ -44,5 +44,9 @@ export interface ILessonProgressRepository {
   ): Promise<LessonProgress>;
 
   findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]>;
-
+  checkAllLessonsWatched(
+    blockOrder: ID,
+    userId: ID,
+    courseId: ID,
+  ): Promise<boolean>;
 }
