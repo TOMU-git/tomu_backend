@@ -73,10 +73,19 @@ export class UserLivechatsService implements IUserLiveChatService {
     await this.userService.findOneById(userId);
     const foundUserLiveChatsByUserId =
       await this.userLiveChatRepository.getByUserId(userId);
+    const arr = [];
+    for (let index = 0; index < foundUserLiveChatsByUserId.length; index++) {
+      const e = foundUserLiveChatsByUserId[index];
+      const rightTime = new Date();
+      const formattedDate = new Date(rightTime).toISOString().split('T')[0];
+      if (String(e.selectedDay) > formattedDate) {
+        arr.push(e);
+      }
+    }
     return new ResData<UserLivechatEntity[]>(
       "Accepted user live chats",
       200,
-      foundUserLiveChatsByUserId,
+      arr,
     );
   }
 

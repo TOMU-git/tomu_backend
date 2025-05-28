@@ -76,7 +76,7 @@ export class CreateLiveChatDto {
   @ApiProperty({
     type: String,
     description: "Selected time",
-    example: "10:00 AM"
+    example: "10:00"
   })
   @IsString()
   @IsNotEmpty()
