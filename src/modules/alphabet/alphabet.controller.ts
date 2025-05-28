@@ -113,7 +113,6 @@ export class AlphabetController {
     @Body() updateAlphabetDto: UpdateAlphabetDto,
     @UploadedFile() file?: Express.Multer.File, // Yuklangan faylni olish (ixtiyoriy)
   ): Promise<ResData<Alphabet>> {
-    console.log(file);
     return await this.alphabetService.update(id, updateAlphabetDto, file);
   }
 

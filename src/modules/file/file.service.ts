@@ -13,7 +13,6 @@ export class FileService {
   ) {}
 
   async create(createFileDto: Express.Multer.File) {
-    console.log('createFileDto', createFileDto);
     const created = new File();
     created.mimetype = createFileDto.mimetype;
     created.originalname = createFileDto.originalname;
@@ -38,10 +37,8 @@ export class FileService {
 
   async findByImageUrl(imageUrl: string): Promise<File | null> {
     const foundFile = await this.fileRepository.findByImageUrl(imageUrl);
-    console.log(imageUrl);
-    console.log(foundFile);
+    imageUrl;
     if (!foundFile) {
-      console.log("work here");
       throw new FileNotFoundException();
     }
     return foundFile;
@@ -50,18 +47,25 @@ export class FileService {
   async removeByImageUrl(imageUrl: string): Promise<ResData<string>> {
     const foundFile = await this.findByImageUrl(imageUrl);
 
-    // Faylni o'chirish
-    await this.fileRepository.delete(foundFile);
-    const deleteFilePath = foundFile.path; // o'chiriladigan faylning yo'li
+    // Fayl yo'lini `upload` so'zidan boshlab olish
+    const keyword = "upload";
+    const deleteFilePathIndex = foundFile.path.indexOf(keyword);
+
+    if (deleteFilePathIndex === -1) {
+      throw new Error('Invalid file path: "upload" keyword not found.');
+    }
+
+    const deleteFilePath = foundFile.path.substring(deleteFilePathIndex); // O'chiriladigan faylning to'g'ri yo'li
 
     // Faylni tizimdan o'chirish
     if (existsSync(deleteFilePath)) {
       try {
         await this.unlinkFile(deleteFilePath);
-        console.log("Fayl muvaffaqiyatli o'chirildi");
       } catch (err) {
         console.error("Faylni o'chirishda xatolik:", err);
       }
+    } else {
+      console.warn("Fayl tizimda mavjud emas:", deleteFilePath);
     }
 
     return new ResData<string>(
@@ -79,7 +83,6 @@ export class FileService {
     if (existsSync(deleteFile)) {
       try {
         await this.unlinkFile(deleteFile);
-        console.log("Fayl muvaffaqiyatli o'chirildi");
       } catch (err) {
         console.error("Faylni o'chirishda xatolik:", err);
       }

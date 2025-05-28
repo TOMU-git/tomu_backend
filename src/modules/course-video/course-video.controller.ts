@@ -45,8 +45,6 @@ export class CourseVideoController {
   async create(
     @UploadedFile() video: Express.Multer.File,
   ): Promise<ResData<CourseVideo>> {
-    console.log('working controller');
-    console.log(video); // Fayl obyektini konsolda tekshirish
     if (!video) {
       throw new BadRequestException('Fayl yuklanmadi');
     }

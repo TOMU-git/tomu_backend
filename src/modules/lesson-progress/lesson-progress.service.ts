@@ -53,7 +53,6 @@ export class LessonProgressService implements ILessonProgressService {
   }
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
-    console.log(id);
     const foundLessonProgress =
       await this.lessonProgressRepository.findById(id);
     if (!foundLessonProgress) {
@@ -87,16 +86,13 @@ export class LessonProgressService implements ILessonProgressService {
         blockOrder,
       );
 
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
-    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
-    const checkAllHomework =
+    const isHomeworkWatchedUpToOrder =
       await this.homeworkProgressRepository.areAllHomeworksWatchedUpToOrder(
         blockOrder,
         userId,
         courseId,
         lastWatchedLessonOrder,
       );
-    console.log("checkAllHomework", checkAllHomework);
 
     const nextLessonOrder = Number(foundLessonProgress.lessonOrder) + 1;
 
@@ -124,7 +120,6 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     if (!lastWatchedHomeworkOrder) {
-      console.log("tushdi")
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<LessonProgress>(
         "To view the next lessons, you must first view the homework assignments",
@@ -133,13 +128,10 @@ export class LessonProgressService implements ILessonProgressService {
       );
     }
 
-
-
     if (
       lastWatchedLessonOrder % 5 === 0 &&
-      !checkAllHomework &&
+      !isHomeworkWatchedUpToOrder &&
       lastWatchedLessonOrder >= 5
-
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<LessonProgress>(
@@ -148,14 +140,15 @@ export class LessonProgressService implements ILessonProgressService {
         foundLessonProgress,
       );
     }
-// lastWatchedLessonOrder 10
-// lastWatchedHomeworkOrder 5
-// checkAllHomework true
+    // lastWatchedLessonOrder 10
+    // lastWatchedHomeworkOrder 5
+    // checkAllHomework true
 
-    const orderDistance = Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder)
+    const orderDistance =
+      Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder);
     if (
       lastWatchedLessonOrder % 5 === 0 &&
-      checkAllHomework &&
+      isHomeworkWatchedUpToOrder &&
       orderDistance >= 5
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
@@ -235,7 +228,7 @@ export class LessonProgressService implements ILessonProgressService {
         blockOrder,
       );
 
-    const checkAllHomework =
+    const isHomeworkWatchedUpToOrder =
       await this.homeworkProgressRepository.areAllHomeworksWatchedUpToOrder(
         blockOrder,
         userId,
@@ -243,7 +236,7 @@ export class LessonProgressService implements ILessonProgressService {
         lastWatchedLessonOrder,
       );
 
-    if (lastWatchedLessonOrder % 5 === 0 && !checkAllHomework) {
+    if (lastWatchedLessonOrder % 5 === 0 && !isHomeworkWatchedUpToOrder) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
       return new ResData<Array<LessonProgress>>(
         "To view the next lessons, you must first view the homework assignments",
@@ -252,10 +245,11 @@ export class LessonProgressService implements ILessonProgressService {
       );
     }
 
-    const orderDistance = Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder)
+    const orderDistance =
+      Number(lastWatchedLessonOrder) - Number(lastWatchedHomeworkOrder);
     if (
       lastWatchedLessonOrder % 5 === 0 &&
-      checkAllHomework &&
+      isHomeworkWatchedUpToOrder &&
       orderDistance >= 5
     ) {
       // agar berilgan ordergacha bo'lgan homeworklarni ko'rmagan bo'lsa update qilmaymiz
@@ -278,8 +272,6 @@ export class LessonProgressService implements ILessonProgressService {
     const block = await this.blockRepository.findById(blockId);
 
     const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
-
-    // console.log("lessons", lessons)
 
     if (lessons.length < 1) {
       throw new Error("No more lessons available in this block");

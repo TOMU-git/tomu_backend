@@ -3,7 +3,6 @@ import { ILiveChatRepository } from "./interfaces/repository-interface";
 import { LiveChatEntity } from "./entities/live-chat.entity";
 import { Repository } from "typeorm";
 import { GenderEnum, MeetingStatusEnum } from "src/common/enums/enum";
-import { TimeEnum } from "src/common/enums/time-enum";
 
 export class LiveChatRepository implements ILiveChatRepository {
   constructor(

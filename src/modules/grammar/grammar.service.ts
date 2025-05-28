@@ -31,7 +31,6 @@ export class GrammarService implements IGrammarService {
     createGrammarDto: CreateGrammarDto,
     file: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
-    console.log(createGrammarDto);
     // Qo'shilayotgan grammarnı nomiga ko'ra tekshirish
        // Kurs mavjudligini tekshirish
     const course = await this.courseRepository.findById(

@@ -101,7 +101,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async update(
     dto: UpdateHomeworkProgressDto,
   ): Promise<ResData<HomeworkProgress>> {
-    console.log("________________________________update homeworkProgress");
     // Berilgan ID bo'yicha homework progressni qidirish
     const foundData = await this.homeworkProgressRepository.getHomeworkProgress(
       dto.homeworkOrder,
@@ -127,14 +126,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         dto.courseId,
         dto.blockOrder,
       );
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
     // oxirgi ko'rilgan homeworkProgress ni orderi
     const lastWatchedHomeworkOrder =
       await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
         dto.userId,
         dto.blockId,
       );
-    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
 
     // agar hamma lesson va homeworklarni ko'rgan bo'lsa hech narsa o'zgarmaydi faqat hozirgi ko'rayotgan progress ni ma'lumotlarini qaytaradid
     if (
@@ -158,7 +155,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // keyingi homeworkni orderi
     const nextHomeworkOrder = Number(dto.homeworkOrder) + 1;
-    console.log("nextHomeworkOrder", nextHomeworkOrder);
 
     // berilgan homeworkOrder userId va blockId bo'yicha progressni topish
     const nextProgress =
@@ -174,12 +170,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         foundData,
       );
     }
-    console.log("nextProgress", nextProgress);
 
     // hozirgi va update bo'lishi kerak bo'lgan progresslar orderlari orasidagi masofa
     const checkOrder =
       Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
-    console.log("checkOrder", checkOrder);
 
     // bu function temprorary dataBaza dan current progressdan keyingi progress ni topib homeworkOrder ini qaytaradi
 
@@ -194,9 +188,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     let nextTemporaryProgressOrder = 0;
     if (nextTemprorayProgress) {
       nextTemporaryProgressOrder = Number(nextTemprorayProgress.homeworkOrder);
-      console.log("nextTemporaryProgressOrder:", nextTemporaryProgressOrder);
     }
-    console.log("nextTemporaryProgress:", nextTemprorayProgress);
 
     // agar temprorary dataBaza da kelayotgan datalarga mos data bo'lsa temprorary bazadagi data ham update bo'ladi
     const foundTemproraryData =
@@ -209,7 +201,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     /* agar temprorary dataBaza da keyingi va current progress bo'lsa temprorary dataBaza dagi hamda homeworkProgress baza dagi porgresslarni update qiladi
      */
     if (nextTemprorayProgress && foundTemproraryData) {
-      console.log("work");
       await this.userHomeworkProgressRepository.markHomeworkAsWatched(
         nextTemporaryProgressOrder,
         dto.userId,
@@ -224,7 +215,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           dto.blockId,
         );
       const nextProgressOrder = Number(exitsNextProgress.homeworkOrder);
-      console.log("exitsNextProgress:", exitsNextProgress);
 
       // agar homeworkProgress bazada keyingi ya'ni update bo'lishi kerak bo'lgan progress topilsa update qilinadi
       if (exitsNextProgress) {
@@ -259,7 +249,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     // homeworkProgress dagi keyingi progress bor bo'lsa hamda keyingi va current progress lar orderlari orasidagi masofa 1 ga teng yoki kichik bo'lsa va ham temprorary baza da ma'lumot bo'lmasa, homeworkPorgress baza dagi progress update qilinadi
     if (nextProgress && checkOrder <= 1 && !nextTemprorayProgress) {
       // Keyingi progressni `isWatched` qilib yangilash
-      console.log("progressni update qilish");
       await this.homeworkProgressRepository.markHomeworkAsWatched(
         nextHomeworkOrder,
         dto.userId,
@@ -321,10 +310,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
     const blockOrder = foundBlock.order;
 
-    console.log(
-      "________________________________________________________________________________________________getvideo",
-    );
-
     // oxirgi ko'rilgan lesson ni orderi
     const lastWatchedLessonOrder =
       await this.lessonProgressRepository.findLastWatchedLessonOrder(
@@ -332,7 +317,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         courseId,
         blockOrder,
       );
-    console.log("lastWatchedLessonOrder", lastWatchedLessonOrder);
 
     // oxirgi ko'rilgan homework ni orderi
     let lastWatchedHomeworkOrder =
@@ -340,7 +324,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         userId,
         blockId,
       );
-    console.log("lastWatchedHomeworkOrder", lastWatchedHomeworkOrder);
 
     // hali lesson da boshidagi 5 ta video ko'rilmagan bo'lsa error qaytaramiz
     if (lastWatchedLessonOrder < 5) {
@@ -399,7 +382,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         userId,
         courseId,
       );
-    console.log("isWatchedAllHomework", isWatchedAllHomework);
 
     // berilgan order gacha bo'lgan lesson lar ko'rildimi yo'qmi aniqlash
     const isAllLessonWatchedUpToOrder =
@@ -409,7 +391,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         userId,
         courseId,
       );
-    console.log("isAllLessonWatched", isAllLessonWatchedUpToOrder);
 
     // bor temprorary progresslar hammasi ko'rildimi yo'qmi tekshirish
     const isAllUserHomeworkProgressWatched =
@@ -418,10 +399,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         userId,
         courseId,
       );
-    console.log(
-      "isAllUserHomeworkProgressWatched",
-      isAllUserHomeworkProgressWatched,
-    );
 
     //// default codes above ____________________________________________________________________________________________________
 
@@ -431,10 +408,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         blockId,
         userId,
       );
-    console.log(
-      "existingTemproraryProgress",
-      existingTemproraryProgress.length,
-    );
 
     // agar temprorary bazada ma'lumot bo'lsa va temprorary baza dagi hamma progresslar ko'rilmagan bo'lsa
     if (
@@ -510,16 +483,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             blockId,
             userId,
           );
-        console.log("lastFiveProgress", lastFiveProgress.length);
         const randomVideos = await this.getRandomVideos(
           blockOrder,
           courseId,
           userId,
         );
-        console.log("randomVideos.length", randomVideos.length);
 
         let progressList = [...lastFiveProgress, ...randomVideos];
-        console.log(",progressList", progressList.length);
 
         // progresslistni massivini homeworkOrder qiymatiga ko'ra tartiblash
         const sortedProgressList = progressList.sort(
@@ -546,14 +516,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             userId,
           );
 
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
-        console.log(
-          "________________________________________________________________________temproraryData.length",
-        );
-        console.log(data.length);
-
         return new ResData<Array<Partial<HomeworkProgress>>>(
           "Homework fetched successfully DATA from temproraryProgress",
           200,
@@ -567,21 +529,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             blockId,
             userId,
           );
-        console.log("lastFiveProgress", lastFiveProgress.length);
         const randomVideos = await this.getRandomVideos(
           blockOrder,
           courseId,
           userId,
         );
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
-        console.log("randomVideos.length", randomVideos.length);
+
         let progressList = [...lastFiveProgress, ...randomVideos];
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
-        console.log(",progressList", progressList.length);
 
         // Random qilingan ma'lumotni bazadan olish
         const isExistTemporaryProgress =
@@ -600,7 +554,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
         for (let i = 0; i < sortedProgressList.length; i++) {
           const video = sortedProgressList[i];
-          console.log("sortedProgressList[i]:", sortedProgressList[i]);
 
           // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
           video.isWatched = i === 0 ? true : false;
@@ -619,13 +572,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             userId,
           );
 
-        console.log(
-          "-------------------------------------------------------------------------------------------------------",
-        );
-        console.log(
-          "________________________________________________________________________temproraryData.length",
-        );
-        console.log(data.length);
+
 
         return new ResData<Array<Partial<HomeworkProgress>>>(
           "Homework fetched successfully DATA from temproraryProgress",
@@ -642,7 +589,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         existingProgresses,
       );
     }
-    console.log("downnnnnnnnnnnnn");
     return new ResData<Array<Partial<HomeworkProgress>>>(
       "Homework fetched successfully DATA from temprorayProgress",
       200,
