@@ -211,4 +211,29 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
     return lessonProgresses.every((progress) => progress.isWatched);
   }
+
+  /**
+   * Berilgan vaqt oralig'ida foydalanuvchi tomonidan ko'rilgan darslar sonini hisoblash.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param startDate - Boshlang'ich sana
+   * @param endDate - Tugash sanasi
+   * @returns Ko'rilgan darslar soni
+   */
+  async countWatchedLessonsInDateRange(
+    userId: ID,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
+    // Berilgan vaqt oralig'ida isWatched=true bo'lgan va updatedAt sanasi mos keladigan yozuvlarni sanash
+    const result = await this.lessonProgressRepository
+      .createQueryBuilder("lessonProgress")
+      .where("lessonProgress.userId = :userId", { userId })
+      .andWhere("lessonProgress.isWatched = :isWatched", { isWatched: true })
+      .andWhere("lessonProgress.updatedAt >= :startDate", { startDate })
+      .andWhere("lessonProgress.updatedAt < :endDate", { endDate })
+      .getCount();
+
+    return result;
+  }
 }
