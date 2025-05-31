@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import { ILessonProgressService } from "./interfaces/lesson-progress.service";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
@@ -12,6 +12,7 @@ import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
 import { ILessonRepository } from "../lesson/interfaces/lesson.repository";
 import { IHomeworkProgressRepository } from "../homework-progress/interfaces/homework-progress.repository";
+import { IHomeworkProgressService } from "../homework-progress/interfaces/homework-progress.service";
 import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 
@@ -35,6 +36,9 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("IBlockRepository") // LessonRepository ni inject qilamiz
     private readonly blockRepository: IBlockRepository,
+    
+    @Inject(forwardRef(() => "IHomeworkProgressService")) // HomeworkProgressService ni inject qilamiz
+    private readonly homeworkProgressService: IHomeworkProgressService,
   ) {}
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
@@ -96,14 +100,6 @@ export class LessonProgressService implements ILessonProgressService {
         blockOrder,
       );
 
-    const isHomeworkWatchedUpToOrder =
-      await this.homeworkProgressRepository.areAllHomeworksWatchedUpToOrder(
-        blockOrder,
-        userId,
-        courseId,
-        lastWatchedLessonOrder,
-      );
-
     const nextLessonOrder = Number(foundLessonProgress.lessonOrder) + 1;
 
     // Har bir darsdan keyin uy vazifa bajarilishi shart
@@ -131,6 +127,23 @@ export class LessonProgressService implements ILessonProgressService {
         blockId,
       );
     }
+    
+    // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
+    try {
+      // Dars uchun uyga vazifa topish
+      const lessonId = foundLessonProgress.lesson?.id;
+      if (lessonId) {
+        // HomeworkProgressService orqali uyga vazifani rejalashtirish
+        // Dars ko'rilgandan so'ng darhol uyga vazifa yuborish uchun
+        // scheduleHomeworkForLesson metodini chaqiramiz
+        await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
+        console.log(`Dars ${lessonId} ko'rilgandan so'ng uyga vazifalar yangilandi`);
+      }
+    } catch (error) {
+      console.error(`Dars ko'rilgandan so'ng uyga vazifani rejalashtirish xatoligi:`, error);
+      // Xatolikni yutib yuboramiz, asosiy jarayonga ta'sir qilmasligi uchun
+    }
+    
     return new ResData<LessonProgress>(
       "Lesson progress updated successfully ",
       200,

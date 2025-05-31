@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { In, LessThanOrEqual, Repository } from "typeorm";
+import { In, LessThanOrEqual, Repository, Between } from "typeorm";
 import { LessonProgress } from "./entities/lesson-progress.entity";
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 
@@ -203,7 +203,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       where: {
         blockOrder: blockOrder,
         courseId: courseId,
-        user: { id: userId },
+        userId: userId,
       },
       select: ["isWatched"],
     });
@@ -225,15 +225,15 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    // Berilgan vaqt oralig'ida isWatched=true bo'lgan va updatedAt sanasi mos keladigan yozuvlarni sanash
-    const result = await this.lessonProgressRepository
-      .createQueryBuilder("lessonProgress")
-      .where("lessonProgress.userId = :userId", { userId })
-      .andWhere("lessonProgress.isWatched = :isWatched", { isWatched: true })
-      .andWhere("lessonProgress.updatedAt >= :startDate", { startDate })
-      .andWhere("lessonProgress.updatedAt < :endDate", { endDate })
-      .getCount();
-
-    return result;
+    // Using TypeORM's find method with automatic mapping
+    const count = await this.lessonProgressRepository.count({
+      where: {
+        userId: userId,
+        isWatched: true,
+        lastUpdatedAt: Between(startDate, endDate)
+      }
+    });
+    
+    return count;
   }
 }

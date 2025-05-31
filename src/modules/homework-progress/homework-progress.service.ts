@@ -83,7 +83,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   // Foydalanuvchi uchun yangi uy vazifa jadvallash
   private async scheduleHomeworkForUser(userId: ID) {
-    // Ochilmagan uy vazifalar sonini tekshirish
+    // Ochilmagan uy vazifa sonini tekshirish
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
     if (pendingCount >= 20) {
       return; // Limit oshgan
@@ -123,30 +123,77 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       nextDeliveryTime
     );
   }
+  
+  /**
+   * Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param lessonId - Dars ID si
+   * @returns Yuborilgan uyga vazifa ma'lumotlari
+   */
+  async scheduleHomeworkForLesson(userId: ID, lessonId: ID): Promise<ResData<any>> {
+    try {
+      // Dars uchun uyga vazifa topish
+      const homework = await this.findHomeworkByLessonId(lessonId);
+      
+      if (!homework) {
+        return new ResData("Dars uchun uyga vazifa topilmadi", 404, null);
+      }
+      
+      // Uyga vazifa allaqachon rejalashtirilganligini tekshirish
+      const existingQueues = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+      const existingQueue = existingQueues.find(q => q.homeworkId === homework.id);
+      
+      if (existingQueue) {
+        return new ResData("Uyga vazifa allaqachon rejalashtirilgan", 200, existingQueue);
+      }
+      
+      // Lesson progressdan ma'lumotlarni olish
+      const lessonProgress = await this.lessonProgressRepository.findById(lessonId);
+      if (!lessonProgress) {
+        return new ResData("Dars progressi topilmadi", 404, null);
+      }
+      
+      // Yangi uyga vazifa rejasini yaratish
+      const queueItem = await this.homeworkQueueRepository.addToQueue({
+        userId,
+        homeworkId: homework.id,
+        moduleId: lessonProgress.blockId,
+        lessonId: lessonId,
+        isScheduled: true,
+        scheduledAt: new Date(), // Darhol yuborish uchun hozirgi vaqt
+        priority: 200 // Eng yuqori prioritet
+      });
+      
+      // Uyga vazifani darhol yuborish uchun getUserHomeworkVideos metodini chaqiramiz
+      await this.getUserHomeworkVideos(userId);
+      
+      return new ResData("Uyga vazifa muvaffaqiyatli rejalashtirildi", 200, queueItem);
+    } catch (error) {
+      console.error(`Dars ${lessonId} uchun uyga vazifani rejalashtirish xatoligi:`, error);
+      return new ResData("Uyga vazifani rejalashtirish xatoligi", 500, null);
+    }
+  }
 
   // Joriy modulni aniqlash
   private async getCurrentUserModule(userId: ID): Promise<number> {
     // Joriy modulni aniqlash (lesson-progress repositoriydan olinishi kerak)
     try {
-      // LessonProgressRepository tipini any sifatida ishlatamiz
-      // Bu TypeScript xatoliklarni chetlab o'tish uchun
-      const repo = this.lessonProgressRepository as any;
-      const userLessons = await repo.find({
-        where: { userId: userId },
-        relations: ['lesson', 'lesson.module'],
-        order: { updatedAt: 'DESC' }
-      });
+      // LessonProgressRepository orqali barcha ko'rilgan darslarni olish
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
       
-      if (!userLessons || userLessons.length === 0) {
+      if (!watchedLessons || watchedLessons.length === 0) {
         return 1; // Default module if no lessons watched
       }
       
-      // Eng so'nggi ko'rilgan darsni olish
-      const latestLesson = userLessons[0];
+      // Eng so'nggi ko'rilgan darsni olish (lastUpdatedAt bo'yicha tartiblash)
+      const sortedLessons = [...watchedLessons].sort((a, b) => 
+        new Date(b.lastUpdatedAt).getTime() - new Date(a.lastUpdatedAt).getTime());
+      const latestLesson = sortedLessons[0];
       
       // Module ID-ni olish
-      if (latestLesson?.lesson?.module?.id) {
-        return latestLesson.lesson.module.id;
+      if (latestLesson?.blockId) {
+        return latestLesson.blockId; // blockId ni module ID sifatida ishlatamiz
       }
       
       return 1; // Default module
@@ -182,6 +229,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       moduleIds
     );
     
+    // Eng oxirgi ko'rilgan darsni topish - barcha ko'rilgan darslardan eng oxirgisini olish
+    const allWatchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+    // Ko'rilgan darslarni lastUpdatedAt bo'yicha tartiblash
+    const latestWatchedLesson = allWatchedLessons.length > 0 ? 
+      allWatchedLessons.sort((a, b) => 
+        new Date(b.lastUpdatedAt).getTime() - new Date(a.lastUpdatedAt).getTime())[0] : null;
+    
     // Dars ko'rilgan, lekin uy vazifa ko'rilmagan yoki kam ko'rilgan
     const recommendations = [];
     
@@ -215,6 +269,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         // Ko'rilish soni bo'yicha prioritet
         const watchCountPriority = (10 - (watchRecord?.watchCount || 0)) * 10;
         
+        // Eng oxirgi ko'rilgan dars uchun qo'shimcha prioritet
+        let latestLessonPriority = 0;
+        if (latestWatchedLesson && lessonId === latestWatchedLesson.lesson?.id) {
+          latestLessonPriority = 200; // Eng oxirgi ko'rilgan darsning uyga vazifasiga eng yuqori prioritet
+        }
+        
         // Navbatga qo'shish
         const queueItem = await this.homeworkQueueRepository.addToQueue({
           userId,
@@ -222,7 +282,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           moduleId: homework.moduleId,
           // LessonProgress entitysida lesson obyekti bor, lessonId emas
           lessonId: lesson.lesson?.id,
-          priority: modulePriority + watchCountPriority
+          priority: modulePriority + watchCountPriority + latestLessonPriority
         });
         
         recommendations.push(queueItem);
@@ -476,5 +536,148 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const updatedProgress = await this.homeworkProgressRepository.update(homework);
     
     return new ResData("Homework marked as watched", 200, updatedProgress);
+  }
+
+  // Foydalanuvchi uchun uy vazifa videolarini olish
+  // Agar schedule bo'lmasa, foydalanuvchi ko'rgan modullar asosida yangi schedule yaratadi
+  async getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    try {
+      // 1. Foydalanuvchi uchun rejalashtirilgan uy vazifalarni olish
+      let scheduledHomeworks = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+      
+      // 2. Agar rejalashtirilgan uy vazifalar bo'lmasa, yangi rejalashtirishni boshlash
+      if (!scheduledHomeworks.length) {
+        console.log(`Foydalanuvchi ${userId} uchun rejalashtirilgan uy vazifalar topilmadi. Yangi schedule yaratiladi.`);
+        
+        // 2.1 Foydalanuvchi ko'rgan darslarni olish
+        const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+        
+        if (!watchedLessons.length) {
+          return new ResData("Foydalanuvchi hali birorta ham dars ko'rmagan", 404, []);
+        }
+        
+        // 2.2 Ko'rilgan darslar uchun uy vazifalarni olish va schedule qilish
+        // Modullar tartibidan qat'iy nazar, faqat ko'rilgan darslar uchun uy vazifalarni qaytarish
+        for (const lesson of watchedLessons) {
+          try {
+            // Dars uchun uy vazifa topish
+            const homework = await this.findHomeworkByLessonId(lesson.id);
+            
+            if (homework) {
+              // Uy vazifa allaqachon rejalashtirilganligini tekshirish
+              const existingQueues = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+              const existingQueue = existingQueues.find(q => q.homeworkId === homework.id);
+              
+              if (!existingQueue) {
+                // Yangi uy vazifa rejasini yaratish
+                await this.homeworkQueueRepository.addToQueue({
+                  userId,
+                  homeworkId: homework.id,
+                  moduleId: lesson.blockId,
+                  lessonId: lesson.id,
+                  isScheduled: true,
+                  scheduledAt: new Date(),
+                  priority: 1
+                });
+              }
+            }
+          } catch (error) {
+            console.error(`Lesson ${lesson.id} uchun uy vazifalarni olishda xatolik:`, error);
+            // Xatolikni yutib, keyingi darsga o'tish
+          }
+        }
+        
+        // 2.3 Yangi rejalashtirilgan uy vazifalarni olish
+        scheduledHomeworks = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+        
+        if (!scheduledHomeworks.length) {
+          return new ResData("Uy vazifalar rejalashtirildi, lekin hech qanday uy vazifa topilmadi", 404, []);
+        }
+      }
+      
+      // 3. Uy vazifa progresslarini olish
+      const homeworkProgresses = [];
+      
+      for (const item of scheduledHomeworks) {
+        // 3.1 Tegishli dars ko'rilganligini tekshirish
+        const isLessonWatched = item.lessonId ? 
+          await this.checkIfLessonWatched(userId, item.lessonId) : true;
+        
+        if (!isLessonWatched) {
+          continue; // Dars ko'rilmagan bo'lsa, o'tkazib yuborish
+        }
+        
+        // 3.2 Uy vazifa progressini olish
+        let progress = await this.homeworkProgressRepository.findOneByUserAndHomework(
+          userId,
+          item.homeworkId
+        );
+        
+        // 3.3 Agar progress mavjud bo'lmasa, yangi progress yaratish
+        if (!progress) {
+          // Uy vazifani olish
+          const homework = item.homework;
+          
+          if (homework) {
+            // Yangi progress yaratish
+            const newProgress = new HomeworkProgress();
+            newProgress.userId = userId;
+            
+            // Lesson progressdan ma'lumotlarni olish
+            if (item.lessonId) {
+              const lessonProgress = await this.lessonProgressRepository.findById(item.lessonId);
+              if (lessonProgress) {
+                newProgress.blockId = lessonProgress.blockId;
+                newProgress.blockOrder = lessonProgress.blockOrder;
+                newProgress.homeworkOrder = lessonProgress.lessonOrder;
+                newProgress.courseId = lessonProgress.courseId;
+              } else {
+                // Agar lesson progress topilmasa, moduleId ni blockId sifatida ishlatamiz
+                newProgress.blockId = item.moduleId;
+                newProgress.homeworkOrder = 1; // Default qiymat
+              }
+            } else {
+              // Agar lessonId bo'lmasa, moduleId ni blockId sifatida ishlatamiz
+              newProgress.blockId = item.moduleId;
+              newProgress.homeworkOrder = 1; // Default qiymat
+            }
+            
+            newProgress.homework = homework;
+            newProgress.isWatched = false;
+            newProgress.countWatched = 0;
+            
+            // Yangi progressni saqlash
+            progress = await this.homeworkProgressRepository.create(newProgress);
+          }
+        }
+        
+        // Faqat ko'rilmagan uyga vazifalarni qaytarish
+        if (progress && !progress.isWatched) {
+          // 3.4 Kerakli ma'lumotlarni ajratib olish
+          homeworkProgresses.push({
+            id: progress.id,
+            videoUrl: progress.homework?.videoUrl,
+            title: progress.homework?.title,
+            blockId: progress.blockId,
+            blockOrder: progress.blockOrder,
+            homeworkOrder: progress.homeworkOrder,
+            isWatched: progress.isWatched,
+            countWatched: progress.countWatched,
+            createdAt: progress.createdAt,
+            lastUpdatedAt: progress.lastUpdatedAt
+          });
+        }
+      }
+      
+      // 4. Natijani qaytarish
+      if (!homeworkProgresses.length) {
+        return new ResData("Foydalanuvchi uchun ko'rilmagan uyga vazifalar topilmadi", 404, []);
+      }
+      
+      return new ResData("Foydalanuvchi uyga vazifa videolari muvaffaqiyatli olindi", 200, homeworkProgresses);
+    } catch (error) {
+      console.error(`Foydalanuvchi ${userId} uchun uy vazifa videolarini olishda xatolik:`, error);
+      return new ResData("Uy vazifa videolarini olishda xatolik yuz berdi", 500, []);
+    }
   }
 }

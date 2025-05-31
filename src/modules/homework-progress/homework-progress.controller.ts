@@ -28,31 +28,19 @@ export class HomeworkProgressController {
   ) {}
 
   /**
-   * Berilgan ID bo'yicha bitta homework progress yozuvini olish.
-   * @param id - Homework progress yozuvini olish uchun kerakli ID
-   * @returns Berilgan ID bo'yicha homework progress
-   */
-  @Get("findOne/:id")
-  async findOne(
-    @Param("id", ParseIntPipe) id: ID,
-  ): Promise<ResData<Array<HomeworkProgress>>> {
-    return await this.homeworkProgressService.findByUserId(id);
-  }
-
-  /**
-   * Foydalanuvchi uchun videos ro'yxatini olish va cache'dan tekshirish.
+   * Foydalanuvchi uchun uy vazifa videolarini olish
+   * Agar schedule bo'lmasa, foydalanuvchi ko'rgan modullar asosida yangi schedule yaratadi
+   * Bu API foydalanuvchi uchun barcha uy vazifalarni qaytaradi, blockId kerak emas
+   * 
    * @param userId - Foydalanuvchi ID
-   * @param blockId - Block ID
-   * @param blockOrder - Block tartibi
-   * @returns Video ro'yxati yoki cached progress
+   * @returns Foydalanuvchi uchun barcha uy vazifa videolari
    */
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
-  @Get("get-videos")
+  @Get("get-videos/:userId")
   async getVideos(
-    @Query("userId", ParseIntPipe) userId: ID,
-    @Query("blockId", ParseIntPipe) blockId: ID,
+    @Param("userId", ParseIntPipe) userId: ID,
   ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
-    return await this.homeworkProgressService.getVideos(userId, blockId);
+    return await this.homeworkProgressService.getUserHomeworkVideos(userId);
   }
 
   /**
