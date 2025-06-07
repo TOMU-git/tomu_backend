@@ -3,18 +3,18 @@ import { HomeworkProgressService } from "./homework-progress.service";
 import { HomeworkProgressController } from "./homework-progress.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
-import { HomeworkWatchRecord } from "./entities/homework-watch-record.entity";
-import { HomeworkQueue } from "./entities/homework-queue.entity";
 import { SharedModule } from "../shared/shared.module";
 import { HomeworkModule } from "../homework/homework.module";
 import { UserModule } from "../user/user.module";
-import { HomeworkProgressRepository } from "./homework-progress.repository";
-import { HomeworkWatchRecordRepository } from "./homework-watch-record.repository";
-import { HomeworkQueueRepository } from "./homework-queue.repository";
 import { BlockModule } from "../block/block.module";
 import { LessonProgressModule } from "../lesson-progress/lesson-progress.module";
 import { UserHomeworkProgressModule } from "../user-homework-progress/user-homework-progress.module";
 import { ScheduleModule } from "@nestjs/schedule";
+import { HomeworkWatchRecord } from "./entities/homework-watch-record.entity";
+import { HomeworkQueue } from "./entities/homework-queue.entity";
+import { HomeworkProgressRepository } from "./repositories/homework-progress.repository";
+import { HomeworkWatchRecordRepository } from "./repositories/homework-watch-record.repository";
+import { HomeworkQueueRepository } from "./repositories/homework-queue.repository";
 
 @Module({
   imports: [

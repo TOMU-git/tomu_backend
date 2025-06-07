@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, LessThanOrEqual, Between } from "typeorm";
-import { HomeworkProgress } from "./entities/homework-progress.entity";
-import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
+import { HomeworkProgress } from "../entities/homework-progress.entity";
+import { IHomeworkProgressRepository } from "../interfaces/homework-progress.repository";
 
 @Injectable()
 export class HomeworkProgressRepository implements IHomeworkProgressRepository {
@@ -359,5 +359,22 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     return homeworkProgresses.every((progress) => progress.isWatched === true);
   }
   
+
+  /**
+   * Foydalanuvchi va homework ID si bo'yicha progress ma'lumotini olish
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @param homeworkId - Homework ID
+   * @returns HomeworkProgress yozuvi yoki null
+   */
+  async findByUserIdAndHomeworkId(userId: ID, homeworkId: ID): Promise<HomeworkProgress | null> {
+    return await this.homeworkProgressRepository.findOne({
+      where: {
+        userId: Number(userId),
+        homework: { id: Number(homeworkId) },
+      },
+      relations: ["homework"],
+    });
+  }
 
 }

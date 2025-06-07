@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LessThan, Repository } from "typeorm";
-import { HomeworkQueue } from "./entities/homework-queue.entity";
+import { HomeworkQueue } from "../entities/homework-queue.entity";
 import { ID } from "src/common/types/type";
 
 @Injectable()
@@ -18,6 +18,49 @@ export class HomeworkQueueRepository {
       relations: ["homework"],
       order: { priority: "DESC" },
     });
+  }
+
+  /**
+   * Foydalanuvchi ID si bo'yicha uyga vazifa navbatlarini olish
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @returns Foydalanuvchi uchun uyga vazifa navbati
+   */
+  async findByUserId(userId: ID): Promise<HomeworkQueue[]> {
+    return this.repository.find({
+      where: { userId: Number(userId) },
+      relations: ["homework"],
+      order: { priority: "DESC" },
+    });
+  }
+
+  /**
+   * Foydalanuvchi va homework ID si bo'yicha uyga vazifa navbatini olish
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @param homeworkId - Homework ID
+   * @returns HomeworkQueue yozuvi yoki null
+   */
+  async findByUserIdAndHomeworkId(userId: ID, homeworkId: ID): Promise<HomeworkQueue | null> {
+    return this.repository.findOne({
+      where: { 
+        userId: Number(userId),
+        homeworkId: Number(homeworkId)
+      },
+      relations: ["homework"]
+    });
+  }
+
+  /**
+   * Yangi homework queue yozuvini yaratish
+   * 
+   * @param homeworkQueue - Yaratilishi kerak bo'lgan HomeworkQueue
+   * @returns Yaratilgan HomeworkQueue yozuvi
+   */
+  async create(homeworkQueue: HomeworkQueue): Promise<HomeworkQueue> {
+    const newQueue = this.repository.create(homeworkQueue);
+    await this.repository.save(newQueue);
+    return newQueue;
   }
 
   async findScheduledHomeworksByUser(userId: ID): Promise<HomeworkQueue[]> {
@@ -40,7 +83,13 @@ export class HomeworkQueueRepository {
 
   async addToQueue(queue: Partial<HomeworkQueue>): Promise<HomeworkQueue> {
     const newItem = this.repository.create(queue);
-    return this.repository.save(newItem);
+    const savedItem = await this.repository.save(newItem);
+    
+    // Homework relationni qayta yuklash
+    return this.repository.findOne({
+      where: { id: savedItem.id },
+      relations: ['homework']
+    });
   }
 
   async removeFromQueue(id: ID): Promise<void> {

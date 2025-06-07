@@ -1,9 +1,9 @@
 // src/modules/homework-progress/homework-progress.service.ts
 import { Inject, Injectable } from "@nestjs/common";
 import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
-import { HomeworkProgressRepository } from "./homework-progress.repository";
-import { HomeworkWatchRecordRepository } from "./homework-watch-record.repository";
-import { HomeworkQueueRepository } from "./homework-queue.repository";
+import { HomeworkProgressRepository } from "./repositories/homework-progress.repository";
+import { HomeworkWatchRecordRepository } from "./repositories/homework-watch-record.repository";
+import { HomeworkQueueRepository } from "./repositories/homework-queue.repository";
 import { ILessonProgressRepository } from "../lesson-progress/interfaces/lesson-progress.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";

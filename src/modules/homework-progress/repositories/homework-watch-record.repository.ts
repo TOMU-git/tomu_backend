@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, In, LessThan } from "typeorm";
-import { HomeworkWatchRecord } from "./entities/homework-watch-record.entity";
+import { HomeworkWatchRecord } from "../entities/homework-watch-record.entity";
 import { ID } from "src/common/types/type";
 
 @Injectable()
