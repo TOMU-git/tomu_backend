@@ -61,10 +61,14 @@ export class LessonProgressService implements ILessonProgressService {
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
     try {
-      // Progress topish
+      // Progress topish va lesson relationni yuklash
       const foundLessonProgress = await this.lessonProgressRepository.findById(id);
       if (!foundLessonProgress) {
         throw new LessonProgressNotFoundException();
+      }
+
+      if (!foundLessonProgress.lesson) {
+        throw new Error('Dars topilmadi');
       }
 
       const userId = Number(foundLessonProgress.userId);
@@ -108,33 +112,45 @@ export class LessonProgressService implements ILessonProgressService {
       foundLessonProgress.isWatched = true;
       await this.lessonProgressRepository.update(foundLessonProgress);
 
-      // Joriy darsning order'ini olish
-      const currentLessonOrder = foundLessonProgress.lessonOrder;
-      const nextLessonOrder = currentLessonOrder + 1;
-      
-      // Keyingi dars progressini topish
-      const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
-        nextLessonOrder,
-        userId,
-        blockId,
-      );
-
-      if (nextLessonProgress) {
-        // Keyingi darsni ochish
-        nextLessonProgress.isUnlocked = true;
-        await this.lessonProgressRepository.update(nextLessonProgress);
-        this.logger.log(`Keyingi dars ochildi: lessonOrder=${nextLessonOrder}`);
-      }
-
       // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
       try {
-        const lessonId = foundLessonProgress.lesson?.id;
-        if (lessonId) {
-          const data = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
-          this.logger.log("Dars ko'rilgandan so'ng uyga vazifalar yangilandi", data);
+        const lessonId = foundLessonProgress.lesson.id;
+        const data = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
+        this.logger.log("Dars ko'rilgandan so'ng uyga vazifalar yangilandi", data.data.homeworkProgress);
+
+        // Uy vazifa ko'rilganligini tekshirish
+        const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(
+          courseId,
+          userId,
+          blockOrder
+        );
+
+        // Joriy darsning order'ini olish
+        const currentLessonOrder = foundLessonProgress.lessonOrder;
+        const nextLessonOrder = currentLessonOrder + 1;
+        
+        // Keyingi dars progressini topish
+        const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+          nextLessonOrder,
+          userId,
+          blockId,
+        );
+
+        if (nextLessonProgress) {
+          // Keyingi darsni faqat uy vazifa ko'rilgan bo'lsa ochish
+          const isHomeworkWatched = lastWatchedHomeworkOrder >= currentLessonOrder;
+          nextLessonProgress.isUnlocked = isHomeworkWatched;
+          await this.lessonProgressRepository.update(nextLessonProgress);
+          
+          if (isHomeworkWatched) {
+            this.logger.log(`Keyingi dars ochildi: lessonOrder=${nextLessonOrder}`);
+          } else {
+            this.logger.log(`Keyingi dars yopiq qoldi chunki uy vazifa ko'rilmagan: lessonOrder=${nextLessonOrder}`);
+          }
         }
       } catch (error) {
-        this.logger.error(`Dars ko'rilgandan so'ng uyga vazifani rejalashtirish xatoligi:`, error);
+        this.logger.error(`Dars ko'rilgandan so'ng uyga vazifani tekshirish xatoligi:`, error);
+        throw error;
       }
 
       return new ResData<LessonProgress>(

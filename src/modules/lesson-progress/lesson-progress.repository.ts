@@ -130,7 +130,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   async findById(id: ID): Promise<LessonProgress | null> {
-    return await this.lessonProgressRepository.findOneBy({ id });
+    return await this.lessonProgressRepository.findOne({
+      where: { id },
+      relations: ['lesson'],
+    });
   }
 
   async getLessonProgress(
