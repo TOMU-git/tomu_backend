@@ -15,6 +15,7 @@ import { HomeworkQueue } from "./entities/homework-queue.entity";
 import { HomeworkProgressRepository } from "./repositories/homework-progress.repository";
 import { HomeworkWatchRecordRepository } from "./repositories/homework-watch-record.repository";
 import { HomeworkQueueRepository } from "./repositories/homework-queue.repository";
+import { LessonModule } from "../lesson/lesson.module";
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HomeworkQueueRepository } from "./repositories/homework-queue.repositor
     UserModule,
     BlockModule,
     UserHomeworkProgressModule,
+    LessonModule,
     forwardRef(() => LessonProgressModule), // forwardRef() bilan import qilingan
     ScheduleModule.forRoot(), // Cron job uchun ScheduleModule ni qo'shamiz
   ],

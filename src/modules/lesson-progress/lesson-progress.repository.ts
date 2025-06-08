@@ -191,9 +191,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]> {
     return await this.lessonProgressRepository.find({
       where: {
-        user: { id: userId },
+        userId: userId, // user.id o'rniga userId ishlatiladi
         isWatched: true,
       },
+      relations: ['lesson'],
     });
   }
 
