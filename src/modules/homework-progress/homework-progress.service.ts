@@ -410,24 +410,36 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
   }
 
-  // ID va DTO bo'yicha HomeworkProgress yozuvini yangilaydi
+  // ID bo'yicha HomeworkProgress yozuvini yangilaydi va ko'rilgan deb belgilaydi
   async update(dto: UpdateHomeworkProgressDto): Promise<ResData<HomeworkProgress>> {
     try {
+      // ID ni tekshirish
+      if (!dto.id) {
+        this.logger.error('ID is required for updating homework progress');
+        return new ResData('ID is required for updating homework progress', 400, null);
+      }
+
       // Avval yangilanayotgan progress yozuvini topish kerak
       const existingProgress = await this.homeworkProgressRepository.findById(dto.id);
       if (!existingProgress) {
+        this.logger.error(`Homework progress with ID ${dto.id} not found`);
         return new ResData('Homework progress not found', 404, null);
       }
       
-      // Mavjud obyektni yangilash
-      Object.assign(existingProgress, dto);
+      this.logger.log(`Updating homework progress with ID ${dto.id}. Current values: isWatched=${existingProgress.isWatched}, countWatched=${existingProgress.countWatched}`);
+      
+      // isWatched ni true ga o'zgartirish va countWatched ni oshirish
+      existingProgress.isWatched = true;
+      existingProgress.countWatched += 1;
+      this.logger.log(`Homework marked as watched. Increasing countWatched to ${existingProgress.countWatched}`);
       
       // HomeworkProgressRepository update metodi entity qabul qiladi
       const updatedProgress = await this.homeworkProgressRepository.update(existingProgress);
       
+      this.logger.log(`Homework progress updated successfully. New values: isWatched=${updatedProgress.isWatched}, countWatched=${updatedProgress.countWatched}`);
       return new ResData('Homework progress updated successfully', 200, updatedProgress);
     } catch (error) {
-      console.error(`Error updating homework progress:`, error);
+      this.logger.error(`Error updating homework progress:`, error);
       return new ResData('Failed to update homework progress', 500, null);
     }
   }

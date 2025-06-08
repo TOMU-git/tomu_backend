@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsString } from "class-validator";
 import { ID } from "src/common/types/type";
 
 export class UpdateHomeworkProgressDto {
@@ -9,53 +9,5 @@ export class UpdateHomeworkProgressDto {
     description: "Homework progress ID",
   })
   @IsString()
-  @IsOptional()
-  id?: ID;
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  userId?: number;
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  blockOrder?: number;
-
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  blockId?: number;
-
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  courseId?: number;
-
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-    default: 0,
-  })
-  @IsNumber()
-  @IsOptional()
-  homeworkOrder?: number;
+  id: ID;
 }
