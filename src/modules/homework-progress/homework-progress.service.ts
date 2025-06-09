@@ -436,6 +436,40 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // HomeworkProgressRepository update metodi entity qabul qiladi
       const updatedProgress = await this.homeworkProgressRepository.update(existingProgress);
       
+      // Keyingi darsni ochish
+      try {
+        // Find next lesson progress by courseId, blockOrder, and lessonOrder
+        const nextLessonOrder = existingProgress.homeworkOrder + 1;
+        
+        // Find lesson progress with matching criteria using getLessonProgress
+        const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+          nextLessonOrder,
+          existingProgress.userId 
+            ? (typeof existingProgress.userId === 'object' 
+                ? (existingProgress.userId as any).id 
+                : existingProgress.userId) 
+            : null,
+          existingProgress.blockId,
+          existingProgress.courseId
+        );
+        
+        if (nextLessonProgress) {
+          if (!nextLessonProgress.isUnlocked) {
+            // Keyingi darsni ochish
+            nextLessonProgress.isUnlocked = true;
+            await this.lessonProgressRepository.update(nextLessonProgress);
+            this.logger.log(`Keyingi dars ochildi: lessonOrder=${nextLessonOrder}, courseId=${existingProgress.courseId}, blockOrder=${existingProgress.blockOrder}`);
+          } else {
+            this.logger.log(`Keyingi dars allaqachon ochilgan: lessonOrder=${nextLessonOrder}`);
+          }
+        } else {
+          this.logger.log(`Keyingi dars topilmadi: lessonOrder=${nextLessonOrder}, courseId=${existingProgress.courseId}, blockOrder=${existingProgress.blockOrder}`);
+        }
+      } catch (error) {
+        // Keyingi darsni ochishda xatolik bo'lsa, asosiy ishni to'xtatmaslik uchun xatoni log qilamiz
+        this.logger.error(`Keyingi darsni ochishda xatolik: ${error.message}`);
+      }
+      
       this.logger.log(`Homework progress updated successfully. New values: isWatched=${updatedProgress.isWatched}, countWatched=${updatedProgress.countWatched}`);
       return new ResData('Homework progress updated successfully', 200, updatedProgress);
     } catch (error) {
@@ -668,8 +702,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       const homework = await this.homeworkRepository.findById(homeworkId);
 
       if (!homework || !homework.block) {
-        this.logger.error(`Homework (ID: ${homeworkId}) yoki uning bloki topilmadi`);
-        throw new NotFoundException(`Homework (ID: ${homeworkId}) yoki uning bloki topilmadi`);
+        this.logger.error(`Homework yoki uning bloki topilmadi. Homework ID: ${homeworkId}`);
+        throw new NotFoundException(`Homework yoki uning bloki topilmadi. Homework ID: ${homeworkId}`);
       }
 
       // Homework va block ma'lumotlarini log qilish

@@ -79,12 +79,14 @@ export class LessonRepository implements ILessonRepository {
       .getMany();
   }
 
-  async findOneByOrder(order: number, blockId: ID): Promise<Lesson | null> {
+  async findOneByOrder(order: number, blockId: ID, courseId?: ID): Promise<Lesson | null> {
     return await this.lessonRepository.findOne({
       where: {
         order: order,
         block: { id: blockId },
+        course: courseId ? { id: courseId } : undefined,
       },
+      relations: ['block', 'course'],
     });
   }
 }

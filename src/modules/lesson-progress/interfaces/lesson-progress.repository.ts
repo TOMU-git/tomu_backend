@@ -35,6 +35,7 @@ export interface ILessonProgressRepository {
     lessonOrder: ID,
     userId: ID,
     blockId: ID,
+    courseId: ID,
   ): Promise<LessonProgress | null>;
 
   markLessonAsWatched(
