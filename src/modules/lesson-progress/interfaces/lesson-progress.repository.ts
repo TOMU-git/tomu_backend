@@ -35,6 +35,7 @@ export interface ILessonProgressRepository {
     lessonOrder: ID,
     userId: ID,
     blockId: ID,
+    courseId: ID,
   ): Promise<LessonProgress | null>;
 
   markLessonAsWatched(
@@ -49,4 +50,18 @@ export interface ILessonProgressRepository {
     userId: ID,
     courseId: ID,
   ): Promise<boolean>;
+
+  /**
+   * Berilgan vaqt oralig'ida foydalanuvchi tomonidan ko'rilgan darslar sonini hisoblash.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param startDate - Boshlang'ich sana
+   * @param endDate - Tugash sanasi
+   * @returns Ko'rilgan darslar soni
+   */
+  countWatchedLessonsInDateRange(
+    userId: ID,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number>;
 }

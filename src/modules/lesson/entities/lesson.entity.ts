@@ -1,5 +1,6 @@
 import { BaseEntity } from "src/common/database/baseEntity";
 import { Block } from "src/modules/block/entities/block.entity";
+import { Course } from "src/modules/course/entities/course.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
@@ -42,6 +43,10 @@ export class Lesson extends BaseEntity {
   @ManyToOne(() => Block, (block) => block.lessons)
   @JoinColumn({ name: "block_id" })
   block: Block;
+
+  @ManyToOne(() => Course, (course) => course.lessons)
+  @JoinColumn({ name: "course_id" })
+  course: Course;
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];

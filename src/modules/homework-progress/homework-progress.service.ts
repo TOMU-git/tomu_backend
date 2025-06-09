@@ -1,715 +1,830 @@
-import { Injectable, Inject } from "@nestjs/common";
+// src/modules/homework-progress/homework-progress.service.ts
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
+import { HomeworkProgressRepository } from "./repositories/homework-progress.repository";
+import { HomeworkWatchRecordRepository } from "./repositories/homework-watch-record.repository";
+import { HomeworkQueueRepository } from "./repositories/homework-queue.repository";
+import { ILessonProgressRepository } from "../lesson-progress/interfaces/lesson-progress.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
-import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
-import { IHomeworkProgressRepository } from "./interfaces/homework-progress.repository";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
-import {
-  HomeworkProgressAlreadyExistException,
-  HomeworkProgressNotFoundException,
-  LessonNotWatchedException,
-  NotFoundNextProgressException,
-} from "./exception/homework-progress.exception";
-import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
-import { IUserRepository } from "../user/interfaces/user.repository";
-import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto";
-import { IBlockRepository } from "../block/interfaces/block.repository";
-import { BlockNotFoundException } from "../block/exception/block.exception";
-import { UserNotFound } from "../user/exception/user.exception";
+import { HomeworkWatchRecord } from "./entities/homework-watch-record.entity";
+import { HomeworkQueue } from "./entities/homework-queue.entity";
 import { HomeworkNotFoundException } from "../homework/exception/homework.exception";
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Cache } from "cache-manager";
-import { ILessonProgressRepository } from "../lesson-progress/interfaces/lesson-progress.repository";
-import { IUserHomeworkProgressRepository } from "../user-homework-progress/interfaces/user-homework-progress.repository";
+import { LessonNotWatchedException } from "./exception/homework-progress.exception";
+import { SchedulerRegistry } from "@nestjs/schedule";
+import { CronJob } from "cron";
+import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto";
+import { IHomeworkQueue } from "./interfaces/homework-queue.interface";
+import { HomeworkRepository } from "../homework/homework.repository";
+import { LessonRepository } from "../lesson/lesson.repository";
+import { BlockRepository } from "../block/block.repository";
+
+// Nestjs/schedule va cron packagelarini o'rnatish kerak bo'lishi mumkin:
+// npm install --save @nestjs/schedule cron
+
 @Injectable()
 export class HomeworkProgressService implements IHomeworkProgressService {
+  private readonly logger = new Logger(HomeworkProgressService.name);
   constructor(
     @Inject("IHomeworkProgressRepository")
-    private readonly homeworkProgressRepository: IHomeworkProgressRepository,
+    private readonly homeworkProgressRepository: HomeworkProgressRepository,
 
-    @Inject("IUserRepository") // UserRepository ni inject qilamiz
-    private readonly userRepository: IUserRepository,
+    private readonly homeworkWatchRecordRepository: HomeworkWatchRecordRepository,
+    private readonly homeworkQueueRepository: HomeworkQueueRepository,
 
-    @Inject("IHomeworkRepository") // HomeworkService ni inject qilamiz
-    private readonly homeworkRepository: IHomeworkRepository,
-
-    @Inject("IUserHomeworkProgressRepository") // HomeworkService ni inject qilamiz
-    private readonly userHomeworkProgressRepository: IUserHomeworkProgressRepository,
-
-    @Inject("ILessonProgressRepository") // LessonProgressService ni inject qilamiz
+    @Inject("ILessonProgressRepository")
     private readonly lessonProgressRepository: ILessonProgressRepository,
 
-    @Inject("IBlockRepository") // BlockService ni inject qilamiz
-    private readonly blockRepository: IBlockRepository,
+    private readonly schedulerRegistry: SchedulerRegistry,
 
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-  ) {}
+    @Inject("IHomeworkRepository")
+    private readonly homeworkRepository: HomeworkRepository,
 
+    @Inject("ILessonRepository")
+    private readonly lessonRepository: LessonRepository,
+
+    @Inject("IBlockRepository")
+    private readonly blockRepository: BlockRepository,
+  ) {
+    // Schedule service initialization
+    this.initializeSchedulers();
+  }
+
+  // Har 30 minutda yangi uy vazifalarni berish uchun scheduler
+  private initializeSchedulers() {
+    try {
+      const job = new CronJob("*/30 * * * *", () => {
+        this.processHomeworkQueue();
+      });
+
+      this.schedulerRegistry.addCronJob("homeworkScheduler", job);
+      job.start();
+    } catch (error) {
+      console.error("Error initializing homework scheduler:", error);
+    }
+  }
+
+  private async processHomeworkQueue() {
+    try {
+      const users = await this.getAllActiveUsers();
+      
+      for (const user of users) {
+        await this.scheduleHomeworkForUser(user.id);
+      }
+    } catch (error) {
+      console.error("Error processing homework queue:", error);
+    }
+  }
+
+  private async getAllActiveUsers() {
+    // Active userlarni User repositoriydan olish kerak
+    // Bu oddiy misol, asl implementatsiya User repositoriyga bog'liq
+    try {
+      // Ushbu metod User service yoki repositoriyga murojaat qilishi kerak
+      // Hozircha shunchaki mock data qaytaramiz
+      return [
+        { id: 1, name: 'User 1' },
+        { id: 2, name: 'User 2' },
+        { id: 3, name: 'User 3' }
+      ];
+    } catch (error) {
+      console.error('Error getting active users:', error);
+      return [];
+    }
+  }
+
+  // Foydalanuvchi uchun yangi uy vazifa jadvallash
+  private async scheduleHomeworkForUser(userId: ID) {
+    // Ochilmagan uy vazifa sonini tekshirish
+    const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
+    if (pendingCount >= 20) {
+      return; // Limit oshgan
+    }
+
+    // Joriy modul va unga mos keladigan modullardan uy vazifalarni topish
+    const currentModule = await this.getCurrentUserModule(userId);
+    const eligibleModules = this.getEligibleModules(currentModule);
+    
+    // Uy vazifalarni tavsiya qilish
+    const recommendations = await this.getHomeworkRecommendations(userId, eligibleModules);
+    if (!recommendations.length) {
+      return;
+    }
+
+    // Keyingi uy vazifani jadvalga qo'shish
+    const nextDeliveryTime = new Date();
+    nextDeliveryTime.setMinutes(nextDeliveryTime.getMinutes() + 30);
+    
+    // HomeworkQueue obyektidan ID olish
+    if (!recommendations.length) {
+      console.error('No recommendations found');
+      return;
+    }
+    
+    // Birinchi tavsiya qilingan uy vazifani olish
+    const queueItem = recommendations[0] as any;
+    // TypeORM entity'lari ID sifatida _id yoki id ishlatishi mumkin
+    const queueItemId = queueItem?._id || queueItem?.id;
+    if (!queueItemId) {
+      console.error('Queue item has no valid ID');
+      return;
+    }
+    
+    await this.homeworkQueueRepository.scheduleHomework(
+      queueItemId,
+      nextDeliveryTime
+    );
+  }
+  
   /**
-   * Barcha Homework progresslarini olish.
-   * @returns Barcha Homework progresslari
+   * Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param lessonId - Dars ID si
+   * @returns Yuborilgan uyga vazifa ma'lumotlari
    */
+  async scheduleHomeworkForLesson(userId: ID, lessonId: ID): Promise<ResData<any>> {
+    try {
+      // Dars uchun uyga vazifa topish
+      const homework = await this.findHomeworkByLessonId(lessonId);
+      
+      if (!homework) {
+        return new ResData("Dars uchun uyga vazifa topilmadi", 404, null);
+      }
+      
+      // Uyga vazifa allaqachon rejalashtirilganligini tekshirish
+      const existingQueues = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+      const existingQueue = existingQueues.find(q => q.homeworkId === homework.id);
+      
+      if (existingQueue) {
+        return new ResData("Uyga vazifa allaqachon rejalashtirilgan", 200, existingQueue);
+      }
+      
+      // Lesson progressdan ma'lumotlarni olish
+      const lessonProgress = await this.lessonProgressRepository.findById(lessonId);
+      if (!lessonProgress) {
+        return new ResData("Dars progressi topilmadi", 404, null);
+      }
+      
+      // Yangi uyga vazifa rejasini yaratish
+      const queueItem = await this.homeworkQueueRepository.addToQueue({
+        userId,
+        homeworkId: homework.id,
+        moduleId: lessonProgress.blockId,
+        lessonId: lessonId,
+        isScheduled: true,
+        scheduledAt: new Date(), // Darhol yuborish uchun hozirgi vaqt
+        priority: 200 // Eng yuqori prioritet
+      });
+      
+      // Uyga vazifani darhol yuborish uchun getUserHomeworkVideos metodini chaqiramiz
+      await this.getUserHomeworkVideos(userId);
+      
+      return new ResData("Uyga vazifa muvaffaqiyatli rejalashtirildi", 200, queueItem);
+    } catch (error) {
+      console.error(`Dars ${lessonId} uchun uyga vazifani rejalashtirish xatoligi:`, error);
+      return new ResData("Uyga vazifani rejalashtirish xatoligi", 500, null);
+    }
+  }
+
+  // Joriy modulni aniqlash
+  private async getCurrentUserModule(userId: ID): Promise<number> {
+    // Joriy modulni aniqlash (lesson-progress repositoriydan olinishi kerak)
+    try {
+      // LessonProgressRepository orqali barcha ko'rilgan darslarni olish
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+      
+      if (!watchedLessons || watchedLessons.length === 0) {
+        return 1; // Default module if no lessons watched
+      }
+      
+      // Eng so'nggi ko'rilgan darsni olish (lastUpdatedAt bo'yicha tartiblash)
+      const sortedLessons = [...watchedLessons].sort((a, b) => 
+        new Date(b.lastUpdatedAt).getTime() - new Date(a.lastUpdatedAt).getTime());
+      const latestLesson = sortedLessons[0];
+      
+      // Module ID-ni olish
+      if (latestLesson?.blockId) {
+        return latestLesson.blockId; // blockId ni module ID sifatida ishlatamiz
+      }
+      
+      return 1; // Default module
+    } catch (error) {
+      console.error(`Error getting current module for user ${userId}:`, error);
+      return 1; // Default module on error
+    }
+  }
+
+  // Tavsiya berilishi mumkin bo'lgan modullarni aniqlash
+  private getEligibleModules(currentModule: number): number[] {
+    const modules = [currentModule]; // Joriy modul
+    
+    // Oldingi 2 ta modul
+    for (let i = 1; i <= 2; i++) {
+      if (currentModule - i > 0) {
+        modules.push(currentModule - i);
+      }
+    }
+    
+    return modules;
+  }
+
+  // Uy vazifalarni tavsiya qilish
+  private async getHomeworkRecommendations(
+    userId: ID,
+    moduleIds: number[]
+  ): Promise<HomeworkQueue[]> {
+    // Dars ko'rilgan, lekin uy vazifa kam ko'rilgan homeworklarni olish
+    const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+    const watchRecords = await this.homeworkWatchRecordRepository.getHomeworksWithWatchCount(
+      userId,
+      moduleIds
+    );
+    
+    // Eng oxirgi ko'rilgan darsni topish - barcha ko'rilgan darslardan eng oxirgisini olish
+    const allWatchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+    // Ko'rilgan darslarni lastUpdatedAt bo'yicha tartiblash
+    const latestWatchedLesson = allWatchedLessons.length > 0 ? 
+      allWatchedLessons.sort((a, b) => 
+        new Date(b.lastUpdatedAt).getTime() - new Date(a.lastUpdatedAt).getTime())[0] : null;
+    
+    // Dars ko'rilgan, lekin uy vazifa ko'rilmagan yoki kam ko'rilgan
+    const recommendations = [];
+    
+    for (const lesson of watchedLessons) {
+      // Tegishli uy vazifani topish
+      const lessonId = lesson.lesson?.id;
+      if (!lessonId) {
+        continue; // Lesson ID topilmasa, keyingi darsga o'tish
+      }
+      
+      const homework = await this.findHomeworkByLessonId(lessonId);
+      if (!homework) {
+        continue; // Uy vazifa topilmasa, keyingi darsga o'tish
+      }
+      
+      // Uy vazifa ko'rilish sonini tekshirish
+      const watchRecord = watchRecords.find(wr => wr.homeworkId === homework.id);
+      if (!watchRecord || watchRecord.watchCount < 10) {
+        // Modul bo'yicha prioritet
+        let modulePriority = 0;
+        const moduleDiff = moduleIds[0] - homework.moduleId;
+        
+        if (moduleDiff === 0) {
+          modulePriority = 100; // Joriy modul
+        } else if (moduleDiff === 1) {
+          modulePriority = 80; // Oldingi modul
+        } else if (moduleDiff === 2) {
+          modulePriority = 60; // 2 modul oldin
+        }
+        
+        // Ko'rilish soni bo'yicha prioritet
+        const watchCountPriority = (10 - (watchRecord?.watchCount || 0)) * 10;
+        
+        // Eng oxirgi ko'rilgan dars uchun qo'shimcha prioritet
+        let latestLessonPriority = 0;
+        if (latestWatchedLesson && lessonId === latestWatchedLesson.lesson?.id) {
+          latestLessonPriority = 200; // Eng oxirgi ko'rilgan darsning uyga vazifasiga eng yuqori prioritet
+        }
+        
+        // Navbatga qo'shish
+        const queueItem = await this.homeworkQueueRepository.addToQueue({
+          userId,
+          homeworkId: homework.id,
+          moduleId: homework.moduleId,
+          // LessonProgress entitysida lesson obyekti bor, lessonId emas
+          lessonId: lesson.lesson?.id,
+          priority: modulePriority + watchCountPriority + latestLessonPriority
+        });
+        
+        recommendations.push(queueItem);
+      }
+    }
+    
+    return recommendations;
+  }
+
+  private async findHomeworkByLessonId(lessonId: ID) {
+    try {
+      // Homework repositoriydan lesson ID bo'yicha uy vazifalarni qidirish
+      // Bu yerda HomeworkRepository ishlatilishi kerak
+      // Hozir mavjud bo'lmagani uchun mock data qaytaramiz
+      return {
+        id: 100 + Number(lessonId),
+        title: `Homework for Lesson ${lessonId}`,
+        moduleId: Math.floor(Number(lessonId) / 10) + 1, // Mock module ID
+        description: 'Watch this homework video',
+        videoUrl: 'https://example.com/homework-video',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+    } catch (error) {
+      console.error(`Error finding homework for lesson ${lessonId}:`, error);
+      return null;
+    }
+  }
+
+  // Foydalanuvchiga ko'rsatiladigan uy vazifalarni olish
+  async getUserHomeworks(userId: ID): Promise<ResData<HomeworkProgress[]>> {
+    // Jadvalga qo'shilgan uy vazifalarni olish
+    const scheduledHomeworks = await this.homeworkQueueRepository.findScheduledHomeworksByUser(userId);
+    
+    if (!scheduledHomeworks.length) {
+      return new ResData("No scheduled homeworks found", 404, []);
+    }
+    
+    // Uy vazifa progresslarini olish
+    const homeworkProgresses = [];
+    
+    for (const item of scheduledHomeworks) {
+      // Tegishli dars ko'rilgani tekshirish
+      const isLessonWatched = await this.checkIfLessonWatched(userId, item.lessonId);
+      if (!isLessonWatched) {
+        continue; // Dars ko'rilmagan bo'lsa, o'tkazib yuborish
+      }
+      
+      // Uy vazifa progressini olish
+      const progress = await this.homeworkProgressRepository.findOneByUserAndHomework(
+        userId,
+        item.homeworkId
+      );
+      
+      if (progress) {
+        homeworkProgresses.push(progress);
+      }
+    }
+    
+    return new ResData("Homeworks retrieved successfully", 200, homeworkProgresses);
+  }
+
+  // Dars ko'rilganligini tekshirish
+  private async checkIfLessonWatched(userId: ID, lessonId: ID): Promise<boolean> {
+    const lessonProgress = await this.lessonProgressRepository.findOneByUserAndLesson(
+      userId,
+      lessonId
+    );
+    
+    // LessonProgress obyektida isWatched property bo'lishi kerak
+    return lessonProgress?.isWatched || false;
+  }
+  
+  // IHomeworkProgressService interfaceini to'liq implementatsiya qilish
+  
+  // Barcha HomeworkProgress yozuvlarini qaytaradi
   async findAll(): Promise<ResData<Array<HomeworkProgress>>> {
-    // Barcha homework progresslarni olish
-    const data = await this.homeworkProgressRepository.findAll();
-
-    // Homework progresslar muvaffaqiyatli topildi, natija qaytariladi
-    return new ResData<Array<HomeworkProgress>>("ok", 200, data);
+    try {
+      // HomeworkProgressRepository da findAll metodi mavjud
+      const homeworkProgresses = await this.homeworkProgressRepository.findAll();
+      return new ResData('All homework progresses retrieved successfully', 200, homeworkProgresses);
+    } catch (error) {
+      console.error('Error finding all homework progresses:', error);
+      return new ResData('Failed to retrieve homework progresses', 500, []);
+    }
   }
 
-  /**
-   * ID bo'yicha Homework progressni topish.
-   * @param id - Homework progress ID
-   * @returns Ma'lum bir Homework progressi
-   */
+  // ID bo'yicha HomeworkProgress yozuvini topadi
   async findOneById(id: ID): Promise<ResData<HomeworkProgress>> {
-    // Berilgan ID bo'yicha homework progressni qidirish
-    const foundData = await this.homeworkProgressRepository.findById(id);
-    if (!foundData) {
-      // Agar homework progress topilmasa, xato qaytariladi
-      throw new HomeworkProgressNotFoundException();
+    try {
+      // HomeworkProgressRepository da findById metodi mavjud
+      const homeworkProgress = await this.homeworkProgressRepository.findById(id);
+      if (!homeworkProgress) {
+        return new ResData('Homework progress not found', 404, null);
+      }
+      return new ResData('Homework progress retrieved successfully', 200, homeworkProgress);
+    } catch (error) {
+      console.error(`Error finding homework progress with ID ${id}:`, error);
+      return new ResData('Failed to retrieve homework progress', 500, null);
     }
-
-    // Homework progress muvaffaqiyatli topildi, natija qaytariladi
-    return new ResData<HomeworkProgress>("ok", 200, foundData);
   }
 
-  /**
-   * Foydalanuvchi ID bo'yicha Homework progresslarini olish.
-   * @param id - Foydalanuvchi ID
-   * @returns Foydalanuvchining barcha Homework progresslari
-   */
+  // Foydalanuvchi ID bo'yicha barcha HomeworkProgress yozuvlarini qaytaradi
   async findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>> {
-    // Berilgan user ID bo'yicha homework progresslarni qidirish
-    const foundData = await this.homeworkProgressRepository.findByUserId(id);
-    if (!foundData) {
-      // Agar homework progresslar topilmasa, xato qaytariladi
-      throw new HomeworkProgressNotFoundException();
+    try {
+      // HomeworkProgressRepository da findByUserId metodi mavjud
+      const homeworkProgresses = await this.homeworkProgressRepository.findByUserId(id);
+      return new ResData('User homework progresses retrieved successfully', 200, homeworkProgresses);
+    } catch (error) {
+      console.error(`Error finding homework progresses for user ${id}:`, error);
+      return new ResData('Failed to retrieve user homework progresses', 500, []);
     }
-
-    // Foydalanuvchining homework progresslari muvaffaqiyatli topildi, natija qaytariladi
-    return new ResData<Array<HomeworkProgress>>("ok", 200, foundData);
   }
 
-  /**
-   * Homework progressini yangilash.
-   * Redisdagi ma'lumotni ham update qilish
-   * @param id - Yangilanishi kerak bo'lgan Homework progress ID
-   * @param dto - Yangilanish uchun kerakli ma'lumotlar
-   * @returns Yangilangan Homework progress
-   */
-  async update(
-    dto: UpdateHomeworkProgressDto,
-  ): Promise<ResData<HomeworkProgress>> {
-    // Berilgan ID bo'yicha homework progressni qidirish
-    const foundData = await this.homeworkProgressRepository.getHomeworkProgress(
-      dto.homeworkOrder,
-      dto.userId,
-      dto.blockId,
-    );
-    if (!foundData) {
-      throw new NotFoundNextProgressException();
-    }
-
-    // hamma lessonlar ko'rilganligini tekshirish
-    const checkAllLessonsWatched =
-      await this.lessonProgressRepository.checkAllLessonsWatched(
-        dto.blockOrder,
-        dto.userId,
-        dto.courseId,
-      );
-
-    // oxirgi ko'rilgan lessonProgress ni orderi
-    const lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLessonOrder(
-        dto.userId,
-        dto.courseId,
-        dto.blockOrder,
-      );
-    // oxirgi ko'rilgan homeworkProgress ni orderi
-    const lastWatchedHomeworkOrder =
-      await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
-        dto.userId,
-        dto.blockId,
-      );
-
-    // agar hamma lesson va homeworklarni ko'rgan bo'lsa hech narsa o'zgarmaydi faqat hozirgi ko'rayotgan progress ni ma'lumotlarini qaytaradid
-    if (
-      checkAllLessonsWatched &&
-      lastWatchedHomeworkOrder === lastWatchedLessonOrder
-    ) {
-      return new ResData<HomeworkProgress>(
-        "You have already completed this module",
-        404,
-        foundData,
-      );
-    }
-
-    // agar lesson dagi ko'rilgan videolar soni homework dagi ko'rilgan videolar sonidan ko'p bo'lmasa error qaytaradi
-    if (
-      lastWatchedHomeworkOrder >= lastWatchedLessonOrder &&
-      dto.homeworkOrder === lastWatchedLessonOrder
-    ) {
-      throw new LessonNotWatchedException();
-    }
-
-    // keyingi homeworkni orderi
-    const nextHomeworkOrder = Number(dto.homeworkOrder) + 1;
-
-    // berilgan homeworkOrder userId va blockId bo'yicha progressni topish
-    const nextProgress =
-      await this.homeworkProgressRepository.getHomeworkProgress(
-        nextHomeworkOrder,
-        dto.userId,
-        dto.blockId,
-      );
-    if (!nextProgress) {
-      return new ResData<HomeworkProgress>(
-        "No further homeworks are available to update progress.",
-        404,
-        foundData,
-      );
-    }
-
-    // hozirgi va update bo'lishi kerak bo'lgan progresslar orderlari orasidagi masofa
-    const checkOrder =
-      Number(nextProgress.homeworkOrder) - Number(foundData.homeworkOrder);
-
-    // bu function temprorary dataBaza dan current progressdan keyingi progress ni topib homeworkOrder ini qaytaradi
-
-    const nextTemprorayProgress =
-      await this.userHomeworkProgressRepository.findNextHomeworkProgress(
-        dto.homeworkOrder,
-        dto.userId,
-        dto.blockId,
-      );
-
-    // agar temprorary dataBaza da current progressdan keyingi progress mavjud bo'lsa uni homeworkOrder ini o'zgaruvchiga olamiz
-    let nextTemporaryProgressOrder = 0;
-    if (nextTemprorayProgress) {
-      nextTemporaryProgressOrder = Number(nextTemprorayProgress.homeworkOrder);
-    }
-
-    // agar temprorary dataBaza da kelayotgan datalarga mos data bo'lsa temprorary bazadagi data ham update bo'ladi
-    const foundTemproraryData =
-      await this.userHomeworkProgressRepository.findByUserIdBlockIdAndHomeworkOrder(
-        dto.userId,
-        dto.blockId,
-        dto.homeworkOrder,
-      );
-
-    /* agar temprorary dataBaza da keyingi va current progress bo'lsa temprorary dataBaza dagi hamda homeworkProgress baza dagi porgresslarni update qiladi
-     */
-    if (nextTemprorayProgress && foundTemproraryData) {
-      await this.userHomeworkProgressRepository.markHomeworkAsWatched(
-        nextTemporaryProgressOrder,
-        dto.userId,
-        dto.blockId,
-      );
-
-      // homeworkProgress bazada keyingi ya'ni update bo'lishi kerak bo'lgan progressni topish
-      const exitsNextProgress =
-        await this.homeworkProgressRepository.getHomeworkProgress(
-          nextTemporaryProgressOrder,
-          dto.userId,
-          dto.blockId,
-        );
-      const nextProgressOrder = Number(exitsNextProgress.homeworkOrder);
-
-      // agar homeworkProgress bazada keyingi ya'ni update bo'lishi kerak bo'lgan progress topilsa update qilinadi
-      if (exitsNextProgress) {
-        await this.homeworkProgressRepository.markHomeworkAsWatched(
-          nextProgressOrder,
-          dto.userId,
-          dto.blockId,
-        );
-
-        // current progressni homeworkProgress baza dan countWatched ini 1 ga oshiramiz
-        foundData.countWatched = Number(foundData.countWatched) + 1;
-        await this.homeworkProgressRepository.update(foundData);
+  // ID bo'yicha HomeworkProgress yozuvini yangilaydi va ko'rilgan deb belgilaydi
+  async update(dto: UpdateHomeworkProgressDto): Promise<ResData<HomeworkProgress>> {
+    try {
+      // ID ni tekshirish
+      if (!dto.id) {
+        this.logger.error('ID is required for updating homework progress');
+        return new ResData('ID is required for updating homework progress', 400, null);
       }
 
-      // Yangilangan homework progress olish
-      const updatedNextProgress =
-        await this.homeworkProgressRepository.getHomeworkProgress(
-          nextTemporaryProgressOrder,
-          dto.userId,
-          dto.blockId,
+      // Avval yangilanayotgan progress yozuvini topish kerak
+      const existingProgress = await this.homeworkProgressRepository.findById(dto.id);
+      if (!existingProgress) {
+        this.logger.error(`Homework progress with ID ${dto.id} not found`);
+        return new ResData('Homework progress not found', 404, null);
+      }
+      
+      this.logger.log(`Updating homework progress with ID ${dto.id}. Current values: isWatched=${existingProgress.isWatched}, countWatched=${existingProgress.countWatched}`);
+      
+      // isWatched ni true ga o'zgartirish va countWatched ni oshirish
+      existingProgress.isWatched = true;
+      existingProgress.countWatched += 1;
+      this.logger.log(`Homework marked as watched. Increasing countWatched to ${existingProgress.countWatched}`);
+      
+      // HomeworkProgressRepository update metodi entity qabul qiladi
+      const updatedProgress = await this.homeworkProgressRepository.update(existingProgress);
+      
+      // Keyingi darsni ochish
+      try {
+        // Find next lesson progress by courseId, blockOrder, and lessonOrder
+        const nextLessonOrder = existingProgress.homeworkOrder + 1;
+        
+        // Find lesson progress with matching criteria using getLessonProgress
+        const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+          nextLessonOrder,
+          existingProgress.userId 
+            ? (typeof existingProgress.userId === 'object' 
+                ? (existingProgress.userId as any).id 
+                : existingProgress.userId) 
+            : null,
+          existingProgress.blockId,
+          existingProgress.courseId
         );
-      // Yangilangan homework progress qaytariladi
-      return new ResData<HomeworkProgress>(
-        "OK, next order information below from the progressDatabase",
-        200,
-        updatedNextProgress,
-      );
+        
+        if (nextLessonProgress) {
+          if (!nextLessonProgress.isUnlocked) {
+            // Keyingi darsni ochish
+            nextLessonProgress.isUnlocked = true;
+            await this.lessonProgressRepository.update(nextLessonProgress);
+            this.logger.log(`Keyingi dars ochildi: lessonOrder=${nextLessonOrder}, courseId=${existingProgress.courseId}, blockOrder=${existingProgress.blockOrder}`);
+          } else {
+            this.logger.log(`Keyingi dars allaqachon ochilgan: lessonOrder=${nextLessonOrder}`);
+          }
+        } else {
+          this.logger.log(`Keyingi dars topilmadi: lessonOrder=${nextLessonOrder}, courseId=${existingProgress.courseId}, blockOrder=${existingProgress.blockOrder}`);
+        }
+      } catch (error) {
+        // Keyingi darsni ochishda xatolik bo'lsa, asosiy ishni to'xtatmaslik uchun xatoni log qilamiz
+        this.logger.error(`Keyingi darsni ochishda xatolik: ${error.message}`);
+      }
+      
+      this.logger.log(`Homework progress updated successfully. New values: isWatched=${updatedProgress.isWatched}, countWatched=${updatedProgress.countWatched}`);
+      return new ResData('Homework progress updated successfully', 200, updatedProgress);
+    } catch (error) {
+      this.logger.error(`Error updating homework progress:`, error);
+      return new ResData('Failed to update homework progress', 500, null);
     }
-
-    // agar temprorary bazada ma'lumotlar bo'lmasa quyidagi kodlar ishlashni boshlaydi
-
-    // homeworkProgress dagi keyingi progress bor bo'lsa hamda keyingi va current progress lar orderlari orasidagi masofa 1 ga teng yoki kichik bo'lsa va ham temprorary baza da ma'lumot bo'lmasa, homeworkPorgress baza dagi progress update qilinadi
-    if (nextProgress && checkOrder <= 1 && !nextTemprorayProgress) {
-      // Keyingi progressni `isWatched` qilib yangilash
-      await this.homeworkProgressRepository.markHomeworkAsWatched(
-        nextHomeworkOrder,
-        dto.userId,
-        dto.blockId,
-      );
-      foundData.countWatched = Number(foundData.countWatched) + 1;
-      await this.homeworkProgressRepository.update(foundData);
-    }
-
-    // homeworkProgress baza dagi progress update qilingandan so'ng, update qilingan progress data larini olish
-    const updatedNextProgress =
-      await this.homeworkProgressRepository.getHomeworkProgress(
-        nextHomeworkOrder,
-        dto.userId,
-        dto.blockId,
-      );
-    // Yangilangan homework progress qaytariladi
-    return new ResData<HomeworkProgress>(
-      "OK, next order information below from the progressDatabase",
-      200,
-      updatedNextProgress,
-    );
   }
 
-  /**
-   * Homework progressini o'chirish.
-   * @param id - O'chirilishi kerak bo'lgan Homework progress ID
-   * @returns O'chirilgan Homework progress
-   */
+  // ID bo'yicha HomeworkProgress yozuvini o'chiradi
   async delete(id: ID): Promise<ResData<HomeworkProgress>> {
-    // Berilgan ID bo'yicha homework progressni qidirish
-    const foundData = await this.homeworkProgressRepository.findById(id);
-    if (!foundData) {
-      // Agar homework progress topilmasa, xato qaytariladi
-      throw new HomeworkProgressNotFoundException();
+    try {
+      // Avval o'chirilayotgan homeworkProgress'ni topamiz
+      const homeworkProgress = await this.homeworkProgressRepository.findById(id);
+      if (!homeworkProgress) {
+        return new ResData('Homework progress not found', 404, null);
+      }
+      
+      // HomeworkProgressRepository delete metodi entity qabul qiladi
+      const deletedProgress = await this.homeworkProgressRepository.delete(homeworkProgress);
+      
+      return new ResData('Homework progress deleted successfully', 200, deletedProgress);
+    } catch (error) {
+      console.error(`Error deleting homework progress with ID ${id}:`, error);
+      return new ResData('Failed to delete homework progress', 500, null);
     }
-
-    // Progressni o'chirish
-    const data = await this.homeworkProgressRepository.delete(foundData);
-
-    // O'chirilgan homework progress qaytariladi
-    return new ResData<HomeworkProgress>("ok", 200, data);
   }
 
-  /**
-   * Foydalanuvchi uchun videos ro'yxatini olish va cache'dan tekshirish.
-   * @param userId - Foydalanuvchi ID
-   * @param blockId - Block ID
-   * @returns Video ro'yxati yoki cached progress
-   */
-  async getVideos(
-    userId: ID,
-    blockId: ID,
-  ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
-    // block ma'lumotlarini topish
-    const foundBlock = await this.blockRepository.findById(blockId);
+  // Foydalanuvchi ID, block ID bo'yicha HomeworkProgress yozuvlarini qaytaradi
+  async getVideos(userID: ID, blockId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    try {
+      // HomeworkProgressRepository da findByBlocIdAndUserId metodi mavjud
+      const homeworkProgresses = await this.homeworkProgressRepository.findByBlocIdAndUserId(blockId, userID);
+      
+      // Faqat kerakli fieldlarni ajratib olish (any tipidan foydalanib)
+      const partialProgresses = homeworkProgresses.map((progress: any) => {
+        return {
+          id: progress.id,
+          videoUrl: progress.videoUrl || progress.homework?.videoUrl,
+          title: progress.title || progress.homework?.title,
+          description: progress.description || progress.homework?.description,
+          isWatched: progress.isWatched,
+          watchCount: progress.countWatched
+        };
+      });
+      
+      return new ResData('Homework videos retrieved successfully', 200, partialProgresses);
+    } catch (error) {
+      console.error(`Error getting homework videos for user ${userID} and block ${blockId}:`, error);
+      return new ResData('Failed to retrieve homework videos', 500, []);
+    }
+  }
 
-    // berilgan blockId bo'yicha faqat course ni Id sini olish
-    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-    const blockOrder = foundBlock.order;
-
-    // oxirgi ko'rilgan lesson ni orderi
-    const lastWatchedLessonOrder =
-      await this.lessonProgressRepository.findLastWatchedLessonOrder(
-        userId,
-        courseId,
-        blockOrder,
-      );
-
-    // oxirgi ko'rilgan homework ni orderi
-    let lastWatchedHomeworkOrder =
-      await this.homeworkProgressRepository.findLastWatchedHomeworkOrderByUserIdAndBlockOrder(
-        userId,
-        blockId,
-      );
-
-    // hali lesson da boshidagi 5 ta video ko'rilmagan bo'lsa error qaytaramiz
-    if (lastWatchedLessonOrder < 5) {
+  // Uy vazifani ko'rilgan deb belgilash
+  async markHomeworkAsWatched(userId: ID, homeworkId: ID): Promise<ResData<HomeworkProgress>> {
+    // Uy vazifani topish
+    const homework = await this.homeworkProgressRepository.findOneByUserAndHomework(
+      userId,
+      homeworkId
+    );
+    
+    if (!homework) {
+      throw new HomeworkNotFoundException();
+    }
+    
+    // Tegishli dars ko'rilgani tekshirish
+    // Homework obyektidan lesson ID ni olish
+    // TypeScript xatoliklarni chetlab o'tish uchun any tipidan foydalanamiz
+    const homeworkAny = homework as any;
+    let lessonId;
+    
+    // Agar homework.lesson.id mavjud bo'lsa, uni ishlating
+    if (homeworkAny.homework && homeworkAny.homework.lessonId) {
+      lessonId = homeworkAny.homework.lessonId;
+    }
+    // Agar homework.lessonId mavjud bo'lsa, uni ishlating
+    else if (homeworkAny.lessonId) {
+      lessonId = homeworkAny.lessonId;
+    }
+    // Homework.lesson.id variantini tekshirish
+    else if (homeworkAny.lesson && homeworkAny.lesson.id) {
+      lessonId = homeworkAny.lesson.id;
+    }
+    // Yana boshqa variantlar ham bo'lishi mumkin
+    else {
+      throw new Error('Lesson ID not found for this homework');
+    }
+    
+    const isLessonWatched = await this.checkIfLessonWatched(userId, lessonId);
+    if (!isLessonWatched) {
       throw new LessonNotWatchedException();
     }
-
-    // hamma lessonlar ko'rilganligini tekshirish
-    const checkAllLessonsWatched =
-      await this.lessonProgressRepository.checkAllLessonsWatched(
-        blockOrder,
-        userId,
-        courseId,
-      );
-
-    // Foydalanuvchining progress larini olish
-    const existingProgresses =
-      await this.homeworkProgressRepository.findByBlocIdAndUserId(
-        blockId,
-        userId,
-      );
-
-    // agar hali hech qanday progress bo'lmasa yangi progresslarni generatsiya qilamiz
-    if (existingProgresses.length === 0) {
-      await this.generateFiveProgress(userId, blockId);
-
-      // generatsiya qilgandan keyin yana bazaga so'rov jo'natib data larni olamiz
-      const existingProgresses =
-        await this.homeworkProgressRepository.findByBlocIdAndUserId(
-          blockId,
-          userId,
-        );
-
-      return new ResData<Array<HomeworkProgress>>(
-        "Homework fetched successfully",
-        200,
-        existingProgresses,
-      );
-    }
-
-    // agar hamma homework va lesson videolar ko'rilgan bo'lsa
-    if (
-      checkAllLessonsWatched &&
-      lastWatchedHomeworkOrder === lastWatchedLessonOrder
-    ) {
-      return new ResData<Array<HomeworkProgress>>(
-        "Homework fetched successfully",
-        200,
-        existingProgresses,
-      );
-    }
-
-    // Barcha homework progressi ko'rilganligini tekshirish
-    const isWatchedAllHomework =
-      await this.homeworkProgressRepository.areAllWatchedByOrderAndUserId(
-        blockOrder,
-        userId,
-        courseId,
-      );
-
-    // berilgan order gacha bo'lgan lesson lar ko'rildimi yo'qmi aniqlash
-    const isAllLessonWatchedUpToOrder =
-      await this.lessonProgressRepository.isAllLessonWatched(
-        blockOrder,
-        lastWatchedHomeworkOrder,
-        userId,
-        courseId,
-      );
-
-    // bor temprorary progresslar hammasi ko'rildimi yo'qmi tekshirish
-    const isAllUserHomeworkProgressWatched =
-      await this.userHomeworkProgressRepository.areAllWatchedByOrderAndUserId(
-        blockOrder,
-        userId,
-        courseId,
-      );
-
-    //// default codes above ____________________________________________________________________________________________________
-
-    // temprorary bazada ma'lumot bor yo'qligin tekshirish
-    const existingTemproraryProgress =
-      await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-        blockId,
-        userId,
-      );
-
-    // agar temprorary bazada ma'lumot bo'lsa va temprorary baza dagi hamma progresslar ko'rilmagan bo'lsa
-    if (
-      existingTemproraryProgress.length > 1 &&
-      lastWatchedHomeworkOrder < lastWatchedLessonOrder &&
-      !isAllUserHomeworkProgressWatched
-    ) {
-      return new ResData<Array<Partial<HomeworkProgress>>>(
-        "Homework fetched successfully DATA from temproraryProgress",
-        200,
-        existingTemproraryProgress,
-      );
-    }
-
-    if (
-      lastWatchedHomeworkOrder < lastWatchedLessonOrder &&
-      !isWatchedAllHomework
-    ) {
-      return new ResData<Array<Partial<HomeworkProgress>>>(
-        "Homework fetched successfully",
-        200,
-        existingProgresses,
-      );
-    }
-
-    // agar oxirgi ko'rilgan homework va lesson order lar teng bo'lsa va hamma bor homework progress lar ko'rilgan bo'lsa
-    if (
-      isWatchedAllHomework &&
-      lastWatchedHomeworkOrder === lastWatchedLessonOrder
-    ) {
-      const temporaryProgress =
-        await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-          blockId,
-          userId,
-        );
-
-      if (temporaryProgress.length > 1) {
-        return new ResData<Array<Partial<HomeworkProgress>>>(
-          "To watch the next videos, you must first watch all the lesson videos",
-          200,
-          temporaryProgress,
-        );
-      }
-      return new ResData<Array<Partial<HomeworkProgress>>>(
-        "To watch the next videos, you must first watch all the lesson videos",
-        200,
-        existingProgresses,
-      );
-    }
-
-    // agar ochiq homework va ochiq lesson larni hammasini ko'rgan bo'lsa progress yaratish
-    if (isWatchedAllHomework && isAllLessonWatchedUpToOrder) {
-      await this.generateFiveProgress(userId, blockId);
-
-      const existingProgresses =
-        await this.homeworkProgressRepository.findByBlocIdAndUserId(
-          blockId,
-          userId,
-        );
-
-      if (existingProgresses.length <= 20) {
-        return new ResData<Array<HomeworkProgress>>(
-          "Homework fetched successfully",
-          200,
-          existingProgresses,
-        );
-      }
-
-      if (existingProgresses.length > 20 && !isAllUserHomeworkProgressWatched) {
-        // Eng kichik homeworkOrder qiymatiga ega bo'lgan ma'lumotni topish va yangilash
-        const lastFiveProgress =
-          await this.homeworkProgressRepository.findTopFiveByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-        const randomVideos = await this.getRandomVideos(
-          blockOrder,
-          courseId,
-          userId,
-        );
-
-        let progressList = [...lastFiveProgress, ...randomVideos];
-
-        // progresslistni massivini homeworkOrder qiymatiga ko'ra tartiblash
-        const sortedProgressList = progressList.sort(
-          (a, b) => Number(a.homeworkOrder) - Number(b.homeworkOrder), // Number() bilan number turiga o'tkazish
-        );
-
-        for (let i = 0; i < sortedProgressList.length; i++) {
-          const video = sortedProgressList[i];
-
-          // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
-          video.isWatched = i === 0 ? true : false;
-
-          // Database yangilash
-          await this.homeworkProgressRepository.update(video);
-        }
-
-        await this.userHomeworkProgressRepository.bulkCreate(
-          sortedProgressList,
-        );
-
-        const data =
-          await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-
-        return new ResData<Array<Partial<HomeworkProgress>>>(
-          "Homework fetched successfully DATA from temproraryProgress",
-          200,
-          data,
-        );
-      }
-
-      if (existingProgresses.length >= 20 && isAllUserHomeworkProgressWatched) {
-        const lastFiveProgress =
-          await this.homeworkProgressRepository.findTopFiveByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-        const randomVideos = await this.getRandomVideos(
-          blockOrder,
-          courseId,
-          userId,
-        );
-
-        let progressList = [...lastFiveProgress, ...randomVideos];
-
-        // Random qilingan ma'lumotni bazadan olish
-        const isExistTemporaryProgress =
-          await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-        if (isExistTemporaryProgress) {
-          await this.userHomeworkProgressRepository.deleteAll(userId, blockId);
-        }
-
-        // progresslistni massivini homeworkOrder qiymatiga ko'ra tartiblash
-        const sortedProgressList = progressList.sort(
-          (a, b) => Number(a.homeworkOrder) - Number(b.homeworkOrder), // Number() bilan number turiga o'tkazish
-        );
-
-        for (let i = 0; i < sortedProgressList.length; i++) {
-          const video = sortedProgressList[i];
-
-          // Agar eng kichik homeworkOrder bo'lsa, isWatched ni true qilamiz, aks holda false qilamiz
-          video.isWatched = i === 0 ? true : false;
-
-          // Database yangilash
-          await this.homeworkProgressRepository.update(video);
-        }
-
-        await this.userHomeworkProgressRepository.bulkCreate(
-          sortedProgressList,
-        );
-
-        const data =
-          await this.userHomeworkProgressRepository.findByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-
-
-
-        return new ResData<Array<Partial<HomeworkProgress>>>(
-          "Homework fetched successfully DATA from temproraryProgress",
-          200,
-          data,
-        );
-      }
-    }
-
-    if (existingTemproraryProgress.length === 0) {
-      return new ResData<Array<HomeworkProgress>>(
-        "Homework fetched successfully",
-        200,
-        existingProgresses,
-      );
-    }
-    return new ResData<Array<Partial<HomeworkProgress>>>(
-      "Homework fetched successfully DATA from temprorayProgress",
-      200,
-      existingTemproraryProgress,
+    
+    // Ko'rilganlik hisoblagichini yangilash
+    let watchRecord = await this.homeworkWatchRecordRepository.findByUserAndHomework(
+      userId,
+      homeworkId
     );
-  }
-
-  /**
-   * Tasodifiy videolarni olish.
-   * @param blockId - Block tartibi
-   * @returns Tasodifiy videolar ro'yxati
-   */
-  private async getRandomVideos(
-    blockOrder: ID,
-    courseId: ID,
-    userId: ID,
-  ): Promise<Array<HomeworkProgress>> {
-    const randomVideos =
-      await this.homeworkProgressRepository.getVideosWithWatchCountBetween0And5(
-        blockOrder,
-        courseId,
+    
+    if (!watchRecord) {
+      watchRecord = await this.homeworkWatchRecordRepository.create({
         userId,
-      );
-    // 15 tasini tasodifiy tanlash
-    return this.shuffleArray(randomVideos).slice(0, 15);
-  }
-
-  /**
-   * Massivni tasodifiy tartibda aralashtirish.
-   * @param array - Aralashtirilishi kerak bo'lgan massiv
-   * @returns Tasodifiy tartibdagi massiv
-   */
-  private shuffleArray(
-    array: Array<HomeworkProgress>,
-  ): Array<HomeworkProgress> {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  /**
-   * Foydalanuvchi uchun 5ta yangi homework progressini yaratish.
-   * @param userId - Foydalanuvchi ID
-   * @param blockId - Block ID
-   * @param blockOrder - Block tartibi
-   * @returns Yangi homework progress ro'yxati
-   */
-  async generateFiveProgress(
-    userId: ID,
-    blockId: ID,
-  ): Promise<Array<HomeworkProgress>> {
-    const block = await this.blockRepository.findById(blockId);
-    const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-    if (!block) throw new BlockNotFoundException();
-
-    const user = await this.userRepository.findOneById(userId);
-    if (!user) {
-      throw new UserNotFound();
-    }
-
-    // Mavjud progresslarni blok va foydalanuvchi bo‘yicha tekshirish
-    const existingProgress =
-      await this.homeworkProgressRepository.findByBlocIdAndUserId(
-        blockId,
+        homeworkId,
+        moduleId: (homework as any).homework?.moduleId || (homework as any).moduleId || 0,
+        lessonId: lessonId,
+        watchCount: 1,
+        lastWatchedAt: new Date()
+      });
+    } else {
+      watchRecord = await this.homeworkWatchRecordRepository.update(
         userId,
+        homeworkId,
+        {
+          watchCount: Math.min(watchRecord.watchCount + 1, 10),
+          lastWatchedAt: new Date()
+        }
       );
-
-    // So'nggi homework orderini olish
-    let lastHomeworkOrder = 0;
-    if (existingProgress.length > 0) {
-      lastHomeworkOrder =
-        await this.homeworkProgressRepository.findHighestHomeworkOrderByUserAndBlock(
-          blockId,
-          userId,
-        );
     }
+    
+    // Uy vazifa progressini yangilash
+    homework.isWatched = true;
+    homework.countWatched = watchRecord.watchCount;
+    
+    const updatedProgress = await this.homeworkProgressRepository.update(homework);
+    
+    return new ResData("Homework marked as watched", 200, updatedProgress);
+  }
 
-    // Keyingi 5ta homeworkni olish
-    const homeworks =
-      await this.homeworkRepository.findNextFiveHomeworksAfterOrder(
-        lastHomeworkOrder || 0,
-        blockId,
-      );
-
-    if (homeworks.length < 1)
-      throw new Error("No more homeworks available in this block");
-
-    // Yangi progresslarni yaratish
-    const newProgressList: HomeworkProgress[] = [];
-    for (const [i, homework] of homeworks.entries()) {
-      const progressExists =
-        await this.homeworkProgressRepository.findOneByUserAndHomework(
+  // Foydalanuvchiga ko'rsatiladigan uy vazifalarni olish
+  // Oxirgi ko'rilgan darsga tegishli uy vazifani va random tarzda oldingi uy vazifalarni qaytaradi
+  async getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    try {
+      // 1. Foydalanuvchining oxirgi ko'rgan darsini topish
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+      
+      if (!watchedLessons || watchedLessons.length === 0) {
+        return new ResData("Foydalanuvchi hali birorta ham dars ko'rmagan", 404, []);
+      }
+      
+      // Oxirgi ko'rilgan darsni topish
+      const lastWatchedLesson = watchedLessons.reduce((latest, current) => {
+        return (!latest || current.lastUpdatedAt > latest.lastUpdatedAt) ? current : latest;
+      }, null);
+      
+      if (!lastWatchedLesson || !lastWatchedLesson.lesson) {
+        return new ResData("Oxirgi ko'rilgan dars topilmadi", 404, []);
+      }
+      
+      // 2. Oxirgi ko'rilgan darsga tegishli uy vazifani topish va progressini yaratish
+      const lastLessonId = lastWatchedLesson.lesson.id;
+      const lastLessonHomework = await this.findHomeworkByLessonId(lastLessonId);
+      
+      if (!lastLessonHomework) {
+        this.logger.log(`Oxirgi ko'rilgan dars (${lastLessonId}) uchun uy vazifa topilmadi`);
+      } else {
+        // Uy vazifa progressini tekshirish yoki yaratish
+        await this.ensureHomeworkProgressExists(userId, lastLessonHomework.id, lastWatchedLesson);
+      }
+      
+      // 3. Foydalanuvchi uchun ko'rilmagan uy vazifalarni olish
+      const homeworkProgresses = [];
+      
+      // 3.1 Oxirgi ko'rilgan darsning uy vazifasini olish
+      if (lastLessonHomework) {
+        const lastHomeworkProgress = await this.homeworkProgressRepository.findOneByUserAndHomework(
           userId,
-          homework.id,
+          lastLessonHomework.id
         );
-      if (progressExists) throw new HomeworkProgressAlreadyExistException();
+        
+        if (lastHomeworkProgress && !lastHomeworkProgress.isWatched) {
+          homeworkProgresses.push(this.formatHomeworkProgress(lastHomeworkProgress));
+        }
+      }
+      
+      // 3.2 Foydalanuvchi ko'rgan modullar bo'yicha uy vazifalarni olish
+      const currentBlockOrder = lastWatchedLesson.blockOrder;
+      
+      // Foydalanuvchi ko'rgan modullarni aniqlash (current va undan oldingi 4 ta modul)
+      const minBlockOrder = Math.max(1, currentBlockOrder - 3);
+      const availableBlockOrders = [];
+      
+      for (let i = minBlockOrder; i <= currentBlockOrder; i++) {
+        availableBlockOrders.push(i);
+      }
+      
+      // 3.3 Har bir modul uchun ehtimollikni aniqlash
+      const probabilities = this.calculateProbabilities(availableBlockOrders, currentBlockOrder);
+      
+      // 3.4 Ko'rilmagan uy vazifalarni olish va ehtimollikka qarab saralash
+      const unwatchedHomeworks = await this.getUnwatchedHomeworks(userId, availableBlockOrders);
+      
+      // 3.5 Ehtimollikka qarab uy vazifalarni tanlash (maksimum 20 ta)
+      const selectedHomeworks = this.selectHomeworksByProbability(unwatchedHomeworks, probabilities);
+      
+      // 3.6 Tanlangan uy vazifalarni homeworkProgresses ga qo'shish
+      for (const homework of selectedHomeworks) {
+        if (!homeworkProgresses.some(hp => hp.id === homework.id)) {
+          homeworkProgresses.push(this.formatHomeworkProgress(homework));
+        }
+        
+        // Maksimum 20 ta uy vazifa qaytarish
+        if (homeworkProgresses.length >= 20) {
+          break;
+        }
+      }
+      
+      // 4. Natijani qaytarish
+      if (homeworkProgresses.length === 0) {
+        return new ResData("Foydalanuvchi uchun ko'rilmagan uyga vazifalar topilmadi", 404, []);
+      }
+      
+      return new ResData("Foydalanuvchi uyga vazifa videolari muvaffaqiyatli olindi", 200, homeworkProgresses);
+    } catch (error) {
+      this.logger.error(`Foydalanuvchi ${userId} uchun uy vazifa videolarini olishda xatolik:`, error);
+      return new ResData("Uy vazifa videolarini olishda xatolik yuz berdi", 500, []);
+    }
+  }
+  
+  // Uy vazifa progressini tekshirish yoki yaratish
+  private async ensureHomeworkProgressExists(
+    userId: ID, 
+    homeworkId: ID, 
+    lessonProgress: any
+  ): Promise<HomeworkProgress> {
+    // Mavjud progressni tekshirish
+    let progress = await this.homeworkProgressRepository.findOneByUserAndHomework(userId, homeworkId);
+    
+    // Agar progress mavjud bo'lmasa, yangi progress yaratish
+    if (!progress) {
+      // Homework ma'lumotlarini olish
+      const homework = await this.homeworkRepository.findById(homeworkId);
 
-      const newHomeworkProgress = new HomeworkProgress();
-      newHomeworkProgress.user = user;
-      newHomeworkProgress.userId = userId;
-      newHomeworkProgress.homework = homework;
-      newHomeworkProgress.blockId = blockId;
-      newHomeworkProgress.courseId = courseId;
-      newHomeworkProgress.blockOrder = block.order;
-      newHomeworkProgress.homeworkOrder = homework.order;
+      if (!homework || !homework.block) {
+        this.logger.error(`Homework yoki uning bloki topilmadi. Homework ID: ${homeworkId}`);
+        throw new NotFoundException(`Homework yoki uning bloki topilmadi. Homework ID: ${homeworkId}`);
+      }
 
-      // isWatched faqat mavjud progress bo‘lmaganda birinchi element uchun true bo‘ladi
-      newHomeworkProgress.isWatched = existingProgress.length === 0 && i === 0;
+      // Homework va block ma'lumotlarini log qilish
+      this.logger.log(`Homework ma'lumotlari: ID=${homework.id}, order=${homework.order}, blockId=${homework.block?.id}, blockOrder=${homework.block?.order}`);
 
+      const newProgress = new HomeworkProgress();
+      newProgress.userId = userId;
+      newProgress.blockId = homework.block.id; // Lesson block ID o'rniga homework block ID
+      
+      // Block order null bo'lmasligi uchun tekshirish
+      if (homework.block.order === null || homework.block.order === undefined) {
+        this.logger.warn(`Homework (ID: ${homeworkId}) blokining order qiymati null. Default qiymat 1 ishlatiladi.`);
+        newProgress.blockOrder = 1; // Default qiymat
+      } else {
+        newProgress.blockOrder = homework.block.order;
+      }
+      
+      // Homework order null bo'lmasligi uchun tekshirish
+      if (homework.order === null || homework.order === undefined) {
+        this.logger.warn(`Homework (ID: ${homeworkId}) ning order qiymati null. Default qiymat 1 ishlatiladi.`);
+        newProgress.homeworkOrder = 1; // Default qiymat
+      } else {
+        newProgress.homeworkOrder = homework.order;
+      }
+      
+      newProgress.courseId = lessonProgress.courseId;
+      newProgress.homework = { id: homeworkId } as any;
+      newProgress.isWatched = false;
+      newProgress.countWatched = 0;
+      
       // Yangi progressni saqlash
-      const savedProgress =
-        await this.homeworkProgressRepository.create(newHomeworkProgress);
-      newProgressList.push(savedProgress);
+      progress = await this.homeworkProgressRepository.create(newProgress);
+      this.logger.log(`Yangi homework progress yaratildi: userId=${userId}, homeworkId=${homeworkId}, blockId=${homework.block.id}, blockOrder=${newProgress.blockOrder}, homeworkOrder=${newProgress.homeworkOrder}`);
     }
-
-    return newProgressList;
+    
+    return progress;
   }
-
-  async generator(userId: ID, blockId: ID): Promise<Array<HomeworkProgress>> {
-    return;
+  
+  // Ehtimolliklarni hisoblash
+  private calculateProbabilities(blockOrders: number[], currentBlockOrder: number): Map<number, number> {
+    const probabilities = new Map<number, number>();
+    
+    for (const blockOrder of blockOrders) {
+      const diff = currentBlockOrder - blockOrder;
+      
+      switch (diff) {
+        case 0: // Joriy modul
+          probabilities.set(blockOrder, 0.4); // 40%
+          break;
+        case 1: // 1 ta oldingi modul
+          probabilities.set(blockOrder, 0.3); // 30%
+          break;
+        case 2: // 2 ta oldingi modul
+          probabilities.set(blockOrder, 0.2); // 20%
+          break;
+        case 3: // 3 ta oldingi modul
+          probabilities.set(blockOrder, 0.1); // 10%
+          break;
+        default:
+          probabilities.set(blockOrder, 0);
+          break;
+      }
+    }
+    
+    return probabilities;
+  }
+  
+  // Ko'rilmagan uy vazifalarni olish
+  private async getUnwatchedHomeworks(
+    userId: ID, 
+    blockOrders: number[]
+  ): Promise<HomeworkProgress[]> {
+    const unwatchedHomeworks = [];
+    
+    for (const blockOrder of blockOrders) {
+      // Har bir modul uchun ko'rilmagan uy vazifalarni olish
+      const homeworks = await this.homeworkProgressRepository.findAllWatchedHomeworkByUser(userId, null);
+      
+      // Ko'rilmagan yoki 10 martadan kam ko'rilgan uy vazifalarni filtrlash
+      const filteredHomeworks = homeworks.filter(hw => 
+        hw.blockOrder === blockOrder && (!hw.isWatched || hw.countWatched < 10)
+      );
+      
+      unwatchedHomeworks.push(...filteredHomeworks);
+    }
+    
+    return unwatchedHomeworks;
+  }
+  
+  // Ehtimollikka qarab uy vazifalarni tanlash
+  private selectHomeworksByProbability(
+    homeworks: HomeworkProgress[], 
+    probabilities: Map<number, number>
+  ): HomeworkProgress[] {
+    // Uy vazifalarni ehtimollikka qarab saralash
+    return homeworks.sort((a, b) => {
+      const probA = probabilities.get(a.blockOrder) || 0;
+      const probB = probabilities.get(b.blockOrder) || 0;
+      
+      // Ehtimolliklari bir xil bo'lsa, ko'rilish soni bo'yicha saralash
+      if (probA === probB) {
+        return a.countWatched - b.countWatched;
+      }
+      
+      // Ehtimollik bo'yicha saralash (kattadan kichikka)
+      return probB - probA;
+    });
+  }
+  
+  // HomeworkProgress ni formatlash
+  private formatHomeworkProgress(progress: HomeworkProgress): Partial<HomeworkProgress> {
+    return {
+      id: progress.id,
+      homework: { videoUrl: progress.homework?.videoUrl } as any,
+      blockId: progress.blockId,
+      blockOrder: progress.blockOrder,
+      homeworkOrder: progress.homeworkOrder,
+      isWatched: progress.isWatched,
+      countWatched: progress.countWatched,
+      createdAt: progress.createdAt,
+      lastUpdatedAt: progress.lastUpdatedAt
+    };
   }
 }
