@@ -5,6 +5,7 @@ import { UserCourse } from "src/modules/user-courses/entities/user-course.entity
 import { Tariff } from "src/modules/tariff/entities/tariff.entity"; // Tariffni import qilish
 import { Column, Entity, OneToMany } from "typeorm";
 import { Alphabet } from "src/modules/alphabet/entities/alphabet.entity";
+import { Lesson } from "src/modules/lesson/entities/lesson.entity";
 
 @Entity("courses")
 export class Course extends BaseEntity {
@@ -50,6 +51,13 @@ export class Course extends BaseEntity {
     nullable: true,
   })
   blocks: Array<Block>;
+
+    // Blocklar bilan bog'lanish
+    @OneToMany(() => Lesson, (lesson) => lesson.course, {
+      onDelete: "SET NULL",
+      nullable: true,
+    })
+    lessons: Array<Block>;
 
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {

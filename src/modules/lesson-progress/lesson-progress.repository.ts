@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { In, LessThanOrEqual, Repository } from "typeorm";
+import { In, LessThanOrEqual, Repository, Between } from "typeorm";
 import { LessonProgress } from "./entities/lesson-progress.entity";
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 
@@ -130,17 +130,21 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   }
 
   async findById(id: ID): Promise<LessonProgress | null> {
-    return await this.lessonProgressRepository.findOneBy({ id });
+    return await this.lessonProgressRepository.findOne({
+      where: { id },
+      relations: ['lesson'],
+    });
   }
 
   async getLessonProgress(
     lessonOrder: ID,
     userId: ID,
     blockId: ID,
+    courseId: ID,
   ): Promise<LessonProgress | null> {
-    // lessonOrder, userId, va courseId bo'yicha lesson progress yozuvini qidiramiz
+    // lessonOrder, userId, blockId va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockId },
+      where: { lessonOrder, userId, blockId, courseId },
     });
 
     // Ma'lumot mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
@@ -188,9 +192,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]> {
     return await this.lessonProgressRepository.find({
       where: {
-        user: { id: userId },
+        userId: userId, // user.id o'rniga userId ishlatiladi
         isWatched: true,
       },
+      relations: ['lesson'],
     });
   }
 
@@ -203,12 +208,37 @@ export class LessonProgressRepository implements ILessonProgressRepository {
       where: {
         blockOrder: blockOrder,
         courseId: courseId,
-        user: { id: userId },
+        userId: userId,
       },
       select: ["isWatched"],
     });
 
     // Agar barcha isWatched qiymatlari true bo'lsa, har doim true qaytaradi.
     return lessonProgresses.every((progress) => progress.isWatched);
+  }
+
+  /**
+   * Berilgan vaqt oralig'ida foydalanuvchi tomonidan ko'rilgan darslar sonini hisoblash.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param startDate - Boshlang'ich sana
+   * @param endDate - Tugash sanasi
+   * @returns Ko'rilgan darslar soni
+   */
+  async countWatchedLessonsInDateRange(
+    userId: ID,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
+    // Using TypeORM's find method with automatic mapping
+    const count = await this.lessonProgressRepository.count({
+      where: {
+        userId: userId,
+        isWatched: true,
+        lastUpdatedAt: Between(startDate, endDate)
+      }
+    });
+    
+    return count;
   }
 }

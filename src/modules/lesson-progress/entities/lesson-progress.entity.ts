@@ -48,6 +48,13 @@ export class LessonProgress extends BaseEntity {
   isWatched: boolean;
 
   /**
+   * Darsning ochiq yoki yopiqligini bildiruvchi holat.
+   * Agar dars ochiq bo'lsa true, aks holda false qiymat saqlanadi.
+   */
+  @Column({ type: "boolean", default: false, name: "is_unlocked" })
+  isUnlocked: boolean;
+
+  /**
    * Foydalanuvchi bilan bog'lanish.
    * Ushbu maydon lesson_progress va user orasidagi aloqani ta'minlaydi.
    */
