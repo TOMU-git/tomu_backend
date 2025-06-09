@@ -34,7 +34,7 @@ export interface ILessonProgressRepository {
   getLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    blockId: ID,
+    blockOrder: ID,
     courseId: ID,
   ): Promise<LessonProgress | null>;
 

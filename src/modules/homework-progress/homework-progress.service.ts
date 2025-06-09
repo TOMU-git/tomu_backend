@@ -449,7 +449,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
                 ? (existingProgress.userId as any).id 
                 : existingProgress.userId) 
             : null,
-          existingProgress.blockId,
+          existingProgress.blockOrder,
           existingProgress.courseId
         );
         
