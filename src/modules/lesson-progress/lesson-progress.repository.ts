@@ -139,12 +139,12 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   async getLessonProgress(
     lessonOrder: ID,
     userId: ID,
-    blockId: ID,
+    blockOrder: ID,
     courseId: ID,
   ): Promise<LessonProgress | null> {
-    // lessonOrder, userId, blockId va courseId bo'yicha lesson progress yozuvini qidiramiz
+    // lessonOrder, userId, blockOrder va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockId, courseId },
+      where: { lessonOrder, userId, blockOrder, courseId },
     });
 
     // Ma'lumot mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi

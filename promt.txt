@@ -51,3 +51,4 @@ Agar user lesson vidolariin ko'rishni ma'lum bir muddatga to'xtatsa frontdagi ho
 videolar kelib tushushi kerak, frontdagi homework modulda videolar soni 20 tada oshib ketmasligi kerak 1-kun uchun,
 va front tomondagi homework modulida vieolar to'planib qolsa user o'sha videolarni hammasini ko'rib tugatmaguncha lesson da kelgan
 joyidagi videosi ochilmasligi kerak.
+Homework modulga kelib tushgan videolar ko'rilgandan keyin moduldan yo'qolishi kerak

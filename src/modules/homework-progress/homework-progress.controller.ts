@@ -1,23 +1,21 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  ParseIntPipe,
-  Inject,
-  Query,
-  Delete,
-  Patch,
-} from "@nestjs/common";
-import { ID } from "src/common/types/type";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Req, UseGuards } from "@nestjs/common";
+import { Request } from "express";
 import { ResData } from "src/lib/resData";
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiTags } from "@nestjs/swagger";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
 import { IHomeworkProgressService } from "./interfaces/homework-progress.service";
 import { HomeworkProgress } from "./entities/homework-progress.entity";
-import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto"; // Yangilash DTO sini import qiling
+import { UpdateHomeworkProgressDto } from "./dto/update-homework-progress.dto";
+import { ID } from "src/common/types/type";
+
+// Define a custom interface that extends Express Request
+interface RequestWithUser extends Request {
+  user: {
+    id: number;
+    [key: string]: any;
+  };
+}
 
 @ApiTags("homework-progress")
 @Controller("homework-progress")
@@ -36,10 +34,9 @@ export class HomeworkProgressController {
    * @returns Foydalanuvchi uchun barcha uy vazifa videolari
    */
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
-  @Get("get-videos/:userId")
-  async getVideos(
-    @Param("userId", ParseIntPipe) userId: ID,
-  ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+  @Get("get-videos")
+  async getVideos(@Req() req: RequestWithUser): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+    const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
     return await this.homeworkProgressService.getUserHomeworkVideos(userId);
   }
 
