@@ -8,6 +8,7 @@ import {
   Inject,
   Query,
   Patch,
+  Req,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { ResData } from "src/lib/resData";
@@ -18,6 +19,15 @@ import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
 import { UpdateLessonProgressDto } from "./dto/update-lesson-progress.dto";
 
+// Define a custom interface that extends Express Request
+interface RequestWithUser extends Request {
+  user: {
+    id: number;
+    [key: string]: any;
+  };
+}
+
+
 @ApiTags("lesson-progress")
 @Controller("lesson-progress")
 export class LessonProgressController {
@@ -25,6 +35,8 @@ export class LessonProgressController {
     @Inject("ILessonProgressService")
     private readonly lessonProgressService: ILessonProgressService,
   ) {}
+
+
 
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
@@ -36,13 +48,11 @@ export class LessonProgressController {
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get("get-videos")
   async getVideos(
-    @Query("userId", ParseIntPipe) userId: ID,
+    @Req() req: RequestWithUser,
     @Query("blockId", ParseIntPipe) blockId: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
-    return await this.lessonProgressService.getVideos(
-      userId,
-      blockId,
-    );
+    const userId = req.user["id"];
+    return await this.lessonProgressService.getVideos(userId, blockId);
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
