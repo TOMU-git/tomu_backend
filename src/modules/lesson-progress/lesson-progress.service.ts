@@ -115,11 +115,18 @@ export class LessonProgressService implements ILessonProgressService {
       // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
       try {
         const lessonId = foundLessonProgress.lesson.id;
-        const data = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
-        this.logger.log("Dars ko'rilgandan so'ng uyga vazifalar yangilandi", data.data.homeworkProgress);
+        
+        // Event emitter orqali xabar yuborish o'rniga to'g'ridan-to'g'ri metodni chaqiramiz
+        const result = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
+        
+        if (result.statusCode === 200) {
+          this.logger.log(`Dars (ID: ${lessonId}) ko'rilgandan so'ng uyga vazifa muvaffaqiyatli rejalashtirildi`);
+        } else {
+          this.logger.warn(`Dars (ID: ${lessonId}) ko'rilgandan so'ng uyga vazifani rejalashtirish muammosi: ${result.message}`);
+        }
       } catch (error) {
-        this.logger.error(`Dars ko'rilgandan so'ng uyga vazifani rejalashtirish xatoligi:`, error);
-        throw error;
+        this.logger.error(`Dars ko'rilgandan so'ng uyga vazifani rejalashtirish xatoligi: ${error.message}`, error.stack);
+        // Asosiy jarayonni to'xtatmaslik uchun xatoni yutib yuboramiz
       }
 
       return new ResData<LessonProgress>(
@@ -128,7 +135,7 @@ export class LessonProgressService implements ILessonProgressService {
         foundLessonProgress,
       );
     } catch (error) {
-      this.logger.error('Dars progressini yangilashda xatolik:', error);
+      this.logger.error(`Dars progressini yangilashda xatolik: ${error.message}`, error.stack);
       throw error;
     }
   }

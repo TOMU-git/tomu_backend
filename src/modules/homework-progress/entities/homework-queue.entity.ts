@@ -31,7 +31,7 @@ export class HomeworkQueue extends BaseEntity {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @ManyToOne(() => Homework)
+  @ManyToOne(() => Homework, { eager: true })
   @JoinColumn({ name: "homework_id" })
   homework: Homework;
 }
