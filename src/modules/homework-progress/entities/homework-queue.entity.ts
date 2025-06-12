@@ -12,14 +12,20 @@ export class HomeworkQueue extends BaseEntity {
   @Column({ type: "int", name: "homework_id", nullable: false })
   homeworkId: number;
 
-  @Column({ type: "int", name: "module_id", nullable: false })
-  moduleId: number;
+  @Column({ type: "int", name: "course_id", nullable: false })
+  courseId: number;
 
   @Column({ type: "int", name: "priority", default: 0 })
   priority: number;
 
   @Column({ type: "int", name: "lesson_id", nullable: false })
   lessonId: number;
+  
+  @Column({ type: "int", name: "homework_order", default: 0 })
+  homeworkOrder: number;
+
+  @Column({ type: "int", name: "block_order", default: 0 })
+  blockOrder: number;
 
   @Column({ type: "boolean", name: "is_scheduled", default: false })
   isScheduled: boolean;

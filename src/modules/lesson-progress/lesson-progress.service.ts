@@ -72,7 +72,6 @@ export class LessonProgressService implements ILessonProgressService {
       }
 
       const userId = Number(foundLessonProgress.userId);
-      const blockId = Number(foundLessonProgress.blockId);
       const courseId = Number(foundLessonProgress.courseId);
       const blockOrder = Number(foundLessonProgress.blockOrder);
 
