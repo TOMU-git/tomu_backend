@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HomeworkQueue } from "../entities/homework-queue.entity";
-import { LessThan, Repository } from "typeorm";
+import { LessThan, Repository,DeleteResult } from "typeorm";
 import { ID } from "src/common/types/type";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 
@@ -139,10 +139,9 @@ export class HomeworkQueueRepository {
     });
   }
 
-  async removeFromQueue(id: ID): Promise<void> {
-    await this.repository.delete(id);
+  async removeFromQueue(id: ID): Promise<DeleteResult> {
+    return this.repository.delete(id);
   }
-  
   /**
    * Foydalanuvchi va queue item ID si bo'yicha uyga vazifa navbatini olish
    * 

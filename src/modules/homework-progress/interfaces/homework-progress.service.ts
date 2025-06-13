@@ -20,13 +20,6 @@ export interface IHomeworkProgressService {
   // ID bo'yicha HomeworkProgress yozuvini o'chiradi
   delete(id: ID): Promise<ResData<HomeworkProgress>>;
 
-  // Foydalanuvchi ID, block ID va blockOrder bo'yicha HomeworkProgress yozuvlarini qaytaradi
-  getVideos(userID: ID, blockId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>>;
-
-  // Foydalanuvchiga ko'rsatiladigan uy vazifalarni olish
-  getUserHomeworks(userId: ID): Promise<ResData<HomeworkProgress[]>>;
-
-  // Foydalanuvchi uchun uy vazifa videolarini olish
   // Agar schedule bo'lmasa, foydalanuvchi ko'rgan modullar asosida yangi schedule yaratadi
   getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>>;
   
