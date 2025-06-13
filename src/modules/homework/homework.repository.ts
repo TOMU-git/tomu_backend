@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Repository, MoreThan } from "typeorm";
 import { IHomeworkRepository } from "./interfaces/homework.repository";
 import { Homework } from "./entities/homework.entity";
 
@@ -19,14 +19,22 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findAll(): Promise<Array<Homework>> {
-    return await this.homeworkRepository
-      .createQueryBuilder("homework")
-      .leftJoinAndSelect("homework.block", "block") // block bilan bog'lanish
-      .select([
-        "homework", // homework ma'lumotlarini olish
-        "block.id", // faqat block id sini olish
-      ])
-      .getMany(); // barcha homework yozuvlarini olish
+    return await this.homeworkRepository.find({
+      relations: ["block"],
+      select: {
+        id: true,
+        title: true,
+        videoUrl: true,
+        mimetype: true,
+        size: true,
+        order: true,
+        duration: true,
+        blockId: true,
+        block: {
+          id: true
+        }
+      }
+    });
   }
 
   async update(entity: Homework): Promise<Homework> {
@@ -46,15 +54,23 @@ export class HomeworkRepository implements IHomeworkRepository {
   }
 
   async findById(id: ID): Promise<Homework | null> {
-    return await this.homeworkRepository
-      .createQueryBuilder("homework")
-      .leftJoinAndSelect("homework.block", "block") // block ni qo'shish
-      .select([
-        "homework", // homework ma'lumotlarini olish
-        "block.id", // faqat block id sini olish
-      ])
-      .where("homework.id = :id", { id }) // id ga mos keladigan homework ni tanlash
-      .getOne(); // bitta yozuvni olish
+    return await this.homeworkRepository.findOne({
+      where: { id },
+      relations: ["block"],
+      select: {
+        id: true,
+        title: true,
+        videoUrl: true,
+        mimetype: true,
+        size: true,
+        order: true,
+        duration: true,
+        blockId: true,
+        block: {
+          id: true
+        }
+      }
+    });
   }
 
   async findOneByOrder(order: number, blockId: ID): Promise<Homework | null> {
@@ -63,6 +79,7 @@ export class HomeworkRepository implements IHomeworkRepository {
         order: order,
         block: { id: blockId },
       },
+      relations: ["block"]
     });
   }
 
@@ -70,26 +87,56 @@ export class HomeworkRepository implements IHomeworkRepository {
     lastHomeworkOrder: number,
     blockId: ID,
   ): Promise<Array<Homework>> {
-    return this.homeworkRepository
-      .createQueryBuilder("homework")
-      .where("homework.order > :lastHomeworkOrder", { lastHomeworkOrder })
-      .andWhere("homework.block_id = :blockId", { blockId }) // blockId o'rniga block_id deb yozamiz
-      .orderBy("homework.order", "ASC")
-      .limit(5)
-      .getMany();
+    return await this.homeworkRepository.find({
+      where: {
+        order: MoreThan(lastHomeworkOrder),
+        blockId: blockId
+      },
+      relations: ["block"],
+      select: {
+        id: true,
+        title: true,
+        videoUrl: true,
+        mimetype: true,
+        size: true,
+        order: true,
+        duration: true,
+        blockId: true,
+        block: {
+          id: true
+        }
+      },
+      order: { order: "ASC" },
+      take: 5
+    });
   }
 
   async getNextFiveVideos(
     order: number,
     blockId: ID,
   ): Promise<Array<Homework>> {
-    return await this.homeworkRepository
-      .createQueryBuilder("homework")
-      .where("homework.order > :order", { order })
-      .andWhere("homework.block_id = :blockId", { blockId })
-      .orderBy("homework.order", "ASC")
-      .limit(5)
-      .getMany();
+    return await this.homeworkRepository.find({
+      where: {
+        order: MoreThan(order),
+        blockId: blockId
+      },
+      relations: ["block"],
+      select: {
+        id: true,
+        title: true,
+        videoUrl: true,
+        mimetype: true,
+        size: true,
+        order: true,
+        duration: true,
+        blockId: true,
+        block: {
+          id: true
+        }
+      },
+      order: { order: "ASC" },
+      take: 5
+    });
   }
 
   async findOneByName(title: string): Promise<Homework | null> {

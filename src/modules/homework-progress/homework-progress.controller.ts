@@ -55,10 +55,13 @@ export class HomeworkProgressController {
    * @param updateHomeworkProgressDto - Yangilash uchun kerakli ma'lumotlar
    * @returns Yangilangan homework progress
    */
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Patch("update")
   async update(
     @Body() updateHomeworkProgressDto: UpdateHomeworkProgressDto, // Yangilash DTO sini oling
   ): Promise<ResData<HomeworkProgress>> {
+   
+    // Servisga foydalanuvchi ID ni to'g'ridan-to'g'ri uzatish
     return await this.homeworkProgressService.update(updateHomeworkProgressDto);
   }
 

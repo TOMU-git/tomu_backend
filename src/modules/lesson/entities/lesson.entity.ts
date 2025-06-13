@@ -37,6 +37,9 @@ export class Lesson extends BaseEntity {
    */
   size: number;
 
+  @Column({type: "varchar", name: "grammar_link", nullable: true})
+  grammarLink: string
+
   @Column({ type: "int" })
   duration: number;
 
