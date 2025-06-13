@@ -42,6 +42,9 @@ export class Homework extends BaseEntity {
   @Column({ type: "int" })
   duration: number;
 
+  @Column({ type: "int", name: "block_id", nullable: true })
+  blockId: number;
+
   @ManyToOne(() => Block, (block) => block.homeworks, {
     nullable: true, // Block mavjud bo'lmasa null bo'lishi mumkin
     onDelete: "SET NULL", // Block o'chirilsa, qiymati null qilinadi

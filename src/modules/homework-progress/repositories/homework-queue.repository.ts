@@ -1,9 +1,10 @@
 // src/modules/homework-progress/repositories/homework-queue.repository.ts
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { LessThan, Repository } from "typeorm";
 import { HomeworkQueue } from "../entities/homework-queue.entity";
+import { LessThan, Repository,DeleteResult } from "typeorm";
 import { ID } from "src/common/types/type";
+import { Homework } from "src/modules/homework/entities/homework.entity";
 
 @Injectable()
 export class HomeworkQueueRepository {
@@ -17,6 +18,14 @@ export class HomeworkQueueRepository {
       where: { userId },
       relations: ["homework"],
       order: { priority: "DESC" },
+    });
+  }
+
+
+  async findById(id: ID): Promise<HomeworkQueue> {
+    return this.repository.findOne({
+      where: { id },
+      relations: ["homework"],
     });
   }
 
@@ -82,6 +91,44 @@ export class HomeworkQueueRepository {
   }
 
   async addToQueue(queue: Partial<HomeworkQueue>): Promise<HomeworkQueue> {
+    try {
+      // Homework va block order ni olish uchun homework ni topish
+      if (queue.homeworkId && (!queue.homeworkOrder || !queue.blockOrder || !queue.courseId)) {
+        const homework = await this.repository.manager.findOne(Homework, {
+          where: { id: Number(queue.homeworkId) },
+          relations: ['block', 'block.course']
+        });
+        
+        if (homework) {
+          // Homework order ni o'rnatish
+          if (!queue.homeworkOrder && typeof homework.order === 'number') {
+            queue.homeworkOrder = homework.order;
+          }
+          
+          // Block order ni o'rnatish
+          if (!queue.blockOrder && homework.block && typeof homework.block.order === 'number') {
+            queue.blockOrder = homework.block.order;
+          } else if (!queue.blockOrder) {
+            queue.blockOrder = 0; // Default qiymat
+          }
+          
+          // Course ID ni o'rnatish
+          if (!queue.courseId && homework.block && homework.block.course && homework.block.course.id) {
+            queue.courseId = homework.block.course.id;
+          } else if (!queue.courseId) {
+            throw new Error('Course ID is required but not available from homework.block.course');
+          }
+        } else {
+          throw new Error(`Homework not found with ID: ${queue.homeworkId}`);
+        }
+      } else if (!queue.courseId) {
+        throw new Error('Course ID is required but not provided');
+      }
+    } catch (error) {
+      console.error('Error in addToQueue:', error.message);
+      throw error;
+    }
+    
     const newItem = this.repository.create(queue);
     const savedItem = await this.repository.save(newItem);
     
@@ -92,8 +139,24 @@ export class HomeworkQueueRepository {
     });
   }
 
-  async removeFromQueue(id: ID): Promise<void> {
-    await this.repository.delete(id);
+  async removeFromQueue(id: ID): Promise<DeleteResult> {
+    return this.repository.delete(id);
+  }
+  /**
+   * Foydalanuvchi va queue item ID si bo'yicha uyga vazifa navbatini olish
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @param queueId - Queue item ID
+   * @returns HomeworkQueue yozuvi yoki null
+   */
+  async findByUserIdAndQueueId(userId: ID, queueId: ID): Promise<HomeworkQueue | null> {
+    return this.repository.findOne({
+      where: { 
+        id: Number(queueId),
+        userId: Number(userId)
+      },
+      relations: ["homework"]
+    });
   }
 
   async scheduleHomework(

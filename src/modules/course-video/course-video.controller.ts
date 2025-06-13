@@ -51,6 +51,7 @@ export class CourseVideoController {
     return await this.courseVideoService.create(video);
   }
 
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get()
   async findAll(): Promise<ResData<Array<CourseVideo>>> {
     return await this.courseVideoService.findAll();

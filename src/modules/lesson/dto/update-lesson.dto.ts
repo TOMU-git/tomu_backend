@@ -17,6 +17,14 @@ export class UpdateLessonDto {
   @MaxLength(255)
   title?: string;
 
+
+  @ApiPropertyOptional({
+    description: "GrammarLink",
+  })
+  @IsString()
+  @IsOptional()
+  grammarLink: string;
+
   @ApiPropertyOptional({
     type: 'string',
     format: 'binary',
