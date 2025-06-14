@@ -66,15 +66,15 @@ export class LessonProgressService implements ILessonProgressService {
       if (!foundLessonProgress) {
         throw new LessonProgressNotFoundException();
       }
-
+      
       if (!foundLessonProgress.lesson) {
         throw new Error('Dars topilmadi');
       }
-
+      
       const userId = Number(foundLessonProgress.userId);
       const courseId = Number(foundLessonProgress.courseId);
       const blockOrder = Number(foundLessonProgress.blockOrder);
-
+      
       // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
       const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
       if (watchedLessonsToday >= 10) {
@@ -84,20 +84,20 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-
+      
       // Oldingi uy vazifalar bajarilganligini tekshirish
       const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
         userId,
         courseId,
         blockOrder,
       );
-
+      
       const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(
         courseId,
         userId,
         blockOrder,
       );
-
+      
       // Har bir darsdan keyin uy vazifa bajarilishi shart
       if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
         return new ResData<LessonProgress>(
@@ -106,6 +106,7 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
+      console.log("working");
 
       // Joriy darsni ko'rilgan qilish
       foundLessonProgress.isWatched = true;
@@ -114,6 +115,8 @@ export class LessonProgressService implements ILessonProgressService {
       // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
       try {
         const lessonId = foundLessonProgress.lesson.id;
+
+        console.log("lessonId in lessonProgressService", lessonId);
         
         // Event emitter orqali xabar yuborish o'rniga to'g'ridan-to'g'ri metodni chaqiramiz
         const result = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);

@@ -168,7 +168,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async scheduleHomeworkForLesson(userId: ID, lessonId: ID): Promise<ResData<any>> {
     try {
       // Dars uchun uyga vazifa topish
+      console.log("userId, lessonId", userId, lessonId);
+      
       const homework = await this.findHomeworkByLessonId(lessonId);
+      console.log(homework)
       
       if (!homework) {
         return new ResData("Dars uchun uyga vazifa topilmadi", 404, null);
