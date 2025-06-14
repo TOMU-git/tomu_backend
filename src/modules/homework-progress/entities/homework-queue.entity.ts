@@ -17,9 +17,6 @@ export class HomeworkQueue extends BaseEntity {
 
   @Column({ type: "int", name: "priority", default: 0 })
   priority: number;
-
-  @Column({ type: "int", name: "lesson_id", nullable: false })
-  lessonId: number;
   
   @Column({ type: "int", name: "homework_order", default: 0 })
   homeworkOrder: number;

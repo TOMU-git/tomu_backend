@@ -67,13 +67,15 @@ export class LessonProgressService implements ILessonProgressService {
         throw new LessonProgressNotFoundException();
       }
       
+      // Lesson ma'lumotlarini tekshirish
       if (!foundLessonProgress.lesson) {
-        throw new Error('Dars topilmadi');
+        throw new Error('Dars topilmadi');  
       }
       
       const userId = Number(foundLessonProgress.userId);
       const courseId = Number(foundLessonProgress.courseId);
       const blockOrder = Number(foundLessonProgress.blockOrder);
+      const lessonOrder = Number(foundLessonProgress.lessonOrder);
       
       // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
       const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
@@ -114,12 +116,22 @@ export class LessonProgressService implements ILessonProgressService {
 
       // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
       try {
+        // Lesson obyektini tekshirish va lessonId olish
+        if (!foundLessonProgress.lesson || !foundLessonProgress.lesson.id) {
+          this.logger.warn(`Dars ma'lumotlari to'liq emas, uyga vazifani rejalashtirish o'tkazib yuborildi`);
+          return new ResData<LessonProgress>(
+            "Dars progressi muvaffaqiyatli yangilandi, lekin uyga vazifa rejalashtirilmadi",
+            200,
+            foundLessonProgress,
+          );
+        }
+        
         const lessonId = foundLessonProgress.lesson.id;
 
         console.log("lessonId in lessonProgressService", lessonId);
         
         // Event emitter orqali xabar yuborish o'rniga to'g'ridan-to'g'ri metodni chaqiramiz
-        const result = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, lessonId);
+        const result = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, courseId, blockOrder, lessonOrder);
         
         if (result.statusCode === 200) {
           this.logger.log(`Dars (ID: ${lessonId}) ko'rilgandan so'ng uyga vazifa muvaffaqiyatli rejalashtirildi`);
