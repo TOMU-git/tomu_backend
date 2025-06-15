@@ -165,10 +165,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
    * @param lessonId - Dars ID si
    * @returns Yuborilgan uyga vazifa ma'lumotlari
    */
-  async scheduleHomeworkForLesson(userId: ID, lessonId: ID): Promise<ResData<any>> {
+  async scheduleHomeworkForLesson(userId: ID, courseId: ID, blockOrder: number, lessonOrder: number): Promise<ResData<any>> {
     try {
       // Dars uchun uyga vazifa topish
-      const homework = await this.findHomeworkByLessonId(lessonId);
+      
+      const homework = await this.findHomeworkByLessonId(courseId, blockOrder, lessonOrder);
+      console.log(homework)
       
       if (!homework) {
         return new ResData("Dars uchun uyga vazifa topilmadi", 404, null);
@@ -182,18 +184,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         return new ResData("Uyga vazifa allaqachon rejalashtirilgan", 200, existingQueue);
       }
       
-      // Lesson progressdan ma'lumotlarni olish
-      const lessonProgress = await this.lessonProgressRepository.findById(lessonId);
-      if (!lessonProgress) {
-        return new ResData("Dars progressi topilmadi", 404, null);
-      }
-      
       // Yangi uyga vazifa rejasini yaratish
       const queueItem = await this.homeworkQueueRepository.addToQueue({
         userId,
         homeworkId: homework.id,
-        lessonId: lessonId,
-        courseId: lessonProgress.courseId,
+        courseId,
         isScheduled: true,
         scheduledAt: new Date(), // Darhol yuborish uchun hozirgi vaqt
         priority: 200 // Eng yuqori prioritet
@@ -204,7 +199,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       
       return new ResData("Uyga vazifa muvaffaqiyatli rejalashtirildi", 200, queueItem);
     } catch (error) {
-      console.error(`Dars ${lessonId} uchun uyga vazifani rejalashtirish xatoligi:`, error);
+      console.error(`Dars uchun uyga vazifani rejalashtirish xatoligi:`, error);
       return new ResData("Uyga vazifani rejalashtirish xatoligi", 500, null);
     }
   }
@@ -280,7 +275,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         continue; // Lesson ID topilmasa, keyingi darsga o'tish
       }
       
-      const homework = await this.findHomeworkByLessonId(lessonId);
+      const homework = await this.findHomeworkByLessonId(lesson.courseId, lesson.blockOrder, lesson.lessonOrder);
       if (!homework) {
         continue; // Uy vazifa topilmasa, keyingi darsga o'tish
       }
@@ -313,7 +308,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         const queueItem = await this.homeworkQueueRepository.addToQueue({
           userId,
           homeworkId: homework.id,
-          lessonId: lesson.lesson?.id,
           priority: modulePriority + watchCountPriority + latestLessonPriority
         });
         
@@ -325,24 +319,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   }
 
   // Darsga mos keladigan uy vazifani topish
-  private async findHomeworkByLessonId(lessonId: ID) {
+  private async findHomeworkByLessonId(courseId: ID, blockOrder: number, lessonOrder: number) {
     try {
-      // Darsni topish
-      const lesson = await this.lessonRepository.findById(lessonId);
-      if (!lesson) {
-        this.logger.warn(`Lesson not found with ID: ${lessonId}`);
-        return null;
-      }
-      
-      // Kerakli ma'lumotlarni olish
-      const courseId = lesson.course?.id;
-      const blockOrder = lesson.block?.order;
-      const lessonOrder = lesson.order;
-      
-      if (!courseId || blockOrder === undefined || lessonOrder === undefined) {
-        this.logger.warn(`Lesson ${lessonId} missing required fields: courseId=${courseId}, blockOrder=${blockOrder}, lessonOrder=${lessonOrder}`);
-        return null;
-      }
+
       
       // Kurs bo'yicha HOMEWORK kategoriyasidagi bloklarni olish
       const homeworkBlocks = await this.blockRepository.getBlocksHomeworksByCourseId(courseId);
@@ -376,7 +355,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       
       return homework;
     } catch (error) {
-      this.logger.error(`Error finding homework for lesson ${lessonId}: ${error.message}`, error.stack);
+      this.logger.error(`Error finding homework for lesson: ${error.message}`, error.stack);
       return null;
     }
   }

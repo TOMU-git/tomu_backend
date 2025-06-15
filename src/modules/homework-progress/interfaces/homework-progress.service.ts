@@ -24,5 +24,5 @@ export interface IHomeworkProgressService {
   getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>>;
   
   // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
-  scheduleHomeworkForLesson(userId: ID, lessonId: ID): Promise<ResData<any>>;
+  scheduleHomeworkForLesson(userId: ID, courseId: ID, blockOrder: number, lessonOrder: number): Promise<ResData<any>>;
 }
