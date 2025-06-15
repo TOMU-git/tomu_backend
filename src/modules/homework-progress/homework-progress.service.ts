@@ -403,16 +403,16 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
   }
 
-  async update(dto: UpdateHomeworkProgressDto): Promise<ResData<HomeworkProgress>> {
+  async update(id: ID): Promise<ResData<HomeworkProgress>> {
     try {
       // HomeworkQueue dan video ma'lumotlarini olish
       // dto.id is the queue item ID, not the homework ID
-      const queueItem = await this.homeworkQueueRepository.findById(dto.id)
+      const queueItem = await this.homeworkQueueRepository.findById(id)
 
       console.log("queueItem", queueItem)
 
       if (!queueItem) {
-        this.logger.error(`Homework queue item not found: queueId=${dto.id}`);
+        this.logger.error(`Homework queue item not found: queueId=${id}`);
         throw new NotFoundException('Homework queue item not found');
       }
 
@@ -420,7 +420,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
       // Kerakli maydonlar mavjudligini tekshirish
       if (!queueItem.courseId) {
-        this.logger.error(`Course ID not found in queue item: queueId=${dto.id}`);
+        this.logger.error(`Course ID not found in queue item: queueId=${id}`);
         throw new BadRequestException('Course ID not found in queue item');
       }
 
@@ -473,6 +473,33 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         }
       }
 
+      // Uyga vazifa ko'rilgandan so'ng keyingi darsni ochish
+      try {
+        const blockOrder = homeworkProgress.blockOrder;
+        const homeworkOrder = homeworkProgress.homeworkOrder;
+        const courseId = homeworkProgress.courseId;
+
+        // Keyingi darsni topish (uyga vazifa tartib raqami bilan bir xil bo'lgan dars)
+        const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+          homeworkOrder + 1, // Keyingi dars
+          userId,
+          blockOrder,
+          courseId
+        );
+
+        if (nextLessonProgress) {
+          // Keyingi darsni ochiq qilish
+          nextLessonProgress.isUnlocked = true;
+          await this.lessonProgressRepository.update(nextLessonProgress);
+          this.logger.log(`Keyingi dars (order: ${nextLessonProgress.lessonOrder}) ochiq qilindi`);
+        } else {
+          this.logger.warn(`Keyingi dars topilmadi: homeworkOrder=${homeworkOrder + 1}, blockOrder=${blockOrder}, courseId=${courseId}`);
+        }
+      } catch (error) {
+        this.logger.error(`Keyingi darsni ochishda xatolik: ${error.message}`, error.stack);
+        // Asosiy jarayonni to'xtatmaslik uchun xatoni yutib yuboramiz
+      }
+
       // Yangi videolarni navbatga qo'shish metodi chaqirilmaydi
       // await this.scheduleHomeworkForUser(userId); - bu qator o'chirildi
 
@@ -519,6 +546,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // Navbatdagi videolarni formatlash
       const formattedVideos = queueItems.map(item => this.formatHomeworkQueueItem(item));
 
+      console.log("formattedVideos", formattedVideos)
+
       // Agar videolar orasida 1-moduldan boshqa modul yoki 20-darsdan keyin darslar bo'lsa, to'lov tekshirish
       const hasLessonsBeyondFree = formattedVideos.some(video =>
         (video.blockOrder && video.blockOrder > 1) ||
@@ -528,6 +557,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       if (hasLessonsBeyondFree) {
         // Foydalanuvchi to'lov qilgan-qilmaganini tekshirish
         const courseId = formattedVideos[0].courseId;
+        console.log("courseId", courseId)
         if (!courseId) {
           this.logger.error('Course ID not found in homework progress');
           return new ResData("Kurs ma'lumotlari topilmadi", 500, []);
@@ -572,6 +602,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         videoUrl: queueItem.homework.videoUrl
       } as any : null,
       blockId: queueItem.homework?.blockId, // Use homework's blockId instead of moduleId
+      blockOrder: queueItem.blockOrder,
+      homeworkOrder: queueItem.homeworkOrder,
       userId: queueItem.userId,
       isWatched: false, // Navbatdagi videolar hali ko'rilmagan
       createdAt: queueItem.createdAt,

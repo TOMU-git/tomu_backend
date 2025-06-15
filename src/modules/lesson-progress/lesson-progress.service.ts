@@ -76,20 +76,29 @@ export class LessonProgressService implements ILessonProgressService {
         throw new Error('Dars topilmadi');
       }
 
+      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
+      if (foundLessonProgress.isWatched) {
+        return new ResData<LessonProgress>(
+          "Dars allaqachon ko'rilgan",
+          200,
+          foundLessonProgress,
+        );
+      }
+
       const userId = Number(foundLessonProgress.userId);
       const courseId = Number(foundLessonProgress.courseId);
       const blockOrder = Number(foundLessonProgress.blockOrder);
       const lessonOrder = Number(foundLessonProgress.lessonOrder);
 
       // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-      const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-      if (watchedLessonsToday >= 10) {
-        return new ResData<LessonProgress>(
-          "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
-          400,
-          foundLessonProgress,
-        );
-      }
+      // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
+      // if (watchedLessonsToday >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
+      //     400,
+      //     foundLessonProgress,
+      //   );
+      // }
 
       // Oldingi uy vazifalar bajarilganligini tekshirish
       const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
@@ -171,14 +180,14 @@ export class LessonProgressService implements ILessonProgressService {
     blockId: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
     // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-    const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-    if (watchedLessonsToday >= 10) {
-      return new ResData<Array<LessonProgress>>(
-        "You have reached the daily limit of 10 lessons. Please continue tomorrow.",
-        400,
-        [],
-      );
-    }
+    // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
+    // if (watchedLessonsToday >= 10) {
+    //   return new ResData<Array<LessonProgress>>(
+    //     "You have reached the daily limit of 10 lessons. Please continue tomorrow.",
+    //     400,
+    //     [],
+    //   );
+    // }
 
     // Block mavjudligini tekshirish
     const block = await this.blockRepository.findById(blockId);

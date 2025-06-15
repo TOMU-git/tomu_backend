@@ -15,7 +15,7 @@ export interface IHomeworkProgressService {
   findByUserId(id: ID): Promise<ResData<Array<HomeworkProgress>>>;
 
   // ID va DTO bo'yicha HomeworkProgress yozuvini yangilaydi
-  update(dto: UpdateHomeworkProgressDto): Promise<ResData<HomeworkProgress>>;
+  update(id: ID): Promise<ResData<HomeworkProgress>>;
 
   // ID bo'yicha HomeworkProgress yozuvini o'chiradi
   delete(id: ID): Promise<ResData<HomeworkProgress>>;
