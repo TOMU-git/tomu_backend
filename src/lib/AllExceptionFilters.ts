@@ -4,7 +4,6 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  Res,
 } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
 import { ResData } from "./resData";
@@ -14,45 +13,68 @@ import { PaymeDataEnum } from "src/common/enums/enum";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  res: Response;
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-  catch(exception: any, host: ArgumentsHost): void | Response {
+  catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const response1 = ctx.getResponse<Response>();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
 
-    const responseBody = new ResData(
-      "",
-      HttpStatus.INTERNAL_SERVER_ERROR,
-      null,
-      exception,
-    );
-    if (exception instanceof HttpException) {
-      if (exception instanceof TransactionErrorException) {
-        return response1.status(HttpStatus.OK).json({
-          error: {
-            code: exception.transactionErrorCode,
-            message: exception.transactionErrorMessage,
-            data: exception.transactionData as PaymeDataEnum,
-          },
-          id: exception.transactionId,
-        });
-      }
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = "Internal server error";
+    let error: Error | null = null;
 
-      responseBody.statusCode = exception.getStatus();
-
-      const response = exception.getResponse() as Error;
-
-      if (typeof response === "string") {
-        responseBody.message = response;
-      } else {
-        responseBody.message = response?.message.toString();
-      }
-    } else {
-      responseBody.message = exception.message;
+    // ✅ TransactionErrorException (Payme uchun maxsus)
+    if (exception instanceof TransactionErrorException) {
+      response.status(HttpStatus.OK).json({
+        error: {
+          code: exception.transactionErrorCode,
+          message: exception.transactionErrorMessage,
+          data: exception.transactionData as PaymeDataEnum,
+        },
+        id: exception.transactionId,
+      });
+      return; // ✅ bu yerda faqat return; qilish mumkin, lekin qiymat qaytarmaymiz
     }
 
-    httpAdapter.reply(ctx.getResponse(), responseBody, responseBody.statusCode);
+    // ✅ NestJS HttpException (shu jumladan UnauthorizedException)
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
+      if (typeof res === "object" && res !== null) {
+        message = (res as any).message || exception.message;
+      } else {
+        message = res as string;
+      }
+      error = exception;
+    }
+    // ✅ JWT xatolari: token yaroqsiz yoki muddati tugagan
+    else if (
+      exception instanceof Error &&
+      (
+        exception.name === "TokenExpiredError" ||
+        exception.name === "JsonWebTokenError" ||
+        exception.name === "NotBeforeError"
+      )
+    ) {
+      status = HttpStatus.UNAUTHORIZED;
+      message = exception.message;
+      error = exception;
+    }
+    // 🔁 Boshqa barcha xatolar (default 500)
+    else if (exception instanceof Error) {
+      message = exception.message;
+      error = exception;
+    }
+
+    const responseBody = new ResData(
+      message,
+      status,
+      null,
+      error,
+    );
+
+    httpAdapter.reply(response, responseBody, status);
   }
 }
