@@ -16,6 +16,7 @@ import { HomeworkProgressRepository } from "./repositories/homework-progress.rep
 import { HomeworkWatchRecordRepository } from "./repositories/homework-watch-record.repository";
 import { HomeworkQueueRepository } from "./repositories/homework-queue.repository";
 import { LessonModule } from "../lesson/lesson.module";
+import { UserCoursesModule } from "../user-courses/user-courses.module";
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { LessonModule } from "../lesson/lesson.module";
     BlockModule,
     UserHomeworkProgressModule,
     LessonModule,
+    UserCoursesModule, // UserCoursesModule ni qo'shamiz
     forwardRef(() => LessonProgressModule), // forwardRef() bilan import qilingan
     ScheduleModule.forRoot(), // Cron job uchun ScheduleModule ni qo'shamiz
   ],
@@ -49,4 +51,4 @@ import { LessonModule } from "../lesson/lesson.module";
     HomeworkQueueRepository, // HomeworkQueueRepository ni export qilamiz
   ],
 })
-export class HomeworkProgressModule {}
+export class HomeworkProgressModule { }

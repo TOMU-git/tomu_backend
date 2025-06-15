@@ -9,6 +9,7 @@ import { LessonModule } from "../lesson/lesson.module";
 import { UserModule } from "../user/user.module";
 import { BlockModule } from "../block/block.module";
 import { HomeworkProgressModule } from "../homework-progress/homework-progress.module";
+import { UserCoursesModule } from "../user-courses/user-courses.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HomeworkProgressModule } from "../homework-progress/homework-progress.m
     LessonModule,
     UserModule,
     BlockModule,
+    UserCoursesModule,
     forwardRef(() => HomeworkProgressModule), // forwardRef() bilan import qilingan
   ],
   controllers: [LessonProgressController],
@@ -35,4 +37,4 @@ import { HomeworkProgressModule } from "../homework-progress/homework-progress.m
     },
   ],
 })
-export class LessonProgressModule {}
+export class LessonProgressModule { }
