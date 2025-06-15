@@ -81,7 +81,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     try {
       this.logger.log('Aktiv foydalanuvchilarni olish...');
 
-      // Oxirgi 30 kunda dars ko'rgan foydalanuvchilarni olish
+      // Oxirgi 30 kunda dars ko'rilganda foydalanuvchilarni olish
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -346,7 +346,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         return null;
       }
 
-      // Dars tartib raqamiga mos keladigan uy vazifani topish
+      // Dars tartib raqami bilan bir xil uy vazifani topish
       // Uy vazifa tartib raqami dars tartib raqamiga teng bo'lishi kerak
       const homework = homeworks.find(hw => hw.order === lessonOrder);
 
@@ -537,7 +537,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     try {
       // Homework queue jadvalidan foydalanuvchining navbatdagi videolarini olish
       const queueItems = await this.homeworkQueueRepository.findByUserId(userId);
-
       if (!queueItems || queueItems.length === 0) {
         // Agar queue bo'sh bo'lsa, foydalanuvchi uchun uy vazifa videolar yo'q degan xabarni qaytarish
         return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
@@ -546,7 +545,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // Navbatdagi videolarni formatlash
       const formattedVideos = queueItems.map(item => this.formatHomeworkQueueItem(item));
 
-      console.log("formattedVideos", formattedVideos)
 
       // Agar videolar orasida 1-moduldan boshqa modul yoki 20-darsdan keyin darslar bo'lsa, to'lov tekshirish
       const hasLessonsBeyondFree = formattedVideos.some(video =>
@@ -554,10 +552,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         (video.blockOrder === 1 && video.homeworkOrder && video.homeworkOrder > 20)
       );
 
-      if (hasLessonsBeyondFree) {
+      if (hasLessonsBeyondFree && queueItems.length > 0) {
         // Foydalanuvchi to'lov qilgan-qilmaganini tekshirish
-        const courseId = formattedVideos[0].courseId;
-        console.log("courseId", courseId)
+        // courseId ni to'g'ridan-to'g'ri queueItems dan olish
+        const courseId = queueItems[0].courseId;
         if (!courseId) {
           this.logger.error('Course ID not found in homework progress');
           return new ResData("Kurs ma'lumotlari topilmadi", 500, []);
@@ -604,6 +602,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       blockId: queueItem.homework?.blockId, // Use homework's blockId instead of moduleId
       blockOrder: queueItem.blockOrder,
       homeworkOrder: queueItem.homeworkOrder,
+      courseId: queueItem.courseId,
       userId: queueItem.userId,
       isWatched: false, // Navbatdagi videolar hali ko'rilmagan
       createdAt: queueItem.createdAt,
