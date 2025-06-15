@@ -578,4 +578,15 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       lastUpdatedAt: queueItem.lastUpdatedAt
     };
   }
+
+  // Foydalanuvchi ID si bo'yicha uyga vazifa navbatidagi elementlar sonini qaytaradi
+  async countQueueItems(userId: ID): Promise<ResData<{ count: number }>> {
+    try {
+      const count = await this.homeworkQueueRepository.countQueueItemsByUserId(userId);
+      return new ResData("Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni", 200, { count });
+    } catch (error) {
+      this.logger.error(`Error counting queue items for user ${userId}: ${error.message}`, error.stack);
+      return new ResData("Uyga vazifa navbatidagi elementlar sonini olishda xatolik yuz berdi", 500, { count: 0 });
+    }
+  }
 }

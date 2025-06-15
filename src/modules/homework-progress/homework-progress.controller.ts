@@ -23,7 +23,7 @@ export class HomeworkProgressController {
   constructor(
     @Inject("IHomeworkProgressService")
     private readonly homeworkProgressService: IHomeworkProgressService,
-  ) {}
+  ) { }
 
   /**
    * Foydalanuvchi uchun uy vazifa videolarini olish
@@ -60,7 +60,7 @@ export class HomeworkProgressController {
   async update(
     @Body() updateHomeworkProgressDto: UpdateHomeworkProgressDto, // Yangilash DTO sini oling
   ): Promise<ResData<HomeworkProgress>> {
-   
+
     // Servisga foydalanuvchi ID ni to'g'ridan-to'g'ri uzatish
     return await this.homeworkProgressService.update(updateHomeworkProgressDto);
   }
@@ -75,5 +75,16 @@ export class HomeworkProgressController {
     @Param("id", ParseIntPipe) id: ID,
   ): Promise<ResData<HomeworkProgress>> {
     return await this.homeworkProgressService.delete(id);
+  }
+
+  /**
+   * Foydalanuvchi uchun uy vazifa navbatidagi elementlar sonini qaytaradi
+   * @returns Foydalanuvchi uchun uy vazifa navbatidagi elementlar soni
+   */
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Get("queue-count")
+  async getQueueCount(@Req() req: RequestWithUser): Promise<ResData<{ count: number }>> {
+    const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
+    return await this.homeworkProgressService.countQueueItems(userId);
   }
 }

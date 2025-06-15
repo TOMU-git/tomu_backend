@@ -22,7 +22,10 @@ export interface IHomeworkProgressService {
 
   // Agar schedule bo'lmasa, foydalanuvchi ko'rgan modullar asosida yangi schedule yaratadi
   getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>>;
-  
+
   // Dars ko'rilganda darhol o'sha darsning uyga vazifasini yuborish
   scheduleHomeworkForLesson(userId: ID, courseId: ID, blockOrder: number, lessonOrder: number): Promise<ResData<any>>;
+
+  // Foydalanuvchi ID bo'yicha uyga vazifa navbatidagi elementlar sonini qaytaradi
+  countQueueItems(userId: ID): Promise<ResData<{ count: number }>>;
 }
