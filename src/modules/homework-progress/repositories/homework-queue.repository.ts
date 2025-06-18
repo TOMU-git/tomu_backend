@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HomeworkQueue } from "../entities/homework-queue.entity";
-import { LessThan, Repository,DeleteResult } from "typeorm";
+import { LessThan, Repository, DeleteResult } from "typeorm";
 import { ID } from "src/common/types/type";
 import { Homework } from "src/modules/homework/entities/homework.entity";
 
@@ -11,7 +11,7 @@ export class HomeworkQueueRepository {
   constructor(
     @InjectRepository(HomeworkQueue)
     private readonly repository: Repository<HomeworkQueue>,
-  ) {}
+  ) { }
 
   async findByUser(userId: ID): Promise<HomeworkQueue[]> {
     return this.repository.find({
@@ -52,7 +52,7 @@ export class HomeworkQueueRepository {
    */
   async findByUserIdAndHomeworkId(userId: ID, homeworkId: ID): Promise<HomeworkQueue | null> {
     return this.repository.findOne({
-      where: { 
+      where: {
         userId: Number(userId),
         homeworkId: Number(homeworkId)
       },
@@ -74,8 +74,8 @@ export class HomeworkQueueRepository {
 
   async findScheduledHomeworksByUser(userId: ID): Promise<HomeworkQueue[]> {
     return this.repository.find({
-      where: { 
-        userId, 
+      where: {
+        userId,
         isScheduled: true,
         scheduledAt: LessThan(new Date())
       },
@@ -86,7 +86,7 @@ export class HomeworkQueueRepository {
 
   async countPendingHomeworksByUser(userId: ID): Promise<number> {
     return this.repository.count({
-      where: { userId, isScheduled: true },
+      where: { userId },
     });
   }
 
@@ -98,20 +98,20 @@ export class HomeworkQueueRepository {
           where: { id: Number(queue.homeworkId) },
           relations: ['block', 'block.course']
         });
-        
+
         if (homework) {
           // Homework order ni o'rnatish
           if (!queue.homeworkOrder && typeof homework.order === 'number') {
             queue.homeworkOrder = homework.order;
           }
-          
+
           // Block order ni o'rnatish
           if (!queue.blockOrder && homework.block && typeof homework.block.order === 'number') {
             queue.blockOrder = homework.block.order;
           } else if (!queue.blockOrder) {
             queue.blockOrder = 0; // Default qiymat
           }
-          
+
           // Course ID ni o'rnatish
           if (!queue.courseId && homework.block && homework.block.course && homework.block.course.id) {
             queue.courseId = homework.block.course.id;
@@ -128,10 +128,10 @@ export class HomeworkQueueRepository {
       console.error('Error in addToQueue:', error.message);
       throw error;
     }
-    
+
     const newItem = this.repository.create(queue);
     const savedItem = await this.repository.save(newItem);
-    
+
     // Homework relationni qayta yuklash
     return this.repository.findOne({
       where: { id: savedItem.id },
@@ -151,7 +151,7 @@ export class HomeworkQueueRepository {
    */
   async findByUserIdAndQueueId(userId: ID, queueId: ID): Promise<HomeworkQueue | null> {
     return this.repository.findOne({
-      where: { 
+      where: {
         id: Number(queueId),
         userId: Number(userId)
       },
@@ -171,5 +171,17 @@ export class HomeworkQueueRepository {
     item.isScheduled = true;
     item.scheduledAt = scheduledAt;
     return this.repository.save(item);
+  }
+
+  /**
+   * Foydalanuvchi ID si bo'yicha uyga vazifa navbatidagi elementlar sonini hisoblash
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @returns Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni
+   */
+  async countQueueItemsByUserId(userId: ID): Promise<number> {
+    return this.repository.count({
+      where: { userId: Number(userId) }
+    });
   }
 }

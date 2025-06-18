@@ -11,6 +11,7 @@ export interface ILessonRepository {
   findOneByName(title: string): Promise<Lesson | null>;
   findOneByOrder(order: ID, blockId: ID): Promise<Lesson | null>;
   findLessonsByBlockId(blockId: ID): Promise<Lesson[]>;
+  countByBlockId(blockId: ID): Promise<number> 
   findNextFiveLessonsAfterOrder(
     lastLessonOrder: number,
     blockId: ID,
