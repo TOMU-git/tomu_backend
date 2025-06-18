@@ -89,4 +89,14 @@ export class LessonRepository implements ILessonRepository {
       relations: ['block', 'course'],
     });
   }
+
+
+  async countByBlockId(blockId: ID): Promise<number> {
+    return await this.lessonRepository.count({
+      where: {
+        block: { id: blockId },
+      },
+    });
+  }
+  
 }

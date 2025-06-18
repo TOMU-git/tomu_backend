@@ -86,7 +86,7 @@ export class HomeworkQueueRepository {
 
   async countPendingHomeworksByUser(userId: ID): Promise<number> {
     return this.repository.count({
-      where: { userId, isScheduled: true },
+      where: { userId },
     });
   }
 

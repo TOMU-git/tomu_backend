@@ -179,40 +179,50 @@ export class LessonProgressService implements ILessonProgressService {
     userId: ID,
     blockId: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
-    // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-    // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-    // if (watchedLessonsToday >= 10) {
-    //   return new ResData<Array<LessonProgress>>(
-    //     "You have reached the daily limit of 10 lessons. Please continue tomorrow.",
-    //     400,
-    //     [],
-    //   );
-    // }
-
-    // Block mavjudligini tekshirish
     const block = await this.blockRepository.findById(blockId);
     if (!block) {
       throw new BlockNotFoundException();
     }
-
-    // Foydalanuvchi va block uchun progress mavjudligini tekshirish
+  
     const existingProgresses =
       await this.lessonProgressRepository.findByBlockIdAndUserId(
         blockId,
         userId,
       );
-
+  
+    // 🔄 Progress mavjud bo'lsa, lekin yangi darslar qo'shilgan bo'lsa, progressni yangilash
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
-
-      // Foydalanuvchi to'lov qilgan-qilmaganini tekshirish
+  
+      // 1. Darslar sonini tekshirish
+      const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
+      const progressCount = existingProgresses.length;
+  
+      // 2. Agar yangi darslar mavjud bo‘lsa, progressga qo‘shib qo‘yish
+      if (totalLessonsCount > progressCount) {
+        // generateLessonProgress progresslarni to‘liq qayta yaratmaydi, faqat yo‘qlarni qo‘shadi
+        await this.generateLessonProgress(userId, blockId, courseId);
+  
+        // Progressni qaytadan olish (yangilangan holda)
+        const updatedProgresses =
+          await this.lessonProgressRepository.findByBlockIdAndUserId(
+            blockId,
+            userId,
+          );
+  
+        return new ResData<Array<LessonProgress>>(
+          "Lesson progress updated with new lessons",
+          200,
+          updatedProgresses,
+        );
+      }
+  
+      // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
       const userCourse = await this.userCourseRepository.findByTariffIdAndUserId(userId, courseId);
       const isPaid = userCourse && userCourse.isActive;
-
-      // Agar to'lov qilinmagan bo'lsa va (blockOrder > 1 yoki lessonOrder > 20) bo'lsa, xatolik qaytarish
+  
       if (!isPaid) {
-        // Agar block order 1 dan katta bo'lsa, xatolik qaytarish
         if (blockOrder > 1) {
           return new ResData<Array<LessonProgress>>(
             "To access lessons beyond module 1, you need to purchase this course.",
@@ -220,14 +230,12 @@ export class LessonProgressService implements ILessonProgressService {
             existingProgresses,
           );
         }
-
-        // Agar block order 1 bo'lsa, lekin darslar orasida 20 dan katta orderga ega bo'lgan dars bo'lsa
-        // va u dars unlocked bo'lsa, xatolik qaytarish
+  
         if (blockOrder === 1) {
           const hasLessonBeyond20 = existingProgresses.some(progress =>
             progress.lessonOrder > 20 && progress.isUnlocked
           );
-
+  
           if (hasLessonBeyond20) {
             return new ResData<Array<LessonProgress>>(
               "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
@@ -237,56 +245,34 @@ export class LessonProgressService implements ILessonProgressService {
           }
         }
       }
-
-      const lastWatchedLessonOrder =
-        await this.lessonProgressRepository.findLastWatchedLessonOrder(
-          userId,
-          courseId,
-          blockOrder,
-        );
-
-      const lastWatchedHomeworkOrder =
-        await this.homeworkProgressRepository.findLastWatchedHomework(
-          courseId,
-          userId,
-          blockOrder,
-        );
-
-      // Har bir darsdan keyin uy vazifa bajarilishi shart
-      if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
-        return new ResData<Array<LessonProgress>>(
-          "To view the next lessons, you must first complete the homework assignment",
-          400,
-          existingProgresses,
-        );
-      }
-
+  
       return new ResData<Array<LessonProgress>>(
         "Lesson fetched successfully",
         200,
         existingProgresses,
       );
     }
-
-    // Agar progress mavjud bo'lmasa, yangi progress yaratish
+  
+    // ❌ Agar progress umuman bo'lmasa — ilk marta yaratilmoqda
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-
+  
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-
+  
       return new ResData<Array<LessonProgress>>(
         "Lesson progress created successfully",
         200,
         newProgresses,
       );
     }
-
+  
     return new ResData<Array<LessonProgress>>(
       "No lessons available",
       404,
       [],
     );
   }
+  
 
   /**
    * Berilgan block va foydalanuvchi uchun barcha darslar progressini yaratadi
@@ -302,57 +288,64 @@ export class LessonProgressService implements ILessonProgressService {
     courseId: ID,
   ): Promise<Array<LessonProgress>> {
     try {
-      // Blokni olish
       const block = await this.blockRepository.findById(blockId);
       if (!block) {
         throw new Error(`${blockId} ID li block topilmadi`);
       }
-
-      // Blockdagi barcha darslarni olish
+  
+      // Barcha darslarni olish
       const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
       if (!lessons || lessons.length === 0) {
         throw new Error(`${blockId} ID li blockda darslar topilmadi`);
       }
-
-      // Darslarni tartib raqami bo'yicha saralash
+  
+      // Mavjud progresslar
+      const existingProgresses =
+        await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+  
+      const existingLessonIds = new Set(
+        existingProgresses.map(progress => progress.lesson.id),
+      );
+  
       const sortedLessons = lessons.sort((a, b) => a.order - b.order);
+  
       const newProgressList: LessonProgress[] = [];
-
+  
       for (const lesson of sortedLessons) {
-        // Har bir dars uchun progress yaratish
-        const existingProgress = await this.lessonProgressRepository.findOneByUserAndLesson(
-          userId,
-          lesson.id,
-        );
-
-        if (!existingProgress) {
-          const newProgress = new LessonProgress();
-          newProgress.userId = userId;
-          newProgress.blockId = blockId;
-          newProgress.lessonOrder = lesson.order;
-          newProgress.blockOrder = block.order;
-          newProgress.courseId = courseId;
-          newProgress.lesson = lesson;
-          newProgress.isWatched = false;
-
-          // Birinchi darsni ochiq qilish, qolganlarini yopiq
-          newProgress.isUnlocked = lesson.order === sortedLessons[0].order;
-
-          this.logger.log(`Yangi progress yaratilmoqda: lessonOrder=${newProgress.lessonOrder}, isUnlocked=${newProgress.isUnlocked}`);
-
-          const createdProgress = await this.lessonProgressRepository.create(newProgress);
-          newProgressList.push(createdProgress);
-        } else {
-          newProgressList.push(existingProgress);
+        if (existingLessonIds.has(lesson.id)) {
+          continue; // progress allaqachon mavjud, o'tkazib yuboriladi
         }
+  
+        const newProgress = new LessonProgress();
+        newProgress.userId = userId;
+        newProgress.blockId = blockId;
+        newProgress.lessonOrder = lesson.order;
+        newProgress.blockOrder = block.order;
+        newProgress.courseId = courseId;
+        newProgress.lesson = lesson;
+        newProgress.isWatched = false;
+  
+        // Progress hali yo'q darslar ichida eng birinchi tartibdagini ochiq qilish
+        const isFirstUnlocked =
+          !existingProgresses.length &&
+          lesson.order === sortedLessons[0].order;
+        newProgress.isUnlocked = isFirstUnlocked;
+  
+        this.logger.log(
+          `Yangi progress qo‘shildi: lessonOrder=${newProgress.lessonOrder}, isUnlocked=${newProgress.isUnlocked}`,
+        );
+  
+        const createdProgress = await this.lessonProgressRepository.create(newProgress);
+        newProgressList.push(createdProgress);
       }
-
-      return newProgressList;
+  
+      return [...existingProgresses, ...newProgressList];
     } catch (error) {
       this.logger.error('Dars progresslarini yaratishda xatolik: ' + error.message);
       throw error;
     }
   }
+  
 
   /**
    * Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
