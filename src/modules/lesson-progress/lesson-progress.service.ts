@@ -16,6 +16,7 @@ import { IHomeworkProgressService } from "../homework-progress/interfaces/homewo
 import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
+import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -39,10 +40,13 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("IBlockRepository") // LessonRepository ni inject qilamiz
     private readonly blockRepository: IBlockRepository,
-    
+
     @Inject(forwardRef(() => "IHomeworkProgressService")) // HomeworkProgressService ni inject qilamiz
     private readonly homeworkProgressService: IHomeworkProgressService,
-  ) {}
+
+    @Inject("IUserCourseRepository") // UserCourseRepository ni inject qilamiz
+    private readonly userCourseRepository: IUserCourseRepository,
+  ) { }
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     const data = await this.lessonProgressRepository.findAll();
@@ -66,40 +70,49 @@ export class LessonProgressService implements ILessonProgressService {
       if (!foundLessonProgress) {
         throw new LessonProgressNotFoundException();
       }
-      
+
       // Lesson ma'lumotlarini tekshirish
       if (!foundLessonProgress.lesson) {
-        throw new Error('Dars topilmadi');  
+        throw new Error('Dars topilmadi');
       }
-      
+
+      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
+      if (foundLessonProgress.isWatched) {
+        return new ResData<LessonProgress>(
+          "Dars allaqachon ko'rilgan",
+          200,
+          foundLessonProgress,
+        );
+      }
+
       const userId = Number(foundLessonProgress.userId);
       const courseId = Number(foundLessonProgress.courseId);
       const blockOrder = Number(foundLessonProgress.blockOrder);
       const lessonOrder = Number(foundLessonProgress.lessonOrder);
-      
+
       // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-      const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-      if (watchedLessonsToday >= 10) {
-        return new ResData<LessonProgress>(
-          "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
-          400,
-          foundLessonProgress,
-        );
-      }
-      
+      // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
+      // if (watchedLessonsToday >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
+      //     400,
+      //     foundLessonProgress,
+      //   );
+      // }
+
       // Oldingi uy vazifalar bajarilganligini tekshirish
       const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
         userId,
         courseId,
         blockOrder,
       );
-      
+
       const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(
         courseId,
         userId,
         blockOrder,
       );
-      
+
       // Har bir darsdan keyin uy vazifa bajarilishi shart
       if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
         return new ResData<LessonProgress>(
@@ -108,7 +121,15 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-      console.log("working");
+
+      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
+      if (foundLessonProgress.isWatched) {
+        return new ResData<LessonProgress>(
+          "Dars allaqachon ko'rilgan",
+          200,
+          foundLessonProgress,
+        );
+      }
 
       // Joriy darsni ko'rilgan qilish
       foundLessonProgress.isWatched = true;
@@ -118,21 +139,21 @@ export class LessonProgressService implements ILessonProgressService {
       try {
         // Lesson obyektini tekshirish va lessonId olish
         if (!foundLessonProgress.lesson || !foundLessonProgress.lesson.id) {
-          this.logger.warn(`Dars ma'lumotlari to'liq emas, uyga vazifani rejalashtirish o'tkazib yuborildi`);
+          this.logger.warn(`Dars ma'lumotlari to'liq emas, uyga vazifa rejalashtirish o'tkazib yuborildi`);
           return new ResData<LessonProgress>(
             "Dars progressi muvaffaqiyatli yangilandi, lekin uyga vazifa rejalashtirilmadi",
             200,
             foundLessonProgress,
           );
         }
-        
+
         const lessonId = foundLessonProgress.lesson.id;
 
         console.log("lessonId in lessonProgressService", lessonId);
-        
+
         // Event emitter orqali xabar yuborish o'rniga to'g'ridan-to'g'ri metodni chaqiramiz
         const result = await this.homeworkProgressService.scheduleHomeworkForLesson(userId, courseId, blockOrder, lessonOrder);
-        
+
         if (result.statusCode === 200) {
           this.logger.log(`Dars (ID: ${lessonId}) ko'rilgandan so'ng uyga vazifa muvaffaqiyatli rejalashtirildi`);
         } else {
@@ -158,82 +179,100 @@ export class LessonProgressService implements ILessonProgressService {
     userId: ID,
     blockId: ID,
   ): Promise<ResData<Array<LessonProgress>>> {
-    // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-    const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-    if (watchedLessonsToday >= 10) {
-      return new ResData<Array<LessonProgress>>(
-        "You have reached the daily limit of 10 lessons. Please continue tomorrow.",
-        400,
-        [],
-      );
-    }
-
-    // Block mavjudligini tekshirish
     const block = await this.blockRepository.findById(blockId);
     if (!block) {
       throw new BlockNotFoundException();
     }
-
-    // Foydalanuvchi va block uchun progress mavjudligini tekshirish
+  
     const existingProgresses =
       await this.lessonProgressRepository.findByBlockIdAndUserId(
         blockId,
         userId,
       );
-
+  
+    // 🔄 Progress mavjud bo'lsa, lekin yangi darslar qo'shilgan bo'lsa, progressni yangilash
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
-
-      const lastWatchedLessonOrder =
-        await this.lessonProgressRepository.findLastWatchedLessonOrder(
-          userId,
-          courseId,
-          blockOrder,
-        );
-
-      const lastWatchedHomeworkOrder =
-        await this.homeworkProgressRepository.findLastWatchedHomework(
-          courseId,
-          userId,
-          blockOrder,
-        );
-
-      // Har bir darsdan keyin uy vazifa bajarilishi shart
-      if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
+  
+      // 1. Darslar sonini tekshirish
+      const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
+      const progressCount = existingProgresses.length;
+  
+      // 2. Agar yangi darslar mavjud bo‘lsa, progressga qo‘shib qo‘yish
+      if (totalLessonsCount > progressCount) {
+        // generateLessonProgress progresslarni to‘liq qayta yaratmaydi, faqat yo‘qlarni qo‘shadi
+        await this.generateLessonProgress(userId, blockId, courseId);
+  
+        // Progressni qaytadan olish (yangilangan holda)
+        const updatedProgresses =
+          await this.lessonProgressRepository.findByBlockIdAndUserId(
+            blockId,
+            userId,
+          );
+  
         return new ResData<Array<LessonProgress>>(
-          "To view the next lessons, you must first complete the homework assignment",
-          400,
-          existingProgresses,
+          "Lesson progress updated with new lessons",
+          200,
+          updatedProgresses,
         );
       }
-
+  
+      // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
+      const userCourse = await this.userCourseRepository.findByTariffIdAndUserId(userId, courseId);
+      const isPaid = userCourse && userCourse.isActive;
+  
+      if (!isPaid) {
+        if (blockOrder > 1) {
+          return new ResData<Array<LessonProgress>>(
+            "To access lessons beyond module 1, you need to purchase this course.",
+            403,
+            existingProgresses,
+          );
+        }
+  
+        if (blockOrder === 1) {
+          const hasLessonBeyond20 = existingProgresses.some(progress =>
+            progress.lessonOrder > 20 && progress.isUnlocked
+          );
+  
+          if (hasLessonBeyond20) {
+            return new ResData<Array<LessonProgress>>(
+              "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
+              403,
+              existingProgresses,
+            );
+          }
+        }
+      }
+  
       return new ResData<Array<LessonProgress>>(
         "Lesson fetched successfully",
         200,
         existingProgresses,
       );
     }
-
-    // Agar progress mavjud bo'lmasa, yangi progress yaratish
+  
+    // ❌ Agar progress umuman bo'lmasa — ilk marta yaratilmoqda
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-    
+  
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-      
+  
       return new ResData<Array<LessonProgress>>(
         "Lesson progress created successfully",
         200,
         newProgresses,
       );
     }
-
+  
     return new ResData<Array<LessonProgress>>(
       "No lessons available",
       404,
       [],
     );
   }
+  
 
   /**
    * Berilgan block va foydalanuvchi uchun barcha darslar progressini yaratadi
@@ -249,57 +288,64 @@ export class LessonProgressService implements ILessonProgressService {
     courseId: ID,
   ): Promise<Array<LessonProgress>> {
     try {
-      // Blokni olish
       const block = await this.blockRepository.findById(blockId);
       if (!block) {
         throw new Error(`${blockId} ID li block topilmadi`);
       }
-
-      // Blockdagi barcha darslarni olish
+  
+      // Barcha darslarni olish
       const lessons = await this.lessonRepository.findLessonsByBlockId(blockId);
       if (!lessons || lessons.length === 0) {
         throw new Error(`${blockId} ID li blockda darslar topilmadi`);
       }
-
-      // Darslarni tartib raqami bo'yicha saralash
+  
+      // Mavjud progresslar
+      const existingProgresses =
+        await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+  
+      const existingLessonIds = new Set(
+        existingProgresses.map(progress => progress.lesson.id),
+      );
+  
       const sortedLessons = lessons.sort((a, b) => a.order - b.order);
+  
       const newProgressList: LessonProgress[] = [];
-
+  
       for (const lesson of sortedLessons) {
-        // Har bir dars uchun progress yaratish
-        const existingProgress = await this.lessonProgressRepository.findOneByUserAndLesson(
-          userId,
-          lesson.id,
-        );
-
-        if (!existingProgress) {
-          const newProgress = new LessonProgress();
-          newProgress.userId = userId;
-          newProgress.blockId = blockId;
-          newProgress.lessonOrder = lesson.order;
-          newProgress.blockOrder = block.order;
-          newProgress.courseId = courseId;
-          newProgress.lesson = lesson;
-          newProgress.isWatched = false;
-          
-          // Birinchi darsni ochiq qilish, qolganlarini yopiq
-          newProgress.isUnlocked = lesson.order === sortedLessons[0].order;
-          
-          this.logger.log(`Yangi progress yaratilmoqda: lessonOrder=${newProgress.lessonOrder}, isUnlocked=${newProgress.isUnlocked}`);
-
-          const createdProgress = await this.lessonProgressRepository.create(newProgress);
-          newProgressList.push(createdProgress);
-        } else {
-          newProgressList.push(existingProgress);
+        if (existingLessonIds.has(lesson.id)) {
+          continue; // progress allaqachon mavjud, o'tkazib yuboriladi
         }
+  
+        const newProgress = new LessonProgress();
+        newProgress.userId = userId;
+        newProgress.blockId = blockId;
+        newProgress.lessonOrder = lesson.order;
+        newProgress.blockOrder = block.order;
+        newProgress.courseId = courseId;
+        newProgress.lesson = lesson;
+        newProgress.isWatched = false;
+  
+        // Progress hali yo'q darslar ichida eng birinchi tartibdagini ochiq qilish
+        const isFirstUnlocked =
+          !existingProgresses.length &&
+          lesson.order === sortedLessons[0].order;
+        newProgress.isUnlocked = isFirstUnlocked;
+  
+        this.logger.log(
+          `Yangi progress qo‘shildi: lessonOrder=${newProgress.lessonOrder}, isUnlocked=${newProgress.isUnlocked}`,
+        );
+  
+        const createdProgress = await this.lessonProgressRepository.create(newProgress);
+        newProgressList.push(createdProgress);
       }
-
-      return newProgressList;
+  
+      return [...existingProgresses, ...newProgressList];
     } catch (error) {
       this.logger.error('Dars progresslarini yaratishda xatolik: ' + error.message);
       throw error;
     }
   }
+  
 
   /**
    * Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
@@ -309,17 +355,17 @@ export class LessonProgressService implements ILessonProgressService {
   private async checkDailyLessonsLimit(userId: ID): Promise<number> {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Bugungi kunning boshlanishi (00:00:00)
-    
+
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1); // Ertangi kun
-    
+
     // Bugun ko'rilgan darslar sonini hisoblash
     const watchedLessonsToday = await this.lessonProgressRepository.countWatchedLessonsInDateRange(
       userId,
       today,
       tomorrow
     );
-    
+
     return watchedLessonsToday;
   }
 }
