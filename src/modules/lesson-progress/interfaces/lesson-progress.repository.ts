@@ -44,7 +44,7 @@ export interface ILessonProgressRepository {
     blockId: ID,
   ): Promise<LessonProgress>;
 
-  findAllWatchedLessonsByUser(userId: ID): Promise<LessonProgress[]>;
+  findAllWatchedLessonsByUser(userId: ID, courseId: ID): Promise<LessonProgress[]>;
   checkAllLessonsWatched(
     blockOrder: ID,
     userId: ID,

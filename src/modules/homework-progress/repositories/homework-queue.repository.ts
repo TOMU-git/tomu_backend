@@ -35,9 +35,9 @@ export class HomeworkQueueRepository {
    * @param userId - Foydalanuvchi ID
    * @returns Foydalanuvchi uchun uyga vazifa navbati
    */
-  async findByUserId(userId: ID): Promise<HomeworkQueue[]> {
+  async findByUserIdAndCourseId(userId: ID, courseId: ID): Promise<HomeworkQueue[]> {
     return this.repository.find({
-      where: { userId: Number(userId) },
+      where: { userId: Number(userId), courseId: Number(courseId) },
       relations: ["homework"],
       order: { priority: "DESC" },
     });
@@ -179,9 +179,9 @@ export class HomeworkQueueRepository {
    * @param userId - Foydalanuvchi ID
    * @returns Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni
    */
-  async countQueueItemsByUserId(userId: ID): Promise<number> {
+  async countQueueItemsByUserId(userId: ID, courseId: ID): Promise<number> {
     return this.repository.count({
-      where: { userId: Number(userId) }
+      where: { userId: Number(userId), courseId: Number(courseId) }
     });
   }
 }

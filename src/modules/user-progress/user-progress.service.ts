@@ -31,9 +31,9 @@ export class UserProgressService {
     return Number(watchedVideosCount.length);
   }
 
-  async getWatchedLessonsCount(userId: ID): Promise<Number> {
+  async getWatchedLessonsCount(userId: ID, courseId: ID): Promise<Number> {
     const watchedVideosCount =
-      await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+      await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
     return Number(watchedVideosCount.length);
   }
 
@@ -49,7 +49,7 @@ export class UserProgressService {
   async getProgressData(userId: ID, courseId: ID): Promise<any> {
     const allVideosCount = await this.getVideosCount();
     const homeworkCount = await this.getWatchedHomeworksCount(userId, courseId);
-    const lessonCount = await this.getWatchedLessonsCount(userId);
+    const lessonCount = await this.getWatchedLessonsCount(userId, courseId);
     const watchedVideosCount = Number(homeworkCount) + Number(lessonCount);
 
     return {
