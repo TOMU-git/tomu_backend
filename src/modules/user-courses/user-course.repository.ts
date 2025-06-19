@@ -41,7 +41,8 @@ export class UserCourseRepository implements IUserCourseRepository {
         user: { id: userId },
         course: { id: courseId },
       },
-    });
+      relations: ["user", "course"], // bu muhim
+    });    
   }
 
   /**
@@ -109,4 +110,18 @@ export class UserCourseRepository implements IUserCourseRepository {
     // Kurs ID bo'yicha UserCourse obyektlarini topish
     return await this.userCourseRepository.findBy({ course: { id: courseId } });
   }
+
+  async findByUserIdAndCourseId(
+    userId: number,
+    courseId: number,
+  ): Promise<UserCourse | null> {
+    return await this.userCourseRepository.findOne({
+      where: {
+        user: { id: userId },
+        course: { id: courseId },
+      },
+      relations: ['user', 'course'], // kerakli joinlar
+    });
+  }
+  
 }

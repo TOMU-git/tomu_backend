@@ -642,7 +642,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           return new ResData("Kurs ma'lumotlari topilmadi", 500, []);
         }
 
-        const userCourse = await this.userCourseRepository.findByTariffIdAndUserId(userId, courseId);
+        const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
         const isPaid = userCourse && userCourse.isActive;
 
         if (!isPaid) {
