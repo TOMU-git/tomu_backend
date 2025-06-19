@@ -1,9 +1,8 @@
 // create-user-course.dto.ts
-
-import { IsEnum, IsNotEmpty, IsOptional, IsDateString } from "class-validator";
+import { ID } from "src/common/types/type";
+import { IsEnum, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { StatusEnum } from "src/common/enums/enum";
-import { UserCourse } from "../entities/user-course.entity";
 
 export class CreateUserCourseDto {
   @ApiProperty({
@@ -20,13 +19,13 @@ export class CreateUserCourseDto {
     example: 1,
   })
   @IsNotEmpty()
-  userId: number; // Foydalanuvchi ID si
+  userId: ID; 
 
   @ApiProperty({
     description: "The ID of the course",
     example: 101,
   })
   @IsNotEmpty()
-  courseId: number; // Kurs ID si
+  courseId: ID; 
 }
 

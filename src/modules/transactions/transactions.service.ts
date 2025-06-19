@@ -56,7 +56,7 @@ export class TransactionsService implements ITransactionService {
     private readonly liveChatPaymentRepository: ILiveChatPaymentRepository,
     @Inject("IUserLiveChatRepository")
     private readonly userLiveChatRepository: IUserLiveChatRepository,
-  ) {}
+  ) { }
 
   //// *** Checking
 
@@ -197,41 +197,57 @@ export class TransactionsService implements ITransactionService {
     params: PaymeParams,
     id: number,
   ): Promise<IPerformTransactionDto> {
+    // Joriy vaqtni olish
     const currentTime = Date.now();
+
+    // Transaksiyani ID orqali topish
     const transaction = await this.transactionRepository.getOneById(params.id);
+
+    // Agar transaksiya topilmasa xatolik qaytarish
     if (!transaction) {
       throw new TransactionErrorException(PaymeError.TransactionNotFound, id);
     }
+
+    // Agar transaksiya allaqachon bajarilgan yoki bekor qilingan bo'lsa
     if (transaction.state !== TransactionStateEnum.PENDING) {
       if (transaction.state !== TransactionStateEnum.PAID) {
         throw new TransactionErrorException(PaymeError.CantDoOperation, id);
       }
+      // Agar transaksiya allaqachon to'langan bo'lsa, mavjud ma'lumotlarni qaytarish
       return {
         perform_time: Number(transaction.performTime),
         transaction: transaction.id,
         state: TransactionStateEnum.PAID,
       };
     }
+
+    // Buyurtmani ID orqali topish
     const { data: foundOrder } = await this.orderService.getOrderById(
       Number(transaction.orderId),
     );
 
+    // Transaksiya vaqti tugaganligini tekshirish (12 daqiqa)
     const expirationTime =
-      (currentTime - Number(transaction.createTime)) / 60000 < 12; // 12m
+      (currentTime - Number(transaction.createTime)) / 60000 < 12;
+
+    // Agar vaqt tugagan bo'lsa
     if (!expirationTime) {
+      // Transaksiyani bekor qilish
       transaction.state = TransactionStateEnum.PENDING_CANCELED;
-      transaction.reason = 4;
+      transaction.reason = 4; // Vaqt tugashi sababli bekor qilish
       transaction.cancelTime = currentTime;
       await this.transactionRepository.updateTransaction(
         transaction.id,
         transaction,
       );
 
+      // Buyurtma holatini yangilash
       foundOrder.status = OrderStatus.TIMEOUT;
       await this.orderRepository.update(foundOrder);
       throw new TransactionErrorException(PaymeError.CantDoOperation, id);
     }
 
+    // Transaksiyani muvaffaqiyatli bajarilgan deb belgilash
     transaction.state = TransactionStateEnum.PAID;
     transaction.performTime = currentTime;
     await this.transactionRepository.updateTransaction(
@@ -239,15 +255,20 @@ export class TransactionsService implements ITransactionService {
       transaction,
     );
 
+    // Agar buyurtmada live chat bo'lsa
     if (foundOrder.liveChatId) {
+      // Live chat ma'lumotlarini olish
       const foundLiveChat = await this.liveChatRepository.findLiveChatById(
         Number(foundOrder.liveChatId),
       );
+      // Live chat holatini yangilash
       (foundLiveChat.status = MeetingStatusEnum.PAID),
         await this.liveChatRepository.updateLiveChat(
           foundLiveChat.id,
           foundLiveChat,
         );
+
+      // Live chat uchun to'lov tarixini yaratish
       const newLiveChatPayment = new LivechatPaymentHistoryEntity();
       newLiveChatPayment.fullName = foundLiveChat.firstName + " " + foundLiveChat.lastName;
       newLiveChatPayment.courseName = foundLiveChat.selectedCourseName;
@@ -261,7 +282,9 @@ export class TransactionsService implements ITransactionService {
       await this.liveChatPaymentRepository.create(newLiveChatPayment);
     }
 
+    // Agar buyurtmada tarif bo'lsa
     if (foundOrder.tariffId) {
+      // Kerakli ma'lumotlarni olish
       const foundTariff = await this.tariffRepository.findOneById(
         Number(foundOrder.tariffId),
       );
@@ -271,12 +294,17 @@ export class TransactionsService implements ITransactionService {
       const foundCourse = await this.courseRepository.findById(
         Number(foundTariff.courseId),
       );
+
+      // Foydalanuvchining kursdagi mavjud obunasini tekshirish
       const foundUserCourse =
         await this.userCourseRepository.findByTariffIdAndUserId(
           Number(foundOrder.userId),
           Number(foundTariff.courseId),
         );
+
+      // Agar foydalanuvchida allaqachon kurs bo'lsa
       if (foundUserCourse) {
+        // Mavjud kurs obunasini yangilash
         foundUserCourse.startedAt = new Date();
         const now = new Date();
         const expiryDate = new Date(now);
@@ -285,6 +313,7 @@ export class TransactionsService implements ITransactionService {
         foundUserCourse.isActive = true;
         await this.userCourseRepository.update(foundUserCourse);
       } else {
+        // Yangi kurs obunasini yaratish
         const newUserCourse = new UserCourse();
         newUserCourse.status = StatusEnum.PANDING;
         newUserCourse.isActive = true;
@@ -298,6 +327,8 @@ export class TransactionsService implements ITransactionService {
         newUserCourse.tariffId = foundOrder.tariffId;
         await this.userCourseRepository.create(newUserCourse);
       }
+
+      // Kurs to'lovi tarixini yaratish
       const newCoursePayment = new CoursePaymentHistoryEntity();
       newCoursePayment.courseId = foundCourse.id;
       newCoursePayment.fullName =
@@ -309,9 +340,11 @@ export class TransactionsService implements ITransactionService {
       await this.coursePaymentRepository.create(newCoursePayment);
     }
 
+    // Buyurtma holatini yangilash
     foundOrder.status = OrderStatus.PAID;
     await this.orderRepository.update(foundOrder);
 
+    // Muvaffaqiyatli javob qaytarish
     return {
       perform_time: currentTime,
       transaction: transaction.id,

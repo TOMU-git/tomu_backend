@@ -142,4 +142,13 @@ export class HomeworkRepository implements IHomeworkRepository {
   async findOneByName(title: string): Promise<Homework | null> {
     return await this.homeworkRepository.findOneBy({ title: title });
   }
+
+
+  async countByBlockId(blockId: ID): Promise<number> {
+    return await this.homeworkRepository.count({
+      where: {
+        block: { id: blockId },
+      },
+    });
+  }
 }
