@@ -67,7 +67,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       const users = await this.getAllActiveUsers();
 
       for (const user of users) {
-        await this.scheduleHomeworkForUser(user.id);
+        await this.scheduleHomeworkForUser(user.id, user.courseId);
       }
     } catch (error) {
       console.error("Error processing homework queue:", error);
@@ -83,7 +83,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
       // Lesson progress bo'yicha aktiv foydalanuvchilarni olish
-      const lessonProgresses = await this.lessonProgressRepository.findAllWatchedLessonsByUser(null);
+      const lessonProgresses = await this.lessonProgressRepository.findAllWatchedLessonsByUser(null, null);
 
       // Homework progress bo'yicha aktiv foydalanuvchilarni olish
       const homeworkProgresses = await this.homeworkProgressRepository.findAll();
@@ -106,7 +106,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       });
 
       // Foydalanuvchilar ro'yxatini yaratish
-      const activeUsers = Array.from(userIds).map(id => ({ id }));
+      const activeUsers = homeworkProgresses.map(progress => ({
+        id: progress.userId,
+        courseId: progress.courseId
+      }));
 
       this.logger.log(`Jami ${activeUsers.length} ta aktiv foydalanuvchi topildi`);
       return activeUsers;
@@ -117,7 +120,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   }
 
   // Foydalanuvchi uchun yangi uy vazifa jadvallash
-  private async scheduleHomeworkForUser(userId: ID) {
+  private async scheduleHomeworkForUser(userId: ID, courseId: ID) {
     // Ochilmagan uy vazifa sonini tekshirish
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
     if (pendingCount >= 20) {
@@ -125,11 +128,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     }
 
     // Joriy modul va unga mos keladigan modullardan uy vazifalarni topish
-    const currentModule = await this.getCurrentUserModule(userId);
+    const currentModule = await this.getCurrentUserModule(userId, courseId);
     const eligibleModules = this.getEligibleModules(currentModule);
 
     // Uy vazifalarni tavsiya qilish
-    const recommendations = await this.getHomeworkRecommendations(userId, eligibleModules);
+    const recommendations = await this.getHomeworkRecommendations(userId, courseId, eligibleModules);
     if (!recommendations.length) {
       return;
     }
@@ -196,7 +199,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       });
 
       // Uyga vazifani darhol yuborish uchun getUserHomeworkVideos metodini chaqiramiz
-      await this.getUserHomeworkVideos(userId);
+      await this.getUserHomeworkVideos(userId, courseId);
 
       return new ResData("Uyga vazifa muvaffaqiyatli rejalashtirildi", 200, queueItem);
     } catch (error) {
@@ -206,11 +209,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   }
 
   // Joriy modulni aniqlash
-  private async getCurrentUserModule(userId: ID): Promise<number> {
+  private async getCurrentUserModule(userId: ID, courseId: ID): Promise<number> {
     // Joriy modulni aniqlash (lesson-progress repositoriydan olinishi kerak)
     try {
       // LessonProgressRepository orqali barcha ko'rilgan darslarni olish
-      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
 
       if (!watchedLessons || watchedLessons.length === 0) {
         return 1; // Default module if no lessons watched
@@ -250,11 +253,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   // Uy vazifalarni tavsiya qilish
   private async getHomeworkRecommendations(
     userId: ID,
+    courseId: ID,
     moduleIds: number[]
   ): Promise<HomeworkQueue[]> {
     try {
       // Dars ko'rilgan darslarni olish
-      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId);
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
       if (!watchedLessons || watchedLessons.length === 0) {
         this.logger.log(`No watched lessons found for user ${userId}`);
         return [];
@@ -610,10 +614,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   // Foydalanuvchiga ko'rsatiladigan uy vazifalarni olish
   // Oxirgi ko'rilgan darsga tegishli uy vazifani va random tarzda oldingi uy vazifalarni qaytaradi
-  async getUserHomeworkVideos(userId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+  async getUserHomeworkVideos(userId: ID, courseId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
     try {
       // Homework queue jadvalidan foydalanuvchining navbatdagi videolarini olish
-      const queueItems = await this.homeworkQueueRepository.findByUserId(userId);
+      const queueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
       if (!queueItems || queueItems.length === 0) {
         // Agar queue bo'sh bo'lsa, foydalanuvchi uchun uy vazifa videolar yo'q degan xabarni qaytarish
         return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
@@ -688,9 +692,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   }
 
   // Foydalanuvchi ID si bo'yicha uyga vazifa navbatidagi elementlar sonini qaytaradi
-  async countQueueItems(userId: ID): Promise<ResData<{ count: number }>> {
+  async countQueueItems(userId: ID, courseId: ID): Promise<ResData<{ count: number }>> {
     try {
-      const count = await this.homeworkQueueRepository.countQueueItemsByUserId(userId);
+      const count = await this.homeworkQueueRepository.countQueueItemsByUserId(userId, courseId);
       return new ResData("Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni", 200, { count });
     } catch (error) {
       this.logger.error(`Error counting queue items for user ${userId}: ${error.message}`, error.stack);

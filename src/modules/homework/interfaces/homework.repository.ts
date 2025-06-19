@@ -11,6 +11,7 @@ export interface IHomeworkRepository {
   getNextFiveVideos(order: number, blockId: ID): Promise<Array<Homework>>;
   findOneByName(title: string): Promise<Homework | null>;
   findHomeworksByBlockId(blockId: ID): Promise<Homework[]>;
+  countByBlockId(blockId: ID): Promise<number>
   findNextFiveHomeworksAfterOrder(
     lastHomeworkOrder: number,
     blockId: ID,

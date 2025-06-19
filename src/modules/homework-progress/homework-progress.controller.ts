@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Query, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 import { ResData } from "src/lib/resData";
 import { ApiTags } from "@nestjs/swagger";
@@ -35,9 +35,12 @@ export class HomeworkProgressController {
    */
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get("get-videos")
-  async getVideos(@Req() req: RequestWithUser): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
+  async getVideos(
+    @Req() req: RequestWithUser,
+    @Query("courseId", ParseIntPipe) courseId: ID,
+  ): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
     const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
-    return await this.homeworkProgressService.getUserHomeworkVideos(userId);
+    return await this.homeworkProgressService.getUserHomeworkVideos(userId, courseId);
   }
 
   /**
@@ -80,8 +83,8 @@ export class HomeworkProgressController {
    */
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get("queue-count")
-  async getQueueCount(@Req() req: RequestWithUser): Promise<ResData<{ count: number }>> {
+  async getQueueCount(@Req() req: RequestWithUser, @Query("courseId", ParseIntPipe) courseId: ID): Promise<ResData<{ count: number }>> {
     const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
-    return await this.homeworkProgressService.countQueueItems(userId);
+    return await this.homeworkProgressService.countQueueItems(userId, courseId);
   }
 }
