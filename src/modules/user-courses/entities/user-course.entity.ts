@@ -16,18 +16,18 @@ export class UserCourse extends BaseEntity {
   @Column({ type: "bool", name: "is_active", default: true })
   isActive: boolean;
   
-  @Column({ name: "tariff_id", type: 'int', nullable: false })
+  @Column({ name: "tariff_id", type: 'int', nullable: true })
   tariffId: number;
 
   @Column({
     name: "started_at",
     type: "date",
-    nullable: false,
+    nullable: true,
     default: () => "CURRENT_TIMESTAMP",
   })
   startedAt: Date;
 
-  @Column({ name: "ended_at", type: "date", nullable: false })
+  @Column({ name: "ended_at", type: "date", nullable: true })
   endedAt: Date;
 
   @ManyToOne(() => Course, (course) => course.userCourses)

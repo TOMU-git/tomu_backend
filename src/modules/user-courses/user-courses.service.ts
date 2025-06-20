@@ -6,7 +6,7 @@ import { IUserCourseRepository } from "./interfaces/user-course.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { IUserCourseService } from "./interfaces/user-course.service";
-import { UserCourseNotFoundException } from "./exception/user-course.exception";
+import { UserCourseAlreadyExistException, UserCourseNotFoundException } from "./exception/user-course.exception";
 import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { IUserRepository } from "../user/interfaces/user.repository";
@@ -48,6 +48,14 @@ export class UserCourseService implements IUserCourseService {
       throw new CourseNotFoundException();
     }
 
+    const foundUserCourse = await this.userCourseRepository.findByUserIdAndCourseId(
+      createUserCourseDto.userId,
+      createUserCourseDto.courseId,
+    );
+    if (foundUserCourse) {
+      throw new UserCourseAlreadyExistException();
+    }
+
     let newUserCourse = new UserCourse();
     newUserCourse.course = foundCourse;
     newUserCourse.user = foundUser;
@@ -65,7 +73,7 @@ export class UserCourseService implements IUserCourseService {
   }
 
   async findByDate(id: number, day: Date, courseId: number): Promise<ResData<{isActive: boolean}>> {
-    const foundUserCourse = await this.userCourseRepository.findByTariffIdAndUserId(id, courseId);
+    const foundUserCourse = await this.userCourseRepository.findByUserIdAndCourseId(id, courseId);
     if (!foundUserCourse) {
       throw new UserCourseNotFoundException();
     }
