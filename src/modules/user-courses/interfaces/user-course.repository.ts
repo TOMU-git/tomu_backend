@@ -12,4 +12,8 @@ export interface IUserCourseRepository {
   findByTariffIdAndUserId(userId: number, courseId: number): Promise<UserCourse>;
   findByUserId(userId: ID): Promise<Array<UserCourse>>;
   findByCourseId(courseId: ID): Promise<Array<UserCourse>>;
+  findByUserIdAndCourseId(
+    userId: number,
+    courseId: number,
+  ): Promise<UserCourse | null> 
 }

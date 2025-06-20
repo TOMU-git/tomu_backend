@@ -297,7 +297,7 @@ export class TransactionsService implements ITransactionService {
 
       // Foydalanuvchining kursdagi mavjud obunasini tekshirish
       const foundUserCourse =
-        await this.userCourseRepository.findByTariffIdAndUserId(
+        await this.userCourseRepository.findByUserIdAndCourseId(
           Number(foundOrder.userId),
           Number(foundTariff.courseId),
         );
