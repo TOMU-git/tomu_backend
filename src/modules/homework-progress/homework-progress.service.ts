@@ -174,7 +174,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // Dars uchun uyga vazifa topish
 
       const homework = await this.findHomeworkByLessonId(courseId, blockOrder, lessonOrder);
-      console.log(homework)
 
       if (!homework) {
         return new ResData("Dars uchun uyga vazifa topilmadi", 404, null);
@@ -490,8 +489,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // dto.id is the queue item ID, not the homework ID
       const queueItem = await this.homeworkQueueRepository.findById(id)
 
-      console.log("queueItem", queueItem)
-
       if (!queueItem) {
         this.logger.error(`Homework queue item not found: queueId=${id}`);
         throw new NotFoundException('Homework queue item not found');
@@ -511,7 +508,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         queueItem.homeworkId
       );
 
-      console.log("working")
       // Agar yozuv mavjud bo'lmasa, yangi yozuv yaratish
       if (!homeworkProgress) {
         const newProgress = new HomeworkProgress();
@@ -525,7 +521,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           newProgress.courseId = queueItem.courseId;
         } else if (queueItem.homework?.block?.course?.id) {
           newProgress.courseId = queueItem.homework.block.course.id;
-          console.log('Using course ID from block.course:', newProgress.courseId);
         } else {
           // Xatolikni qayd qilish va default qiymat berish
           this.logger.warn(`Course ID not found for homework ${queueItem.homeworkId}, using default value`);
