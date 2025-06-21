@@ -612,7 +612,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   async getUserHomeworkVideos(userId: ID, courseId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
     try {
       // Homework queue jadvalidan foydalanuvchining navbatdagi videolarini olish
+      console.log("courseId:", courseId, "userId:", userId)
       const queueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
+      console.log("queueItems", queueItems)
       if (!queueItems || queueItems.length === 0) {
         // Agar queue bo'sh bo'lsa, foydalanuvchi uchun uy vazifa videolar yo'q degan xabarni qaytarish
         return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
@@ -673,7 +675,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       id: queueItem.id,
       homework: queueItem.homework ? {
         id: queueItem.homeworkId,
-        videoUrl: queueItem.homework.videoUrl
+        videoUrl: queueItem.homework.videoUrl,
+        duration: queueItem.homework.duration,
       } as any : null,
       blockId: queueItem.homework?.blockId, // Use homework's blockId instead of moduleId
       blockOrder: queueItem.blockOrder,
