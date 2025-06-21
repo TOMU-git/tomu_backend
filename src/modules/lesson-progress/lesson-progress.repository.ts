@@ -196,9 +196,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
         isWatched: true,
         courseId: courseId,
       },
-      relations: ['lesson'],
+      relations: ['lesson', 'lesson.block', 'lesson.block.course'],
     });
   }
+
 
   async checkAllLessonsWatched(
     blockOrder: ID,
