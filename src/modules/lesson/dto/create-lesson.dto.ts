@@ -19,10 +19,11 @@ export class CreateLessonDto {
   @MaxLength(255)
   title: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: "GrammarLink",
   })
   @IsString()
+  @IsOptional()
   grammarLink: string;
 
   @ApiPropertyOptional({
