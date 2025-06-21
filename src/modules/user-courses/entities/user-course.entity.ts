@@ -13,7 +13,7 @@ export class UserCourse extends BaseEntity {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column({ type: "bool", name: "is_active", default: true })
+  @Column({ type: "bool", name: "is_active", default: false })
   isActive: boolean;
   
   @Column({ name: "tariff_id", type: 'int', nullable: true })
