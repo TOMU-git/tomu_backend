@@ -14,6 +14,7 @@ import { LessonRepository } from "../lesson/lesson.repository";
 import { BlockRepository } from "../block/block.repository";
 import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { StatusEnum } from "src/common/enums/enum";
 
 // Nestjs/schedule va cron packagelarini o'rnatish kerak bo'lishi mumkin:
 // npm install --save @nestjs/schedule cron
@@ -626,7 +627,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         }
 
         const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-        const isPaid = userCourse && userCourse.isActive;
+        const isPaid = userCourse && userCourse.status === StatusEnum.COMPLETED;
 
         if (!isPaid) {
           // Agar to'lov qilinmagan bo'lsa
