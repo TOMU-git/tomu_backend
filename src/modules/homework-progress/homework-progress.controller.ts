@@ -43,6 +43,13 @@ export class HomeworkProgressController {
     return await this.homeworkProgressService.getUserHomeworkVideos(userId, courseId);
   }
 
+  @Get('run-scheduler')
+  async runScheduler() {
+    console.log("Manual scheduler ishga tushdi!");
+    await this.homeworkProgressService['processHomeworkQueue'](); // private metodni chaqiryapmiz
+    return { message: 'Scheduler ishga tushdi (manual test)', success: true };
+  }
+
   /**
    * Barcha homework progress yozuvlarini olish.
    * @returns Barcha homework progress yozuvlari
