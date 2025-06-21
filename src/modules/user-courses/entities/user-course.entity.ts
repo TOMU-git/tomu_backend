@@ -6,14 +6,14 @@ import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity("user_courses")
 export class UserCourse extends BaseEntity {
-  @Column({ type: "enum", enum: StatusEnum, nullable: false })
+  @Column({ type: "enum", enum: StatusEnum, nullable: true, default: StatusEnum.PANDING })
   status: StatusEnum;
 
   @ManyToOne(() => User, (user) => user.userCourses)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column({ type: "bool", name: "is_active", default: false })
+  @Column({ type: "bool", name: "is_active", default: true })
   isActive: boolean;
   
   @Column({ name: "tariff_id", type: 'int', nullable: true })

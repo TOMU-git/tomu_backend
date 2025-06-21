@@ -17,6 +17,7 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { StatusEnum } from "src/common/enums/enum";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -220,7 +221,7 @@ export class LessonProgressService implements ILessonProgressService {
   
       // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      const isPaid = userCourse && userCourse.isActive;
+      const isPaid = userCourse && userCourse.status === StatusEnum.COMPLETED;
   
       if (!isPaid) {
         if (blockOrder > 1) {
