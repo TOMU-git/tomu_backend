@@ -77,13 +77,13 @@ export class LessonProgressService implements ILessonProgressService {
       }
 
       // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
-      // if (foundLessonProgress.isWatched) {
-      //   return new ResData<LessonProgress>(
-      //     "Dars allaqachon ko'rilgan",
-      //     200,
-      //     foundLessonProgress,
-      //   );
-      // }
+      if (foundLessonProgress.isWatched) {
+        return new ResData<LessonProgress>(
+          "Dars allaqachon ko'rilgan",
+          200,
+          foundLessonProgress,
+        );
+      }
 
       const userId = Number(foundLessonProgress.userId);
       const courseId = Number(foundLessonProgress.courseId);
@@ -123,13 +123,13 @@ export class LessonProgressService implements ILessonProgressService {
       }
 
       // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
-      // if (foundLessonProgress.isWatched) {
-      //   return new ResData<LessonProgress>(
-      //     "Dars allaqachon ko'rilgan",
-      //     200,
-      //     foundLessonProgress,
-      //   );
-      // }
+      if (foundLessonProgress.isWatched) {
+        return new ResData<LessonProgress>(
+          "Dars allaqachon ko'rilgan",
+          200,
+          foundLessonProgress,
+        );
+      }
 
       // Joriy darsni ko'rilgan qilish
       foundLessonProgress.isWatched = true;
