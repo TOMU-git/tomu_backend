@@ -228,7 +228,7 @@ export class LessonProgressService implements ILessonProgressService {
           return new ResData<Array<LessonProgress>>(
             "To access lessons beyond module 1, you need to purchase this course.",
             403,
-            existingProgresses,
+            [],
           );
         }
   
