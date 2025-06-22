@@ -150,7 +150,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // Keyingi uy vazifani jadvalga qo'shish
     const nextDeliveryTime = new Date();
-    nextDeliveryTime.setMinutes(nextDeliveryTime.getMinutes() + 60);
+    nextDeliveryTime.setMinutes(nextDeliveryTime.getMinutes() + 30);
 
     // HomeworkQueue obyektidan ID olish
     if (!recommendations.length) {
@@ -272,28 +272,28 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         this.logger.log(`User ${userId} uchun ko'rilgan darslar topilmadi`);
         return [];
       }
-  
+
       const allHomeworkProgresses = await this.homeworkProgressRepository.findByUserId(userId);
-  
+
       // Kursdagi barcha HOMEWORK bloklarni olib qo'yamiz
       const homeworkBlocks = await this.blockRepository.getBlocksHomeworksByCourseId(courseId);
       if (!homeworkBlocks || homeworkBlocks.length === 0) {
         this.logger.warn(`Kurs ${courseId} uchun homework blocklar topilmadi`);
         return [];
       }
-  
+
       const recommendationCandidates = [];
-  
+
       for (const lessonProgress of watchedLessons) {
         const lesson = lessonProgress.lesson;
         const lessonOrder = lesson?.order;
         const lessonBlockOrder = lesson?.block?.order;
-  
+
         if (!lessonOrder || !lessonBlockOrder) {
           this.logger.warn(`lessonOrder yoki blockOrder mavjud emas: lessonId=${lesson?.id}`);
           continue;
         }
-  
+
         // Shu lesson bilan bir xil orderga ega homework block ni topamiz
         const targetHomeworkBlock = homeworkBlocks.find(
           (block) => block.order === lessonBlockOrder
@@ -302,41 +302,41 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           this.logger.warn(`lessonBlockOrder=${lessonBlockOrder} uchun mos homework block topilmadi`);
           continue;
         }
-  
+
         const homeworks = await this.homeworkRepository.findHomeworksByBlockId(targetHomeworkBlock.id);
         if (!homeworks || homeworks.length === 0) {
           this.logger.warn(`homework blockId=${targetHomeworkBlock.id} uchun homework topilmadi`);
           continue;
         }
-  
+
         const matchedHomework = homeworks.find(hw => hw.order === lessonOrder);
         if (!matchedHomework) {
           this.logger.warn(`lessonOrder=${lessonOrder} bilan mos homework topilmadi`);
           continue;
         }
-  
+
         // Homework allaqachon ko‘rilganmi?
         const existingProgress = allHomeworkProgresses.find(
           progress => progress.homework?.id === matchedHomework.id
         );
-  
+
         if (existingProgress && existingProgress.countWatched >= 10) {
           continue;
         }
-  
+
         // Homework allaqachon navbatda bormi?
         const existingQueue = await this.homeworkQueueRepository.findByUserIdAndHomeworkId(
           userId,
           matchedHomework.id
         );
-  
+
         if (existingQueue) {
           continue;
         }
-  
+
         // Prioritet hisoblash (oddiy versiya)
         const priority = 100;
-  
+
         recommendationCandidates.push({
           userId,
           homeworkId: matchedHomework.id,
@@ -345,22 +345,22 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           courseId,
         });
       }
-  
+
       console.log("Recommendation candidates:", recommendationCandidates.map(c => ({
         homeworkId: c.homeworkId,
         priority: c.priority,
       })));
-  
+
       if (recommendationCandidates.length === 0) {
         this.logger.log(`No homework recommendations found for user ${userId}`);
         return [];
       }
-  
+
       // Random tanlash uchun yuqori 5ta kandidatni olamiz
       const topCandidates = recommendationCandidates.slice(0, Math.min(5, recommendationCandidates.length));
       const randomIndex = Math.floor(Math.random() * topCandidates.length);
       const selectedCandidates = [topCandidates[randomIndex]];
-  
+
       const recommendations = [];
       for (const candidate of selectedCandidates) {
         try {
@@ -370,7 +370,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
             priority: candidate.priority,
             courseId: candidate.courseId,
           });
-  
+
           recommendations.push(queueItem);
         } catch (error) {
           this.logger.error(
@@ -379,15 +379,15 @@ export class HomeworkProgressService implements IHomeworkProgressService {
           );
         }
       }
-  
+
       return recommendations;
     } catch (error) {
       this.logger.error(`Error getting homework recommendations: ${error.message}`, error.stack);
       return [];
     }
   }
-  
-  
+
+
 
   // Darsga mos keladigan uy vazifani topish
   private async findHomeworkByLessonId(courseId: ID, blockOrder: number, lessonOrder: number) {
@@ -524,7 +524,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         homeworkProgress = await this.homeworkProgressRepository.update(homeworkProgress);
       }
 
-      // Video ko'rilgandan so'ng queue dan o'chirish
+      // Video ko‘rilgandan so‘ng queue dan o‘chirish
       if (!queueItem.id) {
         this.logger.error(`Queue item ID is undefined, cannot remove from queue`);
       } else {
@@ -536,32 +536,36 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         }
       }
 
-      // Uyga vazifa ko'rilgandan so'ng keyingi darsni ochish
-      try {
-        const blockOrder = homeworkProgress.blockOrder;
-        const homeworkOrder = homeworkProgress.homeworkOrder;
-        const courseId = homeworkProgress.courseId;
+      // ⬇️ Queue bo‘shligini tekshiramiz, faqat o‘chirishdan keyin
+      const remainingQueueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, homeworkProgress.courseId);
+      if (!remainingQueueItems || remainingQueueItems.length === 0) {
+        try {
+          const blockOrder = homeworkProgress.blockOrder;
+          const homeworkOrder = homeworkProgress.homeworkOrder;
+          const courseId = homeworkProgress.courseId;
 
-        // Keyingi darsni topish (uyga vazifa tartib raqami bilan bir xil bo'lgan dars)
-        const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
-          homeworkOrder + 1, // Keyingi dars
-          userId,
-          blockOrder,
-          courseId
-        );
+          const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+            homeworkOrder + 1, // Keyingi dars
+            userId,
+            blockOrder,
+            courseId
+          );
 
-        if (nextLessonProgress) {
-          // Keyingi darsni ochiq qilish
-          nextLessonProgress.isUnlocked = true;
-          await this.lessonProgressRepository.update(nextLessonProgress);
-          this.logger.log(`Keyingi dars (order: ${nextLessonProgress.lessonOrder}) ochiq qilindi`);
-        } else {
-          this.logger.warn(`Keyingi dars topilmadi: homeworkOrder=${homeworkOrder + 1}, blockOrder=${blockOrder}, courseId=${courseId}`);
+          if (nextLessonProgress) {
+            nextLessonProgress.isUnlocked = true;
+            await this.lessonProgressRepository.update(nextLessonProgress);
+            this.logger.log(`Keyingi dars (order: ${nextLessonProgress.lessonOrder}) ochiq qilindi`);
+          } else {
+            this.logger.warn(`Keyingi dars topilmadi: homeworkOrder=${homeworkOrder + 1}, blockOrder=${blockOrder}, courseId=${courseId}`);
+          }
+        } catch (error) {
+          this.logger.error(`Keyingi darsni ochishda xatolik: ${error.message}`, error.stack);
         }
-      } catch (error) {
-        this.logger.error(`Keyingi darsni ochishda xatolik: ${error.message}`, error.stack);
-        // Asosiy jarayonni to'xtatmaslik uchun xatoni yutib yuboramiz
+      } else {
+        this.logger.log(`Queue bo'sh emas (${remainingQueueItems.length} ta item bor), shuning uchun keyingi dars ochilmadi`);
       }
+
+
 
       // Yangi videolarni navbatga qo'shish metodi chaqirilmaydi
       // await this.scheduleHomeworkForUser(userId); - bu qator o'chirildi
