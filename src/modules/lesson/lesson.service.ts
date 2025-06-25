@@ -12,6 +12,7 @@ import {
   LessonOrderAlreadyExistException,
 } from "./exception/lesson.exception";
 import { VimeoService } from "./vimeo.service";
+import { QueryFailedError } from 'typeorm';
 import { IBlockRepository } from "../block/interfaces/block.repository";
 
 // `LessonService` klassi, ILessonService interfeysini implementatsiya qiladi va darslarni boshqarish uchun asosiy servis vazifasini bajaradi.
@@ -211,19 +212,38 @@ export class LessonService implements ILessonService {
    * @param id Dars ID'si
    * @returns O'chirilgan dars haqida ma'lumot
    */
+
   async delete(id: ID): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
-
-    // Darsni o'chirish
-    const data = await this.lessonRepository.delete(foundData);
-
-    // Blokning davomiyligi va video sonini yangilash
-    const foundBlock = await this.blockRepository.findById(foundData.block.id);
-    foundBlock.duration =
-      Number(foundBlock.duration) - Number(foundData.duration);
-    foundBlock.countVideos = Number(foundBlock.countVideos) - 1;
-    await this.blockRepository.update(foundBlock);
-
-    return new ResData<Lesson>("Lesson deleted successfully", 200, data);
+  
+    try {
+      // Darsni o‘chirish
+      const data = await this.lessonRepository.delete(foundData);
+  
+      // Blokning davomiyligi va video sonini yangilash
+      const foundBlock = await this.blockRepository.findById(foundData.block.id);
+      foundBlock.duration =
+        Number(foundBlock.duration) - Number(foundData.duration);
+      foundBlock.countVideos = Number(foundBlock.countVideos) - 1;
+      await this.blockRepository.update(foundBlock);
+  
+      return new ResData<Lesson>("Lesson deleted successfully", 200, data);
+    } catch (error) {
+      // Agar foreign key xatosi bo‘lsa — lesson_progress bilan bog‘liq
+      if (
+        error instanceof QueryFailedError &&
+        error.driverError.code === '23503'
+      ) {
+        return new ResData<Lesson>(
+          "Bu darsni o‘chirish mumkin emas, chunki foydalanuvchilar uni ko‘rgan.",
+          409,
+          null,
+        );
+      }
+  
+      // Boshqa xatolarni tashlaymiz
+      throw error;
+    }
   }
+  
 }
