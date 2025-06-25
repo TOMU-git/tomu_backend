@@ -110,7 +110,7 @@ export class LessonService implements ILessonService {
     return new ResData<Array<Lesson>>("ok", 200, data);
   }
 
-  /**
+  /**d
    * Berilgan ID bo'yicha darsni topish.
    * Topilmasa, xato chiqaradi.
    * @param id Dars ID'si
@@ -160,32 +160,25 @@ export class LessonService implements ILessonService {
     file?: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
-
-    // Agar blockId berilgan bo'lsa, yangi blokni darsga bog'lash
+  
+    // Agar blockId berilgan bo‘lsa, yangi blokni darsga bog‘lash
     if (dto.blockId) {
       const block = await this.blockRepository.findById(dto.blockId);
       foundData.block = block;
     }
-
-    // Yangilash ma'lumotlarini tayyorlash
-    const updateData = {
-      order: dto.order ? parseInt(dto.order.toString(), 10) : foundData.order,
-      title: dto.title === "" ? foundData.title : dto.title || undefined,
-      video: dto.video === "" ? undefined : dto.video || foundData.videoUrl,
-    };
-
-    // Faqat order o'zgartirilganida tekshirish
-    if (updateData.order && updateData.order !== foundData.order) {
+  
+    // Faqat order o‘zgartirilganida tekshirish
+    if (dto.order && dto.order !== foundData.order) {
       const orderExist = await this.lessonRepository.findOneByOrder(
-        updateData.order,
+        dto.order,
         dto.blockId,
       );
       if (orderExist) {
         throw new LessonOrderAlreadyExistException();
       }
     }
-
-    // Yangi fayl bo'lsa, videoni yangilash
+  
+    // Yangi fayl bo‘lsa, videoni yangilash
     if (file) {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
@@ -197,13 +190,20 @@ export class LessonService implements ILessonService {
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
-
-    // Darsni yangilash va saqlash
-    Object.assign(foundData, updateData);
+  
+    // Yangilanishlarni qo‘llash
+    Object.assign(foundData, {
+      order: dto.order ?? foundData.order,
+      title: dto.title ?? foundData.title,
+      video: dto.video ?? foundData.videoUrl,
+      grammarLink: dto.grammarLink ?? foundData.grammarLink,
+    });
+  
     const data = await this.lessonRepository.update(foundData);
-
+  
     return new ResData<Lesson>("Lesson updated successfully", 200, data);
   }
+  
 
   /**
    * Darsni o'chirish funksiyasi.
