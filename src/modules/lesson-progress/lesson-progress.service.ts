@@ -234,7 +234,7 @@ export class LessonProgressService implements ILessonProgressService {
 
       // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      const isPaid = userCourse && userCourse.status === StatusEnum.COMPLETED;
+      const isPaid = userCourse && userCourse.isPaid;
 
       if (!isPaid) {
         if (blockOrder > 1) {

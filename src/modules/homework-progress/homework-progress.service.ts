@@ -565,7 +565,7 @@ private async getHomeworkRecommendations(
         }
 
         const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-        const isPaid = userCourse && userCourse.status === StatusEnum.COMPLETED;
+        const isPaid = userCourse && userCourse.isPaid;
 
         if (!isPaid) {
           // Agar to'lov qilinmagan bo'lsa

@@ -309,9 +309,9 @@ export class TransactionsService implements ITransactionService {
         const now = new Date();
         const expiryDate = new Date(now);
         expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
-        foundUserCourse.status = StatusEnum.COMPLETED;
         foundUserCourse.endedAt = expiryDate;
         foundUserCourse.isActive = true;
+        foundUserCourse.isPaid = true;
         await this.userCourseRepository.update(foundUserCourse);
       } else {
         // Yangi kurs obunasini yaratish
@@ -326,6 +326,7 @@ export class TransactionsService implements ITransactionService {
         newUserCourse.course = foundCourse;
         newUserCourse.user = foundUser;
         newUserCourse.tariffId = foundOrder.tariffId;
+        newUserCourse.isPaid = true;
         await this.userCourseRepository.create(newUserCourse);
       }
 
