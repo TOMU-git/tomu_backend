@@ -309,6 +309,7 @@ export class TransactionsService implements ITransactionService {
         const now = new Date();
         const expiryDate = new Date(now);
         expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
+        foundUserCourse.status = StatusEnum.COMPLETED;
         foundUserCourse.endedAt = expiryDate;
         foundUserCourse.isActive = true;
         await this.userCourseRepository.update(foundUserCourse);
