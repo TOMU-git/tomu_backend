@@ -92,14 +92,14 @@ export class LessonProgressService implements ILessonProgressService {
       const lessonOrder = Number(foundLessonProgress.lessonOrder);
 
       // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-      const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-      if (watchedLessonsToday >= 10) {
-        return new ResData<LessonProgress>(
-          "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
-          400,
-          foundLessonProgress,
-        );
-      }
+      // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
+      // if (watchedLessonsToday >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
+      //     400,
+      //     foundLessonProgress,
+      //   );
+      // }
 
       // Oldingi uy vazifalar bajarilganligini tekshirish
       const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
