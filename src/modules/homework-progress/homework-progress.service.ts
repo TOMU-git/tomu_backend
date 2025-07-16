@@ -52,18 +52,14 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   // Har 30 minutda yangi uy vazifalarni berish uchun scheduler
   private initializeSchedulers() {
     try {
-      console.log("initializeSchedulers() ishga tushdi");
 
       const job = new CronJob("*/30 * * * *", () => {
-        console.log("Cron ishga tushdi, processHomeworkQueue chaqirilmoqda...");
         this.processHomeworkQueue();
       });
 
       this.schedulerRegistry.addCronJob("homeworkScheduler", job);
-      console.log("Cron job registratsiya qilindi");
 
       job.start();
-      console.log("Cron job ishga tushdi");
     } catch (error) {
       console.error("initializeSchedulers xatolik:", error);
     }
@@ -537,9 +533,7 @@ private async getHomeworkRecommendations(
   async getUserHomeworkVideos(userId: ID, courseId: ID): Promise<ResData<Array<Partial<HomeworkProgress>>>> {
     try {
       // Homework queue jadvalidan foydalanuvchining navbatdagi videolarini olish
-      console.log("courseId:", courseId, "userId:", userId)
       const queueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
-      console.log("queueItems", queueItems)
       if (!queueItems || queueItems.length === 0) {
         // Agar queue bo'sh bo'lsa, foydalanuvchi uchun uy vazifa videolar yo'q degan xabarni qaytarish
         return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
