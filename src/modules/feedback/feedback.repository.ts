@@ -19,7 +19,17 @@ export class FeedbackRepository implements IFeedbackRepository {
   }
 
   async findAll(): Promise<Array<Feedback>> {
-    return await this.courseRepository.find();
+    return await this.courseRepository.find({
+      relations: ['user'],
+      select: {
+        id: true,
+        comment: true,
+        user: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    });
   }
 
   async update(entity: Feedback): Promise<Feedback> {

@@ -45,6 +45,8 @@ export class FeedbackService implements IFeedbackService {
   async findAll(): Promise<ResData<Feedback[]>> {
     const feedbacks = await this.feedbackRepository.findAll();
 
+    // console.log("feedbacks", feedbacks);
+
     return new ResData<Feedback[]>("ok", 200, feedbacks);
   }
 
