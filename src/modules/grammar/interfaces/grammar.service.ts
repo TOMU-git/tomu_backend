@@ -11,7 +11,7 @@ export interface IGrammarService {
   ): Promise<ResData<Grammar>>;
   findAll(): Promise<ResData<Array<Grammar>>>;
   findOneById(id: ID): Promise<ResData<Grammar>>;
-  findGrammarByCourseId(id: number): Promise<ResData<Grammar[]>>;
+  findGrammarByCourseId(id: number, userId: number): Promise<ResData<Grammar[]>>;
   update(
     id: ID,
     dto: UpdateGrammarDto,

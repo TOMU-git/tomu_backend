@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   BadRequestException,
   Query,
+  Req,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { CreateGrammarDto } from "./dto/create-grammar.dto";
@@ -23,6 +24,13 @@ import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RoleEnum } from "src/common/enums/enum";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Auth } from "src/common/decorator/auth.decorator";
+
+interface RequestWithUser extends Request {
+  user: {
+    id: number;
+    [key: string]: any;
+  };
+}
 
 @ApiTags("grammar")
 @Controller("grammar")
@@ -69,13 +77,17 @@ export class GrammarController {
   async findAll(): Promise<ResData<Array<Grammar>>> {
     return await this.grammarService.findAll();
   }
-
+  
+  @Auth(RoleEnum.STUDENT, RoleEnum.TEACHER, RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Get("/course/:id")
   async findGrammarByCourseId(
     @Param("id", ParseIntPipe) courseId: number,
+    @Req() req: RequestWithUser,
   ): Promise<ResData<Array<Grammar>>> {
-    return await this.grammarService.findGrammarByCourseId(courseId);
+    const userId = req.user["id"];
+    return await this.grammarService.findGrammarByCourseId(courseId, userId);
   }
+
 
   // @Auth(RoleEnum.TEACHER, RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Get(":id")

@@ -14,6 +14,7 @@ import {
 import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { VimeoService } from "../lesson/vimeo.service";
+import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
 
 @Injectable()
 export class GrammarService implements IGrammarService {
@@ -23,6 +24,9 @@ export class GrammarService implements IGrammarService {
 
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
+
+    @Inject("IUserCourseRepository")
+    private readonly userCourseRepository: IUserCourseRepository,
 
     private readonly vimeoService: VimeoService,
   ) {}
@@ -65,18 +69,22 @@ export class GrammarService implements IGrammarService {
     );
   }
 
-  async findGrammarByCourseId(courseId: number): Promise<ResData<Grammar[]>> {
-    const foundGrammars =
-      await this.grammarRepository.findGrammarsByCourseId(courseId);
-    if (foundGrammars.length === 0) {
-      return new ResData<Grammar[]>("Not any grammar yet", 200, foundGrammars);
-    }
-    return new ResData<Grammar[]>(
-      "Grammars found successfully",
-      200,
-      foundGrammars,
-    );
+  async findGrammarByCourseId(courseId: number, userId: number): Promise<any> {
+    const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+    const isPaid = userCourse && userCourse.isPaid;
+  
+    const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(courseId);
+  
+    const message = foundGrammars.length === 0 ? "Not any grammar yet" : "Grammars found successfully";
+  
+    return {
+      message,
+      statusCode: 200,
+      data: foundGrammars,
+      isPaid: !!isPaid
+    };
   }
+  
 
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();

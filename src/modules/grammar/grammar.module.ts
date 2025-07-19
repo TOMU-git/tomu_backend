@@ -7,9 +7,10 @@ import { GrammarRepository } from "./grammar.repository";
 import { SharedModule } from "../shared/shared.module";
 import { CourseModule } from '../course/course.module';
 import { VimeoService } from "../lesson/vimeo.service";
+import { UserCoursesModule } from "../user-courses/user-courses.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Grammar]), SharedModule, CourseModule],
+  imports: [TypeOrmModule.forFeature([Grammar]), SharedModule, CourseModule, UserCoursesModule],
   controllers: [GrammarController],
   providers: [
     VimeoService,
