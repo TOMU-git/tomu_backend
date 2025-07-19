@@ -189,102 +189,97 @@ export class LessonProgressService implements ILessonProgressService {
     }
   }
 
-  async getVideos(
-    userId: ID,
-    blockId: ID,
-  ): Promise<ResData<Array<LessonProgress>>> {
+  async getVideos(userId: ID, blockId: ID): Promise<any> {
     const block = await this.blockRepository.findById(blockId);
     if (!block) {
       throw new BlockNotFoundException();
     }
-
+  
     const existingProgresses =
-      await this.lessonProgressRepository.findByBlockIdAndUserId(
-        blockId,
-        userId,
-      );
-
-    // 🔄 Progress mavjud bo'lsa, lekin yangi darslar qo'shilgan bo'lsa, progressni yangilash
+      await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+  
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
-
-      // 1. Darslar sonini tekshirish
+  
       const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
       const progressCount = existingProgresses.length;
-
-      // 2. Agar yangi darslar mavjud bo‘lsa, progressga qo‘shib qo‘yish
+  
       if (totalLessonsCount > progressCount) {
-        // generateLessonProgress progresslarni to‘liq qayta yaratmaydi, faqat yo‘qlarni qo‘shadi
         await this.generateLessonProgress(userId, blockId, courseId);
-
-        // Progressni qaytadan olish (yangilangan holda)
+  
         const updatedProgresses =
-          await this.lessonProgressRepository.findByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
-
-        return new ResData<Array<LessonProgress>>(
-          "Lesson progress updated with new lessons",
-          200,
-          updatedProgresses,
-        );
+          await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+  
+        return {
+          message: "Lesson progress updated with new lessons",
+          statusCode: 200,
+          data: updatedProgresses,
+          isPaid: true
+        };
       }
-
-      // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
+  
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
       const isPaid = userCourse && userCourse.isPaid;
+  
       if (!isPaid) {
         if (blockOrder > 1) {
-          return new ResData<Array<LessonProgress>>(
-            "To access lessons beyond module 1, you need to purchase this course.",
-            403,
-            [],
-          );
+          return {
+            message: "To access lessons beyond module 1, you need to purchase this course.",
+            statusCode: 403,
+            data: [],
+            isPaid: false
+          };
         }
-
+  
         if (blockOrder === 1) {
           const hasLessonBeyond20 = existingProgresses.some(progress =>
             progress.lessonOrder > 20 && progress.isUnlocked
           );
-
+  
           if (hasLessonBeyond20) {
-            return new ResData<Array<LessonProgress>>(
-              "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
-              403,
-              existingProgresses,
-            );
+            return {
+              message: "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
+              statusCode: 403,
+              data: existingProgresses,
+              isPaid: false
+            };
           }
         }
       }
-
-      return new ResData<Array<LessonProgress>>(
-        "Lesson fetched successfully",
-        200,
-        existingProgresses,
-      );
+  
+      return {
+        message: "Lesson fetched successfully",
+        statusCode: 200,
+        data: existingProgresses,
+        isPaid: !!isPaid
+      };
     }
-
-    // ❌ Agar progress umuman bo'lmasa — ilk marta yaratilmoqda
+  
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-
+  
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-
-      return new ResData<Array<LessonProgress>>(
-        "Lesson progress created successfully",
-        200,
-        newProgresses,
-      );
+  
+      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+      const isPaid = userCourse && userCourse.isPaid;
+  
+      return {
+        message: "Lesson progress created successfully",
+        statusCode: 200,
+        data: newProgresses,
+        isPaid: !!isPaid
+      };
     }
-
-    return new ResData<Array<LessonProgress>>(
-      "No lessons available",
-      404,
-      [],
-    );
+  
+    return {
+      message: "No lessons available",
+      statusCode: 404,
+      data: [],
+      isPaid: false
+    };
   }
+  
 
 
   /**
