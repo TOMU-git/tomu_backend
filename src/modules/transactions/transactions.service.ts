@@ -311,7 +311,8 @@ export class TransactionsService implements ITransactionService {
         expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
         foundUserCourse.endedAt = expiryDate;
         foundUserCourse.isActive = true;
-        foundUserCourse.isPaid = true;
+        // Birinchi marta to'lov qilindi
+        foundUserCourse.hasEverPaid = true;
         await this.userCourseRepository.update(foundUserCourse);
       } else {
         // Yangi kurs obunasini yaratish
@@ -326,7 +327,8 @@ export class TransactionsService implements ITransactionService {
         newUserCourse.course = foundCourse;
         newUserCourse.user = foundUser;
         newUserCourse.tariffId = foundOrder.tariffId;
-        newUserCourse.isPaid = true;
+        // Birinchi marta to'lov qilindi
+        newUserCourse.hasEverPaid = true;
         await this.userCourseRepository.create(newUserCourse);
       }
 

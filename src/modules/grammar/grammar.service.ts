@@ -71,7 +71,7 @@ export class GrammarService implements IGrammarService {
 
   async findGrammarByCourseId(courseId: number, userId: number): Promise<any> {
     const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-    const isPaid = userCourse && userCourse.isPaid;
+    const isPaid = userCourse && userCourse.isActive;
   
     const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(courseId);
   

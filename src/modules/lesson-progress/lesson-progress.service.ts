@@ -3,10 +3,7 @@ import { ILessonProgressService } from "./interfaces/lesson-progress.service";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { LessonProgress } from "./entities/lesson-progress.entity";
-import {
-  LessonProgressAlreadyExistException,
-  LessonProgressNotFoundException,
-} from "./exception/lesson-progress.exception";
+import { LessonProgressNotFoundException } from "./exception/lesson-progress.exception";
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
@@ -17,7 +14,6 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
-import { StatusEnum } from "src/common/enums/enum";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -219,10 +215,14 @@ export class LessonProgressService implements ILessonProgressService {
         };
       }
   
+      // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      const isPaid = userCourse && userCourse.isPaid;
+
+      const hasPaid = userCourse.hasEverPaid
+      const isActive = userCourse.isActive
+      const onFreeTrial = userCourse.onFreeTrial
   
-      if (!isPaid) {
+      if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
           return {
             message: "To access lessons beyond module 1, you need to purchase this course.",
@@ -233,13 +233,13 @@ export class LessonProgressService implements ILessonProgressService {
         }
   
         if (blockOrder === 1) {
-          const hasLessonBeyond20 = existingProgresses.some(progress =>
-            progress.lessonOrder > 20 && progress.isUnlocked
+          const hasLessonBeyond30 = existingProgresses.some(progress =>
+            progress.lessonOrder > 30 && progress.isUnlocked
           );
   
-          if (hasLessonBeyond20) {
+          if (hasLessonBeyond30) {
             return {
-              message: "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
+              message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
               statusCode: 403,
               data: existingProgresses,
               isPaid: false
@@ -252,7 +252,7 @@ export class LessonProgressService implements ILessonProgressService {
         message: "Lesson fetched successfully",
         statusCode: 200,
         data: existingProgresses,
-        isPaid: !!isPaid
+        isPaid: !!isActive
       };
     }
   
@@ -262,13 +262,13 @@ export class LessonProgressService implements ILessonProgressService {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
   
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      const isPaid = userCourse && userCourse.isPaid;
+      const isActive = userCourse.isActive;
   
       return {
         message: "Lesson progress created successfully",
         statusCode: 200,
         data: newProgresses,
-        isPaid: !!isPaid
+        isPaid: !!isActive
       };
     }
   

@@ -1,6 +1,6 @@
 // create-user-course.dto.ts
 import { ID } from "src/common/types/type";
-import { IsEnum, IsNotEmpty } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { StatusEnum } from "src/common/enums/enum";
 
@@ -20,6 +20,13 @@ export class CreateUserCourseDto {
   })
   @IsNotEmpty()
   userId: ID; 
+
+  @ApiProperty({
+    description: "The on free trial of the user course",
+    example: true,
+  })
+  @IsBoolean()
+  onFreeTrial: boolean;
 
   @ApiProperty({
     description: "The ID of the course",

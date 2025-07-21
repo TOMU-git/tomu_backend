@@ -37,20 +37,20 @@ export class VimeoService {
             const videoId = uri.split('/').pop();
             const videoUrl = `https://player.vimeo.com/video/${videoId}`;
 
-            // Vaqtinchalik faylni o'chirish
+            // Delete the temporary file
             fs.unlink(tempFilePath, (err) => {
               if (err) console.error("Error deleting temp file", err);
             });
 
-            // Video davomiyligini olish uchun kechikish qo'shing
+            // Add a delay to get the video duration
             let videoInfo;
-            let attempts = 5; // 5 marta urinib ko'ramiz
+            let attempts = 5; // Try up to 5 times
             do {
               videoInfo = await this.getVideoInfo(videoId);
               if (videoInfo.status === 'available') {
-                break; // Video holati mavjud bo'lsa, tsiklni to'xtatamiz
+                break; // If the video is available, break the loop
               }
-              await new Promise((res) => setTimeout(res, 5000)); // 5 soniya kutamiz
+              await new Promise((res) => setTimeout(res, 5000)); // Wait for 5 seconds
               attempts--;
             } while (attempts > 0);
 
@@ -81,7 +81,7 @@ export class VimeoService {
           if (error) {
             reject(error);
           } else {
-            resolve({ duration: body.duration, status: body.status }); // Status qo'shamiz
+            resolve({ duration: body.duration, status: body.status }); // Add status to the response
           }
         },
       );

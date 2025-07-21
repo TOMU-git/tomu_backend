@@ -14,7 +14,6 @@ import { LessonRepository } from "../lesson/lesson.repository";
 import { BlockRepository } from "../block/block.repository";
 import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
-import { StatusEnum } from "src/common/enums/enum";
 
 // Nestjs/schedule va cron packagelarini o'rnatish kerak bo'lishi mumkin:
 // npm install --save @nestjs/schedule cron
@@ -543,43 +542,43 @@ private async getHomeworkRecommendations(
       const formattedVideos = queueItems.map(item => this.formatHomeworkQueueItem(item));
 
 
-      // Agar videolar orasida 1-moduldan boshqa modul yoki 20-darsdan keyin darslar bo'lsa, to'lov tekshirish
-      const hasLessonsBeyondFree = formattedVideos.some(video =>
-        (video.blockOrder && video.blockOrder > 1) ||
-        (video.blockOrder === 1 && video.homeworkOrder && video.homeworkOrder > 20)
-      );
+      // Agar videolar orasida 1-moduldan boshqa modul yoki 30-darsdan keyin darslar bo'lsa, to'lov tekshirish
+      // const hasLessonsBeyondFree = formattedVideos.some(video =>
+      //   (video.blockOrder && video.blockOrder > 1) ||
+      //   (video.blockOrder === 1 && video.homeworkOrder && video.homeworkOrder > 30)
+      // );
 
-      if (hasLessonsBeyondFree && queueItems.length > 0) {
-        // Foydalanuvchi to'lov qilgan-qilmaganini tekshirish
-        // courseId ni to'g'ridan-to'g'ri queueItems dan olish
-        const courseId = queueItems[0].courseId;
-        if (!courseId) {
-          this.logger.error('Course ID not found in homework progress');
-          return new ResData("Kurs ma'lumotlari topilmadi", 500, []);
-        }
+      // if (hasLessonsBeyondFree && queueItems.length > 0) {
+      //   // Foydalanuvchi to'lov qilgan-qilmaganini tekshirish
+      //   // courseId ni to'g'ridan-to'g'ri queueItems dan olish
+      //   const courseId = queueItems[0].courseId;
+      //   if (!courseId) {
+      //     this.logger.error('Course ID not found in homework progress');
+      //     return new ResData("Kurs ma'lumotlari topilmadi", 500, []);
+      //   }
 
-        const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-        const isPaid = userCourse && userCourse.isPaid;
+      //   const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+      //   const isActive = userCourse && userCourse.isActive;
 
-        if (!isPaid) {
-          // Agar to'lov qilinmagan bo'lsa
-          if (formattedVideos.some(video => video.blockOrder && video.blockOrder > 1)) {
-            return new ResData(
-              "To access lessons beyond module 1, you need to purchase this course.",
-              403,
-              []
-            );
-          }
+      //   if (!isActive) {
+      //     // Agar to'lov qilinmagan bo'lsa
+      //     if (formattedVideos.some(video => video.blockOrder && video.blockOrder > 1)) {
+      //       return new ResData(
+      //         "To access lessons beyond module 1, you need to purchase this course.",
+      //         403,
+      //         []
+      //       );
+      //     }
 
-          if (formattedVideos.some(video => video.blockOrder === 1 && video.homeworkOrder && video.homeworkOrder > 20)) {
-            return new ResData(
-              "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
-              403,
-              []
-            );
-          }
-        }
-      }
+      //     if (formattedVideos.some(video => video.blockOrder === 1 && video.homeworkOrder && video.homeworkOrder > 20)) {
+      //       return new ResData(
+      //         "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
+      //         403,
+      //         []
+      //       );
+      //     }
+      //   }
+      // }
 
       return new ResData("Foydalanuvchi uy vazifa videolari muvaffaqiyatli olindi", 200, formattedVideos);
     } catch (error) {

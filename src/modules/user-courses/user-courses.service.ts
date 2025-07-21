@@ -73,13 +73,23 @@ export class UserCourseService implements IUserCourseService {
   }
 
   async findByDate(id: number, day: Date, courseId: number): Promise<ResData<{isActive: boolean}>> {
+    console.log("id", id)
+    console.log("day", day)
+    console.log("courseId", courseId)
     const foundUserCourse = await this.userCourseRepository.findByUserIdAndCourseId(id, courseId);
+    const foundUserCourseBeforeUpdate = await this.findOneById(foundUserCourse.id)
+    console.log("foundUserCourseBeforeUpdate", foundUserCourseBeforeUpdate.data.isActive)
     if (!foundUserCourse) {
       throw new UserCourseNotFoundException();
     }
+    console.log("foundUserCourse.endedAt", foundUserCourse.endedAt)
     if (foundUserCourse.endedAt < day) {
       foundUserCourse.isActive = false;
+      // foydalanuvchini obunasi tugaganda isActive false qilinadi
+      await this.userCourseRepository.update(foundUserCourse);
     }
+    const updatedUserCourse = await this.findOneById(foundUserCourse.id)
+    console.log("updatedUserCourse", updatedUserCourse.data)
     return new ResData<{isActive: boolean}>("User course", 200, {isActive: foundUserCourse.isActive});
   }
 
