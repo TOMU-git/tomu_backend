@@ -62,18 +62,13 @@ export class LessonProgressService implements ILessonProgressService {
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
     try {
-      // Progress topish va lesson relationni yuklash
       const foundLessonProgress = await this.lessonProgressRepository.findById(id);
-      if (!foundLessonProgress) {
+      if (!foundLessonProgress || !foundLessonProgress.lesson) {
         throw new LessonProgressNotFoundException();
       }
-
-      // Lesson ma'lumotlarini tekshirish
-      if (!foundLessonProgress.lesson) {
-        throw new Error('Dars topilmadi');
-      }
-
-      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
+  
+      const { userId, blockId, courseId, blockOrder, lessonOrder } = foundLessonProgress;
+  
       if (foundLessonProgress.isWatched) {
         return new ResData<LessonProgress>(
           "Dars allaqachon ko'rilgan",
@@ -81,101 +76,59 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-
-      const userId = Number(foundLessonProgress.userId);
-      const courseId = Number(foundLessonProgress.courseId);
-      const blockOrder = Number(foundLessonProgress.blockOrder);
-      const lessonOrder = Number(foundLessonProgress.lessonOrder);
-
-      // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-      // const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-      // if (watchedLessonsToday >= 10) {
-      //   return new ResData<LessonProgress>(
-      //     "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
-      //     400,
-      //     foundLessonProgress,
-      //   );
-      // }
-
-      // Oldingi uy vazifalar bajarilganligini tekshirish
-      const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
-        userId,
-        courseId,
-        blockOrder,
-      );
-
-      const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(
-        courseId,
-        userId,
-        blockOrder,
-      );
-
-      // Har bir darsdan keyin uy vazifa bajarilishi shart
-      if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
+  
+      // 🔒 Avvalgi vazifalar soni 5 dan oshmaganmi?
+      const initialQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (initialQueue?.data?.count > 4) {
         return new ResData<LessonProgress>(
-          "Keyingi darsni ko'rish uchun avval uy vazifani bajarishingiz kerak",
-          400,
+          "Avvalgi vazifalarni yakunlang, so'ngra dars davom etadi.",
+          403,
           foundLessonProgress,
         );
       }
-
-      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
-      if (foundLessonProgress.isWatched) {
-        return new ResData<LessonProgress>(
-          "Dars allaqachon ko'rilgan",
-          200,
-          foundLessonProgress,
-        );
-      }
-
-      // Joriy darsni ko'rilgan qilish
+  
+      // 👁 Darsni ko‘rilgan deb belgilaymiz
       foundLessonProgress.isWatched = true;
       await this.lessonProgressRepository.update(foundLessonProgress);
-
-      // Darsni ko'rilgan qilishda uy vazifani qo'shish
+  
+      // 📌 Uyga vazifa rejalashtirish
       try {
-        if (!foundLessonProgress.lesson || !foundLessonProgress.lesson.id) {
-          this.logger.warn(`Dars ma'lumotlari to‘liq emas, uyga vazifa rejalashtirish o'tkazib yuborildi`);
-          return new ResData<LessonProgress>(
-            "Dars progressi muvaffaqiyatli yangilandi, lekin uyga vazifa rejalashtirilmadi",
-            200,
-            foundLessonProgress,
-          );
-        }
-
-        const lessonId = foundLessonProgress.lesson.id;
-
         const result = await this.homeworkProgressService.scheduleHomeworkForLesson(
           userId,
           courseId,
           blockOrder,
           lessonOrder,
         );
-
+  
         if (result.statusCode === 200) {
-          this.logger.log(`Dars (ID: ${lessonId}) ko‘rilgandan so‘ng uyga vazifa muvaffaqiyatli rejalashtirildi`);
+          this.logger.log(`Dars ID: ${foundLessonProgress.lesson.id} uchun vazifa muvaffaqiyatli rejalashtirildi`);
         } else {
-          this.logger.warn(`Dars (ID: ${lessonId}) uchun uyga vazifa rejalashtirilmadi: ${result.message}`);
+          this.logger.warn(`Vazifa rejalashtirishda muammo: ${result.message}`);
           return new ResData<LessonProgress>(
-            `Dars progressi yangilandi, lekin uyga vazifa rejalashtirilmadi: ${result.message}`,
+            `Dars ko‘rildi, ammo vazifa rejalashtirilmadi: ${result.message}`,
             200,
             foundLessonProgress,
           );
         }
       } catch (error) {
-        this.logger.error(
-          `Dars ko‘rilgandan so‘ng uyga vazifani rejalashtirishda xatolik: ${error.message}`,
-          error.stack,
-        );
+        this.logger.error(`Vazifa rejalashtirishda xatolik: ${error.message}`, error.stack);
         return new ResData<LessonProgress>(
-          "Dars progressi yangilandi, lekin uyga vazifa rejalashtirishda xatolik yuz berdi",
+          "Dars ko‘rildi, ammo uyga vazifani rejalashtirishda xatolik yuz berdi",
           200,
           foundLessonProgress,
         );
       }
-
+  
+      // 🔄 Vazifa qo‘shilgandan keyin yana tekshiramiz
+      const afterQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (afterQueue?.data?.count <= 4) {
+        await this.lessonProgressRepository.unlockNextLesson(lessonOrder, userId, blockId);
+      } else {
+        this.logger.warn("Vazifa limiti tugadi, keyingi dars ochilmadi");
+      }
+  
       return new ResData<LessonProgress>(
-        "Dars progressi muvaffaqiyatli yangilandi",
+        "Dars muvaffaqiyatli ko‘rildi",
         200,
         foundLessonProgress,
       );
@@ -184,6 +137,8 @@ export class LessonProgressService implements ILessonProgressService {
       throw error;
     }
   }
+  
+  
 
   async getVideos(userId: ID, blockId: ID): Promise<any> {
     const block = await this.blockRepository.findById(blockId);
@@ -214,6 +169,8 @@ export class LessonProgressService implements ILessonProgressService {
           isPaid: true
         };
       }
+
+
   
       // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
@@ -221,6 +178,19 @@ export class LessonProgressService implements ILessonProgressService {
       const hasPaid = userCourse.hasEverPaid
       const isActive = userCourse.isActive
       const onFreeTrial = userCourse.onFreeTrial
+
+
+
+      // Vazifalar bo'limidagi vazifalar sonini tekshirish
+      const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (queueItemsCount.data.count > 4) {
+        return {
+          message: "Finish reviewing the previous tasks first.",
+          statusCode: 403,
+          data: existingProgresses,
+          isPaid: isActive
+        };
+      }
   
       if (!hasPaid || !isActive) {
         if (blockOrder > 1) {

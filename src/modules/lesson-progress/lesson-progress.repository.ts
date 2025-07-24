@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, LessThanOrEqual, Repository, Between } from "typeorm";
@@ -7,6 +7,7 @@ import { ILessonProgressRepository } from "./interfaces/lesson-progress.reposito
 
 @Injectable()
 export class LessonProgressRepository implements ILessonProgressRepository {
+  private readonly logger = new Logger(LessonProgressRepository.name);
   constructor(
     @InjectRepository(LessonProgress)
     private lessonProgressRepository: Repository<LessonProgress>,
@@ -153,7 +154,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
 
   /**
    * Berilgan `lessonOrder`, `userId` va `blockOrder` bo'yicha `LessonkProgress` yozuvini topib,
-   * uning `isWatched` maydonini `true` ga o'zgartiradi va `countWatched` ni oshiradi.
+   * uning `isUnlocked` maydonini `true` ga o'zgartiradi va `countWatched` ni oshiradi.
    *
    * @param lessonOrder - Lessonkning tartib raqami
    * @param userId - Foydalanuvchi ID si
@@ -161,27 +162,35 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @returns Yangilangan `LessonkProgress` yozuvi
    * @throws Error Agar `LessonkProgress` topilmasa
    */
-  async markLessonAsWatched(
-    lessonOrder: ID,
-    userId: ID,
-    blockId: ID,
-  ): Promise<LessonProgress> {
-    // lessonOrder, userId, va blockId bo'yicha lesson progress yozuvini topamiz
-    const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockId },
-    });
+/**
+ * Berilgan `currentLessonOrder`, `userId` va `blockId` bo'yicha
+ * keyingi darsni unlock qiladi (ya'ni `lessonOrder + 1`).
+ *
+ * Agar keyingi dars mavjud bo'lmasa (oxirgi dars bo'lsa), hech narsa qilmaydi.
+ */
+async unlockNextLesson(
+  currentLessonOrder: ID,
+  userId: ID,
+  blockId: ID,
+): Promise<LessonProgress | null> {
+  // Keyingi darsni topamiz
+  const nextLessonProgress = await this.lessonProgressRepository.findOne({
+    where: { lessonOrder: currentLessonOrder + 1, userId, blockId },
+  });
 
-    if (lessonProgress) {
-      // Agar topilgan bo'lsa, faqat isWatched ni true qilamiz
-      lessonProgress.isWatched = true;
-
-      // O'zgartirilgan lessonProgressni saqlaymiz va qaytaramiz
-      return await this.lessonProgressRepository.save(lessonProgress);
-    } else {
-      // Agar topilmasa, xato tashlaymiz
-      throw new Error("LessonkProgress not found");
-    }
+  // Agar keyingi dars mavjud bo'lmasa — oxirgi dars bo'lishi mumkin
+  if (!nextLessonProgress) {
+    this.logger.warn(
+      `Dars zanjiri tugadi: lessonOrder ${currentLessonOrder + 1} uchun progress topilmadi (userId=${userId}, blockId=${blockId})`,
+    );
+    return null;
   }
+
+  // Keyingi darsni unlock qilamiz
+  nextLessonProgress.isUnlocked = true;
+  return await this.lessonProgressRepository.save(nextLessonProgress);
+}
+
 
   /**
    * Foydalanuvchining barcha ko'rilgan (isWatched = true) dars progresslarini topish.

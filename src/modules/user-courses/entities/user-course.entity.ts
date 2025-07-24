@@ -16,7 +16,7 @@ export class UserCourse extends BaseEntity {
   @Column({ name: "on_free_trial", type: "bool", default: false })
   onFreeTrial: boolean;
 
-  @Column({ type: "bool", name: "is_active", default: true })
+  @Column({ type: "bool", name: "is_active", default: false })
   isActive: boolean;
 
   @Column({ name: 'has_ever_paid', type: 'bool', default: false })

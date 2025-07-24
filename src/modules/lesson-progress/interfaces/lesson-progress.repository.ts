@@ -38,8 +38,8 @@ export interface ILessonProgressRepository {
     courseId: ID,
   ): Promise<LessonProgress | null>;
 
-  markLessonAsWatched(
-    lessonOrder: ID,
+  unlockNextLesson(
+    currentLessonOrder: ID,
     userId: ID,
     blockId: ID,
   ): Promise<LessonProgress>;

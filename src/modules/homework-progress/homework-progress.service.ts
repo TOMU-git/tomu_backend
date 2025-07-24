@@ -118,6 +118,12 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     // 1) Kurs holatini o‘qish
     const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
     if (!userCourse) return;
+
+    // agar navbatdagi vazifalar soni 20 dan ortiq bo'lsa, qo'shishni o'tkazmaymiz
+    const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
+    if (pendingCount >= 20) {
+      return;
+    }
   
     // 2) Joriy modul order va eligible modul orderlarini aniqlash
     const currentOrder = await this.getCurrentUserModule(userId, courseId);
