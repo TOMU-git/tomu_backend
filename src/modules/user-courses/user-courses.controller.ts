@@ -58,9 +58,9 @@ export class UserCoursesController {
     type: Number,
     description: "course id",
     })
-  @Get('day/:id')
-  async checkEndedDate(@Param('id', ParseIntPipe) id: number, @Query('day') day: Date, @Query('courseId') courseId: number) {
-    return await this.userCourseService.findByDate(id , day, courseId);
+  @Get('day/:userId')
+  async checkEndedDate(@Param('userId', ParseIntPipe) userId: number, @Query('day') day: Date, @Query('courseId') courseId: number) {
+    return await this.userCourseService.findByDate(userId , day, courseId);
   }
 
  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR, RoleEnum.STUDENT)
