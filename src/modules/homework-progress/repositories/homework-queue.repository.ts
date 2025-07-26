@@ -184,4 +184,13 @@ export class HomeworkQueueRepository {
       where: { userId: Number(userId), courseId: Number(courseId) }
     });
   }
+
+  async findByUserId(userId: number): Promise<HomeworkQueue[]> {
+    return this.repository.createQueryBuilder('queue')
+      .where('queue.userId = :userId', { userId })
+      .getMany();
+  }
+
+  
+  
 }

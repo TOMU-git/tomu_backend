@@ -331,7 +331,6 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 //   }
 // }
 
-
 private async getHomeworkRecommendations(
   userId: ID,
   courseId: ID,
@@ -344,29 +343,31 @@ private async getHomeworkRecommendations(
   }>
 > {
   try {
-    console.log("userId", userId);
-    console.log("courseId", courseId);
-    // 1. HomeworkProgress larni olish (faqat shu kurs uchun)
+    this.logger.log(`userId: ${userId}, courseId: ${courseId}`);
+
+    // Homework progresslarini shu kurs bo‘yicha olish
     const allHomeworkProgresses = await this.homeworkProgressRepository.findByUserIdAndCourseId(userId, courseId);
-    console.log("allHomeworkProgresses.length", allHomeworkProgresses.length);
+    this.logger.log(`allHomeworkProgresses.length: ${allHomeworkProgresses.length}`);
+
     const courseProgresses = allHomeworkProgresses.filter(
-      (p) => p.isWatched && p.countWatched < 10
+      (p) => p.isWatched && p.countWatched < 10 && p.homework
     );
-    console.log("courseProgresses.length", courseProgresses.length);
+    this.logger.log(`courseProgresses.length: ${courseProgresses.length}`);
 
     if (!courseProgresses.length) {
       this.logger.log(`User ${userId} uchun homeworkProgress topilmadi (kurs ${courseId})`);
       return [];
     }
 
+    // Queue’ni faqat shu kurs bo‘yicha olish
+    const queuedItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
+    const queuedHomeworkIds = new Set(queuedItems.map((q) => q.homeworkId));
+
     const recommendations = [];
 
     for (const progress of courseProgresses) {
       const homework = progress.homework;
-      if (!homework) continue;
-
-      const isQueued = await this.homeworkQueueRepository.findByUserIdAndHomeworkId(userId, homework.id);
-      if (isQueued) continue;
+      if (!homework || queuedHomeworkIds.has(homework.id)) continue;
 
       recommendations.push({
         userId,
@@ -381,14 +382,18 @@ private async getHomeworkRecommendations(
       return [];
     }
 
-    // Random bittasini qaytaramiz
     const randomIndex = Math.floor(Math.random() * recommendations.length);
     return [recommendations[randomIndex]];
+
   } catch (error) {
-    this.logger.error(`Error getting homework recommendations: ${error.message}`, error.stack);
+    this.logger.error(
+      `Error getting homework recommendations for user ${userId}, course ${courseId}: ${error.message}`,
+      error.stack
+    );
     return [];
   }
 }
+
 
 
 
