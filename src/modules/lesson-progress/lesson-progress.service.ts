@@ -226,7 +226,7 @@ export class LessonProgressService implements ILessonProgressService {
   
         if (blockOrder === 1) {
           const hasLessonBeyond30 = existingProgresses.some(progress =>
-            progress.lessonOrder > 30 && progress.isUnlocked
+            progress.lessonOrder >= 30 && progress.isUnlocked
           );
   
           if (hasLessonBeyond30) {
