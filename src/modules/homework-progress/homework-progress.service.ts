@@ -121,8 +121,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // agar navbatdagi vazifalar soni 20 dan ortiq bo'lsa, qo'shishni o'tkazmaymiz
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
+    console.log("pendingCount", pendingCount);
     if (pendingCount >= 20) {
-      return;
+      console.log("Queue limit reached, skipping...");
+      return new ResData("Queue to‘la", 400);  
     }
   
     // 2) Joriy modul order va eligible modul orderlarini aniqlash
