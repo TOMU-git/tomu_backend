@@ -129,11 +129,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   
     // 2) Joriy modul order va eligible modul orderlarini aniqlash
     const currentOrder = await this.getCurrentUserModule(userId, courseId);
+    console.log("currentOrder", currentOrder);
     const eligibleModules = this.getEligibleModules(currentOrder);
+    console.log("eligibleModules.length", eligibleModules.length);
   
     // 3) Tavsiya oling
     const recommendations = await this.getHomeworkRecommendations(userId, courseId, eligibleModules);
-    console.log("recommendations", recommendations.length);
+    console.log("recommendations.length", recommendations.length);
     if (!recommendations.length) return;
 
   
