@@ -92,7 +92,8 @@ export class LessonProgressService implements ILessonProgressService {
       const hasPaid = userCourse.hasEverPaid
       const isActive = userCourse.isActive
 
-      if(foundLessonProgress.lessonOrder > 30 && !hasPaid && !isActive){
+
+      if(foundLessonProgress.lessonOrder >= 30 && !hasPaid && !isActive){
         return new ResData<LessonProgress>(
           "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
           403,
