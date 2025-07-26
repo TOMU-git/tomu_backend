@@ -133,7 +133,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
   
     // 3) Tavsiya oling
     const recommendations = await this.getHomeworkRecommendations(userId, courseId, eligibleModules);
+    console.log("recommendations", recommendations.length);
     if (!recommendations.length) return;
+
   
     // 4) Recommendation ob’ekti – sizda mana shunday struktura:
     //    { userId: number, homeworkId: number, priority: number, courseId: number }
