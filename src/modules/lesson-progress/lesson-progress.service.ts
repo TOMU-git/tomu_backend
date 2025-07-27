@@ -217,7 +217,7 @@ export class LessonProgressService implements ILessonProgressService {
       if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
           return {
-            message: "To access lessons beyond module 1, you need to purchase this course.",
+            message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
             statusCode: 403,
             data: [],
             isPaid: false
