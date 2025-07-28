@@ -66,9 +66,9 @@ export class LessonProgressService implements ILessonProgressService {
       if (!foundLessonProgress || !foundLessonProgress.lesson) {
         throw new LessonProgressNotFoundException();
       }
-  
+
       const { userId, blockId, courseId, blockOrder, lessonOrder } = foundLessonProgress;
-  
+
       if (foundLessonProgress.isWatched) {
         return new ResData<LessonProgress>(
           "Dars allaqachon ko'rilgan",
@@ -76,7 +76,7 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-  
+
       // 🔒 Avvalgi vazifalar soni 5 dan oshmaganmi?
       const initialQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
       if (initialQueue?.data?.count > 4) {
@@ -86,6 +86,17 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
+
+      // ✅ Kunlik limit tekshiruvi
+      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      if (dailyWatchedCount >= 10) {
+        return new ResData<LessonProgress>(
+          "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+          403,
+          foundLessonProgress,
+        );
+      }
+
       // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
 
@@ -93,7 +104,7 @@ export class LessonProgressService implements ILessonProgressService {
       const isActive = userCourse.isActive
 
 
-      if(foundLessonProgress.lessonOrder >= 30 && !hasPaid && !isActive){
+      if (foundLessonProgress.lessonOrder >= 30 && !hasPaid && !isActive) {
         return new ResData<LessonProgress>(
           "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
           403,
@@ -101,7 +112,7 @@ export class LessonProgressService implements ILessonProgressService {
         );
       }
 
-      if(foundLessonProgress.lessonOrder > 30 && hasPaid && !isActive){
+      if (foundLessonProgress.lessonOrder > 30 && hasPaid && !isActive) {
         return new ResData<LessonProgress>(
           "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
           403,
@@ -112,7 +123,7 @@ export class LessonProgressService implements ILessonProgressService {
       // 👁 Darsni ko‘rilgan deb belgilaymiz
       foundLessonProgress.isWatched = true;
       await this.lessonProgressRepository.update(foundLessonProgress);
-  
+
       // 📌 Uyga vazifa rejalashtirish
       try {
         const result = await this.homeworkProgressService.scheduleHomeworkForLesson(
@@ -121,7 +132,7 @@ export class LessonProgressService implements ILessonProgressService {
           blockOrder,
           lessonOrder,
         );
-  
+
         if (result.statusCode === 200) {
           this.logger.log(`Dars ID: ${foundLessonProgress.lesson.id} uchun vazifa muvaffaqiyatli rejalashtirildi`);
         } else {
@@ -140,7 +151,7 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-  
+
       // 🔄 Vazifa qo‘shilgandan keyin yana tekshiramiz
       const afterQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
       if (afterQueue?.data?.count <= 4) {
@@ -148,7 +159,7 @@ export class LessonProgressService implements ILessonProgressService {
       } else {
         this.logger.warn("Vazifa limiti tugadi, keyingi dars ochilmadi");
       }
-  
+
       return new ResData<LessonProgress>(
         "Dars muvaffaqiyatli ko‘rildi",
         200,
@@ -159,31 +170,31 @@ export class LessonProgressService implements ILessonProgressService {
       throw error;
     }
   }
-  
-  
+
+
 
   async getVideos(userId: ID, blockId: ID): Promise<any> {
     const block = await this.blockRepository.findById(blockId);
     if (!block) {
       throw new BlockNotFoundException();
     }
-  
+
     const existingProgresses =
       await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
-  
+
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
-  
+
       const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
       const progressCount = existingProgresses.length;
-  
+
       if (totalLessonsCount > progressCount) {
         await this.generateLessonProgress(userId, blockId, courseId);
-  
+
         const updatedProgresses =
           await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
-  
+
         return {
           message: "Lesson progress updated with new lessons",
           statusCode: 200,
@@ -193,7 +204,7 @@ export class LessonProgressService implements ILessonProgressService {
       }
 
 
-  
+
       // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
 
@@ -213,7 +224,19 @@ export class LessonProgressService implements ILessonProgressService {
           isPaid: isActive
         };
       }
-  
+
+
+      // ✅ Kunlik limitni tekshirish
+      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      if (dailyWatchedCount >= 10) {
+        return {
+          message: "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+          statusCode: 403,
+          data: existingProgresses, // eski darslar ko‘rsatiladi
+          isPaid: isActive,
+        };
+      }
+
       if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
           return {
@@ -223,12 +246,12 @@ export class LessonProgressService implements ILessonProgressService {
             isPaid: false
           };
         }
-  
+
         if (blockOrder === 1) {
           const hasLessonBeyond30 = existingProgresses.some(progress =>
             progress.lessonOrder >= 30 && progress.isUnlocked
           );
-  
+
           if (hasLessonBeyond30) {
             return {
               message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
@@ -239,7 +262,7 @@ export class LessonProgressService implements ILessonProgressService {
           }
         }
       }
-  
+
       return {
         message: "Lesson fetched successfully",
         statusCode: 200,
@@ -247,15 +270,15 @@ export class LessonProgressService implements ILessonProgressService {
         isPaid: !!isActive
       };
     }
-  
+
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-  
+
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-  
+
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
       const isActive = userCourse.isActive;
-  
+
       return {
         message: "Lesson progress created successfully",
         statusCode: 200,
@@ -263,7 +286,7 @@ export class LessonProgressService implements ILessonProgressService {
         isPaid: !!isActive
       };
     }
-  
+
     return {
       message: "No lessons available",
       statusCode: 404,
@@ -271,7 +294,7 @@ export class LessonProgressService implements ILessonProgressService {
       isPaid: false
     };
   }
-  
+
 
 
   /**
@@ -352,7 +375,7 @@ export class LessonProgressService implements ILessonProgressService {
    * @param userId - Foydalanuvchi ID si
    * @returns Bugun ko'rilgan darslar soni
    */
-  private async checkDailyLessonsLimit(userId: ID): Promise<number> {
+  async checkDailyLessonsLimit(userId: ID): Promise<number> {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Bugungi kunning boshlanishi (00:00:00)
 

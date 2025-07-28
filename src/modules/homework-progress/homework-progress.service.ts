@@ -14,6 +14,7 @@ import { LessonRepository } from "../lesson/lesson.repository";
 import { BlockRepository } from "../block/block.repository";
 import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { ILessonProgressService } from "../lesson-progress/interfaces/lesson-progress.service";
 
 // Nestjs/schedule va cron packagelarini o'rnatish kerak bo'lishi mumkin:
 // npm install --save @nestjs/schedule cron
@@ -29,6 +30,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     @Inject("ILessonProgressRepository")
     private readonly lessonProgressRepository: ILessonProgressRepository,
+
+    @Inject("ILessonProgressService")
+    private readonly lessonProgressService: ILessonProgressService,
 
     private readonly schedulerRegistry: SchedulerRegistry,
 
@@ -531,8 +535,10 @@ private async getHomeworkRecommendations(
       // 3. Queue tozalanganmi?
       const remainingQueueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
       const isQueueEmpty = !remainingQueueItems || remainingQueueItems.length === 0;
+
+      const dailyWatchedCount = await this.lessonProgressService.checkDailyLessonsLimit(userId);
   
-      if (isQueueEmpty) {
+      if (isQueueEmpty && dailyWatchedCount < 10) {
         // 4. Eng so‘nggi homework progressni aniqlaymiz
         const allProgresses = await this.homeworkProgressRepository.findByUserId(userId);
         const sorted = allProgresses
