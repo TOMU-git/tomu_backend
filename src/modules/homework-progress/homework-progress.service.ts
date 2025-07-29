@@ -536,7 +536,8 @@ private async getHomeworkRecommendations(
       const remainingQueueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
       const isQueueEmpty = !remainingQueueItems || remainingQueueItems.length === 0;
 
-      const dailyWatchedCount = await this.lessonProgressService.checkDailyLessonsLimit(userId);
+      // const dailyWatchedCount = await this.lessonProgressService.checkDailyLessonsLimit(userId);
+      const dailyWatchedCount = 1;
   
       if (isQueueEmpty && dailyWatchedCount < 10) {
         // 4. Eng so‘nggi homework progressni aniqlaymiz

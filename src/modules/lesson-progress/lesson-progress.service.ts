@@ -226,16 +226,16 @@ export class LessonProgressService implements ILessonProgressService {
       }
 
 
-      // ✅ Kunlik limitni tekshirish
-      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
-      if (dailyWatchedCount >= 10) {
-        return {
-          message: "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
-          statusCode: 403,
-          data: existingProgresses, // eski darslar ko‘rsatiladi
-          isPaid: isActive,
-        };
-      }
+      // // ✅ Kunlik limitni tekshirish
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return {
+      //     message: "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+      //     statusCode: 403,
+      //     data: existingProgresses, // eski darslar ko‘rsatiladi
+      //     isPaid: isActive,
+      //   };
+      // }
 
       if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
