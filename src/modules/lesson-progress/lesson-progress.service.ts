@@ -87,15 +87,15 @@ export class LessonProgressService implements ILessonProgressService {
         );
       }
 
-      // ✅ Kunlik limit tekshiruvi
-      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
-      if (dailyWatchedCount >= 10) {
-        return new ResData<LessonProgress>(
-          "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
-          403,
-          foundLessonProgress,
-        );
-      }
+      // // ✅ Kunlik limit tekshiruvi
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+      //     403,
+      //     foundLessonProgress,
+      //   );
+      // }
 
       // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
