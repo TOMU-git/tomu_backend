@@ -13,4 +13,6 @@ export interface ILessonProgressService {
   getVideos(userId: ID, blockId: ID): Promise<ResData<Array<LessonProgress>>>;
 
   checkDailyLessonsLimit(userId: ID): Promise<number>
+
+  
 }

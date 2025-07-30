@@ -64,4 +64,10 @@ export interface ILessonProgressRepository {
     startDate: Date,
     endDate: Date,
   ): Promise<number>;
+
+  findLastUnlockedAndWatchedLessonOrder(
+    userId: ID,
+    courseId: ID,
+    blockOrder: ID,
+  ): Promise<number | null>;
 }

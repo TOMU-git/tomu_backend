@@ -252,4 +252,25 @@ async unlockNextLesson(
     
     return count;
   }
+
+  async findLastUnlockedAndWatchedLessonOrder(
+    userId: ID,
+    courseId: ID,
+    blockOrder: ID,
+  ): Promise<number | null> {
+    const result = await this.lessonProgressRepository
+      .createQueryBuilder("lessonProgress")
+      .select("lessonProgress.lessonOrder", "lessonOrder")
+      .where("lessonProgress.userId = :userId", { userId })
+      .andWhere("lessonProgress.courseId = :courseId", { courseId })
+      .andWhere("lessonProgress.blockOrder = :blockOrder", { blockOrder })
+      .andWhere("lessonProgress.isWatched = true")
+      .andWhere("lessonProgress.isUnlocked = true")
+      .orderBy("lessonProgress.lessonOrder", "DESC")
+      .getRawOne(); // faqat lessonOrder ni olamiz
+  
+    return result ? result.lessonOrder : null;
+  }
+  
+  
 }
