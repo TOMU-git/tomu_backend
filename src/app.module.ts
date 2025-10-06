@@ -34,6 +34,7 @@ import { LivechatPriceModule } from './modules/livechat-price/livechat-price.mod
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { CoursePaymentHistoryModule } from './modules/course-payment-history/course-payment-history.module';
 import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history/livechat-payment-history.module';
+import { AiModule } from './modules/ai/ai.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history
     AnalyticsModule,
     CoursePaymentHistoryModule,
     LivechatPaymentHistoryModule,
+    AiModule,
   ],
 })
 export class AppModule implements NestModule {

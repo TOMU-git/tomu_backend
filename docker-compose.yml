@@ -1,0 +1,91 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: tomu_postgres
+    environment:
+      POSTGRES_DB: tomu_lms
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tomu_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: tomu_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - tomu_network
+
+  # ChromaDB Vector Database
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: tomu_chroma
+    ports:
+      - "8000:8000"
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - tomu_network
+
+  # Main Application
+  app:
+    build: .
+    container_name: tomu_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE=tomu_lms
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres123
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
+      - JWT_SECRET_KEY=your-secret-key
+      - JWT_EXPIRED_IN=24h
+      - JWT_REFRESH_SECRET_KEY=your-refresh-secret-key
+      - JWT_REFRESH_EXPIRATION=7d
+      - COOKIE_TIME=86400000
+    depends_on:
+      - postgres
+      - redis
+      - chroma
+    volumes:
+      - ./upload:/app/upload
+    networks:
+      - tomu_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
+
+networks:
+  tomu_network:
+    driver: bridge
+
+
+
+
+
+
+
+
+

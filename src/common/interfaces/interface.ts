@@ -16,6 +16,30 @@ export interface IConfig {
   paymeTestKey: string;
   token: string;
   smsApiUrl: string;
+  openaiApiKey: string;
+  whisperModel: string;
+  ttsModel: string;
+  gptModel: string;
+  translateApiKey: string;
+  chromaHost: string;
+  chromaPort: number;
+  chromaUrl: string;
+  chromaCollection: string;
+  useRag: string;
+  useRagStrict: string;
+  ragTopK: number;
+  embedModel: string;
+  strictNoEcho: number;
+  detSim: number;
+  echoOverlap: number;
+  maxTokens: number;
+  temperature: number;
+  responseClamp: number;
+  analyzeUser: number;
+  allowedVocabPath: string;
+  embedBatch: number;
+  debugLog: number;
+  retrieveMaxLesson: number;
 }
 
 export interface CustomAxiosResponse<T = any> {
