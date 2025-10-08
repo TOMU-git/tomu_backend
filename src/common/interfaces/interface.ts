@@ -40,6 +40,9 @@ export interface IConfig {
   embedBatch: number;
   debugLog: number;
   retrieveMaxLesson: number;
+  // Logger configuration
+  logLevel: string;
+  isDevelopment: boolean;
 }
 
 export interface CustomAxiosResponse<T = any> {

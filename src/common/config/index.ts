@@ -44,4 +44,7 @@ export const config: IConfig = {
   embedBatch: Number(process.env.EMBED_BATCH),
   debugLog: Number(process.env.DEBUG_LOG),
   retrieveMaxLesson: Number(process.env.RETRIEVE_MAX_LESSON),
+  // Logger configuration
+  logLevel: process.env.LOG_LEVEL || 'warn', // 'error', 'warn', 'log', 'debug'
+  isDevelopment: process.env.NODE_ENV === 'development',
 };
