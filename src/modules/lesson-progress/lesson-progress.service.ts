@@ -14,6 +14,7 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { User } from "../user/entities/user.entity";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -340,7 +341,7 @@ export class LessonProgressService implements ILessonProgressService {
         }
 
         const newProgress = new LessonProgress();
-        newProgress.userId = userId;
+        newProgress.user = { id: userId } as User; // Relation orqali yozish
         newProgress.blockId = blockId;
         newProgress.lessonOrder = lesson.order;
         newProgress.blockOrder = block.order;

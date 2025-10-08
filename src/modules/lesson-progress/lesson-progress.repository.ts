@@ -11,7 +11,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   constructor(
     @InjectRepository(LessonProgress)
     private lessonProgressRepository: Repository<LessonProgress>,
-  ) {}
+  ) { }
 
   async create(dto: LessonProgress): Promise<LessonProgress> {
     const newLessonProgress = await this.lessonProgressRepository.create(dto);
@@ -42,7 +42,7 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return this.lessonProgressRepository.find({
       where: {
         blockId: blockId,
-        userId: userId,
+        user: { id: userId }, // Relation uslubida qidirish
       },
       relations: ["lesson"], // "lesson"ni to'liq olish uchun relations qo'shish
       order: {
@@ -65,8 +65,9 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   ): Promise<number | null> {
     const result = await this.lessonProgressRepository
       .createQueryBuilder("lessonProgress")
+      .leftJoin("lessonProgress.user", "user")
       .select("lessonProgress.lessonOrder", "lessonOrder") // faqat lessonOrder tanlash
-      .where("lessonProgress.userId = :userId", { userId })
+      .where("user.id = :userId", { userId })
       .andWhere("lessonProgress.courseId = :courseId", { courseId })
       .andWhere("lessonProgress.blockOrder = :blockOrder", { blockOrder })
       .andWhere("lessonProgress.isWatched = :isWatched", { isWatched: true })
@@ -84,9 +85,10 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   ): Promise<number | null> {
     const result = await this.lessonProgressRepository
       .createQueryBuilder("lessonProgress")
+      .leftJoin("lessonProgress.user", "user")
       .select("lessonProgress.lessonOrder", "lessonOrder")
       .where("lessonProgress.blockOrder = :blockOrder", { blockOrder })
-      .andWhere("lessonProgress.userId = :userId", { userId })
+      .andWhere("user.id = :userId", { userId })
       .andWhere("lessonProgress.courseId = :courseId", { courseId })
       .orderBy("lessonProgress.lessonOrder", "DESC")
       .getRawOne();
@@ -145,7 +147,12 @@ export class LessonProgressRepository implements ILessonProgressRepository {
   ): Promise<LessonProgress | null> {
     // lessonOrder, userId, blockOrder va courseId bo'yicha lesson progress yozuvini qidiramiz
     const lessonProgress = await this.lessonProgressRepository.findOne({
-      where: { lessonOrder, userId, blockOrder, courseId },
+      where: {
+        lessonOrder,
+        user: { id: userId }, // Relation uslubida qidirish
+        blockOrder,
+        courseId
+      },
     });
 
     // Ma'lumot mavjud bo'lsa, uni qaytaradi, bo'lmasa null qaytaradi
@@ -162,34 +169,38 @@ export class LessonProgressRepository implements ILessonProgressRepository {
    * @returns Yangilangan `LessonkProgress` yozuvi
    * @throws Error Agar `LessonkProgress` topilmasa
    */
-/**
- * Berilgan `currentLessonOrder`, `userId` va `blockId` bo'yicha
- * keyingi darsni unlock qiladi (ya'ni `lessonOrder + 1`).
- *
- * Agar keyingi dars mavjud bo'lmasa (oxirgi dars bo'lsa), hech narsa qilmaydi.
- */
-async unlockNextLesson(
-  currentLessonOrder: ID,
-  userId: ID,
-  blockId: ID,
-): Promise<LessonProgress | null> {
-  // Keyingi darsni topamiz
-  const nextLessonProgress = await this.lessonProgressRepository.findOne({
-    where: { lessonOrder: currentLessonOrder + 1, userId, blockId },
-  });
+  /**
+   * Berilgan `currentLessonOrder`, `userId` va `blockId` bo'yicha
+   * keyingi darsni unlock qiladi (ya'ni `lessonOrder + 1`).
+   *
+   * Agar keyingi dars mavjud bo'lmasa (oxirgi dars bo'lsa), hech narsa qilmaydi.
+   */
+  async unlockNextLesson(
+    currentLessonOrder: ID,
+    userId: ID,
+    blockId: ID,
+  ): Promise<LessonProgress | null> {
+    // Keyingi darsni topamiz
+    const nextLessonProgress = await this.lessonProgressRepository.findOne({
+      where: {
+        lessonOrder: currentLessonOrder + 1,
+        user: { id: userId }, // Relation uslubida qidirish
+        blockId
+      },
+    });
 
-  // Agar keyingi dars mavjud bo'lmasa — oxirgi dars bo'lishi mumkin
-  if (!nextLessonProgress) {
-    this.logger.warn(
-      `Dars zanjiri tugadi: lessonOrder ${currentLessonOrder + 1} uchun progress topilmadi (userId=${userId}, blockId=${blockId})`,
-    );
-    return null;
+    // Agar keyingi dars mavjud bo'lmasa — oxirgi dars bo'lishi mumkin
+    if (!nextLessonProgress) {
+      this.logger.warn(
+        `Dars zanjiri tugadi: lessonOrder ${currentLessonOrder + 1} uchun progress topilmadi (userId=${userId}, blockId=${blockId})`,
+      );
+      return null;
+    }
+
+    // Keyingi darsni unlock qilamiz
+    nextLessonProgress.isUnlocked = true;
+    return await this.lessonProgressRepository.save(nextLessonProgress);
   }
-
-  // Keyingi darsni unlock qilamiz
-  nextLessonProgress.isUnlocked = true;
-  return await this.lessonProgressRepository.save(nextLessonProgress);
-}
 
 
   /**
@@ -201,7 +212,7 @@ async unlockNextLesson(
   async findAllWatchedLessonsByUser(userId: ID, courseId: ID): Promise<LessonProgress[]> {
     return await this.lessonProgressRepository.find({
       where: {
-        userId: userId,
+        user: { id: userId }, // Relation uslubida qidirish
         isWatched: true,
         courseId: courseId,
       },
@@ -219,7 +230,7 @@ async unlockNextLesson(
       where: {
         blockOrder: blockOrder,
         courseId: courseId,
-        userId: userId,
+        user: { id: userId }, // Relation uslubida qidirish
       },
       select: ["isWatched"],
     });
@@ -244,12 +255,12 @@ async unlockNextLesson(
     // Using TypeORM's find method with automatic mapping
     const count = await this.lessonProgressRepository.count({
       where: {
-        userId: userId,
+        user: { id: userId }, // Relation uslubida qidirish
         isWatched: true,
         lastUpdatedAt: Between(startDate, endDate)
       }
     });
-    
+
     return count;
   }
 
@@ -260,17 +271,18 @@ async unlockNextLesson(
   ): Promise<number | null> {
     const result = await this.lessonProgressRepository
       .createQueryBuilder("lessonProgress")
+      .leftJoin("lessonProgress.user", "user")
       .select("lessonProgress.lessonOrder", "lessonOrder")
-      .where("lessonProgress.userId = :userId", { userId })
+      .where("user.id = :userId", { userId })
       .andWhere("lessonProgress.courseId = :courseId", { courseId })
       .andWhere("lessonProgress.blockOrder = :blockOrder", { blockOrder })
       .andWhere("lessonProgress.isWatched = true")
       .andWhere("lessonProgress.isUnlocked = true")
       .orderBy("lessonProgress.lessonOrder", "DESC")
       .getRawOne(); // faqat lessonOrder ni olamiz
-  
+
     return result ? result.lessonOrder : null;
   }
-  
-  
+
+
 }
