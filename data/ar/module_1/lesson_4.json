@@ -1,0 +1,51 @@
+{
+  "id": "ar_m1_l4",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 4,
+  "title": "تَاجِرٌ",
+  "lessonSummary": "Learning to identify people and professions using demonstratives and simple yes/no questions.",
+  "keywords": ["kasb", "shaxs", "ko'rsatish olmoshi", "savol", "inkor"],
+  "vocabulary": [
+    { "word": "تَاجِرٌ", "normalized": "تاجر", "lemma": "تَاجِر", "pos": "noun", "translationUz": "savdogar", "example": "هَذَا تَاجِرٌ" },
+    { "word": "مُهَنْدِسٌ", "normalized": "مهندس", "lemma": "مُهَنْدِس", "pos": "noun", "translationUz": "muhandis", "example": "هُوَ مُهَنْدِسٌ" },
+    { "word": "مَنْ", "normalized": "من", "lemma": "مَنْ", "pos": "interrogative", "translationUz": "kim", "example": "مَنْ هَذَا؟" },
+    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu (yaqin)", "example": "هَذَا كِتَابٌ" },
+    { "word": "ذَلِكَ", "normalized": "ذلك", "lemma": "ذَلِكَ", "pos": "demonstrative", "translationUz": "u (uzoq)", "example": "ذَلِكَ بَيْتٌ" },
+    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ طَالِبٌ؟" },
+    { "word": "لاَ", "normalized": "لا", "lemma": "لَا", "pos": "particle", "translationUz": "yo‘q", "example": "لَا، هُوَ طَبِيبٌ" },
+    { "word": "أَيْضًا", "normalized": "ايضا", "lemma": "أَيْضًا", "pos": "particle", "translationUz": "ham", "example": "هُوَ تَاجِرٌ أَيْضًا" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "أَحْمَدُ",
+      "text": "مَنْ هَذَا، يَا مُحَمَّدُ؟",
+      "translationUz": "Bu kim, Muhammad?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَذَا تَاجِرٌ، يَا أَحْمَدُ.",
+      "translationUz": "Bu savdogar, Ahmad.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "أَحْمَدُ",
+      "text": "هَلْ ذَلِكَ مُهَنْدِسٌ؟",
+      "translationUz": "U (narigi) muhandismi?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 4,
+      "speaker": "مُحَمَّدٌ",
+      "text": "لَا، هُوَ تَاجِرٌ أَيْضًا.",
+      "translationUz": "Yo‘q, u ham savdogar.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:45:00Z",
+  "updatedAt": "2025-10-12T12:45:00Z"
+}

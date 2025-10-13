@@ -3,6 +3,25 @@ import { Course } from "src/modules/course/entities/course.entity";
 import { User } from "src/modules/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
+/**
+ * UserCourseProgress
+ * -------------------------------------------------------
+ * Maqsad:
+ *  - Foydalanuvchining aniq bir kursdagi o‘qish jarayonini saqlaydi.
+ *  - Hozir qaysi blok/darsda ekani, tugallangan darslar va kurs tili kabi
+ *    ma’lumotlarni jamlaydi, AI uchun kontekst sifatida xizmat qiladi.
+ *
+ * Asosiy maydonlar:
+ *  - userId, courseId: Kimning qaysi kurs bo‘yicha progressi saqlanayotgani.
+ *  - courseLanguage: Shu kurs doirasidagi aloqa tili.
+ *  - currentBlockId, currentLessonId, currentLessonOrder: Hozirgi holat.
+ *  - completedLessons, completedBlocks: Tugallangan elementlar ro‘yxati.
+ *  - isActive: Kurs hozir faolmi yoki yo‘q.
+ *
+ * Bog‘lanishlar:
+ *  - ManyToOne(User): Har bir progress bitta foydalanuvchiga tegishli.
+ *  - ManyToOne(Course): Har bir progress bitta kursga tegishli.
+ */
 @Entity("user_course_progress")
 export class UserCourseProgress extends BaseEntity {
     // Foydalanuvchining ID si (kimning progressi saqlanayotganini bildiradi)

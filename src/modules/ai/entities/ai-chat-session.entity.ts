@@ -3,6 +3,25 @@ import { User } from "src/modules/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AIChatMessage } from "./ai-chat-message.entity";
 
+/**
+ * AIChatSession
+ * -------------------------------------------------------
+ * Maqsad:
+ *  - Foydalanuvchi bilan AI o‘rtasidagi muloqotni sessiya ko‘rinishida saqlaydi.
+ *  - Sessiya tilini, kurs kontekstini va faoliyat vaqtini ko‘rsatadi.
+ *  - Chat tarixini (AIChatMessage) bog‘laydi va resume qilishni osonlashtiradi.
+ *
+ * Asosiy maydonlar:
+ *  - userId: Sessiya kimga tegishli (foreign key -> User).
+ *  - courseId: Muloqot qaysi kurs kontekstida (ixtiyoriy).
+ *  - sessionLanguage: Sessiyadagi aloqa tili.
+ *  - sessionTitle: UX uchun sarlavha.
+ *  - isActive, lastActivityAt: Sessiya holati va time management.
+ *
+ * Bog‘lanishlar:
+ *  - ManyToOne(User): Sessiya egasi.
+ *  - OneToMany(AIChatMessage): Sessiyaga tegishli xabarlar tarixi.
+ */
 @Entity("ai_chat_sessions")
 export class AIChatSession extends BaseEntity {
     // Foydalanuvchining ID si (sessiya kimga tegishli ekanini bildiradi)

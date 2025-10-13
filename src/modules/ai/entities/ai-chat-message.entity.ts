@@ -2,6 +2,25 @@ import { BaseEntity } from "src/common/database/baseEntity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { AIChatSession } from "./ai-chat-session.entity";
 
+/**
+ * AIChatMessage
+ * -------------------------------------------------------
+ * Maqsad:
+ *  - AIChatSession ichidagi har bir alohida xabarni saqlaydi.
+ *  - Foydalanuvchi matni, AI javobi, tarjima, audio URL va ishlatilgan kontekstni
+ *    (RAG) yozib boradi.
+ *
+ * Asosiy maydonlar:
+ *  - sessionId: Qaysi sessiyaga tegishliligi (foreign key -> AIChatSession).
+ *  - senderType: Xabar yuboruvchisi ('user' yoki 'ai').
+ *  - originalText, aiResponseText, aiResponseUzbek: Matn tarkiblari.
+ *  - audioUrl: TTS orqali yaratilgan ovozli javob manzili.
+ *  - contextUsed: RAG natijasida ishlatilgan material/bo‘laklar.
+ *  - isWithinLimit: 7-modul limitiga rioya qilinganmi.
+ *
+ * Bog‘lanishlar:
+ *  - ManyToOne(AIChatSession): Xabar tegishli sessiyaga ulanadi.
+ */
 @Entity("ai_chat_messages")
 export class AIChatMessage extends BaseEntity {
     // Qaysi sessiyaga tegishli ekanini bildiradi

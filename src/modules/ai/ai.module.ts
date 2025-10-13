@@ -17,8 +17,25 @@ import { IUserCourseProgressRepository } from './interfaces/user-course-progress
 import { IAIChatSessionRepository } from './interfaces/ai-chat-session.repository';
 import { IAIChatMessageRepository } from './interfaces/ai-chat-message.repository';
 
+// Service imports
+import { AIChatService } from './services/ai-chat.service';
+import { GPTService } from './services/gpt.service';
+import { TTSService } from './services/tts.service';
+import { WhisperService } from './services/whisper.service';
+import { ChromaService } from './services/chroma.service';
+import { TranslationService } from './services/translation.service';
+import { LessonProgressModule } from '../lesson-progress/lesson-progress.module';
+import { IndexLessonsCommand } from './commands/index-lessons.command';
+
+// Controller imports
+import { AiChatController } from './controllers/ai-chat.controller';
+import { AiAdminController } from './controllers/ai-admin.controller';
+import { SharedModule } from '../shared/shared.module';
+
 @Module({
   imports: [
+    SharedModule,
+    LessonProgressModule,
     TypeOrmModule.forFeature([
       AIChatSession,
       AIChatMessage,
@@ -26,7 +43,7 @@ import { IAIChatMessageRepository } from './interfaces/ai-chat-message.repositor
       UserCourseProgress,
     ]),
   ],
-  controllers: [],
+  controllers: [AiChatController, AiAdminController],
   providers: [
     // Repository providers - Interface va Implementation ni bog'laydi
     {
@@ -45,6 +62,14 @@ import { IAIChatMessageRepository } from './interfaces/ai-chat-message.repositor
       provide: 'IAIChatMessageRepository',
       useClass: AIChatMessageRepository,
     },
+    // Servislar
+    AIChatService,
+    GPTService,
+    TTSService,
+    WhisperService,
+    ChromaService,
+    TranslationService,
+    IndexLessonsCommand,
   ],
   exports: [
     TypeOrmModule, // shu moduldagi repo'larni tashqariga berish uchun
@@ -53,6 +78,13 @@ import { IAIChatMessageRepository } from './interfaces/ai-chat-message.repositor
     'IUserCourseProgressRepository',
     'IAIChatSessionRepository',
     'IAIChatMessageRepository',
+    // Servislar exporti (ixtiyoriy, boshqa modullarda ishlatish uchun)
+    AIChatService,
+    GPTService,
+    TTSService,
+    WhisperService,
+    ChromaService,
+    TranslationService,
   ],
 })
 export class AiModule { }

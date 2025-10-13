@@ -2,6 +2,23 @@ import { BaseEntity } from "src/common/database/baseEntity";
 import { User } from "src/modules/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
+/**
+ * UserAIProfile
+ * -------------------------------------------------------
+ * Maqsad:
+ *  - AI tizimi uchun foydalanuvchining shaxsiy sozlamalari va afzalliklarini saqlaydi.
+ *  - AI javoblari foydalanuvchining tiliga va o‘rganish ehtiyojlariga mos kelishi uchun kontekst beradi.
+ *
+ * Asosiy maydonlar:
+ *  - userId: Bu profil kimga tegishli ekanini bildiradi (foreign key -> User).
+ *  - preferredLanguage: AI bilan muloqot uchun afzal til (masalan: english, uzbek).
+ *  - learningGoals, weakAreas: Shaxsiy o‘rganish maqsadlari va kuchsiz tomonlar.
+ *  - moduleLimit, useStrictMode: 7-modul limiti va qat’iy rejim siyosati (material-chegarali RAG uchun).
+ *
+ * Bog‘lanishlar:
+ *  - ManyToOne(User): Har bir AI profil bitta foydalanuvchiga tegishli.
+ */
+
 @Entity("user_ai_profiles")
 export class UserAIProfile extends BaseEntity {
     // Foydalanuvchining ID si (asosiy bog'lanish uchun)
