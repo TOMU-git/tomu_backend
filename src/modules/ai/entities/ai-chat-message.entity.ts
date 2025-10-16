@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/database/baseEntity";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from "typeorm";
 import { AIChatSession } from "./ai-chat-session.entity";
 
 /**
@@ -23,8 +23,8 @@ import { AIChatSession } from "./ai-chat-session.entity";
  */
 @Entity("ai_chat_messages")
 export class AIChatMessage extends BaseEntity {
-    // Qaysi sessiyaga tegishli ekanini bildiradi
-    @Column({ type: "int", name: "session_id", nullable: false })
+    // Qaysi sessiyaga tegishli ekanini bildiradi (scalar id @RelationId orqali olinadi)
+    @RelationId((m: AIChatMessage) => m.session)
     sessionId: number;
 
     // Xabar yuboruvchisi (foydalanuvchi yoki AI)

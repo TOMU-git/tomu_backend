@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AIChatSession } from './entities/ai-chat-session.entity';
 import { AIChatMessage } from './entities/ai-chat-message.entity';
@@ -26,6 +26,10 @@ import { ChromaService } from './services/chroma.service';
 import { TranslationService } from './services/translation.service';
 import { LessonProgressModule } from '../lesson-progress/lesson-progress.module';
 import { IndexLessonsCommand } from './commands/index-lessons.command';
+import { AIChatMessageFactory } from './services/ai-chat-message-factory.service';
+import { VoiceProcessingPipeline } from './services/voice-processing-pipeline.service';
+import { UserCourseProgressService } from './services/user-course-progress.service';
+import { UserProgressCalculator } from './utils/user-progress-calculator.util';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -35,7 +39,7 @@ import { SharedModule } from '../shared/shared.module';
 @Module({
   imports: [
     SharedModule,
-    LessonProgressModule,
+    forwardRef(() => LessonProgressModule),
     TypeOrmModule.forFeature([
       AIChatSession,
       AIChatMessage,
@@ -69,6 +73,10 @@ import { SharedModule } from '../shared/shared.module';
     WhisperService,
     ChromaService,
     TranslationService,
+    AIChatMessageFactory,
+    VoiceProcessingPipeline,
+    UserCourseProgressService,
+    UserProgressCalculator,
     IndexLessonsCommand,
   ],
   exports: [
@@ -85,6 +93,10 @@ import { SharedModule } from '../shared/shared.module';
     WhisperService,
     ChromaService,
     TranslationService,
+    AIChatMessageFactory,
+    VoiceProcessingPipeline,
+    UserCourseProgressService,
+    UserProgressCalculator,
   ],
 })
 export class AiModule { }

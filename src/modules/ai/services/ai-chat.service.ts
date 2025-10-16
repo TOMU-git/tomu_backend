@@ -17,6 +17,9 @@ import { SessionForbiddenException } from "../exceptions/session-forbidden.excep
 import { AI_LIMITS } from "../constants/ai-constants";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { ILessonProgressService } from "src/modules/lesson-progress/interfaces/lesson-progress.service";
+import { ArabicTextUtils } from "../utils/arabic-text.util";
+import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
+import { VoiceProcessingPipeline, VoiceInput } from "./voice-processing-pipeline.service";
 
 /**
  * AIChatService
@@ -40,6 +43,8 @@ export class AIChatService {
         private readonly chroma: ChromaService,
         private readonly translation: TranslationService,
         @Inject('ILessonProgressService') private readonly lessonProgressService: ILessonProgressService,
+        private readonly messageFactory: AIChatMessageFactory,
+        private readonly voicePipeline: VoiceProcessingPipeline,
     ) { }
 
     /**
@@ -58,59 +63,52 @@ export class AIChatService {
 
     /**
      * Voice chat oqimi (audio -> STT -> GPT -> TTS)
-     * Faqat ovoz orqali muloqot, text kiritish mumkin emas
+     * Pipeline pattern orqali boshqariladi
      */
     async sendVoiceMessage(params: {
         userId: ID;
         sessionId: ID;
         audioBuffer: Buffer;
         courseId?: ID;
+        language?: string;
     }): Promise<AIChatMessage> {
-        const { userId, sessionId, audioBuffer, courseId } = params;
-        if (!audioBuffer || audioBuffer.length === 0) throw new BadRequestException(AI_ERROR_MESSAGES.AUDIO_NOT_FOUND);
+        const { userId, sessionId, audioBuffer, courseId, language } = params;
 
-        const session = await this.sessionRepo.findOneById(Number(sessionId));
-        if (!session) throw new BadRequestException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
-        if (session.userId !== Number(userId)) throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
-
-        // STT
-        const text = await this.whisper.speechToText({ audio: audioBuffer });
-
-        // Kontekst va limit
-        const context = await this.buildContext({ userId: Number(userId), courseId: courseId ?? session.courseId });
-        const withinLimit = this.evaluateWithinLimit(context);
-
-        // GPT
-        const aiResponse = await this.gpt.generate({
-            prompt: text,
-            context,
-            language: context.profile?.preferredLanguage || session.sessionLanguage,
-            strict: context.profile?.useStrictMode ?? true,
-        });
-
-        const aiResponseUz = await this.translation.translateToUzbek(aiResponse || '');
-
-        const message = new AIChatMessage();
-        message.sessionId = Number(sessionId);
-        message.senderType = 'ai';
-        message.originalText = text;
-        message.aiResponseText = aiResponse;
-        message.aiResponseUzbek = aiResponseUz;
-        message.isWithinLimit = withinLimit;
-        message.messageLanguage = session.sessionLanguage;
-        message.contextUsed = this.truncateContext(context);
-
-        // Audio strategiyasi: materialda audio bo'lsa, TTS o'rniga uni qaytaramiz
-        const materialAudio = this.pickMaterialAudio(context);
-        if (materialAudio) {
-            message.audioUrl = materialAudio;
-        } else {
-            message.audioUrl = await this.tts.textToSpeech({ text: aiResponseUz || aiResponse || '', language: 'uzbek' });
+        // Validation
+        if (!audioBuffer || audioBuffer.length === 0) {
+            throw new BadRequestException(AI_ERROR_MESSAGES.AUDIO_NOT_FOUND);
         }
 
-        const saved = await this.messageRepo.create(message);
-        session.lastActivityAt = new Date();
-        await this.sessionRepo.update(session);
+        // Session validation
+        const session = await this.sessionRepo.findOneById(Number(sessionId));
+        if (!session) {
+            throw new BadRequestException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+        if (session.userId !== Number(userId)) {
+            throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+
+        // Pipeline input
+        const pipelineInput: VoiceInput = {
+            userId,
+            sessionId,
+            audioBuffer,
+            courseId,
+            language,
+            session,
+        };
+
+        // User ma'lumotlarini console ga chiqarish
+        await this.logUserInfo(userId, courseId ?? session.courseId);
+
+        // Pipeline execution
+        const result = await this.voicePipeline.execute(pipelineInput);
+
+        // Save message and update session
+        const saved = await this.messageRepo.create(result.message);
+        result.session.lastActivityAt = new Date();
+        await this.sessionRepo.update(result.session);
+
         return saved;
     }
 
@@ -130,42 +128,16 @@ export class AIChatService {
         const { userId, courseId } = params;
 
         // 1. Foydalanuvchi AI profili (til, moduleLimit, useStrictMode)
-        const profile = await this.profileRepo.findByUserId(userId);
+        const profile = await this.getUserAIProfile(userId);
 
         // 2. Kurs progressi (hozirgi dars, tugallanganlar, kurs tili)
-        const courseProgress = courseId ? await this.progressRepo.findByUserIdAndCourseId(userId, Number(courseId)) : null;
+        const courseProgress = await this.getUserCourseProgress(userId, courseId);
 
         // 3. Dars progressi (ko'rilgan/unlocked darslar)
-        let lessonProgresses: LessonProgress[] = [];
-        if (courseId) {
-            try {
-                const lessonProgressResult = await this.lessonProgressService.getVideos(userId, courseId);
-                if (lessonProgressResult.statusCode === 200) {
-                    lessonProgresses = lessonProgressResult.data || [];
-                }
-            } catch (error) {
-                // Dars progressi topilmadi, bo'sh massiv qoldiramiz
-                console.warn(`Lesson progress not found for user ${userId}, course ${courseId}:`, error.message);
-            }
-        }
+        const lessonProgresses = await this.getLessonProgresses(userId, courseId);
 
         // 4. Chroma kontekst (kurs materiallari) - faqat kelgan darsigacha
-        let chromaContext: any[] = [];
-        if (courseId && profile?.useStrictMode) {
-            // Strict mode: faqat moduleLimit ichidagi materiallar
-            const maxModule = profile?.moduleLimit || 7;
-            chromaContext = await this.chroma.searchContext({
-                userId,
-                courseId: Number(courseId),
-                moduleLimit: maxModule
-            });
-        } else if (courseId) {
-            // General mode: barcha kurs materiallari, lekin current lesson ustunlik
-            chromaContext = await this.chroma.searchContext({
-                userId,
-                courseId: Number(courseId)
-            });
-        }
+        const chromaContext = await this.getChromaContext(userId, courseId, profile);
 
         return {
             profile,
@@ -173,16 +145,156 @@ export class AIChatService {
             lessonProgresses,
             chromaContext,
             // Foydalanuvchi darajasi uchun qo'shimcha ma'lumotlar
-            userLevel: {
-                currentLessonId: courseProgress?.currentLessonId,
-                currentLessonOrder: courseProgress?.currentLessonOrder,
-                completedLessons: courseProgress?.completedLessons || [],
-                completedBlocks: courseProgress?.completedBlocks || [],
-                courseLanguage: courseProgress?.courseLanguage,
-                watchedLessons: lessonProgresses.filter(lp => lp.isWatched).map(lp => lp.lesson?.id),
-                unlockedLessons: lessonProgresses.filter(lp => lp.isUnlocked).map(lp => lp.lesson?.id),
-            }
+            userLevel: this.buildUserLevel(courseProgress, lessonProgresses)
         };
+    }
+
+    /**
+     * Foydalanuvchi AI profili olish
+     */
+    private async getUserAIProfile(userId: number): Promise<any> {
+        return await this.profileRepo.findByUserId(userId);
+    }
+
+    /**
+     * Foydalanuvchi kurs progressi olish
+     */
+    private async getUserCourseProgress(userId: number, courseId?: ID): Promise<any> {
+        return courseId ? await this.progressRepo.findByUserIdAndCourseId(userId, Number(courseId)) : null;
+    }
+
+    /**
+     * Dars progresslari olish
+     */
+    private async getLessonProgresses(userId: number, courseId?: ID): Promise<LessonProgress[]> {
+        if (!courseId) return [];
+
+        try {
+            const lessonProgressResult = await this.lessonProgressService.getVideos(userId, courseId);
+            if (lessonProgressResult.statusCode === 200) {
+                return lessonProgressResult.data || [];
+            }
+        } catch (error) {
+            // Dars progressi topilmadi, bo'sh massiv qoldiramiz
+            console.warn(`Lesson progress not found for user ${userId}, course ${courseId}:`, error.message);
+        }
+        return [];
+    }
+
+    /**
+     * Chroma kontekst olish (kurs materiallari)
+     */
+    private async getChromaContext(userId: number, courseId?: ID, profile?: any): Promise<any[]> {
+        if (!courseId) return [];
+
+        if (profile?.useStrictMode) {
+            // Strict mode: faqat moduleLimit ichidagi materiallar
+            const maxModule = profile?.moduleLimit || 7;
+            return await this.chroma.searchContext({
+                userId,
+                courseId: Number(courseId),
+                moduleLimit: maxModule
+            });
+        } else {
+            // General mode: barcha kurs materiallari, lekin current lesson ustunlik
+            return await this.chroma.searchContext({
+                userId,
+                courseId: Number(courseId)
+            });
+        }
+    }
+
+    /**
+     * Foydalanuvchi darajasi ma'lumotlarini yig'ish
+     * - currentLessonId/currentLessonOrder
+     * - completedLessons/completedBlocks
+     * - watched/unlocked lessons
+     */
+    private buildUserLevel(courseProgress: any, lessonProgresses: LessonProgress[]): any {
+        return {
+            currentLessonId: courseProgress?.currentLessonId,
+            currentLessonOrder: courseProgress?.currentLessonOrder,
+            completedLessons: courseProgress?.completedLessons || [],
+            completedBlocks: courseProgress?.completedBlocks || [],
+            courseLanguage: courseProgress?.courseLanguage,
+            watchedLessons: (lessonProgresses || [])
+                .filter(lp => lp?.isWatched)
+                .map(lp => lp?.lesson?.id),
+            unlockedLessons: (lessonProgresses || [])
+                .filter(lp => lp?.isUnlocked)
+                .map(lp => lp?.lesson?.id),
+        };
+    }
+
+    /**
+     * Foydalanuvchi ma'lumotlarini console ga chiqarish (test uchun)
+     */
+    private async logUserInfo(userId: ID, courseId?: ID): Promise<void> {
+        try {
+            console.log('\n👤 ===== USER INFO =====');
+            console.log(`🆔 User ID: ${userId}`);
+
+            if (courseId) {
+                console.log(`📚 Course ID: ${courseId}`);
+
+                // AI Profile
+                const profile = await this.profileRepo.findByUserId(Number(userId));
+                if (profile) {
+                    console.log(`🎯 AI Profile:`);
+                    console.log(`   - Preferred Language: ${profile.preferredLanguage || 'uzbek'}`);
+                    console.log(`   - Module Limit: ${profile.moduleLimit || 7}`);
+                    console.log(`   - Strict Mode: ${profile.useStrictMode ? 'ON' : 'OFF'}`);
+                } else {
+                    console.log(`⚠️ AI Profile: Not found`);
+                }
+
+                // Course Progress
+                const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
+                if (courseProgress) {
+                    console.log(`📈 Course Progress:`);
+                    console.log(`   - Current Lesson ID: ${courseProgress.currentLessonId || 'N/A'}`);
+                    console.log(`   - Current Lesson Order: ${courseProgress.currentLessonOrder || 0}`);
+                    console.log(`   - Course Language: ${courseProgress.courseLanguage || 'N/A'}`);
+                    console.log(`   - Completed Lessons: ${courseProgress.completedLessons?.length || 0}`);
+                    console.log(`   - Completed Blocks: ${courseProgress.completedBlocks?.length || 0}`);
+                } else {
+                    console.log(`⚠️ Course Progress: Not found`);
+                }
+
+                // Lesson Progress
+                try {
+                    const lessonProgressResult = await this.lessonProgressService.getVideos(Number(userId), courseId);
+                    if (lessonProgressResult.statusCode === 200 && lessonProgressResult.data) {
+                        const lessons = lessonProgressResult.data;
+                        const watchedCount = lessons.filter(lp => lp.isWatched).length;
+                        const unlockedCount = lessons.filter(lp => lp.isUnlocked).length;
+
+                        console.log(`📖 Lesson Progress:`);
+                        console.log(`   - Total Lessons: ${lessons.length}`);
+                        console.log(`   - Watched: ${watchedCount}`);
+                        console.log(`   - Unlocked: ${unlockedCount}`);
+
+                        // Eng oxirgi ko'rilgan dars
+                        const lastWatched = lessons
+                            .filter(lp => lp.isWatched)
+                            .sort((a, b) => b.lessonOrder - a.lessonOrder)[0];
+                        if (lastWatched) {
+                            console.log(`   - Last Watched: Lesson ${lastWatched.lessonOrder}`);
+                        }
+                    } else {
+                        console.log(`⚠️ Lesson Progress: Failed to load`);
+                    }
+                } catch (error) {
+                    console.log(`⚠️ Lesson Progress: Error - ${error.message}`);
+                }
+            } else {
+                console.log(`📚 Course ID: Not specified`);
+            }
+
+            console.log('========================\n');
+        } catch (error) {
+            console.log(`❌ Error logging user info: ${error.message}`);
+        }
     }
 
     /**
@@ -226,6 +338,7 @@ export class AIChatService {
         const found = chunks.find((c) => !!c.audioUrl);
         return found?.audioUrl ?? null;
     }
+
 }
 
 

@@ -10,6 +10,7 @@ import { UserModule } from "../user/user.module";
 import { BlockModule } from "../block/block.module";
 import { HomeworkProgressModule } from "../homework-progress/homework-progress.module";
 import { UserCoursesModule } from "../user-courses/user-courses.module";
+import { AiModule } from "../ai/ai.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserCoursesModule } from "../user-courses/user-courses.module";
     BlockModule,
     UserCoursesModule,
     forwardRef(() => HomeworkProgressModule), // forwardRef() bilan import qilingan
+    forwardRef(() => AiModule), // AI modulini import qilish
   ],
   controllers: [LessonProgressController],
   providers: [

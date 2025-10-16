@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AIChatService } from "../services/ai-chat.service";
 import { VoiceRequestDto } from "../dto/voice-request.dto";
@@ -37,8 +37,11 @@ export class AiChatController {
     async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto }> {
         // Audio fayl validatsiyasi (MIME/size)
         AudioUtils.validateUpload(file);
-        const { sessionId, courseId } = body || ({} as VoiceRequestDto);
-        const msg = await this.chat.sendVoiceMessage({ userId, sessionId, audioBuffer: file?.buffer, courseId });
+        const { sessionId, courseId, language } = body || ({} as VoiceRequestDto);
+        if (!sessionId || Number.isNaN(Number(sessionId))) {
+            throw new BadRequestException('sessionId noto\'g\'ri yoki yo\'q');
+        }
+        const msg = await this.chat.sendVoiceMessage({ userId, sessionId, audioBuffer: file?.buffer, courseId, language });
         const res: ChatResponseDto = {
             messageId: msg.id,
             sessionId: msg.sessionId,

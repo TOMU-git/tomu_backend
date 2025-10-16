@@ -42,10 +42,15 @@ import { AiModule } from './modules/ai/ai.module';
       isGlobal: true,
       envFilePath: [".env", ".development.env"],
     }),
-    CacheModule.register({isGlobal: true}),
+    CacheModule.register({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "upload"),
       serveRoot: "/upload",
+    }),
+    // Minimal front: AI PTT demo page
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public", "ai-demo"),
+      serveRoot: "/ai-demo",
     }),
     TypeOrmModule.forRoot(connectionSource),
     AuthModule,

@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsOptional } from "class-validator";
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 
 /**
@@ -16,6 +16,10 @@ export class VoiceRequestDto {
     @IsOptional()
     @IsNumber()
     courseId?: number;
+
+    @IsOptional()
+    @IsString()
+    language?: string; // STT tili (masalan: 'ar', 'en'); default: 'ar'
 }
 
 
