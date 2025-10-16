@@ -261,28 +261,34 @@ export class AIChatService {
                     console.log(`⚠️ Course Progress: Not found`);
                 }
 
-                // Lesson Progress
+                // Lesson Progress - Course 2 uchun blockId topish kerak
                 try {
-                    const lessonProgressResult = await this.lessonProgressService.getVideos(Number(userId), courseId);
-                    if (lessonProgressResult.statusCode === 200 && lessonProgressResult.data) {
-                        const lessons = lessonProgressResult.data;
-                        const watchedCount = lessons.filter(lp => lp.isWatched).length;
-                        const unlockedCount = lessons.filter(lp => lp.isUnlocked).length;
+                    // Avval Course 2 uchun blockId ni topamiz
+                    const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
+                    if (courseProgress && courseProgress.currentBlockId) {
+                        const lessonProgressResult = await this.lessonProgressService.getVideos(Number(userId), courseProgress.currentBlockId);
+                        if (lessonProgressResult.statusCode === 200 && lessonProgressResult.data) {
+                            const lessons = lessonProgressResult.data;
+                            const watchedCount = lessons.filter(lp => lp.isWatched).length;
+                            const unlockedCount = lessons.filter(lp => lp.isUnlocked).length;
 
-                        console.log(`📖 Lesson Progress:`);
-                        console.log(`   - Total Lessons: ${lessons.length}`);
-                        console.log(`   - Watched: ${watchedCount}`);
-                        console.log(`   - Unlocked: ${unlockedCount}`);
+                            console.log(`📖 Lesson Progress:`);
+                            console.log(`   - Total Lessons: ${lessons.length}`);
+                            console.log(`   - Watched: ${watchedCount}`);
+                            console.log(`   - Unlocked: ${unlockedCount}`);
 
-                        // Eng oxirgi ko'rilgan dars
-                        const lastWatched = lessons
-                            .filter(lp => lp.isWatched)
-                            .sort((a, b) => b.lessonOrder - a.lessonOrder)[0];
-                        if (lastWatched) {
-                            console.log(`   - Last Watched: Lesson ${lastWatched.lessonOrder}`);
+                            // Eng oxirgi ko'rilgan dars
+                            const lastWatched = lessons
+                                .filter(lp => lp.isWatched)
+                                .sort((a, b) => b.lessonOrder - a.lessonOrder)[0];
+                            if (lastWatched) {
+                                console.log(`   - Last Watched: Lesson ${lastWatched.lessonOrder}`);
+                            }
+                        } else {
+                            console.log(`⚠️ Lesson Progress: Failed to load`);
                         }
                     } else {
-                        console.log(`⚠️ Lesson Progress: Failed to load`);
+                        console.log(`⚠️ Course Progress not found for lesson progress lookup`);
                     }
                 } catch (error) {
                     console.log(`⚠️ Lesson Progress: Error - ${error.message}`);

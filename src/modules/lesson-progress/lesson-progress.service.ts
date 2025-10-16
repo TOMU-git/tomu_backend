@@ -528,7 +528,7 @@ export class LessonProgressService implements ILessonProgressService {
       const allLessonProgresses = await queryRunner.manager.find(LessonProgress, {
         where: {
           blockId: lessonProgress.blockId,
-          userId: userId
+          user: { id: userId }
         },
         relations: ['lesson']
       });
