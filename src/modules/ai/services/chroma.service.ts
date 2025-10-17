@@ -18,13 +18,36 @@ export class ChromaService {
     // Chroma collection id cache
     private chromaCollectionId: string | null = null;
 
+    private getChromaUrl(): string {
+        return process.env.CHROMA_URL || 'http://localhost:8000';
+    }
+
+    private getApiPrefix(): string {
+        const ver = (process.env.CHROMA_API_VERSION || '').trim();
+        if (ver === '2') {
+            return '/api/v2';
+        }
+        return '/api/v1';
+    }
+
+    private getApiBase(): string {
+        return `${this.getChromaUrl()}${this.getApiPrefix()}`;
+    }
+
     private async ensureChromaCollectionId(): Promise<string | null> {
         if (this.chromaCollectionId) return this.chromaCollectionId;
-        const chromaUrl = process.env.CHROMA_URL || 'http://localhost:8000';
+        const apiBase = this.getApiBase();
         const collectionName = process.env.CHROMA_COLLECTION || 'lessons';
 
         try {
-            const listRes = await axios.get(`${chromaUrl}/api/v1/collections`);
+            // v2 API uchun tenant/database headerlari
+            const headers: any = {};
+            if (process.env.CHROMA_API_VERSION === '2') {
+                headers['X-Chroma-Tenant'] = process.env.CHROMA_TENANT || 'default';
+                headers['X-Chroma-Database'] = process.env.CHROMA_DATABASE || 'default';
+            }
+
+            const listRes = await axios.get(`${apiBase}/collections`, { headers });
             const list = (listRes.data as any[]) || [];
             const found = list.find((c: any) => c?.name === collectionName);
             if (found?.id) {
@@ -32,10 +55,10 @@ export class ChromaService {
                 return this.chromaCollectionId;
             }
             // Create if not exists
-            const createRes = await axios.post(`${chromaUrl}/api/v1/collections`, {
+            const createRes = await axios.post(`${apiBase}/collections`, {
                 name: collectionName,
                 metadata: { description: 'Lesson materials for RAG' },
-            });
+            }, { headers });
             const createdId = (createRes.data as any)?.id;
             if (createdId) {
                 this.chromaCollectionId = String(createdId);
@@ -61,6 +84,7 @@ export class ChromaService {
             this.memoryIndex.set(key, arr);
             count++;
         }
+        console.log(`💾 Memory Index updated: language="${chunks[0]?.language}", total chunks for this language: ${this.memoryIndex.get(chunks[0]?.language)?.length || 0}`);
         return count;
     }
 
@@ -102,7 +126,7 @@ export class ChromaService {
         if (!useRag) return false;
 
         try {
-            const chromaUrl = process.env.CHROMA_URL || 'http://localhost:8000';
+            const apiBase = this.getApiBase();
             const collectionId = await this.ensureChromaCollectionId();
             if (!collectionId) {
                 console.warn('ChromaService: collection id not available, skipping Chroma upsert');
@@ -129,8 +153,15 @@ export class ChromaService {
 
             const embeddings = (embedRes.data as any).data.map((item: any) => item.embedding);
 
-            // ChromaDB'ga add (V1 API expects /collections/{id}/add)
-            await axios.post(`${chromaUrl}/api/v1/collections/${collectionId}/add`, {
+            // v2 API uchun tenant/database headerlari
+            const headers: any = {};
+            if (process.env.CHROMA_API_VERSION === '2') {
+                headers['X-Chroma-Tenant'] = process.env.CHROMA_TENANT || 'default';
+                headers['X-Chroma-Database'] = process.env.CHROMA_DATABASE || 'default';
+            }
+
+            // ChromaDB'ga add (v1 va v2 uchun yo'l bir xil bo'lishi mumkin)
+            await axios.post(`${apiBase}/collections/${collectionId}/add`, {
                 ids: chunks.map(c => c.id),
                 embeddings: embeddings,
                 documents: chunks.map(c => c.text),
@@ -144,7 +175,7 @@ export class ChromaService {
                     audioUrl: c.audioUrl,
                     title: c.title,
                 }))
-            });
+            }, { headers });
 
             return true;
         } catch (e) {
@@ -161,50 +192,120 @@ export class ChromaService {
         courseId: number;
         moduleLimit?: number;
         language?: string;
+        maxLessonOrder?: number;
+        strict?: boolean;
     }): Promise<any[]> {
+        console.log('🔍 ===== RAG SEARCH STARTED =====');
+        console.log(`📝 User ID: ${params.userId}, Course ID: ${params.courseId}`);
+        console.log(`🎯 Language: ${params.language || 'ar'}`);
+        console.log(`📊 Module Limit: ${params.moduleLimit || 'none'}`);
+        console.log(`🔒 Strict Mode: ${params.strict ? 'ON' : 'OFF'}`);
+        if (params.strict) {
+            console.log(`📚 Max Lesson Order: ${params.maxLessonOrder}`);
+        }
+
         const language = params.language || 'ar';
         const useRag = process.env.USE_RAG === '1';
 
         if (useRag) {
-            // Chroma HTTP qidiruv
+            console.log('🌐 Using ChromaDB for RAG search...');
             try {
                 const topK = Number(process.env.RAG_TOP_K || 12);
-                const chromaUrl = process.env.CHROMA_URL || 'http://localhost:8000';
+                const apiBase = this.getApiBase();
                 const collectionId = await this.ensureChromaCollectionId();
-                if (!collectionId) throw new Error('Collection id not available');
+                if (!collectionId) {
+                    console.warn('⚠️ ChromaService: collection id not available, falling back to memory');
+                } else {
+                    console.log(`🔗 ChromaDB URL: ${apiBase}`);
+                    console.log(`📦 Collection ID: ${collectionId}`);
 
-                // Query text uchun embedding yaratish (hozircha bo'sh query)
-                const queryText = "dialogue conversation lesson";
-                const openaiKey = process.env.OPENAI_API_KEY;
-                const embedModel = process.env.EMBED_MODEL || 'text-embedding-3-small';
+                    // Query text uchun embedding yaratish (hozircha bo'sh query)
+                    const queryText = "dialogue conversation lesson";
+                    const openaiKey = process.env.OPENAI_API_KEY;
+                    const embedModel = process.env.EMBED_MODEL || 'text-embedding-3-small';
 
-                let queryEmbedding: number[] = [];
-                if (openaiKey) {
-                    const embedRes = await axios.post('https://api.openai.com/v1/embeddings', {
-                        model: embedModel,
-                        input: [queryText],
-                    }, {
-                        headers: { 'Authorization': `Bearer ${openaiKey}` }
-                    });
-                    queryEmbedding = (embedRes.data as any).data[0].embedding;
+                    let queryEmbedding: number[] = [];
+                    if (openaiKey) {
+                        const embedRes = await axios.post('https://api.openai.com/v1/embeddings', {
+                            model: embedModel,
+                            input: [queryText],
+                        }, {
+                            headers: { 'Authorization': `Bearer ${openaiKey}` }
+                        });
+                        queryEmbedding = (embedRes.data as any).data[0].embedding;
+                    }
+
+                    // v2 API uchun tenant/database headerlari
+                    const headers: any = {};
+                    if (process.env.CHROMA_API_VERSION === '2') {
+                        headers['X-Chroma-Tenant'] = process.env.CHROMA_TENANT || 'default';
+                        headers['X-Chroma-Database'] = process.env.CHROMA_DATABASE || 'default';
+                    }
+
+                    // Strict mode uchun where condition
+                    const whereCondition: any = { language };
+                    if (params.strict && params.maxLessonOrder) {
+                        whereCondition.lessonOrder = { $lte: params.maxLessonOrder };
+                    }
+
+                    const res = await axios.post(`${apiBase}/collections/${collectionId}/query`, {
+                        query_embeddings: [queryEmbedding],
+                        n_results: topK,
+                        where: whereCondition,
+                    }, { headers });
+
+                    const documents = (res.data as any)?.documents?.[0] || [];
+                    const metadatas = (res.data as any)?.metadatas?.[0] || [];
+
+                    console.log(`📄 Found ${documents.length} documents from ChromaDB`);
+
+                    if (documents.length > 0) {
+                        const results = documents.map((doc: string, i: number) => ({
+                            id: `chroma_${i}`,
+                            text: doc,
+                            language: metadatas[i]?.language || 'ar',
+                            moduleNumber: metadatas[i]?.moduleNumber || 1,
+                            lessonOrder: metadatas[i]?.lessonOrder || 1,
+                            turnIndex: metadatas[i]?.turnIndex || 0,
+                            speaker: metadatas[i]?.speaker || 'unknown',
+                            translationUz: metadatas[i]?.translationUz || '',
+                            audioUrl: metadatas[i]?.audioUrl || null,
+                            title: metadatas[i]?.title || '',
+                        }));
+
+                        console.log('✅ ChromaDB search successful');
+                        console.log('🔍 ===== RAG SEARCH COMPLETED =====\n');
+                        return results;
+                    }
                 }
-
-                const res = await axios.post(`${chromaUrl}/api/v1/collections/${collectionId}/query`, {
-                    query_embeddings: [queryEmbedding],
-                    n_results: topK,
-                    where: { language },
-                });
-
-                const records: any[] = (res.data as any)?.documents?.flat() || [];
-                if (records.length) return records;
             } catch (e) {
-                console.warn(`ChromaService: search failed, falling back to memory: ${(e as Error).message}`);
+                console.warn(`❌ ChromaService: search failed, falling back to memory: ${(e as Error).message}`);
             }
+        } else {
+            console.log('💾 Using Memory Index for search...');
         }
 
         const all = this.memoryIndex.get(language) ?? [];
-        const limited = typeof params.moduleLimit === 'number' ? all.filter((c) => c.moduleNumber <= (params.moduleLimit as number)) : all;
-        return limited.sort((a, b) => (a.lessonOrder - b.lessonOrder) || (a.turnIndex - b.turnIndex));
+        console.log(`💾 Memory Index lookup: language="${language}", found ${all.length} chunks`);
+        console.log(`💾 Memory Index keys: ${Array.from(this.memoryIndex.keys()).join(', ')}`);
+        let limited = all;
+
+        // Module limit filter
+        if (typeof params.moduleLimit === 'number') {
+            limited = limited.filter((c) => c.moduleNumber <= params.moduleLimit);
+        }
+
+        // Strict mode filter
+        if (params.strict && params.maxLessonOrder) {
+            limited = limited.filter((c) => c.lessonOrder <= params.maxLessonOrder);
+        }
+
+        const sorted = limited.sort((a, b) => (a.lessonOrder - b.lessonOrder) || (a.turnIndex - b.turnIndex));
+
+        console.log(`📄 Found ${sorted.length} documents from Memory Index`);
+        console.log('🔍 ===== RAG SEARCH COMPLETED =====\n');
+
+        return sorted;
     }
 
     /**

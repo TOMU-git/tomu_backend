@@ -20,21 +20,39 @@ export class GPTService {
      * Kontekst asosida javob generatsiya qilish
      */
     async generate(params: { prompt: string; context: any; language: string; strict: boolean; }): Promise<string> {
+        console.log('🤖 ===== GPT GENERATION STARTED =====');
+        console.log(`📝 User Prompt: "${params.prompt}"`);
+        console.log(`🌐 Response Language: ${params.language}`);
+        console.log(`🔒 Strict Mode: ${params.strict ? 'ON' : 'OFF'}`);
+
         const { prompt, context, language, strict } = params;
-        if (!OPENAI_API_KEY) return `Javob: ${prompt}`;
+        if (!OPENAI_API_KEY) {
+            console.log('⚠️ OpenAI API key not found, using fallback');
+            return `Javob: ${prompt}`;
+        }
 
         const systemParts: string[] = [];
-        systemParts.push(`Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}.`);
+
+        // TIL QOIDALARI: Qattiq til instruksiyasi
+        if (language === 'ar' || language === 'arabic') {
+            systemParts.push("You are an Arabic language learning assistant.");
+            systemParts.push("CRITICAL: You MUST respond ONLY in Arabic language (العربية).");
+            systemParts.push("NEVER respond in Uzbek, English, or any other language.");
+            systemParts.push("All responses must use Arabic script and Arabic grammar.");
+        } else {
+            systemParts.push(`Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}.`);
+        }
 
         // QATTIY QOIDALAR: Faqat bizning materiallarimizdan foydalanish
-        systemParts.push("MUHIM: Faqat quyida berilgan dars materiallaridan foydalaning.");
-        systemParts.push("Boshqa so'zlar yoki ma'lumotlardan foydalanmang.");
-        systemParts.push("Agar materialda javob yo'q bo'lsa, 'Bu haqda darsda gapirilmagan' deb ayting.");
+        systemParts.push("IMPORTANT: Use ONLY the lesson materials provided below.");
+        systemParts.push("Do not use words or information from outside the materials.");
+        systemParts.push("If the answer is not in the materials, say 'لم يتم ذكر هذا في الدرس' (This was not mentioned in the lesson).");
 
-        if (strict) systemParts.push("STRICT MODE: Faqat foydalanuvchi kelgan darsigacha bo'lgan materiallardan foydalaning.");
-        if (STRICT_NO_ECHO) systemParts.push("Foydalanuvchi matnini qaytarmang, qisqa va aniq javob bering.");
+        if (strict) systemParts.push("STRICT MODE: Use only materials up to the user's current lesson.");
+        if (STRICT_NO_ECHO) systemParts.push("Do not repeat the user's text, give a short and clear answer.");
 
         const contextSummary = safeClampContext(context);
+        console.log(`📚 Context Summary Length: ${contextSummary.length} chars`);
 
         const messages = [
             { role: "system", content: systemParts.join(" ") },
@@ -43,6 +61,8 @@ export class GPTService {
         ];
 
         try {
+            console.log(`🔐 Using OpenAI (key present: ${OPENAI_API_KEY ? 'YES' : 'NO'})`);
+            console.log(`🚀 Sending request to OpenAI GPT (${GPT_MODEL})...`);
             const res = await axios.post(
                 "https://api.openai.com/v1/chat/completions",
                 {
@@ -54,8 +74,12 @@ export class GPTService {
                 { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
             );
             const text = (res.data as any)?.choices?.[0]?.message?.content?.trim();
+            console.log(`✅ GPT Response: "${text}"`);
+            console.log('🤖 ===== GPT GENERATION COMPLETED =====\n');
             return text || "";
         } catch (e: any) {
+            console.log(`❌ GPT Error: ${e.message}`);
+            console.log('🤖 ===== GPT GENERATION COMPLETED (FALLBACK) =====\n');
             return `Javob: ${prompt}`; // fallback
         }
     }

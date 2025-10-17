@@ -88,7 +88,7 @@ export class UserCourseProgressService {
             progress.currentLessonId = Number(lessonProgressData.currentLessonId);
             progress.currentLessonOrder = lessonProgressData.currentLessonOrder;
             progress.currentBlockId = Number(lessonProgressData.currentBlockId);
-            progress.courseLanguage = lessonProgressData.courseLanguage || 'uzbek';
+            progress.courseLanguage = lessonProgressData.courseLanguage || 'arabic';
             progress.completedLessons = [Number(lessonProgressData.currentLessonId)];
             progress.completedBlocks = [];
             progress.isActive = true;
@@ -208,7 +208,7 @@ export class UserCourseProgressService {
             progress.currentLessonId = Number(lessonProgressData.currentLessonId);
             progress.currentLessonOrder = lessonProgressData.currentLessonOrder;
             progress.currentBlockId = Number(lessonProgressData.currentBlockId);
-            progress.courseLanguage = lessonProgressData.courseLanguage || 'uzbek';
+            progress.courseLanguage = lessonProgressData.courseLanguage || 'arabic';
             progress.completedLessons = [Number(lessonProgressData.currentLessonId)];
             progress.completedBlocks = [];
             progress.isActive = true;
@@ -237,7 +237,7 @@ export class UserCourseProgressService {
         currentLessonId: ID,
         currentLessonOrder: number,
         currentBlockId: ID,
-        courseLanguage: string = 'uzbek'
+        courseLanguage: string = 'arabic'
     ): Promise<UserCourseProgress> {
         // Progress ma'lumotlarini hisoblash
         const progressData = {

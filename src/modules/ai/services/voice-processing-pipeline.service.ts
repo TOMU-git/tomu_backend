@@ -1,11 +1,11 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
-import { Inject } from "@nestjs/common";
+import { Injectable, BadRequestException, Inject, forwardRef } from "@nestjs/common";
 import { WhisperService } from "./whisper.service";
 import { GPTService } from "./gpt.service";
 import { TTSService } from "./tts.service";
 import { ChromaService } from "./chroma.service";
 import { TranslationService } from "./translation.service";
 import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
+import { AIChatService } from "./ai-chat.service";
 import { ArabicTextUtils } from "../utils/arabic-text.util";
 import { AI_ERROR_MESSAGES } from "../constants/error-messages";
 import { SessionForbiddenException } from "../exceptions/session-forbidden.exception";
@@ -47,29 +47,41 @@ export class VoiceProcessingPipeline {
         private readonly chroma: ChromaService,
         private readonly translation: TranslationService,
         private readonly messageFactory: AIChatMessageFactory,
+        @Inject(forwardRef(() => AIChatService))
+        private readonly aiChatService: AIChatService, // AIChatService injection for buildContext
     ) { }
 
     /**
      * Pipeline ni bajarish
      */
     async execute(input: VoiceInput): Promise<VoiceOutput> {
+        console.log('\n🚀 ===== VOICE PROCESSING PIPELINE STARTED =====');
+
         const steps: PipelineStep[] = [
             new STTStep(this.whisper),
             new ValidationStep(),
-            new ContextStep(this.chroma),
+            new ContextStep(this.aiChatService),
             new GPTStep(this.gpt, this.translation),
             new ResponseStep(this.messageFactory),
         ];
 
         let currentInput: VoiceInput | VoiceOutput = input;
+        let stepIndex = 0;
 
         for (const step of steps) {
+            const stepNames = ['STT', 'Validation', 'Context Building', 'GPT Generation', 'Response Creation'];
+            console.log(`📝 Step ${stepIndex + 1}: ${stepNames[stepIndex]}`);
+
             currentInput = await step.execute(currentInput as VoiceInput);
+            console.log(`✅ ${stepNames[stepIndex]} completed`);
 
             // Agar step VoiceOutput qaytarsa, pipeline tugadi
             if ('message' in currentInput) {
+                console.log('🎉 ===== VOICE PROCESSING PIPELINE COMPLETED =====\n');
                 return currentInput as VoiceOutput;
             }
+
+            stepIndex++;
         }
 
         throw new Error('Pipeline failed to produce output');
@@ -159,17 +171,26 @@ class ValidationStep implements PipelineStep {
 }
 
 /**
- * Context Step: Context building
+ * Context Step: Context building using full buildContext logic
  */
 class ContextStep implements PipelineStep {
-    constructor(private readonly chroma: ChromaService) { }
+    constructor(
+        private readonly aiChatService: AIChatService // AIChatService'dan buildContext ishlatish uchun
+    ) { }
 
     async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput> {
-        // Bu yerda context building logikasi bo'lishi kerak
-        // Hozircha placeholder
+        console.log('🧠 Building RAG context...');
+
+        // AIChatService'dan to'liq kontekst olish (profile, courseProgress, lessonProgress bilan)
+        const fullContext = await this.aiChatService['buildContext']({
+            userId: Number(input.userId),
+            courseId: Number(input.courseId || input.session.courseId),
+        });
+
+        console.log(`📄 RAG returned ${Array.isArray(fullContext.chromaContext) ? fullContext.chromaContext.length : 0} chunks`);
         return {
             ...input,
-            context: { placeholder: true },
+            context: fullContext.chromaContext,
         } as VoiceInput & { context: any };
     }
 }
@@ -187,7 +208,7 @@ class GPTStep implements PipelineStep {
         const aiResponse = await this.gpt.generate({
             prompt: input.validatedText,
             context: input.context,
-            language: 'uzbek',
+            language: 'ar',
             strict: true,
         });
 

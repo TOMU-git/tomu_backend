@@ -20,6 +20,7 @@ import { ILessonProgressService } from "src/modules/lesson-progress/interfaces/l
 import { ArabicTextUtils } from "../utils/arabic-text.util";
 import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
 import { VoiceProcessingPipeline, VoiceInput } from "./voice-processing-pipeline.service";
+import { UserAIProfile } from "../entities/user-ai-profile.entity";
 
 /**
  * AIChatService
@@ -54,7 +55,7 @@ export class AIChatService {
         const session = new AIChatSession();
         session.userId = Number(userId);
         session.courseId = courseId ? Number(courseId) : null;
-        session.sessionLanguage = sessionLanguage || 'uzbek';
+        session.sessionLanguage = sessionLanguage || 'ar';
         session.sessionTitle = sessionTitle || null;
         session.isActive = true;
         session.lastActivityAt = new Date();
@@ -137,7 +138,7 @@ export class AIChatService {
         const lessonProgresses = await this.getLessonProgresses(userId, courseId);
 
         // 4. Chroma kontekst (kurs materiallari) - faqat kelgan darsigacha
-        const chromaContext = await this.getChromaContext(userId, courseId, profile);
+        const chromaContext = await this.getChromaContext(userId, courseId, courseProgress, profile);
 
         return {
             profile,
@@ -153,7 +154,23 @@ export class AIChatService {
      * Foydalanuvchi AI profili olish
      */
     private async getUserAIProfile(userId: number): Promise<any> {
-        return await this.profileRepo.findByUserId(userId);
+        let profile = await this.profileRepo.findByUserId(userId);
+
+        // Agar profil yo'q bo'lsa, avtomatik yaratish
+        if (!profile) {
+            profile = new UserAIProfile();
+            profile.userId = userId;
+            profile.preferredLanguage = 'arabic'; // Arabic kurs uchun
+            profile.moduleLimit = 7;
+            profile.useStrictMode = true;
+            profile.learningGoals = [];
+            profile.weakAreas = [];
+
+            profile = await this.profileRepo.create(profile);
+            console.log(`✅ AI Profile auto-created for user ${userId}`);
+        }
+
+        return profile;
     }
 
     /**
@@ -170,7 +187,15 @@ export class AIChatService {
         if (!courseId) return [];
 
         try {
-            const lessonProgressResult = await this.lessonProgressService.getVideos(userId, courseId);
+            // Avval course progress orqali currentBlockId ni topish
+            const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
+            if (!courseProgress || !courseProgress.currentBlockId) {
+                console.warn(`Course progress or currentBlockId not found for user ${userId}, course ${courseId}`);
+                return [];
+            }
+
+            const blockId = courseProgress.currentBlockId;
+            const lessonProgressResult = await this.lessonProgressService.getVideos(userId, blockId);
             if (lessonProgressResult.statusCode === 200) {
                 return lessonProgressResult.data || [];
             }
@@ -184,22 +209,39 @@ export class AIChatService {
     /**
      * Chroma kontekst olish (kurs materiallari)
      */
-    private async getChromaContext(userId: number, courseId?: ID, profile?: any): Promise<any[]> {
+    private async getChromaContext(
+        userId: number,
+        courseId?: ID,
+        courseProgress?: any,
+        profile?: any
+    ): Promise<any[]> {
         if (!courseId) return [];
 
-        if (profile?.useStrictMode) {
-            // Strict mode: faqat moduleLimit ichidagi materiallar
-            const maxModule = profile?.moduleLimit || 7;
+        // Course progress dan current lesson order ni olish (parameter orqali)
+        console.log(`🔍 [DEBUG] courseProgress (from parameter):`, JSON.stringify(courseProgress, null, 2));
+
+        const currentLessonOrder = courseProgress?.currentLessonOrder;
+        console.log(`🔍 [DEBUG] currentLessonOrder extracted: ${currentLessonOrder}`);
+
+        if (profile?.useStrictMode && currentLessonOrder) {
+            // Strict mode: faqat kelgan darsigacha bo'lgan materiallar
+            console.log(`🔒 Strict Mode: Filtering lessons up to order ${currentLessonOrder}`);
             return await this.chroma.searchContext({
                 userId,
                 courseId: Number(courseId),
-                moduleLimit: maxModule
+                language: 'ar',
+                maxLessonOrder: currentLessonOrder,
+                strict: true
             });
         } else {
-            // General mode: barcha kurs materiallari, lekin current lesson ustunlik
+            // General mode yoki currentLessonOrder yo'q bo'lsa: barcha kurs materiallari
+            if (profile?.useStrictMode && !currentLessonOrder) {
+                console.warn(`⚠️ Strict mode enabled but currentLessonOrder is ${currentLessonOrder}. Using general mode.`);
+            }
             return await this.chroma.searchContext({
                 userId,
-                courseId: Number(courseId)
+                courseId: Number(courseId),
+                language: 'ar'
             });
         }
     }
@@ -237,15 +279,15 @@ export class AIChatService {
             if (courseId) {
                 console.log(`📚 Course ID: ${courseId}`);
 
-                // AI Profile
-                const profile = await this.profileRepo.findByUserId(Number(userId));
+                // AI Profile - auto-create if not exists
+                const profile = await this.getUserAIProfile(Number(userId));
                 if (profile) {
                     console.log(`🎯 AI Profile:`);
-                    console.log(`   - Preferred Language: ${profile.preferredLanguage || 'uzbek'}`);
+                    console.log(`   - Preferred Language: ${profile.preferredLanguage || 'ar'}`);
                     console.log(`   - Module Limit: ${profile.moduleLimit || 7}`);
                     console.log(`   - Strict Mode: ${profile.useStrictMode ? 'ON' : 'OFF'}`);
                 } else {
-                    console.log(`⚠️ AI Profile: Not found`);
+                    console.log(`⚠️ AI Profile: Failed to create`);
                 }
 
                 // Course Progress
@@ -265,8 +307,16 @@ export class AIChatService {
                 try {
                     // Avval Course 2 uchun blockId ni topamiz
                     const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
-                    if (courseProgress && courseProgress.currentBlockId) {
+
+                    if (!courseProgress) {
+                        console.log(`⚠️ Lesson Progress: Course progress not found`);
+                    } else if (!courseProgress.currentBlockId) {
+                        console.log(`⚠️ Lesson Progress: currentBlockId is null/undefined`);
+                        console.log(`   - Suggestion: User needs to start the course first`);
+                    } else {
+                        console.log(`🔍 Fetching lesson progress for blockId: ${courseProgress.currentBlockId}`);
                         const lessonProgressResult = await this.lessonProgressService.getVideos(Number(userId), courseProgress.currentBlockId);
+
                         if (lessonProgressResult.statusCode === 200 && lessonProgressResult.data) {
                             const lessons = lessonProgressResult.data;
                             const watchedCount = lessons.filter(lp => lp.isWatched).length;
@@ -285,13 +335,12 @@ export class AIChatService {
                                 console.log(`   - Last Watched: Lesson ${lastWatched.lessonOrder}`);
                             }
                         } else {
-                            console.log(`⚠️ Lesson Progress: Failed to load`);
+                            console.log(`⚠️ Lesson Progress: API returned statusCode ${lessonProgressResult.statusCode}`);
                         }
-                    } else {
-                        console.log(`⚠️ Course Progress not found for lesson progress lookup`);
                     }
                 } catch (error) {
                     console.log(`⚠️ Lesson Progress: Error - ${error.message}`);
+                    console.log(`   - Stack: ${error.stack}`);
                 }
             } else {
                 console.log(`📚 Course ID: Not specified`);

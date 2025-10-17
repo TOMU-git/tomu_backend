@@ -31,7 +31,7 @@ export class UserProgressCalculator {
         currentLessonId: ID,
         currentLessonOrder: number,
         currentBlockId: ID,
-        courseLanguage: string = 'uzbek'
+        courseLanguage: string = 'arabic'
     ): {
         currentLessonId: ID;
         currentLessonOrder: number;
@@ -153,7 +153,7 @@ export class UserProgressCalculator {
         currentLessonId: ID,
         currentLessonOrder: number,
         currentBlockId: ID,
-        courseLanguage: string = 'uzbek'
+        courseLanguage: string = 'arabic'
     ): {
         currentLessonId: ID;
         currentLessonOrder: number;

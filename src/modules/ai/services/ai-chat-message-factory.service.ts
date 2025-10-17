@@ -11,7 +11,7 @@ import { TTSService } from "./tts.service";
  */
 @Injectable()
 export class AIChatMessageFactory {
-    constructor(private readonly tts: TTSService) {}
+    constructor(private readonly tts: TTSService) { }
 
     /**
      * Fallback xabar yaratish (STT bo'sh yoki non-Arabic)
@@ -26,7 +26,7 @@ export class AIChatMessageFactory {
         fallbackType: 'empty' | 'non-arabic'
     ): Promise<AIChatMessage> {
         const message = new AIChatMessage();
-        
+
         // FK ni aniq yozish
         message.sessionId = session.id as unknown as any;
         message.session = { id: session.id } as AIChatSession;
@@ -46,9 +46,9 @@ export class AIChatMessageFactory {
         }
 
         // TTS audio yaratish
-        message.audioUrl = await this.tts.textToSpeech({ 
-            text: message.aiResponseUzbek, 
-            language: 'uzbek' 
+        message.audioUrl = await this.tts.textToSpeech({
+            text: message.aiResponseUzbek,
+            language: 'ar'
         });
 
         return message;
@@ -75,7 +75,7 @@ export class AIChatMessageFactory {
         audioUrl?: string
     ): Promise<AIChatMessage> {
         const message = new AIChatMessage();
-        
+
         // FK ni aniq yozish
         message.sessionId = session.id as unknown as any;
         message.session = { id: session.id } as AIChatSession;
@@ -91,9 +91,9 @@ export class AIChatMessageFactory {
         if (audioUrl) {
             message.audioUrl = audioUrl;
         } else {
-            message.audioUrl = await this.tts.textToSpeech({ 
-                text: aiResponseUz || aiResponse || '', 
-                language: 'uzbek' 
+            message.audioUrl = await this.tts.textToSpeech({
+                text: aiResponseUz || aiResponse || '',
+                language: 'ar'
             });
         }
 

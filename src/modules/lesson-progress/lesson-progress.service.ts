@@ -264,7 +264,10 @@ export class LessonProgressService implements ILessonProgressService {
 
 
 
-      // Vazifalar bo'limidagi vazifalar sonini tekshirish
+      // TODO: TEMPORARY - Re-enable queue check for production
+      // TEMPORARY: Queue check disabled for AI testing
+      /*
+        // Vazifalar bo'limidagi vazifalar sonini tekshirish
       console.log(`[DEBUG] Checking queue items for userId=${userId}, courseId=${courseId}`);
       const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
       console.log(`[DEBUG] Queue items count:`, queueItemsCount?.data?.count || 0);
@@ -276,6 +279,7 @@ export class LessonProgressService implements ILessonProgressService {
           isPaid: isActive
         };
       }
+      */
 
 
       // // ✅ Kunlik limitni tekshirish
@@ -290,6 +294,9 @@ export class LessonProgressService implements ILessonProgressService {
       // }
 
       console.log(`[DEBUG] Checking payment status: hasPaid=${hasPaid}, isActive=${isActive}`);
+      // TODO: TEMPORARY - Re-enable payment check for production
+      // TEMPORARY: Payment check disabled for AI testing
+      /*
       if (!hasPaid || !isActive) {
         console.log(`[DEBUG] User not paid or not active, checking blockOrder=${blockOrder}`);
         if (blockOrder > 1) {
@@ -316,6 +323,7 @@ export class LessonProgressService implements ILessonProgressService {
           }
         }
       }
+      */
 
       console.log(`[DEBUG] Returning successful response`);
       return {
@@ -484,7 +492,7 @@ export class LessonProgressService implements ILessonProgressService {
         lessonProgress.lesson?.id,
         lessonProgress.lessonOrder,
         lessonProgress.blockId,
-        'uzbek' // Default course language
+        'arabic' // Course language (Arabic course)
       );
 
       // UserCourseProgress upsert
@@ -539,7 +547,7 @@ export class LessonProgressService implements ILessonProgressService {
         lessonProgress.lesson?.id,
         lessonProgress.lessonOrder,
         lessonProgress.blockId,
-        'uzbek' // Default course language
+        'arabic' // Course language (Arabic course)
       );
 
       // Transaction ichida UserCourseProgress upsert

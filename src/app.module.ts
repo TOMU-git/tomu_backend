@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod, OnModuleInit } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FeedbackModule } from "./modules/feedback/feedback.module";
 import { TariffModule } from "./modules/tariff/tariff.module";
@@ -35,6 +35,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { CoursePaymentHistoryModule } from './modules/course-payment-history/course-payment-history.module';
 import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history/livechat-payment-history.module';
 import { AiModule } from './modules/ai/ai.module';
+import { ChromaService } from './modules/ai/services/chroma.service';
 
 @Module({
   imports: [
@@ -85,7 +86,22 @@ import { AiModule } from './modules/ai/ai.module';
     AiModule,
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule, OnModuleInit {
+  constructor(private readonly chromaService: ChromaService) { }
+
+  async onModuleInit() {
+    // Auto-index lessons on server startup (for Memory Index)
+    if (process.env.USE_RAG === '1') {
+      console.log('🚀 [AppModule] Auto-indexing lessons on startup...');
+      try {
+        const result = await this.chromaService.indexCourse({ courseId: 1 });
+        console.log(`✅ [AppModule] Indexed ${result.indexed} chunks on startup`);
+      } catch (error) {
+        console.error(`❌ [AppModule] Auto-indexing failed: ${error.message}`);
+      }
+    }
+  }
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckTokenMiddleware)
