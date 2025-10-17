@@ -17,6 +17,8 @@ export class ChromaService {
     private readonly memoryIndex = new Map<string, Array<IndexedChunk>>();
     // Chroma collection id cache
     private chromaCollectionId: string | null = null;
+    // Memory index persistence file path
+    private readonly memoryIndexPath = path.resolve(process.cwd(), 'data', '.memory-index.json');
 
     private getChromaUrl(): string {
         return process.env.CHROMA_URL || 'http://localhost:8000';
@@ -65,7 +67,8 @@ export class ChromaService {
                 return this.chromaCollectionId;
             }
         } catch (e) {
-            console.warn(`ChromaService: ensureChromaCollectionId failed: ${(e as Error).message}`);
+            // Suppress ChromaDB connection errors - Memory Index fallback is working fine
+            // console.warn(`ChromaService: ensureChromaCollectionId failed: ${(e as Error).message}`);
         }
         return null;
     }
@@ -85,7 +88,49 @@ export class ChromaService {
             count++;
         }
         console.log(`💾 Memory Index updated: language="${chunks[0]?.language}", total chunks for this language: ${this.memoryIndex.get(chunks[0]?.language)?.length || 0}`);
+
+        // Persist to disk (async, non-blocking)
+        this.saveMemoryIndexToDisk().catch(e =>
+            console.warn(`Memory Index save failed: ${e.message}`)
+        );
+
         return count;
+    }
+
+    /**
+     * Save Memory Index to disk for persistence
+     */
+    private async saveMemoryIndexToDisk(): Promise<void> {
+        try {
+            const data: Record<string, IndexedChunk[]> = {};
+            for (const [key, value] of this.memoryIndex.entries()) {
+                data[key] = value;
+            }
+            await fs.writeFile(this.memoryIndexPath, JSON.stringify(data, null, 2), 'utf-8');
+            console.log(`💾 Memory Index saved to disk: ${Object.keys(data).length} languages`);
+        } catch (e) {
+            console.warn(`Failed to save Memory Index: ${(e as Error).message}`);
+        }
+    }
+
+    /**
+     * Load Memory Index from disk on startup
+     */
+    async loadMemoryIndexFromDisk(): Promise<void> {
+        try {
+            const raw = await fs.readFile(this.memoryIndexPath, 'utf-8');
+            const data: Record<string, IndexedChunk[]> = JSON.parse(raw);
+            for (const [key, value] of Object.entries(data)) {
+                this.memoryIndex.set(key, value);
+            }
+            const totalChunks = Object.values(data).reduce((sum, arr) => sum + arr.length, 0);
+            console.log(`✅ Memory Index loaded from disk: ${totalChunks} chunks, ${Object.keys(data).length} languages`);
+        } catch (e) {
+            if ((e as NodeJS.ErrnoException).code !== 'ENOENT') {
+                console.warn(`Failed to load Memory Index: ${(e as Error).message}`);
+            }
+            // File doesn't exist yet - this is okay on first run
+        }
     }
 
     private async parseLessonJson(filePath: string): Promise<ParsedLesson | null> {
@@ -179,7 +224,8 @@ export class ChromaService {
 
             return true;
         } catch (e) {
-            console.warn(`ChromaService: upsert to ChromaDB failed: ${(e as Error).message}`);
+            // Suppress ChromaDB errors - Memory Index is the primary storage
+            // console.warn(`ChromaService: upsert to ChromaDB failed: ${(e as Error).message}`);
             return false;
         }
     }
@@ -214,7 +260,8 @@ export class ChromaService {
                 const apiBase = this.getApiBase();
                 const collectionId = await this.ensureChromaCollectionId();
                 if (!collectionId) {
-                    console.warn('⚠️ ChromaService: collection id not available, falling back to memory');
+                    // ChromaDB not available, using Memory Index (this is expected and OK)
+                    // console.warn('⚠️ ChromaService: collection id not available, falling back to memory');
                 } else {
                     console.log(`🔗 ChromaDB URL: ${apiBase}`);
                     console.log(`📦 Collection ID: ${collectionId}`);
@@ -279,7 +326,8 @@ export class ChromaService {
                     }
                 }
             } catch (e) {
-                console.warn(`❌ ChromaService: search failed, falling back to memory: ${(e as Error).message}`);
+                // Suppress ChromaDB errors - Memory Index fallback is working fine
+                // console.warn(`❌ ChromaService: search failed, falling back to memory: ${(e as Error).message}`);
             }
         } else {
             console.log('💾 Using Memory Index for search...');

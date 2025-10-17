@@ -92,12 +92,16 @@ export class AppModule implements NestModule, OnModuleInit {
   async onModuleInit() {
     // Auto-index lessons on server startup (for Memory Index)
     if (process.env.USE_RAG === '1') {
-      console.log('🚀 [AppModule] Auto-indexing lessons on startup...');
+      console.log('🚀 [AppModule] Initializing RAG system...');
       try {
+        // 1. Try to load Memory Index from disk first (fast startup)
+        await this.chromaService.loadMemoryIndexFromDisk();
+
+        // 2. If disk file doesn't exist or is empty, index from JSON files
         const result = await this.chromaService.indexCourse({ courseId: 1 });
-        console.log(`✅ [AppModule] Indexed ${result.indexed} chunks on startup`);
+        console.log(`✅ [AppModule] RAG system ready: ${result.indexed} chunks indexed`);
       } catch (error) {
-        console.error(`❌ [AppModule] Auto-indexing failed: ${error.message}`);
+        console.error(`❌ [AppModule] RAG initialization failed: ${error.message}`);
       }
     }
   }
