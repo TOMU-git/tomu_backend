@@ -24,7 +24,7 @@ export class HomeworkService implements IHomeworkService {
     private readonly blockRepository: IBlockRepository,
 
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   /**
    * Yangi Homework yaratadi.
@@ -125,7 +125,7 @@ export class HomeworkService implements IHomeworkService {
       updateHomeworkDto.order,
       updateHomeworkDto.blockId,
     );
-    if (orderExist && foundData.order !== updateHomeworkDto.order ) { 
+    if (orderExist && foundData.order !== updateHomeworkDto.order) {
       throw new HomeworkOrderAlreadyExistException();
     }
 
@@ -165,26 +165,26 @@ export class HomeworkService implements IHomeworkService {
     );
   }
 
-    /**
-   * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
-   * @param blockId Blok ID'si
-   * @returns Blokga tegishli darslar
-   */
-    async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
-      const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
-      if(homeworks.length === 0){
-        return new ResData<Homework[]>(
-          `No any videos in this blockId: ${blockId} `,
-          200,
-          homeworks,
-        );
-      }
+  /**
+ * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
+ * @param blockId Blok ID'si
+ * @returns Blokga tegishli darslar
+ */
+  async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
+    const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+    if (homeworks.length === 0) {
       return new ResData<Homework[]>(
-        "Homeworks by blockId fetched successfully",
+        `No any videos in this blockId: ${blockId} `,
         200,
         homeworks,
       );
     }
+    return new ResData<Homework[]>(
+      "Homeworks by blockId fetched successfully",
+      200,
+      homeworks,
+    );
+  }
 
   /**
    * Keyingi 5 ta videoni oladi.

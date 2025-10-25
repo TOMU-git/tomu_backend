@@ -6,6 +6,7 @@ import { HomeworkProgress } from "src/modules/homework-progress/entities/homewor
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { UserCourse } from "src/modules/user-courses/entities/user-course.entity";
 import { UserTariff } from "src/modules/user-tariff/entities/user-tariff.entity";
+import { UserDevice } from "src/modules/user-device/entities/user-device.entity";
 import { Entity, Column, OneToMany } from "typeorm";
 
 @Entity("users")
@@ -32,11 +33,40 @@ export class User extends BaseEntity {
   @Column({ type: "enum", enum: RoleEnum, nullable: false })
   role: RoleEnum;
 
-  @Column({name: 'course_id', type: 'int', nullable: true, default: null})
+  @Column({ name: 'course_id', type: 'int', nullable: true, default: null })
   courseId: number;
 
   @Column({ name: "hashed_refresh_token", type: "varchar", nullable: true })
   hashed_refresh_token: string;
+
+  /**
+   * Maximum number of devices allowed for this user
+   * Default values based on role:
+   * - STUDENT: 2 devices
+   * - TEACHER: 3 devices  
+   * - ADMIN: 5 devices
+   * - DIRECTOR: 10 devices
+   */
+  @Column({
+    name: 'max_devices',
+    type: 'int',
+    default: 2,
+    comment: 'Maximum number of devices allowed for this user'
+  })
+  maxDevices: number;
+
+  /**
+   * Device management enabled flag
+   * When false, device limits are not enforced
+   * Allows gradual rollout of device management
+   */
+  @Column({
+    name: 'device_management_enabled',
+    type: 'boolean',
+    default: false,
+    comment: 'Whether device management is enabled for this user'
+  })
+  deviceManagementEnabled: boolean;
 
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
@@ -52,5 +82,15 @@ export class User extends BaseEntity {
   homeworkProgresses: HomeworkProgress[];
 
   @OneToMany(() => UserCourse, (userCourse) => userCourse.user)
-  userCourses: HomeworkProgress[];
+  userCourses: UserCourse[];
+
+  /**
+   * User devices relationship
+   * One user can have multiple devices
+   */
+  @OneToMany(() => UserDevice, (device) => device.user, {
+    cascade: false, // Don't auto-delete devices when user is deleted
+    eager: false    // Don't load devices by default
+  })
+  devices: UserDevice[];
 }

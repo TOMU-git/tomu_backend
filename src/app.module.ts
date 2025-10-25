@@ -35,6 +35,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { CoursePaymentHistoryModule } from './modules/course-payment-history/course-payment-history.module';
 import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history/livechat-payment-history.module';
 import { AiModule } from './modules/ai/ai.module';
+import { UserDeviceModule } from './modules/user-device/user-device.module';
 import { ChromaService } from './modules/ai/services/chroma.service';
 
 @Module({
@@ -84,6 +85,7 @@ import { ChromaService } from './modules/ai/services/chroma.service';
     CoursePaymentHistoryModule,
     LivechatPaymentHistoryModule,
     AiModule,
+    UserDeviceModule,
   ],
 })
 export class AppModule implements NestModule, OnModuleInit {

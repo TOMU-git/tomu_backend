@@ -21,7 +21,7 @@ export class AlphabetService implements IAlphabetService {
     private readonly courseRepository: ICourseRepository,
 
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   async create(
     dto: CreateAlphabetDto,
