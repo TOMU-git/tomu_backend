@@ -1,0 +1,50 @@
+{
+  "id": "ar_m1_l2",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 2,
+  "title": "بَيْتٌ",
+  "lessonSummary": "Practicing demonstrative pronouns and forming simple yes/no questions about objects.",
+  "keywords": ["uy", "ko'rsatish olmoshi", "savol", "ot", "ham"],
+  "vocabulary": [
+    { "word": "بَيْتٌ", "normalized": "بيت", "lemma": "بَيْت", "pos": "noun", "translationUz": "uy", "example": "هَذَا بَيْتٌ" },
+    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا كِتَابٌ" },
+    { "word": "مَا", "normalized": "ما", "lemma": "مَا", "pos": "interrogative", "translationUz": "nima", "example": "مَا هَذَا؟" },
+    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ كَبِيرٌ؟" },
+    { "word": "نَعَمْ", "normalized": "نعم", "lemma": "نَعَمْ", "pos": "particle", "translationUz": "ha", "example": "نَعَمْ، هُوَ طَيِّبٌ" },
+    { "word": "أَيْضًا", "normalized": "ايضا", "lemma": "أَيْضًا", "pos": "particle", "translationUz": "ham", "example": "هُوَ طَالِبٌ أَيْضًا" },
+    { "word": "إِنَّهُ", "normalized": "انه", "lemma": "إِنَّهُ", "pos": "particle", "translationUz": "albatta u", "example": "إِنَّهُ جَمِيلٌ" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "مُحَمَّدٌ",
+      "text": "مَا هَذَا، يَا أَحْمَدُ؟",
+      "translationUz": "Bu nima, Ahmad?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "أَحْمَدُ",
+      "text": "هَذَا بَيْتٌ، يَا مُحَمَّدُ.",
+      "translationUz": "Bu uy, Muhammad.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "مُحَمَّدٌ",
+      "text": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟",
+      "translationUz": "Bu ham uy emasmi?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 4,
+      "speaker": "أَحْمَدُ",
+      "text": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
+      "translationUz": "Ha, bu ham uy.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:15:00Z",
+  "updatedAt": "2025-10-12T12:15:00Z"
+}

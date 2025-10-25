@@ -14,6 +14,10 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { User } from "../user/entities/user.entity";
+import { UserCourseProgressService } from "../ai/services/user-course-progress.service";
+import { UserProgressCalculator } from "../ai/utils/user-progress-calculator.util";
+import { DataSource } from "typeorm";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -43,6 +47,13 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("IUserCourseRepository") // UserCourseRepository ni inject qilamiz
     private readonly userCourseRepository: IUserCourseRepository,
+
+    // AI modulidan UserCourseProgress servislari
+    private readonly userCourseProgressService: UserCourseProgressService,
+    private readonly userProgressCalculator: UserProgressCalculator,
+
+    // Database transaction uchun
+    private readonly dataSource: DataSource,
   ) { }
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
@@ -120,9 +131,33 @@ export class LessonProgressService implements ILessonProgressService {
         );
       }
 
-      // 👁 Darsni ko‘rilgan deb belgilaymiz
-      foundLessonProgress.isWatched = true;
-      await this.lessonProgressRepository.update(foundLessonProgress);
+      // 🔄 Transaction ichida LessonProgress va UserCourseProgress ni yangilash
+      const queryRunner = this.dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      try {
+        // 👁 Darsni ko'rilgan deb belgilaymiz
+        foundLessonProgress.isWatched = true;
+        await queryRunner.manager.save(foundLessonProgress);
+
+        // 🔄 UserCourseProgress ni yangilash
+        await this.updateUserCourseProgressInTransaction(
+          queryRunner,
+          userId,
+          courseId,
+          foundLessonProgress
+        );
+
+        await queryRunner.commitTransaction();
+        this.logger.log(`LessonProgress and UserCourseProgress updated successfully for user ${userId}, course ${courseId}`);
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        this.logger.error(`Transaction failed: ${error.message}`, error.stack);
+        throw error;
+      } finally {
+        await queryRunner.release();
+      }
 
       // 📌 Uyga vazifa rejalashtirish
       try {
@@ -174,22 +209,29 @@ export class LessonProgressService implements ILessonProgressService {
 
 
   async getVideos(userId: ID, blockId: ID): Promise<any> {
+    console.log(`[DEBUG] getVideos started: userId=${userId}, blockId=${blockId}`);
+
     const block = await this.blockRepository.findById(blockId);
+    console.log(`[DEBUG] Block found:`, block ? `id=${block.id}` : 'null');
     if (!block) {
       throw new BlockNotFoundException();
     }
 
     const existingProgresses =
       await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+    console.log(`[DEBUG] Existing progresses count:`, existingProgresses?.length || 0);
 
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
+      console.log(`[DEBUG] CourseId from progress: ${courseId}, blockOrder: ${blockOrder}`);
 
       const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
       const progressCount = existingProgresses.length;
+      console.log(`[DEBUG] Total lessons: ${totalLessonsCount}, Progress count: ${progressCount}`);
 
       if (totalLessonsCount > progressCount) {
+        console.log(`[DEBUG] Generating new lesson progress...`);
         await this.generateLessonProgress(userId, blockId, courseId);
 
         const updatedProgresses =
@@ -206,16 +248,29 @@ export class LessonProgressService implements ILessonProgressService {
 
 
       // UserCourse ma'lumotlarini tekshirish
+      console.log(`[DEBUG] Looking for userCourse: userId=${userId}, courseId=${courseId}`);
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+      console.log(`[DEBUG] UserCourse found:`, userCourse ? `id=${userCourse.id}` : 'null');
+
+      if (!userCourse) {
+        console.log(`[ERROR] UserCourse is null! userId=${userId}, courseId=${courseId}`);
+        throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
+      }
 
       const hasPaid = userCourse.hasEverPaid
       const isActive = userCourse.isActive
       const onFreeTrial = userCourse.onFreeTrial
+      console.log(`[DEBUG] UserCourse properties: hasPaid=${hasPaid}, isActive=${isActive}, onFreeTrial=${onFreeTrial}`);
 
 
 
-      // Vazifalar bo'limidagi vazifalar sonini tekshirish
+      // TODO: TEMPORARY - Re-enable queue check for production
+      // TEMPORARY: Queue check disabled for AI testing
+      /*
+        // Vazifalar bo'limidagi vazifalar sonini tekshirish
+      console.log(`[DEBUG] Checking queue items for userId=${userId}, courseId=${courseId}`);
       const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      console.log(`[DEBUG] Queue items count:`, queueItemsCount?.data?.count || 0);
       if (queueItemsCount.data.count > 4) {
         return {
           message: "Finish reviewing the previous tasks first.",
@@ -224,20 +279,26 @@ export class LessonProgressService implements ILessonProgressService {
           isPaid: isActive
         };
       }
+      */
 
 
       // // ✅ Kunlik limitni tekshirish
       // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
       // if (dailyWatchedCount >= 10) {
       //   return {
-      //     message: "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+      //     message: "Kunlik dars ko'rish limiti tugagan. Ertaga davom eting.",
       //     statusCode: 403,
-      //     data: existingProgresses, // eski darslar ko‘rsatiladi
+      //     data: existingProgresses, // eski darslar ko'rsatiladi
       //     isPaid: isActive,
       //   };
       // }
 
+      console.log(`[DEBUG] Checking payment status: hasPaid=${hasPaid}, isActive=${isActive}`);
+      // TODO: TEMPORARY - Re-enable payment check for production
+      // TEMPORARY: Payment check disabled for AI testing
+      /*
       if (!hasPaid || !isActive) {
+        console.log(`[DEBUG] User not paid or not active, checking blockOrder=${blockOrder}`);
         if (blockOrder > 1) {
           return {
             message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
@@ -262,7 +323,9 @@ export class LessonProgressService implements ILessonProgressService {
           }
         }
       }
+      */
 
+      console.log(`[DEBUG] Returning successful response`);
       return {
         message: "Lesson fetched successfully",
         statusCode: 200,
@@ -271,13 +334,25 @@ export class LessonProgressService implements ILessonProgressService {
       };
     }
 
+    console.log(`[DEBUG] No existing progresses, getting courseId from block`);
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
+    console.log(`[DEBUG] CourseId from block: ${courseId}`);
 
     if (existingProgresses.length === 0) {
+      console.log(`[DEBUG] Generating initial lesson progress...`);
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
 
+      console.log(`[DEBUG] Looking for userCourse for new progress: userId=${userId}, courseId=${courseId}`);
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+      console.log(`[DEBUG] UserCourse for new progress:`, userCourse ? `id=${userCourse.id}` : 'null');
+
+      if (!userCourse) {
+        console.log(`[ERROR] UserCourse is null for new progress! userId=${userId}, courseId=${courseId}`);
+        throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
+      }
+
       const isActive = userCourse.isActive;
+      console.log(`[DEBUG] New progress isActive: ${isActive}`);
 
       return {
         message: "Lesson progress created successfully",
@@ -287,6 +362,7 @@ export class LessonProgressService implements ILessonProgressService {
       };
     }
 
+    console.log(`[DEBUG] No lessons available`);
     return {
       message: "No lessons available",
       statusCode: 404,
@@ -340,7 +416,7 @@ export class LessonProgressService implements ILessonProgressService {
         }
 
         const newProgress = new LessonProgress();
-        newProgress.userId = userId;
+        newProgress.user = { id: userId } as User; // Relation orqali yozish
         newProgress.blockId = blockId;
         newProgress.lessonOrder = lesson.order;
         newProgress.blockOrder = block.order;
@@ -390,6 +466,107 @@ export class LessonProgressService implements ILessonProgressService {
     );
 
     return watchedLessonsToday;
+  }
+
+  /**
+   * UserCourseProgress ni yangilash (LessonProgress o'zgarishidan keyin)
+   * @param userId - Foydalanuvchi ID
+   * @param courseId - Kurs ID
+   * @param lessonProgress - Yangilangan LessonProgress
+   */
+  private async updateUserCourseProgress(
+    userId: ID,
+    courseId: ID,
+    lessonProgress: LessonProgress
+  ): Promise<void> {
+    try {
+      // Barcha lesson progresslarni olish (calculation uchun)
+      const allLessonProgresses = await this.lessonProgressRepository.findByBlockIdAndUserId(
+        lessonProgress.blockId,
+        userId
+      );
+
+      // UserCourseProgress uchun ma'lumotlarni hisoblash
+      const progressData = this.userProgressCalculator.calculateUserCourseProgressData(
+        allLessonProgresses,
+        lessonProgress.lesson?.id,
+        lessonProgress.lessonOrder,
+        lessonProgress.blockId,
+        'arabic' // Course language (Arabic course)
+      );
+
+      // UserCourseProgress upsert
+      const upsertResult = await this.userCourseProgressService.upsertFromLessonProgress(
+        userId,
+        courseId,
+        {
+          currentLessonId: progressData.currentLessonId,
+          currentLessonOrder: progressData.currentLessonOrder,
+          currentBlockId: progressData.currentBlockId,
+          courseLanguage: progressData.courseLanguage,
+        }
+      );
+
+      if (upsertResult.statusCode !== 200 && upsertResult.statusCode !== 201) {
+        throw new Error(`UserCourseProgress upsert failed: ${upsertResult.message}`);
+      }
+
+      this.logger.log(`UserCourseProgress successfully updated for user ${userId}, course ${courseId}`);
+    } catch (error) {
+      this.logger.error(`updateUserCourseProgress failed: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  /**
+   * Transaction ichida UserCourseProgress ni yangilash
+   * @param queryRunner - TypeORM QueryRunner
+   * @param userId - Foydalanuvchi ID
+   * @param courseId - Kurs ID
+   * @param lessonProgress - Yangilangan LessonProgress
+   */
+  private async updateUserCourseProgressInTransaction(
+    queryRunner: any,
+    userId: ID,
+    courseId: ID,
+    lessonProgress: LessonProgress
+  ): Promise<void> {
+    try {
+      // Barcha lesson progresslarni olish (calculation uchun)
+      const allLessonProgresses = await queryRunner.manager.find(LessonProgress, {
+        where: {
+          blockId: lessonProgress.blockId,
+          user: { id: userId }
+        },
+        relations: ['lesson']
+      });
+
+      // UserCourseProgress uchun ma'lumotlarni hisoblash
+      const progressData = this.userProgressCalculator.calculateUserCourseProgressData(
+        allLessonProgresses,
+        lessonProgress.lesson?.id,
+        lessonProgress.lessonOrder,
+        lessonProgress.blockId,
+        'arabic' // Course language (Arabic course)
+      );
+
+      // Transaction ichida UserCourseProgress upsert
+      await this.userCourseProgressService.recalculateAndUpsertInTransaction(
+        queryRunner,
+        userId,
+        courseId,
+        allLessonProgresses,
+        progressData.currentLessonId,
+        progressData.currentLessonOrder,
+        progressData.currentBlockId,
+        progressData.courseLanguage
+      );
+
+      this.logger.log(`UserCourseProgress successfully updated in transaction for user ${userId}, course ${courseId}`);
+    } catch (error) {
+      this.logger.error(`updateUserCourseProgressInTransaction failed: ${error.message}`, error.stack);
+      throw error;
+    }
   }
 }
 

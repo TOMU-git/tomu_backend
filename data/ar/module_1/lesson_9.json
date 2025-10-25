@@ -1,0 +1,96 @@
+{
+    "id": "ar_m1_l9",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 9,
+    "title": "اَلتَّعَارُفُ",
+    "lessonSummary": "Basic greetings and introductions: exchanging names, asking about origin, and responding politely.",
+    "keywords": ["salomlashuv", "ism", "qayerdan", "tanishtirish", "odoblilik"],
+    "vocabulary": [
+      { "word": "اَلسَّلَامُ عَلَيْكُمْ", "normalized": "السلام عليكم", "lemma": "اَلسَّلَامُ عَلَيْكُمْ", "pos": "expression", "translationUz": "Salom (sizga tinchlik bo‘lsin)", "example": "اَلسَّلَامُ عَلَيْكُمْ" },
+      { "word": "وَعَلَيْكُمُ السَّلَامُ", "normalized": "وعليكم السلام", "lemma": "وَعَلَيْكُمُ السَّلَامُ", "pos": "expression", "translationUz": "Va sizga ham tinchlik bo‘lsin", "example": "وَعَلَيْكُمُ السَّلَامُ" },
+      { "word": "مَا اسْمُكَ", "normalized": "ما اسمك", "lemma": "مَا اسْمُكَ", "pos": "interrogative phrase", "translationUz": "Isming nima?", "example": "مَا اسْمُكَ؟" },
+      { "word": "اِسْمِي", "normalized": "اسمي", "lemma": "اِسْمِي", "pos": "noun phrase", "translationUz": "Mening ismim", "example": "اِسْمِي فَرِيدٌ" },
+      { "word": "مِنْ", "normalized": "من", "lemma": "مِنْ", "pos": "preposition", "translationUz": "dan", "example": "أَنَا مِنْ مِصْرَ" },
+      { "word": "مِصْرَ", "normalized": "مصر", "lemma": "مِصْر", "pos": "proper noun", "translationUz": "Misr", "example": "أَنَا مِنْ مِصْرَ" },
+      { "word": "أُوزْبَكِسْتَانَ", "normalized": "اوزبكستان", "lemma": "أُوزْبَكِسْتَان", "pos": "proper noun", "translationUz": "O‘zbekiston", "example": "أَنَا مِنْ أُوزْبَكِسْتَانَ" },
+      { "word": "أَهْلًا وَسَهْلًا", "normalized": "اهلا وسهلا", "lemma": "أَهْلًا وَسَهْلًا", "pos": "expression", "translationUz": "Xush kelibsiz", "example": "أَهْلًا وَسَهْلًا!" },
+      { "word": "أَهْلًا بِكَ", "normalized": "اهلا بك", "lemma": "أَهْلًا بِكَ", "pos": "expression", "translationUz": "Xush ko‘rdim seni", "example": "أَهْلًا بِكَ" },
+      { "word": "مِنْ أَيْنَ", "normalized": "من اين", "lemma": "مِنْ أَيْنَ", "pos": "interrogative phrase", "translationUz": "Qayerdansan?", "example": "مِنْ أَيْنَ أَنْتَ؟" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "مُحَمَّدٌ",
+        "text": "اَلسَّلَامُ عَلَيْكُمْ.",
+        "translationUz": "Assalomu alaykum.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "فَرِيدٌ",
+        "text": "وَعَلَيْكُمُ السَّلَامُ.",
+        "translationUz": "Va alaykum assalom.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "مُحَمَّدٌ",
+        "text": "مَا اسْمُكَ؟",
+        "translationUz": "Isming nima?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 4,
+        "speaker": "فَرِيدٌ",
+        "text": "اِسْمِي فَرِيدٌ، وَمَا اسْمُكَ؟",
+        "translationUz": "Ismim Farid, sening isming nima?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 5,
+        "speaker": "مُحَمَّدٌ",
+        "text": "اِسْمِي مُحَمَّدٌ.",
+        "translationUz": "Ismim Muhammad.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 6,
+        "speaker": "فَرِيدٌ",
+        "text": "مِنْ أَيْنَ أَنْتَ يَا مُحَمَّدُ؟",
+        "translationUz": "Qayerdansan, Muhammad?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 7,
+        "speaker": "مُحَمَّدٌ",
+        "text": "أَنَا مِنْ مِصْرَ، وَمِنْ أَيْنَ أَنْتَ يَا فَرِيدُ؟",
+        "translationUz": "Men Misrdanman. Sen qayerdansan, Farid?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 8,
+        "speaker": "فَرِيدٌ",
+        "text": "أَنَا مِنْ أُوزْبَكِسْتَانَ.",
+        "translationUz": "Men O‘zbekistondanman.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 9,
+        "speaker": "مُحَمَّدٌ",
+        "text": "أَهْلًا وَسَهْلًا!",
+        "translationUz": "Xush kelibsiz!",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 10,
+        "speaker": "فَرِيدٌ",
+        "text": "أَهْلًا بِكَ.",
+        "translationUz": "Xush ko‘rdim seni.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-13T10:00:00Z",
+    "updatedAt": "2025-10-13T10:00:00Z"
+  }
+  

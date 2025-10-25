@@ -1,0 +1,6 @@
+export const AI_LIMITS = {
+    CONTEXT_JSON_MAX: 4000,
+    SESSION_AUTO_CLOSE_HOURS: 24,
+    MAX_AUDIO_MB: 15,
+};
+

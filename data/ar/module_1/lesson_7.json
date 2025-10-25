@@ -1,0 +1,45 @@
+{
+    "id": "ar_m1_l7",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 7,
+    "title": "اَلْمَسْجِدُ الْبَعِيدُ",
+    "lessonSummary": "Practicing demonstratives 'this' and 'that' with adjectives describing distance, such as 'near' and 'far'.",
+    "keywords": ["masofa", "uy", "masjid", "yaqin", "uzoq", "ko'rsatish olmoshi"],
+    "vocabulary": [
+      { "word": "قَرِيبٌ", "normalized": "قريب", "lemma": "قَرِيب", "pos": "adjective", "translationUz": "yaqin", "example": "الْبَيْتُ قَرِيبٌ" },
+      { "word": "بَعِيدٌ", "normalized": "بعيد", "lemma": "بَعِيد", "pos": "adjective", "translationUz": "uzoq", "example": "الْمَسْجِدُ بَعِيدٌ" },
+      { "word": "بَيْتٌ", "normalized": "بيت", "lemma": "بَيْت", "pos": "noun", "translationUz": "uy", "example": "هَذَا بَيْتٌ" },
+      { "word": "مَسْجِدٌ", "normalized": "مسجد", "lemma": "مَسْجِد", "pos": "noun", "translationUz": "masjid", "example": "ذَلِكَ الْمَسْجِدُ بَعِيدٌ" },
+      { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا الْبَيْتُ قَرِيبٌ" },
+      { "word": "ذَلِكَ", "normalized": "ذلك", "lemma": "ذَلِكَ", "pos": "demonstrative", "translationUz": "u (narigi)", "example": "ذَلِكَ الْمَسْجِدُ بَعِيدٌ" },
+      { "word": "أَذَلِكَ", "normalized": "أذلك", "lemma": "أَذَلِكَ", "pos": "interrogative phrase", "translationUz": "u ham ...mi?", "example": "أَذَلِكَ مَسْجِدٌ أَيْضًا؟" },
+      { "word": "أَيْضًا", "normalized": "ايضا", "lemma": "أَيْضًا", "pos": "adverb", "translationUz": "ham", "example": "هُوَ تَاجِرٌ أَيْضًا" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "—",
+        "text": "هَذَا الْبَيْتُ قَرِيبٌ، وَذَلِكَ الْمَسْجِدُ بَعِيدٌ.",
+        "translationUz": "Bu uy yaqin, u masjid esa uzoq.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "—",
+        "text": "أَذَلِكَ مَسْجِدٌ أَيْضًا؟",
+        "translationUz": "U ham masjidmi?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "—",
+        "text": "لَا، ذَلِكَ بَيْتٌ.",
+        "translationUz": "Yo‘q, u uy.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T13:25:00Z",
+    "updatedAt": "2025-10-12T13:25:00Z"
+  }
+      

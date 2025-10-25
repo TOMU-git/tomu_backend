@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod, OnModuleInit } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { FeedbackModule } from "./modules/feedback/feedback.module";
 import { TariffModule } from "./modules/tariff/tariff.module";
@@ -34,6 +34,8 @@ import { LivechatPriceModule } from './modules/livechat-price/livechat-price.mod
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { CoursePaymentHistoryModule } from './modules/course-payment-history/course-payment-history.module';
 import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history/livechat-payment-history.module';
+import { AiModule } from './modules/ai/ai.module';
+import { ChromaService } from './modules/ai/services/chroma.service';
 
 @Module({
   imports: [
@@ -41,10 +43,15 @@ import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history
       isGlobal: true,
       envFilePath: [".env", ".development.env"],
     }),
-    CacheModule.register({isGlobal: true}),
+    CacheModule.register({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "upload"),
       serveRoot: "/upload",
+    }),
+    // Minimal front: AI PTT demo page
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public", "ai-demo"),
+      serveRoot: "/ai-demo",
     }),
     TypeOrmModule.forRoot(connectionSource),
     AuthModule,
@@ -76,9 +83,29 @@ import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history
     AnalyticsModule,
     CoursePaymentHistoryModule,
     LivechatPaymentHistoryModule,
+    AiModule,
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule, OnModuleInit {
+  constructor(private readonly chromaService: ChromaService) { }
+
+  async onModuleInit() {
+    // Auto-index lessons on server startup (for Memory Index)
+    if (process.env.USE_RAG === '1') {
+      console.log('🚀 [AppModule] Initializing RAG system...');
+      try {
+        // 1. Try to load Memory Index from disk first (fast startup)
+        await this.chromaService.loadMemoryIndexFromDisk();
+
+        // 2. If disk file doesn't exist or is empty, index from JSON files
+        const result = await this.chromaService.indexCourse({ courseId: 1 });
+        console.log(`✅ [AppModule] RAG system ready: ${result.indexed} chunks indexed`);
+      } catch (error) {
+        console.error(`❌ [AppModule] RAG initialization failed: ${error.message}`);
+      }
+    }
+  }
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckTokenMiddleware)

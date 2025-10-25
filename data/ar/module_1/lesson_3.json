@@ -1,0 +1,50 @@
+{
+  "id": "ar_m1_l3",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 3,
+  "title": "مَوْزٌ لَذِيذٌ",
+  "lessonSummary": "Practicing questions and answers about fruits and using adjectives to describe taste.",
+  "keywords": ["meva", "savol", "sifat", "mazali", "ko'rsatish olmoshi"],
+  "vocabulary": [
+    { "word": "مَوْزٌ", "normalized": "موز", "lemma": "مَوْز", "pos": "noun", "translationUz": "banan", "example": "هَذَا مَوْزٌ" },
+    { "word": "لَذِيذٌ", "normalized": "لذيذ", "lemma": "لَذِيذ", "pos": "adjective", "translationUz": "mazali", "example": "الطَّعَامُ لَذِيذٌ" },
+    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا كِتَابٌ" },
+    { "word": "مَا", "normalized": "ما", "lemma": "مَا", "pos": "interrogative", "translationUz": "nima", "example": "مَا هَذَا؟" },
+    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ كَبِيرٌ؟" },
+    { "word": "نَعَمْ", "normalized": "نعم", "lemma": "نَعَمْ", "pos": "particle", "translationUz": "ha", "example": "نَعَمْ، هُوَ طَيِّبٌ" },
+    { "word": "إِنَّهُ", "normalized": "انه", "lemma": "إِنَّهُ", "pos": "particle", "translationUz": "albatta u", "example": "إِنَّهُ جَمِيلٌ" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "فَرِيدٌ",
+      "text": "مَا هَذَا، يَا فَرِيدُ؟",
+      "translationUz": "Bu nima, Farid?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "فَرِيدٌ",
+      "text": "هَذَا مَوْزٌ، يَا كَرِيمُ.",
+      "translationUz": "Bu banan, Karim.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "كَرِيمٌ",
+      "text": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟",
+      "translationUz": "Bu banan mazalimi?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 4,
+      "speaker": "فَرِيدٌ",
+      "text": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
+      "translationUz": "Ha, u mazali.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}
