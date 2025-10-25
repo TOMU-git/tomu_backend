@@ -410,6 +410,15 @@ export class ChromaService {
         this.memoryIndex.set(language, filtered);
         return { removed: true };
     }
+
+    /**
+     * Memory Index statistikalarini olish
+     */
+    getMemoryIndexStats(): { languages: number; chunks: number } {
+        const languages = this.memoryIndex.size;
+        const chunks = Array.from(this.memoryIndex.values()).reduce((sum, arr) => sum + arr.length, 0);
+        return { languages, chunks };
+    }
 }
 
 interface IndexedChunk {
