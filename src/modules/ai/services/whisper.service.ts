@@ -24,27 +24,25 @@ export class WhisperService {
         }
         // Aniqlikni oshirish uchun qo'shimcha parametrlar
         fd.append("temperature", "0");
-        // Whisper’ga soha va kalit iboralarni bildiruvchi prompt beramiz (bias)
+        // Whisper'ga soha va kalit iboralarni bildiruvchi prompt beramiz (bias)
+        // Modern Standard Arabic (MSA) recognition with critical lesson vocabulary
+        // CRITICAL: هَلْ is a question particle, NOT وَلْ (which doesn't exist)
         fd.append(
             "prompt",
-            "الرجاء نسخ الكلام حرفياً بالعربية القياسية دون ترجمة. كلمات مفتاحية: فريد، ما هذا يا فريد."
+            "مَا هَٰذَا يَا فَرِيد؟ هَٰذَا بُرْتُقَالٌ يَا فَرِيد. هَلْ هُوَ لَذِيذٌ؟ نَعَمْ هَٰذَا الْبُرْتُقَالُ لَذِيذٌ جِدًّا. مَا هَٰذَا يَا مُحَمَّد؟"
         );
-        // Oddiy matn chiqishi
-        fd.append("response_format", "text");
+        // Verbose JSON for better accuracy (includes word timestamps)
+        fd.append("response_format", "verbose_json");
 
         try {
             const res = await axios.post("https://api.openai.com/v1/audio/transcriptions", fd, {
                 headers: { ...fd.getHeaders(), Authorization: `Bearer ${OPENAI_API_KEY}` },
             });
 
-            // OpenAI: response_format=text bo'lsa string qaytadi, aks holda JSON { text }
-            const isString = typeof res.data === "string";
-            const transcribedText = isString ? (res.data as string) : ((res.data as any)?.text || "");
-
-            // Console log: Arabic text va Latin transliteration
-            console.log('🎙️ User audio transcribed:');
-            console.log('📝 Arabic text:', transcribedText);
-            console.log('🔤 Latin transliteration:', this.transliterateArabic(transcribedText));
+            // OpenAI: response_format=verbose_json returns JSON with text field
+            const transcribedText = typeof res.data === "string"
+                ? res.data
+                : ((res.data as any)?.text || "");
 
             return transcribedText;
         } catch (e: any) {

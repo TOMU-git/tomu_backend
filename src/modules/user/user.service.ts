@@ -19,6 +19,9 @@ export class UserService implements IUserService {
 
   async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
     const foundUser = await this.userRepository.getOntByPhoneNumber(phoneNumber);
+    if (!foundUser) {
+      throw new UserNotFound();
+    }
     return new ResData<User>('found user by phone', 200, foundUser);
   }
   // *** Find one by id *** //

@@ -55,7 +55,8 @@ export class VoiceProcessingPipeline {
      * Pipeline ni bajarish
      */
     async execute(input: VoiceInput): Promise<VoiceOutput> {
-        console.log('\n🚀 ===== VOICE PROCESSING PIPELINE STARTED =====');
+        const pipelineStart = Date.now();
+        console.log("\n⏱️  Pipeline boshlandi...");
 
         const steps: PipelineStep[] = [
             new STTStep(this.whisper),
@@ -66,22 +67,16 @@ export class VoiceProcessingPipeline {
         ];
 
         let currentInput: VoiceInput | VoiceOutput = input;
-        let stepIndex = 0;
 
         for (const step of steps) {
-            const stepNames = ['STT', 'Validation', 'Context Building', 'GPT Generation', 'Response Creation'];
-            console.log(`📝 Step ${stepIndex + 1}: ${stepNames[stepIndex]}`);
-
             currentInput = await step.execute(currentInput as VoiceInput);
-            console.log(`✅ ${stepNames[stepIndex]} completed`);
 
             // Agar step VoiceOutput qaytarsa, pipeline tugadi
             if ('message' in currentInput) {
-                console.log('🎉 ===== VOICE PROCESSING PIPELINE COMPLETED =====\n');
+                const totalTime = Date.now() - pipelineStart;
+                console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
                 return currentInput as VoiceOutput;
             }
-
-            stepIndex++;
         }
 
         throw new Error('Pipeline failed to produce output');
@@ -100,15 +95,6 @@ class STTStep implements PipelineStep {
             : 'ar';
 
         const text = await this.whisper.speechToText({ audio: input.audioBuffer, language: sttLang });
-
-        // Debug logging
-        try {
-            console.log("🎙️ ===== AUDIO TRANSCRIPTION =====");
-            console.log("📝 Arabic text:", text);
-            console.log("🔤 Latin transliteration:", ArabicTextUtils.transliterateArabic(text || ""));
-            console.log("🌐 STT Language:", sttLang);
-            console.log("================================");
-        } catch { }
 
         return {
             ...input,
@@ -159,10 +145,10 @@ class ValidationStep implements PipelineStep {
         message.contextUsed = { note: `${type}-transcript-fallback` };
 
         if (type === 'empty') {
-            message.aiResponseText = 'عفواً، لم أفهم. هل يمكنك الإعادة من فضلك؟';
+            message.aiResponseText = 'عَفْوًا، لَمْ أَفْهَمْ. هَلْ يُمْكِنُكَ الإِعَادَةَ مِنْ فَضْلِكَ؟';
             message.aiResponseUzbek = 'Kechirasiz, tushunmadim. Iltimos, qayta ayting.';
         } else {
-            message.aiResponseText = 'من فضلك، تحدث بالعربية فقط.';
+            message.aiResponseText = 'مِنْ فَضْلِكَ، تَحَدَّثْ بِالْعَرَبِيَّةِ فَقَطْ.';
             message.aiResponseUzbek = 'Iltimos, faqat arab tilida gapiring.';
         }
 
@@ -179,15 +165,12 @@ class ContextStep implements PipelineStep {
     ) { }
 
     async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput> {
-        console.log('🧠 Building RAG context...');
-
         // AIChatService'dan to'liq kontekst olish (profile, courseProgress, lessonProgress bilan)
         const fullContext = await this.aiChatService['buildContext']({
             userId: Number(input.userId),
             courseId: Number(input.courseId || input.session.courseId),
         });
 
-        console.log(`📄 RAG returned ${Array.isArray(fullContext.chromaContext) ? fullContext.chromaContext.length : 0} chunks`);
         return {
             ...input,
             context: fullContext.chromaContext,
@@ -205,19 +188,34 @@ class GPTStep implements PipelineStep {
     ) { }
 
     async execute(input: VoiceInput & { validatedText: string; context: any }): Promise<VoiceInput> {
+        // User input logging
+        const userLatin = ArabicTextUtils.transliterateArabic(input.validatedText || "");
+
+        console.log("\n👤 User:");
+        console.log("   Arab: " + input.validatedText);
+        console.log("   Lotin: " + userLatin);
+
+        // GPT timing
+        const gptStart = Date.now();
         const aiResponse = await this.gpt.generate({
             prompt: input.validatedText,
             context: input.context,
             language: 'ar',
-            strict: true,
+            strict: false, // FALSE! Barcha materiallardan qidiradi
         });
+        const gptTime = Date.now() - gptStart;
 
-        const aiResponseUz = await this.translation.translateToUzbek(aiResponse || '');
+        const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
+
+        console.log("\n🤖 AI:");
+        console.log("   Arab: " + aiResponse);
+        console.log("   Lotin: " + aiResponseLatin);
+        console.log("   ⏱️  GPT vaqti: " + gptTime + "ms");
 
         return {
             ...input,
             aiResponse,
-            aiResponseUz,
+            aiResponseUz: '', // Translation o'chirildi - tezlik uchun
         } as VoiceInput & { aiResponse: string; aiResponseUz: string };
     }
 }

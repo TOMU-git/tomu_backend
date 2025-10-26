@@ -46,7 +46,7 @@ export class AiChatController {
             messageId: msg.id,
             sessionId: msg.sessionId,
             text: msg.aiResponseText,
-            textUz: msg.aiResponseUzbek,
+            textUz: '', // O'zbekcha olib tashlandi - faqat arabcha
             audioUrl: msg.audioUrl,
             isWithinLimit: msg.isWithinLimit,
             createdAt: msg.createdAt,

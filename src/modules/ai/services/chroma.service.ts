@@ -87,12 +87,9 @@ export class ChromaService {
             this.memoryIndex.set(key, arr);
             count++;
         }
-        console.log(`💾 Memory Index updated: language="${chunks[0]?.language}", total chunks for this language: ${this.memoryIndex.get(chunks[0]?.language)?.length || 0}`);
 
         // Persist to disk (async, non-blocking)
-        this.saveMemoryIndexToDisk().catch(e =>
-            console.warn(`Memory Index save failed: ${e.message}`)
-        );
+        this.saveMemoryIndexToDisk().catch(() => { });
 
         return count;
     }
@@ -107,9 +104,8 @@ export class ChromaService {
                 data[key] = value;
             }
             await fs.writeFile(this.memoryIndexPath, JSON.stringify(data, null, 2), 'utf-8');
-            console.log(`💾 Memory Index saved to disk: ${Object.keys(data).length} languages`);
         } catch (e) {
-            console.warn(`Failed to save Memory Index: ${(e as Error).message}`);
+            // Silent fail
         }
     }
 
@@ -124,12 +120,9 @@ export class ChromaService {
                 this.memoryIndex.set(key, value);
             }
             const totalChunks = Object.values(data).reduce((sum, arr) => sum + arr.length, 0);
-            console.log(`✅ Memory Index loaded from disk: ${totalChunks} chunks, ${Object.keys(data).length} languages`);
+            console.log(`✅ Loaded ${totalChunks} lessons from Memory Index`);
         } catch (e) {
-            if ((e as NodeJS.ErrnoException).code !== 'ENOENT') {
-                console.warn(`Failed to load Memory Index: ${(e as Error).message}`);
-            }
-            // File doesn't exist yet - this is okay on first run
+            // Silent fail - file doesn't exist on first run
         }
     }
 
@@ -241,30 +234,17 @@ export class ChromaService {
         maxLessonOrder?: number;
         strict?: boolean;
     }): Promise<any[]> {
-        console.log('🔍 ===== RAG SEARCH STARTED =====');
-        console.log(`📝 User ID: ${params.userId}, Course ID: ${params.courseId}`);
-        console.log(`🎯 Language: ${params.language || 'ar'}`);
-        console.log(`📊 Module Limit: ${params.moduleLimit || 'none'}`);
-        console.log(`🔒 Strict Mode: ${params.strict ? 'ON' : 'OFF'}`);
-        if (params.strict) {
-            console.log(`📚 Max Lesson Order: ${params.maxLessonOrder}`);
-        }
-
         const language = params.language || 'ar';
         const useRag = process.env.USE_RAG === '1';
 
         if (useRag) {
-            console.log('🌐 Using ChromaDB for RAG search...');
             try {
                 const topK = Number(process.env.RAG_TOP_K || 12);
                 const apiBase = this.getApiBase();
                 const collectionId = await this.ensureChromaCollectionId();
                 if (!collectionId) {
                     // ChromaDB not available, using Memory Index (this is expected and OK)
-                    // console.warn('⚠️ ChromaService: collection id not available, falling back to memory');
                 } else {
-                    console.log(`🔗 ChromaDB URL: ${apiBase}`);
-                    console.log(`📦 Collection ID: ${collectionId}`);
 
                     // Query text uchun embedding yaratish (hozircha bo'sh query)
                     const queryText = "dialogue conversation lesson";
@@ -304,8 +284,6 @@ export class ChromaService {
                     const documents = (res.data as any)?.documents?.[0] || [];
                     const metadatas = (res.data as any)?.metadatas?.[0] || [];
 
-                    console.log(`📄 Found ${documents.length} documents from ChromaDB`);
-
                     if (documents.length > 0) {
                         const results = documents.map((doc: string, i: number) => ({
                             id: `chroma_${i}`,
@@ -320,22 +298,16 @@ export class ChromaService {
                             title: metadatas[i]?.title || '',
                         }));
 
-                        console.log('✅ ChromaDB search successful');
-                        console.log('🔍 ===== RAG SEARCH COMPLETED =====\n');
+                        console.log(`\n📚 Context: ChromaDB (${results.length} lessons)`);
                         return results;
                     }
                 }
             } catch (e) {
                 // Suppress ChromaDB errors - Memory Index fallback is working fine
-                // console.warn(`❌ ChromaService: search failed, falling back to memory: ${(e as Error).message}`);
             }
-        } else {
-            console.log('💾 Using Memory Index for search...');
         }
 
         const all = this.memoryIndex.get(language) ?? [];
-        console.log(`💾 Memory Index lookup: language="${language}", found ${all.length} chunks`);
-        console.log(`💾 Memory Index keys: ${Array.from(this.memoryIndex.keys()).join(', ')}`);
         let limited = all;
 
         // Module limit filter
@@ -350,8 +322,7 @@ export class ChromaService {
 
         const sorted = limited.sort((a, b) => (a.lessonOrder - b.lessonOrder) || (a.turnIndex - b.turnIndex));
 
-        console.log(`📄 Found ${sorted.length} documents from Memory Index`);
-        console.log('🔍 ===== RAG SEARCH COMPLETED =====\n');
+        console.log(`\n📚 Context: Memory Index (${sorted.length} lessons)`);
 
         return sorted;
     }
