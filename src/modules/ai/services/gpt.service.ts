@@ -1,12 +1,27 @@
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
 
+// Environment variables - o'qish va console logging
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-// Using gpt-4o-mini for faster responses (2x faster than gpt-4o)
-const GPT_MODEL = "gpt-4o-mini";
-const MAX_TOKENS = Number(process.env.MAX_TOKENS || 150);
-const TEMPERATURE = 0.3; // Low temperature for consistent, accurate responses
+const GPT_MODEL = process.env.GPT_MODEL || "gpt-4o";
+const MAX_TOKENS = Number(process.env.MAX_TOKENS || 200);
+const TEMPERATURE = Number(process.env.TEMPERATURE || 0.3);
 const STRICT_NO_ECHO = process.env.STRICT_NO_ECHO === "1";
+const CONTEXT_MAX_LENGTH = Number(process.env.CONTEXT_MAX_LENGTH || 8000);
+
+// Console logda env value'larini tekshirish
+if (!OPENAI_API_KEY) {
+    console.log("⚠️  WARNING: OPENAI_API_KEY not found in .env");
+} else {
+    console.log("✅ OPENAI_API_KEY loaded");
+}
+
+console.log("📋 GPT Configuration loaded:");
+console.log(`   GPT_MODEL: ${GPT_MODEL}`);
+console.log(`   MAX_TOKENS: ${MAX_TOKENS}`);
+console.log(`   TEMPERATURE: ${TEMPERATURE}`);
+console.log(`   STRICT_NO_ECHO: ${STRICT_NO_ECHO}`);
+console.log(`   CONTEXT_MAX_LENGTH: ${CONTEXT_MAX_LENGTH}`);
 
 /**
  * GPTService
@@ -116,7 +131,8 @@ export class GPTService {
 function safeClampContext(ctx: any): string {
     try {
         const json = JSON.stringify(ctx);
-        return json.length > 4000 ? json.slice(0, 3800) + "..." : json;
+        const maxLength = CONTEXT_MAX_LENGTH - 200; // 200 char buffer
+        return json.length > CONTEXT_MAX_LENGTH ? json.slice(0, maxLength) + "..." : json;
     } catch {
         return "";
     }

@@ -1,0 +1,51 @@
+{
+    "id": "ar_m1_l20",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 20,
+    "title": "رَجُلٌ غَرِيبٌ",
+    "lessonSummary": "Zayd va Karim o'rtasida bog' va g'arib odam haqidagi suhbat.",
+    "keywords": ["bog'", "bolalar", "it", "g'arib odam"],
+    "vocabulary": [
+      { "word": "رَجُلٌ", "normalized": "رجل", "lemma": "رَجُل", "pos": "noun", "translationUz": "erkak kishi", "example": "رَجُلٌ غَرِيبٌ" },
+      { "word": "غَرِيبٌ", "normalized": "غريب", "lemma": "غَرِيب", "pos": "adjective", "translationUz": "g'arib", "example": "رَجُلٌ غَرِيبٌ" },
+      { "word": "حَدِيقَةُ", "normalized": "حديقة", "lemma": "حَدِيقَة", "pos": "noun", "translationUz": "bog'", "example": "تِلْكَ الْحَدِيقَةُ" },
+      { "word": "أَطْفَالُ", "normalized": "اطفال", "lemma": "طِفْل", "pos": "noun", "translationUz": "bolalar", "example": "لِلْأَطْفَالِ" },
+      { "word": "كَلْبُ", "normalized": "كلب", "lemma": "كَلْب", "pos": "noun", "translationUz": "it", "example": "مَعَ الْكَلْبِ" },
+      { "word": "لِمَاذَا", "normalized": "لماذا", "lemma": "لِمَاذَا", "pos": "interrogative", "translationUz": "nega", "example": "لِمَاذَا هُنَاكَ" },
+      { "word": "هُنَاكَ", "normalized": "هناك", "lemma": "هُنَاكَ", "pos": "adverb", "translationUz": "u yerda", "example": "هُنَاكَ ذَلِكَ رَجُلٌ" },
+      { "word": "أُخْرُجْ", "normalized": "اخرج", "lemma": "خَرَجَ", "pos": "verb", "translationUz": "chiq", "example": "أُخْرُجْ مِنْ هُنَاكَ" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "زَيْدٌ",
+        "text": "لِمَنْ تِلْكَ الْحَدِيقَةُ يَا كَرِيمُ؟",
+        "translationUz": "Bu bog' kimniki, Karim?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "كَرِيمٌ",
+        "text": "تِلْكَ الْحَدِيقَةُ لِلْأَطْفَالِ.",
+        "translationUz": "Bu bog' bolalar uchun.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "زَيْدٌ",
+        "text": "لِمَاذَا هُنَاكَ ذَلِكَ رَجُلٌ مَعَ الْكَلْبِ؟",
+        "translationUz": "Nega u yerda it bilan bir erkak bor?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 4,
+        "speaker": "كَرِيمٌ",
+        "text": "يَا رَجُلُ أُخْرُجْ مِنْ هُنَاكَ!",
+        "translationUz": "Ey odam, u yerdan chiq!",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-13T10:00:00Z",
+    "updatedAt": "2025-10-13T10:00:00Z"
+}

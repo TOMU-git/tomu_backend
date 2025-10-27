@@ -318,10 +318,8 @@ export class LessonProgressService implements ILessonProgressService {
     }
 
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
 
       if (!userCourse) {
@@ -548,11 +546,10 @@ export class LessonProgressService implements ILessonProgressService {
 // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
-//     'https://player.vimeo.com/video/1031009633',
-//     'video/mp4',
+//     'https://player.vimeo.com/video/1131005257',
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     32  -- block_id
+//     11  -- block_id
 // FROM
 //     generate_series(1, 100) AS s(i);

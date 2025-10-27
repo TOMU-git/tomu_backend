@@ -24,6 +24,11 @@ import { TTSService } from './services/tts.service';
 import { WhisperService } from './services/whisper.service';
 import { ChromaService } from './services/chroma.service';
 import { TranslationService } from './services/translation.service';
+import { ChromaConnectionService } from './services/chroma-connection.service';
+import { ChromaEmbeddingService } from './services/chroma-embedding.service';
+import { ChromaSearchService } from './services/chroma-search.service';
+import { MemoryIndexService } from './services/memory-index.service';
+import { LessonIndexingService } from './services/lesson-indexing.service';
 import { LessonProgressModule } from '../lesson-progress/lesson-progress.module';
 import { IndexLessonsCommand } from './commands/index-lessons.command';
 import { AIChatMessageFactory } from './services/ai-chat-message-factory.service';
@@ -78,6 +83,12 @@ import { SharedModule } from '../shared/shared.module';
     UserCourseProgressService,
     UserProgressCalculator,
     IndexLessonsCommand,
+    // Chroma sub-services
+    ChromaConnectionService,
+    ChromaEmbeddingService,
+    ChromaSearchService,
+    MemoryIndexService,
+    LessonIndexingService,
   ],
   exports: [
     TypeOrmModule, // shu moduldagi repo'larni tashqariga berish uchun
@@ -97,6 +108,12 @@ import { SharedModule } from '../shared/shared.module';
     VoiceProcessingPipeline,
     UserCourseProgressService,
     UserProgressCalculator,
+    // Chroma sub-services export
+    ChromaConnectionService,
+    ChromaEmbeddingService,
+    ChromaSearchService,
+    MemoryIndexService,
+    LessonIndexingService,
   ],
 })
 export class AiModule { }

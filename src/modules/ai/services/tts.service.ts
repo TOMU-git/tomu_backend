@@ -3,8 +3,17 @@ import axios from "axios";
 import { promises as fs } from "fs";
 import * as path from "path";
 
+// Environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const TTS_MODEL = process.env.TTS_MODEL || "tts-1-hd";
+const TTS_VOICE = process.env.TTS_VOICE || "shimmer";
+const TTS_SPEED = Number(process.env.TTS_SPEED || 0.9);
+
+// Console verification
+console.log("🔊 TTS Configuration:");
+console.log(`   TTS_MODEL: ${TTS_MODEL}`);
+console.log(`   TTS_VOICE: ${TTS_VOICE}`);
+console.log(`   TTS_SPEED: ${TTS_SPEED}`);
 
 /**
  * TTSService
@@ -23,9 +32,9 @@ export class TTSService {
                 "https://api.openai.com/v1/audio/speech",
                 {
                     model: TTS_MODEL,
-                    voice: "shimmer",
+                    voice: TTS_VOICE,
                     input: params.text,
-                    speed: 0.9,
+                    speed: TTS_SPEED,
                     response_format: "mp3",
                 },
                 { responseType: "arraybuffer", headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }

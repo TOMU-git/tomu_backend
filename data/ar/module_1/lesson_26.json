@@ -1,0 +1,46 @@
+{
+    "id": "ar_m1_l26",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 26,
+    "title": "فِي الْغُرْفَةِ",
+    "lessonSummary": "Laylo va Firuza o'rtasida joylashuv haqida suhbat.",
+    "keywords": ["xona", "maktab", "qayerda", "joylashuv"],
+    "vocabulary": [
+      { "word": "غُرْفَةُ", "normalized": "غرفة", "lemma": "غُرْفَة", "pos": "noun", "translationUz": "xona", "example": "فِي الْغُرْفَةِ" },
+      { "word": "مَدْرَسَةُ", "normalized": "مدرسة", "lemma": "مَدْرَسَة", "pos": "noun", "translationUz": "maktab", "example": "فِي الْمَدْرَسَةِ" },
+      { "word": "أَيْنَ", "normalized": "اين", "lemma": "أَيْنَ", "pos": "interrogative", "translationUz": "qayerda", "example": "أَيْنَ أَنْتِ" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "Speaker1",
+        "text": "أَيْنَ أَنْتِ يَا لَيْلَى؟",
+        "translationUz": "Qayerdasan, Laylo?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "لَيْلَى",
+        "text": "أَنَا فِي الْغُرْفَةِ.",
+        "translationUz": "Men xonadaman.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "Speaker1",
+        "text": "أَيْنَ أَنْتِ يَا فِيرُوزَةُ؟",
+        "translationUz": "Qayerdasan, Firuza?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 4,
+        "speaker": "فِيرُوزَةُ",
+        "text": "أَنَا فِي الْمَدْرَسَةِ.",
+        "translationUz": "Men maktabdaman.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-13T10:00:00Z",
+    "updatedAt": "2025-10-13T10:00:00Z"
+}
