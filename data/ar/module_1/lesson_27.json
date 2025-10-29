@@ -1,0 +1,42 @@
+{
+    "id": "ar_m1_l27",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 27,
+    "title": "مَجْلِسٌ مُفِيدٌ",
+    "lessonSummary": "Ali va Salimning majlisga borishlari va joylashishlari haqida hikoya.",
+    "keywords": ["majlis", "do'stlar", "oldinga", "orqaga", "foydali"],
+    "vocabulary": [
+      { "word": "مَجْلِسٌ", "normalized": "مجلس", "lemma": "مَجْلِس", "pos": "noun", "translationUz": "majlis", "example": "ذَهَبَ إِلَى الْمَجْلِسِ" },
+      { "word": "مُفِيدٌ", "normalized": "مفيد", "lemma": "مُفِيد", "pos": "adjective", "translationUz": "foydali", "example": "مَجْلِسٌ مُفِيدٌ" },
+      { "word": "أَمَامَ", "normalized": "امام", "lemma": "أَمَامَ", "pos": "preposition", "translationUz": "oldinga", "example": "جَلَسَ أَمَامَهُ" },
+      { "word": "خَلْفَ", "normalized": "خلف", "lemma": "خَلْفَ", "pos": "preposition", "translationUz": "orqaga", "example": "جَلَسَ خَلْفَ" },
+      { "word": "جَلَسَ", "normalized": "جلس", "lemma": "جَلَسَ", "pos": "verb", "translationUz": "o'tirdi", "example": "فَجَلَسَ عَلِيٌّ" }
+    ],
+    "monologue": {
+      "text": "ذَهَبَ عَلِيٌّ إِلَى الْمَجْلِسِ. ذَهَبَ سَلِيمٌ أَيْضًا مَعَ أَصْدِقَائِهِ. رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ. كَانَ الْمَجْلِسُ مُفِيدًا.",
+      "translationUz": "Ali majlisga bordi. Salim ham do'stlari bilan bordi. Ali Salimni ko'rdi, shunda Ali uning oldiga o'tirdi, Salim esa do'stlarining orqasiga o'tirdi. Majlis foydali bo'ldi."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "ذَهَبَ عَلِيٌّ إِلَى الْمَجْلِسِ. ذَهَبَ سَلِيمٌ أَيْضًا مَعَ أَصْدِقَائِهِ.",
+        "translationUz": "Ali majlisga bordi. Salim ham do'stlari bilan bordi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ.",
+        "translationUz": "Ali Salimni ko'rdi, shunda Ali uning oldiga o'tirdi, Salim esa do'stlarining orqasiga o'tirdi.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "كَانَ الْمَجْلِسُ مُfِيدًا.",
+        "translationUz": "Majlis foydali bo'ldi.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-13T10:00:00Z",
+    "updatedAt": "2025-10-13T10:00:00Z"
+}

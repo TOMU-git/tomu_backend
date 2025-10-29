@@ -99,9 +99,6 @@ export class AIChatService {
             session,
         };
 
-        // User ma'lumotlarini console ga chiqarish
-        await this.logUserInfo(userId, courseId ?? session.courseId);
-
         // Pipeline execution
         const result = await this.voicePipeline.execute(pipelineInput);
 
@@ -167,7 +164,6 @@ export class AIChatService {
             profile.weakAreas = [];
 
             profile = await this.profileRepo.create(profile);
-            console.log(`✅ AI Profile auto-created for user ${userId}`);
         }
 
         return profile;
@@ -190,7 +186,6 @@ export class AIChatService {
             // Avval course progress orqali currentBlockId ni topish
             const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
             if (!courseProgress || !courseProgress.currentBlockId) {
-                console.warn(`Course progress or currentBlockId not found for user ${userId}, course ${courseId}`);
                 return [];
             }
 
@@ -201,7 +196,6 @@ export class AIChatService {
             }
         } catch (error) {
             // Dars progressi topilmadi, bo'sh massiv qoldiramiz
-            console.warn(`Lesson progress not found for user ${userId}, course ${courseId}:`, error.message);
         }
         return [];
     }
@@ -217,33 +211,14 @@ export class AIChatService {
     ): Promise<any[]> {
         if (!courseId) return [];
 
-        // Course progress dan current lesson order ni olish (parameter orqali)
-        console.log(`🔍 [DEBUG] courseProgress (from parameter):`, JSON.stringify(courseProgress, null, 2));
-
         const currentLessonOrder = courseProgress?.currentLessonOrder;
-        console.log(`🔍 [DEBUG] currentLessonOrder extracted: ${currentLessonOrder}`);
 
-        if (profile?.useStrictMode && currentLessonOrder) {
-            // Strict mode: faqat kelgan darsigacha bo'lgan materiallar
-            console.log(`🔒 Strict Mode: Filtering lessons up to order ${currentLessonOrder}`);
-            return await this.chroma.searchContext({
-                userId,
-                courseId: Number(courseId),
-                language: 'ar',
-                maxLessonOrder: currentLessonOrder,
-                strict: true
-            });
-        } else {
-            // General mode yoki currentLessonOrder yo'q bo'lsa: barcha kurs materiallari
-            if (profile?.useStrictMode && !currentLessonOrder) {
-                console.warn(`⚠️ Strict mode enabled but currentLessonOrder is ${currentLessonOrder}. Using general mode.`);
-            }
-            return await this.chroma.searchContext({
-                userId,
-                courseId: Number(courseId),
-                language: 'ar'
-            });
-        }
+        // FAQLAT BARCHA MATERIALLARDAN QIDIRISH - KELGAN DARSLAR CHEKLANGAN
+        return await this.chroma.searchContext({
+            userId,
+            courseId: Number(courseId),
+            language: 'ar'
+        });
     }
 
     /**
@@ -268,89 +243,6 @@ export class AIChatService {
         };
     }
 
-    /**
-     * Foydalanuvchi ma'lumotlarini console ga chiqarish (test uchun)
-     */
-    private async logUserInfo(userId: ID, courseId?: ID): Promise<void> {
-        try {
-            console.log('\n👤 ===== USER INFO =====');
-            console.log(`🆔 User ID: ${userId}`);
-
-            if (courseId) {
-                console.log(`📚 Course ID: ${courseId}`);
-
-                // AI Profile - auto-create if not exists
-                const profile = await this.getUserAIProfile(Number(userId));
-                if (profile) {
-                    console.log(`🎯 AI Profile:`);
-                    console.log(`   - Preferred Language: ${profile.preferredLanguage || 'ar'}`);
-                    console.log(`   - Module Limit: ${profile.moduleLimit || 7}`);
-                    console.log(`   - Strict Mode: ${profile.useStrictMode ? 'ON' : 'OFF'}`);
-                } else {
-                    console.log(`⚠️ AI Profile: Failed to create`);
-                }
-
-                // Course Progress
-                const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
-                if (courseProgress) {
-                    console.log(`📈 Course Progress:`);
-                    console.log(`   - Current Lesson ID: ${courseProgress.currentLessonId || 'N/A'}`);
-                    console.log(`   - Current Lesson Order: ${courseProgress.currentLessonOrder || 0}`);
-                    console.log(`   - Course Language: ${courseProgress.courseLanguage || 'N/A'}`);
-                    console.log(`   - Completed Lessons: ${courseProgress.completedLessons?.length || 0}`);
-                    console.log(`   - Completed Blocks: ${courseProgress.completedBlocks?.length || 0}`);
-                } else {
-                    console.log(`⚠️ Course Progress: Not found`);
-                }
-
-                // Lesson Progress - Course 2 uchun blockId topish kerak
-                try {
-                    // Avval Course 2 uchun blockId ni topamiz
-                    const courseProgress = await this.progressRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
-
-                    if (!courseProgress) {
-                        console.log(`⚠️ Lesson Progress: Course progress not found`);
-                    } else if (!courseProgress.currentBlockId) {
-                        console.log(`⚠️ Lesson Progress: currentBlockId is null/undefined`);
-                        console.log(`   - Suggestion: User needs to start the course first`);
-                    } else {
-                        console.log(`🔍 Fetching lesson progress for blockId: ${courseProgress.currentBlockId}`);
-                        const lessonProgressResult = await this.lessonProgressService.getVideos(Number(userId), courseProgress.currentBlockId);
-
-                        if (lessonProgressResult.statusCode === 200 && lessonProgressResult.data) {
-                            const lessons = lessonProgressResult.data;
-                            const watchedCount = lessons.filter(lp => lp.isWatched).length;
-                            const unlockedCount = lessons.filter(lp => lp.isUnlocked).length;
-
-                            console.log(`📖 Lesson Progress:`);
-                            console.log(`   - Total Lessons: ${lessons.length}`);
-                            console.log(`   - Watched: ${watchedCount}`);
-                            console.log(`   - Unlocked: ${unlockedCount}`);
-
-                            // Eng oxirgi ko'rilgan dars
-                            const lastWatched = lessons
-                                .filter(lp => lp.isWatched)
-                                .sort((a, b) => b.lessonOrder - a.lessonOrder)[0];
-                            if (lastWatched) {
-                                console.log(`   - Last Watched: Lesson ${lastWatched.lessonOrder}`);
-                            }
-                        } else {
-                            console.log(`⚠️ Lesson Progress: API returned statusCode ${lessonProgressResult.statusCode}`);
-                        }
-                    }
-                } catch (error) {
-                    console.log(`⚠️ Lesson Progress: Error - ${error.message}`);
-                    console.log(`   - Stack: ${error.stack}`);
-                }
-            } else {
-                console.log(`📚 Course ID: Not specified`);
-            }
-
-            console.log('========================\n');
-        } catch (error) {
-            console.log(`❌ Error logging user info: ${error.message}`);
-        }
-    }
 
     /**
      * Limit siyosatini baholash: foydalanuvchi darajasi va kelgan darsigacha bo'lgan materiallar

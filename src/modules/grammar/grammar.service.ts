@@ -29,14 +29,14 @@ export class GrammarService implements IGrammarService {
     private readonly userCourseRepository: IUserCourseRepository,
 
     private readonly vimeoService: VimeoService,
-  ) {}
+  ) { }
 
   async create(
     createGrammarDto: CreateGrammarDto,
     file: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
     // Qo'shilayotgan grammarnı nomiga ko'ra tekshirish
-       // Kurs mavjudligini tekshirish
+    // Kurs mavjudligini tekshirish
     const course = await this.courseRepository.findById(
       createGrammarDto.courseId,
     );
@@ -53,7 +53,7 @@ export class GrammarService implements IGrammarService {
 
     // Yangi grammarnı yaratish
     const newGrammar = new Grammar();
-    newGrammar.duration = duration; 
+    newGrammar.duration = duration;
     newGrammar.title = createGrammarDto.title;
     newGrammar.videoUrl = videoUrl;
     newGrammar.courseId = createGrammarDto.courseId;
@@ -72,11 +72,11 @@ export class GrammarService implements IGrammarService {
   async findGrammarByCourseId(courseId: number, userId: number): Promise<any> {
     const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
     const isPaid = userCourse && userCourse.isActive;
-  
+
     const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(courseId);
-  
+
     const message = foundGrammars.length === 0 ? "Not any grammar yet" : "Grammars found successfully";
-  
+
     return {
       message,
       statusCode: 200,
@@ -84,7 +84,7 @@ export class GrammarService implements IGrammarService {
       isPaid: !!isPaid
     };
   }
-  
+
 
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();

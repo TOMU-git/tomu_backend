@@ -33,7 +33,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     @Inject("IUserService") private readonly userService: IUserService,
-  ) {}
+  ) { }
   // **** Login for all users **** //
 
   @ApiOperation({
@@ -45,11 +45,50 @@ export class AuthController {
     res.send(found);
   }
 
+  /**
+   * Login with device information (V2 API)
+   * Backward compatible - device info is optional
+   */
+  @ApiOperation({
+    summary: "Log In user with device information (V2)",
+    description: "Enhanced login endpoint that supports device management. Device information is optional for backward compatibility."
+  })
+  @Post("sign-in/users/v2")
+  async loginWithDevice(
+    @Body() loginDto: LoginAuthDto & { deviceInfo?: any },
+    @Res() res: Response
+  ) {
+    const found = await this.authService.login(loginDto, res, loginDto.deviceInfo);
+    res.send(found);
+  }
+
   // **** Access validation **** //
 
   @Post("current")
   async access(@Body() accessDto: AccessAuthDto) {
     return await this.authService.access(accessDto);
+  }
+
+  /**
+   * Check device management support
+   * GET /api/auth/device-support
+   */
+  @ApiOperation({
+    summary: "Check device management support",
+    description: "Check if device management is supported by the backend"
+  })
+  @Get("device-support")
+  async checkDeviceSupport() {
+    return {
+      supported: true,
+      version: "2.0",
+      features: [
+        "device_registration",
+        "device_limits",
+        "device_management",
+        "security_levels"
+      ]
+    };
   }
 
   // **** Regenerate the refresh token **** //
@@ -59,7 +98,7 @@ export class AuthController {
   async forgotPassword(@Body() forgotDto: ForgotPassword) {
     return await this.authService.forgotPass(forgotDto)
   }
-  
+
   @ApiQuery({
     name: "refresh_token",
     required: false,

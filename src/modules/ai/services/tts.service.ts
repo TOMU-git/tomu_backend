@@ -3,8 +3,17 @@ import axios from "axios";
 import { promises as fs } from "fs";
 import * as path from "path";
 
+// Environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const TTS_MODEL = process.env.TTS_MODEL || "gpt-4o-mini-tts";
+const TTS_MODEL = process.env.TTS_MODEL || "tts-1-hd";
+const TTS_VOICE = process.env.TTS_VOICE || "shimmer";
+const TTS_SPEED = Number(process.env.TTS_SPEED || 0.9);
+
+// Console verification
+console.log("🔊 TTS Configuration:");
+console.log(`   TTS_MODEL: ${TTS_MODEL}`);
+console.log(`   TTS_VOICE: ${TTS_VOICE}`);
+console.log(`   TTS_SPEED: ${TTS_SPEED}`);
 
 /**
  * TTSService
@@ -14,24 +23,19 @@ const TTS_MODEL = process.env.TTS_MODEL || "gpt-4o-mini-tts";
 @Injectable()
 export class TTSService {
     async textToSpeech(params: { text: string; language: string; }): Promise<string> {
-        console.log('🎵 ===== TTS GENERATION STARTED =====');
-        console.log(`📝 Text to convert: "${params.text}"`);
-        console.log(`🌐 Language: ${params.language}`);
-
         if (!OPENAI_API_KEY) {
-            console.log('⚠️ OpenAI API key not found, using placeholder');
             return "/upload/audio/placeholder.mp3";
         }
 
         try {
-            console.log(`🚀 Sending request to OpenAI TTS (${TTS_MODEL})...`);
             const res = await axios.post(
                 "https://api.openai.com/v1/audio/speech",
                 {
                     model: TTS_MODEL,
-                    voice: "alloy",
+                    voice: TTS_VOICE,
                     input: params.text,
-                    format: "mp3",
+                    speed: TTS_SPEED,
+                    response_format: "mp3",
                 },
                 { responseType: "arraybuffer", headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
             );
@@ -43,12 +47,9 @@ export class TTSService {
             await fs.writeFile(full, Buffer.from(res.data as any));
 
             const audioUrl = `/upload/audio/${filename}`;
-            console.log(`✅ TTS Audio generated: ${audioUrl}`);
-            console.log('🎵 ===== TTS GENERATION COMPLETED =====\n');
             return audioUrl;
         } catch (e: any) {
             console.log(`❌ TTS Error: ${e.message}`);
-            console.log('🎵 ===== TTS GENERATION COMPLETED (FALLBACK) =====\n');
             return "/upload/audio/placeholder.mp3";
         }
     }

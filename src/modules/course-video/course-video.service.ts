@@ -12,15 +12,15 @@ export class CourseVideoService {
     @Inject('ICourseVideoRepository')
     private readonly courseVideoRepository: ICourseVideoRepository,
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   async create(file: Express.Multer.File): Promise<ResData<CourseVideo>> {
-     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
-       file.buffer,
-       file.filename,
-       'Dars videosi',
-       // file.size,
-     );
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
+      file.filename,
+      'Dars videosi',
+      // file.size,
+    );
 
     const newCourseVideo = new CourseVideo();
     Object.assign(newCourseVideo, {

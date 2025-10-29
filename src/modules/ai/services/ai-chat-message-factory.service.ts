@@ -45,9 +45,9 @@ export class AIChatMessageFactory {
             message.aiResponseUzbek = AI_FALLBACK_MESSAGES.NON_ARABIC.uzbek;
         }
 
-        // TTS audio yaratish
+        // TTS audio yaratish - FAQAT ARABCHA!
         message.audioUrl = await this.tts.textToSpeech({
-            text: message.aiResponseUzbek,
+            text: message.aiResponseText,
             language: 'ar'
         });
 
@@ -87,12 +87,12 @@ export class AIChatMessageFactory {
         message.messageLanguage = session.sessionLanguage;
         message.contextUsed = contextUsed;
 
-        // Audio strategiyasi
+        // Audio strategiyasi - FAQAT ARABCHA!
         if (audioUrl) {
             message.audioUrl = audioUrl;
         } else {
             message.audioUrl = await this.tts.textToSpeech({
-                text: aiResponseUz || aiResponse || '',
+                text: aiResponse || '',
                 language: 'ar'
             });
         }

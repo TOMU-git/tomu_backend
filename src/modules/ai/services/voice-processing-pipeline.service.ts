@@ -27,6 +27,7 @@ export interface VoiceInput {
     courseId?: ID;
     language?: string;
     session: AIChatSession;
+    validatedText?: string;
 }
 
 export interface VoiceOutput {
@@ -55,33 +56,28 @@ export class VoiceProcessingPipeline {
      * Pipeline ni bajarish
      */
     async execute(input: VoiceInput): Promise<VoiceOutput> {
-        console.log('\n🚀 ===== VOICE PROCESSING PIPELINE STARTED =====');
+        const pipelineStart = Date.now();
+        console.log("\n⏱️  Pipeline boshlandi...");
 
         const steps: PipelineStep[] = [
             new STTStep(this.whisper),
-            new ValidationStep(),
-            new ContextStep(this.aiChatService),
+            new ValidationStep(this.tts),
+            new ContextStep(this.aiChatService, this.tts),
             new GPTStep(this.gpt, this.translation),
             new ResponseStep(this.messageFactory),
         ];
 
         let currentInput: VoiceInput | VoiceOutput = input;
-        let stepIndex = 0;
 
         for (const step of steps) {
-            const stepNames = ['STT', 'Validation', 'Context Building', 'GPT Generation', 'Response Creation'];
-            console.log(`📝 Step ${stepIndex + 1}: ${stepNames[stepIndex]}`);
-
             currentInput = await step.execute(currentInput as VoiceInput);
-            console.log(`✅ ${stepNames[stepIndex]} completed`);
 
             // Agar step VoiceOutput qaytarsa, pipeline tugadi
             if ('message' in currentInput) {
-                console.log('🎉 ===== VOICE PROCESSING PIPELINE COMPLETED =====\n');
+                const totalTime = Date.now() - pipelineStart;
+                console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
                 return currentInput as VoiceOutput;
             }
-
-            stepIndex++;
         }
 
         throw new Error('Pipeline failed to produce output');
@@ -101,15 +97,6 @@ class STTStep implements PipelineStep {
 
         const text = await this.whisper.speechToText({ audio: input.audioBuffer, language: sttLang });
 
-        // Debug logging
-        try {
-            console.log("🎙️ ===== AUDIO TRANSCRIPTION =====");
-            console.log("📝 Arabic text:", text);
-            console.log("🔤 Latin transliteration:", ArabicTextUtils.transliterateArabic(text || ""));
-            console.log("🌐 STT Language:", sttLang);
-            console.log("================================");
-        } catch { }
-
         return {
             ...input,
             transcribedText: text,
@@ -121,6 +108,8 @@ class STTStep implements PipelineStep {
  * Validation Step: Text validation va fallback
  */
 class ValidationStep implements PipelineStep {
+    constructor(private readonly tts: TTSService) { }
+
     async execute(input: VoiceInput & { transcribedText: string }): Promise<VoiceInput | VoiceOutput> {
         const trimmed = (input.transcribedText || "").trim();
 
@@ -147,8 +136,6 @@ class ValidationStep implements PipelineStep {
         text: string,
         type: 'empty' | 'non-arabic'
     ): Promise<AIChatMessage> {
-        // Bu yerda messageFactory ishlatish kerak, lekin circular dependency dan qochish uchun
-        // oddiy message yaratamiz
         const message = new AIChatMessage();
         message.sessionId = input.session.id as unknown as any;
         message.session = { id: input.session.id } as AIChatSession;
@@ -159,12 +146,20 @@ class ValidationStep implements PipelineStep {
         message.contextUsed = { note: `${type}-transcript-fallback` };
 
         if (type === 'empty') {
-            message.aiResponseText = 'عفواً، لم أفهم. هل يمكنك الإعادة من فضلك؟';
-            message.aiResponseUzbek = 'Kechirasiz, tushunmadim. Iltimos, qayta ayting.';
+            console.log("👂 Bo'sh audio aniqlandi, maxsus javob yuborilmoqda.");
+            message.aiResponseText = 'عَفْوًا، لَمْ أَسْمَعْ شَيْئًا. هَلْ يُمْكِنُكَ التَّحَدُّثُ؟';
+            message.aiResponseUzbek = 'Kechirasiz, hech narsa eshitmadim. Gapira olasizmi?';
         } else {
-            message.aiResponseText = 'من فضلك، تحدث بالعربية فقط.';
+            console.log("🚫 Arab tilidan boshqa til aniqlandi, maxsus javob yuborilmoqda.");
+            message.aiResponseText = 'مِنْ فَضْلِكَ، تَحَدَّثْ بِالْعَرَبِيَّةِ فَقَطْ.';
             message.aiResponseUzbek = 'Iltimos, faqat arab tilida gapiring.';
         }
+
+        // TTS audio yaratish
+        message.audioUrl = await this.tts.textToSpeech({
+            text: message.aiResponseText,
+            language: 'ar'
+        });
 
         return message;
     }
@@ -175,23 +170,144 @@ class ValidationStep implements PipelineStep {
  */
 class ContextStep implements PipelineStep {
     constructor(
-        private readonly aiChatService: AIChatService // AIChatService'dan buildContext ishlatish uchun
+        private readonly aiChatService: AIChatService, // AIChatService'dan buildContext ishlatish uchun
+        private readonly tts: TTSService // TTS for audio generation
     ) { }
 
-    async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput> {
-        console.log('🧠 Building RAG context...');
-
+    async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput | VoiceOutput> {
         // AIChatService'dan to'liq kontekst olish (profile, courseProgress, lessonProgress bilan)
         const fullContext = await this.aiChatService['buildContext']({
             userId: Number(input.userId),
             courseId: Number(input.courseId || input.session.courseId),
         });
 
-        console.log(`📄 RAG returned ${Array.isArray(fullContext.chromaContext) ? fullContext.chromaContext.length : 0} chunks`);
+        const courseProgress = fullContext.courseProgress;
+        const userLevel = fullContext.userLevel;
+
+        // User ko'rgan eng oxirgi dars tartib raqami
+        const lastWatchedLessonOrder = userLevel?.currentLessonOrder || 0;
+        console.log(`📊 User progress: Last watched lesson order = ${lastWatchedLessonOrder}`);
+
+        // Context'dan barcha darslarni olish
+        const allLessons = fullContext.chromaContext || [];
+
+        // User textida qanday so'zlar borligini tekshirish
+        const userText = input.validatedText || '';
+
+        // Agar user text kelmagan darslardan bo'lsa, maxsus javob qaytarish
+        // Strict check: Faqat GPT javobiga qarab tekshiramiz, chunki biz xavfni oldini olishga harakat qilamiz
+        // Lekin user har qanday gapirishi mumkin, shuning uchun yaxshiroqroq yondashish kerak
+        const possibleLessons = this.findPossibleFutureLessons(userText, allLessons, lastWatchedLessonOrder);
+
+        if (possibleLessons.futureLessons.length > 0) {
+            console.log(`⚠️ User gapirishga harakat qilayotgan darslar: ${possibleLessons.futureLessons.join(', ')}`);
+            console.log(`📊 Current lesson: ${lastWatchedLessonOrder}`);
+
+            // Maxsus javob yaratish
+            const message = await this.createFutureLessonMessage(input, lastWatchedLessonOrder, Math.min(...possibleLessons.futureLessons));
+            return { message, session: input.session };
+        }
+
         return {
             ...input,
-            context: fullContext.chromaContext,
+            context: allLessons,
         } as VoiceInput & { context: any };
+    }
+
+    private findPossibleFutureLessons(text: string, lessons: any[], currentOrder: number): { mentioned: number[], futureLessons: number[] } {
+        const mentioned: number[] = [];
+
+        // User textidagi maxsus so'zlarni olish (ismlar, predmetlar)
+        const specialWords = this.extractSpecialWords(text);
+        const userText = text.toLowerCase();
+
+        // Har bir lesson'ni text bilan solishtiramiz
+        for (const lesson of lessons) {
+            if (!lesson.text) continue;
+
+            const lessonText = lesson.text.toLowerCase();
+
+            // To'liq matn solishtirish
+            if (userText.includes(lessonText) || lessonText.includes(userText)) {
+                if (!mentioned.includes(lesson.lessonOrder)) {
+                    mentioned.push(lesson.lessonOrder);
+                    continue;
+                }
+            }
+
+            // Maxsus so'zlarni tekshirish
+            for (const word of specialWords) {
+                if (lessonText.includes(word)) {
+                    if (!mentioned.includes(lesson.lessonOrder)) {
+                        mentioned.push(lesson.lessonOrder);
+                    }
+                }
+            }
+        }
+
+        // Kelmagan darslarni ajratish
+        const futureLessons = mentioned.filter(l => l > currentOrder);
+
+        return { mentioned, futureLessons };
+    }
+
+    private extractSpecialWords(text: string): string[] {
+        // Ismlar, narsa nomlari va muhim so'zlarni ajratish
+        const words: string[] = [];
+        const cleanText = text.toLowerCase().trim();
+
+        // Haqiqiy atamalar (Fotima, Amina va boshqa ismlar)
+        const isms = [
+            'فَاطِمَة', 'فاطمة',
+            'آمِنَة', 'أمينة',
+            'مَرْيَم', 'مريم',
+            'زَيْنَب', 'زينب'
+        ];
+
+        for (const ism of isms) {
+            if (cleanText.includes(ism) || cleanText.includes(ism.replace(/َ/g, '').replace(/ُ/g, '').replace(/ِ/g, ''))) {
+                words.push(ism);
+            }
+        }
+
+        // Arab matnidan asosiy so'zlarni ajratish (vorud qilingan narsalar)
+        if (cleanText.includes('زَهْرَة') || cleanText.includes('زهرة')) {
+            words.push('زَهْرَة');
+        }
+        if (cleanText.includes('بُرْتُقَال') || cleanText.includes('برتقال')) {
+            words.push('بُرْتُقَال');
+        }
+        if (cleanText.includes('فَسْل') || cleanText.includes('فصل')) {
+            words.push('فَسْل');
+        }
+
+        return words;
+    }
+
+    private async createFutureLessonMessage(
+        input: VoiceInput,
+        currentLessonOrder: number,
+        mentionedLessonOrder: number
+    ): Promise<AIChatMessage> {
+        const message = new AIChatMessage();
+        message.sessionId = input.session.id as unknown as any;
+        message.session = { id: input.session.id } as AIChatSession;
+        message.senderType = 'ai';
+        message.originalText = input.validatedText;
+        message.isWithinLimit = true;
+        message.messageLanguage = input.session.sessionLanguage;
+        message.contextUsed = { note: `future-lesson-warning: current=${currentLessonOrder}, mentioned=${mentionedLessonOrder}` };
+
+        message.aiResponseText = 'لَحْنِ بَعْدُ لَمْ تَصِلْ إِلَى هَٰذَا الدَّرْسِ.';
+        message.aiResponseUzbek = 'Siz hali bu darsga kelmagansiz.';
+
+        // TTS audio yaratish
+        message.audioUrl = await this.tts.textToSpeech({
+            text: message.aiResponseText,
+            language: 'ar'
+        });
+
+        return message;
     }
 }
 
@@ -205,19 +321,34 @@ class GPTStep implements PipelineStep {
     ) { }
 
     async execute(input: VoiceInput & { validatedText: string; context: any }): Promise<VoiceInput> {
+        // User input logging
+        const userLatin = ArabicTextUtils.transliterateArabic(input.validatedText || "");
+
+        console.log("\n👤 User:");
+        console.log("   Arab: " + input.validatedText);
+        console.log("   Lotin: " + userLatin);
+
+        // GPT timing
+        const gptStart = Date.now();
         const aiResponse = await this.gpt.generate({
             prompt: input.validatedText,
             context: input.context,
             language: 'ar',
-            strict: true,
+            strict: false, // FALSE! Barcha materiallardan qidiradi
         });
+        const gptTime = Date.now() - gptStart;
 
-        const aiResponseUz = await this.translation.translateToUzbek(aiResponse || '');
+        const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
+
+        console.log("\n🤖 AI:");
+        console.log("   Arab: " + aiResponse);
+        console.log("   Lotin: " + aiResponseLatin);
+        console.log("   ⏱️  GPT vaqti: " + gptTime + "ms");
 
         return {
             ...input,
             aiResponse,
-            aiResponseUz,
+            aiResponseUz: '', // Translation o'chirildi - tezlik uchun
         } as VoiceInput & { aiResponse: string; aiResponseUz: string };
     }
 }

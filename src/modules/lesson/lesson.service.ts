@@ -26,7 +26,7 @@ export class LessonService implements ILessonService {
     private readonly blockRepository: IBlockRepository,
 
     private readonly vimeoService: VimeoService, // Vimeo xizmatini yuklash uchun VimeoService injektsiya qilinadi
-  ) {}
+  ) { }
 
   /**
    * Yangi dars yaratish funksiyasi.
@@ -161,13 +161,13 @@ export class LessonService implements ILessonService {
     file?: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
-  
+
     // Agar blockId berilgan bo‘lsa, yangi blokni darsga bog‘lash
     if (dto.blockId) {
       const block = await this.blockRepository.findById(dto.blockId);
       foundData.block = block;
     }
-  
+
     // Faqat order o‘zgartirilganida tekshirish
     if (dto.order && dto.order !== foundData.order) {
       const orderExist = await this.lessonRepository.findOneByOrder(
@@ -178,7 +178,7 @@ export class LessonService implements ILessonService {
         throw new LessonOrderAlreadyExistException();
       }
     }
-  
+
     // Yangi fayl bo‘lsa, videoni yangilash
     if (file) {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
@@ -191,7 +191,7 @@ export class LessonService implements ILessonService {
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
-  
+
     // Yangilanishlarni qo‘llash
     Object.assign(foundData, {
       order: dto.order ?? foundData.order,
@@ -199,12 +199,12 @@ export class LessonService implements ILessonService {
       video: dto.video ?? foundData.videoUrl,
       grammarLink: dto.grammarLink ?? foundData.grammarLink,
     });
-  
+
     const data = await this.lessonRepository.update(foundData);
-  
+
     return new ResData<Lesson>("Lesson updated successfully", 200, data);
   }
-  
+
 
   /**
    * Darsni o'chirish funksiyasi.
@@ -215,18 +215,18 @@ export class LessonService implements ILessonService {
 
   async delete(id: ID): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
-  
+
     try {
       // Darsni o‘chirish
       const data = await this.lessonRepository.delete(foundData);
-  
+
       // Blokning davomiyligi va video sonini yangilash
       const foundBlock = await this.blockRepository.findById(foundData.block.id);
       foundBlock.duration =
         Number(foundBlock.duration) - Number(foundData.duration);
       foundBlock.countVideos = Number(foundBlock.countVideos) - 1;
       await this.blockRepository.update(foundBlock);
-  
+
       return new ResData<Lesson>("Lesson deleted successfully", 200, data);
     } catch (error) {
       // Agar foreign key xatosi bo‘lsa — lesson_progress bilan bog‘liq
@@ -240,10 +240,10 @@ export class LessonService implements ILessonService {
           null,
         );
       }
-  
+
       // Boshqa xatolarni tashlaymiz
       throw error;
     }
   }
-  
+
 }

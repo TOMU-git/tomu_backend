@@ -209,29 +209,22 @@ export class LessonProgressService implements ILessonProgressService {
 
 
   async getVideos(userId: ID, blockId: ID): Promise<any> {
-    console.log(`[DEBUG] getVideos started: userId=${userId}, blockId=${blockId}`);
-
     const block = await this.blockRepository.findById(blockId);
-    console.log(`[DEBUG] Block found:`, block ? `id=${block.id}` : 'null');
     if (!block) {
       throw new BlockNotFoundException();
     }
 
     const existingProgresses =
       await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
-    console.log(`[DEBUG] Existing progresses count:`, existingProgresses?.length || 0);
 
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
-      console.log(`[DEBUG] CourseId from progress: ${courseId}, blockOrder: ${blockOrder}`);
 
       const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
       const progressCount = existingProgresses.length;
-      console.log(`[DEBUG] Total lessons: ${totalLessonsCount}, Progress count: ${progressCount}`);
 
       if (totalLessonsCount > progressCount) {
-        console.log(`[DEBUG] Generating new lesson progress...`);
         await this.generateLessonProgress(userId, blockId, courseId);
 
         const updatedProgresses =
@@ -248,19 +241,15 @@ export class LessonProgressService implements ILessonProgressService {
 
 
       // UserCourse ma'lumotlarini tekshirish
-      console.log(`[DEBUG] Looking for userCourse: userId=${userId}, courseId=${courseId}`);
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      console.log(`[DEBUG] UserCourse found:`, userCourse ? `id=${userCourse.id}` : 'null');
 
       if (!userCourse) {
-        console.log(`[ERROR] UserCourse is null! userId=${userId}, courseId=${courseId}`);
         throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
       }
 
       const hasPaid = userCourse.hasEverPaid
       const isActive = userCourse.isActive
       const onFreeTrial = userCourse.onFreeTrial
-      console.log(`[DEBUG] UserCourse properties: hasPaid=${hasPaid}, isActive=${isActive}, onFreeTrial=${onFreeTrial}`);
 
 
 
@@ -268,9 +257,7 @@ export class LessonProgressService implements ILessonProgressService {
       // TEMPORARY: Queue check disabled for AI testing
       /*
         // Vazifalar bo'limidagi vazifalar sonini tekshirish
-      console.log(`[DEBUG] Checking queue items for userId=${userId}, courseId=${courseId}`);
       const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
-      console.log(`[DEBUG] Queue items count:`, queueItemsCount?.data?.count || 0);
       if (queueItemsCount.data.count > 4) {
         return {
           message: "Finish reviewing the previous tasks first.",
@@ -293,12 +280,10 @@ export class LessonProgressService implements ILessonProgressService {
       //   };
       // }
 
-      console.log(`[DEBUG] Checking payment status: hasPaid=${hasPaid}, isActive=${isActive}`);
       // TODO: TEMPORARY - Re-enable payment check for production
       // TEMPORARY: Payment check disabled for AI testing
       /*
       if (!hasPaid || !isActive) {
-        console.log(`[DEBUG] User not paid or not active, checking blockOrder=${blockOrder}`);
         if (blockOrder > 1) {
           return {
             message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
@@ -324,8 +309,6 @@ export class LessonProgressService implements ILessonProgressService {
         }
       }
       */
-
-      console.log(`[DEBUG] Returning successful response`);
       return {
         message: "Lesson fetched successfully",
         statusCode: 200,
@@ -334,25 +317,16 @@ export class LessonProgressService implements ILessonProgressService {
       };
     }
 
-    console.log(`[DEBUG] No existing progresses, getting courseId from block`);
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-    console.log(`[DEBUG] CourseId from block: ${courseId}`);
-
     if (existingProgresses.length === 0) {
-      console.log(`[DEBUG] Generating initial lesson progress...`);
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
-
-      console.log(`[DEBUG] Looking for userCourse for new progress: userId=${userId}, courseId=${courseId}`);
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      console.log(`[DEBUG] UserCourse for new progress:`, userCourse ? `id=${userCourse.id}` : 'null');
 
       if (!userCourse) {
-        console.log(`[ERROR] UserCourse is null for new progress! userId=${userId}, courseId=${courseId}`);
         throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
       }
 
       const isActive = userCourse.isActive;
-      console.log(`[DEBUG] New progress isActive: ${isActive}`);
 
       return {
         message: "Lesson progress created successfully",
@@ -362,7 +336,6 @@ export class LessonProgressService implements ILessonProgressService {
       };
     }
 
-    console.log(`[DEBUG] No lessons available`);
     return {
       message: "No lessons available",
       statusCode: 404,
@@ -573,11 +546,10 @@ export class LessonProgressService implements ILessonProgressService {
 // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
-//     'https://player.vimeo.com/video/1031009633',
-//     'video/mp4',
+//     'https://player.vimeo.com/video/1131005257',
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     32  -- block_id
+//     11  -- block_id
 // FROM
 //     generate_series(1, 100) AS s(i);

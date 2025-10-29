@@ -63,8 +63,12 @@
       }
 
       function log(msg) {
-        const el = document.getElementById("log");
-        el.textContent = msg + "\n" + el.textContent;
+        // Log ni eskiroq ma'lumotlar uchun ishlatamiz
+      }
+
+      function setStatus(msg) {
+        const el = document.getElementById("status");
+        el.textContent = msg;
       }
 
       async function createSession() {
@@ -86,7 +90,7 @@
         });
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          log(`❌ Sessiya yaratishda xato [${res.status}]: ${txt}`);
+          setStatus(`❌ Sessiya xatolik: ${res.status}`);
           return;
         }
         const json = await res.json();
@@ -94,9 +98,9 @@
           sessionId = json.data.id;
           document.getElementById("session").textContent =
             `Session: ${sessionId}`;
-          log("✅ Sessiya yaratildi");
+          setStatus("✅ Sessiya yaratildi");
         } else {
-          log("❌ Sessiya yaratilmagan (kutilmagan javob)");
+          setStatus("❌ Sessiya yaratilmadi");
         }
       }
 
@@ -128,9 +132,9 @@
           };
           document.addEventListener("mouseup", stopOnce, { once: true });
           document.addEventListener("touchend", stopOnce, { once: true });
-          log("🎙️ Yozish boshlandi...");
+          setStatus("🎙️ Yozish boshlandi...");
         } catch (e) {
-          log("❌ Mikrofon ruxsati berilmadi yoki xatolik: " + e.message);
+          setStatus("❌ Mikrofon xatolik");
         }
       }
 
@@ -138,7 +142,7 @@
         if (!isRecording) return;
         isRecording = false;
         // Tugma qo'yib yuborilganda holatni darhol yangilaymiz
-        log("⏳ Jarayonda...");
+        setStatus("⏳ Jarayonda...");
         if (mediaRecorder && mediaRecorder.state !== "inactive") {
           try {
             mediaRecorder.stop();
@@ -151,7 +155,7 @@
           type: chunks[0]?.type || "audio/webm",
         });
         if (!blob || blob.size === 0) {
-          log("❌ Audio yozilmadi (bo'sh blob). Iltimos, yana urinib ko'ring.");
+          setStatus("❌ Audio yozilmadi");
           return;
         }
         const fd = new FormData();
@@ -167,15 +171,15 @@
         });
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
-          log(`❌ Voice yuborishda xato [${res.status}]: ${txt}`);
+          setStatus(`❌ Xato: ${res.status}`);
           return;
         }
         const json = await res.json();
         if (json?.data) {
           renderMessage(json.data);
-          log("✅ Javob olindi");
+          setStatus("✅ Javob olindi");
         } else {
-          log("❌ Xato (kutilmagan javob): " + JSON.stringify(json));
+          setStatus("❌ Xato");
         }
       }
 
@@ -184,12 +188,13 @@
         const div = document.createElement("div");
         div.className = "row";
         const text = document.createElement("div");
-        text.textContent = `[${new Date(msg.createdAt).toLocaleTimeString()}] ${msg.textUz || msg.text || ""}`;
+        text.textContent = `[${new Date(msg.createdAt).toLocaleTimeString()}] ${msg.text || ""}`;
         div.appendChild(text);
         if (msg.audioUrl) {
           const audio = document.createElement("audio");
           audio.controls = true;
           audio.src = msg.audioUrl;
+          audio.style.width = "100%";
           div.appendChild(audio);
         }
         wrap.prepend(div);
@@ -217,6 +222,7 @@
       <span id="session" class="small"></span>
     </div>
     <div class="row">
+      <div style="flex: 1"></div>
       <button
         class="ptt"
         onmousedown="startRecording()"
@@ -226,10 +232,9 @@
       >
         Bosib gapiring
       </button>
+      <span id="status" class="small" style="margin-left: 12px"></span>
     </div>
 
     <div class="messages" id="messages"></div>
-    <h4>Log</h4>
-    <div class="log" id="log"></div>
   </body>
 </html>

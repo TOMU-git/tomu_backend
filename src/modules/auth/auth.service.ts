@@ -29,6 +29,8 @@ import { Cache } from "cache-manager";
 import { generate } from "../../lib/genearotorCode";
 import { SmsService } from "../../lib/smsService";
 import { ICourseService } from "../course/interfaces/course.service";
+import { IDeviceService } from "src/modules/user-device/interfaces/device.service";
+import { DeviceInfoDto } from "src/modules/user-device/dto/device-info.dto";
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -39,11 +41,12 @@ export class AuthService implements IAuthService {
     @Inject("CACHE_MANAGER") private cacheManager: Cache,
     @Inject("ICourseService") private readonly courseService: ICourseService,
     private readonly smsService: SmsService,
-  ) {}
+    @Inject("IDeviceService") private readonly deviceService: IDeviceService,
+  ) { }
 
   // *** Login for only students *** //
 
-  async login(dto: LoginAuthDto, res: Response): Promise<ResData<ILoginData>> {
+  async login(dto: LoginAuthDto, res: Response, deviceInfo?: any): Promise<ResData<ILoginData>> {
     const { data: foundUser } = await this.userService.findOneByPhoneNumber(
       dto.phoneNumber,
     );
@@ -69,6 +72,19 @@ export class AuthService implements IAuthService {
       httpOnly: true,
       maxAge: config.jwtCookieTime,
     });
+
+    // Register device if deviceInfo is provided and device management is enabled for the user
+    if (deviceInfo && foundUser.deviceManagementEnabled) {
+      try {
+        await this.deviceService.registerDevice(foundUser.id, deviceInfo);
+      } catch (error) {
+        // If device registration fails, throw the error to prevent login
+        console.error('Device registration failed:', error);
+        console.error('Error details:', error.message);
+        throw error; // Throw the error to prevent login when device limit is exceeded
+      }
+    }
+
     return new ResData<ILoginData>(
       "User successfully logged in",
       HttpStatus.OK,

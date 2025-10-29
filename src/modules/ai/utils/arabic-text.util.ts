@@ -24,6 +24,11 @@ export class ArabicTextUtils {
      * @returns Lotin harflarida transliteratsiya
      */
     static transliterateArabic(text: string): string {
+        if (!text) return '';
+
+        // Avval harakat belgilarini (tashkeel) olib tashlash
+        const cleanText = text.replace(/[\u064B-\u065F\u0670]/g, ''); // Remove diacritics
+
         const arabicToLatin: { [key: string]: string } = {
             'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
             'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh', 'ص': 's',
@@ -34,7 +39,8 @@ export class ArabicTextUtils {
             '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6',
             '٧': '7', '٨': '8', '٩': '9'
         };
-        return (text || "")
+
+        return cleanText
             .split("")
             .map((ch) => arabicToLatin[ch] || ch)
             .join("");
@@ -47,7 +53,7 @@ export class ArabicTextUtils {
      */
     static normalizeArabic(text: string): string {
         if (!text) return '';
-        
+
         return text
             .trim()
             .replace(/\s+/g, ' ') // Ko'p bo'shliqlarni bitta qilish
@@ -62,7 +68,7 @@ export class ArabicTextUtils {
      */
     static extractArabicWords(text: string): string[] {
         if (!text) return [];
-        
+
         const normalized = this.normalizeArabic(text);
         return normalized
             .split(/\s+/)
