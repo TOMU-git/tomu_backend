@@ -88,7 +88,6 @@ export class GPTService {
         systemParts.push("2. Answer questions about items/concepts mentioned in the lessons.");
         systemParts.push("3. For yes/no questions (هَلْ), answer with نَعَمْ or لَا based on lesson content.");
         systemParts.push("4. Be helpful and encouraging to beginners.");
-        systemParts.push("5. If you don't know the answer, say: 'لَسْتُ مُتَأَكِّدًا' (I'm not sure)");
 
         // STRICT MODE O'CHIRILDI - Barcha materiallardan qidiradi
         if (STRICT_NO_ECHO) systemParts.push("Do not repeat the user's text, give a short and clear answer.");

@@ -8,6 +8,7 @@ import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
 import { AIChatService } from "./ai-chat.service";
 import { ArabicTextUtils } from "../utils/arabic-text.util";
 import { AI_ERROR_MESSAGES } from "../constants/error-messages";
+import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { SessionForbiddenException } from "../exceptions/session-forbidden.exception";
 import { AIChatSession } from "../entities/ai-chat-session.entity";
 import { AIChatMessage } from "../entities/ai-chat-message.entity";
@@ -328,15 +329,74 @@ class GPTStep implements PipelineStep {
         console.log("   Arab: " + input.validatedText);
         console.log("   Lotin: " + userLatin);
 
-        // GPT timing
-        const gptStart = Date.now();
-        const aiResponse = await this.gpt.generate({
-            prompt: input.validatedText,
-            context: input.context,
-            language: 'ar',
-            strict: false, // FALSE! Barcha materiallardan qidiradi
-        });
-        const gptTime = Date.now() - gptStart;
+        // 1) Echo-avoidance: Agar user gapini dars matnidan topsak,
+        //    keyingi gapni qaytaramiz (echo o'rniga)
+        const userText = input.validatedText || '';
+
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670]/g, '');
+        const normalize = (t: string) => ArabicTextUtils.normalizeArabic(stripDiacritics(t));
+        const splitSentences = (t: string): string[] => {
+            const cleaned = (t || '').trim();
+            if (!cleaned) return [];
+            // Arabcha va umumiy punktuatsiya bo'yicha bo'lamiz
+            return cleaned
+                .split(/(?<=[\.\!؟])\s+/)
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        };
+
+        const normalizedUser = normalize(userText);
+        let nextSentenceFromMaterial = '';
+
+        if (Array.isArray(input.context)) {
+            for (const lesson of input.context) {
+                const lessonText: string = (lesson && (lesson.text || lesson.content || '')) as string;
+                if (!lessonText) continue;
+                const sentences = splitSentences(lessonText);
+                for (let i = 0; i < sentences.length; i++) {
+                    const s = sentences[i];
+                    if (!s) continue;
+                    const normalizedSentence = normalize(s);
+                    // To'liq yoki kuchli moslik (kiritilgan gap shu gapga teng yoki uning ichida)
+                    if (
+                        normalizedSentence === normalizedUser ||
+                        normalizedSentence.includes(normalizedUser) ||
+                        normalizedUser.includes(normalizedSentence)
+                    ) {
+                        const candidate = sentences[i + 1];
+                        if (candidate && candidate.length > 1) {
+                            nextSentenceFromMaterial = candidate;
+                        }
+                        break;
+                    }
+                }
+                if (nextSentenceFromMaterial) break;
+            }
+        }
+
+        let aiResponse = '';
+        let gptTime = 0;
+        if (nextSentenceFromMaterial) {
+            aiResponse = nextSentenceFromMaterial;
+        } else {
+            // 2) Aks holda GPT'dan javob olamiz
+            const gptStart = Date.now();
+            aiResponse = await this.gpt.generate({
+                prompt: input.validatedText,
+                context: input.context,
+                language: 'ar',
+                strict: false, // FALSE! Barcha materiallardan qidiradi
+            });
+            gptTime = Date.now() - gptStart;
+        }
+
+        // If GPT is unsure or empty, return specific NO_MATERIAL_RESPONSE
+        let aiResponseUz = '';
+        const unsure = (aiResponse || '').includes('لَسْتُ مُتَأَكِّدًا');
+        if (!aiResponse || unsure) {
+            aiResponse = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic;
+            aiResponseUz = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek;
+        }
 
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
 
@@ -348,7 +408,7 @@ class GPTStep implements PipelineStep {
         return {
             ...input,
             aiResponse,
-            aiResponseUz: '', // Translation o'chirildi - tezlik uchun
+            aiResponseUz, // Uzbek matn faqat fallback holatida to'ldiriladi
         } as VoiceInput & { aiResponse: string; aiResponseUz: string };
     }
 }
