@@ -90,7 +90,8 @@ export class GPTService {
         systemParts.push("4. Be helpful and encouraging to beginners.");
 
         // STRICT MODE O'CHIRILDI - Barcha materiallardan qidiradi
-        if (STRICT_NO_ECHO) systemParts.push("Do not repeat the user's text, give a short and clear answer.");
+        // Hech qachon foydalanuvchi matnini aynan takrorlamang
+        systemParts.push("Do not repeat the user's text, give a short and clear answer.");
 
         const contextSummary = safeClampContext(context);
 

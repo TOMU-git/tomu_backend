@@ -329,9 +329,8 @@ class GPTStep implements PipelineStep {
         console.log("   Arab: " + input.validatedText);
         console.log("   Lotin: " + userLatin);
 
-        // 1) Echo-avoidance: Agar user gapini dars matnidan topsak,
-        //    keyingi gapni qaytaramiz (echo o'rniga)
-        const userText = input.validatedText || '';
+        // 1) Kontekstga tayangan leksik tuzatish va echo-avoidance
+        const userText = this.applyContextAwareCorrection(input.validatedText || '', input.context);
 
         const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670]/g, '');
         const normalize = (t: string) => ArabicTextUtils.normalizeArabic(stripDiacritics(t));
@@ -347,6 +346,18 @@ class GPTStep implements PipelineStep {
 
         const normalizedUser = normalize(userText);
         let nextSentenceFromMaterial = '';
+        let bestMatchNextSentence = '';
+        let bestMatchScore = 0;
+
+        const wordSet = (t: string) => new Set(normalize(t).split(/\s+/).filter(Boolean));
+        const jaccard = (a: Set<string>, b: Set<string>) => {
+            if (a.size === 0 || b.size === 0) return 0;
+            let inter = 0;
+            for (const w of a) if (b.has(w)) inter++;
+            const uni = new Set<string>([...a, ...b]).size;
+            return inter / uni;
+        };
+        const userWords = wordSet(userText);
 
         if (Array.isArray(input.context)) {
             for (const lesson of input.context) {
@@ -369,6 +380,12 @@ class GPTStep implements PipelineStep {
                         }
                         break;
                     }
+                    // Fuzzy moslik: Jaccard bo'yicha yaqin gapni eslab qolamiz
+                    const score = jaccard(userWords, wordSet(s));
+                    if (score > bestMatchScore) {
+                        bestMatchScore = score;
+                        bestMatchNextSentence = sentences[i + 1] || '';
+                    }
                 }
                 if (nextSentenceFromMaterial) break;
             }
@@ -382,7 +399,7 @@ class GPTStep implements PipelineStep {
             // 2) Aks holda GPT'dan javob olamiz
             const gptStart = Date.now();
             aiResponse = await this.gpt.generate({
-                prompt: input.validatedText,
+                prompt: userText,
                 context: input.context,
                 language: 'ar',
                 strict: false, // FALSE! Barcha materiallardan qidiradi
@@ -393,11 +410,24 @@ class GPTStep implements PipelineStep {
         // If GPT is unsure or empty, return specific NO_MATERIAL_RESPONSE
         let aiResponseUz = '';
         const unsure = (aiResponse || '').includes('لَسْتُ مُتَأَكِّدًا');
-        if (!aiResponse || unsure) {
-            aiResponse = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic;
-            aiResponseUz = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek;
-        }
+        // Echo'ni aniqlash: model javobi foydalanuvchi matniga juda o'xshash bo'lsa
+        const responseIsEcho = (() => {
+            const a = normalize(aiResponse || '');
+            if (!a) return false;
+            if (a === normalizedUser) return true;
+            const sim = jaccard(new Set(a.split(/\s+/).filter(Boolean)), userWords);
+            return sim >= 0.85; // yuqori o'xshashlik thresholddi
+        })();
 
+        if (!aiResponse || unsure || responseIsEcho) {
+            // Agar aniq keyingi gap yo'q bo'lsa, eng yaqin mos gapning keyingisini ishlatamiz
+            if (!nextSentenceFromMaterial && bestMatchScore >= 0.5 && bestMatchNextSentence && bestMatchNextSentence.length > 1) {
+                aiResponse = bestMatchNextSentence;
+            } else {
+                aiResponse = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic;
+                aiResponseUz = AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek;
+            }
+        }
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
 
         console.log("\n🤖 AI:");
@@ -410,6 +440,64 @@ class GPTStep implements PipelineStep {
             aiResponse,
             aiResponseUz, // Uzbek matn faqat fallback holatida to'ldiriladi
         } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+    }
+
+    private buildNormalizedWordSet(context: any[]): Set<string> {
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670]/g, '');
+        const normalize = (t: string) => ArabicTextUtils.normalizeArabic(stripDiacritics(t));
+        const words = new Set<string>();
+        if (!Array.isArray(context)) return words;
+        for (const lesson of context) {
+            const txt: string = (lesson && (lesson.text || lesson.content || '')) as string;
+            if (!txt) continue;
+            const normalized = normalize(txt);
+            for (const w of normalized.split(/\s+/)) {
+                if (w) words.add(w);
+            }
+        }
+        return words;
+    }
+
+    private applyContextAwareCorrection(text: string, context: any): string {
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670]/g, '');
+        const normalize = (t: string) => ArabicTextUtils.normalizeArabic(stripDiacritics(t));
+        const normalizedWords = this.buildNormalizedWordSet(Array.isArray(context) ? context : []);
+        const confusionPairs: Array<[string, string]> = [
+            ['غ', 'و'],
+            ['ض', 'د'],
+        ];
+
+        const original = text || '';
+        const normalized = normalize(original);
+        const tokens = normalized.split(/\s+/);
+        const originalTokens = original.split(/\s+/);
+
+        let changed = false;
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+            if (!token || normalizedWords.has(token)) continue;
+
+            // generate candidates by swapping confusion pairs
+            const candidates = new Set<string>();
+            candidates.add(token);
+            for (const [a, b] of confusionPairs) {
+                candidates.add(token.replace(new RegExp(a, 'g'), b));
+                candidates.add(token.replace(new RegExp(b, 'g'), a));
+            }
+            // check candidates in vocabulary
+            let replacement: string | null = null;
+            for (const cand of candidates) {
+                if (normalizedWords.has(cand)) { replacement = cand; break; }
+            }
+            if (replacement) {
+                // Replace in original token roughly (keep original spacing/punct)
+                originalTokens[i] = originalTokens[i]
+                    .replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+/g, replacement);
+                changed = true;
+            }
+        }
+
+        return changed ? originalTokens.join(' ') : original;
     }
 }
 
