@@ -133,8 +133,8 @@ export class AuthService implements IAuthService {
     dto: CreateAdminDto,
     res: Response,
   ): Promise<ResData<ILoginData>> {
-    const { data: foundPhoneNumber } =
-      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
+    // Check if phone number already exists (using repository directly to avoid exception)
+    const foundPhoneNumber = await this.userRepository.getOntByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
       throw new HttpException("This number already registered", 400);
     }
@@ -152,11 +152,9 @@ export class AuthService implements IAuthService {
       { id: savedUser.id },
       { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
     );
-    const { data: foundUser } = await this.userService.findOneById(
-      savedUser.id,
-    );
-    foundUser.hashed_refresh_token = await hashed(refresh_token);
-    const updated = await this.userRepository.update(foundUser);
+    // Use savedUser directly instead of fetching again - it's already the saved entity with ID
+    savedUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(savedUser);
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
       maxAge: config.jwtCookieTime,
@@ -174,8 +172,8 @@ export class AuthService implements IAuthService {
     dto: CreateStudentDto,
     res: Response,
   ): Promise<ResData<ILoginData>> {
-    const { data: foundPhoneNumber } =
-      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
+    // Check if phone number already exists (using repository directly to avoid exception)
+    const foundPhoneNumber = await this.userRepository.getOntByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
       throw new HttpException("This number already registered", 400);
     }
@@ -193,11 +191,9 @@ export class AuthService implements IAuthService {
       { id: savedUser.id },
       { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
     );
-    const { data: foundUser } = await this.userService.findOneById(
-      savedUser.id,
-    );
-    foundUser.hashed_refresh_token = await hashed(refresh_token);
-    const updated = await this.userRepository.update(foundUser);
+    // Use savedUser directly instead of fetching again - it's already the saved entity with ID
+    savedUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(savedUser);
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
       maxAge: config.jwtCookieTime,
@@ -247,8 +243,8 @@ export class AuthService implements IAuthService {
     dto: CreateTeacherDto,
     res: Response,
   ): Promise<ResData<ILoginData>> {
-    const { data: foundPhoneNumber } =
-      await this.userService.findOneByPhoneNumber(dto.phoneNumber);
+    // Check if phone number already exists (using repository directly to avoid exception)
+    const foundPhoneNumber = await this.userRepository.getOntByPhoneNumber(dto.phoneNumber);
     if (foundPhoneNumber) {
       throw new HttpException("This number already registered", 400);
     }
@@ -268,11 +264,9 @@ export class AuthService implements IAuthService {
       { id: savedUser.id },
       { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
     );
-    const { data: foundUser } = await this.userService.findOneById(
-      savedUser.id,
-    );
-    foundUser.hashed_refresh_token = await hashed(refresh_token);
-    const updated = await this.userRepository.update(foundUser);
+    // Use savedUser directly instead of fetching again - it's already the saved entity with ID
+    savedUser.hashed_refresh_token = await hashed(refresh_token);
+    const updated = await this.userRepository.update(savedUser);
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
       maxAge: config.jwtCookieTime,

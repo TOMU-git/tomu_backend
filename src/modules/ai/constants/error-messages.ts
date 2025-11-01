@@ -44,5 +44,11 @@ export const AI_FALLBACK_MESSAGES = {
         arabic: 'هَلْ تَقْصِدُ: ',
         uzbek: 'Shunday deyishni xohlaysizmi: ',
     },
+
+    // Dialogue oxirida - tasdiqlash
+    DIALOGUE_END_CONFIRMATION: {
+        arabic: 'جَيِّدٌ! أَحْسَنْتَ!',
+        uzbek: 'Yaxshi! Ajoyib!',
+    },
 };
 

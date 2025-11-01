@@ -121,12 +121,22 @@ export class AuthController {
     @Body() studentCreateDto: CreateStudentDto,
     @Res() res: Response,
   ) {
-    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      studentCreateDto.phoneNumber,
-    );
+    try {
+      const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+        studentCreateDto.phoneNumber,
+      );
 
-    if (foundUser) {
-      throw new PhoneNumberAlreadyExist();
+      if (foundUser) {
+        throw new PhoneNumberAlreadyExist();
+      }
+    } catch (error) {
+      // If UserNotFound exception, that's fine - user doesn't exist and can register
+      if (error.status === 404) {
+        // User doesn't exist, which is expected for registration - continue
+      } else {
+        // Other errors (like PhoneNumberAlreadyExist) should be thrown
+        throw error;
+      }
     }
     const createdUser = await this.authService.createStudent(
       studentCreateDto,

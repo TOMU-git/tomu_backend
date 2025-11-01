@@ -441,8 +441,25 @@ class GPTStep implements PipelineStep {
         console.log("   Arab: " + input.validatedText);
         console.log("   Lotin: " + userLatin);
 
+        // 0) Conversation history'dan topic/mavzuni aniqlash (bir marta)
+        const conversationTopic = this.extractConversationTopic(input.conversationHistory || [], input.context);
+
         // 1) Kontekstga tayangan leksik tuzatish va echo-avoidance
-        const userText = this.applyContextAwareCorrection(input.validatedText || '', input.context);
+        // Conversation history'dan topic olib, STT xatolarini tuzatish
+        let userTextCorrected = this.applyConversationAwareCorrection(
+            input.validatedText || '',
+            input.context,
+            conversationTopic
+        );
+
+        // IMPORTANT: Dialogue gap'larini to'liq qidirish va similarity bilan tuzatish
+        // Bu "لَا حَاسَبَيْتٌ" → "لَا، هَذَا بَيْتٌ" kabi STT xatolarini tuzatish uchun
+        userTextCorrected = this.applyDialogueSentenceCorrection(
+            userTextCorrected,
+            input.context
+        );
+
+        const userText = userTextCorrected;
         const lastWatchedLessonOrder = input.lastWatchedLessonOrder || 0;
 
         // Normalization funksiyalari - punctuation va diacritics'ni olib tashlash
@@ -478,75 +495,177 @@ class GPTStep implements PipelineStep {
         };
         const userWords = wordSet(userText);
 
+        // Conversation topic allaqachon aniqlangan (yuqorida)
+        console.log(`\n💬 Conversation context:`);
+        console.log(`   - Topic detected: ${conversationTopic.topic || 'none'}`);
+        if (conversationTopic.keywords.length > 0) {
+            console.log(`   - Keywords from history: ${conversationTopic.keywords.join(', ')}`);
+        }
+
         // 1) BIRINCHI NAVBATDA: Materiallardan qidirish
         console.log(`\n🔍 Searching materials for user query: "${userText}"`);
         console.log(`   Context contains ${input.context?.length || 0} lesson chunks`);
 
+        // IMPORTANT: Context'dagi materiallarni lessonOrder bo'yicha guruhlash
+        // Har bir lesson uchun barcha turn'larni birlashtirish (dialogue to'liq ko'rinishi uchun)
+        const lessonsMap = new Map<number, Array<{ text: string; turnIndex: number; speaker: string | null }>>();
         if (Array.isArray(input.context)) {
-            for (const lesson of input.context) {
-                const lessonText: string = (lesson && (lesson.text || lesson.content || '')) as string;
-                const lessonOrder = lesson?.lessonOrder || 0;
-                if (!lessonText) continue;
+            for (const chunk of input.context) {
+                const lessonOrder = chunk?.lessonOrder || 0;
+                const text: string = (chunk && (chunk.text || chunk.content || '')) as string;
+                const turnIndex = chunk?.turnIndex ?? 0;
+                const speaker = chunk?.speaker || null;
 
-                console.log(`   📚 Checking lesson ${lessonOrder}: "${lessonText.substring(0, 50)}${lessonText.length > 50 ? '...' : ''}"`);
+                if (!text || text.trim().length === 0) continue;
 
-                const sentences = splitSentences(lessonText);
-                console.log(`      Split into ${sentences.length} sentences`);
+                if (!lessonsMap.has(lessonOrder)) {
+                    lessonsMap.set(lessonOrder, []);
+                }
+                lessonsMap.get(lessonOrder)!.push({ text, turnIndex, speaker });
+            }
+        }
 
-                for (let i = 0; i < sentences.length; i++) {
-                    const s = sentences[i];
-                    if (!s) continue;
-                    const normalizedSentence = normalize(s);
+        // Har bir lesson'ni turn'lar tartibida saralash va qidirish
+        for (const [lessonOrder, turns] of lessonsMap.entries()) {
+            // Turn'larni turnIndex bo'yicha tartiblash
+            const sortedTurns = turns.sort((a, b) => a.turnIndex - b.turnIndex);
 
-                    // To'liq yoki kuchli moslik (punctuation va diacritics'ni e'tiborsiz qoldirib)
-                    const isExactMatch = normalizedSentence === normalizedUser;
-                    const sentenceIncludesUser = normalizedSentence.includes(normalizedUser);
-                    const userIncludesSentence = normalizedUser.includes(normalizedSentence);
+            // Barcha turn text'larini birlashtirish (dialogue to'liq ko'rinishi uchun)
+            const allTurnsText = sortedTurns.map(t => t.text).join(' ');
 
-                    // Qo'shimcha: User gapining asosiy qismi (faqat so'zlar) material bilan mos keladimi?
-                    const userWordsArray = normalizedUser.split(/\s+/).filter(Boolean);
-                    const sentenceWordsArray = normalizedSentence.split(/\s+/).filter(Boolean);
-                    const userWordsInSentence = userWordsArray.filter(w => sentenceWordsArray.includes(w)).length;
-                    const wordsMatchRatio = userWordsArray.length > 0 ? userWordsInSentence / userWordsArray.length : 0;
-                    const isWordsMatch = wordsMatchRatio >= 0.8 && userWordsArray.length >= 3; // 80%+ so'zlar mos va kamida 3 so'z
+            console.log(`   📚 Checking lesson ${lessonOrder} (${sortedTurns.length} turns): "${allTurnsText.substring(0, 50)}${allTurnsText.length > 50 ? '...' : ''}"`);
 
-                    if (isExactMatch || sentenceIncludesUser || userIncludesSentence || isWordsMatch) {
-                        console.log(`      ✅ Match found at sentence ${i + 1}: "${s}"`);
-                        console.log(`         User normalized: "${normalizedUser}"`);
-                        console.log(`         Sentence normalized: "${normalizedSentence}"`);
-                        console.log(`         Match type: ${isExactMatch ? 'exact' : sentenceIncludesUser ? 'sentence includes user' : userIncludesSentence ? 'user includes sentence' : `words match (${(wordsMatchRatio * 100).toFixed(0)}%)`}`);
+            // Turn'larni sentence'larga bo'lish - har bir turn alohida sentence
+            const sentences = sortedTurns.map(t => t.text);
+            console.log(`      Split into ${sentences.length} sentences (turn-by-turn)`);
 
-                        const candidate = sentences[i + 1];
-                        if (candidate && candidate.length > 1) {
-                            console.log(`      ✅ Next sentence found: "${candidate}" (from lesson ${lessonOrder})`);
-                            nextSentenceFromMaterial = candidate;
-                            materialLessonOrder = lessonOrder;
-                            break;
-                        } else {
-                            console.log(`      ⚠️  No next sentence found after match`);
+            for (let i = 0; i < sentences.length; i++) {
+                const s = sentences[i];
+                if (!s) continue;
+                const normalizedSentence = normalize(s);
+
+                // To'liq yoki kuchli moslik (punctuation va diacritics'ni e'tiborsiz qoldirib)
+                const isExactMatch = normalizedSentence === normalizedUser;
+                const sentenceIncludesUser = normalizedSentence.includes(normalizedUser);
+                const userIncludesSentence = normalizedUser.includes(normalizedSentence);
+
+                // Qo'shimcha: User gapining asosiy qismi (faqat so'zlar) material bilan mos keladimi?
+                const userWordsArray = normalizedUser.split(/\s+/).filter(Boolean);
+                const sentenceWordsArray = normalizedSentence.split(/\s+/).filter(Boolean);
+                const userWordsInSentence = userWordsArray.filter(w => sentenceWordsArray.includes(w)).length;
+                const wordsMatchRatio = userWordsArray.length > 0 ? userWordsInSentence / userWordsArray.length : 0;
+                const isWordsMatch = wordsMatchRatio >= 0.8 && userWordsArray.length >= 3; // 80%+ so'zlar mos va kamida 3 so'z
+
+                // FUZZY WORD MATCHING: Character-level similarity bilan so'zlarni solishtirish
+                // STT xatolarini aniqlash uchun (masalan: "مَسْتِد" vs "مَسْجِد")
+                let fuzzyWordsMatch = false;
+                let fuzzyWordsMatchRatio = 0;
+                if (userWordsArray.length >= 3 && sentenceWordsArray.length > 0) {
+                    // Har bir user so'zini sentence so'zlari bilan character-level similarity bilan solishtirish
+                    let fuzzyMatchedWords = 0;
+                    const SIMILARITY_THRESHOLD = 0.75; // 75%+ similarity bo'lsa, so'z mos deb hisoblaymiz
+
+                    for (const userWord of userWordsArray) {
+                        if (userWord.length < 3) {
+                            // Qisqa so'zlar (harflar, ko'rsatmalar) - exact match kerak
+                            if (sentenceWordsArray.includes(userWord)) {
+                                fuzzyMatchedWords++;
+                            }
+                            continue;
+                        }
+
+                        // Exact match tekshiruvi
+                        if (sentenceWordsArray.includes(userWord)) {
+                            fuzzyMatchedWords++;
+                            continue;
+                        }
+
+                        // Character-level fuzzy matching
+                        let bestSimilarity = 0;
+                        let bestMatchedWord = '';
+                        for (const sentenceWord of sentenceWordsArray) {
+                            if (sentenceWord.length < 3) continue;
+
+                            const similarity = this.calculateWordSimilarity(userWord, sentenceWord);
+                            if (similarity > bestSimilarity) {
+                                bestSimilarity = similarity;
+                                bestMatchedWord = sentenceWord;
+                            }
+                        }
+
+                        // Agar best similarity threshold'dan yuqori bo'lsa, match deb hisoblaymiz
+                        if (bestSimilarity >= SIMILARITY_THRESHOLD) {
+                            fuzzyMatchedWords++;
+                            console.log(`      🔤 Fuzzy word match: "${userWord}" ≈ "${bestMatchedWord}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
                         }
                     }
 
-                    // Fuzzy moslik: Jaccard bo'yicha yaqin gapni eslab qolamiz
-                    const score = jaccard(userWords, wordSet(s));
-                    if (score > bestMatchScore) {
-                        bestMatchScore = score;
-                        bestMatchNextSentence = sentences[i + 1] || '';
-                        bestMatchLessonOrder = lessonOrder;
-                        if (score > 0.3) {
-                            console.log(`      📊 Good fuzzy match (score: ${score.toFixed(2)}): "${s}" -> next: "${bestMatchNextSentence}"`);
-                        }
+                    fuzzyWordsMatchRatio = userWordsArray.length > 0 ? fuzzyMatchedWords / userWordsArray.length : 0;
+                    // 80%+ so'zlar fuzzy match bo'lsa va kamida 3 so'z bo'lsa, match deb hisoblaymiz
+                    fuzzyWordsMatch = fuzzyWordsMatchRatio >= 0.8 && userWordsArray.length >= 3;
+                }
+
+                if (isExactMatch || sentenceIncludesUser || userIncludesSentence || isWordsMatch || fuzzyWordsMatch) {
+                    const matchType = isExactMatch
+                        ? 'exact'
+                        : sentenceIncludesUser
+                            ? 'sentence includes user'
+                            : userIncludesSentence
+                                ? 'user includes sentence'
+                                : fuzzyWordsMatch
+                                    ? `fuzzy words match (${(fuzzyWordsMatchRatio * 100).toFixed(0)}%)`
+                                    : `words match (${(wordsMatchRatio * 100).toFixed(0)}%)`;
+
+                    console.log(`      ✅ Match found at sentence ${i + 1}: "${s}"`);
+                    console.log(`         User normalized: "${normalizedUser}"`);
+                    console.log(`         Sentence normalized: "${normalizedSentence}"`);
+                    console.log(`         Match type: ${matchType}`);
+
+                    const candidate = sentences[i + 1];
+                    const isLastSentence = i === sentences.length - 1; // Bu oxirgi gapmi?
+
+                    if (candidate && candidate.length > 1) {
+                        console.log(`      ✅ Next sentence found: "${candidate}" (from lesson ${lessonOrder})`);
+                        nextSentenceFromMaterial = candidate;
+                        materialLessonOrder = lessonOrder;
+                        break;
+                    } else if (isLastSentence) {
+                        // IMPORTANT: Agar user dialogue'dagi oxirgi gapni dedi va keyingi gap yo'q bo'lsa
+                        // Bu dialogue tamom bo'lgani degani - tasdiqlash javobi berish kerak
+                        console.log(`      ⚠️  No next sentence found after match - dialogue ended`);
+                        console.log(`      💡 User spoke the LAST sentence in dialogue (sentence ${i + 1}/${sentences.length}) - this is a completion`);
+                        // Material match topilgan, lekin keyingi gap yo'q - bu dialogue oxiri
+                        // Bu holatni alohida belgilash uchun special marker qo'yamiz
+                        nextSentenceFromMaterial = 'DIALOGUE_END'; // Special marker
+                        materialLessonOrder = lessonOrder;
+                        break;
+                    } else {
+                        // Match topilgan, lekin keyingi gap yo'q va bu oxirgi gap ham emas
+                        // Bu oddiy holat - materialdan javob topilmadi
+                        console.log(`      ⚠️  No next sentence found after match (not the last sentence)`);
                     }
                 }
-                if (nextSentenceFromMaterial) {
-                    console.log(`   ✅ Material match found in lesson ${lessonOrder}`);
-                    break;
+
+                // Fuzzy moslik: Jaccard bo'yicha yaqin gapni eslab qolamiz
+                const score = jaccard(userWords, wordSet(s));
+                if (score > bestMatchScore) {
+                    bestMatchScore = score;
+                    bestMatchNextSentence = sentences[i + 1] || '';
+                    bestMatchLessonOrder = lessonOrder;
+                    if (score > 0.3) {
+                        console.log(`      📊 Good fuzzy match (score: ${score.toFixed(2)}): "${s}" -> next: "${bestMatchNextSentence}"`);
+                    }
                 }
             }
 
-            if (!nextSentenceFromMaterial) {
-                console.log(`   ⚠️  No exact material match found. Best fuzzy match score: ${bestMatchScore.toFixed(2)}`);
+            if (nextSentenceFromMaterial) {
+                console.log(`   ✅ Material match found in lesson ${lessonOrder}`);
+                break;
             }
+        }
+
+        if (!nextSentenceFromMaterial) {
+            console.log(`   ⚠️  No exact material match found. Best fuzzy match score: ${bestMatchScore.toFixed(2)}`);
         }
 
         let aiResponse = '';
@@ -556,8 +675,15 @@ class GPTStep implements PipelineStep {
 
         // 2) AGAR MATERIALDAN TOPILDI - kelgan darslarni tekshirish
         if (nextSentenceFromMaterial) {
+            // SPECIAL CASE: User dialogue'dagi oxirgi gapni dedi (keyingi gap yo'q)
+            if (nextSentenceFromMaterial === 'DIALOGUE_END') {
+                console.log(`✅ User completed the dialogue! Using confirmation response.`);
+                aiResponse = AI_FALLBACK_MESSAGES.DIALOGUE_END_CONFIRMATION.arabic;
+                aiResponseUz = AI_FALLBACK_MESSAGES.DIALOGUE_END_CONFIRMATION.uzbek;
+                gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
+            }
             // Agar topilgan javob kelmagan darsda bo'lsa
-            if (materialLessonOrder !== null && materialLessonOrder > lastWatchedLessonOrder) {
+            else if (materialLessonOrder !== null && materialLessonOrder > lastWatchedLessonOrder) {
                 console.log(`⚠️  Material topildi, lekin kelmagan darsda (lesson ${materialLessonOrder} > ${lastWatchedLessonOrder})`);
                 aiResponse = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.arabic;
                 aiResponseUz = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.uzbek;
@@ -579,8 +705,10 @@ class GPTStep implements PipelineStep {
                         console.log(`⚠️  Material response is not logical, asking GPT instead`);
                     }
                     const gptStart = Date.now();
+                    // Conversation topic'ni GPT'ga yanada aniq context sifatida yuborish
+                    const enhancedPrompt = this.enhancePromptWithConversationContext(userText, conversationTopic);
                     const gptResult = await this.gpt.generateWithUsage({
-                        prompt: userText,
+                        prompt: enhancedPrompt,
                         context: input.context,
                         language: 'ar',
                         strict: false,
@@ -590,12 +718,16 @@ class GPTStep implements PipelineStep {
                     aiResponse = gptResult.text;
                     gptUsage = gptResult.usage;
 
-                    // GPT javobini ham tekshirish
+                    // GPT javobini ham tekshirish (conversation context bilan)
                     console.log(`\n🔍 Validating GPT response (after material echo) for echo...`);
                     const gptIsEcho = this.detectEcho(aiResponse, userText, normalizedUser, userWords);
                     const gptIsLogical = this.validateLogicalResponse(aiResponse, userText, normalizedUser);
+                    const gptMatchesContext = this.validateResponseMatchesConversationContext(
+                        aiResponse,
+                        conversationTopic
+                    );
 
-                    if (gptIsEcho || !gptIsLogical) {
+                    if (gptIsEcho || !gptIsLogical || !gptMatchesContext) {
                         // GPT ham mantiqsiz javob berdi - tushunmadim
                         if (gptIsEcho) {
                             console.log(`❌ GPT also echoed! Using NOT_UNDERSTOOD fallback.`);
@@ -637,8 +769,10 @@ class GPTStep implements PipelineStep {
                     // Yordamlash ham mantiqsiz - GPT ga so'rov
                     console.log(`⚠️  Yaqin match mantiqsiz, GPT ga so'rov`);
                     const gptStart = Date.now();
+                    // Conversation topic'ni GPT'ga yanada aniq context sifatida yuborish
+                    const enhancedPrompt = this.enhancePromptWithConversationContext(userText, conversationTopic);
                     const gptResult = await this.gpt.generateWithUsage({
-                        prompt: userText,
+                        prompt: enhancedPrompt,
                         context: input.context,
                         language: 'ar',
                         strict: false,
@@ -701,8 +835,17 @@ class GPTStep implements PipelineStep {
                 console.log(`   ✅ Response exists in lesson materials.`);
             }
 
-            // AGAR TUSHUNMAGAN, ECHO YOKI MANTIQIY EMAS YOKI MATERIALDA YO'Q
-            if (!aiResponse || unsure || responseIsEcho || !isLogicalResponse || hasFutureLessonWords || !responseExistsInMaterials) {
+            // Conversation context bilan mos kelishini tekshirish
+            const matchesConversationContext = this.validateResponseMatchesConversationContext(
+                aiResponse,
+                conversationTopic
+            );
+            if (!matchesConversationContext && conversationTopic.topic) {
+                console.log(`   ⚠️  Response does NOT match conversation context (topic: ${conversationTopic.topic})`);
+            }
+
+            // AGAR TUSHUNMAGAN, ECHO YOKI MANTIQIY EMAS YOKI MATERIALDA YO'Q YOKI CONTEXT'GA MOS KELMASA
+            if (!aiResponse || unsure || responseIsEcho || !isLogicalResponse || hasFutureLessonWords || !responseExistsInMaterials || !matchesConversationContext) {
                 // Echo yoki mantiqsiz javob - tushunmadim
                 if (responseIsEcho) {
                     console.log(`\n🚫 GPT echoed user text. Using NOT_UNDERSTOOD fallback.`);
@@ -997,6 +1140,278 @@ class GPTStep implements PipelineStep {
         return hasLogicalStructure;
     }
 
+    /**
+     * Conversation history'dan topic/mavzuni aniqlash
+     * Masalan: kasb haqida, narsa haqida, joy haqida va h.k.
+     */
+    private extractConversationTopic(
+        conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
+        context: any[]
+    ): { topic: string | null; keywords: string[] } {
+        if (conversationHistory.length === 0) {
+            return { topic: null, keywords: [] };
+        }
+
+        // Materiallardan asosiy so'zlar ro'yxatini yig'ish
+        const materialWords = new Set<string>();
+        const professionWords = new Set<string>(); // Kasb so'zlari
+        const objectWords = new Set<string>(); // Narsa so'zlari
+        const placeWords = new Set<string>(); // Joy so'zlari
+
+        // Ma'lum so'z kategoriyalari
+        const professionKeywords = ['مُهَنْدِس', 'تَاجِر', 'طَبِيب', 'طَالِب', 'مُعَلِّم', 'مُحَمَّد', 'أَحْمَد'];
+        const objectKeywords = ['بُرْتُقَال', 'بَيْت', 'مَوْز', 'كِتَاب', 'مَسْجِد'];
+        const placeKeywords = ['قَرِيب', 'بَعِيد', 'هنا', 'هناك'];
+
+        if (Array.isArray(context)) {
+            for (const lesson of context) {
+                const text = (lesson?.text || lesson?.content || '') as string;
+                if (!text) continue;
+
+                const normalizedText = ArabicTextUtils.normalizeArabic(text.replace(/[\u064B-\u065F\u0670]/g, ''));
+                const words = normalizedText.split(/\s+/).filter(Boolean);
+                words.forEach(w => materialWords.add(w));
+
+                // Kategoriyalarga ajratish
+                professionKeywords.forEach(kw => {
+                    if (normalizedText.includes(kw)) professionWords.add(kw);
+                });
+                objectKeywords.forEach(kw => {
+                    if (normalizedText.includes(kw)) objectWords.add(kw);
+                });
+                placeKeywords.forEach(kw => {
+                    if (normalizedText.includes(kw)) placeWords.add(kw);
+                });
+            }
+        }
+
+        // Conversation history'dan so'zlarni yig'ish
+        const historyWords = new Set<string>();
+        for (const msg of conversationHistory.slice(-4)) { // Oxirgi 4 ta gap
+            const text = msg.content || '';
+            const normalized = ArabicTextUtils.normalizeArabic(text.replace(/[\u064B-\u065F\u0670]/g, ''));
+            normalized.split(/\s+/).filter(Boolean).forEach(w => historyWords.add(w));
+        }
+
+        // Conversation'da qaysi kategoriya so'zlari ko'p uchrayotganini aniqlash
+        let professionCount = 0;
+        let objectCount = 0;
+        let placeCount = 0;
+
+        for (const word of historyWords) {
+            if (professionWords.has(word) || professionKeywords.some(kw => word.includes(kw))) professionCount++;
+            if (objectWords.has(word) || objectKeywords.some(kw => word.includes(kw))) objectCount++;
+            if (placeWords.has(word) || placeKeywords.some(kw => word.includes(kw))) placeCount++;
+        }
+
+        // Topic aniqlash
+        let topic: string | null = null;
+        const keywords: string[] = [];
+
+        if (professionCount > 0 && professionCount >= objectCount && professionCount >= placeCount) {
+            topic = 'profession'; // Kasb
+            for (const word of historyWords) {
+                if (professionWords.has(word) || professionKeywords.some(kw => word.includes(kw))) {
+                    keywords.push(word);
+                }
+            }
+        } else if (objectCount > 0 && objectCount >= placeCount) {
+            topic = 'object'; // Narsa
+            for (const word of historyWords) {
+                if (objectWords.has(word) || objectKeywords.some(kw => word.includes(kw))) {
+                    keywords.push(word);
+                }
+            }
+        } else if (placeCount > 0) {
+            topic = 'place'; // Joy
+            for (const word of historyWords) {
+                if (placeWords.has(word) || placeKeywords.some(kw => word.includes(kw))) {
+                    keywords.push(word);
+                }
+            }
+        }
+
+        return { topic, keywords: [...new Set(keywords)].slice(0, 5) };
+    }
+
+    /**
+     * Conversation history'dan context olib, STT xatolarini tuzatish
+     * Masalan: "مُحَمِّسٌ" → "مُهَنْدِسٌ" (agar conversation kasb haqida bo'lsa)
+     */
+    private applyConversationAwareCorrection(
+        userText: string,
+        context: any[],
+        conversationTopic: { topic: string | null; keywords: string[] }
+    ): string {
+        if (!userText || !conversationTopic.topic) {
+            // Topic yo'q bo'lsa, oddiy correction ishlatamiz
+            return this.applyContextAwareCorrection(userText, context);
+        }
+
+        // Materiallardan topic'ga mos so'zlarni yig'ish
+        const topicWords = new Set<string>();
+        const normalizeWord = (w: string) => ArabicTextUtils.normalizeArabic(w.replace(/[\u064B-\u065F\u0670]/g, ''));
+
+        if (Array.isArray(context)) {
+            for (const lesson of context) {
+                const text = (lesson?.text || lesson?.content || '') as string;
+                if (!text) continue;
+
+                const normalized = normalizeWord(text);
+                const words = normalized.split(/\s+/).filter(Boolean);
+
+                // Topic'ga mos so'zlarni qo'shish
+                if (conversationTopic.topic === 'profession') {
+                    const professionKeywords = ['مُهَنْدِس', 'تَاجِر', 'طَبِيب', 'طَالِب', 'مُعَلِّم'];
+                    words.forEach(w => {
+                        if (professionKeywords.some(kw => w.includes(kw))) {
+                            topicWords.add(w);
+                        }
+                    });
+                } else if (conversationTopic.topic === 'object') {
+                    const objectKeywords = ['بُرْتُقَال', 'بَيْت', 'مَوْز', 'كِتَاب'];
+                    words.forEach(w => {
+                        if (objectKeywords.some(kw => w.includes(kw))) {
+                            topicWords.add(w);
+                        }
+                    });
+                }
+            }
+        }
+
+        // User text'dagi so'zlarni tekshirish va tuzatish
+        const userWords = userText.split(/\s+/);
+        let corrected = false;
+
+        for (let i = 0; i < userWords.length; i++) {
+            const word = userWords[i];
+            const normalizedWord = normalizeWord(word);
+
+            // Agar so'z materialda yo'q bo'lsa, lekin topic'da bor so'zlarga o'xshash bo'lsa
+            if (topicWords.size > 0) {
+                for (const topicWord of topicWords) {
+                    const similarity = this.calculateWordSimilarity(normalizedWord, topicWord);
+                    // 70%+ o'xshashlik bo'lsa va materialda yo'q so'z bo'lsa, tuzatish
+                    if (similarity > 0.7) {
+                        userWords[i] = topicWord; // To'g'ri so'z bilan almashtirish
+                        corrected = true;
+                        console.log(`   ✏️  Corrected "${word}" → "${topicWord}" (topic: ${conversationTopic.topic}, similarity: ${(similarity * 100).toFixed(0)}%)`);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return corrected ? userWords.join(' ') : this.applyContextAwareCorrection(userText, context);
+    }
+
+    /**
+     * Ikki so'z o'rtasidagi o'xshashlikni hisoblash (Levenshtein distance asosida)
+     * STT xatolarini aniqlash uchun character-level similarity
+     */
+    private calculateWordSimilarity(word1: string, word2: string): number {
+        if (!word1 || !word2) return 0;
+        if (word1 === word2) return 1;
+
+        // Levenshtein distance asosida similarity hisoblash
+        const maxLen = Math.max(word1.length, word2.length);
+        if (maxLen === 0) return 1;
+
+        // Qisqa so'zlar uchun Levenshtein distance
+        const distance = this.levenshteinDistance(word1, word2);
+        const similarity = 1 - (distance / maxLen);
+
+        return Math.max(0, similarity);
+    }
+
+    /**
+     * Levenshtein distance - ikki string o'rtasidagi minimum edit distance
+     * STT xatolarini aniqlash uchun
+     */
+    private levenshteinDistance(str1: string, str2: string): number {
+        const m = str1.length;
+        const n = str2.length;
+
+        // Edge cases
+        if (m === 0) return n;
+        if (n === 0) return m;
+
+        // Dynamic programming matrix
+        const dp: number[][] = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+        // Initialize first row and column
+        for (let i = 0; i <= m; i++) dp[i][0] = i;
+        for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+        // Fill the matrix
+        for (let i = 1; i <= m; i++) {
+            for (let j = 1; j <= n; j++) {
+                const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                dp[i][j] = Math.min(
+                    dp[i - 1][j] + 1,     // deletion
+                    dp[i][j - 1] + 1,     // insertion
+                    dp[i - 1][j - 1] + cost // substitution
+                );
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    /**
+     * GPT prompt'ni conversation context bilan yaxshilash
+     */
+    private enhancePromptWithConversationContext(
+        userText: string,
+        conversationTopic: { topic: string | null; keywords: string[] }
+    ): string {
+        if (!conversationTopic.topic) {
+            return userText;
+        }
+
+        // Topic'ga mos context qo'shish
+        const topicContexts: { [key: string]: string } = {
+            'profession': ' [CONTEXT: User is asking about professions/kasb, not objects/things]',
+            'object': ' [CONTEXT: User is asking about objects/things/narsa, not professions]',
+            'place': ' [CONTEXT: User is asking about location/place/joy]'
+        };
+
+        const contextHint = topicContexts[conversationTopic.topic] || '';
+        if (conversationTopic.keywords.length > 0) {
+            return `${userText}${contextHint} [Keywords from conversation: ${conversationTopic.keywords.slice(0, 3).join(', ')}]`;
+        }
+
+        return userText + contextHint;
+    }
+
+    /**
+     * Javob conversation context'ga mos keladimi tekshirish
+     */
+    private validateResponseMatchesConversationContext(
+        response: string,
+        conversationTopic: { topic: string | null; keywords: string[] }
+    ): boolean {
+        if (!conversationTopic.topic || conversationTopic.keywords.length === 0) {
+            return true; // Topic yo'q bo'lsa, valid deb hisoblaymiz
+        }
+
+        const normalizeWord = (w: string) => ArabicTextUtils.normalizeArabic(w.replace(/[\u064B-\u065F\u0670]/g, ''));
+        const responseNormalized = normalizeWord(response);
+        const responseWords = responseNormalized.split(/\s+/).filter(Boolean);
+
+        // Response'da topic keywords'lardan kamida bitta bo'lishi kerak
+        for (const keyword of conversationTopic.keywords) {
+            const keywordNormalized = normalizeWord(keyword);
+            if (responseWords.some(w => w.includes(keywordNormalized) || keywordNormalized.includes(w))) {
+                return true; // Topic'ga mos javob
+            }
+        }
+
+        // Agar response topic'ga mos bo'lmasa, lekin mantiqiy bo'lsa, valid deb hisoblaymiz
+        // (chunki ba'zida topic o'zgarishi mumkin)
+        return false; // Topic'ga mos kelmaydi
+    }
+
     private buildNormalizedWordSet(context: any[]): Set<string> {
         const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670]/g, '');
         const normalize = (t: string) => ArabicTextUtils.normalizeArabic(stripDiacritics(t));
@@ -1053,6 +1468,97 @@ class GPTStep implements PipelineStep {
         }
 
         return changed ? originalTokens.join(' ') : original;
+    }
+
+    /**
+     * Dialogue gap'larini to'liq qidirish va STT xatolarini tuzatish
+     * Masalan: "لَا حَاسَبَيْتٌ" → "لَا، هَذَا بَيْتٌ"
+     * Bu method dialogue'dagi barcha gap'lar bilan character-level similarity qiladi
+     */
+    private applyDialogueSentenceCorrection(userText: string, context: any[]): string {
+        if (!userText || !Array.isArray(context) || context.length === 0) {
+            return userText;
+        }
+
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670\u0640]/g, '');
+        const stripPunctuation = (t: string) => t.replace(/[،,\.\?؟!;؛]/g, '').trim();
+        const normalize = (t: string) => {
+            const cleaned = stripPunctuation(stripDiacritics(t));
+            return ArabicTextUtils.normalizeArabic(cleaned);
+        };
+
+        const splitSentences = (t: string): string[] => {
+            const cleaned = (t || '').trim();
+            if (!cleaned) return [];
+            return cleaned
+                .split(/(?<=[\.\!؟])\s+/)
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        };
+
+        const normalizedUser = normalize(userText);
+        let bestMatch = null;
+        let bestSimilarity = 0;
+        const MIN_SIMILARITY_THRESHOLD = 0.65; // 65%+ similarity bo'lsa, tuzatish
+
+        // Barcha context'dagi dialogue gap'larini qidirish
+        for (const lesson of context) {
+            const lessonText: string = (lesson && (lesson.text || lesson.content || '')) as string;
+            if (!lessonText) continue;
+
+            const sentences = splitSentences(lessonText);
+            for (const sentence of sentences) {
+                const normalizedSentence = normalize(sentence);
+
+                // Character-level similarity hisoblash (to'liq gap uchun)
+                const similarity = this.calculateSentenceSimilarity(normalizedUser, normalizedSentence);
+
+                if (similarity > bestSimilarity) {
+                    bestSimilarity = similarity;
+                    bestMatch = sentence; // Original sentence (diacritics bilan)
+                }
+            }
+        }
+
+        // Agar similarity threshold'dan yuqori bo'lsa, tuzatish
+        if (bestMatch && bestSimilarity >= MIN_SIMILARITY_THRESHOLD) {
+            console.log(`   ✏️  Dialogue sentence correction: "${userText}" → "${bestMatch}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
+            return bestMatch;
+        }
+
+        return userText;
+    }
+
+    /**
+     * Ikki gap o'rtasidagi o'xshashlikni hisoblash (to'liq gap uchun)
+     * Character-level similarity + word overlap kombinatsiyasi
+     */
+    private calculateSentenceSimilarity(sentence1: string, sentence2: string): number {
+        if (!sentence1 || !sentence2) return 0;
+        if (sentence1 === sentence2) return 1;
+
+        // 1) Character-level similarity (Levenshtein)
+        const maxLen = Math.max(sentence1.length, sentence2.length);
+        const charSimilarity = maxLen > 0
+            ? 1 - (this.levenshteinDistance(sentence1, sentence2) / maxLen)
+            : 0;
+
+        // 2) Word overlap (Jaccard)
+        const words1 = new Set(sentence1.split(/\s+/).filter(Boolean));
+        const words2 = new Set(sentence2.split(/\s+/).filter(Boolean));
+        let wordIntersection = 0;
+        for (const w of words1) if (words2.has(w)) wordIntersection++;
+        const wordUnion = new Set([...words1, ...words2]).size;
+        const wordSimilarity = wordUnion > 0 ? wordIntersection / wordUnion : 0;
+
+        // 3) Qisqa gap'lar uchun character-level muhimroq
+        // Uzoq gap'lar uchun word overlap muhimroq
+        const isShort = sentence1.length < 20 || sentence2.length < 20;
+        const combinedSimilarity = isShort
+            ? charSimilarity * 0.7 + wordSimilarity * 0.3
+            : charSimilarity * 0.4 + wordSimilarity * 0.6;
+
+        return Math.max(0, combinedSimilarity);
     }
 }
 
