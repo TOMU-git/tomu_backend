@@ -46,8 +46,9 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
      */
     async findBySessionId(sessionId: ID): Promise<AIChatMessage[]> {
         this.debugLog(`Finding all messages for session: ${sessionId}`);
+        // Use session relation for query since sessionId is @RelationId (virtual property)
         return await this.aiChatMessageRepository.find({
-            where: { sessionId },
+            where: { session: { id: Number(sessionId) } },
             relations: ["session"],
             order: { createdAt: "ASC" },
         });
@@ -60,8 +61,9 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
      */
     async findBySessionIdOrdered(sessionId: ID): Promise<AIChatMessage[]> {
         this.debugLog(`Finding ordered messages for session: ${sessionId}`);
+        // Use session relation for query since sessionId is @RelationId (virtual property)
         return await this.aiChatMessageRepository.find({
-            where: { sessionId },
+            where: { session: { id: Number(sessionId) } },
             relations: ["session"],
             order: {
                 createdAt: "ASC" // Eskidan yangigacha tartib
@@ -76,8 +78,9 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
      */
     async findLastMessageBySessionId(sessionId: ID): Promise<AIChatMessage | null> {
         this.debugLog(`Finding last message for session: ${sessionId}`);
+        // Use session relation for query since sessionId is @RelationId (virtual property)
         return await this.aiChatMessageRepository.findOne({
-            where: { sessionId },
+            where: { session: { id: Number(sessionId) } },
             relations: ["session"],
             order: { createdAt: "DESC" },
         });
@@ -143,8 +146,9 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
      */
     async countMessagesBySessionId(sessionId: ID): Promise<number> {
         this.debugLog(`Counting messages for session: ${sessionId}`);
+        // Use session relation for query since sessionId is @RelationId (virtual property)
         return await this.aiChatMessageRepository.count({
-            where: { sessionId },
+            where: { session: { id: Number(sessionId) } },
         });
     }
 
@@ -176,9 +180,10 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
      */
     async findMessagesWithinLimit(sessionId: ID): Promise<AIChatMessage[]> {
         this.debugLog(`Finding messages within 7-module limit for session: ${sessionId}`);
+        // Use session relation for query since sessionId is @RelationId (virtual property)
         return await this.aiChatMessageRepository.find({
             where: {
-                sessionId,
+                session: { id: Number(sessionId) },
                 isWithinLimit: true
             },
             relations: ["session"],

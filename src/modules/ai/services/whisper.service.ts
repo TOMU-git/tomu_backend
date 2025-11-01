@@ -11,12 +11,32 @@ console.log("🎤 Whisper Configuration:");
 console.log(`   WHISPER_MODEL: ${WHISPER_MODEL}`);
 
 /**
+ * Whisper usage ma'lumotlari
+ */
+export interface WhisperUsage {
+    duration: number; // seconds
+    text: string;
+}
+
+/**
+ * Whisper response with usage
+ */
+export interface WhisperResponse {
+    text: string;
+    duration?: number; // seconds
+}
+
+/**
  * WhisperService
  * -------------------------------------------------------
  * Maqsad: Audio -> Text konvertatsiya (STT).
  */
 @Injectable()
 export class WhisperService {
+    /**
+     * Audio -> Text (backward compatible)
+     * @deprecated Use speechToTextWithUsage() for cost tracking
+     */
     async speechToText(params: { audio: Buffer; language?: string }): Promise<string> {
         if (!OPENAI_API_KEY) {
             console.log("⚠️  OpenAI API key yo'q - fallback javob");
@@ -93,6 +113,76 @@ export class WhisperService {
             }
             console.error('⚠️  Falling back to empty string');
             return "";
+        }
+    }
+
+    /**
+     * Audio -> Text (usage ma'lumotlari bilan)
+     * @param params - Audio va language
+     * @returns Text va duration (cost tracking uchun)
+     */
+    async speechToTextWithUsage(params: { audio: Buffer; language?: string }): Promise<WhisperResponse> {
+        // Reuse existing logic but extract duration
+        if (!OPENAI_API_KEY) {
+            const fallbackText = "عَفْوًا، لَمْ أَسْمَعْ شَيْئًا. هَلْ يُمْكِنُكَ الإِعَادَةَ؟";
+            return { text: fallbackText, duration: 0 };
+        }
+
+        const audioSizeMB = params.audio.length / (1024 * 1024);
+        if (audioSizeMB > 25) {
+            console.error(`❌ Audio fayl juda katta: ${audioSizeMB.toFixed(2)}MB (max: 25MB)`);
+            return { text: "عَفْوًا، الصَّوْتُ كَبِيرٌ جِدًّا.", duration: 0 };
+        }
+
+        const fd = new FormData();
+        const extension = params.language === 'ar' ? 'webm' : 'webm';
+        const filename = `audio.${extension}`;
+        const contentType = `audio/${extension}`;
+
+        fd.append("file", params.audio, { filename, contentType });
+        fd.append("model", WHISPER_MODEL);
+        const whisperLang = params.language || 'ar';
+        fd.append("language", whisperLang);
+        fd.append("temperature", "0");
+
+        if (whisperLang === 'ar') {
+            fd.append(
+                "prompt",
+                "مَا هَٰذَا يَا فَرِيد؟ هَٰذَا بُرْتُقَالٌ يَا فَرِيد. هَلْ هُوَ لَذِيذٌ؟ نَعَمْ هَٰذَا الْبُرْتُقَالُ لَذِيذٌ جِدًّا. مَا هَٰذَا يَا مُحَمَّد؟"
+            );
+        }
+
+        fd.append("response_format", "verbose_json");
+
+        try {
+            console.log(`🎤 Calling Whisper API with model: ${WHISPER_MODEL}`);
+            console.log(`📊 Audio size: ${audioSizeMB.toFixed(3)} MB`);
+
+            const res = await axios.post("https://api.openai.com/v1/audio/transcriptions", fd, {
+                headers: { ...fd.getHeaders(), Authorization: `Bearer ${OPENAI_API_KEY}` },
+            });
+
+            console.log("✅ Whisper API call successful");
+
+            let transcribedText = "";
+            const responseData = res.data as any;
+
+            if (typeof responseData === "string") {
+                transcribedText = responseData;
+            } else if (responseData?.text) {
+                transcribedText = responseData.text;
+            } else if (responseData) {
+                transcribedText = JSON.stringify(responseData);
+            }
+
+            // Extract duration from verbose_json response
+            const duration = responseData?.duration || 0; // seconds
+            console.log(`📝 Transcribed: "${transcribedText}" (duration: ${duration}s)`);
+
+            return { text: transcribedText, duration };
+        } catch (e: any) {
+            console.error('❌ Whisper transcription error:', e.message);
+            return { text: "", duration: 0 };
         }
     }
 
