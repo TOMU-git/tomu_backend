@@ -16,12 +16,32 @@ console.log(`   TTS_VOICE: ${TTS_VOICE}`);
 console.log(`   TTS_SPEED: ${TTS_SPEED}`);
 
 /**
+ * TTS usage ma'lumotlari
+ */
+export interface TTSUsage {
+    characters: number;
+    audioUrl: string;
+}
+
+/**
+ * TTS response with usage
+ */
+export interface TTSResponse {
+    audioUrl: string;
+    characters?: number;
+}
+
+/**
  * TTSService
  * -------------------------------------------------------
  * Maqsad: Matndan audio yaratish (adapter).
  */
 @Injectable()
 export class TTSService {
+    /**
+     * Text -> Speech (backward compatible)
+     * @deprecated Use textToSpeechWithUsage() for cost tracking
+     */
     async textToSpeech(params: { text: string; language: string; }): Promise<string> {
         if (!OPENAI_API_KEY) {
             return "/upload/audio/placeholder.mp3";
@@ -51,6 +71,47 @@ export class TTSService {
         } catch (e: any) {
             console.log(`❌ TTS Error: ${e.message}`);
             return "/upload/audio/placeholder.mp3";
+        }
+    }
+
+    /**
+     * Text -> Speech (usage ma'lumotlari bilan)
+     * @param params - Text va language
+     * @returns Audio URL va character count (cost tracking uchun)
+     */
+    async textToSpeechWithUsage(params: { text: string; language: string; }): Promise<TTSResponse> {
+        if (!OPENAI_API_KEY) {
+            return { audioUrl: "/upload/audio/placeholder.mp3", characters: 0 };
+        }
+
+        try {
+            const res = await axios.post(
+                "https://api.openai.com/v1/audio/speech",
+                {
+                    model: TTS_MODEL,
+                    voice: TTS_VOICE,
+                    input: params.text,
+                    speed: TTS_SPEED,
+                    response_format: "mp3",
+                },
+                { responseType: "arraybuffer", headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
+            );
+
+            const outDir = path.resolve(process.cwd(), "upload", "audio");
+            await fs.mkdir(outDir, { recursive: true });
+            const filename = `tts_${Date.now()}.mp3`;
+            const full = path.join(outDir, filename);
+            await fs.writeFile(full, Buffer.from(res.data as any));
+
+            const audioUrl = `/upload/audio/${filename}`;
+            const characters = params.text.length;
+
+            console.log(`🔊 TTS generated: ${characters} characters -> ${audioUrl}`);
+
+            return { audioUrl, characters };
+        } catch (e: any) {
+            console.log(`❌ TTS Error: ${e.message}`);
+            return { audioUrl: "/upload/audio/placeholder.mp3", characters: 0 };
         }
     }
 }

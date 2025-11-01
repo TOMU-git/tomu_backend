@@ -21,6 +21,7 @@ import { ArabicTextUtils } from "../utils/arabic-text.util";
 import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
 import { VoiceProcessingPipeline, VoiceInput } from "./voice-processing-pipeline.service";
 import { UserAIProfile } from "../entities/user-ai-profile.entity";
+import { LimitCheckService } from "./limit-check.service";
 
 /**
  * AIChatService
@@ -46,6 +47,7 @@ export class AIChatService {
         @Inject('ILessonProgressService') private readonly lessonProgressService: ILessonProgressService,
         private readonly messageFactory: AIChatMessageFactory,
         private readonly voicePipeline: VoiceProcessingPipeline,
+        private readonly limitCheck: LimitCheckService, // Cost tracking uchun
     ) { }
 
     /**
@@ -107,6 +109,22 @@ export class AIChatService {
         result.session.lastActivityAt = new Date();
         await this.sessionRepo.update(result.session);
 
+        // Cost tracking - message saqlangandan keyin (id mavjud bo'ladi)
+        try {
+            const usage = (result as any).usage;
+            if (usage) {
+                await this.trackCostAfterSave({
+                    userId: Number(userId),
+                    sessionId: saved.sessionId,
+                    messageId: saved.id as unknown as number,
+                    usage,
+                });
+            }
+        } catch (error: any) {
+            // Cost tracking xatosi request'ni to'xtatmaydi, faqat log qilamiz
+            console.error('❌ Cost tracking error after message save:', error.message);
+        }
+
         return saved;
     }
 
@@ -122,8 +140,8 @@ export class AIChatService {
     /**
      * Kontekst yig'ish: foydalanuvchi darajasi va kelgan darsigacha bo'lgan materiallar
      */
-    private async buildContext(params: { userId: number; courseId?: ID }): Promise<any> {
-        const { userId, courseId } = params;
+    async buildContext(params: { userId: number; courseId?: ID; userQuery?: string }): Promise<any> {
+        const { userId, courseId, userQuery } = params;
 
         // 1. Foydalanuvchi AI profili (til, moduleLimit, useStrictMode)
         const profile = await this.getUserAIProfile(userId);
@@ -134,8 +152,8 @@ export class AIChatService {
         // 3. Dars progressi (ko'rilgan/unlocked darslar)
         const lessonProgresses = await this.getLessonProgresses(userId, courseId);
 
-        // 4. Chroma kontekst (kurs materiallari) - faqat kelgan darsigacha
-        const chromaContext = await this.getChromaContext(userId, courseId, courseProgress, profile);
+        // 4. Chroma kontekst (kurs materiallari) - user query bilan RAG search
+        const chromaContext = await this.getChromaContext(userId, courseId, courseProgress, profile, userQuery);
 
         return {
             profile,
@@ -207,18 +225,48 @@ export class AIChatService {
         userId: number,
         courseId?: ID,
         courseProgress?: any,
-        profile?: any
+        profile?: any,
+        userQuery?: string // User so'rovi - RAG query uchun
     ): Promise<any[]> {
         if (!courseId) return [];
 
-        const currentLessonOrder = courseProgress?.currentLessonOrder;
+        const currentLessonOrder = courseProgress?.currentLessonOrder || 0;
+        const useStrictMode = profile?.useStrictMode ?? true; // Default: strict mode
+        const moduleLimit = profile?.moduleLimit || 7;
 
-        // FAQLAT BARCHA MATERIALLARDAN QIDIRISH - KELGAN DARSLAR CHEKLANGAN
-        return await this.chroma.searchContext({
+        console.log(`📚 Getting Chroma context:`);
+        console.log(`   - User progress: currentLessonOrder = ${currentLessonOrder}`);
+        console.log(`   - Profile: useStrictMode = ${useStrictMode}, moduleLimit = ${moduleLimit}`);
+        console.log(`   - User query: "${userQuery || '(none)'}"`);
+
+        // IMPORTANT: Agar currentLessonOrder 0 bo'lsa (hech qanday dars ko'rilmagan),
+        // lekin user 1-darsdan gapirishi mumkin - shuning uchun kamida 1-darsni include qilamiz
+        // Yoki agar currentLessonOrder 1 yoki undan katta bo'lsa, shu darsgacha include qilamiz
+        const effectiveMaxLessonOrder = currentLessonOrder > 0 ? currentLessonOrder : 1;
+        const effectiveStrict = useStrictMode && currentLessonOrder > 0; // 0 bo'lsa strict mode o'chiriladi
+
+        console.log(`   - Effective maxLessonOrder = ${effectiveMaxLessonOrder} (original: ${currentLessonOrder})`);
+        console.log(`   - Effective strict mode = ${effectiveStrict} (original: ${useStrictMode})`);
+
+        // User so'rovini query sifatida ishlatish - bu RAG search'ni aniqroq qiladi
+        // Agar userQuery bo'lmasa, umumiy query ishlatiladi
+        const results = await this.chroma.searchContext({
             userId,
             courseId: Number(courseId),
-            language: 'ar'
+            language: 'ar',
+            query: userQuery || undefined, // User textini RAG query sifatida yuborish
+            strict: effectiveStrict, // Strict mode: faqat kelgan darslar (lekin 0 bo'lsa o'chiriladi)
+            maxLessonOrder: effectiveStrict ? effectiveMaxLessonOrder : undefined, // Strict mode: kelgan darsgacha
+            moduleLimit: effectiveStrict ? moduleLimit : undefined, // Module limit
         });
+
+        console.log(`📚 Chroma context retrieved: ${results.length} chunks`);
+        if (results.length > 0) {
+            const lessonOrders = [...new Set(results.map(r => r.lessonOrder))].sort((a, b) => a - b);
+            console.log(`   - Lesson orders: ${lessonOrders.join(', ')}`);
+        }
+
+        return results;
     }
 
     /**
@@ -284,6 +332,40 @@ export class AIChatService {
         const chunks: Array<any> = context?.chromaContext || context?.chroma || [];
         const found = chunks.find((c) => !!c.audioUrl);
         return found?.audioUrl ?? null;
+    }
+
+    /**
+     * Cost tracking - message saqlangandan keyin
+     */
+    private async trackCostAfterSave(params: {
+        userId: number;
+        sessionId: number;
+        messageId: number;
+        usage: VoiceInput['usage'];
+    }): Promise<void> {
+        if (!params.usage) {
+            console.warn('⚠️  Usage ma\'lumotlari yo\'q, cost tracking o\'tkazilmaydi');
+            return;
+        }
+
+        try {
+            await this.limitCheck.saveCostAndCheckLimit({
+                userId: params.userId,
+                sessionId: params.sessionId,
+                messageId: params.messageId,
+                gptPromptTokens: params.usage.gpt?.promptTokens,
+                gptCompletionTokens: params.usage.gpt?.completionTokens,
+                whisperDurationSeconds: params.usage.whisper?.duration,
+                ttsCharacters: params.usage.tts?.characters,
+            });
+        } catch (error: any) {
+            // LimitExceededException - bu expected error
+            // Boshqa xatolar uchun log
+            if (error.constructor.name !== 'LimitExceededException') {
+                console.error('❌ Unexpected error in cost tracking:', error);
+            }
+            throw error;
+        }
     }
 
 }

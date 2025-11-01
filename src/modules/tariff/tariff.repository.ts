@@ -6,14 +6,12 @@ import { Repository } from "typeorm";
 export class TariffRepository implements ITariffRepository {
   constructor(
     @InjectRepository(Tariff) private tariffRepository: Repository<Tariff>,
-  ) {}
+  ) { }
   async insert(entity: Tariff): Promise<Tariff> {
     return this.tariffRepository.save(entity);
   }
   async findAll(): Promise<Tariff[]> {
-    return this.tariffRepository.find({
-      relations: ["course"],
-    });
+    return this.tariffRepository.find();
   }
 
   async findOneById(id: number): Promise<Tariff> {
@@ -36,7 +34,7 @@ export class TariffRepository implements ITariffRepository {
   // Course ID orqali tariflarni topish metodi
   async findByCourseId(courseId: number): Promise<Tariff[]> {
     return await this.tariffRepository.find({
-      where: {courseId}
+      where: { courseId }
     });
   }
 }

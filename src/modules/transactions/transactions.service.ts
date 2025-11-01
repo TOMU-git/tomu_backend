@@ -78,9 +78,32 @@ export class TransactionsService implements ITransactionService {
 
     let { amount } = params;
 
+    // Log qo'shish - muammoni topish uchun
+    console.log("=== PAYME CHECK PERFORM TRANSACTION DEBUG ===");
+    console.log("Received amount from Payme:", amount, "(type:", typeof amount, ")");
+    console.log("Order totalPrice:", foundOrder.totalPrice, "(type:", typeof foundOrder.totalPrice, ")");
+    console.log("Order totalPrice as Number:", Number(foundOrder.totalPrice));
+
+    const originalAmount = amount;
     amount = Math.floor(amount / 100);
 
+    console.log("Amount after division by 100:", amount);
+    console.log("Comparison:", {
+      receivedAmountAfterDiv: amount,
+      orderTotalPrice: Number(foundOrder.totalPrice),
+      areEqual: amount === Number(foundOrder.totalPrice),
+    });
+    console.log("User-Agent (if available):", params);
+    console.log("=============================================");
+
     if (amount !== Number(foundOrder.totalPrice)) {
+      console.error("❌ AMOUNT MISMATCH ERROR:", {
+        receivedAmountOriginal: originalAmount,
+        receivedAmountAfterDiv: amount,
+        orderTotalPrice: foundOrder.totalPrice,
+        orderTotalPriceNumber: Number(foundOrder.totalPrice),
+        difference: Math.abs(amount - Number(foundOrder.totalPrice)),
+      });
       throw new TransactionErrorException(PaymeError.InvalidAmount, id);
     }
   }

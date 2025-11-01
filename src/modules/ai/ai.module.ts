@@ -4,18 +4,21 @@ import { AIChatSession } from './entities/ai-chat-session.entity';
 import { AIChatMessage } from './entities/ai-chat-message.entity';
 import { UserAIProfile } from './entities/user-ai-profile.entity';
 import { UserCourseProgress } from './entities/user-course-progress.entity';
+import { AIUsageCost } from './entities/ai-usage-cost.entity';
 
 // Repository imports
 import { UserAIProfileRepository } from './repositories/user-ai-profile.repository';
 import { UserCourseProgressRepository } from './repositories/user-course-progress.repository';
 import { AIChatSessionRepository } from './repositories/ai-chat-session.repository';
 import { AIChatMessageRepository } from './repositories/ai-chat-message.repository';
+import { AIUsageCostRepository } from './repositories/ai-usage-cost.repository';
 
 // Interface imports
 import { IUserAIProfileRepository } from './interfaces/user-ai-profile.repository';
 import { IUserCourseProgressRepository } from './interfaces/user-course-progress.repository';
 import { IAIChatSessionRepository } from './interfaces/ai-chat-session.repository';
 import { IAIChatMessageRepository } from './interfaces/ai-chat-message.repository';
+import { IAIUsageCostRepository } from './interfaces/ai-usage-cost.repository';
 
 // Service imports
 import { AIChatService } from './services/ai-chat.service';
@@ -35,21 +38,26 @@ import { AIChatMessageFactory } from './services/ai-chat-message-factory.service
 import { VoiceProcessingPipeline } from './services/voice-processing-pipeline.service';
 import { UserCourseProgressService } from './services/user-course-progress.service';
 import { UserProgressCalculator } from './utils/user-progress-calculator.util';
+import { CostCalculationService } from './services/cost-calculation.service';
+import { LimitCheckService } from './services/limit-check.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
 import { AiAdminController } from './controllers/ai-admin.controller';
 import { SharedModule } from '../shared/shared.module';
+import { UserCoursesModule } from '../user-courses/user-courses.module';
 
 @Module({
   imports: [
     SharedModule,
     forwardRef(() => LessonProgressModule),
+    UserCoursesModule, // PaymentGuard uchun UserCourseRepository'ga access
     TypeOrmModule.forFeature([
       AIChatSession,
       AIChatMessage,
       UserAIProfile,
       UserCourseProgress,
+      AIUsageCost, // Cost tracking entity
     ]),
   ],
   controllers: [AiChatController, AiAdminController],
@@ -71,6 +79,10 @@ import { SharedModule } from '../shared/shared.module';
       provide: 'IAIChatMessageRepository',
       useClass: AIChatMessageRepository,
     },
+    {
+      provide: 'IAIUsageCostRepository',
+      useClass: AIUsageCostRepository,
+    },
     // Servislar
     AIChatService,
     GPTService,
@@ -83,6 +95,9 @@ import { SharedModule } from '../shared/shared.module';
     UserCourseProgressService,
     UserProgressCalculator,
     IndexLessonsCommand,
+    // Cost tracking servislar
+    CostCalculationService,
+    LimitCheckService,
     // Chroma sub-services
     ChromaConnectionService,
     ChromaEmbeddingService,
@@ -97,6 +112,7 @@ import { SharedModule } from '../shared/shared.module';
     'IUserCourseProgressRepository',
     'IAIChatSessionRepository',
     'IAIChatMessageRepository',
+    'IAIUsageCostRepository',
     // Servislar exporti (ixtiyoriy, boshqa modullarda ishlatish uchun)
     AIChatService,
     GPTService,
@@ -108,6 +124,9 @@ import { SharedModule } from '../shared/shared.module';
     VoiceProcessingPipeline,
     UserCourseProgressService,
     UserProgressCalculator,
+    // Cost tracking servislar export
+    CostCalculationService,
+    LimitCheckService,
     // Chroma sub-services export
     ChromaConnectionService,
     ChromaEmbeddingService,

@@ -62,21 +62,32 @@ export class ChromaService {
         console.log(`💾 Using Memory Index fallback (RAG=${useRagEnabled ? 'enabled but ChromaDB failed/empty' : 'disabled'})`);
 
         const all = this.memoryIndexService.getChunks(language);
+        console.log(`   - Total chunks in memory: ${all.length}`);
         let limited = all;
 
         // Module limit filter
         if (typeof params.moduleLimit === 'number') {
+            const beforeModuleFilter = limited.length;
             limited = this.memoryIndexService.filterByModule(limited, params.moduleLimit);
+            console.log(`   - After module filter (<=${params.moduleLimit}): ${limited.length} (was ${beforeModuleFilter})`);
         }
 
         // Strict mode filter
         if (params.strict && params.maxLessonOrder) {
+            const beforeLessonFilter = limited.length;
             limited = this.memoryIndexService.filterByLessonOrder(limited, params.maxLessonOrder);
+            console.log(`   - After lesson filter (<=${params.maxLessonOrder}): ${limited.length} (was ${beforeLessonFilter})`);
         }
 
         const sorted = this.memoryIndexService.sortChunks(limited);
 
-        console.log(`📚 Context: Memory Index (${sorted.length} lessons)`);
+        console.log(`📚 Context: Memory Index (${sorted.length} chunks)`);
+        if (sorted.length > 0) {
+            const lessonOrders = [...new Set(sorted.map(s => s.lessonOrder))].sort((a, b) => a - b);
+            console.log(`   - Lesson orders in context: ${lessonOrders.join(', ')}`);
+        } else {
+            console.log(`   ⚠️  WARNING: No chunks found! This might be why AI can't find lesson materials.`);
+        }
 
         return sorted.map(item => ({ ...item, source: 'memory' }));
     }

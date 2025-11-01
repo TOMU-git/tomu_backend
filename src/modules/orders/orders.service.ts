@@ -17,13 +17,13 @@ import { JwtService } from '@nestjs/jwt';
 export class OrdersService implements IOrderService {
   constructor(
     @Inject("IOrderRepository") private readonly orderRepository: IOrderRepository,
-    @Inject("IUserService") private readonly userService : IUserService,
-    @Inject("ITariffService") private readonly tariffService : ITariffService,
+    @Inject("IUserService") private readonly userService: IUserService,
+    @Inject("ITariffService") private readonly tariffService: ITariffService,
     @Inject("ILiveChatService") private readonly liveChatService: ILiveChatService,
     @Inject("ICourseService") private readonly courseService: ICourseService,
     private jwtService: JwtService,
   ) { }
-  
+
   async createOrder(orderDto: CreateOrderDto): Promise<ResData<IOrderCreateReturn>> {
     const foundUser = await this.userService.findOneById(orderDto.userId);
     const foundCourse = await this.courseService.findOneById(orderDto.courseId);
@@ -45,8 +45,19 @@ export class OrdersService implements IOrderService {
     newOrder.status = OrderStatus.PENDING;
     const callBackUrl = `https://tomu.uz/kurslar`;
     const createdOrder = await this.orderRepository.create(newOrder);
+
+    // Log qo'shish - muammoni topish uchun
+    console.log("=== ORDER CREATION DEBUG ===");
+    console.log("Created order:", {
+      id: createdOrder.id,
+      totalPrice: createdOrder.totalPrice,
+      totalPriceType: typeof createdOrder.totalPrice,
+      totalPriceNumber: Number(createdOrder.totalPrice),
+    });
+    console.log("===========================");
+
     const url = buildPaymeApi(orderDto.userId, createdOrder.id, Number(createdOrder.totalPrice), callBackUrl);
-    return new ResData<IOrderCreateReturn>("Order created successfully", 201, {order: createdOrder, url: url});
+    return new ResData<IOrderCreateReturn>("Order created successfully", 201, { order: createdOrder, url: url });
   }
   async getAllOrders(): Promise<ResData<OrderEntity[]>> {
     const foundOrders = await this.orderRepository.findAll();
@@ -55,7 +66,7 @@ export class OrdersService implements IOrderService {
 
   async getOrderById(id: number): Promise<ResData<OrderEntity>> {
     const foundOrder = await this.orderRepository.findOneById(id);
-    if (!foundOrder) { 
+    if (!foundOrder) {
       throw new HttpException("Order not found", HttpStatus.NOT_FOUND);
     }
     return new ResData<OrderEntity>("Found order", 200, foundOrder);
