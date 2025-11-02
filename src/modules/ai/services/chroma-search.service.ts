@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import axios from "axios";
 import { ChromaConnectionService } from "./chroma-connection.service";
 import { SearchContextParams } from "./types/chroma.types";
+import { RerankService } from "./rerank.service";
 
 /**
  * ChromaSearchService
@@ -12,6 +13,7 @@ import { SearchContextParams } from "./types/chroma.types";
 export class ChromaSearchService {
     constructor(
         private readonly connectionService: ChromaConnectionService,
+        private readonly rerankService: RerankService,
     ) { }
 
     /**
@@ -55,7 +57,10 @@ export class ChromaSearchService {
         }
 
         try {
-            const topK = Number(process.env.RAG_TOP_K || 12);
+            // ChromaDB dan ko'proq documents olish (rerank uchun)
+            const initialTopK = Number(process.env.RAG_TOP_K || 50); // Top-50 for reranking
+            const finalTopK = Number(process.env.RERANK_TOP_K || 10); // Final top-10 after rerank
+
             const apiBase = this.connectionService.getApiBase();
             const collectionId = await this.connectionService.ensureChromaCollectionId();
 
@@ -64,7 +69,9 @@ export class ChromaSearchService {
             console.log(`   - Collection ID: ${collectionId ? collectionId.substring(0, 8) + '...' : 'NOT FOUND'}`);
             console.log(`   - Query: "${queryText}"`);
             console.log(`   - Language: ${language}`);
-            console.log(`   - Top K: ${topK}`);
+            console.log(`   - Initial Top K: ${initialTopK} (for reranking)`);
+            console.log(`   - Final Top K: ${finalTopK} (after rerank)`);
+            console.log(`   - Rerank enabled: ${this.rerankService.isEnabled()}`);
 
             if (!collectionId) {
                 console.log(`⚠️  ChromaDB not available, falling back to Memory Index`);
@@ -93,7 +100,7 @@ export class ChromaSearchService {
             console.log(`📡 Querying ChromaDB...`);
             const queryPayload = {
                 query_embeddings: [queryEmbedding],
-                n_results: topK,
+                n_results: initialTopK, // More results for reranking
                 where: whereCondition,
                 include: ['metadatas', 'documents', 'distances']
             };
@@ -114,7 +121,8 @@ export class ChromaSearchService {
             if (documents.length > 0) {
                 console.log(`✅ ChromaDB query successful: ${documents.length} documents found`);
 
-                const results = documents.map((doc: string, i: number) => ({
+                // Build initial results from ChromaDB
+                const initialResults = documents.map((doc: string, i: number) => ({
                     id: metadatas[i]?.id || `chroma_${i}`,
                     text: doc,
                     language: metadatas[i]?.language || 'ar',
@@ -129,8 +137,21 @@ export class ChromaSearchService {
                     source: 'chroma'
                 }));
 
-                console.log(`📚 Context: ChromaDB (${results.length} lessons)`);
-                return results;
+                // Apply reranking if enabled
+                let finalResults = initialResults;
+                if (this.rerankService.isEnabled() && initialResults.length > finalTopK) {
+                    console.log(`🔄 Applying reranking: ${initialResults.length} → ${finalTopK} documents...`);
+                    const reranked = await this.rerankService.rerank(queryText, initialResults, finalTopK);
+                    finalResults = reranked.map((r) => r.document);
+                    console.log(`✅ Reranking completed: selected top ${finalResults.length} most relevant documents`);
+                } else if (initialResults.length > finalTopK) {
+                    // If rerank disabled, just take top-K by distance
+                    finalResults = initialResults.slice(0, finalTopK);
+                    console.log(`📊 Using top ${finalTopK} documents by distance (rerank disabled)`);
+                }
+
+                console.log(`📚 Context: ChromaDB → Rerank (${finalResults.length} lessons)`);
+                return finalResults;
             } else {
                 console.log(`⚠️  ChromaDB query returned 0 documents, falling back to Memory Index`);
                 return [];
