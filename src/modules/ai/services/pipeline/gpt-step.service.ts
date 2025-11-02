@@ -1246,6 +1246,23 @@ export class GPTStep implements PipelineStep {
             return bestMatch;
         }
 
+        // FALLBACK: Agar similarity 50-65% orasida bo'lsa va bestMatch topilgan bo'lsa,
+        // phonetic STT correction qo'llash (faqat kam holatlar uchun)
+        // Bu hozirgi logikani buzmaydi, chunki faqat past similarity holatida ishlaydi
+        const PHONETIC_FALLBACK_THRESHOLD_MIN = 0.50;
+        const PHONETIC_FALLBACK_THRESHOLD_MAX = 0.65;
+        if (
+            bestMatch &&
+            bestSimilarity >= PHONETIC_FALLBACK_THRESHOLD_MIN &&
+            bestSimilarity < PHONETIC_FALLBACK_THRESHOLD_MAX
+        ) {
+            const phoneticCorrected = this.applyPhoneticSTTCorrection(userText, bestMatch);
+            if (phoneticCorrected && phoneticCorrected !== userText) {
+                console.log(`   🔤 Phonetic STT correction (fallback): "${userText}" → "${phoneticCorrected}" (original similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
+                return phoneticCorrected;
+            }
+        }
+
         return userText;
     }
 
@@ -1279,5 +1296,156 @@ export class GPTStep implements PipelineStep {
             : charSimilarity * 0.4 + wordSimilarity * 0.6;
 
         return Math.max(0, combinedSimilarity);
+    }
+
+    /**
+     * Phonetic STT error correction - keng tarqalgan Arabic STT xatolarini tuzatish
+     * Faqat bestMatch materialdan topilgan bo'lsa ishlatiladi (xavfsizlik uchun)
+     * 
+     * @param userText - User gapirgan text (STT xatolar bilan)
+     * @param bestMatch - Materialdan topilgan eng yaqin sentence
+     * @returns Tuzatilgan text yoki null agar tuzatish mumkin bo'lmasa
+     */
+    private applyPhoneticSTTCorrection(userText: string, bestMatch: string): string | null {
+        if (!userText || !bestMatch) {
+            return null;
+        }
+
+        // Keng tarqalgan Arabic STT xatolari - phonetic o'xshashliklar
+        // Constant time lookup uchun Map ishlatamiz
+        const STT_PHONETIC_ERRORS: ReadonlyMap<string, readonly string[]> = new Map([
+            ['ح', ['ه']],      // ح → ه (حذاء → هواء)
+            ['ه', ['ح']],      // ه → ح (reverse)
+            ['ذ', ['ظ', 'ز']], // ذ → ظ, ز (ناذف → نظيف)
+            ['ظ', ['ذ', 'ز']], // ظ → ذ, ز (reverse)
+            ['ز', ['ذ', 'ظ']], // ز → ذ, ظ (reverse)
+            ['ق', ['ك']],      // ق → ك (qaf → kaf)
+            ['ك', ['ق']],      // ك → ق (reverse)
+            ['ص', ['س']],      // ص → س (sad → sin)
+            ['س', ['ص']],      // س → ص (reverse)
+            ['ض', ['د']],      // ض → د (dad → dal)
+            ['د', ['ض']],      // د → ض (reverse)
+            ['ط', ['ت']],      // ط → ت (ta → ta)
+            ['ت', ['ط']],      // ت → ط (reverse)
+        ]);
+
+        // Normalization funksiyalari (hozirgi metod bilan bir xil)
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670\u0640]/g, '');
+        const stripPunctuation = (t: string) => t.replace(/[،,\.\?؟!;؛]/g, '').trim();
+        const normalize = (t: string) => {
+            const cleaned = stripPunctuation(stripDiacritics(t));
+            return ArabicTextUtils.normalizeArabic(cleaned);
+        };
+
+        const normalizedUser = normalize(userText);
+        const normalizedMatch = normalize(bestMatch);
+
+        // Agar to'liq mos kelmasa, word-by-word correction qilamiz
+        if (normalizedUser === normalizedMatch) {
+            return bestMatch; // Allaqachon mos
+        }
+
+        const userWords = normalizedUser.split(/\s+/).filter(Boolean);
+        const matchWords = normalizedMatch.split(/\s+/).filter(Boolean);
+
+        if (userWords.length !== matchWords.length) {
+            // So'zlar soni farq qilsa, phonetic correction qilmaymiz (xavfsizlik)
+            return null;
+        }
+
+        // Har bir so'zni phonetic correction bilan solishtirish
+        let phoneticErrorsFound = 0;
+        let totalWordDifferences = 0;
+
+        for (let i = 0; i < userWords.length; i++) {
+            const userWord = userWords[i];
+            const matchWord = matchWords[i];
+
+            if (!userWord || !matchWord) {
+                continue;
+            }
+
+            // Exact match
+            if (userWord === matchWord) {
+                continue;
+            }
+
+            totalWordDifferences++;
+
+            // Phonetic correction tekshiruvi - faqat bitta harf farqi bo'lsa
+            const isPhoneticError = this.isPhoneticSTTError(userWord, matchWord, STT_PHONETIC_ERRORS);
+            if (isPhoneticError) {
+                phoneticErrorsFound++;
+            }
+        }
+
+        // Agar barcha so'z farqlari phonetic error bo'lsa va kamida 1 ta phonetic error topilgan bo'lsa,
+        // bestMatch qaytaramiz (Bu shuni ko'rsatadiki, user text phonetic xatolar bilan material sentence'ga mos keladi)
+        // Qo'shimcha: Agar kamida 2 ta so'z farq qilsa va ularning ikkalasi ham phonetic error bo'lsa,
+        // bu kuchli ko'rsatkich (faqat bitta so'z uchun xavf yuqori bo'lishi mumkin)
+        if (
+            totalWordDifferences > 0 &&
+            phoneticErrorsFound === totalWordDifferences &&
+            (phoneticErrorsFound >= 2 || (phoneticErrorsFound === 1 && userWords.length <= 3)) // Kamida 2 ta yoki qisqa gap'da 1 ta
+        ) {
+            // BestMatch ni qaytaramiz (to'g'ri sentence diacritics bilan)
+            return bestMatch;
+        }
+
+        return null; // Phonetic correction tasdiqlanmadi yoki foydali emas
+    }
+
+    /**
+     * So'zlar o'rtasidagi farq phonetic STT error ekanligini tekshiradi
+     * Faqat bitta harf farqi bo'lsa va phonetic map'da bor bo'lsa
+     * 
+     * @param userWord - User so'zi (xato bilan)
+     * @param correctWord - To'g'ri so'z (materialdan)
+     * @param phoneticMap - Phonetic error mapping
+     * @returns true agar phonetic error bo'lsa, aks holda false
+     */
+    private isPhoneticSTTError(
+        userWord: string,
+        correctWord: string,
+        phoneticMap: ReadonlyMap<string, readonly string[]>
+    ): boolean {
+        if (userWord.length !== correctWord.length) {
+            return false; // Uzunlik farq qilsa, phonetic error emas
+        }
+
+        // Bitta harf farqini topish
+        let diffCount = 0;
+        let diffIndex = -1;
+
+        for (let i = 0; i < userWord.length; i++) {
+            if (userWord[i] !== correctWord[i]) {
+                diffCount++;
+                if (diffCount > 1) {
+                    return false; // 1+ harf farqi - phonetic error emas
+                }
+                diffIndex = i;
+            }
+        }
+
+        if (diffCount !== 1 || diffIndex === -1) {
+            return false; // Faqat bitta harf farqi bo'lishi kerak
+        }
+
+        const wrongChar = userWord[diffIndex];
+        const correctChar = correctWord[diffIndex];
+
+        // Phonetic map'da borligini tekshirish (forward direction)
+        const phoneticAlternatives = phoneticMap.get(wrongChar);
+        if (phoneticAlternatives && phoneticAlternatives.includes(correctChar)) {
+            return true; // Phonetic error topildi
+        }
+
+        // Reverse tekshiruv (correctChar → wrongChar direction)
+        const reverseAlternatives = phoneticMap.get(correctChar);
+        if (reverseAlternatives && reverseAlternatives.includes(wrongChar)) {
+            return true; // Phonetic error topildi (reverse)
+        }
+
+        return false; // Phonetic error emas
     }
 }
