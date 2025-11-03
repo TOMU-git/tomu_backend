@@ -47,4 +47,14 @@ export const config: IConfig = {
   // Logger configuration
   logLevel: process.env.LOG_LEVEL || 'warn', // 'error', 'warn', 'log', 'debug'
   isDevelopment: process.env.NODE_ENV === 'development',
+  // Firebase configuration
+  firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
+  firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  // Firebase App IDs (for frontend/mobile apps)
+  firebaseWebAppId: process.env.FIREBASE_WEB_APP_ID || '1:1062737653345:web:2945672ae4f851a8f60420',
+  firebaseAndroidAppId: process.env.FIREBASE_ANDROID_APP_ID || '1:1062737653345:android:f8dc6c570f85d476f60420',
+  firebaseIosAppId: process.env.FIREBASE_IOS_APP_ID || '1:1062737653345:ios:3abcf8fb98147f10f60420',
+  firebaseMacosAppId: process.env.FIREBASE_MACOS_APP_ID || '1:1062737653345:ios:3abcf8fb98147f10f60420',
+  firebaseWindowsAppId: process.env.FIREBASE_WINDOWS_APP_ID || '1:1062737653345:web:53e4274667dbf524f60420',
 };

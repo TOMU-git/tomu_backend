@@ -37,6 +37,7 @@ import { LivechatPaymentHistoryModule } from './modules/livechat-payment-history
 import { AiModule } from './modules/ai/ai.module';
 import { UserDeviceModule } from './modules/user-device/user-device.module';
 import { ChromaService } from './modules/ai/services/chroma.service';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { ChromaService } from './modules/ai/services/chroma.service';
     LivechatPaymentHistoryModule,
     AiModule,
     UserDeviceModule,
+    NotificationModule,
   ],
 })
 export class AppModule implements NestModule, OnModuleInit {
