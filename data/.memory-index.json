@@ -43,7 +43,7 @@
       "lessonOrder": 1,
       "turnIndex": 4,
       "speaker": "فَرِيدٌ",
-      "text": "نَعَمْ، هَذَا البُرْتُقَالُ لَذِيذٌ جِدَّا.",
+      "text": "نَعَمْ، هَذَا البُرْتُقَالُ لَذِيذٌ جِدَّا.",
       "translationUz": "Ha, bu apelsin juda mazali.",
       "audioUrl": null,
       "title": "بُرْتُقَالٌ لَذِيذٌ"
@@ -1195,7 +1195,7 @@
       "lessonOrder": 12,
       "turnIndex": 2,
       "speaker": null,
-      "text": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.",
+      "text": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.",
       "translationUz": "Sinfda rasm, stol va kursi bor.",
       "audioUrl": null,
       "title": "اَلْفَصْلُ"
@@ -1207,7 +1207,7 @@
       "lessonOrder": 12,
       "turnIndex": 3,
       "speaker": null,
-      "text": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.",
+      "text": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.",
       "translationUz": "Ruchka va daftar stol ustida.",
       "audioUrl": null,
       "title": "اَلْفَصْلُ"
@@ -1255,10 +1255,10 @@
       "lessonOrder": 14,
       "turnIndex": 1,
       "speaker": null,
-      "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا.",
+      "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا.",
       "translationUz": "Tog' katta va juda baland.",
       "audioUrl": null,
-      "title": "جَوُّ الْجَبَلِ"
+      "title": "جَوُّ الْجَبَلِ"
     },
     {
       "id": "ar_m1_l14_t2",
@@ -1270,7 +1270,7 @@
       "text": "بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ.",
       "translationUz": "Tog'ning yonida daryolar, daraxtlar va gullar bor. Shuningdek tog'da qor ham bor.",
       "audioUrl": null,
-      "title": "جَوُّ الْجَبَلِ"
+      "title": "جَوُّ الْجَبَلِ"
     },
     {
       "id": "ar_m1_l14_t3",
@@ -1279,10 +1279,10 @@
       "lessonOrder": 14,
       "turnIndex": 3,
       "speaker": null,
-      "text": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
+      "text": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
       "translationUz": "Tog'dagi havo toza va saf.",
       "audioUrl": null,
-      "title": "جَوُّ الْجَبَلِ"
+      "title": "جَوُّ الْجَبَلِ"
     },
     {
       "id": "ar_m1_l21_t1",

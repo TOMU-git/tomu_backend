@@ -7,13 +7,69 @@
   "lessonSummary": "Learning to ask 'What is this?' and describe objects with simple adjectives like 'delicious'.",
   "keywords": ["meva", "savol", "ta'rif", "sifat", "ko'rsatish"],
   "vocabulary": [
-    { "word": "بُرْتُقَالٌ", "normalized": "برتقال", "lemma": "بُرْتُقَال", "pos": "noun", "translationUz": "apelsin", "example": "هَذَا بُرْتُقَالٌ" },
-    { "word": "لَذِيذٌ", "normalized": "لذيذ", "lemma": "لَذِيذ", "pos": "adjective", "translationUz": "mazali", "example": "هَذَا الطَّعَامُ لَذِيذٌ" },
-    { "word": "مَا", "normalized": "ما", "lemma": "مَا", "pos": "interrogative", "translationUz": "nima", "example": "مَا هَذَا؟" },
-    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا كِتَابٌ" },
-    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ طَيِّبٌ؟" },
-    { "word": "نَعَمْ", "normalized": "نعم", "lemma": "نَعَمْ", "pos": "particle", "translationUz": "ha", "example": "نَعَمْ، أَنَا طَالِبٌ" },
-    { "word": "جِدًّا", "normalized": "جدا", "lemma": "جِدًّا", "pos": "adverb", "translationUz": "juda", "example": "هُوَ كَبِيرٌ جِدًّا" }
+    {
+      "word": "بُرْتُقَالٌ",
+      "normalized": "برتقال",
+      "lemma": "بُرْتُقَال",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "apelsin",
+      "example": "هَذَا بُرْتُقَالٌ"
+    },
+    {
+      "word": "لَذِيذٌ",
+      "normalized": "لذيذ",
+      "lemma": "لَذِيذ",
+      "pos": "adjective",
+      "category": "quality",
+      "translationUz": "mazali",
+      "example": "هَذَا الطَّعَامُ لَذِيذٌ"
+    },
+    {
+      "word": "مَا",
+      "normalized": "ما",
+      "lemma": "مَا",
+      "pos": "interrogative",
+      "category": "question",
+      "translationUz": "nima",
+      "example": "مَا هَذَا؟"
+    },
+    {
+      "word": "هَذَا",
+      "normalized": "هذا",
+      "lemma": "هَذَا",
+      "pos": "demonstrative",
+      "category": "demonstrative",
+      "translationUz": "bu",
+      "example": "هَذَا كِتَابٌ"
+    },
+    {
+      "word": "هَلْ",
+      "normalized": "هل",
+      "lemma": "هَلْ",
+      "pos": "particle",
+      "category": "particle",
+      "translationUz": "so'roq yuklamasi (mi?)",
+      "example": "هَلْ هُوَ طَيِّبٌ؟"
+    },
+    {
+      "word": "نَعَمْ",
+      "normalized": "نعم",
+      "lemma": "نَعَمْ",
+      "pos": "particle",
+      "category": "particle",
+      "translationUz": "ha",
+      "example": "نَعَمْ، أَنَا طَالِبٌ"
+    },
+    {
+      "word": "جِدًّا",
+      "normalized": "جدا",
+      "lemma": "جِدًّا",
+      "pos": "adverb",
+      "category": "adverb",
+      "translationUz": "juda",
+      "example": "هُوَ كَبِيرٌ جِدًّا"
+    }
   ],
   "dialogue": [
     {
@@ -40,7 +96,7 @@
     {
       "turnIndex": 4,
       "speaker": "فَرِيدٌ",
-      "text": "نَعَمْ، هَذَا البُرْتُقَالُ لَذِيذٌ جِدَّا.",
+      "text": "نَعَمْ، هَذَا البُرْتُقَالُ لَذِيذٌ جِدَّا.",
       "translationUz": "Ha, bu apelsin juda mazali.",
       "audioUrl": null
     }

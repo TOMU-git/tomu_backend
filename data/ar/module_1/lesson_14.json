@@ -3,7 +3,7 @@
   "language": "ar",
   "moduleNumber": 1,
   "lessonNumber": 14,
-  "title": "جَوُّ الْجَبَلِ",
+  "title": "جَوُّ الْجَبَلِ",
   "lessonSummary": "Tog' va uning atrofidagi tabiat haqida tavsif.",
   "keywords": ["tog'", "tabiat", "havo", "daryo"],
   "vocabulary": [
@@ -12,6 +12,7 @@
       "normalized": "جبل",
       "lemma": "جَبَل",
       "pos": "noun",
+      "category": "place",
       "translationUz": "tog'",
       "example": "اَلْجَبَلُ كَبِيرٌ"
     },
@@ -20,14 +21,16 @@
       "normalized": "مرتفع",
       "lemma": "مُرْتَفِع",
       "pos": "adjective",
+      "category": "quality",
       "translationUz": "baland",
-      "example": "وَ مُرْتَفِعٌ جِدًّا"
+      "example": "وَ مُرْتَفِعٌ جِدًّا"
     },
     {
       "word": "بِجَانِبِ",
       "normalized": "بجانب",
       "lemma": "جَانِب",
       "pos": "preposition",
+      "category": "preposition",
       "translationUz": "yonida",
       "example": "بِجَانِبِ الْجَبَلِ"
     },
@@ -36,6 +39,7 @@
       "normalized": "انهار",
       "lemma": "نَهْر",
       "pos": "noun",
+      "category": "object",
       "translationUz": "daryolar",
       "example": "أَنْهَارٌ وَ أَشْجَارٌ"
     },
@@ -44,6 +48,7 @@
       "normalized": "اشجار",
       "lemma": "شَجَر",
       "pos": "noun",
+      "category": "object",
       "translationUz": "daraxtlar",
       "example": "وَ أَشْجَارٌ"
     },
@@ -52,6 +57,7 @@
       "normalized": "ازهار",
       "lemma": "زَهْر",
       "pos": "noun",
+      "category": "object",
       "translationUz": "gullar",
       "example": "وَ أَزْهَارٌ"
     },
@@ -60,6 +66,7 @@
       "normalized": "ثلج",
       "lemma": "ثَلْج",
       "pos": "noun",
+      "category": "object",
       "translationUz": "qor",
       "example": "عَلَى الْجَبَلِ ثَلْجٌ"
     },
@@ -68,6 +75,7 @@
       "normalized": "هواء",
       "lemma": "هَوَاء",
       "pos": "noun",
+      "category": "object",
       "translationUz": "havo",
       "example": "اَلْهَوَاءُ فِي الْجَبَلِ"
     },
@@ -76,26 +84,28 @@
       "normalized": "نظيف",
       "lemma": "نَظِيف",
       "pos": "adjective",
+      "category": "quality",
       "translationUz": "toza",
       "example": "اَلْهَوَاءُ نَظِيفٌ"
     },
     {
-      "word": "نَقِيٌّ",
+      "word": "نَقِيٌّ",
       "normalized": "نقي",
       "lemma": "نَقِيّ",
       "pos": "adjective",
+      "category": "quality",
       "translationUz": "saf",
-      "example": "وَ نَقِيٌّ"
+      "example": "وَ نَقِيٌّ"
     }
   ],
   "monologue": {
-    "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا. بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ. اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
+    "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا. بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ. اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
     "translationUz": "Tog' katta va juda baland. Tog'ning yonida daryolar, daraxtlar va gullar bor. Shuningdek tog'da qor ham bor. Tog'dagi havo toza va saf."
   },
   "segments": [
     {
       "index": 1,
-      "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا.",
+      "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا.",
       "translationUz": "Tog' katta va juda baland.",
       "audioUrl": null
     },
@@ -107,7 +117,7 @@
     },
     {
       "index": 3,
-      "text": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
+      "text": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
       "translationUz": "Tog'dagi havo toza va saf.",
       "audioUrl": null
     }
