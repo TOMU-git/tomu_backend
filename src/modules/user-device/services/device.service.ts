@@ -71,6 +71,10 @@ export class DeviceService implements IDeviceService {
                 existingDevice.userAgent = deviceInfo.userAgent;
                 existingDevice.location = deviceInfo.location;
                 existingDevice.metadata = deviceInfo.metadata;
+                // Update FCM token if provided
+                if (deviceInfo.fcmToken) {
+                    existingDevice.fcmToken = deviceInfo.fcmToken;
+                }
 
                 const updatedDevice = await this.deviceRepository.update(existingDevice);
                 return new ResData<DeviceResponseDto>(
@@ -235,6 +239,7 @@ export class DeviceService implements IDeviceService {
             if (deviceInfo.deviceName) device.deviceName = deviceInfo.deviceName;
             if (deviceInfo.location) device.location = deviceInfo.location;
             if (deviceInfo.metadata) device.metadata = deviceInfo.metadata;
+            if (deviceInfo.fcmToken !== undefined) device.fcmToken = deviceInfo.fcmToken; // Update FCM token
 
             const updatedDevice = await this.deviceRepository.update(device);
 
@@ -547,6 +552,7 @@ export class DeviceService implements IDeviceService {
         device.userAgent = deviceInfo.userAgent;
         device.location = deviceInfo.location;
         device.metadata = deviceInfo.metadata;
+        device.fcmToken = deviceInfo.fcmToken; // Save FCM token
         device.userId = userId;
         device.isActive = true;
         device.lastLoginAt = new Date();

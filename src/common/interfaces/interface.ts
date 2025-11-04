@@ -43,6 +43,16 @@ export interface IConfig {
   // Logger configuration
   logLevel: string;
   isDevelopment: boolean;
+  // Firebase configuration
+  firebaseProjectId: string;
+  firebasePrivateKey: string;
+  firebaseClientEmail: string;
+  // Firebase App IDs (for frontend)
+  firebaseWebAppId?: string;
+  firebaseAndroidAppId?: string;
+  firebaseIosAppId?: string;
+  firebaseMacosAppId?: string;
+  firebaseWindowsAppId?: string;
 }
 
 export interface CustomAxiosResponse<T = any> {

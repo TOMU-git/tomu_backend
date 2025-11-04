@@ -211,6 +211,20 @@ export class UserDevice extends BaseEntity {
     metadata: Record<string, any>;
 
     /**
+     * Firebase Cloud Messaging (FCM) token
+     * Used for sending push notifications to the device
+     * Token can change, so it's updated on each device registration/login
+     */
+    @Column({
+        name: 'fcm_token',
+        type: 'varchar',
+        length: 500,
+        nullable: true,
+        comment: 'Firebase Cloud Messaging token for push notifications'
+    })
+    fcmToken: string;
+
+    /**
      * User relationship
      * Many devices belong to one user
      */

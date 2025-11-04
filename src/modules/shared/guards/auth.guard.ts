@@ -22,23 +22,41 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      console.log('[AuthGuard] ❌ Token not found in Authorization header');
+      throw new UnauthorizedException("Token topilmadi. Iltimos, autentifikatsiya qiling.");
     }
+
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: config.jwtSecretKey,
       });
 
+      if (!payload || !payload.id) {
+        console.log('[AuthGuard] ❌ Invalid token payload:', payload);
+        throw new UnauthorizedException("Token noto'g'ri format.");
+      }
+
       const { data: foundUser } = await this.userService.findOneById(
         payload.id,
       );
 
+      if (!foundUser) {
+        console.log('[AuthGuard] ❌ User not found for id:', payload.id);
+        throw new UnauthorizedException("Foydalanuvchi topilmadi.");
+      }
+
       request["user"] = foundUser;
+      console.log('[AuthGuard] ✅ Authentication successful for user:', foundUser.id);
     } catch (err) {
       if (err instanceof TokenExpiredError) {
-        throw new UnauthorizedException("Token expired");
+        console.log('[AuthGuard] ❌ Token expired');
+        throw new UnauthorizedException("Token muddati tugagan. Iltimos, qayta kirib turing.");
       }
-      throw new UnauthorizedException();
+      if (err instanceof UnauthorizedException) {
+        throw err; // Re-throw if already UnauthorizedException
+      }
+      console.log('[AuthGuard] ❌ Token verification error:', err?.message || err);
+      throw new UnauthorizedException("Token noto'g'ri yoki yaroqsiz. Iltimos, qayta kirib turing.");
     }
     return true;
   }

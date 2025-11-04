@@ -74,33 +74,56 @@
       async function createSession() {
         apiBase = document.getElementById("api").value.trim();
         token = document.getElementById("token").value.trim();
+
+        if (!apiBase) {
+          setStatus("❌ API URL kiritilmagan");
+          return;
+        }
+
+        if (!token) {
+          setStatus("❌ Token kiritilmagan. Iltimos, JWT token kiriting.");
+          return;
+        }
+
         const courseId = document.getElementById("course").value.trim() || null;
         const sessionLanguage = "ar";
 
-        const res = await fetch(`${apiBase}/ai/chat/sessions`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            courseId: courseId ? Number(courseId) : null,
-            sessionLanguage,
-          }),
-        });
-        if (!res.ok) {
-          const txt = await res.text().catch(() => "");
-          setStatus(`❌ Sessiya xatolik: ${res.status}`);
-          return;
-        }
-        const json = await res.json();
-        if (json?.data?.id) {
-          sessionId = json.data.id;
-          document.getElementById("session").textContent =
-            `Session: ${sessionId}`;
-          setStatus("✅ Sessiya yaratildi");
-        } else {
-          setStatus("❌ Sessiya yaratilmadi");
+        try {
+          const res = await fetch(`${apiBase}/ai/chat/sessions`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              courseId: courseId ? Number(courseId) : null,
+              sessionLanguage,
+            }),
+          });
+
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => null);
+            const errorMessage = errorData?.message || `Xato: ${res.status}`;
+            setStatus(`❌ ${errorMessage}`);
+            console.error("Sessiya yaratish xatosi:", {
+              status: res.status,
+              error: errorData,
+            });
+            return;
+          }
+
+          const json = await res.json();
+          if (json?.data?.id) {
+            sessionId = json.data.id;
+            document.getElementById("session").textContent =
+              `Session: ${sessionId}`;
+            setStatus("✅ Sessiya yaratildi");
+          } else {
+            setStatus("❌ Sessiya yaratilmadi");
+          }
+        } catch (error) {
+          setStatus(`❌ Tarmoq xatosi: ${error.message}`);
+          console.error("Network error:", error);
         }
       }
 

@@ -40,6 +40,9 @@ import { UserCourseProgressService } from './services/user-course-progress.servi
 import { UserProgressCalculator } from './utils/user-progress-calculator.util';
 import { CostCalculationService } from './services/cost-calculation.service';
 import { LimitCheckService } from './services/limit-check.service';
+import { RetryHelperService } from './services/retry-helper.service';
+import { TokenCounterService } from './services/token-counter.service';
+import { RerankService } from './services/rerank.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -98,6 +101,12 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     // Cost tracking servislar
     CostCalculationService,
     LimitCheckService,
+    // Retry logic
+    RetryHelperService,
+    // Token management
+    TokenCounterService,
+    // Re-ranking
+    RerankService,
     // Chroma sub-services
     ChromaConnectionService,
     ChromaEmbeddingService,

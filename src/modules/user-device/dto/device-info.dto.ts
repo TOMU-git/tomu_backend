@@ -166,4 +166,18 @@ export class DeviceInfoDto {
     @IsObject()
     @IsOptional()
     metadata?: Record<string, any>;
+
+    /**
+     * Firebase Cloud Messaging (FCM) token
+     * Used for sending push notifications to the device
+     */
+    @ApiPropertyOptional({
+        description: 'Firebase Cloud Messaging token for push notifications',
+        example: 'dGhpc2lzYW5leGFtcGxldG9rZW4...',
+        maxLength: 500
+    })
+    @IsString()
+    @IsOptional()
+    @MaxLength(500)
+    fcmToken?: string;
 }

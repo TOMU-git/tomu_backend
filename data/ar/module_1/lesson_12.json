@@ -7,21 +7,84 @@
   "lessonSummary": "Describing a classroom and the items found inside it.",
   "keywords": ["sinf", "stol", "kursi", "daftar", "ruchka"],
   "vocabulary": [
-    { "word": "فَصْل", "normalized": "فصل", "lemma": "فَصْل", "pos": "noun", "translationUz": "sinf", "example": "هَذَا فَصْلٌ كَبِيرٌ." },
-    { "word": "صُورَة", "normalized": "صورة", "lemma": "صُورَة", "pos": "noun", "translationUz": "rasm", "example": "فِي الْفَصْلِ صُورَةٌ." },
-    { "word": "مَكْتَب", "normalized": "مكتب", "lemma": "مَكْتَب", "pos": "noun", "translationUz": "stol", "example": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ." },
-    { "word": "كُرْسِيّ", "normalized": "كرسي", "lemma": "كُرْسِيّ", "pos": "noun", "translationUz": "kursi", "example": "فِي الْفَصْلِ كُرْسِيٌّ." },
-    { "word": "قَلَم", "normalized": "قلم", "lemma": "قَلَم", "pos": "noun", "translationUz": "ruchka", "example": "الْقَلَمُ عَلَى الْمَكْتَبِ." },
-    { "word": "دَفْتَر", "normalized": "دفتر", "lemma": "دَفْتَر", "pos": "noun", "translationUz": "daftar", "example": "الدَّفْتَرُ عَلَى الْمَكْتَبِ." }
+    {
+      "word": "فَصْل",
+      "normalized": "فصل",
+      "lemma": "فَصْل",
+      "pos": "noun",
+      "category": "place",
+      "translationUz": "sinf",
+      "example": "هَذَا فَصْلٌ كَبِيرٌ."
+    },
+    {
+      "word": "صُورَة",
+      "normalized": "صورة",
+      "lemma": "صُورَة",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "rasm",
+      "example": "فِي الْفَصْلِ صُورَةٌ."
+    },
+    {
+      "word": "مَكْتَب",
+      "normalized": "مكتب",
+      "lemma": "مَكْتَب",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "stol",
+      "example": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ."
+    },
+    {
+      "word": "كُرْسِيّ",
+      "normalized": "كرسي",
+      "lemma": "كُرْسِيّ",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "kursi",
+      "example": "فِي الْفَصْلِ كُرْسِيٌّ."
+    },
+    {
+      "word": "قَلَم",
+      "normalized": "قلم",
+      "lemma": "قَلَم",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "ruchka",
+      "example": "الْقَلَمُ عَلَى الْمَكْتَبِ."
+    },
+    {
+      "word": "دَفْتَر",
+      "normalized": "دفتر",
+      "lemma": "دَفْتَر",
+      "pos": "noun",
+      "category": "object",
+      "translationUz": "daftar",
+      "example": "الدَّفْتَرُ عَلَى الْمَكْتَبِ."
+    }
   ],
   "monologue": {
-    "text": "هَذَا فَصْلٌ كَبِيرٌ. فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ. الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.",
+    "text": "هَذَا فَصْلٌ كَبِيرٌ. فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ. الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.",
     "translationUz": "Bu katta sinf. Sinfda rasm, stol va kursi bor. Ruchka va daftar stol ustida."
   },
   "segments": [
-    { "index": 1, "text": "هَذَا فَصْلٌ كَبِيرٌ.", "translationUz": "Bu katta sinf.", "audioUrl": null },
-    { "index": 2, "text": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.", "translationUz": "Sinfda rasm, stol va kursi bor.", "audioUrl": null },
-    { "index": 3, "text": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.", "translationUz": "Ruchka va daftar stol ustida.", "audioUrl": null }
+    {
+      "index": 1,
+      "text": "هَذَا فَصْلٌ كَبِيرٌ.",
+      "translationUz": "Bu katta sinf.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.",
+      "translationUz": "Sinfda rasm, stol va kursi bor.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "الْقَلَمُ وَالدَّفْتَرُ عَلَى الْمَكْتَبِ.",
+      "translationUz": "Ruchka va daftar stol ustida.",
+      "audioUrl": null
+    }
   ],
   "createdAt": "2025-10-27T18:00:00Z",
   "updatedAt": "2025-10-27T18:00:00Z"
