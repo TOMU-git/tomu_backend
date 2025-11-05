@@ -17,17 +17,17 @@ export class GPTStep implements PipelineStep {
     ) { }
     async execute(input: VoiceInput & { validatedText: string; context: any; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; lastWatchedLessonOrder?: number }): Promise<VoiceInput> {
         // User input logging
-        console.log("\n🧠 GPTStep: Starting execution...");
-        console.log(`   Context type: ${Array.isArray(input.context) ? 'array' : typeof input.context}`);
-        console.log(`   Context length: ${Array.isArray(input.context) ? input.context.length : 'N/A'}`);
-        console.log(`   Conversation history length: ${input.conversationHistory?.length || 0}`);
-        console.log(`   Last watched lesson order: ${input.lastWatchedLessonOrder || 0}`);
+        // console.log("\n🧠 GPTStep: Starting execution...");
+        // console.log(`   Context type: ${Array.isArray(input.context) ? 'array' : typeof input.context}`);
+        // console.log(`   Context length: ${Array.isArray(input.context) ? input.context.length : 'N/A'}`);
+        // console.log(`   Conversation history length: ${input.conversationHistory?.length || 0}`);
+        // console.log(`   Last watched lesson order: ${input.lastWatchedLessonOrder || 0}`);
 
         const userLatin = ArabicTextUtils.transliterateArabic(input.validatedText || "");
 
-        console.log("\n👤 User:");
-        console.log("   Arab: " + input.validatedText);
-        console.log("   Lotin: " + userLatin);
+        // console.log("\n👤 User:");
+        // console.log("   Arab: " + input.validatedText);
+        // console.log("   Lotin: " + userLatin);
 
         // 0) Conversation history'dan topic/mavzuni aniqlash (bir marta)
         const conversationTopic = this.extractConversationTopic(input.conversationHistory || [], input.context);
@@ -50,7 +50,7 @@ export class GPTStep implements PipelineStep {
 
         // Agar gap tuzatilgan bo'lsa, log qilish
         if (userTextCorrected !== originalUserTextBeforeCorrection) {
-            console.log(`   ✏️  User text was corrected: "${originalUserTextBeforeCorrection}" → "${userTextCorrected}"`);
+            // console.log(`   ✏️  User text was corrected: "${originalUserTextBeforeCorrection}" → "${userTextCorrected}"`);
         }
 
         const userText = userTextCorrected;
@@ -94,15 +94,15 @@ export class GPTStep implements PipelineStep {
         const userWords = wordSet(userText);
 
         // Conversation topic allaqachon aniqlangan (yuqorida)
-        console.log(`\n💬 Conversation context:`);
-        console.log(`   - Topic detected: ${conversationTopic.topic || 'none'}`);
+        // console.log(`\n💬 Conversation context:`);
+        // console.log(`   - Topic detected: ${conversationTopic.topic || 'none'}`);
         if (conversationTopic.keywords.length > 0) {
-            console.log(`   - Keywords from history: ${conversationTopic.keywords.join(', ')}`);
+            // console.log(`   - Keywords from history: ${conversationTopic.keywords.join(', ')}`);
         }
 
         // 1) BIRINCHI NAVBATDA: Materiallardan qidirish
-        console.log(`\n🔍 Searching materials for user query: "${userText}"`);
-        console.log(`   Context contains ${input.context?.length || 0} lesson chunks`);
+        // console.log(`\n🔍 Searching materials for user query: "${userText}"`);
+        // console.log(`   Context contains ${input.context?.length || 0} lesson chunks`);
 
         // IMPORTANT: Context'dagi materiallarni lessonOrder bo'yicha guruhlash
         // Har bir lesson uchun barcha turn'larni birlashtirish (dialogue to'liq ko'rinishi uchun)
@@ -132,12 +132,12 @@ export class GPTStep implements PipelineStep {
             // Barcha turn text'larini birlashtirish (dialogue to'liq ko'rinishi uchun)
             const allTurnsText = sortedTurns.map(t => t.text).join(' ');
 
-            console.log(`   📚 Checking lesson ${lessonOrder} (${sortedTurns.length} turns): "${allTurnsText.substring(0, 50)}${allTurnsText.length > 50 ? '...' : ''}"`);
+            // console.log(`   📚 Checking lesson ${lessonOrder} (${sortedTurns.length} turns): "${allTurnsText.substring(0, 50)}${allTurnsText.length > 50 ? '...' : ''}"`);
 
             // Turn'larni sentence'larga bo'lish - har bir turn alohida sentence
             // IMPORTANT: translationUz bilan birga saqlash (text va translationUz)
             const sentences = sortedTurns.map(t => ({ text: t.text, translationUz: t.translationUz }));
-            console.log(`      Split into ${sentences.length} sentences (turn-by-turn)`);
+            // console.log(`      Split into ${sentences.length} sentences (turn-by-turn)`);
 
             for (let i = 0; i < sentences.length; i++) {
                 const sentenceData = sentences[i];
@@ -197,7 +197,7 @@ export class GPTStep implements PipelineStep {
                         // Agar best similarity threshold'dan yuqori bo'lsa, match deb hisoblaymiz
                         if (bestSimilarity >= SIMILARITY_THRESHOLD) {
                             fuzzyMatchedWords++;
-                            console.log(`      🔤 Fuzzy word match: "${userWord}" ≈ "${bestMatchedWord}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
+                            // console.log(`      🔤 Fuzzy word match: "${userWord}" ≈ "${bestMatchedWord}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
                         }
                     }
 
@@ -217,10 +217,10 @@ export class GPTStep implements PipelineStep {
                                     ? `fuzzy words match (${(fuzzyWordsMatchRatio * 100).toFixed(0)}%)`
                                     : `words match (${(wordsMatchRatio * 100).toFixed(0)}%)`;
 
-                    console.log(`      ✅ Match found at sentence ${i + 1}: "${s}"`);
-                    console.log(`         User normalized: "${normalizedUser}"`);
-                    console.log(`         Sentence normalized: "${normalizedSentence}"`);
-                    console.log(`         Match type: ${matchType}`);
+                    // console.log(`      ✅ Match found at sentence ${i + 1}: "${s}"`);
+                    // console.log(`         User normalized: "${normalizedUser}"`);
+                    // console.log(`         Sentence normalized: "${normalizedSentence}"`);
+                    // console.log(`         Match type: ${matchType}`);
 
                     // IMPORTANT: Partial match (user includes sentence) bo'lsa, semantik kontekstni tekshirish
                     // Masalan: user "من مصر" (origin) dedi, lekin material "في المسجد" (location) haqida
@@ -228,11 +228,11 @@ export class GPTStep implements PipelineStep {
                         const nextSentenceText = sentences[i + 1]?.text || '';
                         const semanticContextMatch = this.validateSemanticContext(userText, s, nextSentenceText);
                         if (!semanticContextMatch) {
-                            console.log(`      ⚠️  Semantic context mismatch - user query context doesn't match material context`);
-                            console.log(`      💡 Skipping this match and continuing search...`);
+                            // console.log(`      ⚠️  Semantic context mismatch - user query context doesn't match material context`);
+                            // console.log(`      💡 Skipping this match and continuing search...`);
                             continue; // Skip this match and continue searching
                         }
-                        console.log(`      ✅ Semantic context validated - match is semantically valid`);
+                        // console.log(`      ✅ Semantic context validated - match is semantically valid`);
                     }
 
                     const candidateData = sentences[i + 1];
@@ -240,22 +240,22 @@ export class GPTStep implements PipelineStep {
                     const isLastSentence = i === sentences.length - 1; // Bu oxirgi gapmi?
 
                     if (candidate && candidate.length > 1) {
-                        console.log(`      ✅ Next sentence found: "${candidate}" (from lesson ${lessonOrder})`);
+                        // console.log(`      ✅ Next sentence found: "${candidate}" (from lesson ${lessonOrder})`);
                         nextSentenceFromMaterial = candidate;
                         materialLessonOrder = lessonOrder;
                         // TranslationUz ni extract qilish - to'g'ridan-to'g'ri turn'dan
                         materialTranslationUz = candidateData?.translationUz || null;
                         if (materialTranslationUz) {
-                            console.log(`      ✅ Found translationUz from material: "${materialTranslationUz}"`);
+                            // console.log(`      ✅ Found translationUz from material: "${materialTranslationUz}"`);
                         } else {
-                            console.log(`      ⚠️  translationUz not found in material, will translate`);
+                            // console.log(`      ⚠️  translationUz not found in material, will translate`);
                         }
                         break;
                     } else if (isLastSentence) {
                         // IMPORTANT: Agar user dialogue'dagi oxirgi gapni dedi va keyingi gap yo'q bo'lsa
                         // Bu dialogue tamom bo'lgani degani - tasdiqlash javobi berish kerak
-                        console.log(`      ⚠️  No next sentence found after match - dialogue ended`);
-                        console.log(`      💡 User spoke the LAST sentence in dialogue (sentence ${i + 1}/${sentences.length}) - this is a completion`);
+                        // console.log(`      ⚠️  No next sentence found after match - dialogue ended`);
+                        // console.log(`      💡 User spoke the LAST sentence in dialogue (sentence ${i + 1}/${sentences.length}) - this is a completion`);
                         // Material match topilgan, lekin keyingi gap yo'q - bu dialogue oxiri
                         // Bu holatni alohida belgilash uchun special marker qo'yamiz
                         nextSentenceFromMaterial = 'DIALOGUE_END'; // Special marker
@@ -264,7 +264,7 @@ export class GPTStep implements PipelineStep {
                     } else {
                         // Match topilgan, lekin keyingi gap yo'q va bu oxirgi gap ham emas
                         // Bu oddiy holat - materialdan javob topilmadi
-                        console.log(`      ⚠️  No next sentence found after match (not the last sentence)`);
+                        // console.log(`      ⚠️  No next sentence found after match (not the last sentence)`);
                     }
                 }
 
@@ -289,13 +289,13 @@ export class GPTStep implements PipelineStep {
                     bestMatchNextSentenceTranslationUz = sentences[i + 1]?.translationUz || null; // TranslationUz ni saqlash
                     bestMatchLessonOrder = lessonOrder;
                     if (combinedScore > 0.3) {
-                        console.log(`      📊 Good fuzzy match (sentence similarity: ${(sentenceSimilarity * 100).toFixed(0)}%, jaccard: ${(jaccardScore * 100).toFixed(0)}%, combined: ${(combinedScore * 100).toFixed(0)}%): "${s}" -> next: "${bestMatchNextSentence}"`);
+                        // console.log(`      📊 Good fuzzy match (sentence similarity: ${(sentenceSimilarity * 100).toFixed(0)}%, jaccard: ${(jaccardScore * 100).toFixed(0)}%, combined: ${(combinedScore * 100).toFixed(0)}%): "${s}" -> next: "${bestMatchNextSentence}"`);
                     }
                 }
             }
 
             if (nextSentenceFromMaterial) {
-                console.log(`   ✅ Material match found in lesson ${lessonOrder}`);
+                // console.log(`   ✅ Material match found in lesson ${lessonOrder}`);
                 break;
             }
         }
@@ -304,19 +304,19 @@ export class GPTStep implements PipelineStep {
         // bu materialni topgan deb hisoblash mumkin (STT xatoliklari tufayli exact match topilmasa ham)
         // Threshold 0.65 dan 0.5 ga pasaytirildi - katta STT xatolari bilan ham material topilishi uchun
         if (!nextSentenceFromMaterial && bestMatchScore >= 0.5 && bestMatchNextSentence && bestMatchNextSentence.length > 1) {
-            console.log(`   ✅ High similarity match found (score: ${bestMatchScore.toFixed(2)}) - treating as material match despite STT errors`);
+            // console.log(`   ✅ High similarity match found (score: ${bestMatchScore.toFixed(2)}) - treating as material match despite STT errors`);
             nextSentenceFromMaterial = bestMatchNextSentence;
             materialLessonOrder = bestMatchLessonOrder;
             materialTranslationUz = bestMatchNextSentenceTranslationUz; // TranslationUz ni saqlash
             if (materialTranslationUz) {
-                console.log(`   ✅ Found translationUz from best match: "${materialTranslationUz}"`);
+                // console.log(`   ✅ Found translationUz from best match: "${materialTranslationUz}"`);
             } else {
-                console.log(`   ⚠️  translationUz not found in best match, will translate`);
+                // console.log(`   ⚠️  translationUz not found in best match, will translate`);
             }
         }
 
         if (!nextSentenceFromMaterial) {
-            console.log(`   ⚠️  No exact material match found. Best fuzzy match score: ${bestMatchScore.toFixed(2)}`);
+            // console.log(`   ⚠️  No exact material match found. Best fuzzy match score: ${bestMatchScore.toFixed(2)}`);
         }
 
         let aiResponse = '';
@@ -328,23 +328,23 @@ export class GPTStep implements PipelineStep {
         if (nextSentenceFromMaterial) {
             // SPECIAL CASE: User dialogue'dagi oxirgi gapni dedi (keyingi gap yo'q)
             if (nextSentenceFromMaterial === 'DIALOGUE_END') {
-                console.log(`✅ User completed the dialogue! Using confirmation response.`);
+                // console.log(`✅ User completed the dialogue! Using confirmation response.`);
                 aiResponse = AI_FALLBACK_MESSAGES.DIALOGUE_END_CONFIRMATION.arabic;
                 aiResponseUz = AI_FALLBACK_MESSAGES.DIALOGUE_END_CONFIRMATION.uzbek;
                 gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
             }
             // Agar topilgan javob kelmagan darsda bo'lsa
             else if (materialLessonOrder !== null && materialLessonOrder > lastWatchedLessonOrder) {
-                console.log(`⚠️  Material topildi, lekin kelmagan darsda (lesson ${materialLessonOrder} > ${lastWatchedLessonOrder})`);
+                // console.log(`⚠️  Material topildi, lekin kelmagan darsda (lesson ${materialLessonOrder} > ${lastWatchedLessonOrder})`);
                 aiResponse = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.arabic;
                 aiResponseUz = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.uzbek;
                 gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
             } else {
                 // Kelgan darslardan - to'g'ri javob
-                console.log(`\n🔍 Validating material response...`);
-                console.log(`   User (original): "${userText}"`);
-                console.log(`   User (normalized): "${normalizedUser}"`);
-                console.log(`   Material: "${nextSentenceFromMaterial}"`);
+                // console.log(`\n🔍 Validating material response...`);
+                // console.log(`   User (original): "${userText}"`);
+                // console.log(`   User (normalized): "${normalizedUser}"`);
+                // console.log(`   Material: "${nextSentenceFromMaterial}"`);
 
                 const materialResponseIsEcho = this.detectEcho(nextSentenceFromMaterial, userText, normalizedUser, userWords);
                 const materialIsLogical = this.validateLogicalResponse(nextSentenceFromMaterial, userText, normalizedUser);
@@ -355,31 +355,31 @@ export class GPTStep implements PipelineStep {
                 if (materialResponseIsEcho || !materialIsLogical || !materialSemanticMatch || !nameConsistencyMatch) {
                     // Materialdan javob echo yoki mantiqsiz bo'lsa
                     if (materialResponseIsEcho) {
-                        console.log(`⚠️  Material response is ECHO, rejecting material response`);
+                        // console.log(`⚠️  Material response is ECHO, rejecting material response`);
                     } else if (!materialIsLogical) {
-                        console.log(`⚠️  Material response is not logical (basic validation), rejecting material response`);
+                        // console.log(`⚠️  Material response is not logical (basic validation), rejecting material response`);
                     } else if (!materialSemanticMatch) {
-                        console.log(`⚠️  Material response semantic context doesn't match user query, rejecting material response`);
+                        // console.log(`⚠️  Material response semantic context doesn't match user query, rejecting material response`);
                     } else if (!nameConsistencyMatch) {
-                        console.log(`⚠️  Material response name doesn't match user query, rejecting material response`);
+                        // console.log(`⚠️  Material response name doesn't match user query, rejecting material response`);
                     }
-                    console.log(`⚠️  Material response failed validation - using NOT_UNDERSTOOD instead of asking GPT`);
+                    // console.log(`⚠️  Material response failed validation - using NOT_UNDERSTOOD instead of asking GPT`);
                     aiResponse = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.arabic;
                     aiResponseUz = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.uzbek;
                     gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
                 } else {
                     // Materialdan javob to'g'ri va kuchli mantiqiy tekshiruvdan o'tdi
-                    console.log(`✅ Material response is valid (no echo, logical, STRONG logical, semantic match, name consistent).`);
+                    // console.log(`✅ Material response is valid (no echo, logical, STRONG logical, semantic match, name consistent).`);
                     aiResponse = nextSentenceFromMaterial;
                     // Materialdan translationUz ni olish, agar yo'q bo'lsa tarjima qilish
                     if (materialTranslationUz) {
                         aiResponseUz = materialTranslationUz;
-                        console.log(`   ✅ Using translationUz from material: "${materialTranslationUz}"`);
+                        // console.log(`   ✅ Using translationUz from material: "${materialTranslationUz}"`);
                     } else {
                         // Material'da translationUz yo'q, tarjima qilish
                         try {
                             aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                            console.log(`   ✅ Translated to Uzbek: "${aiResponseUz}"`);
+                            // console.log(`   ✅ Translated to Uzbek: "${aiResponseUz}"`);
                         } catch (e) {
                             console.warn(`   ⚠️  Translation failed, using empty string`);
                             aiResponseUz = '';
@@ -393,7 +393,7 @@ export class GPTStep implements PipelineStep {
         else if (bestMatchScore >= 0.5 && bestMatchNextSentence && bestMatchNextSentence.length > 1) {
             // Kelmagan darsda bo'lsa ham yordam beramiz (lekin e'tiborli)
             if (bestMatchLessonOrder !== null && bestMatchLessonOrder > lastWatchedLessonOrder) {
-                console.log(`⚠️  Yaqin match topildi, lekin kelmagan darsda`);
+                // console.log(`⚠️  Yaqin match topildi, lekin kelmagan darsda`);
                 aiResponse = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.arabic;
                 aiResponseUz = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.uzbek;
                 gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
@@ -408,13 +408,13 @@ export class GPTStep implements PipelineStep {
                     // TranslationUz ni saqlangan translationUz dan yoki tarjima qilish
                     if (bestMatchNextSentenceTranslationUz) {
                         aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + bestMatchNextSentenceTranslationUz;
-                        console.log(`   ✅ Using translationUz from best match: "${bestMatchNextSentenceTranslationUz}"`);
+                        // console.log(`   ✅ Using translationUz from best match: "${bestMatchNextSentenceTranslationUz}"`);
                     } else {
                         // Material'da translationUz yo'q, tarjima qilish
                         try {
                             const translatedSentence = await this.translation.translateToUzbek(bestMatchNextSentence);
                             aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + translatedSentence;
-                            console.log(`   ✅ Translated best match to Uzbek: "${translatedSentence}"`);
+                            // console.log(`   ✅ Translated best match to Uzbek: "${translatedSentence}"`);
                         } catch (e) {
                             console.warn(`   ⚠️  Translation failed: ${e.message}`);
                             aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + bestMatchNextSentence;
@@ -423,7 +423,7 @@ export class GPTStep implements PipelineStep {
                     gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
                 } else {
                     // Yordamlash ham mantiqsiz - GPT ga so'rov
-                    console.log(`⚠️  Yaqin match mantiqsiz, GPT ga so'rov`);
+                    // console.log(`⚠️  Yaqin match mantiqsiz, GPT ga so'rov`);
                     const gptStart = Date.now();
                     // Conversation topic'ni GPT'ga yanada aniq context sifatida yuborish
                     const enhancedPrompt = this.enhancePromptWithConversationContext(userText, conversationTopic);
@@ -445,7 +445,7 @@ export class GPTStep implements PipelineStep {
                     if (aiResponse && aiResponse.trim().length > 0) {
                         try {
                             aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                            console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
+                            // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
                         } catch (e) {
                             console.warn(`   ⚠️  Translation failed: ${e.message}`);
                             aiResponseUz = ''; // Fallback: empty string
@@ -457,11 +457,11 @@ export class GPTStep implements PipelineStep {
         // 3.5) AGAR 30-50% YAQINLIK BO'LSA - yordamlash (pronunciation error bo'lsa)
         else if (bestMatchScore >= 0.3 && bestMatchScore < 0.5 && bestMatchSentence && bestMatchSentence.length > 1) {
             // User xato gapirgan bo'lsa (1-2 harf noto'g'ri), unga o'xshash gapni ko'rsatish
-            console.log(`   💡 Moderate similarity found (${(bestMatchScore * 100).toFixed(0)}%) - user might have pronunciation error`);
-            console.log(`   💡 Best match sentence: "${bestMatchSentence}"`);
+            // console.log(`   💡 Moderate similarity found (${(bestMatchScore * 100).toFixed(0)}%) - user might have pronunciation error`);
+            // console.log(`   💡 Best match sentence: "${bestMatchSentence}"`);
             // Kelmagan darsda bo'lsa ham yordam beramiz (lekin e'tiborli)
             if (bestMatchLessonOrder !== null && bestMatchLessonOrder > lastWatchedLessonOrder) {
-                console.log(`⚠️  Yaqin match topildi, lekin kelmagan darsda`);
+                // console.log(`⚠️  Yaqin match topildi, lekin kelmagan darsda`);
                 aiResponse = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.arabic;
                 aiResponseUz = AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.uzbek;
                 gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
@@ -472,20 +472,20 @@ export class GPTStep implements PipelineStep {
                 // TranslationUz ni saqlangan translationUz dan yoki tarjima qilish
                 if (bestMatchSentenceTranslationUz) {
                     aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + bestMatchSentenceTranslationUz;
-                    console.log(`   ✅ Using translationUz from best match: "${bestMatchSentenceTranslationUz}"`);
+                    // console.log(`   ✅ Using translationUz from best match: "${bestMatchSentenceTranslationUz}"`);
                 } else {
                     // Material'da translationUz yo'q, tarjima qilish
                     try {
                         const translatedSentence = await this.translation.translateToUzbek(bestMatchSentence);
                         aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + translatedSentence;
-                        console.log(`   ✅ Translated best match to Uzbek: "${translatedSentence}"`);
+                        // console.log(`   ✅ Translated best match to Uzbek: "${translatedSentence}"`);
                     } catch (e) {
                         console.warn(`   ⚠️  Translation failed: ${e.message}`);
                         aiResponseUz = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.uzbek + bestMatchSentence;
                     }
                 }
                 gptUsage = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
-                console.log(`   ✅ Using pronunciation help: "${helpResponse}"`);
+                // console.log(`   ✅ Using pronunciation help: "${helpResponse}"`);
             }
         }
         // 4) AGAR MATERIALDAN TOPILMADI - GPT ga so'rov
@@ -509,7 +509,7 @@ export class GPTStep implements PipelineStep {
             if (aiResponse && aiResponse.trim().length > 0) {
                 try {
                     aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                    console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
+                    // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
                 } catch (e) {
                     console.warn(`   ⚠️  Translation failed: ${e.message}`);
                     aiResponseUz = ''; // Fallback: empty string
@@ -522,26 +522,26 @@ export class GPTStep implements PipelineStep {
                 (aiResponse || '').toLowerCase().includes('لا أعرف');
 
             // Echo tekshiruvi - kuchaytirilgan (STRICT MODE)
-            console.log(`\n🔍 Validating GPT response for echo...`);
-            console.log(`   User: "${userText}"`);
-            console.log(`   GPT:  "${aiResponse}"`);
+            // console.log(`\n🔍 Validating GPT response for echo...`);
+            // console.log(`   User: "${userText}"`);
+            // console.log(`   GPT:  "${aiResponse}"`);
             const responseIsEcho = this.detectEcho(aiResponse, userText, normalizedUser, userWords);
             if (responseIsEcho) {
-                console.log(`   ❌ Echo detected! Using fallback message.`);
+                // console.log(`   ❌ Echo detected! Using fallback message.`);
             } else {
-                console.log(`   ✅ No echo detected.`);
+                // console.log(`   ✅ No echo detected.`);
             }
 
             // Mantiqiy validatsiya - javob user so'roviga mantiqan mos keladimi?
             const isLogicalResponse = this.validateLogicalResponse(aiResponse, userText, normalizedUser);
             if (!isLogicalResponse) {
-                console.log(`   ⚠️  Response is not logical (basic validation).`);
+                // console.log(`   ⚠️  Response is not logical (basic validation).`);
             }
 
             // GPT javobida kelmagan materiallardan so'zlarni tekshirish
             const hasFutureLessonWords = this.checkFutureLessonWords(aiResponse, input.context, lastWatchedLessonOrder);
             if (hasFutureLessonWords) {
-                console.log(`   ⚠️  Response contains future lesson words.`);
+                // console.log(`   ⚠️  Response contains future lesson words.`);
             }
 
             // IMPORTANT: Vocabulary-based validation (ASOSIY) - GPT gap tuzsa ham, vocabulary'dan foydalanganligini tekshirish
@@ -551,18 +551,18 @@ export class GPTStep implements PipelineStep {
             const responseUsesValidVocabulary = this.checkResponseUsesValidVocabulary(aiResponse, materialVocabularySet);
 
             if (!responseUsesValidVocabulary) {
-                console.log(`   ⚠️  Response does NOT use valid vocabulary (contains words not in materials).`);
+                // console.log(`   ⚠️  Response does NOT use valid vocabulary (contains words not in materials).`);
             } else {
-                console.log(`   ✅ Response uses valid vocabulary from materials.`);
+                // console.log(`   ✅ Response uses valid vocabulary from materials.`);
             }
 
             // FALLBACK CHECK: Exact match validation (qo'shimcha tekshiruv sifatida)
             // Agar vocabulary validation o'tsa, exact match ham qilish mumkin (lekin majburiy emas)
             const responseExistsInMaterials = this.checkResponseExistsInMaterials(aiResponse, filteredContextForVocabulary);
             if (!responseExistsInMaterials) {
-                console.log(`   ℹ️  Response does NOT exist as exact match in lesson materials (dialogue), but may be constructed from vocabulary.`);
+                // console.log(`   ℹ️  Response does NOT exist as exact match in lesson materials (dialogue), but may be constructed from vocabulary.`);
             } else {
-                console.log(`   ✅ Response exists in lesson materials (exact match).`);
+                // console.log(`   ✅ Response exists in lesson materials (exact match).`);
             }
 
             // Conversation context bilan mos kelishini tekshirish
@@ -571,7 +571,7 @@ export class GPTStep implements PipelineStep {
                 conversationTopic
             );
             if (!matchesConversationContext && conversationTopic.topic) {
-                console.log(`   ⚠️  Response does NOT match conversation context (topic: ${conversationTopic.topic})`);
+                // console.log(`   ⚠️  Response does NOT match conversation context (topic: ${conversationTopic.topic})`);
             }
 
             // AGAR TUSHUNMAGAN, ECHO YOKI MANTIQIY EMAS YOKI VOCABULARY'DAN FOYDALANMAGAN YOKI CONTEXT'GA MOS KELMASA
@@ -580,13 +580,13 @@ export class GPTStep implements PipelineStep {
             if (!aiResponse || unsure || responseIsEcho || !isLogicalResponse || hasFutureLessonWords || !responseUsesValidVocabulary || !matchesConversationContext) {
                 // Echo yoki mantiqsiz javob - tushunmadim
                 if (responseIsEcho) {
-                    console.log(`\n🚫 GPT echoed user text. Using NOT_UNDERSTOOD fallback.`);
+                    // console.log(`\n🚫 GPT echoed user text. Using NOT_UNDERSTOOD fallback.`);
                     aiResponse = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.arabic;
                     aiResponseUz = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.uzbek;
                 }
                 // Javob vocabulary'dan foydalanmagan - material'dan tashqari so'zlar ishlatilgan
                 else if (!responseUsesValidVocabulary) {
-                    console.log(`\n⚠️  GPT response does NOT use valid vocabulary (contains words not in materials). Using NO_MATERIAL_RESPONSE fallback.`);
+                    // console.log(`\n⚠️  GPT response does NOT use valid vocabulary (contains words not in materials). Using NO_MATERIAL_RESPONSE fallback.`);
                     // User gapini uzbek tilida qo'shib yuborish
                     try {
                         const userTextUz = await this.translation.translateToUzbek(userText);
@@ -599,13 +599,13 @@ export class GPTStep implements PipelineStep {
                 }
                 // Tushunilmagan holat
                 else if (unsure || !aiResponse || aiResponse.trim().length < 5) {
-                    console.log(`\n⚠️  GPT response is unsure or too short. Using NOT_UNDERSTOOD fallback.`);
+                    // console.log(`\n⚠️  GPT response is unsure or too short. Using NOT_UNDERSTOOD fallback.`);
                     aiResponse = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.arabic;
                     aiResponseUz = AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.uzbek;
                 }
                 // Kelmagan materiallardan foydalangan yoki boshqa muammo
                 else {
-                    console.log(`\n⚠️  GPT response has other issues. Using NO_MATERIAL_RESPONSE fallback.`);
+                    // console.log(`\n⚠️  GPT response has other issues. Using NO_MATERIAL_RESPONSE fallback.`);
                     // User gapini uzbek tilida qo'shib yuborish
                     try {
                         const userTextUz = await this.translation.translateToUzbek(userText);
@@ -623,7 +623,7 @@ export class GPTStep implements PipelineStep {
         if (!aiResponseUz && aiResponse && aiResponse.trim().length > 0) {
             try {
                 aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                console.log(`   ✅ Final translation to Uzbek (fallback): "${aiResponseUz}"`);
+                // console.log(`   ✅ Final translation to Uzbek (fallback): "${aiResponseUz}"`);
             } catch (e) {
                 console.warn(`   ⚠️  Final translation failed: ${e.message}`);
                 aiResponseUz = ''; // Fallback: empty string (lekin bu kam uchraydi)
@@ -631,15 +631,15 @@ export class GPTStep implements PipelineStep {
         }
 
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
-        console.log("\n🤖 AI:");
-        console.log("   Arab: " + aiResponse);
-        console.log("   Lotin: " + aiResponseLatin);
+        // console.log("\n🤖 AI:");
+        // console.log("   Arab: " + aiResponse);
+        // console.log("   Lotin: " + aiResponseLatin);
         if (aiResponseUz) {
-            console.log("   Uzbek: " + aiResponseUz);
+            // console.log("   Uzbek: " + aiResponseUz);
         } else {
             console.warn("   ⚠️  Uzbek translation is missing!");
         }
-        console.log("   ⏱️  GPT vaqti: " + gptTime + "ms");
+        // console.log("   ⏱️  GPT vaqti: " + gptTime + "ms");
 
         // Usage ma'lumotlarini to'plash
         const usage = input.usage || {};
@@ -766,7 +766,7 @@ export class GPTStep implements PipelineStep {
 
         // 1. To'liq takrorlash (diacritics va punctuation'dan tashqari)
         if (normalizedResponse === normalizedUserCleaned) {
-            console.log(`🚫 Echo detected: Exact match (ignoring diacritics/punctuation)`);
+            // console.log(`🚫 Echo detected: Exact match (ignoring diacritics/punctuation)`);
             return true;
         }
 
@@ -792,7 +792,7 @@ export class GPTStep implements PipelineStep {
                     normalizedResponse.includes(pattern) && pattern.length > 0
                 );
                 if (!hasHelpPattern && helpPattern.length === 0) {
-                    console.log(`🚫 Echo detected: High similarity (${(similarity * 100).toFixed(0)}%), common words: ${commonWords}/${userWords.size}`);
+                    // console.log(`🚫 Echo detected: High similarity (${(similarity * 100).toFixed(0)}%), common words: ${commonWords}/${userWords.size}`);
                     return true;
                 }
             }
@@ -817,7 +817,7 @@ export class GPTStep implements PipelineStep {
             // Response uzunligi user gapidan ko'p farq qilmasa (faqat punctuation/diacritics farqi)
             const lengthRatio = responseLower.length / userTextLower.length;
             if (!hasHelpPattern && lengthRatio <= 1.3) {
-                console.log(`🚫 Echo detected: User text fully contained in response (length ratio: ${lengthRatio.toFixed(2)})`);
+                // console.log(`🚫 Echo detected: User text fully contained in response (length ratio: ${lengthRatio.toFixed(2)})`);
                 return true; // Echo
             }
         }
@@ -837,7 +837,7 @@ export class GPTStep implements PipelineStep {
                 // Faqat vergul yoki diacritics qo'shgan bo'lsa, bu echo
                 const lengthDiff = Math.abs(normalizedResponse.length - normalizedUserCleaned.length);
                 if (lengthDiff < 10) { // Faqat kichik farq (punctuation/diacritics)
-                    console.log(`🚫 Echo detected: Response only reorders user words (same word set, length diff: ${lengthDiff})`);
+                    // console.log(`🚫 Echo detected: Response only reorders user words (same word set, length diff: ${lengthDiff})`);
                     return true;
                 }
             }
@@ -882,7 +882,7 @@ export class GPTStep implements PipelineStep {
 
             // Agar javobda object yo'q, lekin "men ..." deb aytilgan bo'lsa → mantiqsiz!
             if (!responseHasObject && responseHasPerson) {
-                console.log(`   ⚠️ Logical mismatch: User asks about OBJECT, but AI answers about PERSON`);
+                // console.log(`   ⚠️ Logical mismatch: User asks about OBJECT, but AI answers about PERSON`);
                 return false;
             }
         }
@@ -896,7 +896,7 @@ export class GPTStep implements PipelineStep {
 
             // Agar javobda faqat object bor, person yo'q bo'lsa → mantiqsiz!
             if (responseHasObjectOnly) {
-                console.log(`   ⚠️ Logical mismatch: User asks about PERSON, but AI answers about OBJECT only`);
+                // console.log(`   ⚠️ Logical mismatch: User asks about PERSON, but AI answers about OBJECT only`);
                 return false;
             }
         }
@@ -932,13 +932,13 @@ export class GPTStep implements PipelineStep {
 
         // Agar user origin haqida so'rasa, lekin javob location haqida bo'lsa - mantiqsiz
         if (userHasOrigin && !responseHasOrigin && responseHasLocation) {
-            console.log(`      🚫 Semantic mismatch: User asks about ORIGIN (من), but response is about LOCATION (في)`);
+            // console.log(`      🚫 Semantic mismatch: User asks about ORIGIN (من), but response is about LOCATION (في)`);
             return false;
         }
 
         // Agar user location haqida so'rasa, lekin javob origin haqida bo'lsa - mantiqsiz
         if (userHasLocation && !responseHasLocation && responseHasOrigin) {
-            console.log(`      🚫 Semantic mismatch: User asks about LOCATION (في), but response is about ORIGIN (من)`);
+            // console.log(`      🚫 Semantic mismatch: User asks about LOCATION (في), but response is about ORIGIN (من)`);
             return false;
         }
 
@@ -997,7 +997,7 @@ export class GPTStep implements PipelineStep {
             if (responseName !== userNameInQuery) {
                 // Lekin ba'zi umumiy ismlar mantiqiy bo'lishi mumkin (masalan: farid, ahmad, muhammad - hamma bir xil dialogue'da)
                 // Shuning uchun faqat aniq mos kelmasa, rad qilamiz
-                console.log(`      🚫 Name mismatch: User asked about "${userNameInQuery}", but response mentions "${responseName}"`);
+                // console.log(`      🚫 Name mismatch: User asked about "${userNameInQuery}", but response mentions "${responseName}"`);
                 return false;
             }
         }
@@ -1160,7 +1160,7 @@ export class GPTStep implements PipelineStep {
                     if (similarity > 0.7) {
                         userWords[i] = topicWord; // To'g'ri so'z bilan almashtirish
                         corrected = true;
-                        console.log(`   ✏️  Corrected "${word}" → "${topicWord}" (topic: ${conversationTopic.topic}, similarity: ${(similarity * 100).toFixed(0)}%)`);
+                        // console.log(`   ✏️  Corrected "${word}" → "${topicWord}" (topic: ${conversationTopic.topic}, similarity: ${(similarity * 100).toFixed(0)}%)`);
                         break;
                     }
                 }
@@ -1398,12 +1398,12 @@ export class GPTStep implements PipelineStep {
 
                 // Agar ismlar FARQ qilsa, tuzatmaslik
                 if (userName !== materialName) {
-                    console.log(`   ⚠️  Name mismatch detected: user="${userName}" vs material="${materialName}" - NOT correcting!`);
+                    // console.log(`   ⚠️  Name mismatch detected: user="${userName}" vs material="${materialName}" - NOT correcting!`);
                     return userText; // User gapini o'zgartirmasdan qaytarish
                 }
             }
 
-            console.log(`   ✏️  Dialogue sentence correction: "${userText}" → "${bestMatch}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
+            // console.log(`   ✏️  Dialogue sentence correction: "${userText}" → "${bestMatch}" (similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
             return bestMatch;
         }
 
@@ -1419,7 +1419,7 @@ export class GPTStep implements PipelineStep {
         ) {
             const phoneticCorrected = this.applyPhoneticSTTCorrection(userText, bestMatch);
             if (phoneticCorrected && phoneticCorrected !== userText) {
-                console.log(`   🔤 Phonetic STT correction (fallback): "${userText}" → "${phoneticCorrected}" (original similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
+                // console.log(`   🔤 Phonetic STT correction (fallback): "${userText}" → "${phoneticCorrected}" (original similarity: ${(bestSimilarity * 100).toFixed(0)}%)`);
                 return phoneticCorrected;
             }
         }
@@ -1743,11 +1743,11 @@ export class GPTStep implements PipelineStep {
 
         // Agar invalid so'zlar bo'lsa, log qilish
         if (invalidWords.length > 0) {
-            console.log(`   ⚠️  Invalid vocabulary words detected: ${invalidWords.slice(0, 5).join(', ')}${invalidWords.length > 5 ? '...' : ''} (${invalidWords.length} total)`);
+            // console.log(`   ⚠️  Invalid vocabulary words detected: ${invalidWords.slice(0, 5).join(', ')}${invalidWords.length > 5 ? '...' : ''} (${invalidWords.length} total)`);
             return false;
         }
 
-        console.log(`   ✅ All words in response are from material vocabulary (${responseWords.length} words checked)`);
+        // console.log(`   ✅ All words in response are from material vocabulary (${responseWords.length} words checked)`);
         return true;
     }
 }

@@ -68,6 +68,67 @@ export class AIChatService {
     }
 
     /**
+     * Smart Session: Mavjud faol sessiyani qaytarish yoki yangi yaratish
+     * Bu metod har safar AI button bosilganda yangi sessiya yaratilishining oldini oladi
+     * 
+     * Avtomatik aniqlash:
+     * - Agar mavjud faol sessiya bo'lsa (bir xil courseId va sessionLanguage bilan) → qaytaradi
+     * - Agar mavjud sessiya bo'lmasa → yangi yaratadi
+     * 
+     * @param userId - Foydalanuvchi ID
+     * @param courseId - Kurs ID (ixtiyoriy)
+     * @param sessionLanguage - Sessiya tili (default: 'ar')
+     * @param sessionTitle - Sessiya sarlavhasi (ixtiyoriy)
+     * @returns Mavjud yoki yangi yaratilgan sessiya
+     */
+    async getOrCreateSession(
+        userId: ID,
+        courseId?: ID,
+        sessionLanguage?: string,
+        sessionTitle?: string
+    ): Promise<AIChatSession> {
+        const finalLanguage = sessionLanguage || 'ar';
+
+        // Mavjud faol sessiyani topish
+        // courseId va sessionLanguage bo'yicha filtrlash
+        let existingSession: AIChatSession | null = null;
+
+        if (courseId) {
+            // Kurs uchun maxsus sessiyalar - bir xil courseId va sessionLanguage bo'lgan faol sessiya
+            const sessions = await this.sessionRepo.findByUserIdAndCourseId(Number(userId), Number(courseId));
+            existingSession = sessions.find(s => s.isActive && s.sessionLanguage === finalLanguage) || null;
+        } else {
+            // Umumiy sessiya (courseId = null bo'lgan) - bir xil sessionLanguage bo'lgan faol sessiya
+            const allSessions = await this.sessionRepo.findByUserId(Number(userId));
+            existingSession = allSessions.find(s =>
+                s.isActive &&
+                s.courseId === null &&
+                s.sessionLanguage === finalLanguage
+            ) || null;
+        }
+
+        // Agar mavjud faol sessiya topilsa, uni qaytarish
+        if (existingSession) {
+            // lastActivityAt ni yangilash
+            existingSession.lastActivityAt = new Date();
+            const updated = await this.sessionRepo.update(existingSession);
+
+            // Xabarlarni yuklash va qaytarish
+            // // console.log(`[getOrCreateSession] Loading messages for session ${updated.id}...`);
+            updated.messages = await this.messageRepo.findBySessionIdOrdered(updated.id as number);
+            // // console.log(`[getOrCreateSession] Loaded ${updated.messages.length} messages for session ${updated.id}`);
+            return updated;
+        }
+
+        // Mavjud sessiya topilmasa, yangi yaratish
+        const newSession = await this.createSession(userId, courseId, finalLanguage, sessionTitle);
+
+        // Yangi sessiya uchun bo'sh messages array qo'shish
+        newSession.messages = [];
+        return newSession;
+    }
+
+    /**
      * Foydalanuvchi limit holatini tekshirish
      * Session yaratishda ishlatiladi
      */
@@ -113,6 +174,13 @@ export class AIChatService {
             throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
         }
 
+        // Session'dan courseId va language ni olish (session yaratilganda berilgan)
+        // Agar request'da berilgan bo'lsa, ularni e'tiborsiz qoldiramiz (session'dan olamiz)
+        const finalCourseId = session.courseId || courseId || undefined;
+        const finalLanguage = session.sessionLanguage || language || 'ar';
+
+        // // console.log(`[sendVoiceMessage] Using session data: courseId=${finalCourseId}, language=${finalLanguage} (from session: courseId=${session.courseId}, sessionLanguage=${session.sessionLanguage})`);
+
         // Pre-flight limit check - message saqlashdan OLDIN tekshirish
         // Bu limit oshib ketgan holatda message saqlanishini oldini oladi
         try {
@@ -135,24 +203,29 @@ export class AIChatService {
                 throw error;
             }
             // Boshqa xatolar uchun log (lekin pipeline'ni davom ettirish)
-            console.warn('⚠️  Pre-flight limit check xatosi (devam etiladi):', error.message);
+            // console.warn('⚠️  Pre-flight limit check xatosi (devam etiladi):', error.message);
         }
 
-        // Pipeline input
+        // Pipeline input - session'dan olingan ma'lumotlarni ishlatish
         const pipelineInput: VoiceInput = {
             userId,
             sessionId,
             audioBuffer,
-            courseId,
-            language,
+            courseId: finalCourseId,
+            language: finalLanguage,
             session,
         };
 
         // Pipeline execution
         const result = await this.voicePipeline.execute(pipelineInput);
 
+        // Xabar allaqachon pipeline'da session bilan yaratilgan
+        // TypeORM avtomatik sessionId'ni saqlaydi
+        // console.log(`[AI Chat Service] Saving message for session ${result.message.session?.id}`);
+
         // Save message and update session
         const saved = await this.messageRepo.create(result.message);
+
         result.session.lastActivityAt = new Date();
         await this.sessionRepo.update(result.session);
 
@@ -169,7 +242,7 @@ export class AIChatService {
             }
         } catch (error: any) {
             // Cost tracking xatosi request'ni to'xtatmaydi, faqat log qilamiz
-            console.error('❌ Cost tracking error after message save:', error.message);
+            // console.error('❌ Cost tracking error after message save:', error.message);
         }
 
         return saved;
@@ -177,9 +250,39 @@ export class AIChatService {
 
     /**
      * Sessiya xabarlarini olish
+     * Sessiya mavjudligini va egasini tekshiradi
      */
-    async getMessages(sessionId: ID): Promise<AIChatMessage[]> {
-        return this.messageRepo.findBySessionIdOrdered(Number(sessionId));
+    async getMessages(sessionId: ID, userId: ID): Promise<AIChatMessage[]> {
+        // // console.log(`[getMessages] Request: sessionId=${sessionId}, userId=${userId}`);
+
+        // Sessiya mavjudligini tekshirish
+        const session = await this.sessionRepo.findOneById(Number(sessionId));
+        if (!session) {
+            // console.warn(`[getMessages] ❌ Session not found: ${sessionId}`);
+            throw new BadRequestException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+
+        // // console.log(`[getMessages] ✅ Session found: id=${session.id}, userId=${session.userId}, isActive=${session.isActive}`);
+
+        // Sessiya egasini tekshirish
+        if (session.userId !== Number(userId)) {
+            // console.warn(`[getMessages] ❌ Session owner mismatch. Request userId=${userId}, Session userId=${session.userId}, sessionId=${sessionId}`);
+            throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+
+        // Xabarlarni olish
+        // // console.log(`[getMessages] 🔍 Querying messages for session ${sessionId}...`);
+        const messages = await this.messageRepo.findBySessionIdOrdered(Number(sessionId));
+        // console.log(`[AI Chat Service] Found ${messages.length} messages for session ${sessionId}`);
+
+        // Debug: Agar xabarlar bo'lsa, birinchi xabarni ko'rsatish
+        // if (messages.length > 0) {
+        //     // console.log(`[getMessages] 📝 First message: id=${messages[0].id}, senderType=${messages[0].senderType}, hasText=${!!messages[0].originalText || !!messages[0].aiResponseText}`);
+        // } else {
+        //     // console.log(`[getMessages] ⚠️ No messages found for session ${sessionId}. This is normal if no messages have been sent yet.`);
+        // }
+
+        return messages;
     }
 
     // -------------------- Ichki yordamchi metodlar --------------------
@@ -281,10 +384,10 @@ export class AIChatService {
         const useStrictMode = profile?.useStrictMode ?? true; // Default: strict mode
         const moduleLimit = profile?.moduleLimit || 7;
 
-        console.log(`📚 Getting Chroma context:`);
-        console.log(`   - User progress: currentLessonOrder = ${currentLessonOrder}`);
-        console.log(`   - Profile: useStrictMode = ${useStrictMode}, moduleLimit = ${moduleLimit}`);
-        console.log(`   - User query: "${userQuery || '(none)'}"`);
+        // console.log(`📚 Getting Chroma context:`);
+        // console.log(`   - User progress: currentLessonOrder = ${currentLessonOrder}`);
+        // console.log(`   - Profile: useStrictMode = ${useStrictMode}, moduleLimit = ${moduleLimit}`);
+        // console.log(`   - User query: "${userQuery || '(none)'}"`);
 
         // IMPORTANT: Agar currentLessonOrder 0 bo'lsa (hech qanday dars ko'rilmagan),
         // lekin user 1-darsdan gapirishi mumkin - shuning uchun kamida 1-darsni include qilamiz
@@ -292,8 +395,8 @@ export class AIChatService {
         const effectiveMaxLessonOrder = currentLessonOrder > 0 ? currentLessonOrder : 1;
         const effectiveStrict = useStrictMode && currentLessonOrder > 0; // 0 bo'lsa strict mode o'chiriladi
 
-        console.log(`   - Effective maxLessonOrder = ${effectiveMaxLessonOrder} (original: ${currentLessonOrder})`);
-        console.log(`   - Effective strict mode = ${effectiveStrict} (original: ${useStrictMode})`);
+        // console.log(`   - Effective maxLessonOrder = ${effectiveMaxLessonOrder} (original: ${currentLessonOrder})`);
+        // console.log(`   - Effective strict mode = ${effectiveStrict} (original: ${useStrictMode})`);
 
         // User so'rovini query sifatida ishlatish - bu RAG search'ni aniqroq qiladi
         // Agar userQuery bo'lmasa, umumiy query ishlatiladi
@@ -307,10 +410,10 @@ export class AIChatService {
             moduleLimit: effectiveStrict ? moduleLimit : undefined, // Module limit
         });
 
-        console.log(`📚 Chroma context retrieved: ${results.length} chunks`);
+        // console.log(`📚 Chroma context retrieved: ${results.length} chunks`);
         if (results.length > 0) {
             const lessonOrders = [...new Set(results.map(r => r.lessonOrder))].sort((a, b) => a - b);
-            console.log(`   - Lesson orders: ${lessonOrders.join(', ')}`);
+            // console.log(`   - Lesson orders: ${lessonOrders.join(', ')}`);
         }
 
         return results;
@@ -416,5 +519,3 @@ export class AIChatService {
     }
 
 }
-
-

@@ -27,7 +27,7 @@ export class ContextStep implements PipelineStep {
             const courseId = input.courseId || input.session?.courseId;
             const courseIdNum = courseId ? Number(courseId) : undefined;
 
-            console.log(`🔍 Building context for userId=${input.userId}, courseId=${courseIdNum}...`);
+            // console.log(`🔍 Building context for userId=${input.userId}, courseId=${courseIdNum}...`);
             fullContext = await this.aiChatService.buildContext({
                 userId: Number(input.userId),
                 courseId: courseIdNum,
@@ -35,8 +35,8 @@ export class ContextStep implements PipelineStep {
             });
             console.log(`✅ Context built successfully`);
         } catch (error: any) {
-            console.error(`❌ Error building context:`, error.message);
-            console.error(`❌ Error stack:`, error.stack);
+            // console.error(`❌ Error building context:`, error.message);
+            // console.error(`❌ Error stack:`, error.stack);
             throw error;
         }
 
@@ -68,7 +68,7 @@ export class ContextStep implements PipelineStep {
         let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
         try {
             console.log(`📜 Getting conversation history for session ${input.sessionId}...`);
-            const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId));
+            const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
             console.log(`✅ Retrieved ${previousMessages.length} previous messages`);
 
             // Format conversation history for GPT
@@ -178,14 +178,22 @@ export class ContextStep implements PipelineStep {
         currentLessonOrder: number,
         mentionedLessonOrder: number
     ): Promise<AIChatMessage> {
+        // Validation
+        if (!input.sessionId) {
+            throw new Error(`[ContextStep] Invalid sessionId: ${input.sessionId}`);
+        }
+
         const message = new AIChatMessage();
-        message.sessionId = input.session.id as unknown as any;
-        message.session = { id: input.session.id } as AIChatSession;
+
+        // SessionId'ni to'g'ridan-to'g'ri set qilish
+        message.sessionId = Number(input.sessionId);
+        console.log(`[ContextStep] Set sessionId=${message.sessionId} for future lesson message`);
         message.senderType = 'ai';
         message.originalText = input.validatedText;
         message.isWithinLimit = true;
-        message.messageLanguage = input.session.sessionLanguage;
-        message.contextUsed = { note: `future-lesson-warning: current=${currentLessonOrder}, mentioned=${mentionedLessonOrder}` };
+
+        // Debug log
+        console.log(`[ContextStep] Creating future lesson message: sessionId=${message.sessionId}`);
 
         message.aiResponseText = 'لَحْنِ بَعْدُ لَمْ تَصِلْ إِلَى هَٰذَا الدَّرْسِ.';
         message.aiResponseUzbek = 'Siz hali bu darsga kelmagansiz.';

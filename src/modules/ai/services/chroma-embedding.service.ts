@@ -25,7 +25,7 @@ export class ChromaEmbeddingService {
             throw new Error('OPENAI_API_KEY not found');
         }
 
-        console.log(`🧠 Generating embeddings for ${texts.length} texts using ${embedModel}`);
+        // console.log(`🧠 Generating embeddings for ${texts.length} texts using ${embedModel}`);
 
         const embedRes = await axios.post('https://api.openai.com/v1/embeddings', {
             model: embedModel,
@@ -36,7 +36,7 @@ export class ChromaEmbeddingService {
         });
 
         const embeddings = (embedRes.data as any).data.map((item: any) => item.embedding);
-        console.log(`✅ Generated embeddings: ${embeddings.length} vectors, each ${embeddings[0]?.length} dimensions`);
+        // console.log(`✅ Generated embeddings: ${embeddings.length} vectors, each ${embeddings[0]?.length} dimensions`);
 
         return embeddings;
     }
@@ -47,7 +47,7 @@ export class ChromaEmbeddingService {
     async upsertToChroma(chunks: IndexedChunk[]): Promise<boolean> {
         const useRag = process.env.USE_RAG === '1';
         if (!useRag) {
-            console.log(`🔕 RAG disabled, skipping ChromaDB upsert`);
+            // console.log(`🔕 RAG disabled, skipping ChromaDB upsert`);
             return false;
         }
 
@@ -59,7 +59,7 @@ export class ChromaEmbeddingService {
                 return false;
             }
 
-            console.log(`📝 ChromaEmbeddingService: Upserting ${chunks.length} chunks to ChromaDB`);
+            // console.log(`📝 ChromaEmbeddingService: Upserting ${chunks.length} chunks to ChromaDB`);
 
             // Embedding'lar uchun OpenAI API chaqirish
             const openaiKey = process.env.OPENAI_API_KEY;
@@ -94,7 +94,7 @@ export class ChromaEmbeddingService {
             };
 
             // ChromaDB 1.0.0+ always uses 'upsert' endpoint
-            console.log(`🚀 Sending upsert to ChromaDB: ${apiBase}/collections/${collectionId}/upsert`);
+            // console.log(`🚀 Sending upsert to ChromaDB: ${apiBase}/collections/${collectionId}/upsert`);
 
             const upsertRes = await axios.post(
                 `${apiBase}/collections/${collectionId}/upsert`,
@@ -105,7 +105,7 @@ export class ChromaEmbeddingService {
                 }
             );
 
-            console.log(`✅ ChromaDB upsert successful: ${upsertRes.status}`);
+            // console.log(`✅ ChromaDB upsert successful: ${upsertRes.status}`);
             return true;
         } catch (e: any) {
             console.error(`❌ ChromaEmbeddingService: upsert to ChromaDB failed: ${e?.message || String(e)}`);

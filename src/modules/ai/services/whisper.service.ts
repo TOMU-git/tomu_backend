@@ -7,8 +7,8 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const WHISPER_MODEL = process.env.WHISPER_MODEL || "whisper-1";
 
 // Console verification
-console.log("🎤 Whisper Configuration:");
-console.log(`   WHISPER_MODEL: ${WHISPER_MODEL}`);
+// console.log("🎤 Whisper Configuration:");
+// console.log(`   WHISPER_MODEL: ${WHISPER_MODEL}`);
 
 /**
  * Whisper usage ma'lumotlari
@@ -39,7 +39,7 @@ export class WhisperService {
      */
     async speechToText(params: { audio: Buffer; language?: string }): Promise<string> {
         if (!OPENAI_API_KEY) {
-            console.log("⚠️  OpenAI API key yo'q - fallback javob");
+            // console.log("⚠️  OpenAI API key yo'q - fallback javob");
             return "عَفْوًا، لَمْ أَسْمَعْ شَيْئًا. هَلْ يُمْكِنُكَ الإِعَادَةَ؟";
         }
 
@@ -80,14 +80,14 @@ export class WhisperService {
 
         try {
             const audioSizeMB = params.audio.length / (1024 * 1024);
-            console.log(`🎤 Calling Whisper API with model: ${WHISPER_MODEL}`);
-            console.log(`📊 Audio size: ${audioSizeMB.toFixed(3)} MB`);
+            // console.log(`🎤 Calling Whisper API with model: ${WHISPER_MODEL}`);
+            // console.log(`📊 Audio size: ${audioSizeMB.toFixed(3)} MB`);
 
             const res = await axios.post("https://api.openai.com/v1/audio/transcriptions", fd, {
                 headers: { ...fd.getHeaders(), Authorization: `Bearer ${OPENAI_API_KEY}` },
             });
 
-            console.log("✅ Whisper API call successful");
+            // console.log("✅ Whisper API call successful");
 
             // OpenAI: response_format=verbose_json returns JSON with text field
             let transcribedText = "";
@@ -103,7 +103,7 @@ export class WhisperService {
                 transcribedText = JSON.stringify(responseData);
             }
 
-            console.log(`📝 Transcribed: "${transcribedText}"`);
+            // console.log(`📝 Transcribed: "${transcribedText}"`);
             return transcribedText;
         } catch (e: any) {
             console.error('❌ Whisper transcription error:', e.message);
@@ -155,14 +155,14 @@ export class WhisperService {
         fd.append("response_format", "verbose_json");
 
         try {
-            console.log(`🎤 Calling Whisper API with model: ${WHISPER_MODEL}`);
-            console.log(`📊 Audio size: ${audioSizeMB.toFixed(3)} MB`);
+            // console.log(`🎤 Calling Whisper API with model: ${WHISPER_MODEL}`);
+            // console.log(`📊 Audio size: ${audioSizeMB.toFixed(3)} MB`);
 
             const res = await axios.post("https://api.openai.com/v1/audio/transcriptions", fd, {
                 headers: { ...fd.getHeaders(), Authorization: `Bearer ${OPENAI_API_KEY}` },
             });
 
-            console.log("✅ Whisper API call successful");
+            // console.log("✅ Whisper API call successful");
 
             let transcribedText = "";
             const responseData = res.data as any;
@@ -177,7 +177,7 @@ export class WhisperService {
 
             // Extract duration from verbose_json response
             const duration = responseData?.duration || 0; // seconds
-            console.log(`📝 Transcribed: "${transcribedText}" (duration: ${duration}s)`);
+            // console.log(`📝 Transcribed: "${transcribedText}" (duration: ${duration}s)`);
 
             return { text: transcribedText, duration };
         } catch (e: any) {

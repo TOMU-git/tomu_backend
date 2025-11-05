@@ -32,12 +32,11 @@ export class ResponseStep implements PipelineStep {
         };
 
         const message = await this.messageFactory.createResponseMessage(
-            input.session,
+            Number(input.sessionId),
             input.validatedText,
             input.aiResponse,
             input.aiResponseUz,
             true, // withinLimit
-            input.context,
             ttsResult.audioUrl // audioUrl
         );
 

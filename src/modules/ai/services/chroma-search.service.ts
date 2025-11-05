@@ -28,7 +28,7 @@ export class ChromaSearchService {
             return [];
         }
 
-        console.log(`🧠 Generating query embedding...`);
+        // console.log(`🧠 Generating query embedding...`);
         const embedRes = await axios.post('https://api.openai.com/v1/embeddings', {
             model: embedModel,
             input: [queryText],
@@ -37,7 +37,7 @@ export class ChromaSearchService {
             timeout: 15000
         });
         const queryEmbedding = (embedRes.data as any).data[0].embedding;
-        console.log(`✅ Query embedding generated: ${queryEmbedding.length} dimensions`);
+        // console.log(`✅ Query embedding generated: ${queryEmbedding.length} dimensions`);
         return queryEmbedding;
     }
 
@@ -52,7 +52,7 @@ export class ChromaSearchService {
         const queryText = params.query || "arabic language learning lesson dialogue conversation";
 
         if (!useRag) {
-            console.log(`🔕 RAG disabled, falling back to Memory Index`);
+            // console.log(`🔕 RAG disabled, falling back to Memory Index`);
             return [];
         }
 
@@ -64,21 +64,21 @@ export class ChromaSearchService {
             const apiBase = this.connectionService.getApiBase();
             const collectionId = await this.connectionService.ensureChromaCollectionId();
 
-            console.log(`\n🔍 RAG Search:`);
-            console.log(`   - USE_RAG: ${useRag ? '1 (enabled)' : '0 (disabled)'}`);
-            console.log(`   - Collection ID: ${collectionId ? collectionId.substring(0, 8) + '...' : 'NOT FOUND'}`);
-            console.log(`   - Query: "${queryText}"`);
-            console.log(`   - Language: ${language}`);
-            console.log(`   - Initial Top K: ${initialTopK} (for reranking)`);
-            console.log(`   - Final Top K: ${finalTopK} (after rerank)`);
-            console.log(`   - Rerank enabled: ${this.rerankService.isEnabled()}`);
+            // console.log(`\n🔍 RAG Search:`);
+            // console.log(`   - USE_RAG: ${useRag ? '1 (enabled)' : '0 (disabled)'}`);
+            // console.log(`   - Collection ID: ${collectionId ? collectionId.substring(0, 8) + '...' : 'NOT FOUND'}`);
+            // console.log(`   - Query: "${queryText}"`);
+            // console.log(`   - Language: ${language}`);
+            // console.log(`   - Initial Top K: ${initialTopK} (for reranking)`);
+            // console.log(`   - Final Top K: ${finalTopK} (after rerank)`);
+            // console.log(`   - Rerank enabled: ${this.rerankService.isEnabled()}`);
 
             if (!collectionId) {
-                console.log(`⚠️  ChromaDB not available, falling back to Memory Index`);
+                // console.log(`⚠️  ChromaDB not available, falling back to Memory Index`);
                 return [];
             }
 
-            console.log(`✅ ChromaDB connection: ${apiBase}`);
+            // console.log(`✅ ChromaDB connection: ${apiBase}`);
 
             // Query text uchun embedding yaratish
             const queryEmbedding = await this.generateQueryEmbedding(queryText);
@@ -94,10 +94,10 @@ export class ChromaSearchService {
             const whereCondition: any = { language };
             if (params.strict && params.maxLessonOrder) {
                 whereCondition.lessonOrder = { $lte: params.maxLessonOrder };
-                console.log(`   - Strict mode: lessonOrder <= ${params.maxLessonOrder}`);
+                // console.log(`   - Strict mode: lessonOrder <= ${params.maxLessonOrder}`);
             }
 
-            console.log(`📡 Querying ChromaDB...`);
+            // console.log(`📡 Querying ChromaDB...`);
             const queryPayload = {
                 query_embeddings: [queryEmbedding],
                 n_results: initialTopK, // More results for reranking
@@ -119,7 +119,7 @@ export class ChromaSearchService {
             const distances = (res.data as any)?.distances?.[0] || [];
 
             if (documents.length > 0) {
-                console.log(`✅ ChromaDB query successful: ${documents.length} documents found`);
+                // console.log(`✅ ChromaDB query successful: ${documents.length} documents found`);
 
                 // Build initial results from ChromaDB
                 const initialResults = documents.map((doc: string, i: number) => ({
@@ -140,20 +140,20 @@ export class ChromaSearchService {
                 // Apply reranking if enabled
                 let finalResults = initialResults;
                 if (this.rerankService.isEnabled() && initialResults.length > finalTopK) {
-                    console.log(`🔄 Applying reranking: ${initialResults.length} → ${finalTopK} documents...`);
+                    // console.log(`🔄 Applying reranking: ${initialResults.length} → ${finalTopK} documents...`);
                     const reranked = await this.rerankService.rerank(queryText, initialResults, finalTopK);
                     finalResults = reranked.map((r) => r.document);
-                    console.log(`✅ Reranking completed: selected top ${finalResults.length} most relevant documents`);
+                    // console.log(`✅ Reranking completed: selected top ${finalResults.length} most relevant documents`);
                 } else if (initialResults.length > finalTopK) {
                     // If rerank disabled, just take top-K by distance
                     finalResults = initialResults.slice(0, finalTopK);
-                    console.log(`📊 Using top ${finalTopK} documents by distance (rerank disabled)`);
+                    // console.log(`📊 Using top ${finalTopK} documents by distance (rerank disabled)`);
                 }
 
-                console.log(`📚 Context: ChromaDB → Rerank (${finalResults.length} lessons)`);
+                // console.log(`📚 Context: ChromaDB → Rerank (${finalResults.length} lessons)`);
                 return finalResults;
             } else {
-                console.log(`⚠️  ChromaDB query returned 0 documents, falling back to Memory Index`);
+                // console.log(`⚠️  ChromaDB query returned 0 documents, falling back to Memory Index`);
                 return [];
             }
         } catch (e: any) {

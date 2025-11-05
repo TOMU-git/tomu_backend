@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { AIChatMessage } from "../entities/ai-chat-message.entity";
-import { AIChatSession } from "../entities/ai-chat-session.entity";
 import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { TTSService } from "./tts.service";
 
@@ -15,26 +14,29 @@ export class AIChatMessageFactory {
 
     /**
      * Fallback xabar yaratish (STT bo'sh yoki non-Arabic)
-     * @param session - Chat sessiyasi
+     * @param sessionId - Chat sessiya ID (number)
      * @param originalText - Foydalanuvchi matni
      * @param fallbackType - Fallback turi
      * @returns Yaratilgan xabar
      */
     async createFallbackMessage(
-        session: AIChatSession,
+        sessionId: number,
         originalText: string,
         fallbackType: 'empty' | 'non-arabic'
     ): Promise<AIChatMessage> {
+        // Validation
+        if (!sessionId || typeof sessionId !== 'number') {
+            throw new Error(`[MessageFactory] Invalid sessionId: ${sessionId}`);
+        }
+
         const message = new AIChatMessage();
 
-        // FK ni aniq yozish
-        message.sessionId = session.id as unknown as any;
-        message.session = { id: session.id } as AIChatSession;
+        // SessionId'ni to'g'ridan-to'g'ri set qilish
+        message.sessionId = sessionId;
+        console.log(`[MessageFactory.createFallback] Set sessionId=${sessionId} for message`);
         message.senderType = 'ai';
         message.originalText = originalText;
         message.isWithinLimit = true;
-        message.messageLanguage = session.sessionLanguage;
-        message.contextUsed = { note: `${fallbackType}-transcript-fallback` };
 
         // Fallback turiga qarab javob berish
         if (fallbackType === 'empty') {
@@ -56,36 +58,37 @@ export class AIChatMessageFactory {
 
     /**
      * Oddiy AI javob xabari yaratish
-     * @param session - Chat sessiyasi
+     * @param sessionId - Chat sessiya ID (number)
      * @param originalText - Foydalanuvchi matni
      * @param aiResponse - AI javobi
      * @param aiResponseUz - AI javobi o'zbek tilida
      * @param withinLimit - Limit ichida ekanligi
-     * @param contextUsed - Ishlatilgan kontekst
      * @param audioUrl - Audio URL (ixtiyoriy)
      * @returns Yaratilgan xabar
      */
     async createResponseMessage(
-        session: AIChatSession,
+        sessionId: number,
         originalText: string,
         aiResponse: string,
         aiResponseUz: string,
         withinLimit: boolean,
-        contextUsed: any,
         audioUrl?: string
     ): Promise<AIChatMessage> {
+        // Validation
+        if (!sessionId || typeof sessionId !== 'number') {
+            throw new Error(`[MessageFactory] Invalid sessionId: ${sessionId}`);
+        }
+
         const message = new AIChatMessage();
 
-        // FK ni aniq yozish
-        message.sessionId = session.id as unknown as any;
-        message.session = { id: session.id } as AIChatSession;
+        // SessionId'ni to'g'ridan-to'g'ri set qilish
+        message.sessionId = sessionId;
+        console.log(`[MessageFactory.createResponse] Set sessionId=${sessionId} for message`);
         message.senderType = 'ai';
         message.originalText = originalText;
         message.aiResponseText = aiResponse;
         message.aiResponseUzbek = aiResponseUz;
         message.isWithinLimit = withinLimit;
-        message.messageLanguage = session.sessionLanguage;
-        message.contextUsed = contextUsed;
 
         // Audio strategiyasi - FAQAT ARABCHA!
         if (audioUrl) {

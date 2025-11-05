@@ -12,12 +12,12 @@ export class VimeoService {
     const clientSecret = process.env.VIMEO_CLIENT_SECRET;
     const accessToken = process.env.VIMEO_ACCESS_TOKEN;
 
-    console.log('🔧 VimeoService initialized with credentials:', {
-      clientId: clientId ? `${clientId.substring(0, 8)}...` : 'NOT SET',
-      clientSecret: clientSecret ? `${clientSecret.substring(0, 8)}...` : 'NOT SET',
-      accessToken: accessToken ? `${accessToken.substring(0, 8)}...` : 'NOT SET',
-      timestamp: new Date().toISOString()
-    });
+    // console.log('🔧 VimeoService initialized with credentials:', {
+    //   clientId: clientId ? `${clientId.substring(0, 8)}...` : 'NOT SET',
+    //   clientSecret: clientSecret ? `${clientSecret.substring(0, 8)}...` : 'NOT SET',
+    //   accessToken: accessToken ? `${accessToken.substring(0, 8)}...` : 'NOT SET',
+    //   timestamp: new Date().toISOString()
+    // });
 
     if (!clientId || !clientSecret || !accessToken) {
       console.error('❌ Vimeo credentials are missing! Please check environment variables:');
@@ -34,16 +34,16 @@ export class VimeoService {
     title: string,
     description: string,
   ): Promise<{ videoUrl: string; duration: number }> {
-    console.log('🎬 Vimeo video upload started:', {
-      title,
-      description,
-      fileSize: fileBuffer.length,
-      timestamp: new Date().toISOString()
-    });
+    // console.log('🎬 Vimeo video upload started:', {
+    //   title,
+    //   description,
+    //   fileSize: fileBuffer.length,
+    //   timestamp: new Date().toISOString()
+    // });
 
     return new Promise((resolve, reject) => {
       const tempFilePath = path.join(__dirname, 'temp_video.mp4');
-      console.log('📁 Creating temporary file at:', tempFilePath);
+      // console.log('📁 Creating temporary file at:', tempFilePath);
 
       fs.writeFile(tempFilePath, fileBuffer, async (err) => {
         if (err) {
@@ -51,7 +51,7 @@ export class VimeoService {
           return reject(err);
         }
 
-        console.log('✅ Temporary file created successfully, starting Vimeo upload...');
+        // console.log('✅ Temporary file created successfully, starting Vimeo upload...');
 
         this.vimeoClient.upload(
           tempFilePath,
@@ -60,42 +60,42 @@ export class VimeoService {
             description: description,
           },
           async (uri) => {
-            console.log('🎉 Vimeo upload completed successfully!');
-            console.log('🔗 Video URI:', uri);
+            // console.log('🎉 Vimeo upload completed successfully!');
+            // console.log('🔗 Video URI:', uri);
 
             const videoId = uri.split('/').pop();
             const videoUrl = `https://player.vimeo.com/video/${videoId}`;
 
-            console.log('🆔 Video ID:', videoId);
-            console.log('🌐 Video URL:', videoUrl);
+            // console.log('🆔 Video ID:', videoId);
+            // console.log('🌐 Video URL:', videoUrl);
 
             // Delete the temporary file
             fs.unlink(tempFilePath, (err) => {
               if (err) {
                 console.error("❌ Error deleting temp file:", err);
               } else {
-                console.log('🗑️ Temporary file deleted successfully');
+                // console.log('🗑️ Temporary file deleted successfully');
               }
             });
 
             // Add a delay to get the video duration
-            console.log('⏳ Waiting for video to be processed...');
+            // console.log('⏳ Waiting for video to be processed...');
             let videoInfo;
             let attempts = 5; // Try up to 5 times
             do {
-              console.log(`🔍 Attempting to get video info (${6 - attempts}/5)...`);
+              // console.log(`🔍 Attempting to get video info (${6 - attempts}/5)...`);
               try {
                 videoInfo = await this.getVideoInfo(videoId);
-                console.log('📊 Video info retrieved:', {
-                  duration: videoInfo.duration,
-                  status: videoInfo.status
-                });
+                // console.log('📊 Video info retrieved:', {
+                //   duration: videoInfo.duration,
+                //   status: videoInfo.status
+                // });
 
                 if (videoInfo.status === 'available') {
-                  console.log('✅ Video is available and ready!');
+                  // console.log('✅ Video is available and ready!');
                   break; // If the video is available, break the loop
                 } else {
-                  console.log(`⏳ Video status: ${videoInfo.status}, waiting 5 seconds...`);
+                  // console.log(`⏳ Video status: ${videoInfo.status}, waiting 5 seconds...`);
                 }
               } catch (error) {
                 console.error('❌ Error getting video info:', error);
@@ -109,17 +109,17 @@ export class VimeoService {
               console.warn('⚠️ Video processing timeout - using available info');
             }
 
-            console.log('🎯 Upload process completed:', {
-              videoUrl,
-              duration: videoInfo.duration,
-              finalStatus: videoInfo.status
-            });
+            // console.log('🎯 Upload process completed:', {
+            //   videoUrl,
+            //   duration: videoInfo.duration,
+            //   finalStatus: videoInfo.status
+            // });
 
             resolve({ videoUrl, duration: videoInfo.duration });
           },
           (bytesUploaded, bytesTotal) => {
             const percentage = (bytesUploaded / bytesTotal) * 100;
-            console.log(`📤 Upload progress: ${percentage.toFixed(2)}% (${bytesUploaded}/${bytesTotal} bytes)`);
+            // console.log(`📤 Upload progress: ${percentage.toFixed(2)}% (${bytesUploaded}/${bytesTotal} bytes)`);
           },
           (error) => {
             console.error('❌ Vimeo upload error:', error);
@@ -138,7 +138,7 @@ export class VimeoService {
   async getVideoInfo(
     videoId: string,
   ): Promise<{ duration: number; status: string }> {
-    console.log(`🔍 Getting video info for ID: ${videoId}`);
+    // console.log(`🔍 Getting video info for ID: ${videoId}`);
 
     return new Promise((resolve, reject) => {
       this.vimeoClient.request(
@@ -151,12 +151,12 @@ export class VimeoService {
             console.error(`❌ Error getting video info for ${videoId}:`, error);
             reject(error);
           } else {
-            console.log(`✅ Video info retrieved for ${videoId}:`, {
-              duration: body.duration,
-              status: body.status,
-              name: body.name,
-              created_time: body.created_time
-            });
+            // console.log(`✅ Video info retrieved for ${videoId}:`, {
+            //   duration: body.duration,
+            //   status: body.status,
+            //   name: body.name,
+            //   created_time: body.created_time
+            // });
             resolve({ duration: body.duration, status: body.status });
           }
         },
