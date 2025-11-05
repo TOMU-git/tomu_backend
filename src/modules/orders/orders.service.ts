@@ -25,31 +25,77 @@ export class OrdersService implements IOrderService {
   ) { }
 
   async createOrder(orderDto: CreateOrderDto): Promise<ResData<IOrderCreateReturn>> {
+    console.log("=== ORDER CREATION START DEBUG ===");
+    console.log("1. Order DTO received:", {
+      userId: orderDto.userId,
+      courseId: orderDto.courseId,
+      tariffId: orderDto.tariffId,
+      tariffIdType: typeof orderDto.tariffId,
+      liveChatId: orderDto.liveChatId,
+      paymentType: orderDto.paymentType,
+    });
+
     const foundUser = await this.userService.findOneById(orderDto.userId);
     const foundCourse = await this.courseService.findOneById(orderDto.courseId);
     const newOrder = new OrderEntity();
     newOrder.userId = orderDto.userId;
     newOrder.type = orderDto.paymentType;
+
+    console.log("2. Before setting tariffId:", {
+      orderDtoTariffId: orderDto.tariffId,
+      conditionResult: !!orderDto.tariffId,
+    });
+
     if (orderDto.tariffId) {
+      console.log("3. Entered tariffId block");
       const { data: foundTariff } = await this.tariffService.findOne(orderDto.tariffId);
+      console.log("4. Found Tariff:", {
+        id: foundTariff?.id,
+        courseId: foundTariff?.courseId,
+        price: foundTariff?.price,
+      });
       newOrder.tariffId = orderDto.tariffId;
       newOrder.courseId = foundTariff.courseId;
       newOrder.totalPrice = foundTariff.price;
+      console.log("5. After setting tariffId to newOrder:", {
+        tariffId: newOrder.tariffId,
+        courseId: newOrder.courseId,
+        totalPrice: newOrder.totalPrice,
+      });
+    } else {
+      console.log("3. SKIPPED - tariffId not provided in DTO");
     }
+
     if (orderDto.liveChatId) {
+      console.log("6. Entered liveChatId block");
       const { data: foundLiveChat } = await this.liveChatService.findOne(orderDto.liveChatId);
       newOrder.liveChatId = orderDto.liveChatId;
       newOrder.courseId = foundLiveChat.selectedCourseId;
       newOrder.totalPrice = foundLiveChat.price;
     }
+
     newOrder.status = OrderStatus.PENDING;
     const callBackUrl = `https://tomu.uz/kurslar`;
+
+    console.log("7. Before saving to DB - newOrder:", {
+      userId: newOrder.userId,
+      tariffId: newOrder.tariffId,
+      tariffIdType: typeof newOrder.tariffId,
+      liveChatId: newOrder.liveChatId,
+      courseId: newOrder.courseId,
+      totalPrice: newOrder.totalPrice,
+      status: newOrder.status,
+    });
+
     const createdOrder = await this.orderRepository.create(newOrder);
 
-    // Log qo'shish - muammoni topish uchun
     console.log("=== ORDER CREATION DEBUG ===");
-    console.log("Created order:", {
+    console.log("8. Created order from DB:", {
       id: createdOrder.id,
+      tariffId: createdOrder.tariffId,
+      tariffIdType: typeof createdOrder.tariffId,
+      liveChatId: createdOrder.liveChatId,
+      courseId: createdOrder.courseId,
       totalPrice: createdOrder.totalPrice,
       totalPriceType: typeof createdOrder.totalPrice,
       totalPriceNumber: Number(createdOrder.totalPrice),

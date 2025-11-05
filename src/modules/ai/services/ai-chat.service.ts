@@ -22,6 +22,8 @@ import { AIChatMessageFactory } from "./ai-chat-message-factory.service";
 import { VoiceProcessingPipeline, VoiceInput } from "./voice-processing-pipeline.service";
 import { UserAIProfile } from "../entities/user-ai-profile.entity";
 import { LimitCheckService } from "./limit-check.service";
+import { CostCalculationService } from "./cost-calculation.service";
+import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
 
 /**
  * AIChatService
@@ -48,6 +50,7 @@ export class AIChatService {
         private readonly messageFactory: AIChatMessageFactory,
         private readonly voicePipeline: VoiceProcessingPipeline,
         private readonly limitCheck: LimitCheckService, // Cost tracking uchun
+        private readonly costCalculator: CostCalculationService, // Cost estimation uchun
     ) { }
 
     /**
@@ -62,6 +65,25 @@ export class AIChatService {
         session.isActive = true;
         session.lastActivityAt = new Date();
         return await this.sessionRepo.create(session);
+    }
+
+    /**
+     * Foydalanuvchi limit holatini tekshirish
+     * Session yaratishda ishlatiladi
+     */
+    async checkUserLimitStatus(userId: ID): Promise<{
+        canProceed: boolean;
+        currentCost: number;
+        limit: number;
+        remaining: number;
+    }> {
+        const limitCheck = await this.limitCheck.checkMonthlyLimit(userId);
+        return {
+            canProceed: limitCheck.canProceed,
+            currentCost: limitCheck.currentCost,
+            limit: limitCheck.limit,
+            remaining: limitCheck.remaining,
+        };
     }
 
     /**
@@ -89,6 +111,31 @@ export class AIChatService {
         }
         if (session.userId !== Number(userId)) {
             throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+
+        // Pre-flight limit check - message saqlashdan OLDIN tekshirish
+        // Bu limit oshib ketgan holatda message saqlanishini oldini oladi
+        try {
+            const estimatedCost = this.costCalculator.estimateCost({
+                audioBufferSize: audioBuffer.length,
+            });
+            const limitCheck = await this.limitCheck.checkMonthlyLimit(userId, estimatedCost.totalCost);
+            if (!limitCheck.canProceed) {
+                // Limit oshib ketgan bo'lsa, exception tashlash
+                throw new LimitExceededException(
+                    `Oylik limit oshib ketdi. Hozirgi sarflangan: $${limitCheck.currentCost.toFixed(2)}, ` +
+                    `Taxminiy: $${estimatedCost.totalCost.toFixed(2)}, ` +
+                    `Jami: $${limitCheck.estimatedTotal!.toFixed(2)}, Limit: $${limitCheck.limit}. ` +
+                    `Qolgan: $${limitCheck.remaining.toFixed(2)}`
+                );
+            }
+        } catch (error: any) {
+            // LimitExceededException'ni re-throw qilish
+            if (error instanceof LimitExceededException) {
+                throw error;
+            }
+            // Boshqa xatolar uchun log (lekin pipeline'ni davom ettirish)
+            console.warn('⚠️  Pre-flight limit check xatosi (devam etiladi):', error.message);
         }
 
         // Pipeline input

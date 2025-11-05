@@ -212,6 +212,67 @@ export class CostCalculationService {
     }
 
     /**
+     * Taxminiy cost'ni hisoblash (pre-flight check uchun)
+     * Audio buffer asosida taxminiy cost hisoblaydi
+     * 
+     * @param audioBuffer - Audio buffer (bytes)
+     * @returns Taxminiy cost breakdown
+     */
+    estimateCost(params: {
+        audioBufferSize?: number; // bytes
+        estimatedWhisperDurationSeconds?: number;
+        estimatedResponseLength?: number; // characters
+    }): {
+        whisperCost: number;
+        ttsCost: number;
+        gptCost: number;
+        totalCost: number;
+    } {
+        // 1. Whisper cost estimation
+        // Audio buffer size'dan taxminiy duration hisoblash
+        // Taxminan: 1MB audio ≈ 1 minute (128kbps)
+        let estimatedWhisperDuration = params.estimatedWhisperDurationSeconds;
+        if (!estimatedWhisperDuration && params.audioBufferSize) {
+            // Taxminiy: 1MB = 1 minute
+            const estimatedMB = params.audioBufferSize / (1024 * 1024);
+            estimatedWhisperDuration = estimatedMB * 60; // seconds
+            // Maximum 60 seconds (1 minute)
+            estimatedWhisperDuration = Math.min(estimatedWhisperDuration, 60);
+        }
+        const whisperCost = this.calculateWhisperCost(estimatedWhisperDuration || 0);
+
+        // 2. TTS cost estimation
+        // Taxminiy response length asosida (average Arabic response ~100-200 characters)
+        let estimatedTTSSize = params.estimatedResponseLength;
+        if (!estimatedTTSSize) {
+            // Default: 150 characters (average Arabic response)
+            estimatedTTSSize = 150;
+        }
+        const ttsCost = this.calculateTTSCost(estimatedTTSSize);
+
+        // 3. GPT cost estimation
+        // Taxminiy: 1000 prompt tokens + 200 completion tokens (average)
+        // Bu juda taxminiy, lekin pre-flight check uchun yetarli
+        const estimatedPromptTokens = 1000;
+        const estimatedCompletionTokens = 200;
+        const gptCost = this.calculateGPTCost(estimatedPromptTokens, estimatedCompletionTokens);
+
+        const totalCost = this.roundToSixDecimals(whisperCost + ttsCost + gptCost);
+
+        this.logger.debug(
+            `Estimated Cost: GPT=$${gptCost.toFixed(6)}, Whisper=$${whisperCost.toFixed(6)}, ` +
+            `TTS=$${ttsCost.toFixed(6)}, Total=$${totalCost.toFixed(6)}`
+        );
+
+        return {
+            whisperCost,
+            ttsCost,
+            gptCost,
+            totalCost,
+        };
+    }
+
+    /**
      * Cost'ni 6 o'nlik xonaga yaxlitlash (database precision uchun)
      */
     private roundToSixDecimals(value: number): number {

@@ -3,6 +3,8 @@ import { IAIUsageCostRepository } from "../interfaces/ai-usage-cost.repository";
 import { CostCalculationService } from "./cost-calculation.service";
 import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
 import { ID } from "src/common/types/type";
+import { DataSource } from "typeorm";
+import { AIUsageCost } from "../entities/ai-usage-cost.entity";
 
 /**
  * LimitCheckService
@@ -26,6 +28,7 @@ export class LimitCheckService {
         @Inject("IAIUsageCostRepository")
         private readonly costRepository: IAIUsageCostRepository,
         private readonly costCalculator: CostCalculationService,
+        private readonly dataSource: DataSource, // Transaction va lock uchun
     ) {
         // Oylik limit - environment'dan o'qiladi yoki default 2$
         this.monthlyLimit = Number(process.env.AI_MONTHLY_LIMIT) || 2.0;
@@ -83,6 +86,8 @@ export class LimitCheckService {
 
     /**
      * Cost'ni database'ga saqlash va limit tekshiruvi
+     * Transaction va database lock bilan race condition'ni oldini oladi
+     * 
      * @param params - Cost ma'lumotlari
      * @throws LimitExceededException - Agar limit oshib ketsa
      */
@@ -117,53 +122,92 @@ export class LimitCheckService {
             ttsCharacters: params.ttsCharacters,
         });
 
-        // 2. Limit tekshiruvi (taxminiy cost bilan)
-        const limitCheck = await this.checkMonthlyLimit(userId, costBreakdown.totalCost);
+        // 2. Transaction bilan limit check va save
+        // Bu concurrent request'larda race condition'ni oldini oladi
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
 
-        // 3. Agar limit oshib ketsa, exception tashlash
-        if (!limitCheck.canProceed) {
-            throw new LimitExceededException(
-                `Oylik limit oshib ketdi. Hozirgi sarflangan: $${limitCheck.currentCost.toFixed(2)}, ` +
-                `So'ralgan: $${costBreakdown.totalCost.toFixed(2)}, ` +
-                `Jami: $${limitCheck.estimatedTotal!.toFixed(2)}, Limit: $${this.monthlyLimit}. ` +
-                `Qolgan: $${limitCheck.remaining.toFixed(2)}`
+        try {
+            // 3. Database lock bilan limit tekshiruvi
+            // SELECT FOR UPDATE bilan user row'ni lock qilamiz
+            const currentMonth = this.getCurrentMonth();
+            const currentCost = await queryRunner.manager.query(
+                `SELECT COALESCE(SUM(total_cost), 0) as total 
+                 FROM ai_usage_costs 
+                 WHERE user_id = $1 AND month = $2 
+                 FOR UPDATE`,
+                [Number(userId), currentMonth]
             );
+
+            const currentCostValue = parseFloat(currentCost[0]?.total || "0");
+            const estimatedTotal = currentCostValue + costBreakdown.totalCost;
+
+            // 4. Limit tekshiruvi
+            if (estimatedTotal > this.monthlyLimit) {
+                await queryRunner.rollbackTransaction();
+                throw new LimitExceededException(
+                    `Oylik limit oshib ketdi. Hozirgi sarflangan: $${this.roundToSixDecimals(currentCostValue).toFixed(2)}, ` +
+                    `So'ralgan: $${costBreakdown.totalCost.toFixed(2)}, ` +
+                    `Jami: $${this.roundToSixDecimals(estimatedTotal).toFixed(2)}, Limit: $${this.monthlyLimit}. ` +
+                    `Qolgan: $${this.roundToSixDecimals(Math.max(0, this.monthlyLimit - currentCostValue)).toFixed(2)}`
+                );
+            }
+
+            // 5. Cost record yaratish
+            const costRecord = new AIUsageCost();
+            costRecord.userId = Number(userId);
+            costRecord.sessionId = Number(sessionId);
+            costRecord.messageId = Number(messageId);
+            costRecord.gptCost = costBreakdown.gptCost;
+            costRecord.whisperCost = costBreakdown.whisperCost;
+            costRecord.ttsCost = costBreakdown.ttsCost;
+            costRecord.totalCost = costBreakdown.totalCost;
+            costRecord.gptPromptTokens = params.gptPromptTokens;
+            costRecord.gptCompletionTokens = params.gptCompletionTokens;
+            costRecord.gptTotalTokens = (params.gptPromptTokens || 0) + (params.gptCompletionTokens || 0);
+            costRecord.whisperDurationSeconds = params.whisperDurationSeconds;
+            costRecord.ttsCharacters = params.ttsCharacters;
+            costRecord.month = currentMonth;
+
+            // 6. Database'ga saqlash (transaction ichida)
+            await queryRunner.manager.save(AIUsageCost, costRecord);
+
+            // 7. Transaction commit
+            await queryRunner.commitTransaction();
+
+            const finalCost = currentCostValue + costBreakdown.totalCost;
+
+            this.logger.log(
+                `✅ Cost saved for user ${userId}, session ${sessionId}, message ${messageId}: ` +
+                `$${costBreakdown.totalCost.toFixed(6)} (GPT: $${costBreakdown.gptCost.toFixed(6)}, ` +
+                `Whisper: $${costBreakdown.whisperCost.toFixed(6)}, TTS: $${costBreakdown.ttsCost.toFixed(6)})`
+            );
+
+            return {
+                cost: costBreakdown,
+                limitStatus: {
+                    currentCost: this.roundToSixDecimals(finalCost),
+                    limit: this.monthlyLimit,
+                    remaining: Math.max(0, this.monthlyLimit - finalCost),
+                },
+            };
+        } catch (error: any) {
+            // Transaction rollback
+            await queryRunner.rollbackTransaction();
+
+            // LimitExceededException'ni re-throw qilish
+            if (error instanceof LimitExceededException) {
+                throw error;
+            }
+
+            // Boshqa xatolar uchun log va re-throw
+            this.logger.error(`❌ Error saving cost for user ${userId}:`, error);
+            throw error;
+        } finally {
+            // QueryRunner'ni release qilish
+            await queryRunner.release();
         }
-
-        // 4. Database'ga saqlash
-        const currentMonth = this.getCurrentMonth();
-        const costRecord = {
-            userId: Number(userId),
-            sessionId: Number(sessionId),
-            messageId: Number(messageId),
-            gptCost: costBreakdown.gptCost,
-            whisperCost: costBreakdown.whisperCost,
-            ttsCost: costBreakdown.ttsCost,
-            totalCost: costBreakdown.totalCost,
-            gptPromptTokens: params.gptPromptTokens,
-            gptCompletionTokens: params.gptCompletionTokens,
-            gptTotalTokens: (params.gptPromptTokens || 0) + (params.gptCompletionTokens || 0),
-            whisperDurationSeconds: params.whisperDurationSeconds,
-            ttsCharacters: params.ttsCharacters,
-            month: currentMonth,
-        } as any; // TypeORM entity type
-
-        await this.costRepository.create(costRecord);
-
-        this.logger.log(
-            `✅ Cost saved for user ${userId}, session ${sessionId}, message ${messageId}: ` +
-            `$${costBreakdown.totalCost.toFixed(6)} (GPT: $${costBreakdown.gptCost.toFixed(6)}, ` +
-            `Whisper: $${costBreakdown.whisperCost.toFixed(6)}, TTS: $${costBreakdown.ttsCost.toFixed(6)})`
-        );
-
-        return {
-            cost: costBreakdown,
-            limitStatus: {
-                currentCost: limitCheck.currentCost + costBreakdown.totalCost,
-                limit: this.monthlyLimit,
-                remaining: Math.max(0, this.monthlyLimit - (limitCheck.currentCost + costBreakdown.totalCost)),
-            },
-        };
     }
 
     /**

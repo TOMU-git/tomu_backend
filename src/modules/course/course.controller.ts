@@ -30,7 +30,7 @@ export class CourseController {
   constructor(
     @Inject("ICourseService")
     private readonly courseService: ICourseService,
-  ) {}
+  ) { }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post()
@@ -99,6 +99,11 @@ export class CourseController {
         },
         isActive: {
           type: "boolean"
+        },
+        lang: {
+          type: "string",
+          example: "ar",
+          description: "Kursning qaysi tilda mavjudligi"
         },
       },
     },
