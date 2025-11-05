@@ -48,18 +48,18 @@ export class PaymentGuard implements CanActivate {
             const rawBody = request.body || {};
             const rawQuery = request.query || {};
             const rawParams = request.params || {};
-            console.log("[PaymentGuard] Incoming:", {
-                userId: user?.id,
-                body: {
-                    sessionId: rawBody?.sessionId,
-                    courseId: rawBody?.courseId,
-                    language: rawBody?.language,
-                },
-                queryCourseId: rawQuery?.courseId,
-                paramCourseId: rawParams?.courseId,
-                path: request?.originalUrl || request?.url,
-                method: request?.method,
-            });
+            // console.log("[PaymentGuard] Incoming:", {
+            //     userId: user?.id,
+            //     body: {
+            //         sessionId: rawBody?.sessionId,
+            //         courseId: rawBody?.courseId,
+            //         language: rawBody?.language,
+            //     },
+            //     queryCourseId: rawQuery?.courseId,
+            //     paramCourseId: rawParams?.courseId,
+            //     path: request?.originalUrl || request?.url,
+            //     method: request?.method,
+            // });
         } catch (_) { }
 
         // 1. User mavjudligini tekshirish (AuthGuard allaqachon tekshiradi, lekin qo'shimcha xavfsizlik)
@@ -80,7 +80,7 @@ export class PaymentGuard implements CanActivate {
             const headerCourse = request.headers?.['x-course-id'] || request.headers?.['x-course'];
             if (headerCourse) {
                 courseId = Number(headerCourse);
-                console.log("[PaymentGuard] courseId derived from header", { courseId });
+                // console.log("[PaymentGuard] courseId derived from header", { courseId });
             }
 
             const sessionId = this.extractSessionId(request);
@@ -92,7 +92,7 @@ export class PaymentGuard implements CanActivate {
                     this.logger.warn(`PaymentGuard: Session owner mismatch. user=${userId}, session.userId=${session.userId}`);
                 } else if (session.courseId) {
                     courseId = Number(session.courseId);
-                    console.log("[PaymentGuard] courseId derived from session", { sessionId, courseId });
+                    // console.log("[PaymentGuard] courseId derived from session", { sessionId, courseId });
                 }
             }
         }
@@ -101,7 +101,7 @@ export class PaymentGuard implements CanActivate {
             // Agar courseId berilmasa, foydalanuvchi birinchi marta kiryapti
             // Bu holatda barcha aktiv kurslarni tekshiramiz
             const result = await this.checkAnyActiveCourse(userId);
-            console.log("[PaymentGuard] checkAnyActiveCourse result:", result);
+            // console.log("[PaymentGuard] checkAnyActiveCourse result:", result);
             return result;
         }
 
@@ -115,7 +115,7 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: UserCourse not found for user ${userId}, course ${courseId}`
             );
-            console.log("[PaymentGuard] FAIL: userCourse not found", { userId, courseId });
+            // console.log("[PaymentGuard] FAIL: userCourse not found", { userId, courseId });
             throw new BadRequestException(
                 "Kurs sotib olinmagan yoki ruxsat yo'q. Iltimos, kursni sotib oling."
             );
@@ -126,7 +126,7 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: Subscription inactive for user ${userId}, course ${courseId}`
             );
-            console.log("[PaymentGuard] FAIL: isActive=false", { userId, courseId });
+            // console.log("[PaymentGuard] FAIL: isActive=false", { userId, courseId });
             throw new BadRequestException(
                 "Obuna aktiv emas. Iltimos, obunangizni yangilang."
             );
@@ -143,7 +143,7 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: Subscription expired for user ${userId}, course ${courseId}`
             );
-            console.log("[PaymentGuard] FAIL: expired", { userId, courseId, endedAt: userCourse.endedAt, now });
+            // console.log("[PaymentGuard] FAIL: expired", { userId, courseId, endedAt: userCourse.endedAt, now });
             throw new BadRequestException(
                 "Obuna muddati tugagan. Iltimos, obunangizni yangilang."
             );
@@ -156,23 +156,23 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: No payment made for user ${userId}, course ${courseId}`
             );
-            console.log("[PaymentGuard] FAIL: no payment and no trial", { userId, courseId });
+            // console.log("[PaymentGuard] FAIL: no payment and no trial", { userId, courseId });
             throw new BadRequestException(
                 "To'lov qilinmagan. Iltimos, kursni sotib oling."
             );
         }
 
-        this.logger.debug(
-            `PaymentGuard: Access granted for user ${userId}, course ${courseId}`
-        );
-        console.log("[PaymentGuard] PASS", {
-            userId,
-            courseId,
-            isActive: userCourse.isActive,
-            endedAt: userCourse.endedAt,
-            hasEverPaid: userCourse.hasEverPaid,
-            onFreeTrial: userCourse.onFreeTrial,
-        });
+        // this.logger.debug(
+        //     `PaymentGuard: Access granted for user ${userId}, course ${courseId}`
+        // );
+        // console.log("[PaymentGuard] PASS", {
+        //     userId,
+        //     courseId,
+        //     isActive: userCourse.isActive,
+        //     endedAt: userCourse.endedAt,
+        //     hasEverPaid: userCourse.hasEverPaid,
+        //     onFreeTrial: userCourse.onFreeTrial,
+        // });
 
         return true;
     }
@@ -217,13 +217,13 @@ export class PaymentGuard implements CanActivate {
      */
     private async checkAnyActiveCourse(userId: number): Promise<boolean> {
         const userCourses = await this.userCourseRepository.findByUserId(userId);
-        console.log("[PaymentGuard] Found userCourses:", (userCourses || []).map(uc => ({
-            id: uc.id,
-            isActive: uc.isActive,
-            endedAt: uc.endedAt,
-            hasEverPaid: uc.hasEverPaid,
-            onFreeTrial: uc.onFreeTrial,
-        })));
+        // console.log("[PaymentGuard] Found userCourses:", (userCourses || []).map(uc => ({
+        //     id: uc.id,
+        //     isActive: uc.isActive,
+        //     endedAt: uc.endedAt,
+        //     hasEverPaid: uc.hasEverPaid,
+        //     onFreeTrial: uc.onFreeTrial,
+        // })));
 
         if (!userCourses || userCourses.length === 0) {
             throw new BadRequestException(

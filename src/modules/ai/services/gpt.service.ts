@@ -13,17 +13,17 @@ const CONTEXT_MAX_LENGTH = Number(process.env.CONTEXT_MAX_LENGTH || 8000);
 
 // Console logda env value'larini tekshirish
 if (!OPENAI_API_KEY) {
-    console.log("⚠️  WARNING: OPENAI_API_KEY not found in .env");
+    // console.log("⚠️  WARNING: OPENAI_API_KEY not found in .env");
 } else {
-    console.log("✅ OPENAI_API_KEY loaded");
+    // console.log("✅ OPENAI_API_KEY loaded");
 }
 
-console.log("📋 GPT Configuration loaded:");
-console.log(`   GPT_MODEL: ${GPT_MODEL}`);
-console.log(`   MAX_TOKENS: ${MAX_TOKENS}`);
-console.log(`   TEMPERATURE: ${TEMPERATURE}`);
-console.log(`   STRICT_NO_ECHO: ${STRICT_NO_ECHO}`);
-console.log(`   CONTEXT_MAX_LENGTH: ${CONTEXT_MAX_LENGTH}`);
+// console.log("📋 GPT Configuration loaded:");
+// console.log(`   GPT_MODEL: ${GPT_MODEL}`);
+// console.log(`   MAX_TOKENS: ${MAX_TOKENS}`);
+// console.log(`   TEMPERATURE: ${TEMPERATURE}`);
+// console.log(`   STRICT_NO_ECHO: ${STRICT_NO_ECHO}`);
+// console.log(`   CONTEXT_MAX_LENGTH: ${CONTEXT_MAX_LENGTH}`);
 
 /**
  * GPTService
@@ -82,12 +82,12 @@ export class GPTService {
         prompt = prompt.replace(/\s+م[ٌْ]/g, ' مَا');
 
         if (prompt !== originalPrompt) {
-            console.log("  ✏️  Auto-corrected to:", prompt);
+            // console.log("  ✏️  Auto-corrected to:", prompt);
         }
 
         const { context, language, strict } = params;
         if (!OPENAI_API_KEY) {
-            console.log('⚠️ OpenAI API key not found, using fallback');
+            // console.log('⚠️ OpenAI API key not found, using fallback');
             return `Javob: ${prompt}`;
         }
 
@@ -123,7 +123,7 @@ export class GPTService {
         ];
 
         try {
-            console.log(`   🚀 Model: ${GPT_MODEL}`);
+            // console.log(`   🚀 Model: ${GPT_MODEL}`);
 
             // Retry logic bilan OpenAI API call
             const res = await this.retryHelper.executeWithRetry(
@@ -147,7 +147,7 @@ export class GPTService {
                     initialDelay: 1000,
                     maxDelay: 10000,
                     onRetry: (attempt, error) => {
-                        console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
+                        // console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
                     }
                 }
             );
@@ -155,7 +155,7 @@ export class GPTService {
             const text = (res.data as any)?.choices?.[0]?.message?.content?.trim();
             return text || "";
         } catch (e: any) {
-            console.log(`❌ GPT Error after retries: ${e.message}`);
+            // console.log(`❌ GPT Error after retries: ${e.message}`);
             return `Javob: ${prompt}`; // fallback
         }
     }
@@ -183,11 +183,11 @@ export class GPTService {
         correctedPrompt = correctedPrompt.replace(/\s+م[ٌْ]/g, ' مَا');
 
         if (correctedPrompt !== originalPrompt) {
-            console.log("  ✏️  Auto-corrected to:", correctedPrompt);
+            // console.log("  ✏️  Auto-corrected to:", correctedPrompt);
         }
 
         if (!OPENAI_API_KEY) {
-            console.log('⚠️ OpenAI API key not found, using fallback');
+            // console.log('⚠️ OpenAI API key not found, using fallback');
             return {
                 text: `Javob: ${correctedPrompt}`,
                 usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 }
@@ -313,7 +313,7 @@ export class GPTService {
         }
 
         try {
-            console.log(`   🚀 Model: ${GPT_MODEL}`);
+            // console.log(`   🚀 Model: ${GPT_MODEL}`);
 
             // Retry logic bilan OpenAI API call
             const res = await this.retryHelper.executeWithRetry(
@@ -337,7 +337,7 @@ export class GPTService {
                     initialDelay: 1000,
                     maxDelay: 10000,
                     onRetry: (attempt, error) => {
-                        console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
+                        // console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
                     }
                 }
             );
@@ -352,11 +352,11 @@ export class GPTService {
                 totalTokens: usage.total_tokens || 0,
             } : { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
-            console.log(`   📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
+            // console.log(`   📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
 
             return { text, usage: usageData };
         } catch (e: any) {
-            console.log(`❌ GPT Error after retries: ${e.message}`);
+            // console.log(`❌ GPT Error after retries: ${e.message}`);
             // Fallback response
             return {
                 text: `Javob: ${correctedPrompt}`,
@@ -590,7 +590,7 @@ export class GPTService {
                 : "No lesson materials found.";
 
             // Log token usage for monitoring
-            console.log(`   📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
+            // console.log(`   📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
 
             return result;
         } catch (e) {

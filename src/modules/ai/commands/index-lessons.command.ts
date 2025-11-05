@@ -18,14 +18,14 @@ export class IndexLessonsCommand extends CommandRunner {
     }
 
     async run(): Promise<void> {
-        console.log('🚀 Starting lessons indexing...');
+        // console.log('🚀 Starting lessons indexing...');
 
         try {
             // Hozircha courseId = 1 ni indekslaymiz
             const result = await this.chromaService.indexCourse({ courseId: 1 });
 
-            console.log(`✅ Successfully indexed ${result.indexed} lessons`);
-            console.log('🎉 Indexing completed!');
+            // console.log(`✅ Successfully indexed ${result.indexed} lessons`);
+            // console.log('🎉 Indexing completed!');
 
         } catch (error) {
             console.error('❌ Indexing failed:', error.message);

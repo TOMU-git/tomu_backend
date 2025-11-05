@@ -10,10 +10,10 @@ const TTS_VOICE = process.env.TTS_VOICE || "shimmer";
 const TTS_SPEED = Number(process.env.TTS_SPEED || 0.9);
 
 // Console verification
-console.log("🔊 TTS Configuration:");
-console.log(`   TTS_MODEL: ${TTS_MODEL}`);
-console.log(`   TTS_VOICE: ${TTS_VOICE}`);
-console.log(`   TTS_SPEED: ${TTS_SPEED}`);
+// console.log("🔊 TTS Configuration:");
+// console.log(`   TTS_MODEL: ${TTS_MODEL}`);
+// console.log(`   TTS_VOICE: ${TTS_VOICE}`);
+// console.log(`   TTS_SPEED: ${TTS_SPEED}`);
 
 /**
  * TTS usage ma'lumotlari
@@ -69,7 +69,7 @@ export class TTSService {
             const audioUrl = `/upload/audio/${filename}`;
             return audioUrl;
         } catch (e: any) {
-            console.log(`❌ TTS Error: ${e.message}`);
+            // console.log(`❌ TTS Error: ${e.message}`);
             return "/upload/audio/placeholder.mp3";
         }
     }
@@ -106,11 +106,11 @@ export class TTSService {
             const audioUrl = `/upload/audio/${filename}`;
             const characters = params.text.length;
 
-            console.log(`🔊 TTS generated: ${characters} characters -> ${audioUrl}`);
+            // console.log(`🔊 TTS generated: ${characters} characters -> ${audioUrl}`);
 
             return { audioUrl, characters };
         } catch (e: any) {
-            console.log(`❌ TTS Error: ${e.message}`);
+            // console.log(`❌ TTS Error: ${e.message}`);
             return { audioUrl: "/upload/audio/placeholder.mp3", characters: 0 };
         }
     }

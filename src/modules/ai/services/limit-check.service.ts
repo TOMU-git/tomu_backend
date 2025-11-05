@@ -61,11 +61,11 @@ export class LimitCheckService {
         const remaining = this.monthlyLimit - currentCost;
         const canProceed = estimatedTotal <= this.monthlyLimit;
 
-        this.logger.debug(
-            `Monthly limit check for user ${userId}, month ${currentMonth}: ` +
-            `current=$${currentCost.toFixed(6)}, limit=$${this.monthlyLimit}, ` +
-            `remaining=$${remaining.toFixed(6)}, canProceed=${canProceed}`
-        );
+        // this.logger.debug(
+        //     `Monthly limit check for user ${userId}, month ${currentMonth}: ` +
+        //     `current=$${currentCost.toFixed(6)}, limit=$${this.monthlyLimit}, ` +
+        //     `remaining=$${remaining.toFixed(6)}, canProceed=${canProceed}`
+        // );
 
         if (!canProceed && estimatedCost) {
             this.logger.warn(
@@ -130,13 +130,23 @@ export class LimitCheckService {
 
         try {
             // 3. Database lock bilan limit tekshiruvi
-            // SELECT FOR UPDATE bilan user row'ni lock qilamiz
+            // PostgreSQL'da FOR UPDATE bilan aggregate function ishlatib bo'lmaydi
+            // Shuning uchun avval row'larni lock qilamiz, keyin SUM() qilamiz
             const currentMonth = this.getCurrentMonth();
+
+            // Avval row'larni lock qilish (agar bor bo'lsa)
+            await queryRunner.manager.query(
+                `SELECT id FROM ai_usage_costs 
+                 WHERE user_id = $1 AND month = $2 
+                 FOR UPDATE`,
+                [Number(userId), currentMonth]
+            );
+
+            // Keyin SUM() qilish
             const currentCost = await queryRunner.manager.query(
                 `SELECT COALESCE(SUM(total_cost), 0) as total 
                  FROM ai_usage_costs 
-                 WHERE user_id = $1 AND month = $2 
-                 FOR UPDATE`,
+                 WHERE user_id = $1 AND month = $2`,
                 [Number(userId), currentMonth]
             );
 

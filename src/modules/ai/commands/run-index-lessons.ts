@@ -10,7 +10,7 @@ async function bootstrap() {
     try {
         const chroma = app.get(ChromaService);
         const res = await chroma.indexCourse({ courseId: 1 });
-        console.log(`Indexed chunks: ${res.indexed}`);
+        // console.log(`Indexed chunks: ${res.indexed}`);
     } catch (e: any) {
         console.error('Indexing failed:', e?.message || e);
         process.exitCode = 1;

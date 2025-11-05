@@ -27,24 +27,31 @@ export class AiChatController {
     ) { }
 
     /**
-     * Yangi sessiya yaratish
+     * Sessiya olish yoki yaratish (Smart Session)
      * PaymentGuard: Faqat to'lov qilgan foydalanuvchilar uchun
+     * 
+     * Bu endpoint har safar AI button bosilganda chaqiriladi.
+     * Backend avtomatik aniqlaydi:
+     * - Agar mavjud faol sessiya bo'lsa (bir xil courseId va sessionLanguage bilan) → mavjud sessiyani qaytaradi
+     * - Agar mavjud sessiya bo'lmasa → yangi yaratadi
+     * 
+     * Faqat courseId va sessionLanguage yuborish kifoya - backend o'zi aniqlaydi.
      */
     @UseGuards(AuthGuard, PaymentGuard)
     @Post('sessions')
-    @ApiOperation({ summary: 'Yangi AI chat sessiyasi yaratish' })
+    @ApiOperation({ summary: 'Sessiya olish yoki yaratish (Smart Session - avtomatik aniqlaydi)' })
     @ApiBody({
         schema: {
             type: 'object',
             properties: {
-                courseId: { type: 'number', example: 1, nullable: true },
-                sessionLanguage: { type: 'string', example: 'ar', nullable: true },
-                sessionTitle: { type: 'string', example: "Yangi suhbat", nullable: true },
+                courseId: { type: 'number', example: 1, nullable: true, description: 'Kurs ID (ixtiyoriy)' },
+                sessionLanguage: { type: 'string', example: 'ar', nullable: true, description: 'Sessiya tili (default: ar)' },
+                sessionTitle: { type: 'string', example: "Yangi suhbat", nullable: true, description: 'Sessiya sarlavhasi (ixtiyoriy)' },
             },
         },
     })
     @ApiOkResponse({
-        description: 'Sessiya yaratildi', schema: {
+        description: 'Sessiya (mavjud yoki yangi)', schema: {
             type: 'object',
             properties: {
                 message: { type: 'string', example: 'ok' },
@@ -66,14 +73,7 @@ export class AiChatController {
     async createSession(@CurrentUser('id') userId: number, @Body() body: any) {
         // Debug: Session yaratish request logi
         try {
-            console.log('[AI Chat Session] Incoming request:', {
-                userId,
-                body: {
-                    courseId: body?.courseId,
-                    sessionLanguage: body?.sessionLanguage,
-                    sessionTitle: body?.sessionTitle,
-                },
-            });
+            console.log(`[AI Chat Controller] Create session request for user ${userId}, course ${body?.courseId}`);
         } catch (_) { }
 
         // Limit tekshiruvi - session yaratishdan OLDIN
@@ -97,19 +97,16 @@ export class AiChatController {
         } catch (error: any) {
             // Limit check xatosi - log qilish, lekin session yaratishni davom ettirish
             // (xatolik bo'lsa ham, session yaratishga ruxsat berish - defensive approach)
-            console.warn('⚠️  Limit check xatosi (session yaratish davom etadi):', error.message);
+            // console.warn('⚠️  Limit check xatosi (session yaratish davom etadi):', error.message);
         }
 
         const { courseId, sessionLanguage, sessionTitle } = body || {};
-        const session = await this.chat.createSession(userId, courseId, sessionLanguage, sessionTitle);
+
+        // Smart Session: Backend avtomatik aniqlaydi - mavjud faol sessiyani qaytaradi yoki yangi yaratadi
+        const session = await this.chat.getOrCreateSession(userId, courseId, sessionLanguage, sessionTitle);
+
         try {
-            console.log('[AI Chat Session] Created:', {
-                id: session?.id,
-                userId: session?.userId,
-                courseId: session?.courseId,
-                sessionLanguage: session?.sessionLanguage,
-                sessionTitle: session?.sessionTitle,
-            });
+            console.log(`[AI Chat Controller] Session created/found with id ${session?.id}`);
         } catch (_) { }
         return { message: 'ok', data: session };
     }
@@ -117,20 +114,41 @@ export class AiChatController {
     /**
      * Voice chat (foydalanuvchi ovoz yuboradi, AI ham ovozli javob beradi)
      * PaymentGuard: Faqat to'lov qilgan foydalanuvchilar uchun
+     * 
+     * Eslatma: courseId va language session'dan olinadi (session yaratilganda berilgan).
+     * Bu parametrlarni yuborish shart emas - session'dan avtomatik olinadi.
      */
     @UseGuards(AuthGuard, PaymentGuard)
     @Post('voice')
-    @ApiOperation({ summary: 'Ovoz yuborish va AI javobini olish' })
+    @ApiOperation({ summary: 'Ovoz yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
     @ApiConsumes('multipart/form-data')
     @ApiBody({
         schema: {
             type: 'object',
             required: ['file', 'sessionId'],
             properties: {
-                file: { type: 'string', format: 'binary' },
-                sessionId: { type: 'number', example: 123 },
-                courseId: { type: 'number', example: 1, nullable: true },
-                language: { type: 'string', example: 'ar', nullable: true },
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                    description: 'Audio fayl (majburiy)'
+                },
+                sessionId: {
+                    type: 'number',
+                    example: 123,
+                    description: 'Sessiya ID (majburiy)'
+                },
+                courseId: {
+                    type: 'number',
+                    example: 1,
+                    nullable: true,
+                    description: 'Kurs ID (ixtiyoriy - session\'dan avtomatik olinadi, yuborish shart emas)'
+                },
+                language: {
+                    type: 'string',
+                    example: 'ar',
+                    nullable: true,
+                    description: 'Til (ixtiyoriy - session\'dan avtomatik olinadi, default: ar, yuborish shart emas)'
+                },
             },
         },
     })
@@ -150,20 +168,7 @@ export class AiChatController {
     async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
         // Debug: Request'dan kelayotgan ma'lumotlarni log qilish
         try {
-            const safeFileInfo = file ? {
-                originalname: (file as any).originalname,
-                mimetype: file.mimetype,
-                size: file.size ?? file.buffer?.length,
-            } : null;
-            console.log("[AI Chat Voice] Incoming request:", {
-                userId,
-                body: {
-                    sessionId: body?.sessionId,
-                    courseId: body?.courseId,
-                    language: body?.language,
-                },
-                file: safeFileInfo,
-            });
+            console.log(`[AI Chat Controller] Voice message request for user ${userId}, session ${body?.sessionId}`);
         } catch (e) {
             // Agar log qilishda xato bo'lsa, davom etamiz
         }
@@ -201,8 +206,8 @@ export class AiChatController {
             }
 
             // Boshqa xatolar uchun log va re-throw
-            console.error('[AI Chat Voice] Error in sendVoiceMessage:', error.message);
-            console.error('[AI Chat Voice] Error stack:', error.stack);
+            // console.error('[AI Chat Voice] Error in sendVoiceMessage:', error.message);
+            // console.error('[AI Chat Voice] Error stack:', error.stack);
             throw error;
         }
     }
@@ -238,8 +243,9 @@ export class AiChatController {
     })
     @Get('sessions/:id/messages')
     async getMessages(@CurrentUser('id') userId: number, @Param('id') id: string) {
-        // Izoh: AIChatService sessiya egasini tekshiradi, guard esa tokenni tekshiradi
-        const list = await this.chat.getMessages(Number(id));
+        console.log(`[AI Chat Controller] Get messages request for user ${userId}, session ${id}`);
+        // Sessiya mavjudligini va egasini tekshiradi
+        const list = await this.chat.getMessages(Number(id), userId);
         return { message: 'ok', data: list };
     }
 
@@ -284,4 +290,3 @@ export class AiChatController {
         return { message: 'ok', data: courses };
     }
 }
-

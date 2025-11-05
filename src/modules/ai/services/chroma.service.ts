@@ -53,40 +53,40 @@ export class ChromaService {
                 }
             } catch (e: any) {
                 console.error(`❌ ChromaDB search failed: ${e?.message || String(e)}`);
-                console.log(`💾 Falling back to Memory Index`);
+                // console.log(`💾 Falling back to Memory Index`);
             }
         }
 
         // Memory Index fallback
         const useRagEnabled = process.env.USE_RAG === '1';
-        console.log(`💾 Using Memory Index fallback (RAG=${useRagEnabled ? 'enabled but ChromaDB failed/empty' : 'disabled'})`);
+        // console.log(`💾 Using Memory Index fallback (RAG=${useRagEnabled ? 'enabled but ChromaDB failed/empty' : 'disabled'})`);
 
         const all = this.memoryIndexService.getChunks(language);
-        console.log(`   - Total chunks in memory: ${all.length}`);
+        // console.log(`   - Total chunks in memory: ${all.length}`);
         let limited = all;
 
         // Module limit filter
         if (typeof params.moduleLimit === 'number') {
             const beforeModuleFilter = limited.length;
             limited = this.memoryIndexService.filterByModule(limited, params.moduleLimit);
-            console.log(`   - After module filter (<=${params.moduleLimit}): ${limited.length} (was ${beforeModuleFilter})`);
+            // console.log(`   - After module filter (<=${params.moduleLimit}): ${limited.length} (was ${beforeModuleFilter})`);
         }
 
         // Strict mode filter
         if (params.strict && params.maxLessonOrder) {
             const beforeLessonFilter = limited.length;
             limited = this.memoryIndexService.filterByLessonOrder(limited, params.maxLessonOrder);
-            console.log(`   - After lesson filter (<=${params.maxLessonOrder}): ${limited.length} (was ${beforeLessonFilter})`);
+            // console.log(`   - After lesson filter (<=${params.maxLessonOrder}): ${limited.length} (was ${beforeLessonFilter})`);
         }
 
         const sorted = this.memoryIndexService.sortChunks(limited);
 
-        console.log(`📚 Context: Memory Index (${sorted.length} chunks)`);
+        // console.log(`📚 Context: Memory Index (${sorted.length} chunks)`);
         if (sorted.length > 0) {
             const lessonOrders = [...new Set(sorted.map(s => s.lessonOrder))].sort((a, b) => a - b);
-            console.log(`   - Lesson orders in context: ${lessonOrders.join(', ')}`);
+            // console.log(`   - Lesson orders in context: ${lessonOrders.join(', ')}`);
         } else {
-            console.log(`   ⚠️  WARNING: No chunks found! This might be why AI can't find lesson materials.`);
+            // console.log(`   ⚠️  WARNING: No chunks found! This might be why AI can't find lesson materials.`);
         }
 
         return sorted.map(item => ({ ...item, source: 'memory' }));
@@ -108,8 +108,8 @@ export class ChromaService {
         let total = 0;
         const allChunks: IndexedChunk[] = [];
 
-        console.log(`📁 Indexing course from: ${baseDir}`);
-        console.log(`📄 Found ${files.filter(f => f.endsWith('.json')).length} JSON files`);
+        // console.log(`📁 Indexing course from: ${baseDir}`);
+        // console.log(`📄 Found ${files.filter(f => f.endsWith('.json')).length} JSON files`);
 
         for (const f of files) {
             if (!f.endsWith('.json')) continue;
@@ -119,7 +119,7 @@ export class ChromaService {
             // Memory index'ga qo'shish
             total += this.memoryIndexService.upsertChunks(parsed.chunks);
             allChunks.push(...parsed.chunks);
-            console.log(`✅ Indexed ${parsed.chunks.length} chunks from ${f}`);
+            // console.log(`✅ Indexed ${parsed.chunks.length} chunks from ${f}`);
         }
 
         // ChromaDB'ga ham yozish
@@ -136,7 +136,7 @@ export class ChromaService {
      */
     async indexLesson(params: { lessonId: number }): Promise<{ indexed: number; chromaSuccess: boolean }> {
         const file = path.resolve(process.cwd(), 'data', 'ar', 'module_1', `lesson_${params.lessonId}.json`);
-        console.log(`📝 Indexing lesson from: ${file}`);
+        // console.log(`📝 Indexing lesson from: ${file}`);
 
         const parsed = await this.lessonIndexingService.parseLessonJson(file);
         if (!parsed) return { indexed: 0, chromaSuccess: false };
@@ -158,7 +158,7 @@ export class ChromaService {
         this.memoryIndexService.removeChunksByLesson(language, params.lessonId);
 
         // TODO: ChromaDB dan ham o'chirish kerak
-        console.log(`🗑️ Removed lesson ${params.lessonId} from Memory Index`);
+        // console.log(`🗑️ Removed lesson ${params.lessonId} from Memory Index`);
 
         return { removed: true };
     }

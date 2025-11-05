@@ -35,8 +35,7 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
         this.debugLog(`Finding AI chat session by id: ${id}`);
         return await this.aiChatSessionRepository.findOne({
             where: { id },
-            relations: ["user", "messages"],
-            order: { messages: { createdAt: "ASC" } },
+            relations: ["user"],
         });
     }
 
@@ -49,8 +48,10 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
         this.debugLog(`Finding all chat sessions for user: ${userId}`);
         return await this.aiChatSessionRepository.find({
             where: { userId },
-            relations: ["user", "messages"],
-            order: { lastActivityAt: "DESC" },
+            relations: ["user"],
+            order: {
+                lastActivityAt: "DESC"
+            },
         });
     }
 
@@ -67,8 +68,10 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
                 userId,
                 courseId
             },
-            relations: ["user", "messages"],
-            order: { lastActivityAt: "DESC" },
+            relations: ["user"],
+            order: {
+                lastActivityAt: "DESC"
+            },
         });
     }
 
@@ -84,7 +87,7 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
                 userId,
                 isActive: true
             },
-            relations: ["user", "messages"],
+            relations: ["user"],
             order: { lastActivityAt: "DESC" },
         });
     }
@@ -101,7 +104,7 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
                 userId,
                 isActive: true
             },
-            relations: ["user", "messages"],
+            relations: ["user"],
             order: { lastActivityAt: "DESC" },
         });
     }
@@ -139,7 +142,7 @@ export class AIChatSessionRepository extends BaseAIRepository implements IAIChat
     async findAll(): Promise<AIChatSession[]> {
         this.debugLog("Finding all AI chat sessions");
         return await this.aiChatSessionRepository.find({
-            relations: ["user", "messages"],
+            relations: ["user"],
             order: { createdAt: "DESC" },
         });
     }

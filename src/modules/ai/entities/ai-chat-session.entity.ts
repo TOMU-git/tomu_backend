@@ -53,9 +53,10 @@ export class AIChatSession extends BaseEntity {
     @JoinColumn({ name: "user_id" })
     user: User;
 
-    // Sessiyaga tegishli xabarlar ro'yxati
-    @OneToMany(() => AIChatMessage, (message) => message.session)
-    messages: AIChatMessage[];
+    // Note: messages relation olib tashlandi
+    // Xabarlar repository'da findBySessionId() orqali olinadi
+    // Bu TypeORM relation conflict'larini oldini oladi
+    messages?: AIChatMessage[];
 }
 
 

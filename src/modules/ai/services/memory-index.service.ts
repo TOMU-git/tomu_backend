@@ -80,7 +80,7 @@ export class MemoryIndexService {
                 this.memoryIndex.set(key, value);
             }
             const totalChunks = Object.values(data).reduce((sum, arr) => sum + arr.length, 0);
-            console.log(`✅ Loaded ${totalChunks} chunks from Memory Index`);
+            // console.log(`✅ Loaded ${totalChunks} chunks from Memory Index`);
         } catch (e) {
             // Silent fail - file doesn't exist on first run
         }

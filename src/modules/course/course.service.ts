@@ -79,13 +79,13 @@ export class CourseService implements ICourseService {
     // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
       try {
-        console.log("ishla")
+        // console.log("ishla")
         // Fayl mavjudligini tekshirish va o'chirish
         const removeResult = await this.fileService.removeByImageUrl(
           foundData.imageUrl,
         );
         if (!removeResult) {
-          console.log("File not found");
+          // console.log("File not found");
         }
       } catch (error) {
         console.error("Error occurred while deleting the file:", error.message);

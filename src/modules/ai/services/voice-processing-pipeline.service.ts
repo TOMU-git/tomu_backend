@@ -52,7 +52,7 @@ export class VoiceProcessingPipeline {
      */
     async execute(input: VoiceInput): Promise<VoiceOutput> {
         const pipelineStart = Date.now();
-        console.log("\n⏱️  Pipeline boshlandi...");
+        // console.log("\n⏱️  Pipeline boshlandi...");
 
         // Usage tracking uchun initializatsiya
         const inputWithUsage: VoiceInput = {
@@ -65,7 +65,7 @@ export class VoiceProcessingPipeline {
 
         const steps: PipelineStep[] = [
             new STTStep(this.whisper),
-            new ValidationStep(this.tts),
+            new ValidationStep(this.tts, this.messageFactory),
             new ContextStep(this.aiChatService, this.tts),
             new GPTStep(this.gpt, this.translation),
             new ResponseStep(this.messageFactory, this.tts),
@@ -77,11 +77,11 @@ export class VoiceProcessingPipeline {
         try {
             for (const step of steps) {
                 const stepName = step.constructor.name;
-                console.log(`\n🔄 Executing step: ${stepName}`);
+                // console.log(`\n🔄 Executing step: ${stepName}`);
 
                 try {
                     currentInput = await step.execute(currentInput as VoiceInput);
-                    console.log(`✅ Step ${stepName} completed successfully`);
+                    // console.log(`✅ Step ${stepName} completed successfully`);
                     executedSteps.push(step);
 
                     // Agar step VoiceOutput qaytarsa, pipeline tugadi
@@ -92,7 +92,7 @@ export class VoiceProcessingPipeline {
                         const usage = (currentInput as any).usage || inputWithUsage.usage || {};
 
                         const totalTime = Date.now() - pipelineStart;
-                        console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
+                        // console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
 
                         // Usage ma'lumotlarini output'ga qo'shish (keyin trackCost'da ishlatish uchun)
                         return {
@@ -133,14 +133,14 @@ export class VoiceProcessingPipeline {
             return; // Tozalash uchun hech narsa yo'q
         }
 
-        console.log(`\n🧹 Cleaning up resources... (${cleanupResources.length} resources, ${executedSteps.length} steps executed)`);
+        // console.log(`\n🧹 Cleaning up resources... (${cleanupResources.length} resources, ${executedSteps.length} steps executed)`);
 
         // Cleanup resources'ni teskari tartibda tozalash (oxirgi yaratilgan birinchi)
         for (let i = cleanupResources.length - 1; i >= 0; i--) {
             const resource = cleanupResources[i];
             try {
                 await resource.cleanup();
-                console.log(`   ✅ Cleaned up ${resource.type}`);
+                // console.log(`   ✅ Cleaned up ${resource.type}`);
             } catch (cleanupError: any) {
                 console.error(`   ⚠️  Cleanup error for ${resource.type}:`, cleanupError.message);
                 // Cleanup xatosi pipeline xatosini to'xtatmaydi
@@ -153,9 +153,9 @@ export class VoiceProcessingPipeline {
         if (responseStepExecuted) {
             // Audio fayllarni tozalash - bu yerda faqat log qilamiz
             // Haqiqiy fayl o'chirish kerak bo'lsa, audioUrl'ni track qilish kerak
-            console.log(`   ℹ️  ResponseStep executed - audio files may need cleanup (not implemented)`);
+            // console.log(`   ℹ️  ResponseStep executed - audio files may need cleanup (not implemented)`);
         }
 
-        console.log(`✅ Cleanup completed\n`);
+        // console.log(`✅ Cleanup completed\n`);
     }
 }

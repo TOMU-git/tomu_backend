@@ -43,8 +43,8 @@ export class AIDiagnosticsService {
 
         const stats = this.chroma.getMemoryIndexStats();
 
-        console.log(`🔑 OpenAI: ${OPENAI_API_KEY ? 'OK' : 'NO KEY'} | GPT: ${gptReachable ? 'OK' : 'FAIL'} | TTS: ${ttsReachable ? 'OK' : 'FAIL'}`);
-        console.log(`📦 RAG: ${usingChroma ? 'Chroma' : 'Memory'} (${stats.chunks} chunks)`);
+        // console.log(`🔑 OpenAI: ${OPENAI_API_KEY ? 'OK' : 'NO KEY'} | GPT: ${gptReachable ? 'OK' : 'FAIL'} | TTS: ${ttsReachable ? 'OK' : 'FAIL'}`);
+        // console.log(`📦 RAG: ${usingChroma ? 'Chroma' : 'Memory'} (${stats.chunks} chunks)`);
 
         return {
             openai: { keyPresent: OPENAI_API_KEY, gptReachable, ttsReachable },

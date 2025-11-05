@@ -125,21 +125,21 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // agar navbatdagi vazifalar soni 20 dan ortiq bo'lsa, qo'shishni o'tkazmaymiz
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
-    console.log("pendingCount", pendingCount);
+    // console.log("pendingCount", pendingCount);
     if (pendingCount >= 20) {
-      console.log("Queue limit reached, skipping...");
+      // console.log("Queue limit reached, skipping...");
       return new ResData("Queue to‘la", 400);  
     }
   
     // // 2) Joriy modul order va eligible modul orderlarini aniqlash
     // const currentOrder = await this.getCurrentUserModule(userId, courseId);
-    // console.log("currentOrder", currentOrder);
+    // // console.log("currentOrder", currentOrder);
     // const eligibleModules = this.getEligibleModules(currentOrder);
-    // console.log("eligibleModules.length", eligibleModules.length);
+    // // console.log("eligibleModules.length", eligibleModules.length);
   
     // 3) Tavsiya oling
     const recommendations = await this.getHomeworkRecommendations(userId, courseId);
-    console.log("recommendations.length", recommendations.length);
+    // console.log("recommendations.length", recommendations.length);
     if (!recommendations.length) return;
 
   
