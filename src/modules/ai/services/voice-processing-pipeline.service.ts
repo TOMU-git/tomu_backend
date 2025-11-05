@@ -48,6 +48,7 @@ export class VoiceProcessingPipeline {
 
     /**
      * Pipeline ni bajarish
+     * Cleanup logic bilan - xato bo'lganda yaratilgan resurslarni tozalash
      */
     async execute(input: VoiceInput): Promise<VoiceOutput> {
         const pipelineStart = Date.now();
@@ -59,6 +60,9 @@ export class VoiceProcessingPipeline {
             usage: {},
         };
 
+        // Cleanup tracking - xato bo'lganda tozalash uchun
+        const cleanupResources: Array<{ type: string; resource: any; cleanup: () => Promise<void> }> = [];
+
         const steps: PipelineStep[] = [
             new STTStep(this.whisper),
             new ValidationStep(this.tts),
@@ -68,43 +72,90 @@ export class VoiceProcessingPipeline {
         ];
 
         let currentInput: VoiceInput | VoiceOutput = inputWithUsage;
+        let executedSteps: PipelineStep[] = [];
 
-        for (const step of steps) {
-            try {
+        try {
+            for (const step of steps) {
                 const stepName = step.constructor.name;
                 console.log(`\n🔄 Executing step: ${stepName}`);
-                currentInput = await step.execute(currentInput as VoiceInput);
-                console.log(`✅ Step ${stepName} completed successfully`);
 
-                // Agar step VoiceOutput qaytarsa, pipeline tugadi
-                if ('message' in currentInput) {
-                    const output = currentInput as VoiceOutput;
+                try {
+                    currentInput = await step.execute(currentInput as VoiceInput);
+                    console.log(`✅ Step ${stepName} completed successfully`);
+                    executedSteps.push(step);
 
-                    // Usage ma'lumotlarini olish
-                    const usage = (currentInput as any).usage || inputWithUsage.usage || {};
+                    // Agar step VoiceOutput qaytarsa, pipeline tugadi
+                    if ('message' in currentInput) {
+                        const output = currentInput as VoiceOutput;
 
-                    // Cost tracking message.id bo'lmasa ham ishlashi uchun
-                    // (message hali saqlanmagan bo'lishi mumkin)
-                    // Bu holatda messageId null bo'ladi va keyin update qilinadi
+                        // Usage ma'lumotlarini olish
+                        const usage = (currentInput as any).usage || inputWithUsage.usage || {};
 
-                    const totalTime = Date.now() - pipelineStart;
-                    console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
+                        const totalTime = Date.now() - pipelineStart;
+                        console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
 
-                    // Usage ma'lumotlarini output'ga qo'shish (keyin trackCost'da ishlatish uchun)
-                    return {
-                        ...output,
-                        usage, // Usage ma'lumotlarini qo'shish
-                    } as VoiceOutput & { usage?: VoiceInput['usage'] };
+                        // Usage ma'lumotlarini output'ga qo'shish (keyin trackCost'da ishlatish uchun)
+                        return {
+                            ...output,
+                            usage, // Usage ma'lumotlarini qo'shish
+                        } as VoiceOutput & { usage?: VoiceInput['usage'] };
+                    }
+                } catch (stepError: any) {
+                    // Step xatosi - cleanup qilish va re-throw
+                    console.error(`\n❌ Error in step ${stepName}:`, stepError.message);
+                    console.error(`❌ Error stack:`, stepError.stack);
+
+                    // Cleanup - barcha yaratilgan resurslarni tozalash
+                    await this.cleanupResources(cleanupResources, executedSteps);
+
+                    throw stepError;
                 }
-            } catch (error: any) {
-                const stepName = step.constructor.name;
-                console.error(`\n❌ Error in step ${stepName}:`, error.message);
-                console.error(`❌ Error stack:`, error.stack);
-                console.error(`❌ Error details:`, JSON.stringify(error, null, 2));
-                throw error;
+            }
+
+            throw new Error('Pipeline failed to produce output');
+        } catch (error: any) {
+            // Pipeline xatosi - cleanup qilish
+            console.error(`\n❌ Pipeline error:`, error.message);
+            await this.cleanupResources(cleanupResources, executedSteps);
+            throw error;
+        }
+    }
+
+    /**
+     * Yaratilgan resurslarni tozalash (cleanup)
+     * Xato bo'lganda chaqiriladi
+     */
+    private async cleanupResources(
+        cleanupResources: Array<{ type: string; resource: any; cleanup: () => Promise<void> }>,
+        executedSteps: PipelineStep[]
+    ): Promise<void> {
+        if (cleanupResources.length === 0 && executedSteps.length === 0) {
+            return; // Tozalash uchun hech narsa yo'q
+        }
+
+        console.log(`\n🧹 Cleaning up resources... (${cleanupResources.length} resources, ${executedSteps.length} steps executed)`);
+
+        // Cleanup resources'ni teskari tartibda tozalash (oxirgi yaratilgan birinchi)
+        for (let i = cleanupResources.length - 1; i >= 0; i--) {
+            const resource = cleanupResources[i];
+            try {
+                await resource.cleanup();
+                console.log(`   ✅ Cleaned up ${resource.type}`);
+            } catch (cleanupError: any) {
+                console.error(`   ⚠️  Cleanup error for ${resource.type}:`, cleanupError.message);
+                // Cleanup xatosi pipeline xatosini to'xtatmaydi
             }
         }
 
-        throw new Error('Pipeline failed to produce output');
+        // ResponseStep'da yaratilgan audio fayllarni tozalash
+        // Agar ResponseStep ishlagan bo'lsa, audio fayl yaratilgan bo'lishi mumkin
+        const responseStepExecuted = executedSteps.some(step => step.constructor.name === 'ResponseStep');
+        if (responseStepExecuted) {
+            // Audio fayllarni tozalash - bu yerda faqat log qilamiz
+            // Haqiqiy fayl o'chirish kerak bo'lsa, audioUrl'ni track qilish kerak
+            console.log(`   ℹ️  ResponseStep executed - audio files may need cleanup (not implemented)`);
+        }
+
+        console.log(`✅ Cleanup completed\n`);
     }
 }

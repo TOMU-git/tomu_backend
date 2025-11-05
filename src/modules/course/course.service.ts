@@ -113,6 +113,10 @@ export class CourseService implements ICourseService {
     if (updateCourseDto.videoUrl !== "") {
       foundData.videoUrl = updateCourseDto.videoUrl;
     }
+
+    if (updateCourseDto.lang !== undefined && updateCourseDto.lang !== null) {
+      foundData.lang = updateCourseDto.lang;
+    }
     
     foundData.isActive = updateCourseDto.isActive;
     // Yangilangan ma'lumotlarni birlashtirish
@@ -126,6 +130,7 @@ export class CourseService implements ICourseService {
       description: data.description,
       videoUrl: data.videoUrl,
       imageUrl: data.imageUrl,
+      lang: data.lang,
     });
   }
 

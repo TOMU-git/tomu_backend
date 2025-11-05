@@ -10,7 +10,7 @@ export class UserCourseRepository implements IUserCourseRepository {
   constructor(
     @InjectRepository(UserCourse)
     private userCourseRepository: Repository<UserCourse>,
-  ) {}
+  ) { }
 
   /**
    * Yangi UserCourse ma'lumotlarini yaratadi va saqlaydi.
@@ -42,7 +42,7 @@ export class UserCourseRepository implements IUserCourseRepository {
         course: { id: courseId },
       },
       relations: ["user", "course"], // bu muhim
-    });    
+    });
   }
 
   /**
@@ -96,6 +96,7 @@ export class UserCourseRepository implements IUserCourseRepository {
           title: true,
           imageUrl: true,
           description: true,
+          lang: true,
         },
       },
     });
@@ -123,5 +124,5 @@ export class UserCourseRepository implements IUserCourseRepository {
       relations: ['user', 'course'], // kerakli joinlar
     });
   }
-  
+
 }

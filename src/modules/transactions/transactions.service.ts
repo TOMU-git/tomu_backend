@@ -148,6 +148,16 @@ export class TransactionsService implements ITransactionService {
       Number(orderId),
     );
 
+    console.log("=== CREATE TRANSACTION DEBUG ===");
+    console.log("1. Found Order in createTransaction:", {
+      id: foundOrder.id,
+      tariffId: foundOrder.tariffId,
+      tariffIdType: typeof foundOrder.tariffId,
+      liveChatId: foundOrder.liveChatId,
+      courseId: foundOrder.courseId,
+      userId: foundOrder.userId,
+    });
+
     if (transaction) {
       if (transaction.state !== TransactionStateEnum.PENDING) {
         throw new TransactionErrorException(PaymeError.CantDoOperation, id);
@@ -196,16 +206,58 @@ export class TransactionsService implements ITransactionService {
     newTransaction.orderId = Number(orderId);
     newTransaction.state = TransactionStateEnum.PENDING;
     newTransaction.createTime = time;
+
+    console.log("2. Before setting transaction fields:", {
+      foundOrderLiveChatId: foundOrder.liveChatId,
+      foundOrderTariffId: foundOrder.tariffId,
+      foundOrderTariffIdType: typeof foundOrder.tariffId,
+      foundOrderCourseId: foundOrder.courseId,
+    });
+
     newTransaction.liveChatId = foundOrder.liveChatId
       ? foundOrder.liveChatId
       : null;
+
+    console.log("3. Setting tariffId to transaction:", {
+      foundOrderTariffId: foundOrder.tariffId,
+      conditionResult: !!foundOrder.tariffId,
+      isNull: foundOrder.tariffId === null,
+      isUndefined: foundOrder.tariffId === undefined,
+    });
+
     newTransaction.tariffId = foundOrder.tariffId ? foundOrder.tariffId : null;
     newTransaction.courseId = foundOrder.courseId ? foundOrder.courseId : null;
     newTransaction.amount = amount;
     (newTransaction.reason = null), (newTransaction.cancelTime = 0);
     newTransaction.performTime = 0;
+
+    console.log("4. Before saving transaction - newTransaction:", {
+      id: newTransaction.id,
+      userId: newTransaction.userId,
+      orderId: newTransaction.orderId,
+      tariffId: newTransaction.tariffId,
+      tariffIdType: typeof newTransaction.tariffId,
+      liveChatId: newTransaction.liveChatId,
+      courseId: newTransaction.courseId,
+      amount: newTransaction.amount,
+    });
+
     const createdTransaction =
       await this.transactionRepository.createTransaction(newTransaction);
+
+    console.log("5. After saving transaction - createdTransaction:", {
+      id: createdTransaction.id,
+      userId: createdTransaction.userId,
+      orderId: createdTransaction.orderId,
+      tariffId: createdTransaction.tariffId,
+      tariffIdType: typeof createdTransaction.tariffId,
+      liveChatId: createdTransaction.liveChatId,
+      courseId: createdTransaction.courseId,
+      amount: createdTransaction.amount,
+      state: createdTransaction.state,
+    });
+
+    console.log("=== END CREATE TRANSACTION DEBUG ===");
 
     foundOrder.status = OrderStatus.PENDING;
     await this.orderRepository.update(foundOrder);
@@ -225,6 +277,18 @@ export class TransactionsService implements ITransactionService {
 
     // Transaksiyani ID orqali topish
     const transaction = await this.transactionRepository.getOneById(params.id);
+
+    console.log("=== PERFORM TRANSACTION START DEBUG ===");
+    console.log("0. Transaction from DB:", {
+      id: transaction?.id,
+      orderId: transaction?.orderId,
+      userId: transaction?.userId,
+      tariffId: transaction?.tariffId,
+      tariffIdType: typeof transaction?.tariffId,
+      liveChatId: transaction?.liveChatId,
+      courseId: transaction?.courseId,
+      state: transaction?.state,
+    });
 
     // Agar transaksiya topilmasa xatolik qaytarish
     if (!transaction) {
@@ -248,6 +312,16 @@ export class TransactionsService implements ITransactionService {
     const { data: foundOrder } = await this.orderService.getOrderById(
       Number(transaction.orderId),
     );
+
+    console.log("=== PERFORM TRANSACTION DEBUG ===");
+    console.log("1. Found Order:", {
+      id: foundOrder.id,
+      tariffId: foundOrder.tariffId,
+      tariffIdType: typeof foundOrder.tariffId,
+      liveChatId: foundOrder.liveChatId,
+      userId: foundOrder.userId,
+      courseId: foundOrder.courseId,
+    });
 
     // Transaksiya vaqti tugaganligini tekshirish (12 daqiqa)
     const expirationTime =
@@ -306,11 +380,25 @@ export class TransactionsService implements ITransactionService {
     }
 
     // Agar buyurtmada tarif bo'lsa
+    console.log("2. Checking tariffId condition:", {
+      tariffId: foundOrder.tariffId,
+      conditionResult: !!foundOrder.tariffId,
+      isNull: foundOrder.tariffId === null,
+      isUndefined: foundOrder.tariffId === undefined,
+    });
+
     if (foundOrder.tariffId) {
+      console.log("3. Entered tariffId block");
       // Kerakli ma'lumotlarni olish
       const foundTariff = await this.tariffRepository.findOneById(
         Number(foundOrder.tariffId),
       );
+      console.log("4. Found Tariff:", {
+        id: foundTariff?.id,
+        courseId: foundTariff?.courseId,
+        duration: foundTariff?.duration,
+      });
+
       const foundUser = await this.userRepository.findOneById(
         Number(foundOrder.userId),
       );
@@ -325,8 +413,17 @@ export class TransactionsService implements ITransactionService {
           Number(foundTariff.courseId),
         );
 
+      console.log("5. Found UserCourse:", {
+        exists: !!foundUserCourse,
+        id: foundUserCourse?.id,
+        currentTariffId: foundUserCourse?.tariffId,
+        userId: foundUserCourse?.user?.id,
+        courseId: foundUserCourse?.course?.id,
+      });
+
       // Agar foydalanuvchida allaqachon kurs bo'lsa
       if (foundUserCourse) {
+        console.log("6. Updating existing UserCourse");
         // Mavjud kurs obunasini yangilash
         foundUserCourse.startedAt = new Date();
         const now = new Date();
@@ -334,10 +431,33 @@ export class TransactionsService implements ITransactionService {
         expiryDate.setDate(expiryDate.getDate() + foundTariff.duration);
         foundUserCourse.endedAt = expiryDate;
         foundUserCourse.isActive = true;
+
+        console.log("7. Before setting tariffId:", {
+          oldTariffId: foundUserCourse.tariffId,
+          newTariffId: foundOrder.tariffId,
+        });
+
+        foundUserCourse.tariffId = foundOrder.tariffId;
+
+        console.log("8. After setting tariffId:", {
+          tariffId: foundUserCourse.tariffId,
+          isActive: foundUserCourse.isActive,
+          hasEverPaid: foundUserCourse.hasEverPaid,
+        });
+
         // Birinchi marta to'lov qilindi
         foundUserCourse.hasEverPaid = true;
-        await this.userCourseRepository.update(foundUserCourse);
+        const updatedUserCourse = await this.userCourseRepository.update(foundUserCourse);
+
+        console.log("9. After update - Updated UserCourse:", {
+          id: updatedUserCourse.id,
+          tariffId: updatedUserCourse.tariffId,
+          tariffIdType: typeof updatedUserCourse.tariffId,
+          isActive: updatedUserCourse.isActive,
+          hasEverPaid: updatedUserCourse.hasEverPaid,
+        });
       } else {
+        console.log("6. Creating new UserCourse");
         // Yangi kurs obunasini yaratish
         const newUserCourse = new UserCourse();
         newUserCourse.status = StatusEnum.PANDING;
@@ -349,10 +469,29 @@ export class TransactionsService implements ITransactionService {
         newUserCourse.endedAt = expiryDate;
         newUserCourse.course = foundCourse;
         newUserCourse.user = foundUser;
+
+        console.log("7. Before setting tariffId (new):", {
+          tariffId: newUserCourse.tariffId,
+          newTariffId: foundOrder.tariffId,
+        });
+
         newUserCourse.tariffId = foundOrder.tariffId;
+
+        console.log("8. After setting tariffId (new):", {
+          tariffId: newUserCourse.tariffId,
+        });
+
         // Birinchi marta to'lov qilindi
         newUserCourse.hasEverPaid = true;
-        await this.userCourseRepository.create(newUserCourse);
+        const createdUserCourse = await this.userCourseRepository.create(newUserCourse);
+
+        console.log("9. After create - Created UserCourse:", {
+          id: createdUserCourse.id,
+          tariffId: createdUserCourse.tariffId,
+          tariffIdType: typeof createdUserCourse.tariffId,
+          isActive: createdUserCourse.isActive,
+          hasEverPaid: createdUserCourse.hasEverPaid,
+        });
       }
 
       // Kurs to'lovi tarixini yaratish
@@ -365,7 +504,11 @@ export class TransactionsService implements ITransactionService {
       newCoursePayment.courseName = foundCourse.title;
       newCoursePayment.userPhoneNumber = foundUser.phoneNumber;
       await this.coursePaymentRepository.create(newCoursePayment);
+    } else {
+      console.log("3. SKIPPED - tariffId condition is false, not entering tariff block");
     }
+
+    console.log("=== END PERFORM TRANSACTION DEBUG ===");
 
     // Buyurtma holatini yangilash
     foundOrder.status = OrderStatus.PAID;

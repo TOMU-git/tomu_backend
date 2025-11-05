@@ -30,6 +30,15 @@ export class Course extends BaseEntity {
   @Column({ type: "bool", nullable: true, default: true })
   isActive: boolean;
 
+  @Column({
+    type: "varchar",
+    length: 50,
+    nullable: true,
+    name: "lang",
+    default: null
+  })
+  lang: string; // "ar", "eng", "ru" - kursning qaysi tilda mavjudligi
+
   // Foydalanuvchi o'qigan kurslar bilan bog'lanish
   @OneToMany(() => UserCourse, (userCourse) => userCourse.course, {
     onDelete: "NO ACTION", // Kurs o'chirilganda bog'langan o'qishlar o'chirilmaydi
@@ -52,12 +61,12 @@ export class Course extends BaseEntity {
   })
   blocks: Array<Block>;
 
-    // Blocklar bilan bog'lanish
-    @OneToMany(() => Lesson, (lesson) => lesson.course, {
-      onDelete: "SET NULL",
-      nullable: true,
-    })
-    lessons: Array<Block>;
+  // Blocklar bilan bog'lanish
+  @OneToMany(() => Lesson, (lesson) => lesson.course, {
+    onDelete: "SET NULL",
+    nullable: true,
+  })
+  lessons: Array<Block>;
 
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {

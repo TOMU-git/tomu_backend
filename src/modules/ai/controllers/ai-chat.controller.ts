@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AIChatService } from "../services/ai-chat.service";
 import { VoiceRequestDto } from "../dto/voice-request.dto";
@@ -8,6 +8,8 @@ import { PaymentGuard } from "../guards/payment.guard";
 import { CurrentUser } from "src/common/decorator/CurrentUser.decorator";
 import { AudioUtils } from "../utils/audio.util";
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
+import { IUserCourseService } from "src/modules/user-courses/interfaces/user-course.service";
 
 /**
  * AiChatController
@@ -18,7 +20,11 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiPa
 @ApiBearerAuth()
 @Controller('ai/chat')
 export class AiChatController {
-    constructor(private readonly chat: AIChatService) { }
+    constructor(
+        private readonly chat: AIChatService,
+        @Inject('IUserCourseService')
+        private readonly userCourseService: IUserCourseService,
+    ) { }
 
     /**
      * Yangi sessiya yaratish
@@ -70,6 +76,30 @@ export class AiChatController {
             });
         } catch (_) { }
 
+        // Limit tekshiruvi - session yaratishdan OLDIN
+        // Bu foydalanuvchiga limit holatini oldindan ko'rsatadi
+        try {
+            const limitStatus = await this.chat.checkUserLimitStatus(userId);
+            if (!limitStatus.canProceed) {
+                // Limit oshib ketgan bo'lsa, error response qaytarish
+                return {
+                    message: 'error',
+                    error: 'LIMIT_EXCEEDED',
+                    data: {
+                        message: `Oylik limit tugagan. Limit: $${limitStatus.limit}, Sarflangan: $${limitStatus.currentCost.toFixed(2)}, Qolgan: $${limitStatus.remaining.toFixed(2)}`,
+                        currentCost: limitStatus.currentCost,
+                        limit: limitStatus.limit,
+                        remaining: limitStatus.remaining,
+                        errorCode: 'LIMIT_EXCEEDED',
+                    },
+                };
+            }
+        } catch (error: any) {
+            // Limit check xatosi - log qilish, lekin session yaratishni davom ettirish
+            // (xatolik bo'lsa ham, session yaratishga ruxsat berish - defensive approach)
+            console.warn('⚠️  Limit check xatosi (session yaratish davom etadi):', error.message);
+        }
+
         const { courseId, sessionLanguage, sessionTitle } = body || {};
         const session = await this.chat.createSession(userId, courseId, sessionLanguage, sessionTitle);
         try {
@@ -117,7 +147,7 @@ export class AiChatController {
     })
     @UseInterceptors(FileInterceptor('file'))
     @UsePipes(new ValidationPipe({ transform: true }))
-    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto }> {
+    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
         // Debug: Request'dan kelayotgan ma'lumotlarni log qilish
         try {
             const safeFileInfo = file ? {
@@ -157,6 +187,20 @@ export class AiChatController {
             };
             return { message: 'ok', data: res };
         } catch (error: any) {
+            // Limit exceeded exception'ni to'g'ri handle qilish
+            if (error instanceof LimitExceededException) {
+                // Limit oshib ketgan holat uchun aniq xabar qaytarish
+                return {
+                    message: 'error',
+                    error: 'LIMIT_EXCEEDED',
+                    data: {
+                        message: error.message,
+                        errorCode: 'LIMIT_EXCEEDED',
+                    },
+                };
+            }
+
+            // Boshqa xatolar uchun log va re-throw
             console.error('[AI Chat Voice] Error in sendVoiceMessage:', error.message);
             console.error('[AI Chat Voice] Error stack:', error.stack);
             throw error;
@@ -197,6 +241,47 @@ export class AiChatController {
         // Izoh: AIChatService sessiya egasini tekshiradi, guard esa tokenni tekshiradi
         const list = await this.chat.getMessages(Number(id));
         return { message: 'ok', data: list };
+    }
+
+    /**
+     * User'ning o'qiyotgan kurslarini olish
+     */
+    @UseGuards(AuthGuard)
+    @Get('courses')
+    @ApiOperation({ summary: "User'ning o'qiyotgan kurslarini olish" })
+    @ApiOkResponse({
+        description: "User'ning kurslari",
+        schema: {
+            type: 'object',
+            properties: {
+                message: { type: 'string', example: 'ok' },
+                data: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            courseId: { type: 'number', example: 1 },
+                            lang: { type: 'string', example: 'ar', nullable: true },
+                            title: { type: 'string', example: 'Russian language' },
+                            imageUrl: { type: 'string', example: '/upload/image.jpg', nullable: true },
+                        }
+                    }
+                }
+            }
+        }
+    })
+    async getUserCourses(@CurrentUser('id') userId: number) {
+        const { data: userCourses } = await this.userCourseService.findOneByUserId(userId);
+
+        // Har bir UserCourse uchun course ma'lumotlarini olish
+        const courses = userCourses.map(userCourse => ({
+            courseId: userCourse.course.id,
+            lang: userCourse.course.lang || null,
+            title: userCourse.course.title,
+            imageUrl: userCourse.course.imageUrl || null,
+        }));
+
+        return { message: 'ok', data: courses };
     }
 }
 
