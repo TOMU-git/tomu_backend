@@ -222,6 +222,7 @@ export class CostCalculationService {
         audioBufferSize?: number; // bytes
         estimatedWhisperDurationSeconds?: number;
         estimatedResponseLength?: number; // characters
+        textLength?: number; // text message uzunligi (characters)
     }): {
         whisperCost: number;
         ttsCost: number;
@@ -229,11 +230,14 @@ export class CostCalculationService {
         totalCost: number;
     } {
         // 1. Whisper cost estimation
-        // Audio buffer size'dan taxminiy duration hisoblash
-        // Taxminan: 1MB audio ≈ 1 minute (128kbps)
+        // Text message uchun whisper cost 0 (STT ishlatilmaydi)
         let estimatedWhisperDuration = params.estimatedWhisperDurationSeconds;
-        if (!estimatedWhisperDuration && params.audioBufferSize) {
-            // Taxminiy: 1MB = 1 minute
+        if (params.textLength) {
+            // Text message - whisper cost 0
+            estimatedWhisperDuration = 0;
+        } else if (!estimatedWhisperDuration && params.audioBufferSize) {
+            // Audio buffer size'dan taxminiy duration hisoblash
+            // Taxminan: 1MB audio ≈ 1 minute (128kbps)
             const estimatedMB = params.audioBufferSize / (1024 * 1024);
             estimatedWhisperDuration = estimatedMB * 60; // seconds
             // Maximum 60 seconds (1 minute)
@@ -251,10 +255,13 @@ export class CostCalculationService {
         const ttsCost = this.calculateTTSCost(estimatedTTSSize);
 
         // 3. GPT cost estimation
-        // Taxminiy: 1000 prompt tokens + 200 completion tokens (average)
-        // Bu juda taxminiy, lekin pre-flight check uchun yetarli
-        const estimatedPromptTokens = 1000;
-        const estimatedCompletionTokens = 200;
+        // Text message uchun prompt tokens textLength asosida hisoblanadi
+        let estimatedPromptTokens = 1000; // Default
+        if (params.textLength) {
+            // Taxminiy: 1 character ≈ 0.25 token (Arabic uchun)
+            estimatedPromptTokens = Math.ceil(params.textLength * 0.25) + 500; // +500 context uchun
+        }
+        const estimatedCompletionTokens = 200; // Average response
         const gptCost = this.calculateGPTCost(estimatedPromptTokens, estimatedCompletionTokens);
 
         const totalCost = this.roundToSixDecimals(whisperCost + ttsCost + gptCost);

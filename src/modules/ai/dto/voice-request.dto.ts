@@ -5,8 +5,8 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 /**
  * VoiceRequestDto
  * -------------------------------------------------------
- * Voice chat so'rovi uchun DTO (metadata qismi, audio fayl alohida keladi).
- * Faqat ovoz orqali muloqot uchun.
+ * Voice/Text chat so'rovi uchun DTO.
+ * Audio fayl yoki text qabul qiladi.
  * 
  * Eslatma: courseId va language session'dan avtomatik olinadi (session yaratilganda berilgan).
  * Bu parametrlarni yuborish shart emas - session'dan olinadi.
@@ -40,6 +40,30 @@ export class VoiceRequestDto {
     @IsOptional()
     @IsString()
     language?: string; // STT tili (masalan: 'ar', 'en'); default: 'ar' - session'dan olinadi
+
+    @ApiPropertyOptional({
+        description: "Text xabar (ixtiyoriy - agar file bo'lmasa, text yuboriladi)",
+        type: String,
+        example: "مَا هَٰذَا؟",
+    })
+    @IsOptional()
+    @IsString()
+    text?: string;
+
+    @ApiPropertyOptional({
+        description: "History so'rovi (agar 'history' bo'lsa, faqat message'lar qaytariladi, AI ga so'rov yuborilmaydi)",
+        type: String,
+        example: "history",
+    })
+    @IsOptional()
+    @IsString()
+    history?: string;
+
+    // File property - multipart/form-data uchun
+    // Bu property ValidationPipe tomonidan ignore qilinadi
+    // @UploadedFile() decorator orqali olinadi
+    @IsOptional()
+    file?: any;
 }
 
 

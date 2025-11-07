@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject, CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { Observable } from "rxjs";
 import { AIChatService } from "../services/ai-chat.service";
 import { VoiceRequestDto } from "../dto/voice-request.dto";
-import { ChatResponseDto } from "../dto/chat-response.dto";
+import { ChatResponseDto, ChatMessageDto } from "../dto/chat-response.dto";
 import { AuthGuard } from "src/modules/shared/guards/auth.guard";
 import { PaymentGuard } from "../guards/payment.guard";
 import { CurrentUser } from "src/common/decorator/CurrentUser.decorator";
@@ -13,9 +14,46 @@ import { AIErrorResponseDto } from "../dto/error-response.dto";
 import { IUserCourseService } from "src/modules/user-courses/interfaces/user-course.service";
 
 /**
+ * OptionalFileInterceptor
+ * -------------------------------------------------------
+ * FileInterceptor'ni shartli qilish - faqat multipart/form-data uchun ishlaydi
+ * ValidationPipe'dan oldin ishlaydi - file property'sini o'chiradi
+ * 
+ * Eslatma: Interceptor'lar teskari tartibda ishlaydi, shuning uchun bu birinchi ishlaydi
+ */
+class OptionalFileInterceptor implements NestInterceptor {
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+        const request = context.switchToHttp().getRequest();
+        const contentType = request.headers['content-type'] || '';
+
+        // application/json uchun file property'sini o'chirish (validation'dan oldin)
+        // Bu global ValidationPipe'dan oldin ishlaydi
+        if (!contentType.includes('multipart/form-data')) {
+            // Request body'ni parse qilish (agar hali parse qilinmagan bo'lsa)
+            if (request.body && typeof request.body === 'object') {
+                // file property'sini o'chirish
+                if (request.body.file !== undefined) {
+                    delete request.body.file;
+                }
+            }
+
+            // Request body'ni yangilash - ValidationPipe uchun
+            // Bu global ValidationPipe'dan oldin ishlaydi
+            if (request.body && typeof request.body === 'object') {
+                // Body'ni yangilash
+                request.body = { ...request.body };
+                delete request.body.file;
+            }
+        }
+
+        return next.handle();
+    }
+}
+
+/**
  * AiChatController
  * -------------------------------------------------------
- * Maqsad: Voice chat endpointlari (faqat ovoz orqali muloqot).
+ * Maqsad: Voice/Text chat endpointlari.
  */
 @ApiTags('AI Chat')
 @ApiBearerAuth()
@@ -119,16 +157,18 @@ export class AiChatController {
     }
 
     /**
-     * Voice chat (foydalanuvchi ovoz yuboradi, AI ham ovozli javob beradi)
+     * Voice/Text chat (foydalanuvchi ovoz yoki text yuboradi, AI ham ovozli javob beradi)
      * PaymentGuard: Faqat to'lov qilgan foydalanuvchilar uchun
      * 
      * Eslatma: courseId va language session'dan olinadi (session yaratilganda berilgan).
      * Bu parametrlarni yuborish shart emas - session'dan avtomatik olinadi.
+     * 
+     * History: Agar body'da history='history' bo'lsa, AI ga so'rov yuborilmaydi, faqat message'lar qaytariladi.
      */
     @UseGuards(AuthGuard, PaymentGuard)
     @Post('voice')
-    @ApiOperation({ summary: 'Ovoz yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
-    @ApiConsumes('multipart/form-data')
+    @ApiOperation({ summary: 'Ovoz yoki text yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
+    @ApiConsumes('multipart/form-data', 'application/json')
     @ApiBadRequestResponse({
         description: 'Error response',
         type: AIErrorResponseDto
@@ -136,17 +176,27 @@ export class AiChatController {
     @ApiBody({
         schema: {
             type: 'object',
-            required: ['file', 'sessionId'],
+            required: ['sessionId'],
             properties: {
                 file: {
                     type: 'string',
                     format: 'binary',
-                    description: 'Audio fayl (majburiy)'
+                    description: 'Audio fayl (ixtiyoriy - agar text bo\'lmasa)'
                 },
                 sessionId: {
                     type: 'number',
                     example: 123,
                     description: 'Sessiya ID (majburiy)'
+                },
+                text: {
+                    type: 'string',
+                    example: 'مَا هَٰذَا؟',
+                    description: 'Text xabar (ixtiyoriy - agar file bo\'lmasa)'
+                },
+                history: {
+                    type: 'string',
+                    example: 'history',
+                    description: 'History so\'rovi (agar "history" bo\'lsa, faqat message\'lar qaytariladi)'
                 },
                 courseId: {
                     type: 'number',
@@ -174,24 +224,100 @@ export class AiChatController {
             }
         }
     })
-    @UseInterceptors(FileInterceptor('file'))
-    @UsePipes(new ValidationPipe({ transform: true }))
-    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
-        // Debug: Request'dan kelayotgan ma'lumotlarni log qilish
+    @UseInterceptors(
+        OptionalFileInterceptor, // Birinchi ishlaydi (validation'dan oldin) - file property'sini o'chiradi
+        FileInterceptor('file', {
+            limits: { fileSize: 15 * 1024 * 1024 },
+            fileFilter: (req, file, cb) => {
+                // File optional - agar file bo'lmasa, ruxsat berish
+                cb(null, true);
+            }
+        })
+    )
+    // Controller'dagi ValidationPipe global ValidationPipe'ni override qiladi
+    @UsePipes(new ValidationPipe({
+        transform: true,
+        skipMissingProperties: true,
+        whitelist: false, // Whitelist'ni o'chirish - barcha property'larni qabul qilish
+        forbidNonWhitelisted: false, // File property'sini qabul qilish uchun
+        skipUndefinedProperties: true, // Undefined property'larni o'tkazib yuborish
+    }))
+    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File | undefined, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
         try {
-            console.log(`[AI Chat Controller] Voice message request for user ${userId}, session ${body?.sessionId}`);
+            console.log(`[AI Chat Controller] Voice/Text message request for user ${userId}, session ${body?.sessionId}`);
         } catch (e) {
             // Agar log qilishda xato bo'lsa, davom etamiz
         }
-        // Audio fayl validatsiyasi (MIME/size)
-        AudioUtils.validateUpload(file);
-        const { sessionId, courseId, language } = body || ({} as VoiceRequestDto);
+
+        const { sessionId, courseId, language, text, history } = body || ({} as VoiceRequestDto);
+
         if (!sessionId || Number.isNaN(Number(sessionId))) {
             throw new BadRequestException('sessionId noto\'g\'ri yoki yo\'q');
         }
 
+        // History so'rovi - faqat message'larni qaytarish
+        if (history === 'history') {
+            const messages = await this.chat.getMessages(sessionId, userId);
+            // Oxirgi 20 ta message'ni qaytarish
+            const limitedMessages = messages.slice(0, 20).map(msg => ({
+                id: msg.id,
+                sessionId: msg.sessionId,
+                senderType: msg.senderType,
+                originalText: msg.originalText || undefined,
+                aiResponseText: msg.aiResponseText || undefined,
+                aiResponseUzbek: msg.aiResponseUzbek || undefined,
+                audioUrl: msg.audioUrl || undefined,
+                isWithinLimit: msg.isWithinLimit ?? true,
+                createdAt: msg.createdAt,
+            }));
+
+            const res: ChatResponseDto = {
+                messageId: 0,
+                sessionId: sessionId,
+                text: '',
+                textUz: '',
+                audioUrl: undefined,
+                isWithinLimit: true,
+                createdAt: new Date(),
+                messages: limitedMessages,
+            };
+            return { message: 'ok', data: res };
+        }
+
+        // File yoki text validatsiyasi
+        if (!file && !text) {
+            throw new BadRequestException('File yoki text yuborish kerak');
+        }
+
+        if (file && text) {
+            throw new BadRequestException('File va text bir vaqtda yuborilmaydi');
+        }
+
+        let msg: any;
+
         try {
-            const msg = await this.chat.sendVoiceMessage({ userId, sessionId, audioBuffer: file?.buffer, courseId, language });
+            if (file) {
+                // Audio fayl validatsiyasi (MIME/size)
+                AudioUtils.validateUpload(file);
+                msg = await this.chat.sendVoiceMessage({ userId, sessionId, audioBuffer: file?.buffer, courseId, language });
+            } else if (text) {
+                msg = await this.chat.sendTextMessage({ userId, sessionId, text, courseId, language });
+            }
+
+            // Message'larni olish (oxirgi 20 ta)
+            const messages = await this.chat.getMessages(sessionId, userId);
+            const limitedMessages = messages.slice(0, 20).map(m => ({
+                id: m.id,
+                sessionId: m.sessionId,
+                senderType: m.senderType,
+                originalText: m.originalText || undefined,
+                aiResponseText: m.aiResponseText || undefined,
+                aiResponseUzbek: m.aiResponseUzbek || undefined,
+                audioUrl: m.audioUrl || undefined,
+                isWithinLimit: m.isWithinLimit ?? true,
+                createdAt: m.createdAt,
+            }));
+
             const res: ChatResponseDto = {
                 messageId: msg.id,
                 sessionId: msg.sessionId,
@@ -200,12 +326,12 @@ export class AiChatController {
                 audioUrl: msg.audioUrl || '',
                 isWithinLimit: msg.isWithinLimit ?? true,
                 createdAt: msg.createdAt,
+                messages: limitedMessages,
             };
             return { message: 'ok', data: res };
         } catch (error: any) {
             // Limit exceeded exception'ni to'g'ri handle qilish
             if (error instanceof LimitExceededException) {
-                // Limit oshib ketgan holat uchun aniq xabar qaytarish
                 return {
                     message: 'error',
                     error: 'LIMIT_EXCEEDED',
@@ -216,9 +342,6 @@ export class AiChatController {
                 };
             }
 
-            // Boshqa xatolar uchun log va re-throw
-            // console.error('[AI Chat Voice] Error in sendVoiceMessage:', error.message);
-            // console.error('[AI Chat Voice] Error stack:', error.stack);
             throw error;
         }
     }

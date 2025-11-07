@@ -47,6 +47,67 @@ export class VoiceProcessingPipeline {
     ) { }
 
     /**
+     * Pipeline ni bajarish (text bilan - STT bosqichini o'tkazib yuboradi)
+     * Cleanup logic bilan - xato bo'lganda yaratilgan resurslarni tozalash
+     */
+    async executeWithText(input: VoiceInput & { transcribedText: string }): Promise<VoiceOutput> {
+        const pipelineStart = Date.now();
+
+        // Usage tracking uchun initializatsiya
+        const inputWithUsage: VoiceInput = {
+            ...input,
+            usage: {},
+        };
+
+        // Cleanup tracking
+        const cleanupResources: Array<{ type: string; resource: any; cleanup: () => Promise<void> }> = [];
+
+        // STT bosqichini o'tkazib yuboramiz, to'g'ridan-to'g'ri Validation bosqichidan boshlaymiz
+        const steps: PipelineStep[] = [
+            new ValidationStep(this.tts, this.messageFactory),
+            new ContextStep(this.aiChatService, this.tts),
+            new GPTStep(this.gpt, this.translation),
+            new ResponseStep(this.messageFactory, this.tts),
+        ];
+
+        let currentInput: VoiceInput | VoiceOutput = inputWithUsage;
+        let executedSteps: PipelineStep[] = [];
+
+        try {
+            for (const step of steps) {
+                const stepName = step.constructor.name;
+
+                try {
+                    currentInput = await step.execute(currentInput as VoiceInput);
+                    executedSteps.push(step);
+
+                    // Agar step VoiceOutput qaytarsa, pipeline tugadi
+                    if ('message' in currentInput) {
+                        const output = currentInput as VoiceOutput;
+                        const usage = (currentInput as any).usage || inputWithUsage.usage || {};
+                        const totalTime = Date.now() - pipelineStart;
+
+                        return {
+                            ...output,
+                            usage,
+                        } as VoiceOutput & { usage?: VoiceInput['usage'] };
+                    }
+                } catch (stepError: any) {
+                    console.error(`\n❌ Error in step ${stepName}:`, stepError.message);
+                    await this.cleanupResources(cleanupResources, executedSteps);
+                    throw stepError;
+                }
+            }
+
+            throw new Error('Pipeline failed to produce output');
+        } catch (error: any) {
+            console.error(`\n❌ Pipeline error:`, error.message);
+            await this.cleanupResources(cleanupResources, executedSteps);
+            throw error;
+        }
+    }
+
+    /**
      * Pipeline ni bajarish
      * Cleanup logic bilan - xato bo'lganda yaratilgan resurslarni tozalash
      */
