@@ -153,6 +153,101 @@ export class AIChatService {
     }
 
     /**
+     * Text chat oqimi (text -> GPT -> TTS)
+     * Pipeline pattern orqali boshqariladi (STT bosqichini o'tkazib yuboradi)
+     */
+    async sendTextMessage(params: {
+        userId: ID;
+        sessionId: ID;
+        text: string;
+        courseId?: ID;
+        language?: string;
+    }): Promise<AIChatMessage> {
+        const { userId, sessionId, text, courseId, language } = params;
+
+        // Validation
+        if (!text || text.trim().length === 0) {
+            throw new BadRequestException('Text xabar bo\'sh bo\'lishi mumkin emas');
+        }
+
+        // Session validation
+        const session = await this.sessionRepo.findOneById(Number(sessionId));
+        if (!session) {
+            throw new BadRequestException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+        }
+        if (session.userId !== Number(userId)) {
+            throw new InvalidSessionException({
+                sessionId: Number(sessionId),
+                userId: Number(userId),
+                reason: 'forbidden'
+            });
+        }
+
+        // Session'dan courseId va language ni olish
+        const finalCourseId = session.courseId || courseId || undefined;
+        const finalLanguage = session.sessionLanguage || language || 'ar';
+
+        // Pre-flight limit check
+        try {
+            const estimatedCost = this.costCalculator.estimateCost({
+                textLength: text.length,
+            });
+            const courseIdForLimit = session.courseId || null;
+            const limitCheck = await this.limitCheck.checkMonthlyLimit(userId, courseIdForLimit, estimatedCost.totalCost);
+            if (!limitCheck.canProceed) {
+                throw new LimitExceededException({
+                    currentCost: limitCheck.currentCost,
+                    limit: limitCheck.limit,
+                    remaining: limitCheck.remaining,
+                    courseId: courseIdForLimit,
+                    month: new Date().toISOString().slice(0, 7),
+                });
+            }
+        } catch (error: any) {
+            if (error instanceof LimitExceededException) {
+                throw error;
+            }
+        }
+
+        // Pipeline input - text bilan (STT bosqichini o'tkazib yuboramiz)
+        const pipelineInput: VoiceInput & { transcribedText: string } = {
+            userId,
+            sessionId,
+            audioBuffer: Buffer.from(''), // Bo'sh buffer (ishlatilmaydi)
+            courseId: finalCourseId,
+            language: finalLanguage,
+            session,
+            transcribedText: text.trim(), // To'g'ridan-to'g'ri text
+        };
+
+        // Pipeline execution - STT bosqichini o'tkazib yuborish uchun alohida execute
+        const result = await this.voicePipeline.executeWithText(pipelineInput);
+
+        // Save message and update session
+        const saved = await this.messageRepo.create(result.message);
+
+        result.session.lastActivityAt = new Date();
+        await this.sessionRepo.update(result.session);
+
+        // Cost tracking
+        try {
+            const usage = (result as any).usage;
+            if (usage) {
+                await this.trackCostAfterSave({
+                    userId: Number(userId),
+                    sessionId: saved.sessionId,
+                    messageId: saved.id as unknown as number,
+                    usage,
+                });
+            }
+        } catch (error: any) {
+            // Cost tracking xatosi request'ni to'xtatmaydi
+        }
+
+        return saved;
+    }
+
+    /**
      * Voice chat oqimi (audio -> STT -> GPT -> TTS)
      * Pipeline pattern orqali boshqariladi
      */
