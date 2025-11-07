@@ -46,7 +46,8 @@ export class ResponseStep implements PipelineStep {
             message,
             session: input.session,
             usage: usage, // Pipeline'da ishlatish uchun
-        } as VoiceOutput & { usage?: VoiceInput['usage'] };
+            transcribedText: input.validatedText, // Foydalanuvchi xabarini saqlash uchun
+        } as VoiceOutput & { usage?: VoiceInput['usage']; transcribedText?: string };
     }
 }
 

@@ -41,6 +41,7 @@ export interface VoiceOutput {
     message: any; // AIChatMessage
     session: AIChatSession;
     usage?: VoiceInput['usage'];
+    transcribedText?: string; // Foydalanuvchi xabarini saqlash uchun
 }
 
 export interface PipelineStep {

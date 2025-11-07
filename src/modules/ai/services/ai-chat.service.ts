@@ -220,10 +220,17 @@ export class AIChatService {
             transcribedText: text.trim(), // To'g'ridan-to'g'ri text
         };
 
+        // Foydalanuvchi xabarini saqlash
+        const userMessage = await this.messageFactory.createUserMessage(
+            Number(sessionId),
+            text.trim()
+        );
+        const savedUserMessage = await this.messageRepo.create(userMessage);
+
         // Pipeline execution - STT bosqichini o'tkazib yuborish uchun alohida execute
         const result = await this.voicePipeline.executeWithText(pipelineInput);
 
-        // Save message and update session
+        // AI javobini saqlash
         const saved = await this.messageRepo.create(result.message);
 
         result.session.lastActivityAt = new Date();
@@ -257,8 +264,9 @@ export class AIChatService {
         audioBuffer: Buffer;
         courseId?: ID;
         language?: string;
+        mimetype?: string; // Audio MIME type
     }): Promise<AIChatMessage> {
-        const { userId, sessionId, audioBuffer, courseId, language } = params;
+        const { userId, sessionId, audioBuffer, courseId, language, mimetype } = params;
 
         // Validation
         if (!audioBuffer || audioBuffer.length === 0) {
@@ -323,14 +331,35 @@ export class AIChatService {
             session,
         };
 
+        // Foydalanuvchi audio faylini saqlash
+        let userAudioUrl: string | null = null;
+        try {
+            // Audio faylni saqlash
+            userAudioUrl = await this.messageFactory.saveUserAudio(
+                audioBuffer,
+                mimetype || 'audio/webm' // MIME type yoki default
+            );
+        } catch (error: any) {
+            // Audio saqlash xatosi request'ni to'xtatmaydi
+            console.error(`[AI Chat Service] Error saving user audio: ${error.message}`);
+        }
+
         // Pipeline execution
         const result = await this.voicePipeline.execute(pipelineInput);
 
-        // Xabar allaqachon pipeline'da session bilan yaratilgan
-        // TypeORM avtomatik sessionId'ni saqlaydi
-        // console.log(`[AI Chat Service] Saving message for session ${result.message.session?.id}`);
+        // Foydalanuvchi xabarini saqlash (STT natijasi va audio URL)
+        // Pipeline'dan transcribedText olish
+        const userText = result.transcribedText || (pipelineInput as any).transcribedText || '';
+        if (userText) {
+            const userMessage = await this.messageFactory.createUserMessage(
+                Number(sessionId),
+                userText,
+                userAudioUrl || undefined
+            );
+            await this.messageRepo.create(userMessage);
+        }
 
-        // Save message and update session
+        // AI javobini saqlash
         const saved = await this.messageRepo.create(result.message);
 
         result.session.lastActivityAt = new Date();

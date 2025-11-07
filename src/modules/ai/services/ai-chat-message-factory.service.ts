@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { AIChatMessage } from "../entities/ai-chat-message.entity";
 import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { TTSService } from "./tts.service";
+import * as fs from "fs/promises";
+import * as path from "path";
 
 /**
  * AIChatMessageFactory
@@ -57,9 +59,68 @@ export class AIChatMessageFactory {
     }
 
     /**
-     * Oddiy AI javob xabari yaratish
+     * Foydalanuvchi audio faylini saqlash
+     * @param audioBuffer - Audio buffer
+     * @param mimetype - Audio MIME type
+     * @returns Audio URL
+     */
+    async saveUserAudio(audioBuffer: Buffer, mimetype: string): Promise<string> {
+        try {
+            const outDir = path.resolve(process.cwd(), "upload", "audio");
+            await fs.mkdir(outDir, { recursive: true });
+
+            // Extension'ni MIME type'dan olish
+            let extension = 'webm'; // default
+            if (mimetype.includes('mp3')) extension = 'mp3';
+            else if (mimetype.includes('wav')) extension = 'wav';
+            else if (mimetype.includes('ogg')) extension = 'ogg';
+            else if (mimetype.includes('webm')) extension = 'webm';
+
+            const filename = `user_audio_${Date.now()}.${extension}`;
+            const full = path.join(outDir, filename);
+            await fs.writeFile(full, audioBuffer);
+
+            const audioUrl = `/upload/audio/${filename}`;
+            return audioUrl;
+        } catch (error: any) {
+            console.error(`[MessageFactory] Error saving user audio: ${error.message}`);
+            return null; // Xato bo'lsa, null qaytarish
+        }
+    }
+
+    /**
+     * Foydalanuvchi xabarini yaratish
      * @param sessionId - Chat sessiya ID (number)
      * @param originalText - Foydalanuvchi matni
+     * @param audioUrl - Foydalanuvchi audio URL (ixtiyoriy)
+     * @returns Yaratilgan xabar
+     */
+    async createUserMessage(
+        sessionId: number,
+        originalText: string,
+        audioUrl?: string
+    ): Promise<AIChatMessage> {
+        // Validation
+        if (!sessionId || typeof sessionId !== 'number') {
+            throw new Error(`[MessageFactory] Invalid sessionId: ${sessionId}`);
+        }
+
+        const message = new AIChatMessage();
+        message.sessionId = sessionId;
+        message.senderType = 'user';
+        message.originalText = originalText;
+        message.aiResponseText = null;
+        message.aiResponseUzbek = null;
+        message.audioUrl = audioUrl || null; // Foydalanuvchi audio URL
+        message.isWithinLimit = true;
+
+        return message;
+    }
+
+    /**
+     * Oddiy AI javob xabari yaratish
+     * @param sessionId - Chat sessiya ID (number)
+     * @param originalText - Foydalanuvchi matni (faqat ma'lumot uchun)
      * @param aiResponse - AI javobi
      * @param aiResponseUz - AI javobi o'zbek tilida
      * @param withinLimit - Limit ichida ekanligi
@@ -85,7 +146,7 @@ export class AIChatMessageFactory {
         message.sessionId = sessionId;
         console.log(`[MessageFactory.createResponse] Set sessionId=${sessionId} for message`);
         message.senderType = 'ai';
-        message.originalText = originalText;
+        message.originalText = null; // Foydalanuvchi xabari alohida saqlanadi
         message.aiResponseText = aiResponse;
         message.aiResponseUzbek = aiResponseUz;
         message.isWithinLimit = withinLimit;
