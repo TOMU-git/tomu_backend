@@ -27,6 +27,16 @@ export interface IAIUsageCostRepository {
     sumMonthlyByUser(userId: ID, month: string): Promise<number>;
 
     /**
+     * Foydalanuvchi va kurs uchun oylik umumiy cost'ni hisoblash
+     * sessionId orqali courseId'ni aniqlaydi va limit check qiladi
+     * @param userId Foydalanuvchi ID
+     * @param month Oylik ("2024-01" formatida)
+     * @param courseId Kurs ID (nullable - agar null bo'lsa, umumiy chat uchun)
+     * @returns Umumiy cost (USD)
+     */
+    sumMonthlyByUserAndCourse(userId: ID, month: string, courseId: number | null): Promise<number>;
+
+    /**
      * Foydalanuvchi va oy bo'yicha barcha cost recordlarni olish
      * @param userId Foydalanuvchi ID
      * @param month Oylik ("2024-01" formatida)
@@ -50,6 +60,15 @@ export interface IAIUsageCostRepository {
      * Barcha recordlarni olish (admin uchun)
      */
     findAll(): Promise<AIUsageCost[]>;
+
+    /**
+     * Foydalanuvchi va kurs uchun o'sha oydagi barcha cost recordlarni o'chirish
+     * To'lov qilinganda limitni yangilash uchun ishlatiladi
+     * @param userId Foydalanuvchi ID
+     * @param courseId Kurs ID (nullable - agar null bo'lsa, umumiy chat uchun)
+     * @param month Oylik ("2024-01" formatida)
+     */
+    deleteByUserCourseAndMonth(userId: ID, courseId: number | null, month: string): Promise<void>;
 }
 
 

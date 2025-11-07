@@ -13,7 +13,7 @@ import { AIChatSession } from "../entities/ai-chat-session.entity";
 import { ID } from "src/common/types/type";
 import { TranslationService } from "./translation.service";
 import { AI_ERROR_MESSAGES } from "../constants/error-messages";
-import { SessionForbiddenException } from "../exceptions/session-forbidden.exception";
+import { InvalidSessionException } from "../exceptions";
 import { AI_LIMITS } from "../constants/ai-constants";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { ILessonProgressService } from "src/modules/lesson-progress/interfaces/lesson-progress.service";
@@ -131,14 +131,19 @@ export class AIChatService {
     /**
      * Foydalanuvchi limit holatini tekshirish
      * Session yaratishda ishlatiladi
+     * @param userId - Foydalanuvchi ID
+     * @param courseId - Kurs ID (optional - agar berilmasa, barcha kurslar bo'yicha umumiy limit ko'rsatiladi)
      */
-    async checkUserLimitStatus(userId: ID): Promise<{
+    async checkUserLimitStatus(userId: ID, courseId?: number | null): Promise<{
         canProceed: boolean;
         currentCost: number;
         limit: number;
         remaining: number;
     }> {
-        const limitCheck = await this.limitCheck.checkMonthlyLimit(userId);
+        // Agar courseId berilgan bo'lsa, shu kurs uchun limit tekshiramiz
+        // Agar berilmagan bo'lsa, umumiy limit tekshiramiz (barcha kurslar bo'yicha)
+        const finalCourseId = courseId !== undefined ? courseId : null;
+        const limitCheck = await this.limitCheck.checkMonthlyLimit(userId, finalCourseId);
         return {
             canProceed: limitCheck.canProceed,
             currentCost: limitCheck.currentCost,
@@ -171,7 +176,11 @@ export class AIChatService {
             throw new BadRequestException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
         }
         if (session.userId !== Number(userId)) {
-            throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+            throw new InvalidSessionException({
+                sessionId: Number(sessionId),
+                userId: Number(userId),
+                reason: 'forbidden'
+            });
         }
 
         // Session'dan courseId va language ni olish (session yaratilganda berilgan)
@@ -183,19 +192,22 @@ export class AIChatService {
 
         // Pre-flight limit check - message saqlashdan OLDIN tekshirish
         // Bu limit oshib ketgan holatda message saqlanishini oldini oladi
+        // Har bir kurs uchun alohida limit tekshiriladi
         try {
             const estimatedCost = this.costCalculator.estimateCost({
                 audioBufferSize: audioBuffer.length,
             });
-            const limitCheck = await this.limitCheck.checkMonthlyLimit(userId, estimatedCost.totalCost);
+            const courseId = session.courseId || null; // null = umumiy chat
+            const limitCheck = await this.limitCheck.checkMonthlyLimit(userId, courseId, estimatedCost.totalCost);
             if (!limitCheck.canProceed) {
                 // Limit oshib ketgan bo'lsa, exception tashlash
-                throw new LimitExceededException(
-                    `Oylik limit oshib ketdi. Hozirgi sarflangan: $${limitCheck.currentCost.toFixed(2)}, ` +
-                    `Taxminiy: $${estimatedCost.totalCost.toFixed(2)}, ` +
-                    `Jami: $${limitCheck.estimatedTotal!.toFixed(2)}, Limit: $${limitCheck.limit}. ` +
-                    `Qolgan: $${limitCheck.remaining.toFixed(2)}`
-                );
+                throw new LimitExceededException({
+                    currentCost: limitCheck.currentCost,
+                    limit: limitCheck.limit,
+                    remaining: limitCheck.remaining,
+                    courseId: courseId,
+                    month: new Date().toISOString().slice(0, 7),
+                });
             }
         } catch (error: any) {
             // LimitExceededException'ni re-throw qilish
@@ -267,7 +279,11 @@ export class AIChatService {
         // Sessiya egasini tekshirish
         if (session.userId !== Number(userId)) {
             // console.warn(`[getMessages] ❌ Session owner mismatch. Request userId=${userId}, Session userId=${session.userId}, sessionId=${sessionId}`);
-            throw new SessionForbiddenException(AI_ERROR_MESSAGES.SESSION_NOT_FOUND);
+            throw new InvalidSessionException({
+                sessionId: Number(sessionId),
+                userId: Number(userId),
+                reason: 'forbidden'
+            });
         }
 
         // Xabarlarni olish

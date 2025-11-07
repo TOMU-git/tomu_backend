@@ -1,13 +1,19 @@
-import { BadRequestException } from "@nestjs/common";
+import { AIException } from './ai-exception.base';
+import { AIErrorCode } from '../constants/error-codes.enum';
 
 /**
  * InvalidAudioException
  * -------------------------------------------------------
- * Maqsad: Audio fayl MIME/size/duration noto'g'ri bo'lsa tashlanadi.
+ * Thrown when audio file is invalid (MIME, size, format)
  */
-export class InvalidAudioException extends BadRequestException {
-    constructor(message: string = "Audio fayl noto'g'ri") {
-        super(message);
+export class InvalidAudioException extends AIException {
+    constructor(details?: {
+        mimetype?: string;
+        size?: number;
+        maxSize?: number;
+        reason?: 'invalid_mime' | 'too_large' | 'missing' | 'empty';
+    }) {
+        super(AIErrorCode.INVALID_AUDIO, details);
     }
 }
 

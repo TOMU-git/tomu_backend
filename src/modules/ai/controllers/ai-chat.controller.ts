@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AIChatService } from "../services/ai-chat.service";
 import { VoiceRequestDto } from "../dto/voice-request.dto";
@@ -7,8 +7,9 @@ import { AuthGuard } from "src/modules/shared/guards/auth.guard";
 import { PaymentGuard } from "../guards/payment.guard";
 import { CurrentUser } from "src/common/decorator/CurrentUser.decorator";
 import { AudioUtils } from "../utils/audio.util";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, ApiBadRequestResponse } from "@nestjs/swagger";
 import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
+import { AIErrorResponseDto } from "../dto/error-response.dto";
 import { IUserCourseService } from "src/modules/user-courses/interfaces/user-course.service";
 
 /**
@@ -40,6 +41,10 @@ export class AiChatController {
     @UseGuards(AuthGuard, PaymentGuard)
     @Post('sessions')
     @ApiOperation({ summary: 'Sessiya olish yoki yaratish (Smart Session - avtomatik aniqlaydi)' })
+    @ApiBadRequestResponse({
+        description: 'Error response',
+        type: AIErrorResponseDto
+    })
     @ApiBody({
         schema: {
             type: 'object',
@@ -76,17 +81,21 @@ export class AiChatController {
             console.log(`[AI Chat Controller] Create session request for user ${userId}, course ${body?.courseId}`);
         } catch (_) { }
 
+        const { courseId, sessionLanguage, sessionTitle } = body || {};
+
         // Limit tekshiruvi - session yaratishdan OLDIN
         // Bu foydalanuvchiga limit holatini oldindan ko'rsatadi
+        // Har bir kurs uchun alohida limit tekshiriladi
         try {
-            const limitStatus = await this.chat.checkUserLimitStatus(userId);
+            const limitStatus = await this.chat.checkUserLimitStatus(userId, courseId || null);
             if (!limitStatus.canProceed) {
                 // Limit oshib ketgan bo'lsa, error response qaytarish
+                const courseInfo = courseId ? `kurs ${courseId}` : "umumiy chat";
                 return {
                     message: 'error',
                     error: 'LIMIT_EXCEEDED',
                     data: {
-                        message: `Oylik limit tugagan. Limit: $${limitStatus.limit}, Sarflangan: $${limitStatus.currentCost.toFixed(2)}, Qolgan: $${limitStatus.remaining.toFixed(2)}`,
+                        message: `Oylik limit tugagan (${courseInfo}). Limit: $${limitStatus.limit}, Sarflangan: $${limitStatus.currentCost.toFixed(2)}, Qolgan: $${limitStatus.remaining.toFixed(2)}`,
                         currentCost: limitStatus.currentCost,
                         limit: limitStatus.limit,
                         remaining: limitStatus.remaining,
@@ -99,8 +108,6 @@ export class AiChatController {
             // (xatolik bo'lsa ham, session yaratishga ruxsat berish - defensive approach)
             // console.warn('⚠️  Limit check xatosi (session yaratish davom etadi):', error.message);
         }
-
-        const { courseId, sessionLanguage, sessionTitle } = body || {};
 
         // Smart Session: Backend avtomatik aniqlaydi - mavjud faol sessiyani qaytaradi yoki yangi yaratadi
         const session = await this.chat.getOrCreateSession(userId, courseId, sessionLanguage, sessionTitle);
@@ -122,6 +129,10 @@ export class AiChatController {
     @Post('voice')
     @ApiOperation({ summary: 'Ovoz yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
     @ApiConsumes('multipart/form-data')
+    @ApiBadRequestResponse({
+        description: 'Error response',
+        type: AIErrorResponseDto
+    })
     @ApiBody({
         schema: {
             type: 'object',
@@ -185,7 +196,7 @@ export class AiChatController {
                 messageId: msg.id,
                 sessionId: msg.sessionId,
                 text: msg.aiResponseText || '',
-                textUz: '', // O'zbekcha olib tashlandi - faqat arabcha
+                textUz: msg.aiResponseUzbek || '',
                 audioUrl: msg.audioUrl || '',
                 isWithinLimit: msg.isWithinLimit ?? true,
                 createdAt: msg.createdAt,
@@ -288,5 +299,86 @@ export class AiChatController {
         }));
 
         return { message: 'ok', data: courses };
+    }
+
+    /**
+     * Foydalanuvchi limit holatini tekshirish
+     * Har bir kurs uchun alohida limit (2$) tekshiriladi
+     * 
+     * @param courseId - Kurs ID (ixtiyoriy - agar berilmasa, umumiy chat uchun limit ko'rsatiladi)
+     */
+    @UseGuards(AuthGuard)
+    @Get('limit-status')
+    @ApiOperation({
+        summary: 'Foydalanuvchi limit holatini tekshirish',
+        description: 'Har bir kurs uchun alohida oylik limit (2$) tekshiriladi. Agar courseId berilmasa, umumiy chat uchun limit ko\'rsatiladi.'
+    })
+    @ApiQuery({
+        name: 'courseId',
+        required: false,
+        type: Number,
+        description: 'Kurs ID (ixtiyoriy - agar berilmasa, umumiy chat uchun limit ko\'rsatiladi)',
+        example: 1
+    })
+    @ApiOkResponse({
+        description: 'Limit holati',
+        schema: {
+            type: 'object',
+            properties: {
+                message: { type: 'string', example: 'ok' },
+                data: {
+                    type: 'object',
+                    properties: {
+                        canProceed: {
+                            type: 'boolean',
+                            example: true,
+                            description: 'Limit hali oshib ketmaganmi (true bo\'lsa, davom etish mumkin)'
+                        },
+                        currentCost: {
+                            type: 'number',
+                            example: 0.5,
+                            description: 'Hozirgi oyda sarflangan summa (USD)'
+                        },
+                        limit: {
+                            type: 'number',
+                            example: 2.0,
+                            description: 'Oylik limit (USD)'
+                        },
+                        remaining: {
+                            type: 'number',
+                            example: 1.5,
+                            description: 'Qolgan limit (USD)'
+                        },
+                        courseId: {
+                            type: 'number',
+                            nullable: true,
+                            example: 1,
+                            description: 'Kurs ID (agar null bo\'lsa, umumiy chat uchun)'
+                        }
+                    }
+                }
+            }
+        }
+    })
+    async getLimitStatus(
+        @CurrentUser('id') userId: number,
+        @Query('courseId') courseId?: string
+    ) {
+        const courseIdNumber = courseId ? Number(courseId) : null;
+
+        // courseId validatsiyasi
+        if (courseId && (isNaN(courseIdNumber) || courseIdNumber <= 0)) {
+            throw new BadRequestException('courseId noto\'g\'ri formatda');
+        }
+
+        const limitStatus = await this.chat.checkUserLimitStatus(userId, courseIdNumber);
+
+        return {
+            message: 'ok',
+            data: {
+                ...limitStatus,
+                courseId: courseIdNumber,
+            }
+        };
     }
 }

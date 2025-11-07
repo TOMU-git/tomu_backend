@@ -1,4 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AIChatSession } from './entities/ai-chat-session.entity';
 import { AIChatMessage } from './entities/ai-chat-message.entity';
@@ -47,6 +48,11 @@ import { RerankService } from './services/rerank.service';
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
 import { AiAdminController } from './controllers/ai-admin.controller';
+
+// Filter imports
+import { AIExceptionFilter } from './filters/ai-exception.filter';
+
+// Module imports
 import { SharedModule } from '../shared/shared.module';
 import { UserCoursesModule } from '../user-courses/user-courses.module';
 
@@ -65,6 +71,11 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
   ],
   controllers: [AiChatController, AiAdminController],
   providers: [
+    // Global Exception Filter for AI Module
+    {
+      provide: APP_FILTER,
+      useClass: AIExceptionFilter,
+    },
     // Repository providers - Interface va Implementation ni bog'laydi
     {
       provide: 'IUserAIProfileRepository',

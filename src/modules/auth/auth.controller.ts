@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Inject,
-  Res,
-  Query,
-} from "@nestjs/common";
+import {Controller,Get,Post,Body,Inject,Res,Query} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
   CreateAdminDto,
@@ -33,7 +25,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     @Inject("IUserService") private readonly userService: IUserService,
-  ) { }
+  ) {}
   // **** Login for all users **** //
 
   @ApiOperation({
@@ -51,14 +43,19 @@ export class AuthController {
    */
   @ApiOperation({
     summary: "Log In user with device information (V2)",
-    description: "Enhanced login endpoint that supports device management. Device information is optional for backward compatibility."
+    description:
+      "Enhanced login endpoint that supports device management. Device information is optional for backward compatibility.",
   })
   @Post("sign-in/users/v2")
   async loginWithDevice(
     @Body() loginDto: LoginAuthDto & { deviceInfo?: any },
-    @Res() res: Response
+    @Res() res: Response,
   ) {
-    const found = await this.authService.login(loginDto, res, loginDto.deviceInfo);
+    const found = await this.authService.login(
+      loginDto,
+      res,
+      loginDto.deviceInfo,
+    );
     res.send(found);
   }
 
@@ -75,7 +72,7 @@ export class AuthController {
    */
   @ApiOperation({
     summary: "Check device management support",
-    description: "Check if device management is supported by the backend"
+    description: "Check if device management is supported by the backend",
   })
   @Get("device-support")
   async checkDeviceSupport() {
@@ -86,17 +83,16 @@ export class AuthController {
         "device_registration",
         "device_limits",
         "device_management",
-        "security_levels"
-      ]
+        "security_levels",
+      ],
     };
   }
 
   // **** Regenerate the refresh token **** //
 
-
-  @Post('forgot-password')
+  @Post("forgot-password")
   async forgotPassword(@Body() forgotDto: ForgotPassword) {
-    return await this.authService.forgotPass(forgotDto)
+    return await this.authService.forgotPass(forgotDto);
   }
 
   @ApiQuery({

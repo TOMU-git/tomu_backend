@@ -1,5 +1,5 @@
 import { AI_LIMITS } from "../constants/ai-constants";
-import { InvalidAudioException } from "../exceptions/invalid-audio.exception";
+import { InvalidAudioException } from "../exceptions";
 
 /**
  * AudioUtils
@@ -8,7 +8,12 @@ import { InvalidAudioException } from "../exceptions/invalid-audio.exception";
  */
 export class AudioUtils {
     static validateUpload(file?: Express.Multer.File) {
-        if (!file) throw new InvalidAudioException("Audio fayl topilmadi");
+        if (!file) {
+            throw new InvalidAudioException({
+                reason: 'missing'
+            });
+        }
+
         const allowed = [
             "audio/mpeg",
             "audio/mp3",
@@ -17,12 +22,21 @@ export class AudioUtils {
             "audio/ogg",
             "audio/x-wav",
         ];
+
         if (!allowed.includes(file.mimetype)) {
-            throw new InvalidAudioException("Audio MIME turi qo'llab-quvvatlanmaydi");
+            throw new InvalidAudioException({
+                mimetype: file.mimetype,
+                reason: 'invalid_mime'
+            });
         }
+
         const maxBytes = AI_LIMITS.MAX_AUDIO_MB * 1024 * 1024;
         if (file.size > maxBytes) {
-            throw new InvalidAudioException("Audio hajmi juda katta");
+            throw new InvalidAudioException({
+                size: file.size,
+                maxSize: maxBytes,
+                reason: 'too_large'
+            });
         }
     }
 }

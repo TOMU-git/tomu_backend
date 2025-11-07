@@ -55,6 +55,37 @@ export class AIUsageCostRepository extends BaseAIRepository implements IAIUsageC
     }
 
     /**
+     * Foydalanuvchi va kurs uchun oylik umumiy cost'ni hisoblash
+     * sessionId orqali courseId'ni aniqlaydi (JOIN qilib)
+     * Performance: userId + month index va sessionId JOIN ishlatiladi
+     */
+    async sumMonthlyByUserAndCourse(userId: ID, month: string, courseId: number | null): Promise<number> {
+        this.debugLog(`Calculating monthly cost for user ${userId}, month ${month}, courseId ${courseId || 'null'}`);
+
+        const queryBuilder = this.aiUsageCostRepository
+            .createQueryBuilder("cost")
+            .innerJoin("ai_chat_sessions", "session", "session.id = cost.session_id")
+            .select("COALESCE(SUM(cost.total_cost), 0)", "total")
+            .where("cost.user_id = :userId", { userId: Number(userId) })
+            .andWhere("cost.month = :month", { month });
+
+        if (courseId === null) {
+            // Umumiy chat uchun (courseId NULL bo'lgan sessionlar)
+            queryBuilder.andWhere("session.course_id IS NULL");
+        } else {
+            // Muayyan kurs uchun
+            queryBuilder.andWhere("session.course_id = :courseId", { courseId: Number(courseId) });
+        }
+
+        const result = await queryBuilder.getRawOne();
+
+        const total = parseFloat(result?.total || "0");
+        this.debugLog(`Monthly cost for user ${userId}, month ${month}, courseId ${courseId || 'null'}: $${total.toFixed(6)}`);
+
+        return total;
+    }
+
+    /**
      * Foydalanuvchi va oy bo'yicha barcha cost recordlarni olish
      */
     async findByUserAndMonth(userId: ID, month: string): Promise<AIUsageCost[]> {
@@ -105,6 +136,38 @@ export class AIUsageCostRepository extends BaseAIRepository implements IAIUsageC
                 createdAt: "DESC",
             },
         });
+    }
+
+    /**
+     * Foydalanuvchi va kurs uchun o'sha oydagi barcha cost recordlarni o'chirish
+     * To'lov qilinganda limitni yangilash uchun ishlatiladi
+     * sessionId orqali courseId'ni aniqlaydi (JOIN qilib)
+     */
+    async deleteByUserCourseAndMonth(userId: ID, courseId: number | null, month: string): Promise<void> {
+        this.debugLog(`Deleting cost records for user ${userId}, courseId ${courseId || 'null'}, month ${month}`);
+
+        const queryBuilder = this.aiUsageCostRepository
+            .createQueryBuilder("cost")
+            .innerJoin("ai_chat_sessions", "session", "session.id = cost.session_id")
+            .where("cost.user_id = :userId", { userId: Number(userId) })
+            .andWhere("cost.month = :month", { month });
+
+        if (courseId === null) {
+            // Umumiy chat uchun (courseId NULL bo'lgan sessionlar)
+            queryBuilder.andWhere("session.course_id IS NULL");
+        } else {
+            // Muayyan kurs uchun
+            queryBuilder.andWhere("session.course_id = :courseId", { courseId: Number(courseId) });
+        }
+
+        const recordsToDelete = await queryBuilder.getMany();
+
+        if (recordsToDelete.length > 0) {
+            await this.aiUsageCostRepository.remove(recordsToDelete);
+            this.debugLog(`Deleted ${recordsToDelete.length} cost records for user ${userId}, courseId ${courseId || 'null'}, month ${month}`);
+        } else {
+            this.debugLog(`No cost records found to delete for user ${userId}, courseId ${courseId || 'null'}, month ${month}`);
+        }
     }
 }
 
