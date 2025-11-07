@@ -299,7 +299,14 @@ export class AiChatController {
             if (file) {
                 // Audio fayl validatsiyasi (MIME/size)
                 AudioUtils.validateUpload(file);
-                msg = await this.chat.sendVoiceMessage({ userId, sessionId, audioBuffer: file?.buffer, courseId, language });
+                msg = await this.chat.sendVoiceMessage({
+                    userId,
+                    sessionId,
+                    audioBuffer: file?.buffer,
+                    courseId,
+                    language,
+                    mimetype: file?.mimetype
+                });
             } else if (text) {
                 msg = await this.chat.sendTextMessage({ userId, sessionId, text, courseId, language });
             }

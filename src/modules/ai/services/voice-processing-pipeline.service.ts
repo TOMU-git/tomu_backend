@@ -86,11 +86,14 @@ export class VoiceProcessingPipeline {
                         const output = currentInput as VoiceOutput;
                         const usage = (currentInput as any).usage || inputWithUsage.usage || {};
                         const totalTime = Date.now() - pipelineStart;
+                        // transcribedText ni output'ga qo'shish
+                        const transcribedText = (currentInput as any).validatedText || (currentInput as any).transcribedText || inputWithUsage.transcribedText;
 
                         return {
                             ...output,
                             usage,
-                        } as VoiceOutput & { usage?: VoiceInput['usage'] };
+                            transcribedText,
+                        } as VoiceOutput & { usage?: VoiceInput['usage']; transcribedText?: string };
                     }
                 } catch (stepError: any) {
                     console.error(`\n❌ Error in step ${stepName}:`, stepError.message);
@@ -155,11 +158,15 @@ export class VoiceProcessingPipeline {
                         const totalTime = Date.now() - pipelineStart;
                         // console.log(`\n✅ Pipeline tugadi. Umumiy vaqt: ${totalTime}ms (${(totalTime / 1000).toFixed(1)}s)\n`);
 
+                        // transcribedText ni output'ga qo'shish
+                        const transcribedText = (currentInput as any).validatedText || (currentInput as any).transcribedText || inputWithUsage.transcribedText;
+
                         // Usage ma'lumotlarini output'ga qo'shish (keyin trackCost'da ishlatish uchun)
                         return {
                             ...output,
                             usage, // Usage ma'lumotlarini qo'shish
-                        } as VoiceOutput & { usage?: VoiceInput['usage'] };
+                            transcribedText, // Foydalanuvchi xabarini saqlash uchun
+                        } as VoiceOutput & { usage?: VoiceInput['usage']; transcribedText?: string };
                     }
                 } catch (stepError: any) {
                     // Step xatosi - cleanup qilish va re-throw
