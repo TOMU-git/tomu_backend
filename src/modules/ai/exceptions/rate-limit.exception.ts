@@ -2,20 +2,20 @@ import { AIException } from './ai-exception.base';
 import { AIErrorCode } from '../constants/error-codes.enum';
 
 /**
- * LimitExceededException
+ * RateLimitException
  * -------------------------------------------------------
- * Thrown when monthly AI usage limit is exceeded
+ * Thrown when API rate limit is exceeded (429 Too Many Requests)
  */
-export class LimitExceededException extends AIException {
+export class RateLimitException extends AIException {
     constructor(details?: {
-        currentCost?: number;
+        service?: string;
+        retryAfter?: number; // seconds
         limit?: number;
         remaining?: number;
-        courseId?: number | null;
-        month?: string;
     }) {
-        super(AIErrorCode.LIMIT_EXCEEDED, details);
+        super(AIErrorCode.RATE_LIMIT_EXCEEDED, details);
     }
 }
+
 
 

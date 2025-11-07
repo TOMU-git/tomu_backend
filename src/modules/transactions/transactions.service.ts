@@ -30,6 +30,7 @@ import { CoursePaymentHistoryEntity } from "../course-payment-history/entities/c
 import { LivechatPaymentHistoryEntity } from "../livechat-payment-history/entities/livechat-payment-history.entity";
 import { ILiveChatPaymentRepository } from "../livechat-payment-history/interfaces/livechat-payment-repository.interface";
 import { IUserLiveChatRepository } from "../user-livechats/interfaces/user-livechat.repository.interface";
+import { LimitCheckService } from "../ai/services/limit-check.service";
 
 @Injectable()
 export class TransactionsService implements ITransactionService {
@@ -56,6 +57,7 @@ export class TransactionsService implements ITransactionService {
     private readonly liveChatPaymentRepository: ILiveChatPaymentRepository,
     @Inject("IUserLiveChatRepository")
     private readonly userLiveChatRepository: IUserLiveChatRepository,
+    private readonly limitCheckService: LimitCheckService, // AI limit reset uchun
   ) { }
 
   //// *** Checking
@@ -504,6 +506,22 @@ export class TransactionsService implements ITransactionService {
       newCoursePayment.courseName = foundCourse.title;
       newCoursePayment.userPhoneNumber = foundUser.phoneNumber;
       await this.coursePaymentRepository.create(newCoursePayment);
+
+      // AI limitni yangilash - to'lov qilinganda shu kurs uchun o'sha oydagi barcha cost recordlarni o'chirish
+      // Bu user'ga yangi 2$ limit beradi
+      try {
+        await this.limitCheckService.resetAILimitForCourse(
+          Number(foundOrder.userId),
+          Number(foundTariff.courseId)
+        );
+      } catch (error: any) {
+        // AI limit reset xatosi to'lovni to'xtatmasligi kerak
+        // Faqat log qilamiz, lekin to'lov muvaffaqiyatli deb hisoblanadi
+        console.error(
+          `⚠️  AI limit reset xatosi (to'lov muvaffaqiyatli):`,
+          error.message
+        );
+      }
     } else {
       // console.log("3. SKIPPED - tariffId condition is false, not entering tariff block");
     }

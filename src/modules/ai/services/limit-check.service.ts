@@ -1,5 +1,6 @@
 import { Injectable, Logger, Inject } from "@nestjs/common";
 import { IAIUsageCostRepository } from "../interfaces/ai-usage-cost.repository";
+import { IAIChatSessionRepository } from "../interfaces/ai-chat-session.repository";
 import { CostCalculationService } from "./cost-calculation.service";
 import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
 import { ID } from "src/common/types/type";
@@ -27,6 +28,8 @@ export class LimitCheckService {
     constructor(
         @Inject("IAIUsageCostRepository")
         private readonly costRepository: IAIUsageCostRepository,
+        @Inject("IAIChatSessionRepository")
+        private readonly sessionRepository: IAIChatSessionRepository,
         private readonly costCalculator: CostCalculationService,
         private readonly dataSource: DataSource, // Transaction va lock uchun
     ) {
@@ -34,17 +37,20 @@ export class LimitCheckService {
         this.monthlyLimit = Number(process.env.AI_MONTHLY_LIMIT) || 2.0;
 
         this.logger.log(`🔒 Limit Check Service initialized:`);
-        this.logger.log(`   Monthly Limit: $${this.monthlyLimit}`);
+        this.logger.log(`   Monthly Limit: $${this.monthlyLimit} per course`);
     }
 
     /**
      * Oylik limit'ni tekshirish va cost hisoblash
+     * Har bir kurs uchun alohida limit tekshiriladi
      * @param userId - Foydalanuvchi ID
+     * @param courseId - Kurs ID (nullable - agar null bo'lsa, umumiy chat uchun)
      * @param estimatedCost - Taxminiy cost (agar mavjud bo'lsa)
      * @returns Limit holati va qolgan summa
      */
     async checkMonthlyLimit(
         userId: ID,
+        courseId: number | null,
         estimatedCost?: number
     ): Promise<{
         canProceed: boolean;
@@ -54,22 +60,17 @@ export class LimitCheckService {
         estimatedTotal?: number;
     }> {
         const currentMonth = this.getCurrentMonth();
-        const currentCost = await this.costRepository.sumMonthlyByUser(userId, currentMonth);
+        const currentCost = await this.costRepository.sumMonthlyByUserAndCourse(userId, currentMonth, courseId);
 
         // Agar taxminiy cost berilgan bo'lsa, umumiy cost'ni hisoblaymiz
         const estimatedTotal = estimatedCost ? currentCost + estimatedCost : currentCost;
         const remaining = this.monthlyLimit - currentCost;
         const canProceed = estimatedTotal <= this.monthlyLimit;
 
-        // this.logger.debug(
-        //     `Monthly limit check for user ${userId}, month ${currentMonth}: ` +
-        //     `current=$${currentCost.toFixed(6)}, limit=$${this.monthlyLimit}, ` +
-        //     `remaining=$${remaining.toFixed(6)}, canProceed=${canProceed}`
-        // );
-
         if (!canProceed && estimatedCost) {
+            const courseInfo = courseId ? `course ${courseId}` : "general chat";
             this.logger.warn(
-                `❌ Monthly limit exceeded for user ${userId}: ` +
+                `❌ Monthly limit exceeded for user ${userId}, ${courseInfo}: ` +
                 `current=$${currentCost.toFixed(6)}, requested=$${estimatedCost.toFixed(6)}, ` +
                 `total=$${estimatedTotal.toFixed(6)}, limit=$${this.monthlyLimit}`
             );
@@ -87,6 +88,7 @@ export class LimitCheckService {
     /**
      * Cost'ni database'ga saqlash va limit tekshiruvi
      * Transaction va database lock bilan race condition'ni oldini oladi
+     * Har bir kurs uchun alohida limit (2$) tekshiriladi
      * 
      * @param params - Cost ma'lumotlari
      * @throws LimitExceededException - Agar limit oshib ketsa
@@ -114,7 +116,14 @@ export class LimitCheckService {
     }> {
         const { userId, sessionId, messageId } = params;
 
-        // 1. Cost hisoblash
+        // 1. Session'dan courseId'ni olish
+        const session = await this.sessionRepository.findOneById(sessionId);
+        if (!session) {
+            throw new Error(`Session not found: ${sessionId}`);
+        }
+        const courseId = session.courseId || null; // null = umumiy chat
+
+        // 2. Cost hisoblash
         const costBreakdown = this.costCalculator.calculateTotalCost({
             gptPromptTokens: params.gptPromptTokens,
             gptCompletionTokens: params.gptCompletionTokens,
@@ -122,46 +131,71 @@ export class LimitCheckService {
             ttsCharacters: params.ttsCharacters,
         });
 
-        // 2. Transaction bilan limit check va save
+        // 3. Transaction bilan limit check va save
         // Bu concurrent request'larda race condition'ni oldini oladi
         const queryRunner = this.dataSource.createQueryRunner();
         await queryRunner.connect();
         await queryRunner.startTransaction();
 
         try {
-            // 3. Database lock bilan limit tekshiruvi
+            // 4. Database lock bilan limit tekshiruvi
             // PostgreSQL'da FOR UPDATE bilan aggregate function ishlatib bo'lmaydi
             // Shuning uchun avval row'larni lock qilamiz, keyin SUM() qilamiz
             const currentMonth = this.getCurrentMonth();
 
-            // Avval row'larni lock qilish (agar bor bo'lsa)
-            await queryRunner.manager.query(
-                `SELECT id FROM ai_usage_costs 
-                 WHERE user_id = $1 AND month = $2 
-                 FOR UPDATE`,
-                [Number(userId), currentMonth]
-            );
+            // Avval sessionId orqali courseId'ga tegishli cost recordlarni lock qilish
+            // JOIN qilib courseId'ga mos keladigan recordlarni lock qilamiz
+            if (courseId === null) {
+                await queryRunner.manager.query(
+                    `SELECT cost.id FROM ai_usage_costs cost
+                     INNER JOIN ai_chat_sessions session ON session.id = cost.session_id
+                     WHERE cost.user_id = $1 AND cost.month = $2 AND session.course_id IS NULL
+                     FOR UPDATE`,
+                    [Number(userId), currentMonth]
+                );
+            } else {
+                await queryRunner.manager.query(
+                    `SELECT cost.id FROM ai_usage_costs cost
+                     INNER JOIN ai_chat_sessions session ON session.id = cost.session_id
+                     WHERE cost.user_id = $1 AND cost.month = $2 AND session.course_id = $3
+                     FOR UPDATE`,
+                    [Number(userId), currentMonth, Number(courseId)]
+                );
+            }
 
-            // Keyin SUM() qilish
-            const currentCost = await queryRunner.manager.query(
-                `SELECT COALESCE(SUM(total_cost), 0) as total 
-                 FROM ai_usage_costs 
-                 WHERE user_id = $1 AND month = $2`,
-                [Number(userId), currentMonth]
-            );
+            // Keyin SUM() qilish - courseId bo'yicha
+            let currentCost;
+            if (courseId === null) {
+                currentCost = await queryRunner.manager.query(
+                    `SELECT COALESCE(SUM(cost.total_cost), 0) as total 
+                     FROM ai_usage_costs cost
+                     INNER JOIN ai_chat_sessions session ON session.id = cost.session_id
+                     WHERE cost.user_id = $1 AND cost.month = $2 AND session.course_id IS NULL`,
+                    [Number(userId), currentMonth]
+                );
+            } else {
+                currentCost = await queryRunner.manager.query(
+                    `SELECT COALESCE(SUM(cost.total_cost), 0) as total 
+                     FROM ai_usage_costs cost
+                     INNER JOIN ai_chat_sessions session ON session.id = cost.session_id
+                     WHERE cost.user_id = $1 AND cost.month = $2 AND session.course_id = $3`,
+                    [Number(userId), currentMonth, Number(courseId)]
+                );
+            }
 
             const currentCostValue = parseFloat(currentCost[0]?.total || "0");
             const estimatedTotal = currentCostValue + costBreakdown.totalCost;
 
-            // 4. Limit tekshiruvi
+            // 5. Limit tekshiruvi (har bir kurs uchun alohida)
             if (estimatedTotal > this.monthlyLimit) {
                 await queryRunner.rollbackTransaction();
-                throw new LimitExceededException(
-                    `Oylik limit oshib ketdi. Hozirgi sarflangan: $${this.roundToSixDecimals(currentCostValue).toFixed(2)}, ` +
-                    `So'ralgan: $${costBreakdown.totalCost.toFixed(2)}, ` +
-                    `Jami: $${this.roundToSixDecimals(estimatedTotal).toFixed(2)}, Limit: $${this.monthlyLimit}. ` +
-                    `Qolgan: $${this.roundToSixDecimals(Math.max(0, this.monthlyLimit - currentCostValue)).toFixed(2)}`
-                );
+                throw new LimitExceededException({
+                    currentCost: this.roundToSixDecimals(currentCostValue),
+                    limit: this.monthlyLimit,
+                    remaining: this.roundToSixDecimals(Math.max(0, this.monthlyLimit - currentCostValue)),
+                    courseId: courseId,
+                    month: currentMonth,
+                });
             }
 
             // 5. Cost record yaratish
@@ -188,8 +222,9 @@ export class LimitCheckService {
 
             const finalCost = currentCostValue + costBreakdown.totalCost;
 
+            const courseInfo = courseId ? `course ${courseId}` : "general chat";
             this.logger.log(
-                `✅ Cost saved for user ${userId}, session ${sessionId}, message ${messageId}: ` +
+                `✅ Cost saved for user ${userId}, session ${sessionId}, message ${messageId}, ${courseInfo}: ` +
                 `$${costBreakdown.totalCost.toFixed(6)} (GPT: $${costBreakdown.gptCost.toFixed(6)}, ` +
                 `Whisper: $${costBreakdown.whisperCost.toFixed(6)}, TTS: $${costBreakdown.ttsCost.toFixed(6)})`
             );
@@ -235,6 +270,38 @@ export class LimitCheckService {
      */
     private roundToSixDecimals(value: number): number {
         return Math.round(value * 1000000) / 1000000;
+    }
+
+    /**
+     * To'lov qilinganda AI limitni yangilash
+     * Shu kurs uchun o'sha oydagi barcha cost recordlarni o'chirish
+     * Bu user'ga yangi 2$ limit beradi
+     * 
+     * @param userId - Foydalanuvchi ID
+     * @param courseId - Kurs ID (nullable - agar null bo'lsa, umumiy chat uchun)
+     */
+    async resetAILimitForCourse(userId: ID, courseId: number | null): Promise<void> {
+        const currentMonth = this.getCurrentMonth();
+
+        this.logger.log(
+            `🔄 Resetting AI limit for user ${userId}, courseId ${courseId || 'null'}, month ${currentMonth}`
+        );
+
+        try {
+            await this.costRepository.deleteByUserCourseAndMonth(userId, courseId, currentMonth);
+
+            const courseInfo = courseId ? `course ${courseId}` : "general chat";
+            this.logger.log(
+                `✅ AI limit reset successfully for user ${userId}, ${courseInfo}, month ${currentMonth}. ` +
+                `User now has fresh $${this.monthlyLimit} limit.`
+            );
+        } catch (error: any) {
+            this.logger.error(
+                `❌ Error resetting AI limit for user ${userId}, courseId ${courseId || 'null'}:`,
+                error
+            );
+            throw error;
+        }
     }
 }
 

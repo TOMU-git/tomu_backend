@@ -3,12 +3,15 @@ import {
     ExecutionContext,
     Inject,
     Injectable,
-    ForbiddenException,
-    BadRequestException,
     Logger,
 } from "@nestjs/common";
 import { IUserCourseRepository } from "src/modules/user-courses/interfaces/user-course.repository";
 import { IAIChatSessionRepository } from "../interfaces/ai-chat-session.repository";
+import {
+    PaymentRequiredException,
+    SubscriptionExpiredException,
+    InvalidSessionException
+} from "../exceptions";
 
 /**
  * PaymentGuard
@@ -63,10 +66,12 @@ export class PaymentGuard implements CanActivate {
         } catch (_) { }
 
         // 1. User mavjudligini tekshirish (AuthGuard allaqachon tekshiradi, lekin qo'shimcha xavfsizlik)
-        // Bu yerda 401 Unauthorized to'g'ri, chunki authentication muammosi
         if (!user || !user.id) {
             this.logger.warn("PaymentGuard: User not found in request");
-            throw new ForbiddenException("Foydalanuvchi autentifikatsiya qilinmagan");
+            throw new InvalidSessionException({
+                reason: 'invalid',
+                userId: user?.id
+            });
         }
 
         const userId = user.id;
@@ -115,10 +120,10 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: UserCourse not found for user ${userId}, course ${courseId}`
             );
-            // console.log("[PaymentGuard] FAIL: userCourse not found", { userId, courseId });
-            throw new BadRequestException(
-                "Kurs sotib olinmagan yoki ruxsat yo'q. Iltimos, kursni sotib oling."
-            );
+            throw new PaymentRequiredException({
+                courseId,
+                userId
+            });
         }
 
         // 4. Obuna aktivligini tekshirish
@@ -126,10 +131,11 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: Subscription inactive for user ${userId}, course ${courseId}`
             );
-            // console.log("[PaymentGuard] FAIL: isActive=false", { userId, courseId });
-            throw new BadRequestException(
-                "Obuna aktiv emas. Iltimos, obunangizni yangilang."
-            );
+            throw new SubscriptionExpiredException({
+                courseId,
+                userId,
+                expiredAt: userCourse.endedAt
+            });
         }
 
         // 5. Obuna muddati tekshiruvi
@@ -143,10 +149,11 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: Subscription expired for user ${userId}, course ${courseId}`
             );
-            // console.log("[PaymentGuard] FAIL: expired", { userId, courseId, endedAt: userCourse.endedAt, now });
-            throw new BadRequestException(
-                "Obuna muddati tugagan. Iltimos, obunangizni yangilang."
-            );
+            throw new SubscriptionExpiredException({
+                courseId,
+                userId,
+                expiredAt: userCourse.endedAt
+            });
         }
 
         // 6. hasEverPaid tekshiruvi (ixtiyoriy - free trial bo'lsa ruxsat berish)
@@ -156,10 +163,10 @@ export class PaymentGuard implements CanActivate {
             this.logger.warn(
                 `PaymentGuard: No payment made for user ${userId}, course ${courseId}`
             );
-            // console.log("[PaymentGuard] FAIL: no payment and no trial", { userId, courseId });
-            throw new BadRequestException(
-                "To'lov qilinmagan. Iltimos, kursni sotib oling."
-            );
+            throw new PaymentRequiredException({
+                courseId,
+                userId
+            });
         }
 
         // this.logger.debug(
@@ -226,9 +233,9 @@ export class PaymentGuard implements CanActivate {
         // })));
 
         if (!userCourses || userCourses.length === 0) {
-            throw new BadRequestException(
-                "Sizda aktiv kurs mavjud emas. Iltimos, kurs sotib oling."
-            );
+            throw new PaymentRequiredException({
+                userId
+            });
         }
 
         // Agar ayrim ustunlar undefined bo'lsa, to'liq entity'ni olib qayta tekshiramiz
@@ -258,9 +265,9 @@ export class PaymentGuard implements CanActivate {
         });
 
         if (!hasActiveCourse) {
-            throw new BadRequestException(
-                "Aktiv obunangiz mavjud emas. Iltimos, obunangizni yangilang."
-            );
+            throw new SubscriptionExpiredException({
+                userId
+            });
         }
 
         return true;

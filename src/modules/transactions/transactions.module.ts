@@ -14,6 +14,7 @@ import { CourseModule } from "../course/course.module";
 import { CoursePaymentHistoryModule } from "../course-payment-history/course-payment-history.module";
 import { LivechatPaymentHistoryModule } from "../livechat-payment-history/livechat-payment-history.module";
 import { UserLivechatsModule } from "../user-livechats/user-livechats.module";
+import { AiModule } from "../ai/ai.module";
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { UserLivechatsModule } from "../user-livechats/user-livechats.module";
     CourseModule,
     CoursePaymentHistoryModule,
     LivechatPaymentHistoryModule,
-    UserLivechatsModule
+    UserLivechatsModule,
+    AiModule, // AI limit reset uchun
   ],
   controllers: [TransactionsController],
   providers: [
@@ -39,4 +41,4 @@ import { UserLivechatsModule } from "../user-livechats/user-livechats.module";
     { provide: "ITransactionRepository", useClass: TransactionRepository },
   ],
 })
-export class TransactionsModule {}
+export class TransactionsModule { }
