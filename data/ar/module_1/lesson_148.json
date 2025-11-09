@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l148",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 148,
+  "title": "اَلرَّجُلُ الغَنِيُّ",
+  "lessonSummary": "Ahmadning boyligi va uning mashinalari haqida.",
+  "keywords": ["mashina", "go'zal", "qora", "oq", "boy", "kompaniya"],
+  "vocabulary": [
+    { "word": "غَنِيّ", "normalized": "غني", "lemma": "غَنِيّ", "pos": "adjective", "translationUz": "boy", "example": "اَلرَّجُلُ الغَنِيُّ" },
+    { "word": "سَيَّارَة", "normalized": "سيارة", "lemma": "سَيَّارَة", "pos": "noun", "translationUz": "mashina", "example": "هَاتَانِ السَّيَّارَتَانِ" },
+    { "word": "جَمِيل", "normalized": "جميل", "lemma": "جَمِيل", "pos": "adjective", "translationUz": "go'zal", "example": "جَمِيلَتَانِ" },
+    { "word": "أَسْوَد", "normalized": "اسود", "lemma": "أَسْوَد", "pos": "adjective", "translationUz": "qora", "example": "لَوْنُهُمَا أَسْوَدُ" },
+    { "word": "أَبْيَض", "normalized": "ابيض", "lemma": "أَبْيَض", "pos": "adjective", "translationUz": "oq", "example": "وَ أَبْيَضُ" },
+    { "word": "يَمْلِكُ", "normalized": "يملك", "lemma": "مَلَكَ", "pos": "verb", "translationUz": "ega", "example": "هُوَ يَمْلِكُ شَرِكَةً" }
+  ],
+  "monologue": {
+    "text": "هَاتَانِ السَّيَّارَتَانِ لِأَحْمَدَ. سَيَّارَتَاهُ جَمِيلَتَانِ، وَ لَوْنُهُمَا أَسْوَدُ وَ أَبْيَضُ. أَحْمَدُ رَجُلٌ غَنِيٌّ، وَ هُوَ يَمْلِكُ شَرِكَةً كَبِيرَةً.",
+    "translationUz": "Bu ikkita mashina Ahmadga tegishli. Uning mashinalari go'zal va ularning rangi qora va oq. Ahmad boy odam va u katta kompaniyaga ega."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "هَاتَانِ السَّيَّارَتَانِ لِأَحْمَدَ.",
+      "translationUz": "Bu ikkita mashina Ahmadga tegishli.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "سَيَّارَتَاهُ جَمِيلَتَانِ، وَ لَوْنُهُمَا أَسْوَدُ وَ أَبْيَضُ.",
+      "translationUz": "Uning mashinalari go'zal va ularning rangi qora va oq.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "أَحْمَدُ رَجُلٌ غَنِيٌّ، وَ هُوَ يَمْلِكُ شَرِكَةً كَبِيرَةً.",
+      "translationUz": "Ahmad boy odam va u katta kompaniyaga ega.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "ar_m1_l119",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 119,
+  "title": "تَأَخَّرَ زَيْدٌ",
+  "lessonSummary": "Zaydning maktabga kech qolishi va ustoziga sababini tushuntirishi haqida.",
+  "keywords": ["kechikish", "maktab", "sinf", "uzr", "trafik"],
+  "vocabulary": [
+    { "word": "تَأَخَّرَ", "normalized": "تاخر", "lemma": "تَأَخَّرَ", "pos": "verb", "translationUz": "kechikdi", "example": "تَأَخَّرَ عَنِ الْمَدْرَسَةِ" },
+    { "word": "عُذْر", "normalized": "عذر", "lemma": "عُذْر", "pos": "noun", "translationUz": "uzr", "example": "عُذْرًا يَا أُسْتَاذُ" },
+    { "word": "قَلِيلًا", "normalized": "قليلا", "lemma": "قَلِيل", "pos": "adverb", "translationUz": "ozgina", "example": "تَأَخَّرْتُ قَلِيلًا" },
+    { "word": "لِمَاذَا", "normalized": "لماذا", "lemma": "لِمَاذَا", "pos": "interrogative", "translationUz": "nega", "example": "لِمَاذَا تَأَخَّرْتَ" },
+    { "word": "طَرِيق", "normalized": "طريق", "lemma": "طَرِيق", "pos": "noun", "translationUz": "yo'l", "example": "الطَّرِيقَ مُزْدَحِمٌ" },
+    { "word": "مُزْدَحِم", "normalized": "مزدحم", "lemma": "مُزْدَحِم", "pos": "adjective", "translationUz": "gavjum", "example": "مُزْدَحِمٌ جِدًّا" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "زَيْدٌ",
+      "text": "اَلسَّلَامُ عَلَيْكُمْ، عُذْرًا يَا أُسْتَاذُ، تَأَخَّرْتُ قَلِيلًا.",
+      "translationUz": "Assalomu alaykum, uzr, ey ustoz, men ozgina kechikdim.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "اَلْأُسْتَاذُ",
+      "text": "لِمَاذَا تَأَخَّرْتَ؟",
+      "translationUz": "Nega kechikding?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "زَيْدٌ",
+      "text": "تَأَخَّرْتُ لِأَنَّ الطَّرِيقَ مُزْدَحِمٌ جِدًّا.",
+      "translationUz": "Kechikdim, chunki yo'l juda gavjum.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

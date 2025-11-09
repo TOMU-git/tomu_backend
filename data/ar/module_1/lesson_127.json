@@ -1,0 +1,42 @@
+{
+  "id": "ar_m1_l127",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 127,
+  "title": "اَلْأَطْبَاقُ فِي الْمَطْبَخِ",
+  "lessonSummary": "Oshxonadagi idishlar va ularning maqsadi haqida ona va qizi o'rtasida suhbat.",
+  "keywords": ["idish", "tort", "salat", "kosa", "stol"],
+  "vocabulary": [
+    { "word": "طَبَق", "normalized": "طبق", "lemma": "طَبَق", "pos": "noun", "translationUz": "idish", "example": "اَلْأَطْبَاقُ فِي الْمَطْبَخِ" },
+    { "word": "كَعْكَة", "normalized": "كعكة", "lemma": "كَعْكَة", "pos": "noun", "translationUz": "tort", "example": "لِلْكَعْكَةِ" },
+    { "word": "سَلَطَة", "normalized": "سلطة", "lemma": "سَلَطَة", "pos": "noun", "translationUz": "salat", "example": "لِلسَّلَطَةِ" },
+    { "word": "كُوب", "normalized": "كوب", "lemma": "كُوب", "pos": "noun", "translationUz": "kosa", "example": "الْكُوبَ الَّذِي" },
+    { "word": "طَاوِلَة", "normalized": "طاولة", "lemma": "طَاوِلَة", "pos": "noun", "translationUz": "stol", "example": "عَلَى الطَّاوِلَةِ" },
+    { "word": "أَخَذْتُ", "normalized": "اخذت", "lemma": "أَخَذَ", "pos": "verb", "translationUz": "oldim", "example": "أَنَا أَخَذْتُ" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "اَلْبِنْتُ",
+      "text": "لِمَاذَا هَذَانِ الطَّبَقَانِ يَا أُمِّي؟",
+      "translationUz": "Bu ikkita idish nima uchun, onajon?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "اَلْأُمُّ",
+      "text": "هَذَا الطَّبَقُ لِلْكَعْكَةِ، وَ ذَلِكَ الطَّبَقُ لِلسَّلَطَةِ يَا بِنْتِي.",
+      "translationUz": "Bu idish tort uchun va o'sha idish salat uchun, qizim.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "اَلْبِنْتُ",
+      "text": "يَا أُمِّي، أَنَا أَخَذْتُ الطَّبَقَ لِلْكَعْكَةِ وَ الْكُوبَ الَّذِي عَلَى الطَّاوِلَةِ.",
+      "translationUz": "Onajon, men tort uchun idishni va stoldagi kosani oldim.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

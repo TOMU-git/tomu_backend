@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l142",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 142,
+  "title": "اَلْفِيلُ",
+  "lessonSummary": "Filning tashqi ko'rinishi, ovqatlanishi va yashash joylari haqida.",
+  "keywords": ["fil", "xortum", "quloq", "katta", "o't", "suv"],
+  "vocabulary": [
+    { "word": "فِيل", "normalized": "فيل", "lemma": "فِيل", "pos": "noun", "translationUz": "fil", "example": "اَلْفِيلُ" },
+    { "word": "خُرْطُوم", "normalized": "خرطوم", "lemma": "خُرْطُوم", "pos": "noun", "translationUz": "xortum", "example": "خُرْطُومٌ طَوِيلٌ" },
+    { "word": "ضَخْم", "normalized": "ضخم", "lemma": "ضَخْم", "pos": "adjective", "translationUz": "katta", "example": "حَيَوَانٌ ضَخْمٌ" },
+    { "word": "أَعْشَاب", "normalized": "اعشاب", "lemma": "أَعْشَاب", "pos": "noun", "translationUz": "o'tlar", "example": "يَأْكُلُ الأَعْشَابَ" },
+    { "word": "مُخْتَلِف", "normalized": "مختلف", "lemma": "مُخْتَلِف", "pos": "adjective", "translationUz": "turli", "example": "الأَعْشَابَ المُخْتَلِفَةَ" },
+    { "word": "يَعِيشُ", "normalized": "يعيش", "lemma": "عَاشَ", "pos": "verb", "translationUz": "yashaydi", "example": "يَعِيشُ فِي آسِيَا" }
+  ],
+  "monologue": {
+    "text": "اَلْفِيلُ لَهُ خُرْطُومٌ طَوِيلٌ وَ أُذُنَانِ كَبِيرَتَانِ. اَلْفِيلُ حَيَوَانٌ ضَخْمٌ جِدًّا، وَ هُوَ يَأْكُلُ الأَعْشَابَ المُخْتَلِفَةَ وَ يَشْرَبُ كَثِيرًا مِنَ المَاءِ. اَلْفِيلُ يَعِيشُ فِي آسِيَا وَ إِفْرِيقِيَا.",
+    "translationUz": "Filning uzun xortumi va ikkita katta qulog'i bor. Fil juda katta hayvon va u turli xil o'tlarni yeydi va ko'p suv ichadi. Fil Osiyo va Afrikada yashaydi."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "اَلْفِيلُ لَهُ خُرْطُومٌ طَوِيلٌ وَ أُذُنَانِ كَبِيرَتَانِ.",
+      "translationUz": "Filning uzun xortumi va ikkita katta qulog'i bor.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "اَلْفِيلُ حَيَوَانٌ ضَخْمٌ جِدًّا، وَ هُوَ يَأْكُلُ الأَعْشَابَ المُخْتَلِفَةَ وَ يَشْرَبُ كَثِيرًا مِنَ المَاءِ.",
+      "translationUz": "Fil juda katta hayvon va u turli xil o'tlarni yeydi va ko'p suv ichadi.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "اَلْفِيلُ يَعِيشُ فِي آسِيَا وَ إِفْرِيقِيَا.",
+      "translationUz": "Fil Osiyo va Afrikada yashaydi.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

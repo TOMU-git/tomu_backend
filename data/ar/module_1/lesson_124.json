@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l124",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 124,
+  "title": "اَلْبُسْتَانِيُّ الْمُجْتَهِدُ",
+  "lessonSummary": "Bog'bonning gullar ekishi va ishini sevishi haqida.",
+  "keywords": ["bog'bon", "gul", "atirgul", "banafsha", "hid", "ish"],
+  "vocabulary": [
+    { "word": "بُسْتَانِيّ", "normalized": "بستاني", "lemma": "بُسْتَانِيّ", "pos": "noun", "translationUz": "bog'bon", "example": "اَلْبُسْتَانِيُّ الْمُجْتَهِدُ" },
+    { "word": "زَرَعَ", "normalized": "زرع", "lemma": "زَرَعَ", "pos": "verb", "translationUz": "ekdi", "example": "يَزْرَعُ الْوَرْدَ" },
+    { "word": "وَرْد", "normalized": "ورد", "lemma": "وَرْد", "pos": "noun", "translationUz": "atirgul", "example": "الْوَرْدَ" },
+    { "word": "بَنَفْسَج", "normalized": "بنفسج", "lemma": "بَنَفْسَج", "pos": "noun", "translationUz": "banafsha", "example": "وَ البَنَفْسَجَ" },
+    { "word": "رَائِحَة", "normalized": "رائحة", "lemma": "رَائِحَة", "pos": "noun", "translationUz": "hid", "example": "رَائِحَةُ الأَزْهَارِ" },
+    { "word": "مُجْتَهِد", "normalized": "مجتهد", "lemma": "مُجْتَهِد", "pos": "adjective", "translationUz": "mehnatsevar", "example": "الْمُجْتَهِدُ" }
+  ],
+  "monologue": {
+    "text": "هَذَا الْبُسْتَانِيُّ يَزْرَعُ الْوَرْدَ وَ البَنَفْسَجَ وَ الْأَزْهَارَ الأُخْرَى. هُوَ يَعْمَلُ فِي الْبُسْتَانِ كَثِيرًا وَ يُحِبُّ عَمَلَهُ وَ الأَزْهَارَ جِدًّا. رَائِحَةُ الأَزْهَارِ فِي بُسْتَانِهِ رَائِعَةٌ.",
+    "translationUz": "Bu bog'bon atirgul, banafsha va boshqa gullarni ekadi. U bog'da juda ko'p ishlaydi va o'z ishini va gullarni juda yaxshi ko'radi. Uning bog'idagi gullarning hidi ajoyibdir."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "هَذَا الْبُسْتَانِيُّ يَزْرَعُ الْوَرْدَ وَ البَنَفْسَجَ وَ الْأَزْهَارَ الأُخْرَى.",
+      "translationUz": "Bu bog'bon atirgul, banafsha va boshqa gullarni ekadi.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "هُوَ يَعْمَلُ فِي الْبُسْتَانِ كَثِيرًا وَ يُحِبُّ عَمَلَهُ وَ الأَزْهَارَ جِدًّا.",
+      "translationUz": "U bog'da juda ko'p ishlaydi va o'z ishini va gullarni juda yaxshi ko'radi.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "رَائِحَةُ الأَزْهَارِ فِي بُسْتَانِهِ رَائِعَةٌ.",
+      "translationUz": "Uning bog'idagi gullarning hidi ajoyibdir.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

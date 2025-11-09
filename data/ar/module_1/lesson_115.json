@@ -1,0 +1,37 @@
+{
+  "id": "ar_m1_l115",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 115,
+  "title": "فِي السُّوقِ",
+  "lessonSummary": "Bozordan turli mevalar sotib olish haqida.",
+  "keywords": ["bozor", "anor", "olma", "banan", "qulupnay", "sotib olish"],
+  "vocabulary": [
+    { "word": "سُوق", "normalized": "سوق", "lemma": "سُوق", "pos": "noun", "translationUz": "bozor", "example": "فِي السُّوقِ" },
+    { "word": "رُمَّان", "normalized": "رمان", "lemma": "رُمَّان", "pos": "noun", "translationUz": "anor", "example": "ثَمَانِيَ رُمَّانَاتٍ" },
+    { "word": "تُفَّاح", "normalized": "تفاح", "lemma": "تُفَّاح", "pos": "noun", "translationUz": "olma", "example": "خَمْسَ تُفَّاحَاتٍ" },
+    { "word": "مَوْز", "normalized": "موز", "lemma": "مَوْز", "pos": "noun", "translationUz": "banan", "example": "عَشَرَ مُوْزَاتٍ" },
+    { "word": "فَرَاوِل", "normalized": "فراول", "lemma": "فَرَاوِل", "pos": "noun", "translationUz": "qulupnay", "example": "عَشْرَ فَرَاوِلَاتٍ" },
+    { "word": "اشْتَرَى", "normalized": "اشترى", "lemma": "اشْتَرَى", "pos": "verb", "translationUz": "sotib oldi", "example": "اشْتَرَيْتُ" }
+  ],
+  "monologue": {
+    "text": "ذَهَبْتُ إِلَى السُّوقِ وَ اشْتَرَيْتُ ثَمَانِيَ رُمَّانَاتٍ وَ خَمْسَ تُفَّاحَاتٍ. وَ اشْتَرَيْتُ أَيْضًا عَشَرَ مُوْزَاتٍ وَ عَشْرَ فَرَاوِلَاتٍ.",
+    "translationUz": "Men bozorga bordim va sakkizta anor va beshta olma sotib oldim. Va shuningdek o'n dona banan va o'n dona qulupnay sotib oldim."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "ذَهَبْتُ إِلَى السُّوقِ وَ اشْتَرَيْتُ ثَمَانِيَ رُمَّانَاتٍ وَ خَمْسَ تُفَّاحَاتٍ.",
+      "translationUz": "Men bozorga bordim va sakkizta anor va beshta olma sotib oldim.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "وَ اشْتَرَيْتُ أَيْضًا عَشَرَ مُوْزَاتٍ وَ عَشْرَ فَرَاوِلَاتٍ.",
+      "translationUz": "Va shuningdek o'n dona banan va o'n dona qulupnay sotib oldim.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

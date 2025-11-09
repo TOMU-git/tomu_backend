@@ -1,0 +1,42 @@
+
+    {
+      "id": "ar_m1_l40",
+      "language": "ar",
+      "moduleNumber": 1,
+      "lessonNumber": 40,
+      "title": "اَلْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ",
+      "lessonSummary": "Boshlang'ich maktab haqida va maktabdan keyingi faoliyatlar haqida gapirish.",
+      "keywords": ["maktab", "o'qish", "o'yin", "bosh", "uyda"],
+      "vocabulary": [
+        { "word": "مَدْرَسَة", "normalized": "مدرسة", "lemma": "مَدْرَسَة", "pos": "noun", "translationUz": "maktab", "example": "دَرَسَتْ فِي الْمَدْرَسَةِ" },
+        { "word": "إِبْتِدَائِيَّة", "normalized": "ابتدائية", "lemma": "إِبْتِدَائِيَّة", "pos": "adjective", "translationUz": "boshlang'ich", "example": "الْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ" },
+        { "word": "مَلْعَب", "normalized": "ملعب", "lemma": "مَلْعَب", "pos": "noun", "translationUz": "o'yin maydoni", "example": "لَعِبْنَ فِي الْمَلْعَبِ" },
+        { "word": "رَجَعَ", "normalized": "رجع", "lemma": "رَجَعَ", "pos": "verb", "translationUz": "qaytdi", "example": "رَجَعْنَ إِلَى الْبَيْتِ" }
+      ],
+      "monologue": {
+        "text": "دَرَسَتْ زَيْنَبُ، وَمَرْيَمُ، وَهِنْدُ فِي الْمَدْرَسَةِ الْإِبْتِدَائِيَّةِ. بَعْدَ الْمَدْرَسَةِ، لَعِبْنَ فِي الْمَلْعَبِ. ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ.",
+        "translationUz": "Zaynab, Maryam va Hind boshlang'ich maktabda o'qishdi. Maktabdan keyin ular o'yin maydonida o'ynashdi. Keyin o'yindan so'ng ular uyga qaytishdi."
+      },
+      "segments": [
+        {
+          "index": 1,
+          "text": "دَرَسَتْ زَيْنَبُ، وَمَرْيَمُ، وَهِنْدُ فِي الْمَدْرَسَةِ الْإِبْتِدَائِيَّةِ.",
+          "translationUz": "Zaynab, Maryam va Hind boshlang'ich maktabda o'qishdi.",
+          "audioUrl": null
+        },
+        {
+          "index": 2,
+          "text": "بَعْدَ الْمَدْرَسَةِ، لَعِبْنَ فِي الْمَلْعَبِ.",
+          "translationUz": "Maktabdan keyin ular o'yin maydonida o'ynashdi.",
+          "audioUrl": null
+        },
+        {
+          "index": 3,
+          "text": "ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ.",
+          "translationUz": "Keyin o'yindan so'ng ular uyga qaytishdi.",
+          "audioUrl": null
+        }
+      ],
+      "createdAt": "2025-10-12T12:30:00Z",
+      "updatedAt": "2025-10-12T12:30:00Z"
+    }

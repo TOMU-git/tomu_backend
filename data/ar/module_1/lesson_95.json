@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l95",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 95,
+  "title": "أَخَوَاتٌ",
+  "lessonSummary": "Ahmadning uchta opa-singillari va ularning odobli xatti-harakatlari haqida.",
+  "keywords": ["ism", "opa", "odobli", "o'ynash", "o'qish", "sevgi"],
+  "vocabulary": [
+    { "word": "أَخَوَات", "normalized": "اخوات", "lemma": "أَخَوَات", "pos": "noun", "translationUz": "opa-singillar", "example": "أَخَوَاتٌ" },
+    { "word": "اِسْم", "normalized": "اسم", "lemma": "اِسْم", "pos": "noun", "translationUz": "ism", "example": "اِسْمِي أَحْمَدُ" },
+    { "word": "عِنْدِي", "normalized": "عندي", "lemma": "عِنْدَ", "pos": "preposition", "translationUz": "menda bor", "example": "عِنْدِي ثَلَاثُ أَخَوَاتٍ" },
+    { "word": "ثَلَاث", "normalized": "ثلاث", "lemma": "ثَلَاث", "pos": "numeral", "translationUz": "uch", "example": "ثَلَاثُ أَخَوَاتٍ" },
+    { "word": "يَلْعَبْنَ", "normalized": "يلعبن", "lemma": "لَعِبَ", "pos": "verb", "translationUz": "o'ynaydilar", "example": "لاَ يَلْعَبْنَ كَثِيرًا" },
+    { "word": "يَدْرُسْنَ", "normalized": "يدرسن", "lemma": "دَرَسَ", "pos": "verb", "translationUz": "o'qiydilar", "example": "يَدْرُسْنَ كَثِيرًا" }
+  ],
+  "monologue": {
+    "text": "أَنَا اِسْمِي أَحْمَدُ. عِنْدِي ثَلَاثُ أَخَوَاتٍ. هُنَّ مُؤَدَّبَاتٌ جِدًّا. لاَ يَلْعَبْنَ كَثِيرًا، بَلْ يَدْرُسْنَ كَثِيرًا. أَنَا أُحِبُّهُنَّ جِدًّا.",
+    "translationUz": "Mening ismim Ahmad. Mening uchta opam bor. Ular juda odoblidirlar. Ular ko'p o'ynamaydilar, balki ko'p o'qiydilar. Men ularni juda yaxshi ko'raman."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "أَنَا اِسْمِي أَحْمَدُ.",
+      "translationUz": "Mening ismim Ahmad.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "عِنْدِي ثَلَاثُ أَخَوَاتٍ.",
+      "translationUz": "Mening uchta opam bor.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "هُنَّ مُؤَدَّبَاتٌ جِدًّا.",
+      "translationUz": "Ular juda odoblidirlar.",
+      "audioUrl": null
+    },
+    {
+      "index": 4,
+      "text": "لاَ يَلْعَبْنَ كَثِيرًا، بَلْ يَدْرُسْنَ كَثِيرًا.",
+      "translationUz": "Ular ko'p o'ynamaydilar, balki ko'p o'qiydilar.",
+      "audioUrl": null
+    },
+    {
+      "index": 5,
+      "text": "أَنَا أُحِبُّهُنَّ جِدًّا.",
+      "translationUz": "Men ularni juda yaxshi ko'raman.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

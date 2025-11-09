@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l117",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 117,
+  "title": "تَعَلُّمُ الأَرْقَامِ",
+  "lessonSummary": "Qizning maktabda raqamlarni o'rganganligi va otasiga sanab berishi haqida.",
+  "keywords": ["raqam", "o'rganish", "sanash", "mashq", "maqtov"],
+  "vocabulary": [
+    { "word": "تَعَلَّم", "normalized": "تعلم", "lemma": "تَعَلَّم", "pos": "verb", "translationUz": "o'rgandi", "example": "تَعَلَّمْتُ الأَرْقَامَ" },
+    { "word": "رَقْم", "normalized": "رقم", "lemma": "رَقْم", "pos": "noun", "translationUz": "raqam", "example": "الأَرْقَامَ" },
+    { "word": "عَدَّ", "normalized": "عد", "lemma": "عَدَّ", "pos": "verb", "translationUz": "sanadi", "example": "عُدِّي لِي" },
+    { "word": "وَاحِد", "normalized": "واحد", "lemma": "وَاحِد", "pos": "numeral", "translationUz": "bir", "example": "وَاحِدٌ" },
+    { "word": "اثْنَان", "normalized": "اثنان", "lemma": "اثْنَان", "pos": "numeral", "translationUz": "ikki", "example": "اثْنَانِ" },
+    { "word": "مَا شَاءَ اللهُ", "normalized": "ما شاء الله", "lemma": "مَا شَاءَ اللهُ", "pos": "phrase", "translationUz": "Alloh xohlasa", "example": "مَا شَاءَ اللهُ" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "اَلْأَبُ",
+      "text": "مَاذَا تَعَلَّمْتِ فِي الْمَدْرَسَةِ يَا بِنْتِي؟",
+      "translationUz": "Maktabda nima o'rganding, qizim?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "اَلْبِنْتُ",
+      "text": "تَعَلَّمْتُ الأَرْقَامَ يَا أَبَتِي.",
+      "translationUz": "Raqamlarni o'rgandim, otajon.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "اَلْأَبُ",
+      "text": "عُدِّي لِي يَا بِنْتِي!",
+      "translationUz": "Menga sanab ber, qizim!",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 4,
+      "speaker": "اَلْبِنْتُ",
+      "text": "وَاحِدٌ، اثْنَانِ، ثَلَاثَةٌ، أَرْبَعَةٌ، خَمْسَةٌ، سِتَّةٌ، سَبْعَةٌ، ثَمَانِيَةٌ، تِسْعَةٌ، عَشَرَةٌ.",
+      "translationUz": "Bir, ikki, uch, to'rt, besh, olti, yetti, sakkiz, to'qqiz, o'n.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 5,
+      "speaker": "اَلْأَبُ",
+      "text": "مَا شَاءَ اللهُ، يَا بِنْتِي.",
+      "translationUz": "Alloh xohlasa, qizim.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

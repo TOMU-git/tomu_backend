@@ -1,0 +1,49 @@
+{
+  "id": "ar_m1_l99",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 99,
+  "title": "أُحِبُّ عَائِلَتِي",
+  "lessonSummary": "Ominaning o'zi va oilasi haqida ma'lumot.",
+  "keywords": ["yosh", "ota", "mudir", "ona", "uyda", "sevgi"],
+  "vocabulary": [
+    { "word": "عَائِلَة", "normalized": "عائلة", "lemma": "عَائِلَة", "pos": "noun", "translationUz": "oila", "example": "أُحِبُّ عَائِلَتِي" },
+    { "word": "عُمْر", "normalized": "عمر", "lemma": "عُمْر", "pos": "noun", "translationUz": "yosh", "example": "عُمْرِي عِشْرُونَ سَنَةً" },
+    { "word": "مُدِير", "normalized": "مدير", "lemma": "مُدِير", "pos": "noun", "translationUz": "mudir", "example": "هُوَ مُدِيرٌ" },
+    { "word": "مَحَل", "normalized": "محل", "lemma": "مَحَل", "pos": "noun", "translationUz": "do'kon", "example": "فِي الْمَحَلِّ" },
+    { "word": "رَبَّة", "normalized": "ربة", "lemma": "رَبَّة", "pos": "noun", "translationUz": "egasi", "example": "رَبَّةُ بَيْتٍ" },
+    { "word": "بَيْت", "normalized": "بيت", "lemma": "بَيْت", "pos": "noun", "translationUz": "uy", "example": "رَبَّةُ بَيْتٍ" }
+  ],
+  "monologue": {
+    "text": "أَنَا اِسْمِي آمِنَةُ، وَ عُمْرِي عِشْرُونَ سَنَةً. أَبِي اِسْمُهُ كَرِيمٌ، وَ هُوَ مُدِيرٌ فِي الْمَحَلِّ. وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ. أَنَا أُحِبُّهُمَا جِدًّا.",
+    "translationUz": "Mening ismim Omina va yoshim yigirma yosh. Otamning ismi Karim va u do'konda mudir. Onamning ismi Fotima va u uy bekasi. Men ularni juda yaxshi ko'raman."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "أَنَا اِسْمِي آمِنَةُ، وَ عُمْرِي عِشْرُونَ سَنَةً.",
+      "translationUz": "Mening ismim Omina va yoshim yigirma yosh.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "أَبِي اِسْمُهُ كَرِيمٌ، وَ هُوَ مُدِيرٌ فِي الْمَحَلِّ.",
+      "translationUz": "Otamning ismi Karim va u do'konda mudir.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ.",
+      "translationUz": "Onamning ismi Fotima va u uy bekasi.",
+      "audioUrl": null
+    },
+    {
+      "index": 4,
+      "text": "أَنَا أُحِبُّهُمَا جِدًّا.",
+      "translationUz": "Men ularni juda yaxshi ko'raman.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

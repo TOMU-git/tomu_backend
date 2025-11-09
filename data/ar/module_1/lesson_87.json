@@ -1,0 +1,37 @@
+{
+    "id": "ar_m1_l87",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 87,
+    "title": "رِحْلَةٌ إِلَى الْغَابَةِ 2",
+    "lessonSummary": "Ahmadning oilasining o'rmonga sayohati va yo'lda bo'ri ko'rishlari haqida.",
+    "keywords": ["mashina", "kulrang", "yo'l", "bo'ri", "daryo", "o'tirish"],
+    "vocabulary": [
+      { "word": "رَكِبَ", "normalized": "ركب", "lemma": "رَكِبَ", "pos": "verb", "translationUz": "minadi", "example": "رَكِبَتْ أُسْرَةُ" },
+      { "word": "سَيَّارَة", "normalized": "سيارة", "lemma": "سَيَّارَة", "pos": "noun", "translationUz": "mashina", "example": "السَّيَّارَةَ الرَّمَادِيَّةَ" },
+      { "word": "رَمَادِي", "normalized": "رمادي", "lemma": "رَمَادِي", "pos": "adjective", "translationUz": "kulrang", "example": "الرَّمَادِيَّةَ" },
+      { "word": "ذِئْب", "normalized": "ذئب", "lemma": "ذِئْب", "pos": "noun", "translationUz": "bo'ri", "example": "رَأَى ذِئْبًا" },
+      { "word": "وَصَلَ", "normalized": "وصل", "lemma": "وَصَلَ", "pos": "verb", "translationUz": "yetib keldi", "example": "عِنْدَمَا وَ صَلَتِ" },
+      { "word": "جَلَسَ", "normalized": "جلس", "lemma": "جَلَسَ", "pos": "verb", "translationUz": "o'tirdi", "example": "جَلَسُوا عِنْدَ النَّهْرِ" }
+    ],
+    "monologue": {
+      "text": "رَكِبَتْ أُسْرَةُ أَحْمَدَ السَّيَّارَةَ الرَّمَادِيَّةَ، وَ فِي الطَّرِيقِ رَأَى أَحْمَدُ وَ أُسْرَتُهُ ذِئْبًا كَبِيرًا. وَ عِنْدَمَا وَ صَلَتِ الْأُسْرَةُ إِلَى الْغَابَةِ، جَلَسُوا عِنْدَ النَّهْرِ.",
+      "translationUz": "Ahmadning oilasi kulrang mashinaga mindi va yo'lda Ahmad va uning oilasi katta bo'rini ko'rdi. Va oila o'rmonga yetib kelganda, ular daryo bo'yida o'tirdilar."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "رَكِبَتْ أُسْرَةُ أَحْمَدَ السَّيَّارَةَ الرَّمَادِيَّةَ، وَ فِي الطَّرِيقِ رَأَى أَحْمَدُ وَ أُسْرَتُهُ ذِئْبًا كَبِيرًا.",
+        "translationUz": "Ahmadning oilasi kulrang mashinaga mindi va yo'lda Ahmad va uning oilasi katta bo'rini ko'rdi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "وَ عِنْدَمَا وَ صَلَتِ الْأُسْرَةُ إِلَى الْغَابَةِ، جَلَسُوا عِنْدَ النَّهْرِ.",
+        "translationUz": "Va oila o'rmonga yetib kelganda, ular daryo bo'yida o'tirdilar.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

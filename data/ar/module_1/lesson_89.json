@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l89",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 89,
+    "title": "اَللَّعِبُ فِي الشَّارِعِ",
+    "lessonSummary": "Kichik ukaning ko'chada futbol o'ynashi va uning xavfli ekanligi haqida ogohlantirish.",
+    "keywords": ["futbol", "ko'cha", "xavfli", "yo'l", "yon", "ogohlantirish"],
+    "vocabulary": [
+      { "word": "لَعِبَ", "normalized": "لعب", "lemma": "لَعِبَ", "pos": "verb", "translationUz": "o'ynadi", "example": "يَلْعَبُ بِالْكُرَةِ" },
+      { "word": "كُرَة", "normalized": "كرة", "lemma": "كُرَة", "pos": "noun", "translationUz": "to'p", "example": "يَلْعَبُ بِالْكُرَةِ" },
+      { "word": "قَدَم", "normalized": "قدم", "lemma": "قَدَم", "pos": "noun", "translationUz": "oyoq", "example": "كُرَةَ الْقَدَمِ" },
+      { "word": "خَطِير", "normalized": "خطير", "lemma": "خَطِير", "pos": "adjective", "translationUz": "xavfli", "example": "فَهُوَ خَطِيرٌ" },
+      { "word": "وَسَط", "normalized": "وسط", "lemma": "وَسَط", "pos": "noun", "translationUz": "o'rta", "example": "فِي وَسَطِ الطَّرِيقِ" },
+      { "word": "جَانِب", "normalized": "جانب", "lemma": "جَانِب", "pos": "noun", "translationUz": "yon", "example": "فِي جَانِبِهِ" }
+    ],
+    "monologue": {
+      "text": "وَجَدْتُ أَخِي الصَّغِيرَ يَلْعَبُ بِالْكُرَةِ فِي الشَّارِعِ، فَسَأَلْتُهُ: \"مَاذَا تَفْعَلُ؟\" فَقَالَ: \"أَنَا أَلْعَبُ كُرَةَ الْقَدَمِ.\" فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\" فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\"",
+      "translationUz": "Men kichik ukamni ko'chada to'p o'ynayotganini topdim, shuning uchun undan so'radim: \"Nima qilyapsan?\" U dedi: \"Men futbol o'ynayapman.\" Men unga dedim: \"Ko'chada o'ynama, chunki u xavfli!\" U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida o'ynayman.\""
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "وَجَدْتُ أَخِي الصَّغِيرَ يَلْعَبُ بِالْكُرَةِ فِي الشَّارِعِ، فَسَأَلْتُهُ: \"مَاذَا تَفْعَلُ؟\"",
+        "translationUz": "Men kichik ukamni ko'chada to'p o'ynayotganini topdim, shuning uchun undan so'radim: \"Nima qilyapsan?\"",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "فَقَالَ: \"أَنَا أَلْعَبُ كُرَةَ الْقَدَمِ.\"",
+        "translationUz": "U dedi: \"Men futbol o'ynayapman.\"",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\"",
+        "translationUz": "Men unga dedim: \"Ko'chada o'ynama, chunki u xavfli!\"",
+        "audioUrl": null
+      },
+      {
+        "index": 4,
+        "text": "فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\"",
+        "translationUz": "U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida o'ynayman.\"",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

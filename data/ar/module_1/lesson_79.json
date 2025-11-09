@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l79",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 79,
+    "title": "اَلزَّوْجَانِ",
+    "lessonSummary": "Er-xotinning bolalar sumkalari haqida suhbati.",
+    "keywords": ["er", "xotin", "sumka", "bolalar", "qora", "pushti"],
+    "vocabulary": [
+      { "word": "زَوْج", "normalized": "زوج", "lemma": "زَوْج", "pos": "noun", "translationUz": "er", "example": "اَلزَّوْجُ" },
+      { "word": "زَوْجَة", "normalized": "زوجة", "lemma": "زَوْجَة", "pos": "noun", "translationUz": "xotin", "example": "اَلزَّوْجَةُ" },
+      { "word": "وَلَد", "normalized": "ولد", "lemma": "وَلَد", "pos": "noun", "translationUz": "bola", "example": "الأَوْلَادِ" },
+      { "word": "سَوْدَاء", "normalized": "سوداء", "lemma": "أَسْوَد", "pos": "adjective", "translationUz": "qora", "example": "حَقِيبَةٌ سَوْدَاءُ" },
+      { "word": "وَرْدِيَّة", "normalized": "وردية", "lemma": "وَرْدِي", "pos": "adjective", "translationUz": "pushti", "example": "حَقِيبَةٌ وَرْدِيَّةٌ" },
+      { "word": "خِزَانَة", "normalized": "خزانة", "lemma": "خِزَانَة", "pos": "noun", "translationUz": "javon", "example": "فِي الخِزَانَةِ" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "اَلزَّوْجُ",
+        "text": "أَيْنَ حَقِيبَةُ الأَوْلَادِ؟",
+        "translationUz": "Bolalarning sumkasi qayerda?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "حَقِيبَةُ الأَوْلَادِ فِي الخِزَانَةِ.",
+        "translationUz": "Bolalarning sumkasi javonda.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "هَاتَانِ حَقِيبَتَانِ لِلَيْلَى ولِأَحْمَدَ.",
+        "translationUz": "Bu ikkita sumka Laylo va Ahmadga.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 4,
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "حَقِيبَةٌ سَوْدَاءُ لِأَحْمَدَ، وَحَقِيبَةٌ وَرْدِيَّةٌ لِلَيْلَى.",
+        "translationUz": "Qora sumka Ahmadga va pushti sumka Layloga.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

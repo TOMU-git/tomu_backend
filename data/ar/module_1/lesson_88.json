@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l88",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 88,
+    "title": "رِحْلَةٌ إِلَى الْغَابَةِ 3",
+    "lessonSummary": "O'rmonda ajoyib ziyofat va quyosh botgandan keyin uyga qaytish haqida.",
+    "keywords": ["ziyofat", "quyosh", "botish", "qaytish", "ish", "ertaga"],
+    "vocabulary": [
+      { "word": "أَقَامَ", "normalized": "اقام", "lemma": "أَقَامَ", "pos": "verb", "translationUz": "o'tkazdi", "example": "أَقَامَ وَلِيمَةً" },
+      { "word": "وَلِيمَة", "normalized": "وليمة", "lemma": "وَلِيمَة", "pos": "noun", "translationUz": "ziyofat", "example": "أَقَامَ وَلِيمَةً" },
+      { "word": "رَائِع", "normalized": "رائع", "lemma": "رَائِع", "pos": "adjective", "translationUz": "ajoyib", "example": "وَلِيمَةً رَائِعَةً" },
+      { "word": "غُرُوب", "normalized": "غروب", "lemma": "غُرُوب", "pos": "noun", "translationUz": "botish", "example": "عِنْدَ غُرُوبِ الشَّمْسِ" },
+      { "word": "رَجَعَ", "normalized": "رجع", "lemma": "رَجَعَ", "pos": "verb", "translationUz": "qaytdi", "example": "رَجَعَتِ الْأُسْرَةُ" },
+      { "word": "غَدًا", "normalized": "غدا", "lemma": "غَدًا", "pos": "adverb", "translationUz": "ertaga", "example": "غَدًا أَحْمَدُ" }
+    ],
+    "monologue": {
+      "text": "أَقَامَ أَحْمَدُ وَ أُسْرَتُهُ وَلِيمَةً رَائِعَةً فِي الْغَابَةِ. وَ عِنْدَ غُرُوبِ الشَّمْسِ، رَجَعَتِ الْأُسْرَةُ إِلَى الْبَيْتِ. غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيْرًا.",
+      "translationUz": "Ahmad va uning oilasi o'rmonda ajoyib ziyofat o'tkazdi. Va quyosh botganda, oila uyiga qaytdi. Ertaga Ahmad juda ko'p ishlaydi."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "أَقَامَ أَحْمَدُ وَ أُسْرَتُهُ وَلِيمَةً رَائِعَةً فِي الْغَابَةِ.",
+        "translationUz": "Ahmad va uning oilasi o'rmonda ajoyib ziyofat o'tkazdi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "وَ عِنْدَ غُرُوبِ الشَّمْسِ، رَجَعَتِ الْأُسْرَةُ إِلَى الْبَيْتِ.",
+        "translationUz": "Va quyosh botganda, oila uyiga qaytdi.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيْرًا.",
+        "translationUz": "Ertaga Ahmad juda ko'p ishlaydi.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

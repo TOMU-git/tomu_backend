@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l71",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 71,
+    "title": "اَلْبَيْتُ الْجَدِيدُ",
+    "lessonSummary": "Yangi uy va unga sotib olingan yangi mebellar haqida.",
+    "keywords": ["yangi uy", "mebel", "xona", "jihoz", "soyabon"],
+    "vocabulary": [
+      { "word": "بَيْت", "normalized": "بيت", "lemma": "بَيْت", "pos": "noun", "translationUz": "uy", "example": "اَلْبَيْتُ الْجَدِيدُ" },
+      { "word": "جَدِيد", "normalized": "جديد", "lemma": "جَدِيد", "pos": "adjective", "translationUz": "yangi", "example": "اَلْبَيْتُ الْجَدِيدُ" },
+      { "word": "دُولَاب", "normalized": "دولاب", "lemma": "دُولَاب", "pos": "noun", "translationUz": "shkaf", "example": "دُولَابٌ" },
+      { "word": "بُوتَاجَاز", "normalized": "بوتاجاز", "lemma": "بُوتَاجَاز", "pos": "noun", "translationUz": "gaz plita", "example": "بُوتَاجَازٌ" },
+      { "word": "سَرِير", "normalized": "سرير", "lemma": "سَرِير", "pos": "noun", "translationUz": "karavot", "example": "سَرِيرٌ" },
+      { "word": "إِبْرِيق", "normalized": "ابريق", "lemma": "إِبْرِيق", "pos": "noun", "translationUz": "choynak", "example": "إِبْرِيقُ شَايٍ" }
+    ],
+    "monologue": {
+      "text": "بَيْتُنَا جَدِيدٌ. اِشْتَرَيْنَا لَهُ أَثَاثًا جَدِيدًا، مِنْهُ: دُولَابٌ، بُوتَاجَازٌ، سَرِيرٌ، طَاوِلَةٌ، كَرَاسِيُّ، خِزَانَةُ كُتُبٍ، إِبْرِيقُ شَايٍ، وَ غَيْرُ ذَلِكَ. بَيْتُنَا مُمْتَلِئٌ بِالْأَثَاثِ الْجَدِيدِ, وَ أَنَا أُحِبُّ بَيْتَنَا.",
+      "translationUz": "Bizning uyimiz yangi. Biz unga yangi mebel sotib oldik, ulardan: shkaf, gaz plita, karavot, stol, stullar, kitob javoni, choynak va boshqalar. Bizning uyimiz yangi mebellar bilan to'la va men uyimizni yaxshi ko'raman."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "بَيْتُنَا جَدِيدٌ.",
+        "translationUz": "Bizning uyimiz yangi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "اِشْتَرَيْنَا لَهُ أَثَاثًا جَدِيدًا، مِنْهُ: دُولَابٌ، بُوتَاجَازٌ، سَرِيرٌ، طَاوِلَةٌ، كَرَاسِيُّ، خِزَانَةُ كُتُبٍ، إِبْرِيقُ شَايٍ، وَ غَيْرُ ذَلِكَ.",
+        "translationUz": "Biz unga yangi mebel sotib oldik, ulardan: shkaf, gaz plita, karavot, stol, stullar, kitob javoni, choynak va boshqalar.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "بَيْتُنَا مُمْتَلِئٌ بِالْأَثَاثِ الْجَدِيدِ, وَ أَنَا أُحِبُّ بَيْتَنَا.",
+        "translationUz": "Bizning uyimiz yangi mebellar bilan to'la va men uyimizni yaxshi ko'raman.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

@@ -1,0 +1,42 @@
+{
+    "id": "ar_m1_l54",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 54,
+    "title": "اَلْمُعَلِّمَاتُ الْعَرَبِيَّاتُ",
+    "lessonSummary": "Saudiyalik o'qituvchi ayollar va ularning malakasi haqida.",
+    "keywords": ["o'qituvchi", "ayol", "Saudiya", "son", "malaka"],
+    "vocabulary": [
+      { "word": "مُعَلِّم", "normalized": "معلم", "lemma": "مُعَلِّم", "pos": "noun", "translationUz": "o'qituvchi", "example": "مُعَلِّمَاتٌ" },
+      { "word": "سَعُودِي", "normalized": "سعودي", "lemma": "سَعُودِي", "pos": "adjective", "translationUz": "saudiyalik", "example": "السُّعُودِيَّةِ" },
+      { "word": "عَدَد", "normalized": "عدد", "lemma": "عَدَد", "pos": "noun", "translationUz": "son", "example": "عَدَدُ هَؤُلَاءِ" },
+      { "word": "سَبْع", "normalized": "سبع", "lemma": "سَبْع", "pos": "numeral", "translationUz": "yetti", "example": "سَبْعٌ" },
+      { "word": "مَاهِر", "normalized": "ماهر", "lemma": "مَاهِر", "pos": "adjective", "translationUz": "mohir", "example": "مَاهِرَاتٌ" }
+    ],
+    "monologue": {
+      "text": "جَاءَتْ مُعَلِّمَاتٌ مِنَ السُّعُودِيَّةِ. عَدَدُ هَؤُلَاءِ الْمُعَلِّمَاتِ سَبْعٌ. هَؤُلَاءِ الْمُعَلِّمَاتُ مَاهِرَاتٌ جِدًّا.",
+      "translationUz": "Saudiy Arabistondan o'qituvchi ayollar keldi. Bu o'qituvchi ayollarning soni yettita. Bu o'qituvchi ayollar juda mohirdirlar."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "جَاءَتْ مُعَلِّمَاتٌ مِنَ السُّعُودِيَّةِ.",
+        "translationUz": "Saudiy Arabistondan o'qituvchi ayollar keldi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "عَدَدُ هَؤُلَاءِ الْمُعَلِّمَاتِ سَبْعٌ.",
+        "translationUz": "Bu o'qituvchi ayollarning soni yettita.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "هَؤُلَاءِ الْمُعَلِّمَاتُ mَاهِرَاتٌ جِدًّا.",
+        "translationUz": "Bu o'qituvchi ayollar juda mohirdirlar.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

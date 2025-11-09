@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l77",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 77,
+    "title": "اَلْفُصُولُ الْأَرْبَعَةُ",
+    "lessonSummary": "Yilning to'rt fasli va yozni sevish haqida.",
+    "keywords": ["fasl", "qish", "bahor", "yoz", "kuz", "yil"],
+    "vocabulary": [
+      { "word": "فَصْل", "normalized": "فصل", "lemma": "فَصْل", "pos": "noun", "translationUz": "fasl", "example": "اَلْفُصُولُ الْأَرْبَعَةُ" },
+      { "word": "شِتَاء", "normalized": "شتاء", "lemma": "شِتَاء", "pos": "noun", "translationUz": "qish", "example": "الشِّتَاءُ" },
+      { "word": "رَبِيع", "normalized": "ربيع", "lemma": "رَبِيع", "pos": "noun", "translationUz": "bahor", "example": "الرَّبِيعُ" },
+      { "word": "صَيْف", "normalized": "صيف", "lemma": "صَيْف", "pos": "noun", "translationUz": "yoz", "example": "الصَّيْفُ" },
+      { "word": "خَرِيف", "normalized": "خريف", "lemma": "خَرِيف", "pos": "noun", "translationUz": "kuz", "example": "الْخَرِيفُ" },
+      { "word": "سَنَة", "normalized": "سنة", "lemma": "سَنَة", "pos": "noun", "translationUz": "yil", "example": "فِي السَّنَةِ" }
+    ],
+    "monologue": {
+      "text": "فِي السَّنَةِ يُوجَدُ أَرْبَعَةُ فُصُولٍ: الشِّتَاءُ، وَ الرَّبِيعُ، وَ الصَّيْفُ، وَ الْخَرِيفُ. أَنَا أُحِبُّ الصَّيْفَ جِدًّا.",
+      "translationUz": "Yilda to'rt fasl mavjud: qish, bahor, yoz va kuz. Men yozni juda yaxshi ko'raman."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "فِي السَّنَةِ يُوجَدُ أَرْبَعَةُ فُصُولٍ:",
+        "translationUz": "Yilda to'rt fasl mavjud:",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "الشِّتَاءُ، وَ الرَّبِيعُ، وَ الصَّيْفُ، وَ الْخَرِيفُ.",
+        "translationUz": "qish, bahor, yoz va kuz.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "أَنَا أُحِبُّ الصَّيْفَ جِدًّا.",
+        "translationUz": "Men yozni juda yaxshi ko'raman.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

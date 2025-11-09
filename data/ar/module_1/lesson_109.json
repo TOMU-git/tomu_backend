@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l109",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 109,
+  "title": "مَكْتَبُ الْمُعَلِّمِ",
+  "lessonSummary": "O'qituvchi va talabalarning stollari va stullari haqida taqqoslash.",
+  "keywords": ["stol", "stul", "o'qituvchi", "talaba", "katta", "kichik"],
+  "vocabulary": [
+    { "word": "مَكْتَب", "normalized": "مكتب", "lemma": "مَكْتَب", "pos": "noun", "translationUz": "stol", "example": "مَكْتَبُ الْمُعَلِّمِ" },
+    { "word": "كُرْسِيّ", "normalized": "كرسي", "lemma": "كُرْسِيّ", "pos": "noun", "translationUz": "stul", "example": "كُرْسِيُّهُ" },
+    { "word": "طَالِب", "normalized": "طالب", "lemma": "طَالِب", "pos": "noun", "translationUz": "talaba", "example": "الطُّلَّابِ" },
+    { "word": "كَبير", "normalized": "كبير", "lemma": "كَبير", "pos": "adjective", "translationUz": "katta", "example": "كَبيرٌ" },
+    { "word": "صَغِير", "normalized": "صغير", "lemma": "صَغِير", "pos": "adjective", "translationUz": "kichik", "example": "صَغِيرَةٌ" },
+    { "word": "ذَلِكَ", "normalized": "ذلك", "lemma": "ذَلِكَ", "pos": "demonstrative", "translationUz": "bu", "example": "وَ ذَلِكَ كُرْسِيُّهُ" }
+  ],
+  "monologue": {
+    "text": "هَذَا مَكْتَبُ الْمُعَلِّمِ، وَ ذَلِكَ كُرْسِيُّهُ. وَ تِلْكَ مَكَاتِبُ الطُّلَّابِ وَ كَرَاسِيُّهُمْ. مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ.",
+    "translationUz": "Bu o'qituvchining stoli va bu uning stuli. Va bu talabalarning stollari va stullari. O'qituvchining stoli katta va talabalarning stollari kichik."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "هَذَا مَكْتَبُ الْمُعَلِّمِ، وَ ذَلِكَ كُرْسِيُّهُ.",
+      "translationUz": "Bu o'qituvchining stoli va bu uning stuli.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "وَ تِلْكَ مَكَاتِبُ الطُّلَّابِ وَ كَرَاسِيُّهُمْ.",
+      "translationUz": "Va bu talabalarning stollari va stullari.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ.",
+      "translationUz": "O'qituvchining stoli katta va talabalarning stollari kichik.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

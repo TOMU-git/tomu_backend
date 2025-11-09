@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l49",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 49,
+    "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
+    "lessonSummary": "Bog'da o'tirgan ayolning holati va uning qayg'uli sababi haqida suhbat.",
+    "keywords": ["ayol", "qayg'u", "kasallik", "bog'", "sabab"],
+    "vocabulary": [
+      { "word": "مَرْأَة", "normalized": "مرأة", "lemma": "مَرْأَة", "pos": "noun", "translationUz": "ayol", "example": "اَلْمَرْأَةُ الْحَزِينَةُ" },
+      { "word": "حَزِين", "normalized": "حزين", "lemma": "حَزِين", "pos": "adjective", "translationUz": "qayg'uli", "example": "الْمَرْأَةُ الْحَزِينَةُ" },
+      { "word": "زَوْجَة", "normalized": "زوجة", "lemma": "زَوْجَة", "pos": "noun", "translationUz": "xotin", "example": "زَوْجَةُ أَخِي" },
+      { "word": "مَرِيض", "normalized": "مريض", "lemma": "مَرِيض", "pos": "adjective", "translationUz": "kasal", "example": "هِيَ مَرِيضَةٌ" },
+      { "word": "قَلِيلًا", "normalized": "قليلا", "lemma": "قَلِيل", "pos": "adverb", "translationUz": "ozgina", "example": "مَرِيضَةٌ قَلِيلًا" },
+      { "word": "لِمَاذَا", "normalized": "لماذا", "lemma": "لِمَاذَا", "pos": "interrogative", "translationUz": "nega", "example": "لِمَاذَا هِيَ حَزِينَةٌ؟" }
+    ],
+    "dialogue": [
+      {
+        "turnIndex": 1,
+        "speaker": "حَفْصَةُ",
+        "text": "مَنِ الْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ، يَا سَلْمَى؟",
+        "translationUz": "Bog'da o'tirgan ayol kim, ey Salmo?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 2,
+        "speaker": "سَلْمَى",
+        "text": "اَلْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ زَوْجَةُ أَخِي.",
+        "translationUz": "Bog'da o'tirgan ayol mening akamning xotini.",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 3,
+        "speaker": "حَفْصَةُ",
+        "text": "لِمَاذَا هِيَ حَزِينَةٌ؟",
+        "translationUz": "Nega u hafa?",
+        "audioUrl": null
+      },
+      {
+        "turnIndex": 4,
+        "speaker": "سَلْمَى",
+        "text": "هِيَ مَرِيضَةٌ قَلِيلًا.",
+        "translationUz": "U biroz betob.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

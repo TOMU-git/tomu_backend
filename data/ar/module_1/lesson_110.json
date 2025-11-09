@@ -1,0 +1,63 @@
+{
+  "id": "ar_m1_l110",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 110,
+  "title": "أَنَا عِنْدَ الْبَابِ",
+  "lessonSummary": "Ona va qizi o'rtasida eshik oldida bo'lish va eshikni ochish haqida suhbat.",
+  "keywords": ["salom", "eski", "qaytish", "ochish", "rahmat"],
+  "vocabulary": [
+    { "word": "بَاب", "normalized": "باب", "lemma": "بَاب", "pos": "noun", "translationUz": "eshik", "example": "أَنَا عِنْدَ الْبَابِ" },
+    { "word": "سَلَام", "normalized": "سلام", "lemma": "سَلَام", "pos": "noun", "translationUz": "salom", "example": "السَّلَامُ عَلَيْكِ" },
+    { "word": "مَتَى", "normalized": "متى", "lemma": "مَتَى", "pos": "adverb", "translationUz": "qachon", "example": "مَتَى تَرْجِعِينَ" },
+    { "word": "اِفْتَح", "normalized": "افتح", "lemma": "فَتَحَ", "pos": "verb", "translationUz": "och", "example": "اِفْتَحِي الْبَابَ" },
+    { "word": "حَسَنًا", "normalized": "حسنا", "lemma": "حَسَن", "pos": "adverb", "translationUz": "yaxshi", "example": "حَسَنًا يَا أُمِّي" },
+    { "word": "شُكْرًا", "normalized": "شكرا", "lemma": "شُكْر", "pos": "noun", "translationUz": "rahmat", "example": "شُكْرًا يَا بِنْتِي" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "لَيْلَى",
+      "text": "السَّلَامُ عَلَيْكِ يَا أُمِّي.",
+      "translationUz": "Assalomu alaykum, onajon.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "اَلْأُمُّ",
+      "text": "وَ عَلَيْكِ السَّلَامُ يَا بِنْتِي.",
+      "translationUz": "Va alaykum assalom, qizim.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "لَيْلَى",
+      "text": "مَتَى تَرْجِعِينَ يَا أُمِّي?",
+      "translationUz": "Qachon qaytasiz, onajon?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 4,
+      "speaker": "اَلْأُمُّ",
+      "text": "أَنَا عِنْدَ الْبَابِ، اِفْتَحِي الْبَابَ يَا بِنْتِي.",
+      "translationUz": "Men eshik oldidaman, eshikni och, qizim.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 5,
+      "speaker": "لَيْلَى",
+      "text": "حَسَنًا يَا أُمِّي.",
+      "translationUz": "Yaxshi, onajon.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 6,
+      "speaker": "اَلْأُمُّ",
+      "text": "شُكْرًا يَا بِنْتِي.",
+      "translationUz": "Rahmat, qizim.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}
