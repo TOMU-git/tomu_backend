@@ -74,11 +74,23 @@ export class AIChatMessageFactory {
             await fs.mkdir(outDir, { recursive: true });
 
             // Extension'ni MIME type'dan olish
-            let extension = 'webm'; // default
-            if (mimetype.includes('mp3')) extension = 'mp3';
-            else if (mimetype.includes('wav')) extension = 'wav';
-            else if (mimetype.includes('ogg')) extension = 'ogg';
-            else if (mimetype.includes('webm')) extension = 'webm';
+            // Default format: mp3
+            let extension = 'mp3'; // default - mp3 formatida saqlash
+            const normalizedMime = (mimetype || '').toLowerCase();
+            
+            if (normalizedMime.includes('audio/mpeg') || normalizedMime.includes('audio/mp3') || normalizedMime.includes('mp3')) {
+                extension = 'mp3';
+            } else if (normalizedMime.includes('audio/wav') || normalizedMime.includes('audio/x-wav') || normalizedMime.includes('wav')) {
+                extension = 'mp3'; // WAV ni ham mp3 formatida saqlash
+            } else if (normalizedMime.includes('audio/ogg') || normalizedMime.includes('ogg')) {
+                extension = 'mp3'; // OGG ni ham mp3 formatida saqlash
+            } else if (normalizedMime.includes('audio/webm') || normalizedMime.includes('webm')) {
+                extension = 'mp3'; // WebM ni ham mp3 formatida saqlash
+            } else if (normalizedMime.includes('webp') || normalizedMime.includes('image/')) {
+                // .webp yoki boshqa rasm formatlari - audio emas, default mp3 ishlatish
+                console.warn(`[MessageFactory] Invalid audio mimetype detected: ${mimetype}, using default mp3`);
+                extension = 'mp3';
+            }
 
             const filename = `user_audio_${Date.now()}.${extension}`;
             const full = path.join(outDir, filename);
