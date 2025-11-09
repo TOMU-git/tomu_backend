@@ -1,0 +1,42 @@
+{
+  "id": "ar_m1_l141",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 141,
+  "title": "اَلْخَرِيطَةُ",
+  "lessonSummary": "Do'stlar o'rtasida dunyo xaritasi va mamlakatlar soni haqida suhbat.",
+  "keywords": ["xarita", "dunyo", "mamlakat", "qit'a", "son", "bilish"],
+  "vocabulary": [
+    { "word": "خَرِيطَة", "normalized": "خريطة", "lemma": "خَرِيطَة", "pos": "noun", "translationUz": "xarita", "example": "اَلْخَرِيطَةُ" },
+    { "word": "بَلَد", "normalized": "بلد", "lemma": "بَلَد", "pos": "noun", "translationUz": "mamlakat", "example": "بَلَدًا فِي الْعَالَمِ" },
+    { "word": "عَالَم", "normalized": "عالم", "lemma": "عَالَم", "pos": "noun", "translationUz": "dunyo", "example": "فِي الْعَالَمِ" },
+    { "word": "قَارَّة", "normalized": "قارة", "lemma": "قَارَّة", "pos": "noun", "translationUz": "qit'a", "example": "سَبْعُ قَارَّاتٍ" },
+    { "word": "بُلْدَان", "normalized": "بلدان", "lemma": "بُلْدَان", "pos": "noun", "translationUz": "mamlakatlar", "example": "بُلْدانٌ كَثِيرَةٌ" },
+    { "word": "صَدِيق", "normalized": "صديق", "lemma": "صَدِيق", "pos": "noun", "translationUz": "do'st", "example": "يَا صَدِيْقِي" }
+  ],
+  "dialogue": [
+    {
+      "turnIndex": 1,
+      "speaker": "يَعْقُوبُ",
+      "text": "كَمْ بَلَدًا فِي الْعَالَمِ هَلْ تَعْرِفُ يَا أَحْمَدُ؟",
+      "translationUz": "Dunyoda nechta mamlakat bor bilasanmi, ey Ahmad?",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 2,
+      "speaker": "أَحْمَدُ",
+      "text": "لَا يَا صَدِيْقِي يَعْقُوبُ.",
+      "translationUz": "Yo'q, do'stim Yoqub.",
+      "audioUrl": null
+    },
+    {
+      "turnIndex": 3,
+      "speaker": "يَعْقُوبُ",
+      "text": "هَذَهِ خَرِيْطَةُ الْعَالَمِ وَ بِهَا سَبْعُ قَارَّاتٍ وَ بُلْدانٌ كَثِيرَةٌ.",
+      "translationUz": "Bu dunyo xaritasi va unda etti qit'a va ko'p mamlakatlar bor.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

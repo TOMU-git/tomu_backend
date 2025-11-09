@@ -1,0 +1,37 @@
+{
+    "id": "ar_m1_l85",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 85,
+    "title": "أَنهَارُ آسِيَا الْوُسْطَى",
+    "lessonSummary": "O'rta Osiyodagi ikki buyuk daryo haqida.",
+    "keywords": ["daryo", "O'rta Osiyo", "Amudaryo", "Sirdaryo", "katta", "hudud"],
+    "vocabulary": [
+      { "word": "نَهْر", "normalized": "نهر", "lemma": "نَهْر", "pos": "noun", "translationUz": "daryo", "example": "أَنهَارُ آسِيَا" },
+      { "word": "آسِيَا", "normalized": "اسيا", "lemma": "آسِيَا", "pos": "noun", "translationUz": "Osiyo", "example": "آسِيَا الْوُسْطَى" },
+      { "word": "وُسْطَى", "normalized": "وسطى", "lemma": "وُسْطَى", "pos": "adjective", "translationUz": "o'rta", "example": "آسِيَا الْوُسْطَى" },
+      { "word": "أَمُودَرْيَا", "normalized": "امودريا", "lemma": "أَمُودَرْيَا", "pos": "noun", "translationUz": "Amudaryo", "example": "أَمُودَرْيَا" },
+      { "word": "سِيردَرْيَا", "normalized": "سيردريا", "lemma": "سِيردَرْيَا", "pos": "noun", "translationUz": "Sirdaryo", "example": "وَسِيردَرْيَا" },
+      { "word": "مِنْطَقَة", "normalized": "منطقة", "lemma": "مِنْطَقَة", "pos": "noun", "translationUz": "hudud", "example": "هَذِهِ الْمِنْطَقَةِ" }
+    ],
+    "monologue": {
+      "text": "فِي آسِيَا الْوُسْطَى نَهْرَانِ عَظِيمَانِ، وَهُمَا أَمُودَرْيَا وَسِيردَرْيَا. هَذَانِ النَّهْرَانِ هُمَا أَكْبَرُ أَنْهَارِ هَذِهِ الْمِنْطَقَةِ.",
+      "translationUz": "O'rta Osiyoda ikkita buyuk daryo mavjud va ular Amudaryo va Sirdaryodir. Bu ikkita daryo bu hududdagi eng katta daryolardir."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "فِي آسِيَا الْوُسْطَى نَهْرَانِ عَظِيمَانِ، وَهُمَا أَمُودَرْيَا وَسِيردَرْيَا.",
+        "translationUz": "O'rta Osiyoda ikkita buyuk daryo mavjud va ular Amudaryo va Sirdaryodir.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "هَذَانِ النَّهْرَانِ هُمَا أَكْبَرُ أَنْهَارِ هَذِهِ الْمِنْطَقَةِ.",
+        "translationUz": "Bu ikkita daryo bu hududdagi eng katta daryolardir.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

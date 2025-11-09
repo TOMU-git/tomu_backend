@@ -1,0 +1,49 @@
+{
+  "id": "ar_m1_l107",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 107,
+  "title": "عَمَلُ وَالِدَيَّ",
+  "lessonSummary": "Ota-onaning kasblari va ish joylari haqida.",
+  "keywords": ["muhandis", "kompaniya", "o'qituvchi", "soat", "yarim"],
+  "vocabulary": [
+    { "word": "وَالِد", "normalized": "والد", "lemma": "وَالِد", "pos": "noun", "translationUz": "ota", "example": "عَمَلُ وَالِدَيَّ" },
+    { "word": "مُهَنْدِس", "normalized": "مهندس", "lemma": "مُهَنْدِس", "pos": "noun", "translationUz": "muhandis", "example": "هُوَ مُهَنْدِسٌ" },
+    { "word": "شَرِكَة", "normalized": "شركة", "lemma": "شَرِكَة", "pos": "noun", "translationUz": "kompaniya", "example": "فِي الشَّرِكَةِ" },
+    { "word": "مُعَلِّم", "normalized": "معلم", "lemma": "مُعَلِّم", "pos": "noun", "translationUz": "o'qituvchi", "example": "مُعَلِّمَةٌ" },
+    { "word": "ثَامِن", "normalized": "ثامن", "lemma": "ثَامِن", "pos": "numeral", "translationUz": "sakkizinchi", "example": "السَّاعَةِ الثَّامِنَةِ" },
+    { "word": "نِصْف", "normalized": "نصف", "lemma": "نِصْف", "pos": "noun", "translationUz": "yarim", "example": "وَ النِّصْفِ" }
+  ],
+  "monologue": {
+    "text": "أَبِي إِسْمُهُ سَمِيرٌ، وَ هُوَ مُهَنْدِسٌ يَعْمَلُ فِي الشَّرِكَةِ. وَ أُمِّي إِسْمُهَا عَائِشَةُ، وَهِيَ مُعَلِّمَةٌ تَعْمَلُ فِي الْمَدْرَسَةِ. يَذْهَبُ أَبِي إِلَى الشَّرِكَةِ فِي السَّاعَةِ الثَّامِنَةِ، وَتَذْهَبُ أُمِّي إِلَى الْمَدْرَسَةِ فِي السَّاعَةِ الثَّامِنَةِ وَالنِّصْفِ.",
+    "translationUz": "Otamning ismi Samir va u kompaniyada ishlaydigan muhandis. Onamning ismi Oisha va u maktabda ishlaydigan o'qituvchi. Otam kompaniyaga soat sakkizda boradi va onam maktabga soat sakkiz yarimda boradi."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "أَبِي إِسْمُهُ سَمِيرٌ، وَ هُوَ مُهَنْدِسٌ يَعْمَلُ فِي الشَّرِكَةِ.",
+      "translationUz": "Otamning ismi Samir va u kompaniyada ishlaydigan muhandis.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "وَ أُمِّي إِسْمُهَا عَائِشَةُ، وَهِيَ مُعَلِّمَةٌ تَعْمَلُ فِي الْمَدْرَسَةِ.",
+      "translationUz": "Onamning ismi Oisha va u maktabda ishlaydigan o'qituvchi.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "يَذْهَبُ أَبِي إِلَى الشَّرِكَةِ فِي السَّاعَةِ الثَّامِنَةِ،",
+      "translationUz": "Otam kompaniyaga soat sakkizda boradi,",
+      "audioUrl": null
+    },
+    {
+      "index": 4,
+      "text": "وَتَذْهَبُ أُمِّي إِلَى الْمَدْرَسَةِ fِي السَّاعَةِ الثَّامِنَةِ وَالنِّصْفِ.",
+      "translationUz": "va onam maktabga soat sakkiz yarimda boradi.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

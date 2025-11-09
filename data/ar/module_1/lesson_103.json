@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l103",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 103,
+  "title": "اَلْكَسُولُ",
+  "lessonSummary": "Karimning maktabga bormasligi va o'qimasligi haqida.",
+  "keywords": ["maktab", "o'qish", "dars", "dangasa", "sabab"],
+  "vocabulary": [
+    { "word": "كَسُول", "normalized": "كسول", "lemma": "كَسُول", "pos": "adjective", "translationUz": "dangasa", "example": "اَلْكَسُولُ" },
+    { "word": "يَوْم", "normalized": "يوم", "lemma": "يَوْم", "pos": "noun", "translationUz": "kun", "example": "كُلَّ يَوْمٍ" },
+    { "word": "يَقْرَأُ", "normalized": "يقرا", "lemma": "قَرَأَ", "pos": "verb", "translationUz": "o'qiydi", "example": "لاَ يَقْرَأُ" },
+    { "word": "يَدْرُسُ", "normalized": "يدرس", "lemma": "دَرَسَ", "pos": "verb", "translationUz": "o'qiydi", "example": "لاَ يَدْرُسُ" },
+    { "word": "جَيِّدًا", "normalized": "جيدا", "lemma": "جَيِّد", "pos": "adverb", "translationUz": "yaxshi", "example": "جَيِّدًا" },
+    { "word": "لِأَنَّهُ", "normalized": "لانه", "lemma": "لِأَنَّ", "pos": "conjunction", "translationUz": "chunki u", "example": "لِأَنَّهُ كَسُولٌ" }
+  ],
+  "monologue": {
+    "text": "كَرِيمٌ لاَ يَذْهَبُ إِلَى الْمَدْرَسَةِ كُلَّ يَوْمٍ، وَ لاَ يَقْرَأُ وَ لاَ يَدْرُسُ جَيِّدًا، لِأَنَّهُ كَسُولٌ جِدًّا.",
+    "translationUz": "Karim har kuni maktabga bormaydi va yaxshi o'qimaydi va o'qimaydi, chunki u juda dangasa."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "كَرِيمٌ لاَ يَذْهَبُ إِلَى الْمَدْرَسَةِ كُلَّ يَوْمٍ،",
+      "translationUz": "Karim har kuni maktabga bormaydi,",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "وَ لاَ يَقْرَأُ وَ لاَ يَدْرُسُ جَيِّدًا،",
+      "translationUz": "va yaxshi o'qimaydi va o'qimaydi,",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "لِأَنَّهُ كَسُولٌ جِدًّا.",
+      "translationUz": "chunki u juda dangasa.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l70",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 70,
+    "title": "أَنْوَاعُ الْعِنَبِ",
+    "lessonSummary": "Turli xil uzum turlari va ranglari, shuningdek O'zbekiston uzumining mashhurligi haqida.",
+    "keywords": ["uzum", "turlar", "rang", "O'zbekiston", "asal", "mashhur"],
+    "vocabulary": [
+      { "word": "عِنَب", "normalized": "عنب", "lemma": "عِنَب", "pos": "noun", "translationUz": "uzum", "example": "أَنْوَاعُ الْعِنَبِ" },
+      { "word": "نَوْع", "normalized": "نوع", "lemma": "نَوْع", "pos": "noun", "translationUz": "turi", "example": "أَنْوَاعٌ" },
+      { "word": "لَوْن", "normalized": "لون", "lemma": "لَوْن", "pos": "noun", "translationUz": "rang", "example": "أَلْوَانٌ" },
+      { "word": "عَسَل", "normalized": "عسل", "lemma": "عَسَل", "pos": "noun", "translationUz": "asal", "example": "كَالْعَسَلِ" },
+      { "word": "مَشْهُور", "normalized": "مشهور", "lemma": "مَشْهُور", "pos": "adjective", "translationUz": "mashhur", "example": "مَشْهُورٌ فِي الْعَالَمِ" },
+      { "word": "عَالَم", "normalized": "عالم", "lemma": "عَالَم", "pos": "noun", "translationUz": "dunyo", "example": "فِي الْعَالَمِ" }
+    ],
+    "monologue": {
+      "text": "تُوجَدُ أَنْوَاعٌ وَ أَلْوَانٌ مُخْتَلِفَةٌ مِنَ العِنَبِ. مِثَالًا : عِنَبٌ أَحْمَرُ، عِنَبٌ أَصْفَرُ، عِنَبٌ أَسْوَدُ، وَعِنَبٌ أَبْيَضُ. عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ.",
+      "translationUz": "Uzumning turli xil turlari va ranglari mavjud. Masalan: qizil uzum, sariq uzum, qora uzum va oq uzum. O'zbekiston uzumi asal kabi (shirin) va u dunyoda mashhurdir."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "تُوجَدُ أَنْوَاعٌ وَ أَلْوَانٌ مُخْتَلِفَةٌ مِنَ العِنَبِ.",
+        "translationUz": "Uzumning turli xil turlari va ranglari mavjud.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "مِثَالًا : عِنَبٌ أَحْمَرُ، عِنَبٌ أَصْفَرُ، عِنَبٌ أَسْوَدُ، وَعِنَبٌ أَبْيَضُ.",
+        "translationUz": "Masalan: qizil uzum, sariq uzum, qora uzum va oq uzum.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ.",
+        "translationUz": "O'zbekiston uzumi asal kabi (shirin) va u dunyoda mashhurdir.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l61",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 61,
+    "title": "زِيَارَةٌ إلَى الْقَرْيَةِ",
+    "lessonSummary": "Qishloqqa sayohat va amakining o'g'li bilan o'ynash haqida.",
+    "keywords": ["qishloq", "amaki", "o'g'il", "o'yin", "tog'", "do'st"],
+    "vocabulary": [
+      { "word": "زِيَارَة", "normalized": "زيارة", "lemma": "زِيَارَة", "pos": "noun", "translationUz": "sayohat", "example": "زِيَارَةٌ إلَى الْقَرْيَةِ" },
+      { "word": "خَال", "normalized": "خال", "lemma": "خَال", "pos": "noun", "translationUz": "amaki", "example": "بَيْتِ خَالِي" },
+      { "word": "ابْن", "normalized": "ابن", "lemma": "ابْن", "pos": "noun", "translationUz": "o'g'il", "example": "إِبْرَاهِيمُ ابْنُ خَالِي" },
+      { "word": "سَبْت", "normalized": "سبت", "lemma": "سَبْت", "pos": "noun", "translationUz": "shanba", "example": "يَوْمَيِ السَّبْتِ" },
+      { "word": "أَحَد", "normalized": "احد", "lemma": "أَحَد", "pos": "noun", "translationUz": "yakshanba", "example": "وَ الأَحَدِ" },
+      { "word": "صَعِدَ", "normalized": "صعد", "lemma": "صَعِدَ", "pos": "verb", "translationUz": "chiqdi", "example": "نَصْعَدُ الْجَبَلَ" }
+    ],
+    "monologue": {
+      "text": "إِبْرَاهِيمُ ابْنُ خَالِي، وَ هُوَ يَسْكُنُ فِي الْقَرْيَةِ. يَوْمَيِ السَّبْتِ وَ الأَحَدِ أَذْهَبُ إِلَى بَيْتِ خَالِي. نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ مَعًا. أَنَا وَ إِبْرَاهِيمُ صَدِيقَانِ.",
+      "translationUz": "Ibrohim mening amakimning o'g'li, va u qishloqda yashaydi. Shanba va yakshanba kunlari men amakimning uyiga boraman. Biz birga o'ynaymiz va tog'ga chiqamiz. Men va Ibrohim do'stmiz."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "إِبْرَاهِيمُ ابْنُ خَالِي، وَ هُوَ يَسْكُنُ فِي الْقَرْيَةِ.",
+        "translationUz": "Ibrohim mening amakimning o'g'li, va u qishloqda yashaydi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "يَوْمَيِ السَّبْتِ وَ الأَحَدِ أَذْهَبُ إِلَى بَيْتِ خَالِي.",
+        "translationUz": "Shanba va yakshanba kunlari men amakimning uyiga boraman.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ mَعًا.",
+        "translationUz": "Biz birga o'ynaymiz va tog'ga chiqamiz.",
+        "audioUrl": null
+      },
+      {
+        "index": 4,
+        "text": "أَنَا وَ إِبْرَاهِيمُ صَدِيقَانِ.",
+        "translationUz": "Men va Ibrohim do'stmiz.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

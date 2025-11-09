@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l96",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 96,
+  "title": "صَبَاحٌ فِي الْقَرْيَةِ",
+  "lessonSummary": "Qishloqda ertalab hayvonlar va odamlarning faoliyati haqida.",
+  "keywords": ["qishloq", "xo'roz", "tovuq", "tuxum", "ot", "sigir"],
+  "vocabulary": [
+    { "word": "صَبَاح", "normalized": "صباح", "lemma": "صَبَاح", "pos": "noun", "translationUz": "ertalab", "example": "صَبَاحٌ فِي الْقَرْيَةِ" },
+    { "word": "دِيك", "normalized": "ديك", "lemma": "دِيك", "pos": "noun", "translationUz": "xo'roz", "example": "صَاحَ الدِّيكُ" },
+    { "word": "دَجَاج", "normalized": "دجاج", "lemma": "دَجَاج", "pos": "noun", "translationUz": "tovuq", "example": "الدَّجَاجَاتُ" },
+    { "word": "بَيْض", "normalized": "بيض", "lemma": "بَيْض", "pos": "noun", "translationUz": "tuxum", "example": "بَيْضَهَا" },
+    { "word": "حِصَان", "normalized": "حصان", "lemma": "حِصَان", "pos": "noun", "translationUz": "ot", "example": "الْحِصَانَ" },
+    { "word": "بَقَر", "normalized": "بقر", "lemma": "بَقَر", "pos": "noun", "translationUz": "sigir", "example": "الْبَقَرَةَ" }
+  ],
+  "monologue": {
+    "text": "صَاحَ الدِّيكُ فِي الصَّبَاحِ فِي الْقَرْيَةِ، وَ بَدَأَ النَّاسُ أَعْمَالَهُمْ. وَ قُرْبَ الظُّهْرِ صَاحَتِ الدَّجَاجَاتُ، فَجَمَعَ صَاحِبُ الْمَنْزِلِ بَيْضَهَا، وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ.",
+    "translationUz": "Qishloqda ertalab xo'roz qichqirdi va odamlar ishlarini boshladilar. Va peshin yaqinida tovuqlar qichqirdi, shuning uchun uy egasi ularning tuxumlarini yig'di va ot, sigir va qolgan hayvonlarni boqdi."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "صَاحَ الدِّيكُ فِي الصَّبَاحِ فِي الْقَرْيَةِ، وَ بَدَأَ النَّاسُ أَعْمَالَهُمْ.",
+      "translationUz": "Qishloqda ertalab xo'roz qichqirdi va odamlar ishlarini boshladilar.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "وَ قُرْبَ الظُّهْرِ صَاحَتِ الدَّجَاجَاتُ، فَجَمَعَ صَاحِبُ الْمَنْزِلِ بَيْضَهَا،",
+      "translationUz": "Va peshin yaqinida tovuqlar qichqirdi, shuning uchun uy egasi ularning tuxumlarini yig'di,",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ.",
+      "translationUz": "va ot, sigir va qolgan hayvonlarni boqdi.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

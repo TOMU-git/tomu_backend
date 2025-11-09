@@ -1,0 +1,55 @@
+{
+    "id": "ar_m1_l64",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 64,
+    "title": "زِيَارَةٌ إِلَى الْمَدِيْنَةِ",
+    "lessonSummary": "Madina shahriga sayohat va sayohat tayyorgarligi haqida.",
+    "keywords": ["Madina", "sayohat", "sumka", "samolyot", "vaqt"],
+    "vocabulary": [
+      { "word": "مَدِينَة", "normalized": "مدينة", "lemma": "مَدِينَة", "pos": "noun", "translationUz": "shahar", "example": "إِلَى الْمَدِينَةِ" },
+      { "word": "مُنَوَّرَة", "normalized": "منورة", "lemma": "مُنَوَّرَة", "pos": "adjective", "translationUz": "nurli", "example": "الْمَدِينَةِ الْمُنَوَّرَةِ" },
+      { "word": "سَفَر", "normalized": "سفر", "lemma": "سَفَر", "pos": "noun", "translationUz": "sayohat", "example": "حَقِيبَةَ السَّفَرِ" },
+      { "word": "حَقِيبَة", "normalized": "حقيبة", "lemma": "حَقِيبَة", "pos": "noun", "translationUz": "sumka", "example": "حَقِيبَةَ السَّفَرِ" },
+      { "word": "طَائِرَة", "normalized": "طائرة", "lemma": "طَائِرَة", "pos": "noun", "translationUz": "samolyot", "example": "الطَّائِرَةُ" },
+      { "word": "تَسْتَغْرِقُ", "normalized": "تستغرق", "lemma": "اِسْتَغْرَقَ", "pos": "verb", "translationUz": "davom etadi", "example": "تَسْتَغْرِقُ خَمْسَ سَاعَاتٍ" }
+    ],
+    "monologue": {
+      "text": "تُسَافِرُ خَدِيجَةُ إِلَى الْمَدِينَةِ الْمُنَوَّرَةِ لِلزِّيَارَةِ. حَضَّرَتْ حَقِيبَةَ السَّفَرِ بَعْدَ الظُّهْرِ. سَفَرُهَا فِي السَّاعَةِ السَّابِعَةِ مَسَاءً. وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ. تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ فِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ.",
+      "translationUz": "Xadicha ziyorat uchun Madina shahriga sayohat qiladi. U peshindan keyin sayohat sumkasini tayyorladi. Uning sayohati soat 7 da kechqurun boshlanadi. Va samolyot besh soat davom etadi. Xadicha shaharga soat 1 da tunda, yarim tundan keyin yetib boradi."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "تُسَافِرُ خَدِيجَةُ إِلَى الْمَدِينَةِ الْمُنَوَّرَةِ لِلزِّيَارَةِ.",
+        "translationUz": "Xadicha ziyorat uchun Madina shahriga sayohat qiladi.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "حَضَّرَتْ حَقِيبَةَ السَّفَرِ bَعْدَ الظُّهْرِ.",
+        "translationUz": "U peshindan keyin sayohat sumkasini tayyorladi.",
+        "audioUrl": null
+      },
+      {
+        "index": 3,
+        "text": "سَفَرُهَا فِي السَّاعَةِ السَّابِعَةِ مَسَاءً.",
+        "translationUz": "Uning sayohati soat 7 da kechqurun boshlanadi.",
+        "audioUrl": null
+      },
+      {
+        "index": 4,
+        "text": "وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ.",
+        "translationUz": "Va samolyot besh soat davom etadi.",
+        "audioUrl": null
+      },
+      {
+        "index": 5,
+        "text": "تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ فِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ.",
+        "translationUz": "Xadicha shaharga soat 1 da tunda, yarim tundan keyin yetib boradi.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

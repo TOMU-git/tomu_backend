@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l125",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 125,
+  "title": "اَلْحُوتُ الأَزْرَقُ",
+  "lessonSummary": "Ko'k kitning dunyodagi eng katta hayvon ekanligi va xususiyatlari haqida.",
+  "keywords": ["kit", "ko'k", "hayvon", "okean", "baliq", "xavf"],
+  "vocabulary": [
+    { "word": "حُوت", "normalized": "حوت", "lemma": "حُوت", "pos": "noun", "translationUz": "kit", "example": "اَلْحُوتُ الأَزْرَقُ" },
+    { "word": "أَزْرَق", "normalized": "ازرق", "lemma": "أَزْرَق", "pos": "adjective", "translationUz": "ko'k", "example": "اَلْحُوتُ الأَزْرَقُ" },
+    { "word": "عَالَم", "normalized": "عالم", "lemma": "عَالَم", "pos": "noun", "translationUz": "dunyo", "example": "فِي الْعَالَمِ" },
+    { "word": "سَبَحَ", "normalized": "سبح", "lemma": "سَبَحَ", "pos": "verb", "translationUz": "suzdi", "example": "يَعِيشُ وَ يَسْبَحُ" },
+    { "word": "سَمَك", "normalized": "سمك", "lemma": "سَمَك", "pos": "noun", "translationUz": "baliq", "example": "يَأْكُلُ الْأَسْمَاكَ" },
+    { "word": "خَطَر", "normalized": "خطر", "lemma": "خَطَر", "pos": "noun", "translationUz": "xavf", "example": "خَطَرًا عَلَى النَّاسِ" }
+  ],
+  "monologue": {
+    "text": "اَلْحُوتُ الأَزْرَقُ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ، وَ هُوَ يَعِيشُ وَ يَسْبَحُ فِي الْمُحِيطَاتِ. الْحُوتُ الأَزْرَقُ يَأْكُلُ الْأَسْمَاكَ الصَّغِيرَةَ وَ الْكَبِيرَةَ، وَ قَدْ يُشَكِّلُ خَطَرًا عَلَى النَّاسِ إِذَا إِقْتَرَبُوا مِنْهُ.",
+    "translationUz": "Ko'k kit dunyodagi eng katta hayvon va u okeanlarda yashaydi va suzadi. Ko'k kit kichik va katta baliqlarni yeydi va agar odamlar unga yaqinlashsa, xavf tug'dirishi mumkin."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "اَلْحُوتُ الأَزْرَقُ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ، وَ هُوَ يَعِيشُ وَ يَسْبَحُ فِي الْمُحِيطَاتِ.",
+      "translationUz": "Ko'k kit dunyodagi eng katta hayvon va u okeanlarda yashaydi va suzadi.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "الْحُوتُ الأَزْرَقُ يَأْكُلُ الْأَسْمَاكَ الصَّغِيرَةَ وَ الْكَبِيرَةَ،",
+      "translationUz": "Ko'k kit kichik va katta baliqlarni yeydi,",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "وَ قَدْ يُشَكِّلُ خَطَرًا عَلَى النَّاسِ إِذَا إِقْتَرَبُوا مِنْهُ.",
+      "translationUz": "va agar odamlar unga yaqinlashsa, xavf tug'dirishi mumkin.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}

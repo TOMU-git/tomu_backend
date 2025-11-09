@@ -1,0 +1,36 @@
+{
+    "id": "ar_m1_l47",
+    "language": "ar",
+    "moduleNumber": 1,
+    "lessonNumber": 47,
+    "title": "اَلْإِسْتِرَاحَةُ",
+    "lessonSummary": "Bog'da dam olishga taklif qilish va erkak/ayol shaxslarga murojaat qilish.",
+    "keywords": ["dam", "bog'", "taklif", "murojaat", "dam olish"],
+    "vocabulary": [
+      { "word": "إِسْتِرَاحَة", "normalized": "استراحة", "lemma": "إِسْتِرَاحَة", "pos": "noun", "translationUz": "dam olish", "example": "اَلْإِسْتِرَاحَةُ" },
+      { "word": "حَدِيقَة", "normalized": "حديقة", "lemma": "حَدِيقَة", "pos": "noun", "translationUz": "bog'", "example": "اِذْهَبْ إِلَى الْحَدِيْقَةِ" },
+      { "word": "اِسْتَرَاحَ", "normalized": "استراح", "lemma": "اِسْتَرَاحَ", "pos": "verb", "translationUz": "dam oldi", "example": "اسْتَرِحْ هُنَاكَ" },
+      { "word": "اِذْهَبْ", "normalized": "اذهب", "lemma": "ذَهَبَ", "pos": "verb", "translationUz": "bor (erkak)", "example": "اِذْهَبْ إِلَى الْحَدِيْقَةِ" },
+      { "word": "اِذْهَبِي", "normalized": "اذهبي", "lemma": "ذَهَبَ", "pos": "verb", "translationUz": "bor (ayol)", "example": "اِذْهَبِي إِلَى الْحَدِيْقَةِ" }
+    ],
+    "monologue": {
+      "text": "اِذْهَبْ إِلَى الْحَدِيْقَةِ يَا مُحَمَّدُ، وَ اسْتَرِحْ هُنَاكَ. وَ أَنْتِ أَيْضًا يَا سَلْمَى، اِذْهَبِي إِلَى الْحَدِيْقَةِ وَ اسْتَرِيحِي هُنَاكَ.",
+      "translationUz": "Bog'ga bor, ey Muhammad, va u yerda dam ol. Sen ham, ey Salmo, bog'ga bor va u yerda dam ol."
+    },
+    "segments": [
+      {
+        "index": 1,
+        "text": "اِذْهَبْ إِلَى الْحَدِيْقَةِ يَا مُحَمَّدُ، وَ اسْتَرِحْ هُنَاكَ.",
+        "translationUz": "Bog'ga bor, ey Muhammad, va u yerda dam ol.",
+        "audioUrl": null
+      },
+      {
+        "index": 2,
+        "text": "وَ أَنْتِ أَيْضًا يَا سَلْمَى، اِذْهَبِي إِلَى الْحَدِيْقَةِ وَ اسْتَرِيحِي هُنَاكَ.",
+        "translationUz": "Sen ham, ey Salmo, bog'ga bor va u yerda dam ol.",
+        "audioUrl": null
+      }
+    ],
+    "createdAt": "2025-10-12T12:30:00Z",
+    "updatedAt": "2025-10-12T12:30:00Z"
+  }

@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l147",
+  "language": "ar",
+  "moduleNumber": 1,
+  "lessonNumber": 147,
+  "title": "جَدِّي و جَدَّتِي",
+  "lessonSummary": "Bobo va buvinining kasblari va hozirgi holati haqida.",
+  "keywords": ["bobo", "buv", "qari", "shifokor", "o'qituvchi", "uy"],
+  "vocabulary": [
+    { "word": "جَد", "normalized": "جد", "lemma": "جَد", "pos": "noun", "translationUz": "bobo", "example": "جَدِّي" },
+    { "word": "جَدَّة", "normalized": "جدة", "lemma": "جَدَّة", "pos": "noun", "translationUz": "buv", "example": "جَدَّتِي" },
+    { "word": "عَجُوز", "normalized": "عجوز", "lemma": "عَجُوز", "pos": "adjective", "translationUz": "qari", "example": "عَجُوزَانِ" },
+    { "word": "طَبِيب", "normalized": "طبيب", "lemma": "طَبِيب", "pos": "noun", "translationUz": "shifokor", "example": "طَبِيبًا" },
+    { "word": "مُسْتَشْفَى", "normalized": "مستشفى", "lemma": "مُسْتَشْفَى", "pos": "noun", "translationUz": "kasalxona", "example": "فِي الْمُسْتَشْفَى" },
+    { "word": "مُدَرِّس", "normalized": "مدرس", "lemma": "مُدَرِّس", "pos": "noun", "translationUz": "o'qituvchi", "example": "مُدَرِّسَةً" }
+  ],
+  "monologue": {
+    "text": "جَدِّي وَ جَدَّتِي عَجُوزَانِ. يَعْمَلُ جَدِّي طَبِيبًا فِي الْمُسْتَشْفَى، وَتَعْمَلُ جَدَّتِي مُدَرِّسَةً فِي الْمَدْرَسَةِ. هُمَا الْآنَ فِي بَيْتِهِمَا.",
+    "translationUz": "Bobom va buvim qarilar. Bobom kasalxonada shifokor bo'lib ishlaydi va buvim maktabda o'qituvchi bo'lib ishlaydi. Ular hozir o'z uylarida."
+  },
+  "segments": [
+    {
+      "index": 1,
+      "text": "جَدِّي وَ جَدَّتِي عَجُوزَانِ.",
+      "translationUz": "Bobom va buvim qarilar.",
+      "audioUrl": null
+    },
+    {
+      "index": 2,
+      "text": "يَعْمَلُ جَدِّي طَبِيبًا فِي الْمُسْتَشْفَى، وَتَعْمَلُ جَدَّتِي مُدَرِّسَةً فِي الْمَدْرَسَةِ.",
+      "translationUz": "Bobom kasalxonada shifokor bo'lib ishlaydi va buvim maktabda o'qituvchi bo'lib ishlaydi.",
+      "audioUrl": null
+    },
+    {
+      "index": 3,
+      "text": "هُمَا الْآنَ فِي بَيْتِهِمَا.",
+      "translationUz": "Ular hozir o'z uylarida.",
+      "audioUrl": null
+    }
+  ],
+  "createdAt": "2025-10-12T12:30:00Z",
+  "updatedAt": "2025-10-12T12:30:00Z"
+}
