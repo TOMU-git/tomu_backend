@@ -157,17 +157,16 @@ export class AiChatController {
     }
 
     /**
-     * Voice/Text chat (foydalanuvchi ovoz yoki text yuboradi, AI ham ovozli javob beradi)
+     * Voice chat (foydalanuvchi ovoz yuboradi, AI ham ovozli javob beradi)
      * PaymentGuard: Faqat to'lov qilgan foydalanuvchilar uchun
      * 
      * Eslatma: courseId va language session'dan olinadi (session yaratilganda berilgan).
-     * Bu parametrlarni yuborish shart emas - session'dan avtomatik olinadi.
      * 
      * History: Agar body'da history='history' bo'lsa, AI ga so'rov yuborilmaydi, faqat message'lar qaytariladi.
      */
     @UseGuards(AuthGuard, PaymentGuard)
     @Post('voice')
-    @ApiOperation({ summary: 'Ovoz yoki text yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
+    @ApiOperation({ summary: 'Ovoz yuborish va AI javobini olish (courseId va language sessiondan olinadi)' })
     @ApiConsumes('multipart/form-data', 'application/json')
     @ApiBadRequestResponse({
         description: 'Error response',
@@ -181,34 +180,17 @@ export class AiChatController {
                 file: {
                     type: 'string',
                     format: 'binary',
-                    description: 'Audio fayl (ixtiyoriy - agar text bo\'lmasa)'
+                    description: 'Audio fayl (majburiy)'
                 },
                 sessionId: {
                     type: 'number',
                     example: 123,
                     description: 'Sessiya ID (majburiy)'
                 },
-                text: {
-                    type: 'string',
-                    example: 'مَا هَٰذَا؟',
-                    description: 'Text xabar (ixtiyoriy - agar file bo\'lmasa)'
-                },
                 history: {
                     type: 'string',
                     example: 'history',
                     description: 'History so\'rovi (agar "history" bo\'lsa, faqat message\'lar qaytariladi)'
-                },
-                courseId: {
-                    type: 'number',
-                    example: 1,
-                    nullable: true,
-                    description: 'Kurs ID (ixtiyoriy - session\'dan avtomatik olinadi, yuborish shart emas)'
-                },
-                language: {
-                    type: 'string',
-                    example: 'ar',
-                    nullable: true,
-                    description: 'Til (ixtiyoriy - session\'dan avtomatik olinadi, default: ar, yuborish shart emas)'
                 },
             },
         },
@@ -244,12 +226,12 @@ export class AiChatController {
     }))
     async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File | undefined, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
         try {
-            console.log(`[AI Chat Controller] Voice/Text message request for user ${userId}, session ${body?.sessionId}`);
+            console.log(`[AI Chat Controller] Voice message request for user ${userId}, session ${body?.sessionId}`);
         } catch (e) {
             // Agar log qilishda xato bo'lsa, davom etamiz
         }
 
-        const { sessionId, courseId, language, text, history } = body || ({} as VoiceRequestDto);
+        const { sessionId, history } = body || ({} as VoiceRequestDto);
 
         if (!sessionId || Number.isNaN(Number(sessionId))) {
             throw new BadRequestException('sessionId noto\'g\'ri yoki yo\'q');
@@ -284,32 +266,22 @@ export class AiChatController {
             return { message: 'ok', data: res };
         }
 
-        // File yoki text validatsiyasi
-        if (!file && !text) {
-            throw new BadRequestException('File yoki text yuborish kerak');
-        }
-
-        if (file && text) {
-            throw new BadRequestException('File va text bir vaqtda yuborilmaydi');
+        // File validatsiyasi
+        if (!file) {
+            throw new BadRequestException('Audio fayl yuborish kerak');
         }
 
         let msg: any;
 
         try {
-            if (file) {
-                // Audio fayl validatsiyasi (MIME/size)
-                AudioUtils.validateUpload(file);
-                msg = await this.chat.sendVoiceMessage({
-                    userId,
-                    sessionId,
-                    audioBuffer: file?.buffer,
-                    courseId,
-                    language,
-                    mimetype: file?.mimetype
-                });
-            } else if (text) {
-                msg = await this.chat.sendTextMessage({ userId, sessionId, text, courseId, language });
-            }
+            // Audio fayl validatsiyasi (MIME/size)
+            AudioUtils.validateUpload(file);
+            msg = await this.chat.sendVoiceMessage({
+                userId,
+                sessionId,
+                audioBuffer: file?.buffer,
+                mimetype: file?.mimetype
+            });
 
             // Message'larni olish (oxirgi 20 ta)
             const messages = await this.chat.getMessages(sessionId, userId);

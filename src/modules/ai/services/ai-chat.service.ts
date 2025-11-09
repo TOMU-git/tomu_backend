@@ -155,15 +155,14 @@ export class AIChatService {
     /**
      * Text chat oqimi (text -> GPT -> TTS)
      * Pipeline pattern orqali boshqariladi (STT bosqichini o'tkazib yuboradi)
+     * courseId va language session'dan olinadi
      */
     async sendTextMessage(params: {
         userId: ID;
         sessionId: ID;
         text: string;
-        courseId?: ID;
-        language?: string;
     }): Promise<AIChatMessage> {
-        const { userId, sessionId, text, courseId, language } = params;
+        const { userId, sessionId, text } = params;
 
         // Validation
         if (!text || text.trim().length === 0) {
@@ -184,8 +183,8 @@ export class AIChatService {
         }
 
         // Session'dan courseId va language ni olish
-        const finalCourseId = session.courseId || courseId || undefined;
-        const finalLanguage = session.sessionLanguage || language || 'ar';
+        const finalCourseId = session.courseId || undefined;
+        const finalLanguage = session.sessionLanguage || 'ar';
 
         // Pre-flight limit check
         try {
@@ -257,16 +256,15 @@ export class AIChatService {
     /**
      * Voice chat oqimi (audio -> STT -> GPT -> TTS)
      * Pipeline pattern orqali boshqariladi
+     * courseId va language session'dan olinadi
      */
     async sendVoiceMessage(params: {
         userId: ID;
         sessionId: ID;
         audioBuffer: Buffer;
-        courseId?: ID;
-        language?: string;
         mimetype?: string; // Audio MIME type
     }): Promise<AIChatMessage> {
-        const { userId, sessionId, audioBuffer, courseId, language, mimetype } = params;
+        const { userId, sessionId, audioBuffer, mimetype } = params;
 
         // Validation
         if (!audioBuffer || audioBuffer.length === 0) {
@@ -287,9 +285,8 @@ export class AIChatService {
         }
 
         // Session'dan courseId va language ni olish (session yaratilganda berilgan)
-        // Agar request'da berilgan bo'lsa, ularni e'tiborsiz qoldiramiz (session'dan olamiz)
-        const finalCourseId = session.courseId || courseId || undefined;
-        const finalLanguage = session.sessionLanguage || language || 'ar';
+        const finalCourseId = session.courseId || undefined;
+        const finalLanguage = session.sessionLanguage || 'ar';
 
         // // console.log(`[sendVoiceMessage] Using session data: courseId=${finalCourseId}, language=${finalLanguage} (from session: courseId=${session.courseId}, sessionLanguage=${session.sessionLanguage})`);
 
