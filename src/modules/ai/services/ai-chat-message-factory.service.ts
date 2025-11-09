@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AIChatMessage } from "../entities/ai-chat-message.entity";
 import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { TTSService } from "./tts.service";
+import { TranslationService } from "./translation.service";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -12,7 +13,10 @@ import * as path from "path";
  */
 @Injectable()
 export class AIChatMessageFactory {
-    constructor(private readonly tts: TTSService) { }
+    constructor(
+        private readonly tts: TTSService,
+        private readonly translation: TranslationService
+    ) { }
 
     /**
      * Fallback xabar yaratish (STT bo'sh yoki non-Arabic)
@@ -90,6 +94,7 @@ export class AIChatMessageFactory {
 
     /**
      * Foydalanuvchi xabarini yaratish
+     * User xabarlari ham AI xabarlari kabi aiResponseText va aiResponseUzbek ga saqlanadi
      * @param sessionId - Chat sessiya ID (number)
      * @param originalText - Foydalanuvchi matni
      * @param audioUrl - Foydalanuvchi audio URL (ixtiyoriy)
@@ -105,12 +110,24 @@ export class AIChatMessageFactory {
             throw new Error(`[MessageFactory] Invalid sessionId: ${sessionId}`);
         }
 
+        // User matnini o'zbek tiliga tarjima qilish
+        let uzbekText = '';
+        try {
+            if (originalText && originalText.trim().length > 0) {
+                uzbekText = await this.translation.translateToUzbek(originalText);
+            }
+        } catch (error: any) {
+            console.error(`[MessageFactory] Error translating user message to Uzbek: ${error.message}`);
+            // Tarjima xatosi bo'lsa ham, xabarni saqlashni davom ettirish
+            uzbekText = '';
+        }
+
         const message = new AIChatMessage();
         message.sessionId = sessionId;
         message.senderType = 'user';
-        message.originalText = originalText;
-        message.aiResponseText = null;
-        message.aiResponseUzbek = null;
+        message.originalText = null; // originalText endi ishlatilmaydi
+        message.aiResponseText = originalText; // User matni aiResponseText ga yoziladi
+        message.aiResponseUzbek = uzbekText; // O'zbek tarjimasi aiResponseUzbek ga yoziladi
         message.audioUrl = audioUrl || null; // Foydalanuvchi audio URL
         message.isWithinLimit = true;
 

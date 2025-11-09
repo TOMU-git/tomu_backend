@@ -74,15 +74,14 @@ export class ContextStep implements PipelineStep {
             // Format conversation history for GPT
             conversationHistory = previousMessages
                 .filter(msg => {
-                    // User messages: originalText bo'lishi kerak
-                    // AI messages: aiResponseText bo'lishi kerak
-                    const content = msg.senderType === 'user' ? msg.originalText : msg.aiResponseText;
+                    // User va AI xabarlari ikkalasi ham aiResponseText dan o'qiladi
+                    const content = msg.aiResponseText;
                     return content && content.trim().length > 0;
                 })
                 .slice(-10) // Limit to last 10 messages
                 .map(msg => ({
                     role: msg.senderType === 'user' ? 'user' as const : 'assistant' as const,
-                    content: (msg.senderType === 'user' ? msg.originalText : msg.aiResponseText) || '',
+                    content: msg.aiResponseText || '',
                 }));
             console.log(`📜 Formatted ${conversationHistory.length} messages for conversation history`);
         } catch (error: any) {
