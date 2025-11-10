@@ -63,20 +63,7 @@ export class VimeoService {
             // console.log('🎉 Vimeo upload completed successfully!');
             // console.log('🔗 Video URI:', uri);
 
-            // Video ID ni to'g'ri parse qilish - Vimeo API /videos/{id} formatida qaytaradi
-            let videoId: string;
-            const uriMatch = uri.match(/\/videos\/(\d+)/);
-            if (uriMatch && uriMatch[1]) {
-              videoId = uriMatch[1];
-            } else {
-              // Fallback: agar regex ishlamasa, split bilan olish
-              videoId = uri.split('/').pop() || uri;
-            }
-
-            if (!videoId || !/^\d+$/.test(videoId)) {
-              return reject(new Error(`Invalid video URI format: ${uri}`));
-            }
-
+            const videoId = uri.split('/').pop();
             const videoUrl = `https://player.vimeo.com/video/${videoId}`;
 
             // console.log('🆔 Video ID:', videoId);
@@ -93,13 +80,10 @@ export class VimeoService {
 
             // Add a delay to get the video duration
             // console.log('⏳ Waiting for video to be processed...');
-            let videoInfo: { duration: number; status: string } | null = null;
-            const maxAttempts = 5;
-            let attempts = maxAttempts;
-            const waitInterval = 2000; // 2 soniya (5 soniyadan kamaytirildi)
-
+            let videoInfo;
+            let attempts = 5; // Try up to 5 times
             do {
-              // console.log(`🔍 Attempting to get video info (${maxAttempts - attempts + 1}/${maxAttempts})...`);
+              // console.log(`🔍 Attempting to get video info (${6 - attempts}/5)...`);
               try {
                 videoInfo = await this.getVideoInfo(videoId);
                 // console.log('📊 Video info retrieved:', {
@@ -107,34 +91,22 @@ export class VimeoService {
                 //   status: videoInfo.status
                 // });
 
-                if (videoInfo && videoInfo.status === 'available') {
+                if (videoInfo.status === 'available') {
                   // console.log('✅ Video is available and ready!');
                   break; // If the video is available, break the loop
                 } else {
-                  // console.log(`⏳ Video status: ${videoInfo?.status}, waiting ${waitInterval / 1000} seconds...`);
+                  // console.log(`⏳ Video status: ${videoInfo.status}, waiting 5 seconds...`);
                 }
               } catch (error) {
                 console.error('❌ Error getting video info:', error);
-                // Error bo'lsa ham davom etadi, lekin videoInfo null qoladi
-                videoInfo = null;
               }
 
-              if (attempts > 1) {
-                // Oxirgi urinishda kutmaymiz
-                await new Promise((res) => setTimeout(res, waitInterval));
-              }
+              await new Promise((res) => setTimeout(res, 5000)); // Wait for 5 seconds
               attempts--;
             } while (attempts > 0);
 
-            // videoInfo undefined yoki duration yo'q bo'lsa, error throw qilish
-            if (!videoInfo || typeof videoInfo.duration !== 'number') {
-              const errorMessage = 'Video processing failed - duration not available after processing attempts';
-              console.error(`❌ ${errorMessage} (videoId: ${videoId})`);
-              return reject(new Error(errorMessage));
-            }
-
-            if (videoInfo.status !== 'available') {
-              console.warn(`⚠️ Video processing timeout - video status: ${videoInfo.status} (videoId: ${videoId})`);
+            if (attempts === 0) {
+              console.warn('⚠️ Video processing timeout - using available info');
             }
 
             // console.log('🎯 Upload process completed:', {
