@@ -10,6 +10,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { NotificationService } from './services/notification.service';
 import { SendNotificationDto } from './dto/send-notification.dto';
+import { SendToAllNotificationDto } from './dto/send-to-all-notification.dto';
 import { RegisterFcmTokenDto } from './dto/register-fcm-token.dto';
 import { Auth } from 'src/common/decorator/auth.decorator';
 import { RoleEnum } from 'src/common/enums/enum';
@@ -68,6 +69,21 @@ export class NotificationController {
         };
     }
 
+    @Post('send-to-all')
+    @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+    @ApiOperation({ summary: 'Send push notification to all users' })
+    @ApiResponse({ status: 200, description: 'Notification sent to all users successfully' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    async sendToAll(@Body() notificationDto: SendToAllNotificationDto) {
+        const result = await this.notificationService.sendToAllUsers(notificationDto);
+        return {
+            message: 'Notification sent to all users',
+            success: result.success,
+            failure: result.failure,
+            totalSent: result.success + result.failure,
+        };
+    }
+
     @Get('status')
     @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
     @ApiOperation({ summary: 'Check Firebase notification service status' })
@@ -77,6 +93,18 @@ export class NotificationController {
         return {
             status: 'active',
             message: 'Notification service is running',
+        };
+    }
+
+    @Get('debug/devices')
+    @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+    @ApiOperation({ summary: 'Debug: Get all active devices with FCM tokens' })
+    @ApiResponse({ status: 200, description: 'Device information' })
+    async getDevicesDebug() {
+        const result = await this.notificationService.getDevicesDebug();
+        return {
+            message: 'Device debug information',
+            ...result,
         };
     }
 

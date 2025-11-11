@@ -50,8 +50,31 @@ export class NotificationService {
                 },
             });
 
+            // If no active devices found, create a simple device for FCM token
             if (devices.length === 0) {
-                throw new NotFoundException('No active devices found for user');
+                this.logger.log(`No active devices found for user ${userId}, creating a simple device for FCM token`);
+                
+                // Create a simple device for FCM token storage
+                const newDevice = this.userDeviceRepository.create({
+                    userId,
+                    deviceId: `fcm-${userId}-${Date.now()}`, // Simple device ID
+                    deviceName: 'Mobile Device',
+                    deviceType: 'mobile',
+                    osName: 'Unknown',
+                    osVersion: 'Unknown',
+                    browserName: 'Unknown',
+                    browserVersion: 'Unknown',
+                    ipAddress: '0.0.0.0',
+                    userAgent: 'FCM Token Registration',
+                    fcmToken: registerDto.fcmToken,
+                    isActive: true,
+                    lastLoginAt: new Date(),
+                    securityLevel: 'normal',
+                });
+
+                await this.userDeviceRepository.save(newDevice);
+                this.logger.log(`Created new device and registered FCM token for user ${userId}`);
+                return;
             }
 
             // Update FCM token for all active devices
@@ -143,7 +166,7 @@ export class NotificationService {
     /**
      * Send notification to all users
      */
-    async sendToAllUsers(notificationDto: SendNotificationDto): Promise<{ success: number; failure: number }> {
+    async sendToAllUsers(notificationDto: { title: string; body: string }): Promise<{ success: number; failure: number }> {
         try {
             // Get all active devices with FCM tokens
             const devices = await this.userDeviceRepository.find({
@@ -152,9 +175,13 @@ export class NotificationService {
                 },
             });
 
+            this.logger.log(`Found ${devices.length} active device(s)`);
+
             const tokens = devices
                 .map((device) => device.fcmToken)
                 .filter((token) => token && token.length > 0);
+
+            this.logger.log(`Found ${tokens.length} device(s) with valid FCM tokens`);
 
             if (tokens.length === 0) {
                 this.logger.warn('No FCM tokens found for any user');
@@ -176,7 +203,7 @@ export class NotificationService {
                 const response = await this.firebaseService.sendToTokens(
                     batch,
                     notification,
-                    notificationDto.data,
+                    undefined, // No additional data
                 );
                 totalSuccess += response.successCount;
                 totalFailure += response.failureCount;
@@ -206,5 +233,42 @@ export class NotificationService {
 
         // Send to all users if neither userId nor tokens provided
         return this.sendToAllUsers(notificationDto);
+    }
+
+    /**
+     * Debug method: Get information about active devices and FCM tokens
+     */
+    async getDevicesDebug(): Promise<{
+        totalDevices: number;
+        activeDevices: number;
+        devicesWithTokens: number;
+        devicesWithoutTokens: number;
+        sampleTokens: string[];
+    }> {
+        const allDevices = await this.userDeviceRepository.find();
+        const activeDevices = await this.userDeviceRepository.find({
+            where: {
+                isActive: true,
+            },
+        });
+
+        const devicesWithTokens = activeDevices.filter(
+            (device) => device.fcmToken && device.fcmToken.length > 0
+        );
+        const devicesWithoutTokens = activeDevices.filter(
+            (device) => !device.fcmToken || device.fcmToken.length === 0
+        );
+
+        const sampleTokens = devicesWithTokens
+            .slice(0, 5)
+            .map((device) => device.fcmToken?.substring(0, 50) + '...' || 'null');
+
+        return {
+            totalDevices: allDevices.length,
+            activeDevices: activeDevices.length,
+            devicesWithTokens: devicesWithTokens.length,
+            devicesWithoutTokens: devicesWithoutTokens.length,
+            sampleTokens,
+        };
     }
 }
