@@ -729,4 +729,15 @@ private async getHomeworkRecommendations(
       return new ResData("Uyga vazifa navbatidagi elementlar sonini olishda xatolik yuz berdi", 500, { count: 0 });
     }
   }
+
+  // Foydalanuvchi ID si bo'yicha barcha kurslar uchun uyga vazifa navbatidagi elementlar sonini qaytaradi
+  async countAllQueueItems(userId: ID): Promise<ResData<{ count: number }>> {
+    try {
+      const count = await this.homeworkQueueRepository.countAllQueueItemsByUserId(userId);
+      return new ResData("Foydalanuvchi uchun barcha kurslardagi uyga vazifa navbatidagi elementlar soni", 200, { count });
+    } catch (error) {
+      this.logger.error(`Error counting all queue items for user ${userId}: ${error.message}`, error.stack);
+      return new ResData("Barcha kurslardagi uyga vazifa navbatidagi elementlar sonini olishda xatolik yuz berdi", 500, { count: 0 });
+    }
+  }
 }

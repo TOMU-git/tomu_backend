@@ -94,4 +94,16 @@ export class HomeworkProgressController {
     const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
     return await this.homeworkProgressService.countQueueItems(userId, courseId);
   }
+
+  /**
+   * Foydalanuvchi uchun barcha kurslardagi uy vazifa navbatidagi elementlar sonini qaytaradi
+   * Access token orqali foydalanuvchi ID si olinadi, courseId kerak emas
+   * @returns Foydalanuvchi uchun barcha kurslardagi uy vazifa navbatidagi elementlar soni
+   */
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Get("total-queue-count")
+  async getTotalQueueCount(@Req() req: RequestWithUser): Promise<ResData<{ count: number }>> {
+    const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
+    return await this.homeworkProgressService.countAllQueueItems(userId);
+  }
 }

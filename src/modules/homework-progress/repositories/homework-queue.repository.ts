@@ -185,6 +185,18 @@ export class HomeworkQueueRepository {
     });
   }
 
+  /**
+   * Foydalanuvchi ID si bo'yicha barcha kurslar uchun uyga vazifa navbatidagi elementlar sonini hisoblash
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @returns Foydalanuvchi uchun barcha kurslardagi uyga vazifa navbatidagi elementlar soni
+   */
+  async countAllQueueItemsByUserId(userId: ID): Promise<number> {
+    return this.repository.count({
+      where: { userId: Number(userId) }
+    });
+  }
+
   async findByUserId(userId: number): Promise<HomeworkQueue[]> {
     return this.repository.createQueryBuilder('queue')
       .where('queue.userId = :userId', { userId })
