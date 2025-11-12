@@ -44,6 +44,8 @@ import { LimitCheckService } from './services/limit-check.service';
 import { RetryHelperService } from './services/retry-helper.service';
 import { TokenCounterService } from './services/token-counter.service';
 import { RerankService } from './services/rerank.service';
+import { GPTPromptBuilderService } from './services/gpt-prompt-builder.service';
+import { GPTInputValidatorService } from './services/gpt-input-validator.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -118,6 +120,9 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     TokenCounterService,
     // Re-ranking
     RerankService,
+    // GPT prompt building and validation
+    GPTPromptBuilderService,
+    GPTInputValidatorService,
     // Chroma sub-services
     ChromaConnectionService,
     ChromaEmbeddingService,
