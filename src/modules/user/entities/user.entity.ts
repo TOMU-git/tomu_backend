@@ -50,7 +50,7 @@ export class User extends BaseEntity {
   @Column({
     name: 'max_devices',
     type: 'int',
-    default: 2,
+    default: 3,
     comment: 'Maximum number of devices allowed for this user'
   })
   maxDevices: number;

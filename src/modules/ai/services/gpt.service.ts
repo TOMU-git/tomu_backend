@@ -1,29 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger, BadRequestException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import axios from "axios";
 import { RetryHelperService } from "./retry-helper.service";
 import { TokenCounterService } from "./token-counter.service";
-
-// Environment variables - o'qish va console logging
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const GPT_MODEL = process.env.GPT_MODEL || "gpt-4o";
-const MAX_TOKENS = Number(process.env.MAX_TOKENS || 350); // Increased from 200 to 350 for Arabic with tashkeel
-const TEMPERATURE = Number(process.env.TEMPERATURE || 0); // Deterministik response uchun 0
-const STRICT_NO_ECHO = process.env.STRICT_NO_ECHO === "1";
-const CONTEXT_MAX_LENGTH = Number(process.env.CONTEXT_MAX_LENGTH || 8000);
-
-// Console logda env value'larini tekshirish
-if (!OPENAI_API_KEY) {
-    // console.log("⚠️  WARNING: OPENAI_API_KEY not found in .env");
-} else {
-    // console.log("✅ OPENAI_API_KEY loaded");
-}
-
-// console.log("📋 GPT Configuration loaded:");
-// console.log(`   GPT_MODEL: ${GPT_MODEL}`);
-// console.log(`   MAX_TOKENS: ${MAX_TOKENS}`);
-// console.log(`   TEMPERATURE: ${TEMPERATURE}`);
-// console.log(`   STRICT_NO_ECHO: ${STRICT_NO_ECHO}`);
-// console.log(`   CONTEXT_MAX_LENGTH: ${CONTEXT_MAX_LENGTH}`);
+import { GPTPromptBuilderService } from "./gpt-prompt-builder.service";
+import { GPTInputValidatorService } from "./gpt-input-validator.service";
 
 /**
  * GPTService
@@ -49,12 +30,82 @@ export interface GPTResponse {
     usage?: GPTUsage;
 }
 
+/**
+ * OpenAI API response structure
+ */
+interface OpenAIChoice {
+    message: {
+        content: string;
+    };
+}
+
+interface OpenAIUsage {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+}
+
+interface OpenAIResponse {
+    choices: OpenAIChoice[];
+    usage?: OpenAIUsage;
+}
+
+interface AxiosOpenAIResponse {
+    data: OpenAIResponse;
+}
+
 @Injectable()
 export class GPTService {
+    private readonly logger = new Logger(GPTService.name);
+
+    // Configuration from environment variables (via ConfigService)
+    private readonly openaiApiKey: string;
+    private readonly gptModel: string;
+    private readonly maxTokens: number;
+    private readonly temperature: number;
+    private readonly strictNoEcho: boolean;
+    private readonly contextMaxLength: number;
+
+    // API Configuration Constants
+    private readonly DEFAULT_TIMEOUT_MS = 30000; // 30 seconds
+    private readonly DEFAULT_MAX_RETRIES = 3;
+    private readonly DEFAULT_INITIAL_DELAY_MS = 1000; // 1 second
+    private readonly DEFAULT_MAX_DELAY_MS = 10000; // 10 seconds
+
+    // Token Management Constants
+    private readonly MAX_CONVERSATION_HISTORY_MESSAGES = 10;
+    private readonly MIN_TOKEN_THRESHOLD = 50; // Minimum tokens for partial content
+    private readonly CHARS_PER_TOKEN_ESTIMATE = 3.5; // Approximation for Arabic text
+
+    // Token Budget Estimates (for formatLessonMaterials)
+    private readonly SYSTEM_MESSAGE_TOKEN_ESTIMATE = 300;
+    private readonly CONVERSATION_TOKEN_ESTIMATE = 500;
+    private readonly TOKEN_BUFFER = 100;
+    private readonly MODEL_LIMIT_FALLBACK = 8000; // gpt-4o: 8192, using 8000 as safe fallback
+
     constructor(
+        private readonly configService: ConfigService,
         private readonly retryHelper: RetryHelperService,
-        private readonly tokenCounter: TokenCounterService
-    ) { }
+        private readonly tokenCounter: TokenCounterService,
+        private readonly promptBuilder: GPTPromptBuilderService,
+        private readonly inputValidator: GPTInputValidatorService
+    ) {
+        // Load configuration from ConfigService
+        this.openaiApiKey = this.configService.get<string>("OPENAI_API_KEY") || "";
+        this.gptModel = this.configService.get<string>("GPT_MODEL") || "gpt-4o";
+        this.maxTokens = Number(this.configService.get<string>("MAX_TOKENS") || 350);
+        this.temperature = Number(this.configService.get<string>("TEMPERATURE") || 0);
+        this.strictNoEcho = this.configService.get<string>("STRICT_NO_ECHO") === "1";
+        this.contextMaxLength = Number(this.configService.get<string>("CONTEXT_MAX_LENGTH") || 8000);
+
+        // Log configuration on service initialization
+        if (!this.openaiApiKey) {
+            this.logger.warn("⚠️  WARNING: OPENAI_API_KEY not found in .env");
+        } else {
+            this.logger.log("✅ OPENAI_API_KEY loaded");
+        }
+        this.logger.log(`📋 GPT Configuration loaded: MODEL=${this.gptModel}, MAX_TOKENS=${this.maxTokens}, TEMPERATURE=${this.temperature}, STRICT_NO_ECHO=${this.strictNoEcho}, CONTEXT_MAX_LENGTH=${this.contextMaxLength}`);
+    }
 
     /**
      * Kontekst asosida javob generatsiya qilish
@@ -62,100 +113,41 @@ export class GPTService {
      * @returns Faqat text (backward compatibility)
      */
     async generate(params: { prompt: string; context: any; language: string; strict: boolean; }): Promise<string> {
+        // Input validation
+        this.inputValidator.validateGenerateParams(params);
+
         // Fix common Whisper transcription errors for Arabic
-        let prompt = params.prompt;
-        const originalPrompt = prompt;
-
-        // YO'QOLGAN HARFLARNI QAYTARISH:
-        // "يفريد" → "يا فريد" (missing ي harfi)
-        prompt = prompt.replace(/يَفَرِيد/g, 'يَا فَرِيد');
-        prompt = prompt.replace(/يفريد/g, 'يا فريد');
-        prompt = prompt.replace(/يَفَرِيد؟/g, 'يَا فَرِيد؟');
-
-        // "ول" → "هل" (question particle xatosi)
-        prompt = prompt.replace(/وَوَلْ/g, 'وَهَلْ');
-        prompt = prompt.replace(/ووَلْ/g, 'وَهَلْ');
-        prompt = prompt.replace(/ووَل/g, 'وَهَلْ');
-        prompt = prompt.replace(/وول/g, 'وَهَلْ');
-
-        // "مْ" → "مَا" (question word xatosi)
-        prompt = prompt.replace(/\s+م[ٌْ]/g, ' مَا');
-
-        if (prompt !== originalPrompt) {
-            // console.log("  ✏️  Auto-corrected to:", prompt);
-        }
+        const prompt = this.correctPrompt(params.prompt);
 
         const { context, language, strict } = params;
-        if (!OPENAI_API_KEY) {
-            // console.log('⚠️ OpenAI API key not found, using fallback');
+        if (!this.openaiApiKey) {
+            this.logger.warn('⚠️ OpenAI API key not found, using fallback');
             return `Javob: ${prompt}`;
         }
 
-        const systemParts: string[] = [];
+        // Build system prompt
+        const systemPrompt = this.promptBuilder.buildBasicSystemPrompt(language);
 
-        // TIL QOIDALARI: Qisqa va tushunarli
-        if (language === 'ar' || language === 'arabic') {
-            systemParts.push("You are an Arabic language learning assistant for beginners.");
-            systemParts.push("RULES:");
-            systemParts.push("1. Respond ONLY in Modern Standard Arabic (الفصحى) with FULL diacritical marks (تشكيل) on every letter.");
-            systemParts.push("2. Use ONLY vocabulary and grammar from lesson materials - never use general knowledge.");
-            systemParts.push("3. Give short, clear answers that directly respond (never echo user's words).");
-            systemParts.push("4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا based on lesson content.");
-            systemParts.push("5. Response MUST be logically correct and different from user's input.");
-            systemParts.push("6. If user makes pronunciation errors (1-2 wrong letters), find similar sentence/word from lesson materials and ask 'هَلْ تَقْصِدُ ...؟' (Did you mean ...?) to help them.");
-        } else {
-            systemParts.push(`Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}.`);
-        }
-
-        // Note: Using token-based truncation (same as generateWithUsage)
+        // Format context as structured lesson materials
         const contextSummary = this.formatLessonMaterials(context);
 
-        const messages = [
-            { role: "system", content: systemParts.join(" ") },
-            { role: "system", content: `Lesson materials context:\n${contextSummary}` },
-            // Few-shot example to guide the model
-            { role: "user", content: "مَا هَٰذَا؟" },
-            { role: "assistant", content: "هَٰذَا بُرْتُقَالٌ." },
-            { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" },
-            { role: "assistant", content: "نَعَمْ، هَٰذَا الْبُرْتُقَالُ لَذِيذٌ جِدًّا." },
-            // Actual user query
-            { role: "user", content: prompt },
-        ];
+        // Build messages array
+        const messages = this.promptBuilder.buildMessages({
+            systemPrompt,
+            contextSummary,
+            prompt,
+            language,
+            useComprehensiveExamples: false,
+        });
 
         try {
-            // console.log(`   🚀 Model: ${GPT_MODEL}`);
-
-            // Retry logic bilan OpenAI API call
-            const res = await this.retryHelper.executeWithRetry(
-                async () => {
-                    return await axios.post(
-                        "https://api.openai.com/v1/chat/completions",
-                        {
-                            model: GPT_MODEL,
-                            messages,
-                            max_tokens: MAX_TOKENS,
-                            temperature: TEMPERATURE, // Aniq va tabiiy javoblar uchun balans
-                        },
-                        {
-                            headers: { Authorization: `Bearer ${OPENAI_API_KEY}` },
-                            timeout: 30000 // 30 seconds timeout
-                        }
-                    );
-                },
-                {
-                    maxRetries: 3,
-                    initialDelay: 1000,
-                    maxDelay: 10000,
-                    onRetry: (attempt, error) => {
-                        // console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
-                    }
-                }
-            );
-
-            const text = (res.data as any)?.choices?.[0]?.message?.content?.trim();
-            return text || "";
-        } catch (e: any) {
-            // console.log(`❌ GPT Error after retries: ${e.message}`);
+            const res = await this.callOpenAI(messages);
+            const text = res.data?.choices?.[0]?.message?.content?.trim() || "";
+            return text;
+        } catch (e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+            const errorStack = e instanceof Error ? e.stack : undefined;
+            this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
             return `Javob: ${prompt}`; // fallback
         }
     }
@@ -166,28 +158,17 @@ export class GPTService {
      * @returns Text va usage ma'lumotlari (cost tracking uchun)
      */
     async generateWithUsage(params: { prompt: string; context: any; language: string; strict: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; conversationTopic?: { topic: string | null; keywords: string[] } }): Promise<GPTResponse> {
+        // Input validation
+        this.inputValidator.validateGenerateWithUsageParams(params);
+
         // Reuse existing generate logic but extract usage
         const { prompt, context, language, strict, conversationHistory = [], conversationTopic } = params;
 
         // Prompt correction (same as generate)
-        let correctedPrompt = prompt;
-        const originalPrompt = prompt;
+        const correctedPrompt = this.correctPrompt(prompt);
 
-        correctedPrompt = correctedPrompt.replace(/يَفَرِيد/g, 'يَا فَرِيد');
-        correctedPrompt = correctedPrompt.replace(/يفريد/g, 'يا فريد');
-        correctedPrompt = correctedPrompt.replace(/يَفَرِيد؟/g, 'يَا فَرِيد؟');
-        correctedPrompt = correctedPrompt.replace(/وَوَلْ/g, 'وَهَلْ');
-        correctedPrompt = correctedPrompt.replace(/ووَلْ/g, 'وَهَلْ');
-        correctedPrompt = correctedPrompt.replace(/ووَل/g, 'وَهَلْ');
-        correctedPrompt = correctedPrompt.replace(/وول/g, 'وَهَلْ');
-        correctedPrompt = correctedPrompt.replace(/\s+م[ٌْ]/g, ' مَا');
-
-        if (correctedPrompt !== originalPrompt) {
-            // console.log("  ✏️  Auto-corrected to:", correctedPrompt);
-        }
-
-        if (!OPENAI_API_KEY) {
-            // console.log('⚠️ OpenAI API key not found, using fallback');
+        if (!this.openaiApiKey) {
+            this.logger.warn('⚠️ OpenAI API key not found, using fallback');
             return {
                 text: `Javob: ${correctedPrompt}`,
                 usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 }
@@ -197,172 +178,131 @@ export class GPTService {
         // Extract names from conversation history for context
         const conversationNames = this.extractNamesFromConversation(conversationHistory);
 
-        // System parts - SIMPLE AND CLEAR
-        const systemParts: string[] = [];
-        if (language === 'ar' || language === 'arabic') {
-            systemParts.push("You are an Arabic language learning assistant for beginners.");
-            systemParts.push("");
-            systemParts.push("CRITICAL RULE - Subject Matching:");
-            systemParts.push("- If user asks about an OBJECT (الدفتر, الكتاب, القلم), answer about THAT OBJECT");
-            systemParts.push("- If user asks about a PERSON (أنت, أنا, هو), answer about THAT PERSON");
-            systemParts.push("- NEVER mix: object question → object answer, person question → person answer");
-            systemParts.push("");
-            systemParts.push("CRITICAL RULE - Conversation Context:");
-            if (conversationNames.length > 0) {
-                systemParts.push(`- REMEMBER: In this conversation, the user's name is: ${conversationNames.join(', ')}`);
-                systemParts.push(`- ALWAYS use this name when addressing the user (يَا ${conversationNames[0]}...)`);
-                systemParts.push(`- NEVER ask for the name again if you already know it from conversation history`);
-            }
-            systemParts.push("- Pay attention to conversation history - if a name was mentioned before, remember it!");
+        // Build comprehensive system prompt
+        const systemPrompt = this.promptBuilder.buildComprehensiveSystemPrompt(language, {
+            conversationNames,
+            conversationTopic,
+        });
 
-            // Conversation topic/mavzu haqida context
-            if (conversationTopic && conversationTopic.topic) {
-                const topicMap: Record<string, string> = {
-                    'profession': 'kasb haqida',
-                    'object': 'narsa haqida',
-                    'place': 'joy haqida'
-                };
-                const topicName = topicMap[conversationTopic.topic] || conversationTopic.topic;
-                systemParts.push(`- Current conversation topic: ${topicName} (${conversationTopic.keywords.slice(0, 3).join(', ')})`);
-                systemParts.push("- Respond naturally based on the conversation flow and current topic");
-                systemParts.push("- If the topic changes, adapt your responses accordingly");
-            }
-
-            systemParts.push("- Maintain natural conversation flow - like a human would talk");
-            systemParts.push("- Build upon previous messages in the conversation");
-            systemParts.push("- If user changes topic, smoothly transition to the new topic");
-            systemParts.push("");
-            systemParts.push("Other rules:");
-            systemParts.push("1. Respond in Modern Standard Arabic with full diacritical marks (تشكيل).");
-            systemParts.push("2. Use ONLY vocabulary from the lesson materials provided.");
-            systemParts.push("3. Give short, clear answers (never echo user's words).");
-            systemParts.push("4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا.");
-        } else {
-            systemParts.push(`Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}.`);
-        }
-
-        // Format context as structured lesson materials (not raw JSON)
-        // IMPROVED: Token-based truncation
+        // Format context as structured lesson materials
         const contextSummary = this.formatLessonMaterials(context);
 
-        const messages: Array<{ role: string; content: string }> = [
-            { role: "system", content: systemParts.join("\n") },
-            { role: "system", content: `Lesson materials:\n${contextSummary}` },
-        ];
-
-        // Add few-shot examples for subject matching (SIMPLE AND CLEAR)
-        if (language === 'ar' || language === 'arabic') {
-            messages.push(
-                // Example 1: Object location
-                { role: "user", content: "أَيْنَ الدَّفْتَرُ؟" },
-                { role: "assistant", content: "الدَّفْتَرُ عَلَى الْمَكْتَبِ." },
-
-                // Example 2: Person location
-                { role: "user", content: "أَيْنَ أَنْتَ؟" },
-                { role: "assistant", content: "أَنَا فِي الْمَسْجِدِ." },
-
-                // Example 3: What is this
-                { role: "user", content: "مَا هَذَا؟" },
-                { role: "assistant", content: "هَذَا كِتَابٌ." },
-
-                // Example 4: Conversation context - remembering names
-                { role: "user", content: "اِسْمِي سَعِيدٌ." },
-                { role: "assistant", content: "مَرْحَبًا يَا سَعِيدُ!" },
-                { role: "user", content: "مَا هَذَا؟" },
-                { role: "assistant", content: "هَذَا كِتَابٌ، يَا سَعِيدُ." }, // Name remembered from previous message
-
-                // Example 5: Natural conversation flow - topic continuation
-                { role: "user", content: "مَا هَذَا؟" },
-                { role: "assistant", content: "هَذَا بُرْتُقَالٌ." },
-                { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" },
-                { role: "assistant", content: "نَعَمْ، هُوَ لَذِيذٌ جِدًّا." }, // Continuing about the same object (orange)
-
-                // Example 6: Topic transition - natural flow
-                { role: "user", content: "أَيْنَ الدَّفْتَرُ؟" },
-                { role: "assistant", content: "الدَّفْتَرُ عَلَى الْمَكْتَبِ." },
-                { role: "user", content: "وَالْكِتَابُ؟" },
-                { role: "assistant", content: "الْكِتَابُ أَيْضًا عَلَى الْمَكْتَبِ." }, // Continuing conversation about location
-
-                // Anti-pattern warning
-                { role: "system", content: "REMEMBER: If user asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?), answer about the NOTEBOOK, NOT about yourself!" },
-
-                // Conversation context reminder
-                { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change." }
-            );
-        }
-
-        // Add conversation history before current prompt
-        if (conversationHistory.length > 0) {
-            // Limit to last 10 messages to avoid token overflow
-            const recentHistory = conversationHistory.slice(-10);
-            messages.push(...recentHistory);
-        }
-
-        // Current user prompt
-        messages.push({ role: "user", content: correctedPrompt });
+        // Build messages array with comprehensive examples
+        const messages = this.promptBuilder.buildMessages({
+            systemPrompt,
+            contextSummary,
+            prompt: correctedPrompt,
+            language,
+            conversationHistory,
+            useComprehensiveExamples: true,
+            maxHistoryMessages: this.MAX_CONVERSATION_HISTORY_MESSAGES,
+        });
 
         // Pre-flight token validation
         const tokenValidation = this.tokenCounter.validateTokenLimit(
             messages,
-            GPT_MODEL,
-            MAX_TOKENS
+            this.gptModel,
+            this.maxTokens
         );
         if (tokenValidation.exceedsLimit) {
-            console.warn(`⚠️  Token limit exceeded: ${tokenValidation.totalTokens} tokens (limit: ${tokenValidation.availableForContext + MAX_TOKENS})`);
+            this.logger.warn(`⚠️  Token limit exceeded: ${tokenValidation.totalTokens} tokens (limit: ${tokenValidation.availableForContext + this.maxTokens})`);
             // Truncate context if needed (should rarely happen due to formatLessonMaterials)
         }
 
         try {
-            // console.log(`   🚀 Model: ${GPT_MODEL}`);
-
-            // Retry logic bilan OpenAI API call
-            const res = await this.retryHelper.executeWithRetry(
-                async () => {
-                    return await axios.post(
-                        "https://api.openai.com/v1/chat/completions",
-                        {
-                            model: GPT_MODEL,
-                            messages,
-                            max_tokens: MAX_TOKENS,
-                            temperature: TEMPERATURE,
-                        },
-                        {
-                            headers: { Authorization: `Bearer ${OPENAI_API_KEY}` },
-                            timeout: 30000 // 30 seconds timeout
-                        }
-                    );
-                },
-                {
-                    maxRetries: 3,
-                    initialDelay: 1000,
-                    maxDelay: 10000,
-                    onRetry: (attempt, error) => {
-                        // console.log(`   🔄 Retrying GPT call (attempt ${attempt}/3)...`);
-                    }
-                }
-            );
-
-            const text = (res.data as any)?.choices?.[0]?.message?.content?.trim() || "";
+            const res = await this.callOpenAI(messages);
+            const text = res.data?.choices?.[0]?.message?.content?.trim() || "";
 
             // Extract usage information
-            const usage = (res.data as any)?.usage;
+            const usage = res.data?.usage;
             const usageData: GPTUsage = usage ? {
                 promptTokens: usage.prompt_tokens || 0,
                 completionTokens: usage.completion_tokens || 0,
                 totalTokens: usage.total_tokens || 0,
             } : { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
-            // console.log(`   📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
+            this.logger.debug(`📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
 
             return { text, usage: usageData };
-        } catch (e: any) {
-            // console.log(`❌ GPT Error after retries: ${e.message}`);
+        } catch (e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : 'Unknown error';
+            const errorStack = e instanceof Error ? e.stack : undefined;
+            this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
             // Fallback response
             return {
                 text: `Javob: ${correctedPrompt}`,
                 usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 }
             };
         }
+    }
+
+    /**
+     * Execute OpenAI API call with retry logic
+     * 
+     * @param messages - Array of messages to send to GPT
+     * @returns Axios response from OpenAI API
+     */
+    private async callOpenAI(messages: Array<{ role: string; content: string }>): Promise<AxiosOpenAIResponse> {
+        this.logger.debug(`🚀 Calling GPT API with model: ${this.gptModel}`);
+
+        return await this.retryHelper.executeWithRetry(
+            async () => {
+                return await axios.post(
+                    "https://api.openai.com/v1/chat/completions",
+                    {
+                        model: this.gptModel,
+                        messages,
+                        max_tokens: this.maxTokens,
+                        temperature: this.temperature,
+                    },
+                    {
+                        headers: { Authorization: `Bearer ${this.openaiApiKey}` },
+                        timeout: this.DEFAULT_TIMEOUT_MS
+                    }
+                );
+            },
+            {
+                maxRetries: this.DEFAULT_MAX_RETRIES,
+                initialDelay: this.DEFAULT_INITIAL_DELAY_MS,
+                maxDelay: this.DEFAULT_MAX_DELAY_MS,
+                onRetry: (attempt, error) => {
+                    this.logger.warn(`🔄 Retrying GPT call (attempt ${attempt}/${this.DEFAULT_MAX_RETRIES})... Error: ${error?.message || 'Unknown error'}`);
+                }
+            }
+        );
+    }
+
+    /**
+     * Fix common Whisper transcription errors for Arabic
+     * Corrects common mistakes in Arabic text transcription
+     * 
+     * @param prompt - Original prompt text
+     * @returns Corrected prompt text
+     */
+    private correctPrompt(prompt: string): string {
+        const originalPrompt = prompt;
+        let corrected = prompt;
+
+        // YO'QOLGAN HARFLARNI QAYTARISH:
+        // "يفريد" → "يا فريد" (missing ي harfi)
+        corrected = corrected.replace(/يَفَرِيد/g, 'يَا فَرِيد');
+        corrected = corrected.replace(/يفريد/g, 'يا فريد');
+        corrected = corrected.replace(/يَفَرِيد؟/g, 'يَا فَرِيد؟');
+
+        // "ول" → "هل" (question particle xatosi)
+        corrected = corrected.replace(/وَوَلْ/g, 'وَهَلْ');
+        corrected = corrected.replace(/ووَلْ/g, 'وَهَلْ');
+        corrected = corrected.replace(/ووَل/g, 'وَهَلْ');
+        corrected = corrected.replace(/وول/g, 'وَهَلْ');
+
+        // "مْ" → "مَا" (question word xatosi)
+        corrected = corrected.replace(/\s+م[ٌْ]/g, ' مَا');
+
+        if (corrected !== originalPrompt) {
+            this.logger.debug(`✏️  Auto-corrected prompt: "${originalPrompt}" → "${corrected}"`);
+        }
+
+        return corrected;
     }
 
     /**
@@ -470,65 +410,6 @@ export class GPTService {
         return vocabularyWords;
     }
 
-    /**
-     * Build few-shot examples to teach GPT logical response patterns
-     * These examples demonstrate:
-     * 1. Subject matching (object question → object answer)
-     * 2. Question type matching (where → location, what → object, who → person)
-     * 3. Proper diacritical marks
-     */
-    private buildFewShotExamples(): Array<{ role: string; content: string }> {
-        const examples: Array<{ role: string; content: string }> = [];
-
-        // EXAMPLE 1: Object location (WHERE + OBJECT)
-        examples.push(
-            { role: "user", content: "أَيْنَ الدَّفْتَرُ؟" }, // Where is the notebook?
-            { role: "assistant", content: "الدَّفْتَرُ فِي الْمَدْرَسَةِ." } // The notebook is in the school
-        );
-
-        // EXAMPLE 2: Object location (WHERE + OBJECT)
-        examples.push(
-            { role: "user", content: "أَيْنَ الْكِتَابُ؟" }, // Where is the book?
-            { role: "assistant", content: "الْكِتَابُ عَلَى الطَّاوِلَةِ." } // The book is on the table
-        );
-
-        // EXAMPLE 3: Person location (WHERE + PERSON)
-        examples.push(
-            { role: "user", content: "أَيْنَ أَنْتَ؟" }, // Where are you?
-            { role: "assistant", content: "أَنَا فِي الْمَسْجِدِ." } // I am in the mosque
-        );
-
-        // EXAMPLE 4: Person identity (WHO)
-        examples.push(
-            { role: "user", content: "مَنْ أَنْتَ؟" }, // Who are you?
-            { role: "assistant", content: "أَنَا طَالِبٌ." } // I am a student
-        );
-
-        // EXAMPLE 5: Object identification (WHAT)
-        examples.push(
-            { role: "user", content: "مَا هَذَا؟" }, // What is this?
-            { role: "assistant", content: "هَذَا كِتَابٌ." } // This is a book
-        );
-
-        // EXAMPLE 6: Yes/No question
-        examples.push(
-            { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" }, // Is it delicious?
-            { role: "assistant", content: "نَعَمْ، هُوَ لَذِيذٌ جِدًّا." } // Yes, it is very delicious
-        );
-
-        // CRITICAL ANTI-PATTERNS (what NOT to do)
-        examples.push({
-            role: "system",
-            content: "❌ FORBIDDEN PATTERN: User asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?) → DO NOT answer 'أَنَا فِي الْمَسْجِدِ' (I am in mosque). This is WRONG because subject mismatch (notebook vs. I)."
-        });
-
-        examples.push({
-            role: "system",
-            content: "✅ CORRECT PATTERN: User asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?) → Answer 'الدَّفْتَرُ فِي الْمَدْرَسَةِ' (notebook is in school). This is RIGHT because subject matches (notebook → notebook)."
-        });
-
-        return examples;
-    }
 
     /**
      * Format lesson materials from context array into structured text
@@ -544,14 +425,13 @@ export class GPTService {
             const materials: string[] = [];
 
             // Token-based budget calculation
-            // System message: ~300 tokens, conversation: ~500 tokens, completion: 400 tokens, buffer: 100
-            const systemMessageEstimate = 300;
-            const conversationEstimate = 500;
-            const completionTokens = MAX_TOKENS; // 350
-            const buffer = 100;
+            const systemMessageEstimate = this.SYSTEM_MESSAGE_TOKEN_ESTIMATE;
+            const conversationEstimate = this.CONVERSATION_TOKEN_ESTIMATE;
+            const completionTokens = this.maxTokens;
+            const buffer = this.TOKEN_BUFFER;
 
             // Model limit (gpt-4o: 8192, fallback: 8000)
-            const modelLimit = 8000;
+            const modelLimit = this.MODEL_LIMIT_FALLBACK;
             const maxContextTokens = modelLimit - systemMessageEstimate - conversationEstimate - completionTokens - buffer;
 
             let totalTokens = 0;
@@ -572,8 +452,8 @@ export class GPTService {
                 if (totalTokens + lessonTokens > maxContextTokens) {
                     // Try to add partial lesson if there's space
                     const remainingTokens = maxContextTokens - totalTokens;
-                    if (remainingTokens > 50) { // At least 50 tokens worth of content
-                        const remainingChars = Math.floor(remainingTokens * 3.5); // Approximation
+                    if (remainingTokens > this.MIN_TOKEN_THRESHOLD) {
+                        const remainingChars = Math.floor(remainingTokens * this.CHARS_PER_TOKEN_ESTIMATE);
                         if (remainingChars > 0) {
                             materials.push(lessonInfo + lessonText.slice(0, remainingChars) + "...");
                         }
@@ -590,11 +470,11 @@ export class GPTService {
                 : "No lesson materials found.";
 
             // Log token usage for monitoring
-            // console.log(`   📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
+            this.logger.debug(`📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
 
             return result;
         } catch (e) {
-            console.warn("⚠️  Error formatting lesson materials:", e);
+            this.logger.warn("⚠️  Error formatting lesson materials:", e);
             return "Error loading lesson materials.";
         }
     }
