@@ -222,13 +222,6 @@ export class LimitCheckService {
 
             const finalCost = currentCostValue + costBreakdown.totalCost;
 
-            const courseInfo = courseId ? `course ${courseId}` : "general chat";
-            this.logger.log(
-                `✅ Cost saved for user ${userId}, session ${sessionId}, message ${messageId}, ${courseInfo}: ` +
-                `$${costBreakdown.totalCost.toFixed(6)} (GPT: $${costBreakdown.gptCost.toFixed(6)}, ` +
-                `Whisper: $${costBreakdown.whisperCost.toFixed(6)}, TTS: $${costBreakdown.ttsCost.toFixed(6)})`
-            );
-
             return {
                 cost: costBreakdown,
                 limitStatus: {

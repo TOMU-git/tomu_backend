@@ -227,7 +227,18 @@ export class AIChatService {
         const savedUserMessage = await this.messageRepo.create(userMessage);
 
         // Pipeline execution - STT bosqichini o'tkazib yuborish uchun alohida execute
+        // AI javob vaqtini o'lchash
+        const aiResponseStartTime = Date.now();
         const result = await this.voicePipeline.executeWithText(pipelineInput);
+        const aiResponseTime = Date.now() - aiResponseStartTime;
+
+        // 2. Userni text console ga chiqar
+        console.log('User text:', text.trim());
+        const userTextLatin = ArabicTextUtils.transliterateArabic(text.trim());
+        console.log('User text (latin):', userTextLatin);
+
+        // 1. AI javob qaytarishiga qancha vaqt ketganini chiqarib qo'y
+        console.log(`AI javob vaqti: ${aiResponseTime}ms (${(aiResponseTime / 1000).toFixed(2)}s)`);
 
         // AI javobini saqlash
         const saved = await this.messageRepo.create(result.message);
@@ -341,12 +352,24 @@ export class AIChatService {
             console.error(`[AI Chat Service] Error saving user audio: ${error.message}`);
         }
 
-        // Pipeline execution
+        // Pipeline execution - AI javob vaqtini o'lchash
+        const aiResponseStartTime = Date.now();
         const result = await this.voicePipeline.execute(pipelineInput);
+        const aiResponseTime = Date.now() - aiResponseStartTime;
 
         // Foydalanuvchi xabarini saqlash (STT natijasi va audio URL)
         // Pipeline'dan transcribedText olish
         const userText = result.transcribedText || (pipelineInput as any).transcribedText || '';
+
+        // 1. AI javob qaytarishiga qancha vaqt ketganini chiqarib qo'y
+        console.log(`AI javob vaqti: ${aiResponseTime}ms (${(aiResponseTime / 1000).toFixed(2)}s)`);
+
+        // 2. Userni text console ga chiqar
+        console.log('User text:', userText);
+        if (userText) {
+            const userTextLatin = ArabicTextUtils.transliterateArabic(userText);
+            console.log('User text (latin):', userTextLatin);
+        }
         if (userText) {
             const userMessage = await this.messageFactory.createUserMessage(
                 Number(sessionId),

@@ -8,26 +8,20 @@ import { AIErrorCode } from '../constants/error-codes.enum';
  */
 export class AIErrorResponseDto {
     @ApiProperty({
-        example: 'error',
-        description: 'Response status indicator'
+        example: 'Oylik limitingiz tugagan ($2). Yangi oyni kuting yoki qayta to\'lov qiling.',
+        description: 'User-friendly error message in Uzbek'
     })
-    message: 'error';
+    message: string;
 
     @ApiProperty({
-        enum: AIErrorCode,
-        example: AIErrorCode.LIMIT_EXCEEDED,
-        description: 'Unique error code for programmatic handling'
+        example: 402,
+        description: 'HTTP status code'
     })
-    errorCode: AIErrorCode;
+    statusCode: number;
 
     @ApiProperty({
         type: 'object',
         properties: {
-            message: {
-                type: 'string',
-                example: 'Oylik limitingiz tugagan ($2). Yangi oyni kuting yoki qayta to\'lov qiling.',
-                description: 'User-friendly error message in Uzbek'
-            },
             retryable: {
                 type: 'boolean',
                 example: false,
@@ -41,7 +35,6 @@ export class AIErrorResponseDto {
         },
     })
     data: {
-        message: string;
         retryable: boolean;
         action: string;
     };

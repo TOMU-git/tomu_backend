@@ -117,10 +117,6 @@ export class CostCalculationService {
         const outputCost = (completionTokens / 1000) * this.gptOutputPrice;
         const totalCost = inputCost + outputCost;
 
-        this.logger.debug(
-            `GPT Cost: ${promptTokens} input + ${completionTokens} output = $${totalCost.toFixed(6)}`
-        );
-
         return this.roundToSixDecimals(totalCost);
     }
 
@@ -138,10 +134,6 @@ export class CostCalculationService {
         const minutes = durationSeconds / 60;
         const cost = minutes * this.whisperPricePerMin;
 
-        this.logger.debug(
-            `Whisper Cost: ${durationSeconds}s (${minutes.toFixed(2)}min) = $${cost.toFixed(6)}`
-        );
-
         return this.roundToSixDecimals(cost);
     }
 
@@ -158,10 +150,6 @@ export class CostCalculationService {
 
         const chars1K = textLength / 1000;
         const cost = chars1K * this.ttsPricePer1KChars;
-
-        this.logger.debug(
-            `TTS Cost: ${textLength} chars (${chars1K.toFixed(2)}K) = $${cost.toFixed(6)}`
-        );
 
         return this.roundToSixDecimals(cost);
     }
@@ -198,10 +186,6 @@ export class CostCalculationService {
         );
 
         const totalCost = this.roundToSixDecimals(gptCost + whisperCost + ttsCost);
-
-        this.logger.debug(
-            `Total Cost: GPT=$${gptCost.toFixed(6)}, Whisper=$${whisperCost.toFixed(6)}, TTS=$${ttsCost.toFixed(6)}, Total=$${totalCost.toFixed(6)}`
-        );
 
         return {
             gptCost,
@@ -265,11 +249,6 @@ export class CostCalculationService {
         const gptCost = this.calculateGPTCost(estimatedPromptTokens, estimatedCompletionTokens);
 
         const totalCost = this.roundToSixDecimals(whisperCost + ttsCost + gptCost);
-
-        this.logger.debug(
-            `Estimated Cost: GPT=$${gptCost.toFixed(6)}, Whisper=$${whisperCost.toFixed(6)}, ` +
-            `TTS=$${ttsCost.toFixed(6)}, Total=$${totalCost.toFixed(6)}`
-        );
 
         return {
             whisperCost,

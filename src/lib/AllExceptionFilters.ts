@@ -13,7 +13,7 @@ import { PaymeDataEnum } from "src/common/enums/enum";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) { }
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
@@ -36,6 +36,27 @@ export class AllExceptionsFilter implements ExceptionFilter {
         id: exception.transactionId,
       });
       return; // ✅ bu yerda faqat return; qilish mumkin, lekin qiymat qaytarmaymiz
+    }
+
+    // ✅ AIException - AI module exception'larini o'z formatida qaytarish
+    // AIException'ni property'lar orqali aniqlash (circular dependency oldini olish uchun)
+    const exceptionAny = exception as any;
+    if (
+      exception instanceof HttpException &&
+      exceptionAny.errorCode &&
+      typeof exceptionAny.getResponse === 'function'
+    ) {
+      const exceptionResponse = exceptionAny.getResponse();
+      // AIException response'ida errorCode bo'lishi kerak
+      if (exceptionResponse && exceptionResponse.statusCode && exceptionResponse.message) {
+        // Bu AIException - o'z formatida qaytarish (faqat message, statusCode, data: null)
+        response.status(exceptionResponse.statusCode).json({
+          message: exceptionResponse.message,
+          statusCode: exceptionResponse.statusCode,
+          data: null,
+        });
+        return;
+      }
     }
 
     // ✅ NestJS HttpException (shu jumladan UnauthorizedException)

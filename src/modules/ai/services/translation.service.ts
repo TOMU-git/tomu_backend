@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import axios from "axios";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const TRANSLATION_MODEL = "gpt-4o-mini"; // Fast and cheap for translation
+const TRANSLATION_MODEL = "gpt-4o"; // Better quality translation model
 
 /**
  * TranslationService

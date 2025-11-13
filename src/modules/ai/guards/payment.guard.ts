@@ -126,7 +126,18 @@ export class PaymentGuard implements CanActivate {
             });
         }
 
-        // 4. Obuna aktivligini tekshirish
+        // 4. hasEverPaid tekshiruvi - birinchi tekshirish (agar to'lov qilinmagan bo'lsa, obuna haqida gapirish mantiqiy emas)
+        if (!userCourse.hasEverPaid) {
+            this.logger.warn(
+                `PaymentGuard: No payment made for user ${userId}, course ${courseId}`
+            );
+            throw new PaymentRequiredException({
+                courseId,
+                userId
+            });
+        }
+
+        // 5. Obuna aktivligini tekshirish
         if (!userCourse.isActive) {
             this.logger.warn(
                 `PaymentGuard: Subscription inactive for user ${userId}, course ${courseId}`
@@ -138,7 +149,7 @@ export class PaymentGuard implements CanActivate {
             });
         }
 
-        // 5. Obuna muddati tekshiruvi
+        // 6. Obuna muddati tekshiruvi
         const now = new Date();
         if (userCourse.endedAt && new Date(userCourse.endedAt) < now) {
             // Obuna muddati tugagan, lekin database'da isActive hali true bo'lishi mumkin
@@ -153,19 +164,6 @@ export class PaymentGuard implements CanActivate {
                 courseId,
                 userId,
                 expiredAt: userCourse.endedAt
-            });
-        }
-
-        // 6. hasEverPaid tekshiruvi (ixtiyoriy - free trial bo'lsa ruxsat berish)
-        // Agar free trial ruxsat etilsa, bu tekshiruvni o'tkazib yuborish mumkin
-        // Hozircha: hasEverPaid yoki onFreeTrial bo'lsa ruxsat beramiz
-        if (!userCourse.hasEverPaid && !userCourse.onFreeTrial) {
-            this.logger.warn(
-                `PaymentGuard: No payment made for user ${userId}, course ${courseId}`
-            );
-            throw new PaymentRequiredException({
-                courseId,
-                userId
             });
         }
 
@@ -256,10 +254,20 @@ export class PaymentGuard implements CanActivate {
 
         // Hech bo'lmaganda bitta aktiv va muddati tugamagan kurs bo'lishi kerak
         const now = new Date();
+        
+        // Avval hasEverPaid = false bo'lgan kurslarni tekshirish
+        const hasAnyPaidCourse = hydrated.some((uc) => uc.hasEverPaid);
+        if (!hasAnyPaidCourse) {
+            // Agar hech qanday kurs uchun to'lov qilinmagan bo'lsa, PAYMENT_REQUIRED
+            throw new PaymentRequiredException({
+                userId
+            });
+        }
+        
         const hasActiveCourse = hydrated.some((uc) => {
             const isActive = uc.isActive;
             const notExpired = !uc.endedAt || new Date(uc.endedAt) >= now;
-            const hasPaid = uc.hasEverPaid || uc.onFreeTrial;
+            const hasPaid = uc.hasEverPaid; // Faqat hasEverPaid tekshiriladi
 
             return isActive && notExpired && hasPaid;
         });

@@ -225,11 +225,6 @@ export class AiChatController {
         skipUndefinedProperties: true, // Undefined property'larni o'tkazib yuborish
     }))
     async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File | undefined, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
-        try {
-            console.log(`[AI Chat Controller] Voice message request for user ${userId}, session ${body?.sessionId}`);
-        } catch (e) {
-            // Agar log qilishda xato bo'lsa, davom etamiz
-        }
 
         const { sessionId, history } = body || ({} as VoiceRequestDto);
 
