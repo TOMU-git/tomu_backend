@@ -63,7 +63,7 @@ export class NotificationService {
             // If no active devices found, create a simple device for FCM token
             if (devices.length === 0) {
                 this.logger.log(`No active devices found for user ${userId}, creating a simple device for FCM token`);
-                
+
                 // Create a simple device for FCM token storage
                 const newDevice = this.userDeviceRepository.create({
                     userId,
