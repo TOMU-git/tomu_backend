@@ -91,6 +91,9 @@ export class UserCourseRepository implements IUserCourseRepository {
       select: {
         id: true,
         status: true,
+        isActive: true,
+        startedAt: true,
+        endedAt: true,
         course: {
           id: true,
           title: true,

@@ -442,13 +442,26 @@ export class GPTStep implements PipelineStep {
                     gptUsage = gptResult.usage;
 
                     // GPT javobini o'zbek tiliga tarjima qilish
+                    // Birinchi navbatda materiallardan translationUz ni qidirish
                     if (aiResponse && aiResponse.trim().length > 0) {
-                        try {
-                            aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                            // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
-                        } catch (e) {
-                            console.warn(`   ⚠️  Translation failed: ${e.message}`);
-                            aiResponseUz = ''; // Fallback: empty string
+                        const materialTranslationUz = this.findTranslationUzInMaterials(
+                            aiResponse,
+                            input.context,
+                            lastWatchedLessonOrder
+                        );
+                        
+                        if (materialTranslationUz) {
+                            aiResponseUz = materialTranslationUz;
+                            // console.log(`   ✅ Found translationUz from materials: "${materialTranslationUz}"`);
+                        } else {
+                            // Materiallarda topilmadi, GPT bilan tarjima qilish
+                            try {
+                                aiResponseUz = await this.translation.translateToUzbek(aiResponse);
+                                // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
+                            } catch (e) {
+                                console.warn(`   ⚠️  Translation failed: ${e.message}`);
+                                aiResponseUz = ''; // Fallback: empty string
+                            }
                         }
                     }
                 }
@@ -506,13 +519,26 @@ export class GPTStep implements PipelineStep {
             gptUsage = gptResult.usage;
 
             // GPT javobini o'zbek tiliga tarjima qilish
+            // Birinchi navbatda materiallardan translationUz ni qidirish
             if (aiResponse && aiResponse.trim().length > 0) {
-                try {
-                    aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                    // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
-                } catch (e) {
-                    console.warn(`   ⚠️  Translation failed: ${e.message}`);
-                    aiResponseUz = ''; // Fallback: empty string
+                const materialTranslationUz = this.findTranslationUzInMaterials(
+                    aiResponse,
+                    input.context,
+                    lastWatchedLessonOrder
+                );
+                
+                if (materialTranslationUz) {
+                    aiResponseUz = materialTranslationUz;
+                    // console.log(`   ✅ Found translationUz from materials: "${materialTranslationUz}"`);
+                } else {
+                    // Materiallarda topilmadi, GPT bilan tarjima qilish
+                    try {
+                        aiResponseUz = await this.translation.translateToUzbek(aiResponse);
+                        // console.log(`   ✅ GPT response translated to Uzbek: "${aiResponseUz}"`);
+                    } catch (e) {
+                        console.warn(`   ⚠️  Translation failed: ${e.message}`);
+                        aiResponseUz = ''; // Fallback: empty string
+                    }
                 }
             }
 
@@ -620,17 +646,35 @@ export class GPTStep implements PipelineStep {
         }
 
         // IMPORTANT: Agar aiResponseUz bo'sh bo'lsa, tarjima qilish (har doim textUz bo'lishi kerak)
+        // Birinchi navbatda materiallardan translationUz ni qidirish
         if (!aiResponseUz && aiResponse && aiResponse.trim().length > 0) {
-            try {
-                aiResponseUz = await this.translation.translateToUzbek(aiResponse);
-                // console.log(`   ✅ Final translation to Uzbek (fallback): "${aiResponseUz}"`);
-            } catch (e) {
-                console.warn(`   ⚠️  Final translation failed: ${e.message}`);
-                aiResponseUz = ''; // Fallback: empty string (lekin bu kam uchraydi)
+            const materialTranslationUz = this.findTranslationUzInMaterials(
+                aiResponse,
+                input.context,
+                lastWatchedLessonOrder
+            );
+            
+            if (materialTranslationUz) {
+                aiResponseUz = materialTranslationUz;
+                // console.log(`   ✅ Found translationUz from materials (final fallback): "${materialTranslationUz}"`);
+            } else {
+                // Materiallarda topilmadi, GPT bilan tarjima qilish
+                try {
+                    aiResponseUz = await this.translation.translateToUzbek(aiResponse);
+                    // console.log(`   ✅ Final translation to Uzbek (fallback): "${aiResponseUz}"`);
+                } catch (e) {
+                    console.warn(`   ⚠️  Final translation failed: ${e.message}`);
+                    aiResponseUz = ''; // Fallback: empty string (lekin bu kam uchraydi)
+                }
             }
         }
 
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
+        
+        // 3. GPT ni javobini console ga chiqar
+        console.log('GPT javobi:', aiResponse);
+        console.log('GPT javobi (latin):', aiResponseLatin);
+        
         // console.log("\n🤖 AI:");
         // console.log("   Arab: " + aiResponse);
         // console.log("   Lotin: " + aiResponseLatin);
@@ -1749,5 +1793,92 @@ export class GPTStep implements PipelineStep {
 
         // console.log(`   ✅ All words in response are from material vocabulary (${responseWords.length} words checked)`);
         return true;
+    }
+
+    /**
+     * Materiallardan translationUz ni qidirish
+     * GPT javobini materiallardan qidirib, agar topilsa translationUz ni qaytaradi
+     * 
+     * @param aiResponse - GPT javobi (Arabic text)
+     * @param context - Lesson context array
+     * @param lastWatchedLessonOrder - User ko'rgan eng oxirgi dars tartibi
+     * @returns translationUz agar topilsa, null agar topilmasa
+     */
+    private findTranslationUzInMaterials(
+        aiResponse: string,
+        context: any[],
+        lastWatchedLessonOrder?: number
+    ): string | null {
+        if (!aiResponse || !context || !Array.isArray(context) || context.length === 0) {
+            return null;
+        }
+
+        const stripDiacritics = (t: string) => t.replace(/[\u064B-\u065F\u0670\u0640]/g, '');
+        const stripPunctuation = (t: string) => t.replace(/[،,\.\?؟!;؛:]/g, '').trim();
+        const normalize = (t: string) => {
+            const cleaned = stripPunctuation(stripDiacritics(t));
+            return ArabicTextUtils.normalizeArabic(cleaned);
+        };
+
+        const normalizedResponse = normalize(aiResponse);
+        if (!normalizedResponse || normalizedResponse.length === 0) {
+            return null;
+        }
+
+        // Context'dan barcha materiallarni ko'rib chiqish
+        for (const lesson of context) {
+            // Skip future lessons if lastWatchedLessonOrder provided
+            if (lastWatchedLessonOrder && lesson?.lessonOrder && lesson.lessonOrder > lastWatchedLessonOrder) {
+                continue;
+            }
+
+            // Dialogue turns'ni tekshirish
+            if (lesson.dialogue && Array.isArray(lesson.dialogue)) {
+                for (const turn of lesson.dialogue) {
+                    const turnText = turn?.text || turn?.content || '';
+                    if (!turnText) continue;
+
+                    const normalizedTurn = normalize(turnText);
+                    if (normalizedTurn === normalizedResponse) {
+                        // Exact match topildi
+                        const translationUz = turn?.translationUz || null;
+                        if (translationUz) {
+                            return translationUz;
+                        }
+                    }
+                }
+            }
+
+            // Monologue'ni tekshirish
+            if (lesson.monologue && Array.isArray(lesson.monologue)) {
+                for (const segment of lesson.monologue) {
+                    const segmentText = segment?.text || segment?.content || '';
+                    if (!segmentText) continue;
+
+                    const normalizedSegment = normalize(segmentText);
+                    if (normalizedSegment === normalizedResponse) {
+                        // Exact match topildi
+                        const translationUz = segment?.translationUz || null;
+                        if (translationUz) {
+                            return translationUz;
+                        }
+                    }
+                }
+            }
+
+            // Direct text field'ni tekshirish (backward compatibility)
+            const lessonText = lesson?.text || lesson?.content || '';
+            if (lessonText) {
+                const normalizedLesson = normalize(lessonText);
+                if (normalizedLesson === normalizedResponse) {
+                    const translationUz = lesson?.translationUz || null;
+                    if (translationUz) {
+                        return translationUz;
+                    }
+                }
+            }
+        }
+
+        return null; // Topilmadi
     }
 }

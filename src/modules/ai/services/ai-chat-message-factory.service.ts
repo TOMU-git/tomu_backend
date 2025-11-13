@@ -173,7 +173,6 @@ export class AIChatMessageFactory {
 
         // SessionId'ni to'g'ridan-to'g'ri set qilish
         message.sessionId = sessionId;
-        console.log(`[MessageFactory.createResponse] Set sessionId=${sessionId} for message`);
         message.senderType = 'ai';
         message.originalText = null; // Foydalanuvchi xabari alohida saqlanadi
         message.aiResponseText = aiResponse;

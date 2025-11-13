@@ -26,8 +26,6 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
             throw new Error(`[AI Chat Repository] Invalid sessionId: ${entity.sessionId}`);
         }
 
-        console.log(`[AI Chat Repository] Saving message with sessionId: ${entity.sessionId}`);
-
         // ✅ To'g'ridan-to'g'ri INSERT - QueryBuilder bilan
         const result = await this.aiChatMessageRepository
             .createQueryBuilder()
@@ -46,7 +44,6 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
             .execute();
 
         const savedId = result.identifiers[0].id;
-        console.log(`[AI Chat Repository] ✅ Saved message id=${savedId} with sessionId=${entity.sessionId}`);
 
         // Saved message'ni qaytarish
         const saved = await this.aiChatMessageRepository.findOne({
@@ -92,7 +89,6 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
             .orderBy('message.createdAt', 'ASC')
             .getMany();
 
-        console.log(`[AI Chat Repository] Found ${messages.length} messages for session ${sessionId}`);
         return messages;
     }
 

@@ -28,13 +28,9 @@ export abstract class AIException extends HttpException {
 
         super(
             {
-                message: 'error',
-                errorCode: errorConfig.code,
-                data: {
-                    message: errorConfig.message,
-                    retryable: errorConfig.retryable,
-                    action: errorConfig.action,
-                },
+                message: errorConfig.message,
+                statusCode: errorConfig.httpStatus,
+                data: null,
             },
             errorConfig.httpStatus,
         );

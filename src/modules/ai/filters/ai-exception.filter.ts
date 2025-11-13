@@ -85,13 +85,9 @@ export class AIExceptionFilter implements ExceptionFilter {
         const errorConfig = AI_ERROR_MESSAGES[errorCode];
 
         return response.status(status).json({
-            message: 'error',
-            errorCode: errorConfig.code,
-            data: {
-                message: errorConfig.message,
-                retryable: errorConfig.retryable,
-                action: errorConfig.action,
-            },
+            message: errorConfig.message,
+            statusCode: errorConfig.httpStatus,
+            data: null,
         });
     }
 
@@ -106,13 +102,9 @@ export class AIExceptionFilter implements ExceptionFilter {
         if (networkErrorCodes.includes(error.code)) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.NETWORK_ERROR];
             return response.status(errorConfig.httpStatus).json({
-                message: 'error',
-                errorCode: errorConfig.code,
-                data: {
-                    message: errorConfig.message,
-                    retryable: errorConfig.retryable,
-                    action: errorConfig.action,
-                },
+                message: errorConfig.message,
+                statusCode: errorConfig.httpStatus,
+                data: null,
             });
         }
 
@@ -120,39 +112,27 @@ export class AIExceptionFilter implements ExceptionFilter {
         if (error.response?.status === 429) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.RATE_LIMIT_EXCEEDED];
             return response.status(errorConfig.httpStatus).json({
-                message: 'error',
-                errorCode: errorConfig.code,
-                data: {
-                    message: errorConfig.message,
-                    retryable: errorConfig.retryable,
-                    action: errorConfig.action,
-                },
+                message: errorConfig.message,
+                statusCode: errorConfig.httpStatus,
+                data: null,
             });
         }
 
         if (error.response?.status >= 500 && error.response?.status < 600) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.AI_SERVICE_ERROR];
             return response.status(errorConfig.httpStatus).json({
-                message: 'error',
-                errorCode: errorConfig.code,
-                data: {
-                    message: errorConfig.message,
-                    retryable: errorConfig.retryable,
-                    action: errorConfig.action,
-                },
+                message: errorConfig.message,
+                statusCode: errorConfig.httpStatus,
+                data: null,
             });
         }
 
         // Default: Server error
         const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.SERVER_ERROR];
         return response.status(errorConfig.httpStatus).json({
-            message: 'error',
-            errorCode: errorConfig.code,
-            data: {
-                message: errorConfig.message,
-                retryable: errorConfig.retryable,
-                action: errorConfig.action,
-            },
+            message: errorConfig.message,
+            statusCode: errorConfig.httpStatus,
+            data: null,
         });
     }
 

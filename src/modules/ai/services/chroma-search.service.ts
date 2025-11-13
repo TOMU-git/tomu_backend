@@ -90,12 +90,10 @@ export class ChromaSearchService {
 
             const headers = this.connectionService.getChromaHeaders();
 
-            // Strict mode uchun where condition
+            // Where condition - faqat language bilan qidirish
+            // lessonOrder filterni ChromaDB natijalaridan keyin qo'llaymiz (client-side)
+            // Bu ChromaDB versiyasiga bog'liq emas va xatolarni oldini oladi
             const whereCondition: any = { language };
-            if (params.strict && params.maxLessonOrder) {
-                whereCondition.lessonOrder = { $lte: params.maxLessonOrder };
-                // console.log(`   - Strict mode: lessonOrder <= ${params.maxLessonOrder}`);
-            }
 
             // console.log(`📡 Querying ChromaDB...`);
             const queryPayload = {
@@ -122,7 +120,7 @@ export class ChromaSearchService {
                 // console.log(`✅ ChromaDB query successful: ${documents.length} documents found`);
 
                 // Build initial results from ChromaDB
-                const initialResults = documents.map((doc: string, i: number) => ({
+                let initialResults = documents.map((doc: string, i: number) => ({
                     id: metadatas[i]?.id || `chroma_${i}`,
                     text: doc,
                     language: metadatas[i]?.language || 'ar',
@@ -137,6 +135,25 @@ export class ChromaSearchService {
                     source: 'chroma'
                 }));
 
+                // Client-side filtering: lessonOrder filterni qo'llash (strict mode)
+                // Bu ChromaDB where clause'da $lte operatori muammosini hal qiladi
+                if (params.strict && params.maxLessonOrder) {
+                    const beforeFilter = initialResults.length;
+                    initialResults = initialResults.filter(
+                        (result) => result.lessonOrder <= params.maxLessonOrder!
+                    );
+                    // console.log(`   - Strict mode filter: ${beforeFilter} → ${initialResults.length} documents (lessonOrder <= ${params.maxLessonOrder})`);
+                }
+
+                // Module limit filter (client-side)
+                if (typeof params.moduleLimit === 'number') {
+                    const beforeModuleFilter = initialResults.length;
+                    initialResults = initialResults.filter(
+                        (result) => result.moduleNumber <= params.moduleLimit!
+                    );
+                    // console.log(`   - Module filter: ${beforeModuleFilter} → ${initialResults.length} documents (moduleNumber <= ${params.moduleLimit})`);
+                }
+
                 // Apply reranking if enabled
                 let finalResults = initialResults;
                 if (this.rerankService.isEnabled() && initialResults.length > finalTopK) {
@@ -150,7 +167,7 @@ export class ChromaSearchService {
                     // console.log(`📊 Using top ${finalTopK} documents by distance (rerank disabled)`);
                 }
 
-                // console.log(`📚 Context: ChromaDB → Rerank (${finalResults.length} lessons)`);
+                // console.log(`📚 Context: ChromaDB → Filter → Rerank (${finalResults.length} lessons)`);
                 return finalResults;
             } else {
                 // console.log(`⚠️  ChromaDB query returned 0 documents, falling back to Memory Index`);
