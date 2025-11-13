@@ -1,3 +1,6 @@
+/**
+ * AI moduli uchun xato xabarlari (O'zbek tilida)
+ */
 export const AI_ERROR_MESSAGES = {
     EMPTY_TEXT: "Matn bo'sh bo'lishi mumkin emas",
     SESSION_NOT_FOUND: "Sessiya topilmadi yoki ruxsat yo'q",
@@ -6,7 +9,8 @@ export const AI_ERROR_MESSAGES = {
 
 /**
  * AI Fallback Messages
- * STT va validation xatolari uchun standart javoblar
+ * STT (Speech-to-Text) va validation xatolari uchun standart javoblar
+ * Har bir xabar arab va o'zbek tillarida
  */
 export const AI_FALLBACK_MESSAGES = {
     // STT bo'sh yoki qisqa bo'lsa
@@ -39,13 +43,13 @@ export const AI_FALLBACK_MESSAGES = {
         uzbek: 'Kechirasiz, tushunmadim. Iltimos, qayta ayting.',
     },
 
-    // Yaqin match - yordamlash
+    // Yaqin match - yordamlash (foydalanuvchi noto'g'ri talaffuz qilgan bo'lsa)
     CLOSE_MATCH_HELP: {
         arabic: 'هَلْ تَقْصِدُ: ',
         uzbek: 'Shunday deyishni xohlaysizmi: ',
     },
 
-    // Dialogue oxirida - tasdiqlash
+    // Dialogue oxirida - tasdiqlash (muvaffaqiyatli yakunlangan suhbat)
     DIALOGUE_END_CONFIRMATION: {
         arabic: 'جَيِّدٌ! أَحْسَنْتَ!',
         uzbek: 'Yaxshi! Ajoyib!',

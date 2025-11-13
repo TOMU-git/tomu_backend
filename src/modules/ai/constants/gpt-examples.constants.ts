@@ -1,15 +1,18 @@
 /**
  * GPT Few-Shot Examples Constants
- * Contains hardcoded examples used for GPT prompt engineering
+ * 
+ * GPT prompt engineering uchun ishlatiladigan misollar
+ * Few-shot learning - AI ga misollar orqali qanday javob berishni o'rgatish
  */
 
 export interface GPTMessage {
-    role: 'user' | 'assistant' | 'system';
-    content: string;
+    role: 'user' | 'assistant' | 'system'; // Xabar roli
+    content: string; // Xabar matni
 }
 
 /**
- * Simple few-shot examples for basic generate() method
+ * Oddiy few-shot misollar - basic generate() metodi uchun
+ * Oddiy savol-javob misollari
  */
 export const SIMPLE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
     { role: "user", content: "مَا هَٰذَا؟" },
@@ -19,51 +22,58 @@ export const SIMPLE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
 ];
 
 /**
- * Comprehensive few-shot examples for generateWithUsage() method
- * Includes examples for subject matching, conversation context, and natural flow
+ * Keng qamrovli few-shot misollar - generateWithUsage() metodi uchun
+ * 
+ * Quyidagi holatlarni qamrab oladi:
+ * - Mavzu moslashuvi (obyekt haqida savol → obyekt haqida javob)
+ * - Suhbat konteksti (oldingi xabarlarni eslab qolish)
+ * - Tabiiy suhbat oqimi (mavzuni davom ettirish)
  */
 export const COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
-    // Example 1: Object location
+    // Misol 1: Obyekt joylashuvi
     { role: "user", content: "أَيْنَ الدَّفْتَرُ؟" },
     { role: "assistant", content: "الدَّفْتَرُ عَلَى الْمَكْتَبِ." },
 
-    // Example 2: Person location
+    // Misol 2: Shaxs joylashuvi
     { role: "user", content: "أَيْنَ أَنْتَ؟" },
     { role: "assistant", content: "أَنَا فِي الْمَسْجِدِ." },
 
-    // Example 3: What is this
+    // Misol 3: "Bu nima?" savoli
     { role: "user", content: "مَا هَذَا؟" },
     { role: "assistant", content: "هَذَا كِتَابٌ." },
 
-    // Example 4: Conversation context - remembering names
+    // Misol 4: Suhbat konteksti - ismlarni eslab qolish
     { role: "user", content: "اِسْمِي سَعِيدٌ." },
     { role: "assistant", content: "مَرْحَبًا يَا سَعِيدُ!" },
     { role: "user", content: "مَا هَذَا؟" },
-    { role: "assistant", content: "هَذَا كِتَابٌ، يَا سَعِيدُ." }, // Name remembered from previous message
+    { role: "assistant", content: "هَذَا كِتَابٌ، يَا سَعِيدُ." }, // Oldingi xabardan ism eslab qolindi
 
-    // Example 5: Natural conversation flow - topic continuation
+    // Misol 5: Tabiiy suhbat oqimi - mavzuni davom ettirish
     { role: "user", content: "مَا هَذَا؟" },
     { role: "assistant", content: "هَذَا بُرْتُقَالٌ." },
     { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" },
-    { role: "assistant", content: "نَعَمْ، هُوَ لَذِيذٌ جِدًّا." }, // Continuing about the same object (orange)
+    { role: "assistant", content: "نَعَمْ، هُوَ لَذِيذٌ جِدًّا." }, // Xuddi shu obyekt (apelsin) haqida davom etadi
 
-    // Example 6: Topic transition - natural flow
+    // Misol 6: Mavzu o'zgarishi - tabiiy o'tish
     { role: "user", content: "أَيْنَ الدَّفْتَرُ؟" },
     { role: "assistant", content: "الدَّفْتَرُ عَلَى الْمَكْتَبِ." },
     { role: "user", content: "وَالْكِتَابُ؟" },
-    { role: "assistant", content: "الْكِتَابُ أَيْضًا عَلَى الْمَكْتَبِ." }, // Continuing conversation about location
+    { role: "assistant", content: "الْكِتَابُ أَيْضًا عَلَى الْمَكْتَبِ." }, // Joylashuv haqidagi suhbatni davom ettiradi
 
-    // Anti-pattern warning
+    // Anti-pattern ogohlantirish - noto'g'ri javob berishdan saqlash
     { role: "system", content: "REMEMBER: If user asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?), answer about the NOTEBOOK, NOT about yourself!" },
 
-    // Conversation context reminder
+    // Suhbat konteksti eslatmasi
     { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change." }
 ];
 
 /**
- * System prompt rules for Arabic language learning
+ * Arab tili o'rganish uchun system prompt qoidalari
+ * 
+ * GPT ga qanday javob berishni o'rgatish uchun qoidalar
  */
 export const ARABIC_SYSTEM_PROMPT_RULES = {
+    // Oddiy qoidalar - basic generate() uchun
     basic: [
         "You are an Arabic language learning assistant for beginners.",
         "RULES:",
@@ -74,20 +84,24 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
         "5. Response MUST be logically correct and different from user's input.",
         "6. If user makes pronunciation errors (1-2 wrong letters), find similar sentence/word from lesson materials and ask 'هَلْ تَقْصِدُ ...؟' (Did you mean ...?) to help them.",
     ],
+    // Keng qamrovli qoidalar - generateWithUsage() uchun
     comprehensive: {
         introduction: "You are an Arabic language learning assistant for beginners.",
         criticalRules: {
+            // Mavzu moslashuvi - muhim qoida
             subjectMatching: [
                 "CRITICAL RULE - Subject Matching:",
                 "- If user asks about an OBJECT (الدفتر, الكتاب, القلم), answer about THAT OBJECT",
                 "- If user asks about a PERSON (أنت, أنا, هو), answer about THAT PERSON",
                 "- NEVER mix: object question → object answer, person question → person answer",
             ],
+            // Suhbat konteksti - muhim qoida
             conversationContext: [
                 "CRITICAL RULE - Conversation Context:",
                 "- Pay attention to conversation history - if a name was mentioned before, remember it!",
             ],
         },
+        // Boshqa qoidalar
         otherRules: [
             "Other rules:",
             "1. Respond in Modern Standard Arabic with full diacritical marks (تشكيل).",
@@ -95,6 +109,7 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
             "3. Give short, clear answers (never echo user's words).",
             "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا.",
         ],
+        // Suhbat oqimi qoidalari
         conversationFlow: [
             "- Maintain natural conversation flow - like a human would talk",
             "- Build upon previous messages in the conversation",
@@ -104,7 +119,9 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
 };
 
 /**
- * Topic mapping for conversation topics
+ * Suhbat mavzulari mapping
+ * 
+ * Mavzu nomlarini o'zbek tiliga tarjima qilish uchun
  */
 export const CONVERSATION_TOPIC_MAP: Record<string, string> = {
     'profession': 'kasb haqida',

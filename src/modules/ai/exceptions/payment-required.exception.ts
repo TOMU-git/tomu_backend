@@ -2,14 +2,14 @@ import { AIException } from './ai-exception.base';
 import { AIErrorCode } from '../constants/error-codes.enum';
 
 /**
- * PaymentRequiredException
- * -------------------------------------------------------
- * Thrown when user has not purchased the course
+ * To'lov talab qilinadi xatosi
+ * 
+ * Foydalanuvchi kursni sotib olmaganida tashlanadi
  */
 export class PaymentRequiredException extends AIException {
     constructor(details?: {
-        courseId?: number;
-        userId?: number;
+        courseId?: number; // Kurs ID
+        userId?: number; // Foydalanuvchi ID
     }) {
         super(AIErrorCode.PAYMENT_REQUIRED, details);
     }

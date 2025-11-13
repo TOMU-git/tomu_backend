@@ -1,13 +1,13 @@
 /**
- * AI Module Exceptions - Barrel Export
- * -------------------------------------------------------
- * Centralized export for all exception classes
+ * AI moduli exceptionlari - Barrel Export
+ * 
+ * Barcha exception klasslarini markazlashtirilgan export
  */
 
-// Base exception
+// Asosiy exception
 export * from './ai-exception.base';
 
-// Specific exceptions
+// Maxsus exceptionlar
 export * from './limit-exceeded.exception';
 export * from './payment-required.exception';
 export * from './subscription-expired.exception';
@@ -17,7 +17,7 @@ export * from './ai-service-unavailable.exception';
 export * from './rate-limit.exception';
 export * from './audio-not-recognized.exception';
 
-// Legacy exports (deprecated, will be removed)
+// Legacy exportlar (deprecated, keyinroq olib tashlanadi)
 export * from './session-forbidden.exception';
 
 

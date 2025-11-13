@@ -3,29 +3,31 @@ import { AIErrorCode } from '../constants/error-codes.enum';
 import { AI_ERROR_MESSAGES } from '../constants/error-messages.constant';
 
 /**
- * Base class for all AI module exceptions
- * -------------------------------------------------------
- * Best Practice: Single inheritance hierarchy for domain exceptions
+ * AI moduli barcha exceptionlar uchun asosiy klass
  * 
- * Benefits:
- * - Consistent error response structure
- * - Centralized error configuration
- * - Easy to catch and handle in filters
- * - Type-safe error codes
+ * Eng yaxshi amaliyot: Domain exceptionlar uchun bitta inheritance ierarxiyasi
+ * 
+ * Afzalliklari:
+ * - Bir xil xato javob strukturi
+ * - Markazlashtirilgan xato konfiguratsiyasi
+ * - Filterlarda oson tutish va boshqarish
+ * - Type-safe xato kodlari
  */
 export abstract class AIException extends HttpException {
-    public readonly errorCode: AIErrorCode;
-    public readonly retryable: boolean;
-    public readonly action: string;
-    public readonly timestamp: string;
-    public readonly details?: any; // Technical details for logging
+    public readonly errorCode: AIErrorCode; // Xato kodi
+    public readonly retryable: boolean; // Qayta urinish mumkinmi
+    public readonly action: string; // Foydalanuvchi uchun tavsiya (qanday harakat qilish)
+    public readonly timestamp: string; // Xato vaqti
+    public readonly details?: any; // Logging uchun texnik tafsilotlar
 
     constructor(
         errorCode: AIErrorCode,
         details?: any,
     ) {
+        // Xato konfiguratsiyasini olish
         const errorConfig = AI_ERROR_MESSAGES[errorCode];
 
+        // HttpException ni chaqirish (NestJS standart xato formati)
         super(
             {
                 message: errorConfig.message,
@@ -35,25 +37,28 @@ export abstract class AIException extends HttpException {
             errorConfig.httpStatus,
         );
 
+        // Xato xususiyatlarini o'rnatish
         this.errorCode = errorCode;
         this.retryable = errorConfig.retryable;
         this.action = errorConfig.action;
         this.timestamp = new Date().toISOString();
         this.details = details;
 
-        // For proper instanceof checks
+        // To'g'ri instanceof tekshiruvlari uchun prototype ni o'rnatish
         Object.setPrototypeOf(this, new.target.prototype);
     }
 
     /**
-     * Get error response for API
+     * API uchun xato javobini olish
      */
     getErrorResponse() {
         return this.getResponse();
     }
 
     /**
-     * Get details for logging
+     * Logging uchun tafsilotlarni olish
+     * 
+     * Bu metod xatolarni log qilish yoki monitoring uchun ishlatiladi
      */
     getLogDetails() {
         return {
