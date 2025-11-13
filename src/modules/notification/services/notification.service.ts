@@ -23,22 +23,32 @@ export class NotificationService {
      */
     async registerFcmToken(userId: number, registerDto: RegisterFcmTokenDto): Promise<void> {
         try {
-            // If deviceId is provided, update that specific device
+            // If deviceId is provided, upsert (create or update) device
             if (registerDto.deviceId) {
-                const device = await this.userDeviceRepository.findOne({
-                    where: {
+                // Use upsert to create or update without querying first
+                await this.userDeviceRepository.upsert(
+                    {
                         userId,
                         deviceId: registerDto.deviceId,
+                        deviceName: 'Mobile Device',
+                        deviceType: 'mobile',
+                        osName: 'Unknown',
+                        osVersion: 'Unknown',
+                        browserName: 'Unknown',
+                        browserVersion: 'Unknown',
+                        ipAddress: '0.0.0.0',
+                        userAgent: 'FCM Token Registration',
+                        fcmToken: registerDto.fcmToken,
+                        isActive: true,
+                        lastLoginAt: new Date(),
+                        securityLevel: 'normal',
                     },
-                });
-
-                if (!device) {
-                    throw new NotFoundException(`Device with ID ${registerDto.deviceId} not found`);
-                }
-
-                device.fcmToken = registerDto.fcmToken;
-                await this.userDeviceRepository.save(device);
-                this.logger.log(`FCM token updated for device ${registerDto.deviceId}`);
+                    {
+                        conflictPaths: ['userId', 'deviceId'], // Unique constraint on userId + deviceId
+                        skipUpdateIfNoValuesChanged: false, // Always update
+                    }
+                );
+                this.logger.log(`FCM token registered/updated for device ${registerDto.deviceId}`);
                 return;
             }
 
