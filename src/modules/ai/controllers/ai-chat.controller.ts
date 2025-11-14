@@ -235,8 +235,8 @@ export class AiChatController {
         // History so'rovi - faqat message'larni qaytarish
         if (history === 'history') {
             const messages = await this.chat.getMessages(sessionId, userId);
-            // Oxirgi 20 ta message'ni qaytarish
-            const limitedMessages = messages.slice(0, 20).map(msg => ({
+            // Oxirgi 25 ta message'ni qaytarish
+            const limitedMessages = messages.slice(0, 25).map(msg => ({
                 id: msg.id,
                 sessionId: msg.sessionId,
                 senderType: msg.senderType,
@@ -278,9 +278,9 @@ export class AiChatController {
                 mimetype: file?.mimetype
             });
 
-            // Message'larni olish (oxirgi 20 ta)
+            // Message'larni olish (oxirgi 25 ta)
             const messages = await this.chat.getMessages(sessionId, userId);
-            const limitedMessages = messages.slice(0, 20).map(m => ({
+            const limitedMessages = messages.slice(0, 25).map(m => ({
                 id: m.id,
                 sessionId: m.sessionId,
                 senderType: m.senderType,
