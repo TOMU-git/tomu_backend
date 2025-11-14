@@ -28,9 +28,7 @@ async function bootstrap() {
         // Kurs ID=1 bo'lgan kursning barcha darslarini indekslaydi
         // Bu jarayon darslarni qismlarga bo'lib, har birini embedding qiladi
         const res = await chroma.indexCourse({ courseId: 1 });
-        // console.log(`Indexed chunks: ${res.indexed}`);
     } catch (e: any) {
-        // Xatolik bo'lsa, xabarni ko'rsatadi va processni xato kodi bilan yakunlaydi
         console.error('Indexing failed:', e?.message || e);
         process.exitCode = 1;
     } finally {
@@ -39,7 +37,6 @@ async function bootstrap() {
     }
 }
 
-// Scriptni ishga tushiradi
 bootstrap();
 
 

@@ -9,7 +9,7 @@ import { Column, Entity } from "typeorm";
  * Asosiy maydonlar:
  *  - sessionId: Qaysi sessiyaga tegishliligi (REAL COLUMN, faqat number)
  *  - senderType: Xabar yuboruvchisi ('user' yoki 'ai')
- *  - originalText, aiResponseText, aiResponseUzbek: Matn tarkiblari
+ *  - aiResponseText, aiResponseUzbek: Matn tarkiblari
  *  - audioUrl: TTS audio fayl URL
  *  - isWithinLimit: 7-modul limitiga rioya qilinganmi
  */

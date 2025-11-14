@@ -46,26 +46,12 @@ export class PaymentGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const user = request.user; // AuthGuard'dan keladi
 
-        // DEBUG: kiruvchi request haqida qisqa log (guarddan oldin controller ishlamaydi)
         try {
             const rawBody = request.body || {};
             const rawQuery = request.query || {};
             const rawParams = request.params || {};
-            // console.log("[PaymentGuard] Incoming:", {
-            //     userId: user?.id,
-            //     body: {
-            //         sessionId: rawBody?.sessionId,
-            //         courseId: rawBody?.courseId,
-            //         language: rawBody?.language,
-            //     },
-            //     queryCourseId: rawQuery?.courseId,
-            //     paramCourseId: rawParams?.courseId,
-            //     path: request?.originalUrl || request?.url,
-            //     method: request?.method,
-            // });
         } catch (_) { }
 
-        // 1. User mavjudligini tekshirish (AuthGuard allaqachon tekshiradi, lekin qo'shimcha xavfsizlik)
         if (!user || !user.id) {
             this.logger.warn("PaymentGuard: User not found in request");
             throw new InvalidSessionException({
@@ -166,26 +152,9 @@ export class PaymentGuard implements CanActivate {
                 expiredAt: userCourse.endedAt
             });
         }
-
-        // this.logger.debug(
-        //     `PaymentGuard: Access granted for user ${userId}, course ${courseId}`
-        // );
-        // console.log("[PaymentGuard] PASS", {
-        //     userId,
-        //     courseId,
-        //     isActive: userCourse.isActive,
-        //     endedAt: userCourse.endedAt,
-        //     hasEverPaid: userCourse.hasEverPaid,
-        //     onFreeTrial: userCourse.onFreeTrial,
-        // });
-
         return true;
     }
 
-    /**
-     * Request'dan courseId ni olish
-     * Body, query yoki params'dan
-     */
     private extractCourseId(request: any): number | null {
         // Body'dan (POST request)
         if (request.body?.courseId) {
@@ -222,20 +191,11 @@ export class PaymentGuard implements CanActivate {
      */
     private async checkAnyActiveCourse(userId: number): Promise<boolean> {
         const userCourses = await this.userCourseRepository.findByUserId(userId);
-        // console.log("[PaymentGuard] Found userCourses:", (userCourses || []).map(uc => ({
-        //     id: uc.id,
-        //     isActive: uc.isActive,
-        //     endedAt: uc.endedAt,
-        //     hasEverPaid: uc.hasEverPaid,
-        //     onFreeTrial: uc.onFreeTrial,
-        // })));
-
         if (!userCourses || userCourses.length === 0) {
             throw new PaymentRequiredException({
                 userId
             });
         }
-
         // Agar ayrim ustunlar undefined bo'lsa, to'liq entity'ni olib qayta tekshiramiz
         const hydrated: typeof userCourses = [] as any;
         for (const uc of userCourses) {
