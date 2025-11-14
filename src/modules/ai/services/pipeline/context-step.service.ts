@@ -4,108 +4,105 @@ import { AIChatService } from "../ai-chat.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
 import { AIChatMessage } from "../../entities/ai-chat-message.entity";
 import { AIChatSession } from "../../entities/ai-chat-session.entity";
+import { AI_LIMITS } from "../../constants/ai-constants";
 
 /**
- * Context Step: Context building using full buildContext logic
+ * Context Step: Kontekst yaratish
+ * 
+ * Foydalanuvchi progress, dars materiallari va suhbat tarixini yig'ib, 
+ * GPT uchun kontekst tayyorlaydi
  */
 @Injectable()
 export class ContextStep implements PipelineStep {
     constructor(
         @Inject(forwardRef(() => AIChatService))
-        private readonly aiChatService: AIChatService, // AIChatService'dan buildContext ishlatish uchun
-        private readonly tts: TTSService // TTS for audio generation
+        private readonly aiChatService: AIChatService, // buildContext metodini ishlatish uchun
+        private readonly tts: TTSService // Audio yaratish uchun TTS
     ) { }
 
     async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput | VoiceOutput> {
-        // User textini RAG query sifatida ishlatish uchun olish
+        // Foydalanuvchi matnini RAG query sifatida olish
         const userText = input.validatedText || '';
 
-        // AIChatService'dan to'liq kontekst olish (profile, courseProgress, lessonProgress bilan)
-        // User textini query sifatida yuborish - RAG search'ni aniqroq qiladi
+        // To'liq kontekst olish (foydalanuvchi profili, progress, dars materiallari)
+        // User textini query sifatida yuborish - RAG qidiruvni aniqroq qiladi
         let fullContext: any;
         try {
             const courseId = input.courseId || input.session?.courseId;
             const courseIdNum = courseId ? Number(courseId) : undefined;
 
-            // console.log(`🔍 Building context for userId=${input.userId}, courseId=${courseIdNum}...`);
             fullContext = await this.aiChatService.buildContext({
                 userId: Number(input.userId),
                 courseId: courseIdNum,
-                userQuery: userText, // User so'rovini RAG query sifatida yuborish
+                userQuery: userText, // RAG qidiruv uchun foydalanuvchi so'rovi
             });
-            console.log(`✅ Context built successfully`);
         } catch (error: any) {
-            // console.error(`❌ Error building context:`, error.message);
-            // console.error(`❌ Error stack:`, error.stack);
             throw error;
         }
 
         const courseProgress = fullContext?.courseProgress;
         const userLevel = fullContext?.userLevel;
+        const profile = fullContext?.profile;
 
-        // User ko'rgan eng oxirgi dars tartib raqami
+        // Foydalanuvchi ko'rgan eng oxirgi dars tartib raqami
         const lastWatchedLessonOrder = userLevel?.currentLessonOrder || 0;
-        console.log(`📊 User progress: Last watched lesson order = ${lastWatchedLessonOrder}`);
 
-        // Context'dan barcha darslarni olish
+        // Kontekstdan barcha dars materiallarini olish
         const allLessons = fullContext.chromaContext || [];
 
-        // Agar user text kelmagan darslardan bo'lsa, maxsus javob qaytarish
-        // Strict check: Faqat GPT javobiga qarab tekshiramiz, chunki biz xavfni oldini olishga harakat qilamiz
-        // Lekin user har qanday gapirishi mumkin, shuning uchun yaxshiroqroq yondashish kerak
+        // Foydalanuvchi hali ko'rmagan darslar haqida gapirishga harakat qilayotganini tekshirish
         const possibleLessons = this.findPossibleFutureLessons(userText, allLessons, lastWatchedLessonOrder);
 
         if (possibleLessons.futureLessons.length > 0) {
-            console.log(`⚠️ User gapirishga harakat qilayotgan darslar: ${possibleLessons.futureLessons.join(', ')}`);
-            console.log(`📊 Current lesson: ${lastWatchedLessonOrder}`);
-
-            // Maxsus javob yaratish
+            // Maxsus javob yaratish (hali kelmagan dars haqida)
             const message = await this.createFutureLessonMessage(input, lastWatchedLessonOrder, Math.min(...possibleLessons.futureLessons));
             return { message, session: input.session };
         }
 
-        // Get conversation history for context
+        // Suhbat tarixini olish (kontekst uchun)
         let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
         try {
-            console.log(`📜 Getting conversation history for session ${input.sessionId}...`);
             const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
-            console.log(`✅ Retrieved ${previousMessages.length} previous messages`);
 
-            // Format conversation history for GPT
+            // Suhbat tarixini GPT uchun formatlash
             conversationHistory = previousMessages
                 .filter(msg => {
-                    // User va AI xabarlari ikkalasi ham aiResponseText dan o'qiladi
+                    // Foydalanuvchi va AI xabarlari ikkalasi ham aiResponseText dan o'qiladi
                     const content = msg.aiResponseText;
                     return content && content.trim().length > 0;
                 })
-                .slice(-10) // Limit to last 10 messages
+                .slice(-AI_LIMITS.MAX_CONVERSATION_HISTORY)
                 .map(msg => ({
                     role: msg.senderType === 'user' ? 'user' as const : 'assistant' as const,
                     content: msg.aiResponseText || '',
                 }));
-            console.log(`📜 Formatted ${conversationHistory.length} messages for conversation history`);
         } catch (error: any) {
-            console.error(`❌ Error getting conversation history:`, error.message);
-            console.error(`⚠️  Continuing without conversation history`);
+            // Conversation history olishda xato bo'lsa, bo'sh array bilan davom etamiz
             conversationHistory = [];
         }
 
         return {
             ...input,
-            context: allLessons,
-            conversationHistory, // Add conversation history
-            lastWatchedLessonOrder, // User progress - kelgan dars tartibi
+            context: allLessons, // Dars materiallari
+            conversationHistory, // Suhbat tarixi
+            lastWatchedLessonOrder, // Foydalanuvchi progress - ko'rgan dars tartibi
+            profile, // Foydalanuvchi profili
         } as VoiceInput & {
             context: any;
             conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>;
             lastWatchedLessonOrder: number;
+            profile?: any;
         };
     }
 
+    /**
+     * Foydalanuvchi matnida eslatilgan darslarni topish
+     * Hali ko'rilmagan darslarni aniqlash uchun
+     */
     private findPossibleFutureLessons(text: string, lessons: any[], currentOrder: number): { mentioned: number[], futureLessons: number[] } {
         const mentioned: number[] = [];
 
-        // User textidagi maxsus so'zlarni olish (ismlar, predmetlar)
+        // Foydalanuvchi matnidagi maxsus so'zlarni olish (ismlar, predmetlar)
         const specialWords = this.extractSpecialWords(text);
         const userText = text.toLowerCase();
 
@@ -133,12 +130,15 @@ export class ContextStep implements PipelineStep {
             }
         }
 
-        // Kelmagan darslarni ajratish
+        // Hali ko'rilmagan darslarni ajratish
         const futureLessons = mentioned.filter(l => l > currentOrder);
 
         return { mentioned, futureLessons };
     }
 
+    /**
+     * Matndan maxsus so'zlarni ajratish (ismlar, predmetlar)
+     */
     private extractSpecialWords(text: string): string[] {
         // Ismlar, narsa nomlari va muhim so'zlarni ajratish
         const words: string[] = [];
@@ -172,28 +172,28 @@ export class ContextStep implements PipelineStep {
         return words;
     }
 
+    /**
+     * Hali ko'rilmagan dars haqida maxsus xabar yaratish
+     */
     private async createFutureLessonMessage(
         input: VoiceInput,
         currentLessonOrder: number,
         mentionedLessonOrder: number
     ): Promise<AIChatMessage> {
-        // Validation
+        // Validatsiya
         if (!input.sessionId) {
             throw new Error(`[ContextStep] Invalid sessionId: ${input.sessionId}`);
         }
 
         const message = new AIChatMessage();
 
-        // SessionId'ni to'g'ridan-to'g'ri set qilish
+        // Xabar xususiyatlarini o'rnatish
         message.sessionId = Number(input.sessionId);
-        console.log(`[ContextStep] Set sessionId=${message.sessionId} for future lesson message`);
         message.senderType = 'ai';
         message.originalText = input.validatedText;
         message.isWithinLimit = true;
 
-        // Debug log
-        console.log(`[ContextStep] Creating future lesson message: sessionId=${message.sessionId}`);
-
+        // Hali kelmagan dars haqida javob
         message.aiResponseText = 'لَحْنِ بَعْدُ لَمْ تَصِلْ إِلَى هَٰذَا الدَّرْسِ.';
         message.aiResponseUzbek = 'Siz hali bu darsga kelmagansiz.';
 

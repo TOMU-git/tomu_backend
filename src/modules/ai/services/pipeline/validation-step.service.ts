@@ -5,7 +5,11 @@ import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
 import { ArabicTextUtils } from "../../utils/arabic-text.util";
 
 /**
- * Validation Step: Text validation va fallback
+ * Validation Step: Matn validatsiyasi va fallback
+ * 
+ * STT natijasini tekshiradi:
+ * - Bo'sh yoki qisqa bo'lsa fallback javob
+ * - Arab tilidan boshqa til bo'lsa fallback javob
  */
 @Injectable()
 export class ValidationStep implements PipelineStep {
@@ -17,12 +21,12 @@ export class ValidationStep implements PipelineStep {
     async execute(input: VoiceInput & { transcribedText: string }): Promise<VoiceInput | VoiceOutput> {
         const trimmed = (input.transcribedText || "").trim();
 
-        // STT bo'sh yoki qisqa bo'lsa
+        // STT natijasi bo'sh yoki juda qisqa bo'lsa
         if (!trimmed || trimmed.length < 2) {
             const message = await this.messageFactory.createFallbackMessage(
                 Number(input.sessionId),
                 trimmed,
-                'empty'
+                'empty' // Bo'sh matn fallback
             );
             return { message, session: input.session };
         }
@@ -32,11 +36,12 @@ export class ValidationStep implements PipelineStep {
             const message = await this.messageFactory.createFallbackMessage(
                 Number(input.sessionId),
                 trimmed,
-                'non-arabic'
+                'non-arabic' // Arab tilidan boshqa til fallback
             );
             return { message, session: input.session };
         }
 
+        // Validatsiya muvaffaqiyatli - matn keyingi step'ga uzatiladi
         return {
             ...input,
             validatedText: trimmed,

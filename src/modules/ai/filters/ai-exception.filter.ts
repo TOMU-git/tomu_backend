@@ -11,15 +11,13 @@ import { AIErrorCode } from '../constants/error-codes.enum';
 import { AI_ERROR_MESSAGES } from '../constants/error-messages.constant';
 
 /**
- * Global Exception Filter for AI Module
- * -------------------------------------------------------
- * Best Practice: Centralized error handling and logging
+ * AI moduli uchun global exception filter
  * 
- * Responsibilities:
- * - Catch all exceptions in AI module
- * - Transform to standardized error response
- * - Log errors for monitoring and debugging
- * - Map unknown errors to appropriate error codes
+ * Vazifalari:
+ * - AI modulidagi barcha exceptionlarni tutish
+ * - Standartlashtirilgan xato javobiga o'zgartirish
+ * - Monitoring va debugging uchun xatolarni log qilish
+ * - Noma'lum xatolarni mos xato kodlariga map qilish
  */
 @Catch()
 export class AIExceptionFilter implements ExceptionFilter {
@@ -30,37 +28,37 @@ export class AIExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest();
 
-        // Log error for debugging and monitoring
+        // Xatolarni log qilish
         this.logError(exception, request);
 
-        // Handle AIException (our domain exceptions)
+        // AIException ni boshqarish (bizning domain exceptionlarimiz)
         if (exception instanceof AIException) {
             return response
                 .status(exception.getStatus())
                 .json(exception.getResponse());
         }
 
-        // Handle known NestJS exceptions
+        // NestJS exceptionlarini boshqarish
         if (exception instanceof HttpException) {
             return this.handleHttpException(exception, response);
         }
 
-        // Handle unknown errors (catch-all)
+        // Noma'lum xatolarni boshqarish (catch-all)
         return this.handleUnknownError(exception, response);
     }
 
     /**
-     * Handle HTTP exceptions (BadRequestException, ForbiddenException, etc.)
+     * HTTP exceptionlarni boshqarish (BadRequestException, ForbiddenException, va h.k.)
      */
     private handleHttpException(exception: HttpException, response: Response) {
         const status = exception.getStatus();
         const exceptionResponse = exception.getResponse() as any;
         const errorMessage = exceptionResponse?.message || 'Unknown error';
 
-        // Map common HTTP exceptions to AIErrorCode based on status and message
+        // HTTP exceptionlarni status va xabar asosida AIErrorCode ga map qilish
         let errorCode = AIErrorCode.SERVER_ERROR;
 
-        // Check message content for specific errors
+        // Xabar tarkibini tekshirish (maxsus xatolarni aniqlash)
         if (typeof errorMessage === 'string') {
             if (errorMessage.includes('sotib olinmagan') || errorMessage.includes('purchase')) {
                 errorCode = AIErrorCode.PAYMENT_REQUIRED;
@@ -73,7 +71,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             }
         }
 
-        // Fallback to status-based mapping
+        // Status asosida map qilish (fallback)
         if (errorCode === AIErrorCode.SERVER_ERROR) {
             if (status === 400) errorCode = AIErrorCode.INVALID_AUDIO;
             else if (status === 402) errorCode = AIErrorCode.PAYMENT_REQUIRED;
@@ -92,12 +90,12 @@ export class AIExceptionFilter implements ExceptionFilter {
     }
 
     /**
-     * Handle unknown errors (fallback for unexpected errors)
+     * Noma'lum xatolarni boshqarish (kutilmagan xatolar uchun fallback)
      */
     private handleUnknownError(exception: unknown, response: Response) {
         const error = exception as any;
 
-        // Network errors (axios, node:http)
+        // Tarmoq xatolari (axios, node:http)
         const networkErrorCodes = ['ENOTFOUND', 'ETIMEDOUT', 'ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH'];
         if (networkErrorCodes.includes(error.code)) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.NETWORK_ERROR];
@@ -108,7 +106,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             });
         }
 
-        // OpenAI API errors (axios response with OpenAI error)
+        // OpenAI API xatolari (axios response bilan)
         if (error.response?.status === 429) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.RATE_LIMIT_EXCEEDED];
             return response.status(errorConfig.httpStatus).json({
@@ -118,6 +116,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             });
         }
 
+        // 5xx server xatolari
         if (error.response?.status >= 500 && error.response?.status < 600) {
             const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.AI_SERVICE_ERROR];
             return response.status(errorConfig.httpStatus).json({
@@ -127,7 +126,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             });
         }
 
-        // Default: Server error
+        // Default: Server xatosi
         const errorConfig = AI_ERROR_MESSAGES[AIErrorCode.SERVER_ERROR];
         return response.status(errorConfig.httpStatus).json({
             message: errorConfig.message,
@@ -137,12 +136,12 @@ export class AIExceptionFilter implements ExceptionFilter {
     }
 
     /**
-     * Log error for debugging and monitoring
+     * Xatolarni log qilish (debugging va monitoring uchun)
      */
     private logError(exception: unknown, request: any) {
         const error = exception as any;
 
-        // Build log context
+        // Log kontekstini yaratish
         const logContext = {
             timestamp: new Date().toISOString(),
             path: request.url,
@@ -155,26 +154,26 @@ export class AIExceptionFilter implements ExceptionFilter {
             httpStatus: error?.status || error?.response?.status,
         };
 
-        // Log based on severity
+        // Xatolik darajasiga qarab log qilish
         if (exception instanceof AIException) {
-            // Domain exceptions - warn level (expected business errors)
+            // Domain exceptionlar - warn level (kutilgan biznes xatolari)
             this.logger.warn(
                 `AI Exception: ${error.errorCode} - ${error.message}`,
                 JSON.stringify(logContext, null, 2)
             );
         } else if (error?.status >= 400 && error?.status < 500) {
-            // Client errors - warn level
+            // Client xatolari - warn level
             this.logger.warn(
                 `Client Error: ${error.status} - ${error.message}`,
                 JSON.stringify(logContext, null, 2)
             );
         } else {
-            // Server errors and unknown errors - error level (needs investigation)
+            // Server xatolari va noma'lum xatolar - error level (tekshirish kerak)
             this.logger.error(
                 `Unhandled Exception: ${error?.message || 'Unknown error'}`,
                 JSON.stringify({
                     ...logContext,
-                    stack: error?.stack?.split('\n').slice(0, 5).join('\n'), // First 5 lines of stack
+                    stack: error?.stack?.split('\n').slice(0, 5).join('\n'), // Stack trace ning birinchi 5 qatori
                 }, null, 2)
             );
         }

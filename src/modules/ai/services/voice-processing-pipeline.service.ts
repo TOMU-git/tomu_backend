@@ -44,6 +44,7 @@ export class VoiceProcessingPipeline {
         @Inject(forwardRef(() => AIChatService))
         private readonly aiChatService: AIChatService, // AIChatService injection for buildContext
         private readonly limitCheck: LimitCheckService, // Cost tracking uchun
+        private readonly gptStep: GPTStep, // Inject GPTStep instead of creating it
     ) { }
 
     /**
@@ -66,7 +67,7 @@ export class VoiceProcessingPipeline {
         const steps: PipelineStep[] = [
             new ValidationStep(this.tts, this.messageFactory),
             new ContextStep(this.aiChatService, this.tts),
-            new GPTStep(this.gpt, this.translation),
+            this.gptStep, // Use injected GPTStep
             new ResponseStep(this.messageFactory, this.tts),
         ];
 
@@ -131,7 +132,7 @@ export class VoiceProcessingPipeline {
             new STTStep(this.whisper),
             new ValidationStep(this.tts, this.messageFactory),
             new ContextStep(this.aiChatService, this.tts),
-            new GPTStep(this.gpt, this.translation),
+            this.gptStep, // Use injected GPTStep
             new ResponseStep(this.messageFactory, this.tts),
         ];
 

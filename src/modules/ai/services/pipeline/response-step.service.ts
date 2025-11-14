@@ -4,13 +4,15 @@ import { AIChatMessageFactory } from "../ai-chat-message-factory.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
 
 /**
- * Response Step: Final message creation
+ * Response Step: Yakuniy xabar yaratish
+ * 
+ * AI javobini audio'ga aylantirib, xabarni yaratadi va saqlaydi
  */
 @Injectable()
 export class ResponseStep implements PipelineStep {
     constructor(
         private readonly messageFactory: AIChatMessageFactory,
-        private readonly tts: TTSService, // TTS service to'g'ridan-to'g'ri
+        private readonly tts: TTSService, // TTS servisi - audio yaratish uchun
     ) { }
 
     async execute(input: VoiceInput & {
@@ -19,33 +21,34 @@ export class ResponseStep implements PipelineStep {
         aiResponse: string;
         aiResponseUz: string;
     }): Promise<VoiceOutput> {
-        // TTS audio yaratish (usage ma'lumotlari bilan)
+        // TTS orqali audio yaratish (xarajat ma'lumotlari bilan)
         const ttsResult = await this.tts.textToSpeechWithUsage({
             text: input.aiResponse,
             language: 'ar',
         });
 
-        // Usage ma'lumotlarini to'plash
+        // Xarajat ma'lumotlarini to'plash
         const usage = input.usage || {};
         usage.tts = {
             characters: ttsResult.characters || 0,
         };
 
+        // Xabarni yaratish va saqlash
         const message = await this.messageFactory.createResponseMessage(
             Number(input.sessionId),
             input.validatedText,
             input.aiResponse,
             input.aiResponseUz,
-            true, // withinLimit
-            ttsResult.audioUrl // audioUrl
+            true, // withinLimit - limit ichida
+            ttsResult.audioUrl // Audio URL
         );
 
-        // Usage ma'lumotlarini message bilan birga qaytarish
-        // (Pipeline'dan trackCost metodida ishlatish uchun)
+        // Xarajat ma'lumotlarini xabar bilan birga qaytarish
+        // (Pipeline'da trackCost metodida ishlatish uchun)
         return {
             message,
             session: input.session,
-            usage: usage, // Pipeline'da ishlatish uchun
+            usage: usage, // Pipeline'da xarajatni hisoblash uchun
             transcribedText: input.validatedText, // Foydalanuvchi xabarini saqlash uchun
         } as VoiceOutput & { usage?: VoiceInput['usage']; transcribedText?: string };
     }

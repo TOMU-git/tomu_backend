@@ -2,48 +2,60 @@ import { AIChatSession } from "../../entities/ai-chat-session.entity";
 import { ID } from "src/common/types/type";
 
 /**
- * Pipeline Types and Interfaces
- * -------------------------------------------------------
+ * Pipeline Types va Interfaces
+ * 
  * Pipeline uchun umumiy type va interface'lar
  */
 
+/**
+ * Pipeline input ma'lumotlari
+ * Har bir step bu ma'lumotlarni qabul qiladi va yangilaydi
+ */
 export interface VoiceInput {
     userId: ID;
     sessionId: ID;
-    audioBuffer: Buffer;
+    audioBuffer: Buffer; // Audio fayl buffer
     courseId?: ID;
-    language?: string;
+    language?: string; // Audio tili (default: 'ar')
     session: AIChatSession;
-    validatedText?: string;
-    transcribedText?: string;
-    context?: any;
-    conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
-    lastWatchedLessonOrder?: number;
-    aiResponse?: string;
-    aiResponseUz?: string;
-    // Cost tracking ma'lumotlari
+    validatedText?: string; // Validatsiya qilingan matn
+    transcribedText?: string; // STT natijasi
+    context?: any; // Dars materiallari (kontekst)
+    conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; // Suhbat tarixi
+    lastWatchedLessonOrder?: number; // Foydalanuvchi ko'rgan eng oxirgi dars tartibi
+    aiResponse?: string; // AI javobi (arab tilida)
+    aiResponseUz?: string; // AI javobi (o'zbek tilida)
+    // Xarajat kuzatish ma'lumotlari
     usage?: {
         whisper?: {
-            duration: number; // seconds
+            duration: number; // Audio davomiyligi (soniya)
         };
         gpt?: {
-            promptTokens: number;
-            completionTokens: number;
-            totalTokens: number;
+            promptTokens: number; // Prompt tokenlar soni
+            completionTokens: number; // Completion tokenlar soni
+            totalTokens: number; // Jami tokenlar soni
         };
         tts?: {
-            characters: number;
+            characters: number; // TTS uchun ishlatilgan belgilar soni
         };
     };
 }
 
+/**
+ * Pipeline output ma'lumotlari
+ * Pipeline yakunlanganda qaytariladi
+ */
 export interface VoiceOutput {
-    message: any; // AIChatMessage
+    message: any; // AIChatMessage entity
     session: AIChatSession;
-    usage?: VoiceInput['usage'];
+    usage?: VoiceInput['usage']; // Xarajat ma'lumotlari
     transcribedText?: string; // Foydalanuvchi xabarini saqlash uchun
 }
 
+/**
+ * Pipeline step interface
+ * Har bir step bu interface'ni implement qilishi kerak
+ */
 export interface PipelineStep {
     execute(input: VoiceInput): Promise<VoiceInput | VoiceOutput>;
 }

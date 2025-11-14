@@ -45,7 +45,18 @@ import { RetryHelperService } from './services/retry-helper.service';
 import { TokenCounterService } from './services/token-counter.service';
 import { RerankService } from './services/rerank.service';
 import { GPTPromptBuilderService } from './services/gpt-prompt-builder.service';
-import { GPTInputValidatorService } from './services/gpt-input-validator.service';
+// Pipeline services
+import { GPTStep } from './services/pipeline/gpt-step.service';
+import { ConversationTopicExtractorService } from './services/pipeline/extractors/conversation-topic-extractor.service';
+import { DialogueCorrectionService } from './services/pipeline/correctors/dialogue-correction.service';
+import { SimilarityCalculatorService } from './services/pipeline/correctors/similarity-calculator.service';
+import { NameValidationService } from './services/pipeline/validators/name-validation.service';
+import { VocabularyValidationService } from './services/pipeline/validators/vocabulary-validation.service';
+import { TranslationLookupService } from './services/pipeline/extractors/translation-lookup.service';
+import { ContextFilterService } from './services/pipeline/filters/context-filter.service';
+import { MaterialMatchingService } from './services/pipeline/matchers/material-matching.service';
+import { ResponseValidationService } from './services/pipeline/validators/response-validation.service';
+import { FallbackResponseService } from './services/pipeline/builders/fallback-response.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -120,9 +131,20 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     TokenCounterService,
     // Re-ranking
     RerankService,
-    // GPT prompt building and validation
+    // GPT prompt building
     GPTPromptBuilderService,
-    GPTInputValidatorService,
+    // Pipeline services
+    ConversationTopicExtractorService,
+    SimilarityCalculatorService,
+    DialogueCorrectionService,
+    NameValidationService,
+    VocabularyValidationService,
+    TranslationLookupService,
+    ContextFilterService,
+    MaterialMatchingService,
+    ResponseValidationService,
+    FallbackResponseService,
+    GPTStep,
     // Chroma sub-services
     ChromaConnectionService,
     ChromaEmbeddingService,

@@ -4,7 +4,6 @@ import axios from "axios";
 import { RetryHelperService } from "./retry-helper.service";
 import { TokenCounterService } from "./token-counter.service";
 import { GPTPromptBuilderService } from "./gpt-prompt-builder.service";
-import { GPTInputValidatorService } from "./gpt-input-validator.service";
 
 /**
  * GPTService
@@ -87,8 +86,7 @@ export class GPTService {
         private readonly configService: ConfigService,
         private readonly retryHelper: RetryHelperService,
         private readonly tokenCounter: TokenCounterService,
-        private readonly promptBuilder: GPTPromptBuilderService,
-        private readonly inputValidator: GPTInputValidatorService
+        private readonly promptBuilder: GPTPromptBuilderService
     ) {
         // Load configuration from ConfigService
         this.openaiApiKey = this.configService.get<string>("OPENAI_API_KEY") || "";
@@ -114,7 +112,12 @@ export class GPTService {
      */
     async generate(params: { prompt: string; context: any; language: string; strict: boolean; }): Promise<string> {
         // Input validation
-        this.inputValidator.validateGenerateParams(params);
+        if (!params?.prompt || typeof params.prompt !== 'string' || params.prompt.trim().length === 0) {
+            throw new BadRequestException('Prompt must be a non-empty string');
+        }
+        if (!params?.language || typeof params.language !== 'string') {
+            throw new BadRequestException('Language must be a non-empty string');
+        }
 
         // Fix common Whisper transcription errors for Arabic
         const prompt = this.correctPrompt(params.prompt);
@@ -157,12 +160,20 @@ export class GPTService {
      * @param params - Generate parametrlari
      * @returns Text va usage ma'lumotlari (cost tracking uchun)
      */
-    async generateWithUsage(params: { prompt: string; context: any; language: string; strict: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; conversationTopic?: { topic: string | null; keywords: string[] } }): Promise<GPTResponse> {
+    async generateWithUsage(params: { prompt: string; context: any; language: string; strict: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; conversationTopic?: { topic: string | null; keywords: string[] }; freeMode?: boolean }): Promise<GPTResponse> {
         // Input validation
-        this.inputValidator.validateGenerateWithUsageParams(params);
+        if (!params?.prompt || typeof params.prompt !== 'string' || params.prompt.trim().length === 0) {
+            throw new BadRequestException('Prompt must be a non-empty string');
+        }
+        if (!params?.language || typeof params.language !== 'string') {
+            throw new BadRequestException('Language must be a non-empty string');
+        }
+        if (params.conversationHistory !== undefined && !Array.isArray(params.conversationHistory)) {
+            throw new BadRequestException('ConversationHistory must be an array if provided');
+        }
 
         // Reuse existing generate logic but extract usage
-        const { prompt, context, language, strict, conversationHistory = [], conversationTopic } = params;
+        const { prompt, context, language, strict, conversationHistory = [], conversationTopic, freeMode = false } = params;
 
         // Prompt correction (same as generate)
         const correctedPrompt = this.correctPrompt(prompt);
@@ -175,26 +186,35 @@ export class GPTService {
             };
         }
 
-        // Extract names from conversation history for context
-        const conversationNames = this.extractNamesFromConversation(conversationHistory);
+        // Erkin rejim tekshiruvi
+        let systemPrompt: string;
+        let contextSummary: string;
+        let useComprehensiveExamples: boolean;
 
-        // Build comprehensive system prompt
-        const systemPrompt = this.promptBuilder.buildComprehensiveSystemPrompt(language, {
-            conversationNames,
-            conversationTopic,
-        });
+        if (freeMode) {
+            // Erkin rejim: materiallarga havola qilmaydigan system prompt
+            systemPrompt = this.promptBuilder.buildFreeModeSystemPrompt(language);
+            contextSummary = ""; // Bo'sh context
+            useComprehensiveExamples = false; // Oddiy misollar
+        } else {
+            // Materiallarga asoslangan rejim
+            const conversationNames = this.extractNamesFromConversation(conversationHistory);
+            systemPrompt = this.promptBuilder.buildComprehensiveSystemPrompt(language, {
+                conversationNames,
+                conversationTopic,
+            });
+            contextSummary = this.formatLessonMaterials(context);
+            useComprehensiveExamples = true;
+        }
 
-        // Format context as structured lesson materials
-        const contextSummary = this.formatLessonMaterials(context);
-
-        // Build messages array with comprehensive examples
+        // Build messages array
         const messages = this.promptBuilder.buildMessages({
             systemPrompt,
             contextSummary,
             prompt: correctedPrompt,
             language,
             conversationHistory,
-            useComprehensiveExamples: true,
+            useComprehensiveExamples,
             maxHistoryMessages: this.MAX_CONVERSATION_HISTORY_MESSAGES,
         });
 
