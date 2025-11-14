@@ -113,10 +113,9 @@ export class AIChatService {
             existingSession.lastActivityAt = new Date();
             const updated = await this.sessionRepo.update(existingSession);
 
-            // Xabarlarni yuklash va qaytarish (oxirgi 25 ta)
+            // Xabarlarni yuklash va qaytarish
             // // console.log(`[getOrCreateSession] Loading messages for session ${updated.id}...`);
-            const allMessages = await this.messageRepo.findBySessionIdOrdered(updated.id as number);
-            updated.messages = allMessages.slice(0, 25);
+            updated.messages = await this.messageRepo.findBySessionIdOrdered(updated.id as number);
             // // console.log(`[getOrCreateSession] Loaded ${updated.messages.length} messages for session ${updated.id}`);
             return updated;
         }

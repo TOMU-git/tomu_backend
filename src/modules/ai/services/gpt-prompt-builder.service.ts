@@ -31,6 +31,27 @@ export class GPTPromptBuilderService {
     }
 
     /**
+     * Build system prompt for free mode (erkin rejim)
+     * Materiallarga havola qilmaydi
+     */
+    buildFreeModeSystemPrompt(language: string): string {
+        if (language === 'ar' || language === 'arabic') {
+            return [
+                "You are an Arabic language learning assistant for beginners.",
+                "RULES:",
+                "1. Respond ONLY in Modern Standard Arabic (الفصحى) with FULL diacritical marks (تشكيل) on every letter.",
+                "2. Give natural, helpful answers in Arabic - you can use any appropriate vocabulary.",
+                "3. Give short, clear answers that directly respond (never echo user's words).",
+                "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا naturally.",
+                "5. Response MUST be logically correct and different from user's input.",
+                "6. Be friendly and helpful - answer naturally as a native Arabic speaker would.",
+            ].join(" ");
+        } else {
+            return `Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}. Erkin rejimda ishlaysiz - materiallarga bog'liq emassiz.`;
+        }
+    }
+
+    /**
      * Build comprehensive system prompt for generateWithUsage() method
      */
     buildComprehensiveSystemPrompt(
@@ -82,15 +103,22 @@ export class GPTPromptBuilderService {
     buildMessages(params: BuildMessagesParams): Array<{ role: string; content: string }> {
         const messages: Array<{ role: string; content: string }> = [
             { role: "system", content: params.systemPrompt },
-            { role: "system", content: `Lesson materials${params.useComprehensiveExamples ? '' : ' context'}:\n${params.contextSummary}` },
         ];
 
-        // Add few-shot examples
-        if (params.language === 'ar' || params.language === 'arabic') {
-            const examples = params.useComprehensiveExamples
-                ? COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES
-                : SIMPLE_ARABIC_FEW_SHOT_EXAMPLES;
-            messages.push(...examples);
+        // Context summary'ni faqat bo'sh bo'lmasa qo'shamiz
+        if (params.contextSummary && params.contextSummary.trim().length > 0) {
+            messages.push({ role: "system", content: `Lesson materials${params.useComprehensiveExamples ? '' : ' context'}:\n${params.contextSummary}` });
+        }
+
+        // Add few-shot examples (faqat contextSummary bo'lsa - materiallarga asoslangan rejimda)
+        // Erkin rejimda few-shot examples'ni o'tkazib yuboramiz
+        if (params.contextSummary && params.contextSummary.trim().length > 0) {
+            if (params.language === 'ar' || params.language === 'arabic') {
+                const examples = params.useComprehensiveExamples
+                    ? COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES
+                    : SIMPLE_ARABIC_FEW_SHOT_EXAMPLES;
+                messages.push(...examples);
+            }
         }
 
         // Add conversation history before current prompt

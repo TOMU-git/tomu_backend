@@ -4,6 +4,7 @@ import { AIChatService } from "../ai-chat.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
 import { AIChatMessage } from "../../entities/ai-chat-message.entity";
 import { AIChatSession } from "../../entities/ai-chat-session.entity";
+import { AI_LIMITS } from "../../constants/ai-constants";
 
 /**
  * Context Step: Kontekst yaratish
@@ -35,17 +36,16 @@ export class ContextStep implements PipelineStep {
                 courseId: courseIdNum,
                 userQuery: userText, // RAG qidiruv uchun foydalanuvchi so'rovi
             });
-            console.log(`✅ Context built successfully`);
         } catch (error: any) {
             throw error;
         }
 
         const courseProgress = fullContext?.courseProgress;
         const userLevel = fullContext?.userLevel;
+        const profile = fullContext?.profile;
 
         // Foydalanuvchi ko'rgan eng oxirgi dars tartib raqami
         const lastWatchedLessonOrder = userLevel?.currentLessonOrder || 0;
-        console.log(`📊 User progress: Last watched lesson order = ${lastWatchedLessonOrder}`);
 
         // Kontekstdan barcha dars materiallarini olish
         const allLessons = fullContext.chromaContext || [];
@@ -54,9 +54,6 @@ export class ContextStep implements PipelineStep {
         const possibleLessons = this.findPossibleFutureLessons(userText, allLessons, lastWatchedLessonOrder);
 
         if (possibleLessons.futureLessons.length > 0) {
-            console.log(`⚠️ User gapirishga harakat qilayotgan darslar: ${possibleLessons.futureLessons.join(', ')}`);
-            console.log(`📊 Current lesson: ${lastWatchedLessonOrder}`);
-
             // Maxsus javob yaratish (hali kelmagan dars haqida)
             const message = await this.createFutureLessonMessage(input, lastWatchedLessonOrder, Math.min(...possibleLessons.futureLessons));
             return { message, session: input.session };
@@ -65,9 +62,7 @@ export class ContextStep implements PipelineStep {
         // Suhbat tarixini olish (kontekst uchun)
         let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
         try {
-            console.log(`📜 Getting conversation history for session ${input.sessionId}...`);
             const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
-            console.log(`✅ Retrieved ${previousMessages.length} previous messages`);
 
             // Suhbat tarixini GPT uchun formatlash
             conversationHistory = previousMessages
@@ -76,15 +71,13 @@ export class ContextStep implements PipelineStep {
                     const content = msg.aiResponseText;
                     return content && content.trim().length > 0;
                 })
-                .slice(-10) // Oxirgi 10 ta xabarni olish
+                .slice(-AI_LIMITS.MAX_CONVERSATION_HISTORY)
                 .map(msg => ({
                     role: msg.senderType === 'user' ? 'user' as const : 'assistant' as const,
                     content: msg.aiResponseText || '',
                 }));
-            console.log(`📜 Formatted ${conversationHistory.length} messages for conversation history`);
         } catch (error: any) {
-            console.error(`❌ Error getting conversation history:`, error.message);
-            console.error(`⚠️  Continuing without conversation history`);
+            // Conversation history olishda xato bo'lsa, bo'sh array bilan davom etamiz
             conversationHistory = [];
         }
 
@@ -93,10 +86,12 @@ export class ContextStep implements PipelineStep {
             context: allLessons, // Dars materiallari
             conversationHistory, // Suhbat tarixi
             lastWatchedLessonOrder, // Foydalanuvchi progress - ko'rgan dars tartibi
+            profile, // Foydalanuvchi profili
         } as VoiceInput & {
             context: any;
             conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>;
             lastWatchedLessonOrder: number;
+            profile?: any;
         };
     }
 
@@ -194,12 +189,9 @@ export class ContextStep implements PipelineStep {
 
         // Xabar xususiyatlarini o'rnatish
         message.sessionId = Number(input.sessionId);
-        console.log(`[ContextStep] Set sessionId=${message.sessionId} for future lesson message`);
         message.senderType = 'ai';
         message.originalText = input.validatedText;
         message.isWithinLimit = true;
-
-        console.log(`[ContextStep] Creating future lesson message: sessionId=${message.sessionId}`);
 
         // Hali kelmagan dars haqida javob
         message.aiResponseText = 'لَحْنِ بَعْدُ لَمْ تَصِلْ إِلَى هَٰذَا الدَّرْسِ.';
