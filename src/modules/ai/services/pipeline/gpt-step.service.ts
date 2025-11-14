@@ -6,8 +6,15 @@ import { ArabicTextUtils } from "../../utils/arabic-text.util";
 import { AI_FALLBACK_MESSAGES } from "../../constants/error-messages";
 
 /**
- * GPT Step: AI response generation
- * This is a very large class (1250+ lines) containing all the complex matching and validation logic
+ * GPT Step: AI javob yaratish
+ * 
+ * Bu juda katta klass (1800+ qator) - murakkab matching va validatsiya logikasini o'z ichiga oladi
+ * 
+ * Vazifalari:
+ * - STT xatolarini tuzatish
+ * - Materiallardan javob topish
+ * - GPT orqali javob yaratish
+ * - Materialda javob topilmasa fallback javob berish
  */
 @Injectable()
 export class GPTStep implements PipelineStep {
