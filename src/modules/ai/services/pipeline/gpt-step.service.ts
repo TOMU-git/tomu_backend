@@ -456,7 +456,7 @@ export class GPTStep implements PipelineStep {
                             input.context,
                             lastWatchedLessonOrder
                         );
-                        
+
                         if (materialTranslationUz) {
                             aiResponseUz = materialTranslationUz;
                             // console.log(`   ✅ Found translationUz from materials: "${materialTranslationUz}"`);
@@ -533,7 +533,7 @@ export class GPTStep implements PipelineStep {
                     input.context,
                     lastWatchedLessonOrder
                 );
-                
+
                 if (materialTranslationUz) {
                     aiResponseUz = materialTranslationUz;
                     // console.log(`   ✅ Found translationUz from materials: "${materialTranslationUz}"`);
@@ -660,7 +660,7 @@ export class GPTStep implements PipelineStep {
                 input.context,
                 lastWatchedLessonOrder
             );
-            
+
             if (materialTranslationUz) {
                 aiResponseUz = materialTranslationUz;
                 // console.log(`   ✅ Found translationUz from materials (final fallback): "${materialTranslationUz}"`);
@@ -677,11 +677,11 @@ export class GPTStep implements PipelineStep {
         }
 
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(aiResponse || "");
-        
+
         // 3. GPT ni javobini console ga chiqar
         console.log('GPT javobi:', aiResponse);
         console.log('GPT javobi (latin):', aiResponseLatin);
-        
+
         // console.log("\n🤖 AI:");
         // console.log("   Arab: " + aiResponse);
         // console.log("   Lotin: " + aiResponseLatin);
