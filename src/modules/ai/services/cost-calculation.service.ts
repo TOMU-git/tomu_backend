@@ -11,11 +11,11 @@ import { Injectable, Logger } from "@nestjs/common";
  * Pricing source: https://openai.com/pricing (2024)
  * 
  * Environment variables:
- *  - GPT_4O_INPUT_PRICE: GPT-4o input tokens uchun ($ per 1K tokens)
- *  - GPT_4O_OUTPUT_PRICE: GPT-4o output tokens uchun ($ per 1K tokens)
+ *  - GPT_4O_INPUT_PRICE: GPT-5 input tokens uchun ($ per 1K tokens)
+ *  - GPT_4O_OUTPUT_PRICE: GPT-5 output tokens uchun ($ per 1K tokens)
  *  - WHISPER_PRICE_PER_MIN: Whisper uchun ($ per minute)
  *  - TTS_HD_PRICE_PER_1K_CHARS: TTS-1-HD uchun ($ per 1K characters)
- *  - GPT_MODEL: Ishlatilayotgan GPT model (default: gpt-4o)
+ *  - GPT_MODEL: Ishlatilayotgan GPT model (default: gpt-5)
  *  - TTS_MODEL: Ishlatilayotgan TTS model (default: tts-1-hd)
  */
 
@@ -36,6 +36,10 @@ interface WhisperPricing {
 }
 
 const GPT_PRICING: Record<string, GPTPricing> = {
+    "gpt-5": {
+        input: 0.0025,   // $ per 1K input tokens
+        output: 0.01,    // $ per 1K output tokens
+    },
     "gpt-4o": {
         input: 0.0025,   // $ per 1K input tokens
         output: 0.01,    // $ per 1K output tokens
@@ -77,8 +81,8 @@ export class CostCalculationService {
 
     constructor() {
         // GPT pricing - model bo'yicha
-        this.gptModel = process.env.GPT_MODEL || "gpt-4o";
-        const gptPricing = GPT_PRICING[this.gptModel] || GPT_PRICING["gpt-4o"];
+        this.gptModel = process.env.GPT_MODEL || "gpt-5";
+        const gptPricing = GPT_PRICING[this.gptModel] || GPT_PRICING["gpt-5"];
 
         this.gptInputPrice = Number(process.env.GPT_4O_INPUT_PRICE) || gptPricing.input;
         this.gptOutputPrice = Number(process.env.GPT_4O_OUTPUT_PRICE) || gptPricing.output;

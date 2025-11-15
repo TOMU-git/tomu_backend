@@ -1,50 +1,54 @@
 {
   "id": "ar_m1_l3",
   "language": "ar",
-  "moduleNumber": 1,
-  "lessonNumber": 3,
+  "module": 1,
+  "lesson": 3,
   "title": "مَوْزٌ لَذِيذٌ",
-  "lessonSummary": "Practicing questions and answers about fruits and using adjectives to describe taste.",
-  "keywords": ["meva", "savol", "sifat", "mazali", "ko'rsatish olmoshi"],
+  "summary": "Practicing questions and answers about fruits and using adjectives to describe taste.",
   "vocabulary": [
-    { "word": "مَوْزٌ", "normalized": "موز", "lemma": "مَوْز", "pos": "noun", "translationUz": "banan", "example": "هَذَا مَوْزٌ" },
-    { "word": "لَذِيذٌ", "normalized": "لذيذ", "lemma": "لَذِيذ", "pos": "adjective", "translationUz": "mazali", "example": "الطَّعَامُ لَذِيذٌ" },
-    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا كِتَابٌ" },
-    { "word": "مَا", "normalized": "ما", "lemma": "مَا", "pos": "interrogative", "translationUz": "nima", "example": "مَا هَذَا؟" },
-    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ كَبِيرٌ؟" },
-    { "word": "نَعَمْ", "normalized": "نعم", "lemma": "نَعَمْ", "pos": "particle", "translationUz": "ha", "example": "نَعَمْ، هُوَ طَيِّبٌ" },
-    { "word": "إِنَّهُ", "normalized": "انه", "lemma": "إِنَّهُ", "pos": "particle", "translationUz": "albatta u", "example": "إِنَّهُ جَمِيلٌ" }
+    { "word": "مَوْزٌ", "translationUz": "banan" },
+    { "word": "لَذِيذٌ", "translationUz": "mazali" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "إِنَّهُ", "translationUz": "albatta u" }
   ],
   "dialogue": [
     {
-      "turnIndex": 1,
-      "speaker": "فَرِيدٌ",
+      "speaker": "كَرِيمٌ",
       "text": "مَا هَذَا، يَا فَرِيدُ؟",
       "translationUz": "Bu nima, Farid?",
-      "audioUrl": null
+      "next": "هَذَا مَوْزٌ، يَا كَرِيمُ."
     },
     {
-      "turnIndex": 2,
       "speaker": "فَرِيدٌ",
       "text": "هَذَا مَوْزٌ، يَا كَرِيمُ.",
       "translationUz": "Bu banan, Karim.",
-      "audioUrl": null
+      "next": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟"
     },
     {
-      "turnIndex": 3,
       "speaker": "كَرِيمٌ",
       "text": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟",
       "translationUz": "Bu banan mazalimi?",
-      "audioUrl": null
+      "next": "نَعَمْ، إِنَّهُ لَذِيذٌ."
     },
     {
-      "turnIndex": 4,
       "speaker": "فَرِيدٌ",
-      "text": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
+      "text": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
       "translationUz": "Ha, u mazali.",
-      "audioUrl": null
+      "next": null
     }
   ],
-  "createdAt": "2025-10-12T12:30:00Z",
-  "updatedAt": "2025-10-12T12:30:00Z"
+  "followups": [
+    "هَلْ تُحِبُّ الْمَوْزَ؟",
+    "هَلْ هُوَ حُلْوٌ؟",
+    "هَلْ تُرِيدُ تَجْرِبَةَ قِطْعَةٍ؟",
+    "هَلْ عِنْدَكَ مَوْزٌ آخَرُ؟",
+    "كَمْ ثَمَنُ الْمَوْزِ؟"
+  ],
+  "context": {
+    "main_object": "banana",
+    "pattern": "question → answer → question → answer"
+  }
 }

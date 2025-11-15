@@ -129,6 +129,16 @@ export class GPTStep implements PipelineStep {
             input.context
         );
 
+        // Console log: Material matching natijasi
+        if (materialMatch.nextSentence) {
+            console.log(`📚 Material match topildi (lessonOrder: ${materialMatch.lessonOrder})`);
+            console.log(`   📝 Topilgan javob: "${materialMatch.nextSentence.substring(0, 60)}"`);
+        } else if (materialMatch.bestMatchScore > 0) {
+            console.log(`🔍 Material match: ${(materialMatch.bestMatchScore * 100).toFixed(0)}% o'xshashlik`);
+        } else {
+            console.log(`❌ Material match topilmadi, GPT'ga so'rov yuborilmoqda...`);
+        }
+
         // Response yaratish
         const response = await this.buildResponse(
             materialMatch,
@@ -152,8 +162,8 @@ export class GPTStep implements PipelineStep {
 
         const aiResponseLatin = ArabicTextUtils.transliterateArabic(response.aiResponse || "");
 
-        console.log('GPT javobi:', response.aiResponse);
-        console.log('GPT javobi (latin):', aiResponseLatin);
+        console.log('✅ GPT javobi:', response.aiResponse);
+        console.log('✅ GPT javobi (latin):', aiResponseLatin);
         if (!response.aiResponseUz) {
             console.warn("   ⚠️  Uzbek translation is missing!");
         }
@@ -208,6 +218,7 @@ export class GPTStep implements PipelineStep {
             );
 
             if (!validation.isValid) {
+                console.log(`⚠️  Material javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
                 return this.fallbackResponse.createNotUnderstoodResponse();
             }
 
@@ -321,6 +332,7 @@ export class GPTStep implements PipelineStep {
         );
 
         if (!validation.isValid) {
+            console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
             if (validation.reason === 'echo') {
                 return this.fallbackResponse.createNotUnderstoodResponse();
             } else if (validation.reason === 'invalid_vocabulary') {

@@ -80,7 +80,7 @@ export class GPTService {
     private readonly SYSTEM_MESSAGE_TOKEN_ESTIMATE = 300;
     private readonly CONVERSATION_TOKEN_ESTIMATE = 500;
     private readonly TOKEN_BUFFER = 100;
-    private readonly MODEL_LIMIT_FALLBACK = 8000; // gpt-4o: 8192, using 8000 as safe fallback
+    private readonly MODEL_LIMIT_FALLBACK = 8000; // gpt-5: 8192, using 8000 as safe fallback
 
     constructor(
         private readonly configService: ConfigService,
@@ -90,7 +90,7 @@ export class GPTService {
     ) {
         // Load configuration from ConfigService
         this.openaiApiKey = this.configService.get<string>("OPENAI_API_KEY") || "";
-        this.gptModel = this.configService.get<string>("GPT_MODEL") || "gpt-4o";
+        this.gptModel = this.configService.get<string>("GPT_MODEL") || "gpt-5";
         this.maxTokens = Number(this.configService.get<string>("MAX_TOKENS") || 350);
         this.temperature = Number(this.configService.get<string>("TEMPERATURE") || 0);
         this.strictNoEcho = this.configService.get<string>("STRICT_NO_ECHO") === "1";
@@ -450,7 +450,7 @@ export class GPTService {
             const completionTokens = this.maxTokens;
             const buffer = this.TOKEN_BUFFER;
 
-            // Model limit (gpt-4o: 8192, fallback: 8000)
+            // Model limit (gpt-5: 8192, fallback: 8000)
             const modelLimit = this.MODEL_LIMIT_FALLBACK;
             const maxContextTokens = modelLimit - systemMessageEstimate - conversationEstimate - completionTokens - buffer;
 

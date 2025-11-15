@@ -52,6 +52,11 @@ export class MaterialMatchingService {
 
         // Context'dagi materiallarni lessonOrder bo'yicha guruhlash
         const lessonsMap = this.groupContextByLessonOrder(context);
+        
+        // Context bo'sh bo'lsa, hech narsa qaytarmaymiz
+        if (lessonsMap.size === 0) {
+            return result;
+        }
 
         // Har bir lesson'ni turn'lar tartibida saralash va qidirish
         for (const [lessonOrder, turns] of lessonsMap.entries()) {
@@ -84,17 +89,54 @@ export class MaterialMatchingService {
                         }
                     }
 
-                    // Keyingi gapni topish
-                    const candidateData = sentences[i + 1];
-                    const candidate = candidateData?.text || '';
-                    const isLastSentence = i === sentences.length - 1;
+                    // Keyingi gapni topish - user gapining o'zini o'tkazib yuborish
+                    let nextIndex = i + 1;
+                    let candidateData = null;
+                    let candidate = '';
+                    let skippedCount = 0;
+                    
+                    // Keyingi gapni qidirish - user gapining o'zini o'tkazib yuborish
+                    while (nextIndex < sentences.length) {
+                        candidateData = sentences[nextIndex];
+                        candidate = candidateData?.text || '';
+                        const normalizedCandidate = normalizeText(candidate);
+                        const isCandidateSameAsUser = normalizedCandidate === normalizedUser;
+                        
+                        // Debug: Barcha keyingi gaplarni ko'rsatish
+                        console.log(`   🔍 [${nextIndex}] Gap: "${candidate.substring(0, 40)}" (normalized: "${normalizedCandidate.substring(0, 40)}") - Bir xilmi: ${isCandidateSameAsUser}`);
+                        
+                        // Agar keyingi gap user gapining o'zi bo'lmasa, uni qabul qilamiz
+                        if (candidate && candidate.length > 1 && !isCandidateSameAsUser) {
+                            console.log(`   ✅ Keyingi gap topildi: "${candidate.substring(0, 40)}"`);
+                            break;
+                        }
+                        
+                        if (isCandidateSameAsUser) {
+                            skippedCount++;
+                            console.log(`   ⚠️  Keyingi gap user gapining o'zi, o'tkazib yuborildi (${skippedCount})`);
+                        }
+                        
+                        nextIndex++;
+                    }
 
-                    if (candidate && candidate.length > 1) {
+                    const isLastSentence = nextIndex >= sentences.length;
+                    const normalizedFinalCandidate = candidate ? normalizeText(candidate) : '';
+                    const isFinalCandidateSameAsUser = normalizedFinalCandidate === normalizedUser;
+
+                    // Agar keyingi gap topilgan va u user gapining o'zi bo'lmasa
+                    if (candidate && candidate.length > 1 && !isFinalCandidateSameAsUser) {
                         result.nextSentence = candidate;
                         result.lessonOrder = lessonOrder;
                         result.translationUz = candidateData?.translationUz || null;
+                        // Console log: Exact match topildi
+                        console.log(`   ✅ Material match: "${s.substring(0, 40)}" → "${candidate.substring(0, 40)}"`);
                         return result;
+                    } else if (isFinalCandidateSameAsUser) {
+                        // Keyingi gap user gapining o'zi bo'lsa, bu match'ni o'tkazib yuborish
+                        console.log(`   ⚠️  Keyingi gap user gapining o'zi, bu match'ni o'tkazib yuborish`);
+                        continue;
                     } else if (isLastSentence) {
+                        console.log(`   ⚠️  Keyingi gap topilmadi, dialogue tugadi`);
                         result.nextSentence = 'DIALOGUE_END';
                         result.lessonOrder = lessonOrder;
                         return result;
@@ -126,6 +168,12 @@ export class MaterialMatchingService {
             result.nextSentence = result.bestMatchNextSentence;
             result.lessonOrder = result.bestMatchLessonOrder;
             result.translationUz = result.bestMatchNextSentenceTranslationUz;
+        }
+
+        // Debug: Agar match topilmasa, best match ma'lumotlarini saqlash
+        if (!result.nextSentence && result.bestMatchScore > 0) {
+            // Best match topilgan, lekin threshold'dan past
+            // Bu ma'lumot console log'da ko'rsatiladi
         }
 
         return result;

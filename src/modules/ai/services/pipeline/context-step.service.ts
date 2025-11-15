@@ -50,6 +50,9 @@ export class ContextStep implements PipelineStep {
         // Kontekstdan barcha dars materiallarini olish
         const allLessons = fullContext.chromaContext || [];
 
+        // Console log: Context yuklandi
+        console.log(`📚 Context: ${allLessons.length} ta material chunk, progress: lesson ${lastWatchedLessonOrder}`);
+
         // Foydalanuvchi hali ko'rmagan darslar haqida gapirishga harakat qilayotganini tekshirish
         const possibleLessons = this.findPossibleFutureLessons(userText, allLessons, lastWatchedLessonOrder);
 

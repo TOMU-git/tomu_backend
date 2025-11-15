@@ -23,6 +23,7 @@ export class ValidationStep implements PipelineStep {
 
         // STT natijasi bo'sh yoki juda qisqa bo'lsa
         if (!trimmed || trimmed.length < 2) {
+            console.log(`⚠️  Validation: Bo'sh yoki qisqa matn (uzunlik: ${trimmed.length})`);
             const message = await this.messageFactory.createFallbackMessage(
                 Number(input.sessionId),
                 trimmed,
@@ -33,6 +34,7 @@ export class ValidationStep implements PipelineStep {
 
         // Arab tilidan boshqa til bo'lsa
         if (!ArabicTextUtils.isArabicText(trimmed)) {
+            console.log(`⚠️  Validation: Arab tilidan boshqa til aniqlandi`);
             const message = await this.messageFactory.createFallbackMessage(
                 Number(input.sessionId),
                 trimmed,
@@ -42,6 +44,7 @@ export class ValidationStep implements PipelineStep {
         }
 
         // Validatsiya muvaffaqiyatli - matn keyingi step'ga uzatiladi
+        console.log(`✅ Validation: Matn validatsiyadan o'tdi (uzunlik: ${trimmed.length})`);
         return {
             ...input,
             validatedText: trimmed,
