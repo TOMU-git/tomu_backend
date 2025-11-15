@@ -8,7 +8,7 @@ import { AIErrorCode } from '../constants/error-codes.enum';
  */
 export class AIErrorResponseDto {
     @ApiProperty({
-        example: 'Oylik limitingiz tugagan ($2). Yangi oyni kuting yoki qayta to\'lov qiling.',
+        example: 'Oylik limitingiz tugagan.',
         description: 'User-friendly error message in Uzbek'
     })
     message: string;

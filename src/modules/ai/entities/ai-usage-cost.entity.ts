@@ -25,6 +25,7 @@ import { Column, Entity, Index } from "typeorm";
 @Entity("ai_usage_costs")
 @Index(["userId", "month"]) // Composite index for monthly cost queries
 @Index(["userId"]) // Index for user history queries
+@Index(["messageId"], { unique: true }) // Unique index to prevent duplicate records per message
 export class AIUsageCost extends BaseEntity {
     // Foydalanuvchi ID (tez qidiruv uchun index qilingan)
     @Column({ type: "int", name: "user_id", nullable: false })

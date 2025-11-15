@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, Inject, CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe, BadRequestException, HttpException, Inject, CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Observable } from "rxjs";
 import { AIChatService } from "../services/ai-chat.service";
@@ -127,23 +127,21 @@ export class AiChatController {
         try {
             const limitStatus = await this.chat.checkUserLimitStatus(userId, courseId || null);
             if (!limitStatus.canProceed) {
-                // Limit oshib ketgan bo'lsa, error response qaytarish
-                const courseInfo = courseId ? `kurs ${courseId}` : "umumiy chat";
-                return {
-                    message: 'error',
-                    error: 'LIMIT_EXCEEDED',
-                    data: {
-                        message: `Oylik limit tugagan (${courseInfo}). Limit: $${limitStatus.limit}, Sarflangan: $${limitStatus.currentCost.toFixed(2)}, Qolgan: $${limitStatus.remaining.toFixed(2)}`,
-                        currentCost: limitStatus.currentCost,
-                        limit: limitStatus.limit,
-                        remaining: limitStatus.remaining,
-                        errorCode: 'LIMIT_EXCEEDED',
-                    },
-                };
+                // Limit oshib ketgan bo'lsa, exception tashlash
+                throw new LimitExceededException({
+                    currentCost: limitStatus.currentCost,
+                    limit: limitStatus.limit,
+                    remaining: limitStatus.remaining,
+                    courseId: courseId || null,
+                    month: new Date().toISOString().slice(0, 7),
+                });
             }
         } catch (error: any) {
-            // Limit check xatosi - log qilish, lekin session yaratishni davom ettirish
-            // (xatolik bo'lsa ham, session yaratishga ruxsat berish - defensive approach)
+            // LimitExceededException'ni re-throw qilish
+            if (error instanceof LimitExceededException) {
+                throw error;
+            }
+            // Boshqa xatolar uchun log (lekin session yaratishni davom ettirish - defensive approach)
             // console.warn('⚠️  Limit check xatosi (session yaratish davom etadi):', error.message);
         }
 
@@ -224,7 +222,7 @@ export class AiChatController {
         forbidNonWhitelisted: false, // File property'sini qabul qilish uchun
         skipUndefinedProperties: true, // Undefined property'larni o'tkazib yuborish
     }))
-    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File | undefined, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto } | { message: string; error: string; data: { message: string; errorCode: string } }> {
+    async sendVoice(@CurrentUser('id') userId: number, @UploadedFile() file: Express.Multer.File | undefined, @Body() body: VoiceRequestDto): Promise<{ message: string; data: ChatResponseDto }> {
 
         const { sessionId, history } = body || ({} as VoiceRequestDto);
 
@@ -266,12 +264,11 @@ export class AiChatController {
             throw new BadRequestException('Audio fayl yuborish kerak');
         }
 
-        let msg: any;
-
+        // Audio fayl validatsiyasi (MIME/size)
+        AudioUtils.validateUpload(file);
+        
         try {
-            // Audio fayl validatsiyasi (MIME/size)
-            AudioUtils.validateUpload(file);
-            msg = await this.chat.sendVoiceMessage({
+            const msg = await this.chat.sendVoiceMessage({
                 userId,
                 sessionId,
                 audioBuffer: file?.buffer,
@@ -304,18 +301,36 @@ export class AiChatController {
             };
             return { message: 'ok', data: res };
         } catch (error: any) {
-            // Limit exceeded exception'ni to'g'ri handle qilish
+            // LimitExceededException ni catch qilish va message'larni qo'shib response qaytarish
             if (error instanceof LimitExceededException) {
-                return {
-                    message: 'error',
-                    error: 'LIMIT_EXCEEDED',
-                    data: {
+                // Message'larni olish
+                const messages = await this.chat.getMessages(sessionId, userId);
+                const limitedMessages = messages.slice(0, 25).map(m => ({
+                    id: m.id,
+                    createdAt: m.createdAt,
+                    lastUpdatedAt: m.lastUpdatedAt,
+                    sessionId: m.sessionId,
+                    senderType: m.senderType,
+                    originalText: m.originalText || null,
+                    aiResponseText: m.aiResponseText || null,
+                    aiResponseUzbek: m.aiResponseUzbek || null,
+                    audioUrl: m.audioUrl || null,
+                    isWithinLimit: m.isWithinLimit ?? true,
+                }));
+                
+                // Error response qaytarish (lekin message'lar bilan)
+                throw new HttpException(
+                    {
                         message: error.message,
-                        errorCode: 'LIMIT_EXCEEDED',
+                        statusCode: error.getStatus(),
+                        data: {
+                            messages: limitedMessages,
+                        },
                     },
-                };
+                    error.getStatus()
+                );
             }
-
+            // Boshqa exception'larni re-throw qilish
             throw error;
         }
     }

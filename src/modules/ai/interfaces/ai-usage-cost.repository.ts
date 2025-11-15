@@ -57,6 +57,12 @@ export interface IAIUsageCostRepository {
     findOneById(id: ID): Promise<AIUsageCost | null>;
 
     /**
+     * messageId bo'yicha bitta record topish
+     * Upsert operatsiyasi uchun ishlatiladi
+     */
+    findOneByMessageId(messageId: ID): Promise<AIUsageCost | null>;
+
+    /**
      * Barcha recordlarni olish (admin uchun)
      */
     findAll(): Promise<AIUsageCost[]>;

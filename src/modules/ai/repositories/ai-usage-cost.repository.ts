@@ -127,6 +127,17 @@ export class AIUsageCostRepository extends BaseAIRepository implements IAIUsageC
     }
 
     /**
+     * messageId bo'yicha bitta record topish
+     * Upsert operatsiyasi uchun ishlatiladi
+     */
+    async findOneByMessageId(messageId: ID): Promise<AIUsageCost | null> {
+        this.debugLog(`Finding cost record by messageId: ${messageId}`);
+        return await this.aiUsageCostRepository.findOne({
+            where: { messageId: Number(messageId) },
+        });
+    }
+
+    /**
      * Barcha recordlarni olish (admin uchun)
      */
     async findAll(): Promise<AIUsageCost[]> {
