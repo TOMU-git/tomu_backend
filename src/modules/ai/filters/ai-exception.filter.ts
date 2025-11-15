@@ -4,11 +4,14 @@ import {
     ArgumentsHost,
     Logger,
     HttpException,
+    Inject,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AIException } from '../exceptions/ai-exception.base';
 import { AIErrorCode } from '../constants/error-codes.enum';
 import { AI_ERROR_MESSAGES } from '../constants/error-messages.constant';
+import { AIChatService } from '../services/ai-chat.service';
+import { LimitExceededException } from '../exceptions/limit-exceeded.exception';
 
 /**
  * AI moduli uchun global exception filter
@@ -23,7 +26,12 @@ import { AI_ERROR_MESSAGES } from '../constants/error-messages.constant';
 export class AIExceptionFilter implements ExceptionFilter {
     private readonly logger = new Logger(AIExceptionFilter.name);
 
-    catch(exception: unknown, host: ArgumentsHost) {
+    constructor(
+        @Inject(AIChatService)
+        private readonly chatService: AIChatService,
+    ) {}
+
+    async catch(exception: unknown, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest();
@@ -33,9 +41,43 @@ export class AIExceptionFilter implements ExceptionFilter {
 
         // AIException ni boshqarish (bizning domain exceptionlarimiz)
         if (exception instanceof AIException) {
+            const exceptionResponse = exception.getResponse() as any;
+            
+            // LimitExceededException va /ai/chat/voice endpoint uchun message'larni qo'shish
+            if (exception instanceof LimitExceededException && request.url?.includes('/ai/chat/voice')) {
+                try {
+                    const sessionId = request.body?.sessionId;
+                    const userId = request.user?.id;
+                    
+                    if (sessionId && userId) {
+                        const messages = await this.chatService.getMessages(sessionId, userId);
+                        const limitedMessages = messages.slice(0, 25).map(m => ({
+                            id: m.id,
+                            sessionId: m.sessionId,
+                            senderType: m.senderType,
+                            originalText: m.originalText || undefined,
+                            aiResponseText: m.aiResponseText || undefined,
+                            aiResponseUzbek: m.aiResponseUzbek || undefined,
+                            audioUrl: m.audioUrl || undefined,
+                            isWithinLimit: m.isWithinLimit ?? true,
+                            createdAt: m.createdAt,
+                        }));
+                        
+                        return response.status(exception.getStatus()).json({
+                            message: exceptionResponse.message,
+                            statusCode: exceptionResponse.statusCode,
+                            data: limitedMessages,
+                        });
+                    }
+                } catch (error) {
+                    // Message'larni olishda xatolik bo'lsa, oddiy response qaytarish
+                    this.logger.warn(`Failed to get messages for error response: ${error.message}`);
+                }
+            }
+            
             return response
                 .status(exception.getStatus())
-                .json(exception.getResponse());
+                .json(exceptionResponse);
         }
 
         // NestJS exceptionlarini boshqarish
@@ -85,7 +127,7 @@ export class AIExceptionFilter implements ExceptionFilter {
         return response.status(status).json({
             message: errorConfig.message,
             statusCode: errorConfig.httpStatus,
-            data: null,
+            data: [],
         });
     }
 
@@ -102,7 +144,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             return response.status(errorConfig.httpStatus).json({
                 message: errorConfig.message,
                 statusCode: errorConfig.httpStatus,
-                data: null,
+                data: [],
             });
         }
 
@@ -112,7 +154,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             return response.status(errorConfig.httpStatus).json({
                 message: errorConfig.message,
                 statusCode: errorConfig.httpStatus,
-                data: null,
+                data: [],
             });
         }
 
@@ -122,7 +164,7 @@ export class AIExceptionFilter implements ExceptionFilter {
             return response.status(errorConfig.httpStatus).json({
                 message: errorConfig.message,
                 statusCode: errorConfig.httpStatus,
-                data: null,
+                data: [],
             });
         }
 
@@ -131,7 +173,7 @@ export class AIExceptionFilter implements ExceptionFilter {
         return response.status(errorConfig.httpStatus).json({
             message: errorConfig.message,
             statusCode: errorConfig.httpStatus,
-            data: null,
+            data: [],
         });
     }
 

@@ -143,7 +143,15 @@ export class LimitCheckService {
             // Shuning uchun avval row'larni lock qilamiz, keyin SUM() qilamiz
             const currentMonth = this.getCurrentMonth();
 
-            // Avval sessionId orqali courseId'ga tegishli cost recordlarni lock qilish
+            // 4.1. Avval messageId bo'yicha mavjud record'ni tekshirish va lock qilish (upsert uchun)
+            // Bu concurrent request'larda race condition'ni oldini oladi
+            const existingRecord = await queryRunner.manager
+                .createQueryBuilder(AIUsageCost, "cost")
+                .where("cost.message_id = :messageId", { messageId: Number(messageId) })
+                .setLock("pessimistic_write") // Lock qilish
+                .getOne();
+
+            // 4.2. Avval sessionId orqali courseId'ga tegishli cost recordlarni lock qilish
             // JOIN qilib courseId'ga mos keladigan recordlarni lock qilamiz
             if (courseId === null) {
                 await queryRunner.manager.query(
@@ -163,7 +171,7 @@ export class LimitCheckService {
                 );
             }
 
-            // Keyin SUM() qilish - courseId bo'yicha
+            // 4.3. Keyin SUM() qilish - courseId bo'yicha
             let currentCost;
             if (courseId === null) {
                 currentCost = await queryRunner.manager.query(
@@ -184,22 +192,41 @@ export class LimitCheckService {
             }
 
             const currentCostValue = parseFloat(currentCost[0]?.total || "0");
-            const estimatedTotal = currentCostValue + costBreakdown.totalCost;
+            
+            // 4.4. Agar mavjud record bo'lsa, eski cost'ni ayirib, yangi cost'ni qo'shamiz
+            // Bu limit check'ni to'g'ri qilish uchun zarur
+            const oldCostValue = existingRecord ? parseFloat(String(existingRecord.totalCost || "0")) : 0;
+            const adjustedCurrentCost = currentCostValue - oldCostValue; // Eski cost'ni ayirish
+            const estimatedTotal = adjustedCurrentCost + costBreakdown.totalCost;
 
             // 5. Limit tekshiruvi (har bir kurs uchun alohida)
             if (estimatedTotal > this.monthlyLimit) {
                 await queryRunner.rollbackTransaction();
                 throw new LimitExceededException({
-                    currentCost: this.roundToSixDecimals(currentCostValue),
+                    currentCost: this.roundToSixDecimals(adjustedCurrentCost),
                     limit: this.monthlyLimit,
-                    remaining: this.roundToSixDecimals(Math.max(0, this.monthlyLimit - currentCostValue)),
+                    remaining: this.roundToSixDecimals(Math.max(0, this.monthlyLimit - adjustedCurrentCost)),
                     courseId: courseId,
                     month: currentMonth,
                 });
             }
 
-            // 5. Cost record yaratish
-            const costRecord = new AIUsageCost();
+            // 6. Cost record yaratish yoki yangilash (upsert)
+            let costRecord: AIUsageCost;
+            if (existingRecord) {
+                // Mavjud record'ni yangilash
+                this.logger.debug(
+                    `🔄 Updating existing cost record for messageId ${messageId}, ` +
+                    `old cost: $${oldCostValue.toFixed(6)}, new cost: $${costBreakdown.totalCost.toFixed(6)}`
+                );
+                costRecord = existingRecord;
+            } else {
+                // Yangi record yaratish
+                this.logger.debug(`✨ Creating new cost record for messageId ${messageId}`);
+                costRecord = new AIUsageCost();
+            }
+
+            // Ma'lumotlarni to'ldirish/yangilash
             costRecord.userId = Number(userId);
             costRecord.sessionId = Number(sessionId);
             costRecord.messageId = Number(messageId);
@@ -214,13 +241,13 @@ export class LimitCheckService {
             costRecord.ttsCharacters = params.ttsCharacters;
             costRecord.month = currentMonth;
 
-            // 6. Database'ga saqlash (transaction ichida)
+            // 7. Database'ga saqlash (transaction ichida) - save() avtomatik ravishda update yoki create qiladi
             await queryRunner.manager.save(AIUsageCost, costRecord);
 
-            // 7. Transaction commit
+            // 8. Transaction commit
             await queryRunner.commitTransaction();
 
-            const finalCost = currentCostValue + costBreakdown.totalCost;
+            const finalCost = adjustedCurrentCost + costBreakdown.totalCost;
 
             return {
                 cost: costBreakdown,

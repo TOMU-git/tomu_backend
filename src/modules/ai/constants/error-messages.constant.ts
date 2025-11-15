@@ -20,7 +20,7 @@ export interface ErrorMessage {
 export const AI_ERROR_MESSAGES: Record<AIErrorCode, ErrorMessage> = {
     [AIErrorCode.LIMIT_EXCEEDED]: {
         code: AIErrorCode.LIMIT_EXCEEDED,
-        message: 'Oylik limitingiz tugagan ($2). Yangi oyni kuting yoki qayta to\'lov qiling.',
+        message: 'Oylik limitingiz tugagan.',
         retryable: false,
         action: 'wait_or_pay',
         httpStatus: 402, // Payment Required

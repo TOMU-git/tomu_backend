@@ -32,7 +32,7 @@ export abstract class AIException extends HttpException {
             {
                 message: errorConfig.message,
                 statusCode: errorConfig.httpStatus,
-                data: null,
+                data: [],
             },
             errorConfig.httpStatus,
         );
