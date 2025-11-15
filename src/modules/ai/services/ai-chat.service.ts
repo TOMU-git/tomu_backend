@@ -296,10 +296,8 @@ export class AIChatService {
         }
 
         // Session'dan courseId va language ni olish (session yaratilganda berilgan)
-        const finalCourseId = session.courseId || undefined;
-        const finalLanguage = session.sessionLanguage || 'ar';
-
-        // // console.log(`[sendVoiceMessage] Using session data: courseId=${finalCourseId}, language=${finalLanguage} (from session: courseId=${session.courseId}, sessionLanguage=${session.sessionLanguage})`);
+        const finalCourseId = session.courseId;
+        const finalLanguage = session.sessionLanguage;
 
         // Pre-flight limit check - message saqlashdan OLDIN tekshirish
         // Bu limit oshib ketgan holatda message saqlanishini oldini oladi

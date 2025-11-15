@@ -3,6 +3,7 @@ import { AIChatMessage } from "../entities/ai-chat-message.entity";
 import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { TTSService } from "./tts.service";
 import { TranslationService } from "./translation.service";
+import { ArabicTextUtils } from "../utils/arabic-text.util";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -169,6 +170,28 @@ export class AIChatMessageFactory {
             throw new Error(`[MessageFactory] Invalid sessionId: ${sessionId}`);
         }
 
+        // aiResponseUz ni tekshirish va kerak bo'lsa tarjima qilish
+        let finalUzbekText = aiResponseUz || '';
+        
+        // Agar aiResponseUz bo'sh, aiResponse bilan bir xil yoki arabcha bo'lsa, tarjima qilish
+        const needsTranslation = 
+            !finalUzbekText || 
+            finalUzbekText.trim() === '' || 
+            finalUzbekText.trim() === aiResponse.trim() ||
+            ArabicTextUtils.isArabicText(finalUzbekText);
+
+        if (needsTranslation && aiResponse && aiResponse.trim().length > 0) {
+            try {
+                console.log(`[MessageFactory] Translating aiResponseUzbek: "${aiResponse}" -> Uzbek`);
+                finalUzbekText = await this.translation.translateToUzbek(aiResponse);
+                console.log(`[MessageFactory] Translation result: "${finalUzbekText}"`);
+            } catch (error: any) {
+                console.error(`[MessageFactory] Error translating aiResponseUzbek: ${error.message}`);
+                // Tarjima xatosi bo'lsa ham, bo'sh qoldirish yoki asl matnni qoldirish
+                finalUzbekText = finalUzbekText || '';
+            }
+        }
+
         const message = new AIChatMessage();
 
         // SessionId'ni to'g'ridan-to'g'ri set qilish
@@ -176,7 +199,7 @@ export class AIChatMessageFactory {
         message.senderType = 'ai';
         message.originalText = null; // Foydalanuvchi xabari alohida saqlanadi
         message.aiResponseText = aiResponse;
-        message.aiResponseUzbek = aiResponseUz;
+        message.aiResponseUzbek = finalUzbekText;
         message.isWithinLimit = withinLimit;
 
         // Audio strategiyasi - FAQAT ARABCHA!

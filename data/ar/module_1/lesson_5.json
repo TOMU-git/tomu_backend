@@ -1,126 +1,51 @@
 {
   "id": "ar_m1_l5",
   "language": "ar",
-  "moduleNumber": 1,
-  "lessonNumber": 5,
+  "module": 1,
+  "lesson": 5,
   "title": "مَسْجِدٌ جَمِيلٌ",
-  "lessonSummary": "Learning to describe location and distance using demonstratives and simple adjectives like 'near' and 'far'.",
-  "keywords": ["joy", "masofa", "uy", "masjid", "ko'rsatish olmoshi", "sifat"],
+  "summary": "Learning to describe location and distance using demonstratives and simple adjectives like 'near' and 'far'.",
   "vocabulary": [
-    {
-      "word": "مَسْجِدٌ",
-      "normalized": "مسجد",
-      "lemma": "مَسْجِد",
-      "pos": "noun",
-      "category": "place",
-      "translationUz": "masjid",
-      "example": "ذَلِكَ مَسْجِدٌ"
-    },
-    {
-      "word": "جَمِيلٌ",
-      "normalized": "جميل",
-      "lemma": "جَمِيل",
-      "pos": "adjective",
-      "category": "quality",
-      "translationUz": "chiroyli",
-      "example": "الْبَيْتُ جَمِيلٌ"
-    },
-    {
-      "word": "بَيْتٌ",
-      "normalized": "بيت",
-      "lemma": "بَيْت",
-      "pos": "noun",
-      "category": "place",
-      "translationUz": "uy",
-      "example": "هَذَا بَيْتٌ"
-    },
-    {
-      "word": "قَرِيبٌ",
-      "normalized": "قريب",
-      "lemma": "قَرِيب",
-      "pos": "adjective",
-      "category": "quality",
-      "translationUz": "yaqin",
-      "example": "الْمَسْجِدُ قَرِيبٌ"
-    },
-    {
-      "word": "بَعِيدٌ",
-      "normalized": "بعيد",
-      "lemma": "بَعِيد",
-      "pos": "adjective",
-      "category": "quality",
-      "translationUz": "uzoq",
-      "example": "الْبَيْتُ بَعِيدٌ"
-    },
-    {
-      "word": "هَذَا",
-      "normalized": "هذا",
-      "lemma": "هَذَا",
-      "pos": "demonstrative",
-      "category": "demonstrative",
-      "translationUz": "bu (yaqin)",
-      "example": "هَذَا كِتَابٌ"
-    },
-    {
-      "word": "ذَلِكَ",
-      "normalized": "ذلك",
-      "lemma": "ذَلِكَ",
-      "pos": "demonstrative",
-      "category": "demonstrative",
-      "translationUz": "u (uzoq)",
-      "example": "ذَلِكَ بَيْتٌ"
-    },
-    {
-      "word": "أَهَذَا",
-      "normalized": "اهذا",
-      "lemma": "أَهَذَا",
-      "pos": "interrogative phrase",
-      "category": "question",
-      "translationUz": "bu ham ...mi?",
-      "example": "أَهَذَا كِتَابٌ؟"
-    },
-    {
-      "word": "أَيْضًا",
-      "normalized": "ايضا",
-      "lemma": "أَيْضًا",
-      "pos": "particle",
-      "category": "particle",
-      "translationUz": "ham",
-      "example": "هُوَ طَالِبٌ أَيْضًا"
-    },
-    {
-      "word": "لَا",
-      "normalized": "لا",
-      "lemma": "لَا",
-      "pos": "particle",
-      "category": "particle",
-      "translationUz": "yo'q",
-      "example": "لَا، هُوَ طَبِيبٌ"
-    }
+    { "word": "مَسْجِدٌ", "translationUz": "masjid" },
+    { "word": "جَمِيلٌ", "translationUz": "chiroyli" },
+    { "word": "بَيْتٌ", "translationUz": "uy" },
+    { "word": "قَرِيبٌ", "translationUz": "yaqin" },
+    { "word": "بَعِيدٌ", "translationUz": "uzoq" },
+    { "word": "هَذَا", "translationUz": "bu (yaqin)" },
+    { "word": "ذَلِكَ", "translationUz": "u (uzoq)" },
+    { "word": "أَهَذَا", "translationUz": "bu ham ...mi?" },
+    { "word": "أَيْضًا", "translationUz": "ham" },
+    { "word": "لَا", "translationUz": "yo'q" }
   ],
   "dialogue": [
     {
-      "turnIndex": 1,
-      "speaker": "مُحَمَّدٌ",
+      "speaker": "مُحَمَّدٌ",
       "text": "هَذَا الْبَيْتُ قَرِيبٌ، ذَلِكَ الْمَسْجِدُ بَعِيدٌ.",
       "translationUz": "Bu uy yaqin, u masjid uzoq.",
-      "audioUrl": null
+      "next": "أَهَذَا مَسْجِدٌ أَيْضًا؟"
     },
     {
-      "turnIndex": 2,
       "speaker": "أَحْمَدُ",
       "text": "أَهَذَا مَسْجِدٌ أَيْضًا؟",
       "translationUz": "Bu ham masjidmi?",
-      "audioUrl": null
+      "next": "لَا، هَذَا بَيْتٌ."
     },
     {
-      "turnIndex": 3,
-      "speaker": "مُحَمَّدٌ",
+      "speaker": "مُحَمَّدٌ",
       "text": "لَا، هَذَا بَيْتٌ.",
-      "translationUz": "Yo‘q, bu uy.",
-      "audioUrl": null
+      "translationUz": "Yo'q, bu uy.",
+      "next": null
     }
   ],
-  "createdAt": "2025-10-12T13:00:00Z",
-  "updatedAt": "2025-10-12T13:00:00Z"
+  "followups": [
+    "هَلْ ذَلِكَ الْمَسْجِدُ جَمِيلٌ؟",
+    "أَيْنَ الْبَيْتُ الْقَرِيبُ؟",
+    "هَلْ تَذْهَبُ إِلَى الْمَسْجِدِ؟",
+    "كَمْ مَسَافَةُ الْمَسْجِدِ؟",
+    "هَلْ تُحِبُّ الْمَسَاجِدَ الْقَرِيبَةَ؟"
+  ],
+  "context": {
+    "main_topic": "location_distance",
+    "pattern": "statement → question → answer"
+  }
 }

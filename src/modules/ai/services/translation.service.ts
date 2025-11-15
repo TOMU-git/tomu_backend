@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import axios from "axios";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const TRANSLATION_MODEL = "gpt-4o"; // Better quality translation model
+const TRANSLATION_MODEL = process.env.GPT_MODEL || "gpt-5"; // Use same model as main GPT service
+const TRANSLATION_MAX_TOKENS = 500; // Increased for longer translations
 
 /**
  * TranslationService
@@ -12,7 +13,9 @@ const TRANSLATION_MODEL = "gpt-4o"; // Better quality translation model
 @Injectable()
 export class TranslationService {
     async translateToUzbek(text: string): Promise<string> {
-        if (!text || !OPENAI_API_KEY) return text;
+        if (!text || !text.trim() || !OPENAI_API_KEY) {
+            return text || '';
+        }
 
         try {
             const res = await axios.post(
@@ -29,14 +32,19 @@ export class TranslationService {
                             content: text
                         }
                     ],
-                    max_tokens: 100,
+                    max_tokens: TRANSLATION_MAX_TOKENS,
                     temperature: 0.3,
                 },
-                { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
+                { 
+                    headers: { Authorization: `Bearer ${OPENAI_API_KEY}` },
+                    timeout: 30000 // 30 seconds timeout
+                }
             );
 
-            return (res.data as any)?.choices?.[0]?.message?.content?.trim() || text;
-        } catch (e) {
+            const translated = (res.data as any)?.choices?.[0]?.message?.content?.trim();
+            return translated || text;
+        } catch (e: any) {
+            console.error(`[TranslationService] Error translating to Uzbek: ${e?.message || 'Unknown error'}`);
             // Fallback - matnni qaytarish
             return text;
         }

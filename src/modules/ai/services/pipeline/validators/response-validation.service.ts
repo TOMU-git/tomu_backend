@@ -13,11 +13,11 @@ import { ConversationTopicExtractorService, ConversationTopic } from '../extract
 
 @Injectable()
 export class ResponseValidationService {
-    constructor() {}
+    constructor() { }
 
     /**
      * Material javobini validatsiya qilish
-     * Soddalashtirilgan - faqat echo detection
+     * Echo detection o'chirilgan - material javoblar to'g'ridan-to'g'ri qabul qilinadi
      */
     validateMaterialResponse(
         response: string,
@@ -25,12 +25,8 @@ export class ResponseValidationService {
         normalizedUser: string,
         userWords: Set<string>
     ): { isValid: boolean; reason?: string } {
-        // Faqat echo detection - eng muhim validatsiya
-        const isEcho = this.detectEcho(response, userText, normalizedUser, userWords);
-        if (isEcho) {
-            return { isValid: false, reason: 'echo' };
-        }
-
+        // Echo detection o'chirilgan - material javoblar har doim valid
+        // Material javoblar materiallardan kelgani uchun, ular har doim to'g'ri
         return { isValid: true };
     }
 
@@ -73,6 +69,7 @@ export class ResponseValidationService {
 
     /**
      * Echo detection
+     * Yaxshilangan: Material javoblarini noto'g'ri echo deb topmasligi uchun
      */
     private detectEcho(response: string, originalUserText: string, normalizedUser: string, userWords: Set<string>): boolean {
         if (!response || !originalUserText) return false;
@@ -82,20 +79,60 @@ export class ResponseValidationService {
         const normalizedResponse = normalize(response);
         const normalizedUserCleaned = normalize(originalUserText);
 
+        // Response uzunligi user gapidan ancha katta bo'lsa, echo emas (material javob bo'lishi mumkin)
+        const lengthRatio = normalizedResponse.length / (normalizedUserCleaned.length || 1);
+        if (lengthRatio > 1.5) {
+            // Response user gapidan 1.5x katta bo'lsa, echo emas
+            return false;
+        }
+
         // 1. To'liq takrorlash
         if (normalizedResponse === normalizedUserCleaned) {
             return true;
         }
 
-        // 2. Yuqori o'xshashlik
+        // 2. Response'da qo'shimcha ma'lumot borligini tekshirish
+        // Material javoblarida odatda qo'shimcha ma'lumot bo'ladi
         const responseWords = new Set(normalizedResponse.split(/\s+/).filter(Boolean));
+        const userWordArray = Array.from(userWords);
+
+        // Response'da user gapida bo'lmagan so'zlar borligini tekshirish
+        const newWordsInResponse = Array.from(responseWords).filter(word => !userWords.has(word));
+        const hasNewContent = newWordsInResponse.length > 0 && newWordsInResponse.some(w => w.length > 2);
+
+        // MUHIM: Agar response'da user gapida bo'lmagan mazmunli so'zlar bo'lsa, echo emas
+        // Masalan: User "مَا هَذَا يَا فَرِيد؟" deb so'rasa, javob "هَذَا بُرْتُقَالٌ" bo'lishi mumkin
+        // "بُرْتُقَالٌ" - bu user gapida yo'q, demak echo emas
+        if (hasNewContent) {
+            return false; // Qo'shimcha ma'lumot bor, echo emas
+        }
+
+        // 3. User gapidagi barcha so'zlar response'da bo'lsa va response'da qo'shimcha so'zlar yo'q bo'lsa
+        // Bu echo bo'lishi mumkin
+        const allUserWordsInResponse = userWordArray.every(word => responseWords.has(word));
+        const responseHasOnlyUserWords = Array.from(responseWords).every(word => userWords.has(word));
+
+        if (allUserWordsInResponse && responseHasOnlyUserWords) {
+            // User gapidagi barcha so'zlar response'da va response'da faqat user gapidagi so'zlar bor
+            // Lekin uzunlik farqi katta bo'lsa, echo emas (masalan, so'zlar qayta tartibda)
+            const lengthDiff = Math.abs(normalizedResponse.length - normalizedUserCleaned.length);
+            if (lengthDiff < 5 && responseWords.size <= userWords.size) {
+                return true; // Echo
+            }
+        }
+
+        // 4. Yuqori o'xshashlik (lekin qo'shimcha ma'lumot yo'q bo'lsa)
         if (responseWords.size > 0 && userWords.size > 0) {
             let commonWords = 0;
             for (const word of userWords) {
                 if (responseWords.has(word)) commonWords++;
             }
             const similarity = commonWords / userWords.size;
-            if (similarity > SIMILARITY_THRESHOLDS.ECHO_SIMILARITY && responseWords.size <= userWords.size * SIMILARITY_THRESHOLDS.ECHO_LENGTH_RATIO) {
+
+            // Echo bo'lishi uchun: yuqori o'xshashlik VA response'da faqat user gapidagi so'zlar VA uzunlik farqi kichik
+            if (similarity > SIMILARITY_THRESHOLDS.ECHO_SIMILARITY &&
+                responseHasOnlyUserWords &&
+                responseWords.size <= userWords.size * SIMILARITY_THRESHOLDS.ECHO_LENGTH_RATIO) {
                 const helpPattern = normalize(AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP?.arabic || '');
                 const helpPatterns = [
                     normalize('هل تقصد'),
@@ -112,7 +149,7 @@ export class ResponseValidationService {
             }
         }
 
-        // 3. User gapini to'liq o'z ichiga olish
+        // 5. User gapini to'liq o'z ichiga olish (lekin qo'shimcha ma'lumot yo'q bo'lsa)
         const userTextLower = normalizedUserCleaned.toLowerCase();
         const responseLower = normalizedResponse.toLowerCase();
 
@@ -126,21 +163,22 @@ export class ResponseValidationService {
             const hasHelpPattern = helpPatterns.some(pattern =>
                 normalizedResponse.includes(pattern) && pattern.length > 0
             );
-            const lengthRatio = responseLower.length / userTextLower.length;
-            if (!hasHelpPattern && lengthRatio <= SIMILARITY_THRESHOLDS.ECHO_LENGTH_RATIO_STRICT) {
+            // Agar qo'shimcha ma'lumot bo'lsa yoki uzunlik farqi katta bo'lsa, echo emas
+            if (!hasHelpPattern && !hasNewContent && lengthRatio <= SIMILARITY_THRESHOLDS.ECHO_LENGTH_RATIO_STRICT) {
                 return true;
             }
         }
 
-        // 4. So'zlarni qayta tartib bilan qo'yish
+        // 6. So'zlarni qayta tartib bilan qo'yish (faqat uzunlik farqi kichik bo'lsa)
         const responseWordArray = Array.from(responseWords);
-        const userWordArray = Array.from(userWords);
 
         if (userWordArray.length > 0 && responseWordArray.length > 0) {
             const allResponseWordsInUser = responseWordArray.every(word => userWords.has(word));
             const allUserWordsInResponse = userWordArray.every(word => responseWords.has(word));
 
-            if (allResponseWordsInUser && allUserWordsInResponse && responseWords.size === userWords.size) {
+            // Barcha so'zlar mos va uzunlik farqi kichik bo'lsa, echo
+            if (allResponseWordsInUser && allUserWordsInResponse &&
+                responseWords.size === userWords.size) {
                 const lengthDiff = Math.abs(normalizedResponse.length - normalizedUserCleaned.length);
                 if (lengthDiff < 10) {
                     return true;

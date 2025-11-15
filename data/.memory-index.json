@@ -6707,6 +6707,16 @@
       "translationUz": "Men ularni juda yaxshi ko'raman.",
       "audioUrl": null,
       "title": "أُحِبُّ عَائِلَتِي"
+    },
+    {
+      "id": "ar_mundefined_lundefined_t0",
+      "language": "ar",
+      "turnIndex": 0,
+      "speaker": "فَرِيدٌ",
+      "text": "أَهْلًا بِكَ.",
+      "translationUz": "Xush ko'rdim seni.",
+      "audioUrl": null,
+      "title": "اَلتَّعَارُفُ"
     }
   ]
 }

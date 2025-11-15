@@ -1,50 +1,55 @@
 {
   "id": "ar_m1_l2",
   "language": "ar",
-  "moduleNumber": 1,
-  "lessonNumber": 2,
+  "module": 1,
+  "lesson": 2,
   "title": "بَيْتٌ",
-  "lessonSummary": "Practicing demonstrative pronouns and forming simple yes/no questions about objects.",
-  "keywords": ["uy", "ko'rsatish olmoshi", "savol", "ot", "ham"],
+  "summary": "Practicing demonstrative pronouns and forming simple yes/no questions about objects.",
   "vocabulary": [
-    { "word": "بَيْتٌ", "normalized": "بيت", "lemma": "بَيْت", "pos": "noun", "translationUz": "uy", "example": "هَذَا بَيْتٌ" },
-    { "word": "هَذَا", "normalized": "هذا", "lemma": "هَذَا", "pos": "demonstrative", "translationUz": "bu", "example": "هَذَا كِتَابٌ" },
-    { "word": "مَا", "normalized": "ما", "lemma": "مَا", "pos": "interrogative", "translationUz": "nima", "example": "مَا هَذَا؟" },
-    { "word": "هَلْ", "normalized": "هل", "lemma": "هَلْ", "pos": "particle", "translationUz": "so‘roq yuklamasi (mi?)", "example": "هَلْ هُوَ كَبِيرٌ؟" },
-    { "word": "نَعَمْ", "normalized": "نعم", "lemma": "نَعَمْ", "pos": "particle", "translationUz": "ha", "example": "نَعَمْ، هُوَ طَيِّبٌ" },
-    { "word": "أَيْضًا", "normalized": "ايضا", "lemma": "أَيْضًا", "pos": "particle", "translationUz": "ham", "example": "هُوَ طَالِبٌ أَيْضًا" },
-    { "word": "إِنَّهُ", "normalized": "انه", "lemma": "إِنَّهُ", "pos": "particle", "translationUz": "albatta u", "example": "إِنَّهُ جَمِيلٌ" }
+    { "word": "بَيْتٌ", "translationUz": "uy" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "أَيْضًا", "translationUz": "ham" },
+    { "word": "إِنَّهُ", "translationUz": "albatta u" }
   ],
   "dialogue": [
     {
-      "turnIndex": 1,
       "speaker": "مُحَمَّدٌ",
       "text": "مَا هَذَا، يَا أَحْمَدُ؟",
       "translationUz": "Bu nima, Ahmad?",
-      "audioUrl": null
+      "next": "هَذَا بَيْتٌ، يَا مُحَمَّدُ."
     },
     {
-      "turnIndex": 2,
       "speaker": "أَحْمَدُ",
-      "text": "هَذَا بَيْتٌ، يَا مُحَمَّدُ.",
+      "text": "هَذَا بَيْتٌ، يَا مُحَمَّدُ.",
       "translationUz": "Bu uy, Muhammad.",
-      "audioUrl": null
+      "next": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟"
     },
     {
-      "turnIndex": 3,
       "speaker": "مُحَمَّدٌ",
       "text": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟",
       "translationUz": "Bu ham uy emasmi?",
-      "audioUrl": null
+      "next": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا."
     },
     {
-      "turnIndex": 4,
       "speaker": "أَحْمَدُ",
-      "text": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
+      "text": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
       "translationUz": "Ha, bu ham uy.",
-      "audioUrl": null
+      "next": null
     }
   ],
-  "createdAt": "2025-10-12T12:15:00Z",
-  "updatedAt": "2025-10-12T12:15:00Z"
+  "followups": [
+    "هَلْ هُوَ كَبِيرٌ؟",
+    "مَنْ يَسْكُنُ فِي هَذَا البَيْتِ؟",
+    "هَلْ هُوَ جَدِيدٌ؟",
+    "هَلْ تُعْجِبُكَ هَذِهِ البُيُوتُ؟",
+    "كَمْ غُرْفَةً فِي هَذَا البَيْتِ؟",
+    "هَلْ هُنَاكَ بُيُوتٌ أُخْرَى؟"
+  ],
+  "context": {
+    "main_object": "house",
+    "pattern": "question → answer → question → answer"
+  }
 }

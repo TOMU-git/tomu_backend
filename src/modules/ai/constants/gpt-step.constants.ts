@@ -71,3 +71,5 @@ export const NAME_VALIDATION = {
     COMMON_NAMES: ['محمد', 'أحمد', 'فريد', 'كريم', 'علي', 'حسن', 'حسين'],
 } as const;
 
+
+

@@ -12,7 +12,7 @@ export class AIDiagnosticsService {
      */
     async checkConnectivity(): Promise<{ openai: { keyPresent: boolean; gptReachable: boolean; ttsReachable: boolean }; chroma: { usingChroma: boolean; url?: string; reachable: boolean; memoryIndex: { languages: number; chunks: number } } }> {
         const OPENAI_API_KEY = !!process.env.OPENAI_API_KEY;
-        const GPT_MODEL = process.env.GPT_MODEL || "gpt-4o-mini";
+        const GPT_MODEL = process.env.GPT_MODEL || "gpt-5";
         const TTS_MODEL = process.env.TTS_MODEL || "tts-1-hd";
 
         // OpenAI reachability: GET /models (no billing)

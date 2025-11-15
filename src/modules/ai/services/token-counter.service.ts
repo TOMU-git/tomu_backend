@@ -15,9 +15,9 @@ export class TokenCounterService {
 
     constructor() {
         try {
-            // gpt-4o uchun encoding (cl100k_base)
-            this.encoding = encodingForModel("gpt-4o");
-            this.logger.log("✅ Tiktoken encoding initialized for gpt-4o");
+            // gpt-5 uchun encoding (cl100k_base)
+            this.encoding = encodingForModel("gpt-5");
+            this.logger.log("✅ Tiktoken encoding initialized for gpt-5");
         } catch (error) {
             this.logger.warn(`⚠️  Failed to initialize tiktoken: ${error}. Using fallback estimation.`);
             try {
@@ -105,7 +105,7 @@ export class TokenCounterService {
 
     /**
      * Calculate token budget for GPT call
-     * @param model - Model name (gpt-4o, gpt-4-turbo, etc.)
+     * @param model - Model name (gpt-5, gpt-4o, gpt-4-turbo, etc.)
      * @param systemTokens - Estimated system prompt tokens
      * @param conversationTokens - Estimated conversation history tokens
      * @param completionTokens - Desired completion tokens
@@ -119,6 +119,7 @@ export class TokenCounterService {
     ): number {
         // Model limits (approximate)
         const modelLimits: Record<string, number> = {
+            "gpt-5": 8192,
             "gpt-4o": 8192,
             "gpt-4-turbo": 8192,
             "gpt-4": 8192,
@@ -153,6 +154,7 @@ export class TokenCounterService {
     } {
         const totalTokens = this.estimateMessageTokens(messages);
         const modelLimits: Record<string, number> = {
+            "gpt-5": 8192,
             "gpt-4o": 8192,
             "gpt-4-turbo": 8192,
             "gpt-4": 8192,
