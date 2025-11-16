@@ -151,6 +151,18 @@ export class GPTService {
             const errorMessage = e instanceof Error ? e.message : 'Unknown error';
             const errorStack = e instanceof Error ? e.stack : undefined;
             this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
+
+            // Log response data if available (for debugging API errors)
+            if (e && typeof e === 'object' && 'response' in e) {
+                const axiosError = e as any;
+                if (axiosError.response?.data) {
+                    this.logger.error(`❌ GPT API Response Data:`, JSON.stringify(axiosError.response.data, null, 2));
+                }
+                if (axiosError.response?.status) {
+                    this.logger.error(`❌ GPT API Response Status: ${axiosError.response.status}`);
+                }
+            }
+
             return `Javob: ${prompt}`; // fallback
         }
     }
@@ -248,6 +260,18 @@ export class GPTService {
             const errorMessage = e instanceof Error ? e.message : 'Unknown error';
             const errorStack = e instanceof Error ? e.stack : undefined;
             this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
+
+            // Log response data if available (for debugging API errors)
+            if (e && typeof e === 'object' && 'response' in e) {
+                const axiosError = e as any;
+                if (axiosError.response?.data) {
+                    this.logger.error(`❌ GPT API Response Data:`, JSON.stringify(axiosError.response.data, null, 2));
+                }
+                if (axiosError.response?.status) {
+                    this.logger.error(`❌ GPT API Response Status: ${axiosError.response.status}`);
+                }
+            }
+
             // Fallback response
             return {
                 text: `Javob: ${correctedPrompt}`,
@@ -272,7 +296,7 @@ export class GPTService {
                     {
                         model: this.gptModel,
                         messages,
-                        max_tokens: this.maxTokens,
+                        max_completion_tokens: this.maxTokens,
                         temperature: this.temperature,
                     },
                     {

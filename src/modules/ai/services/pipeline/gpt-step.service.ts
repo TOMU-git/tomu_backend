@@ -72,7 +72,7 @@ export class GPTStep implements PipelineStep {
         // Agar ACCESS_GENERAL=true bo'lsa, material matching'ni o'tkazib yuboramiz
         if (this.accessGeneral) {
             // Erkin rejim: to'g'ridan-to'g'ri GPT'ga so'rov yuborish
-            // Context'ni yubormaymiz - faqat user text va conversation history
+            // Context va conversation history'ni yubormaymiz - faqat user text
             const response = await this.generateGPTResponse(
                 userText,
                 normalizedUser,
@@ -80,7 +80,7 @@ export class GPTStep implements PipelineStep {
                 [], // Bo'sh context - materiallarga etibor berilmaydi
                 lastWatchedLessonOrder,
                 { topic: null, keywords: [] }, // Conversation topic'ni ham o'tkazib yuboramiz
-                input.conversationHistory || [],
+                [], // Bo'sh conversation history - oldingi suhbatlarni ham unutamiz
                 true // freeMode = true
             );
 
@@ -321,15 +321,18 @@ export class GPTStep implements PipelineStep {
         const gptUsage = gptResult.usage;
 
         // GPT javobini validatsiya qilish
-        const validation = this.responseValidation.validateGPTResponse(
-            aiResponse,
-            userText,
-            normalizedUser,
-            userWords,
-            context,
-            lastWatchedLessonOrder,
-            conversationTopic
-        );
+        // Erkin rejimda material-based validation'ni o'tkazib yuboramiz
+        const validation = freeMode
+            ? { isValid: true } // Erkin rejimda validation'ni o'tkazib yuboramiz
+            : this.responseValidation.validateGPTResponse(
+                aiResponse,
+                userText,
+                normalizedUser,
+                userWords,
+                context,
+                lastWatchedLessonOrder,
+                conversationTopic
+            );
 
         if (!validation.isValid) {
             console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
@@ -343,10 +346,11 @@ export class GPTStep implements PipelineStep {
         }
 
         // Valid GPT response
+        // Erkin rejimda context'ni o'tkazib yuboramiz
         const aiResponseUz = await this.fallbackResponse.translateGPTResponse(
             aiResponse,
-            context,
-            lastWatchedLessonOrder
+            freeMode ? [] : context,
+            freeMode ? 0 : lastWatchedLessonOrder
         );
 
         return {
