@@ -60,6 +60,19 @@ export class RetryHelperService {
                     this.logger.warn(
                         `Non-retriable error on attempt ${attempt + 1}: ${error.message}`
                     );
+
+                    // Log response data if available for debugging
+                    if (error.response?.data) {
+                        this.logger.warn(
+                            `Non-retriable error response data: ${JSON.stringify(error.response.data, null, 2)}`
+                        );
+                    }
+                    if (error.response?.status) {
+                        this.logger.warn(
+                            `Non-retriable error status: ${error.response.status}`
+                        );
+                    }
+
                     throw error;
                 }
 

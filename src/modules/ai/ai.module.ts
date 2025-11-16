@@ -47,6 +47,10 @@ import { RerankService } from './services/rerank.service';
 import { GPTPromptBuilderService } from './services/gpt-prompt-builder.service';
 // Pipeline services
 import { GPTStep } from './services/pipeline/gpt-step.service';
+import { STTStep } from './services/pipeline/stt-step.service';
+import { ValidationStep } from './services/pipeline/validation-step.service';
+import { ContextStep } from './services/pipeline/context-step.service';
+import { ResponseStep } from './services/pipeline/response-step.service';
 import { ConversationTopicExtractorService } from './services/pipeline/extractors/conversation-topic-extractor.service';
 import { DialogueCorrectionService } from './services/pipeline/correctors/dialogue-correction.service';
 import { SimilarityCalculatorService } from './services/pipeline/correctors/similarity-calculator.service';
@@ -144,6 +148,10 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     MaterialMatchingService,
     ResponseValidationService,
     FallbackResponseService,
+    STTStep,
+    ValidationStep,
+    ContextStep,
+    ResponseStep,
     GPTStep,
     // Chroma sub-services
     ChromaConnectionService,

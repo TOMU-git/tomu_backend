@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { Inject } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { IAIChatSessionRepository } from "../interfaces/ai-chat-session.repository";
 import { IAIChatMessageRepository } from "../interfaces/ai-chat-message.repository";
 import { IUserAIProfileRepository } from "../interfaces/user-ai-profile.repository";
@@ -36,6 +37,8 @@ import { LimitExceededException } from "../exceptions/limit-exceeded.exception";
  */
 @Injectable()
 export class AIChatService {
+    private readonly accessGeneral: boolean;
+
     constructor(
         @Inject('IAIChatSessionRepository') private readonly sessionRepo: IAIChatSessionRepository,
         @Inject('IAIChatMessageRepository') private readonly messageRepo: IAIChatMessageRepository,
@@ -51,7 +54,11 @@ export class AIChatService {
         private readonly voicePipeline: VoiceProcessingPipeline,
         private readonly limitCheck: LimitCheckService, // Cost tracking uchun
         private readonly costCalculator: CostCalculationService, // Cost estimation uchun
-    ) { }
+        private readonly configService: ConfigService, // ACCESS_GENERAL flag uchun
+    ) {
+        // Environment variable'dan erkin rejim flag'ini o'qish
+        this.accessGeneral = this.configService.get<string>("ACCESS_GENERAL") === "true";
+    }
 
     /**
      * Sessiya yaratish yoki mavjudini qaytarish (title/til ixtiyoriy)
@@ -536,6 +543,12 @@ export class AIChatService {
         profile?: any,
         userQuery?: string // User so'rovi - RAG query uchun
     ): Promise<any[]> {
+        // ACCESS_GENERAL=true bo'lsa: materiallardan qidirmaslik
+        if (this.accessGeneral) {
+            // console.log(`🌐 ACCESS_GENERAL rejimi: ChromaDB qidiruvi o'tkazib yuborildi`);
+            return [];
+        }
+
         if (!courseId) return [];
 
         const currentLessonOrder = courseProgress?.currentLessonOrder || 0;

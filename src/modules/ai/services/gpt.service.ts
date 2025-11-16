@@ -34,8 +34,10 @@ export interface GPTResponse {
  */
 interface OpenAIChoice {
     message: {
-        content: string;
+        content: string | null;
+        refusal?: string | null; // GPT-4o refusal mechanism
     };
+    finish_reason?: string; // stop, length, content_filter, etc.
 }
 
 interface OpenAIUsage {
@@ -80,7 +82,7 @@ export class GPTService {
     private readonly SYSTEM_MESSAGE_TOKEN_ESTIMATE = 300;
     private readonly CONVERSATION_TOKEN_ESTIMATE = 500;
     private readonly TOKEN_BUFFER = 100;
-    private readonly MODEL_LIMIT_FALLBACK = 8000; // gpt-5: 8192, using 8000 as safe fallback
+    private readonly MODEL_LIMIT_FALLBACK = 128000; // gpt-4o: 128K context window
 
     constructor(
         private readonly configService: ConfigService,
@@ -90,7 +92,7 @@ export class GPTService {
     ) {
         // Load configuration from ConfigService
         this.openaiApiKey = this.configService.get<string>("OPENAI_API_KEY") || "";
-        this.gptModel = this.configService.get<string>("GPT_MODEL") || "gpt-5";
+        this.gptModel = this.configService.get<string>("GPT_MODEL") || "gpt-4o"; // ✅ Default: gpt-4o (mavjud model)
         this.maxTokens = Number(this.configService.get<string>("MAX_TOKENS") || 350);
         this.temperature = Number(this.configService.get<string>("TEMPERATURE") || 0);
         this.strictNoEcho = this.configService.get<string>("STRICT_NO_ECHO") === "1";
@@ -151,6 +153,18 @@ export class GPTService {
             const errorMessage = e instanceof Error ? e.message : 'Unknown error';
             const errorStack = e instanceof Error ? e.stack : undefined;
             this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
+
+            // Log response data if available (for debugging API errors)
+            if (e && typeof e === 'object' && 'response' in e) {
+                const axiosError = e as any;
+                if (axiosError.response?.data) {
+                    this.logger.error(`❌ GPT API Response Data:`, JSON.stringify(axiosError.response.data, null, 2));
+                }
+                if (axiosError.response?.status) {
+                    this.logger.error(`❌ GPT API Response Status: ${axiosError.response.status}`);
+                }
+            }
+
             return `Javob: ${prompt}`; // fallback
         }
     }
@@ -231,7 +245,30 @@ export class GPTService {
 
         try {
             const res = await this.callOpenAI(messages);
-            const text = res.data?.choices?.[0]?.message?.content?.trim() || "";
+
+            // Debug: GPT response'ni to'liq log qilish
+            const firstChoice = res.data?.choices?.[0];
+            this.logger.debug(`🔍 GPT Response structure:`, JSON.stringify({
+                hasChoices: !!res.data?.choices,
+                choicesLength: res.data?.choices?.length,
+                firstChoice: firstChoice ? {
+                    hasMessage: !!firstChoice.message,
+                    hasContent: !!firstChoice.message?.content,
+                    contentType: typeof firstChoice.message?.content,
+                    contentLength: firstChoice.message?.content?.length || 0,
+                    contentPreview: firstChoice.message?.content?.substring(0, 100) || '',
+                    finishReason: firstChoice.finish_reason || 'unknown',
+                    refusal: firstChoice.message?.refusal || null, // ✅ Refusal tekshiruvi
+                } : null
+            }, null, 2));
+
+            // Refusal tekshiruvi - agar GPT javob berishni rad etgan bo'lsa
+            if (firstChoice?.message?.refusal) {
+                this.logger.error(`❌ GPT Refusal: ${firstChoice.message.refusal}`);
+                throw new Error(`GPT refused to respond: ${firstChoice.message.refusal}`);
+            }
+
+            const text = firstChoice?.message?.content?.trim() || "";
 
             // Extract usage information
             const usage = res.data?.usage;
@@ -242,12 +279,25 @@ export class GPTService {
             } : { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
             this.logger.debug(`📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
+            this.logger.debug(`📝 GPT Text result: "${text}" (length: ${text.length})`);
 
             return { text, usage: usageData };
         } catch (e: unknown) {
             const errorMessage = e instanceof Error ? e.message : 'Unknown error';
             const errorStack = e instanceof Error ? e.stack : undefined;
             this.logger.error(`❌ GPT Error after retries: ${errorMessage}`, errorStack);
+
+            // Log response data if available (for debugging API errors)
+            if (e && typeof e === 'object' && 'response' in e) {
+                const axiosError = e as any;
+                if (axiosError.response?.data) {
+                    this.logger.error(`❌ GPT API Response Data:`, JSON.stringify(axiosError.response.data, null, 2));
+                }
+                if (axiosError.response?.status) {
+                    this.logger.error(`❌ GPT API Response Status: ${axiosError.response.status}`);
+                }
+            }
+
             // Fallback response
             return {
                 text: `Javob: ${correctedPrompt}`,
@@ -265,6 +315,14 @@ export class GPTService {
     private async callOpenAI(messages: Array<{ role: string; content: string }>): Promise<AxiosOpenAIResponse> {
         this.logger.debug(`🚀 Calling GPT API with model: ${this.gptModel}`);
 
+        // Debug: Request parametrlarini log qilish
+        this.logger.debug(`📤 GPT Request: ${messages.length} messages, max_tokens: ${this.maxTokens}, temperature: ${this.temperature}`);
+        this.logger.debug(`📝 Messages preview:`, JSON.stringify(
+            messages.map(m => ({ role: m.role, contentLength: m.content.length, preview: m.content.substring(0, 100) })),
+            null,
+            2
+        ));
+
         return await this.retryHelper.executeWithRetry(
             async () => {
                 return await axios.post(
@@ -272,7 +330,7 @@ export class GPTService {
                     {
                         model: this.gptModel,
                         messages,
-                        max_tokens: this.maxTokens,
+                        max_completion_tokens: this.maxTokens,
                         temperature: this.temperature,
                     },
                     {

@@ -81,8 +81,8 @@ export class CostCalculationService {
 
     constructor() {
         // GPT pricing - model bo'yicha
-        this.gptModel = process.env.GPT_MODEL || "gpt-5";
-        const gptPricing = GPT_PRICING[this.gptModel] || GPT_PRICING["gpt-5"];
+        this.gptModel = process.env.GPT_MODEL || "gpt-4o";
+        const gptPricing = GPT_PRICING[this.gptModel] || GPT_PRICING["gpt-4o"];
 
         this.gptInputPrice = Number(process.env.GPT_4O_INPUT_PRICE) || gptPricing.input;
         this.gptOutputPrice = Number(process.env.GPT_4O_OUTPUT_PRICE) || gptPricing.output;

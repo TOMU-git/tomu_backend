@@ -234,7 +234,7 @@ export class AiChatController {
         if (history === 'history') {
             const messages = await this.chat.getMessages(sessionId, userId);
             // Oxirgi 25 ta message'ni qaytarish
-            const limitedMessages = messages.slice(0, 25).map(msg => ({
+            const limitedMessages = messages.slice(-25).map(msg => ({
                 id: msg.id,
                 sessionId: msg.sessionId,
                 senderType: msg.senderType,
@@ -249,8 +249,8 @@ export class AiChatController {
             const res: ChatResponseDto = {
                 messageId: 0,
                 sessionId: sessionId,
-                text: '',
-                textUz: '',
+                aiResponseText: '',
+                aiResponseUzbek: '',
                 audioUrl: undefined,
                 isWithinLimit: true,
                 createdAt: new Date(),
@@ -266,7 +266,7 @@ export class AiChatController {
 
         // Audio fayl validatsiyasi (MIME/size)
         AudioUtils.validateUpload(file);
-        
+
         try {
             const msg = await this.chat.sendVoiceMessage({
                 userId,
@@ -277,7 +277,7 @@ export class AiChatController {
 
             // Message'larni olish (oxirgi 25 ta)
             const messages = await this.chat.getMessages(sessionId, userId);
-            const limitedMessages = messages.slice(0, 25).map(m => ({
+            const limitedMessages = messages.slice(-25).map(m => ({
                 id: m.id,
                 sessionId: m.sessionId,
                 senderType: m.senderType,
@@ -292,8 +292,8 @@ export class AiChatController {
             const res: ChatResponseDto = {
                 messageId: msg.id,
                 sessionId: msg.sessionId,
-                text: msg.aiResponseText || '',
-                textUz: msg.aiResponseUzbek || '',
+                aiResponseText: msg.aiResponseText || '',
+                aiResponseUzbek: msg.aiResponseUzbek || '',
                 audioUrl: msg.audioUrl || '',
                 isWithinLimit: msg.isWithinLimit ?? true,
                 createdAt: msg.createdAt,
@@ -305,7 +305,7 @@ export class AiChatController {
             if (error instanceof LimitExceededException) {
                 // Message'larni olish
                 const messages = await this.chat.getMessages(sessionId, userId);
-                const limitedMessages = messages.slice(0, 25).map(m => ({
+                const limitedMessages = messages.slice(-25).map(m => ({
                     id: m.id,
                     createdAt: m.createdAt,
                     lastUpdatedAt: m.lastUpdatedAt,
@@ -317,7 +317,7 @@ export class AiChatController {
                     audioUrl: m.audioUrl || null,
                     isWithinLimit: m.isWithinLimit ?? true,
                 }));
-                
+
                 // Error response qaytarish (lekin message'lar bilan)
                 throw new HttpException(
                     {

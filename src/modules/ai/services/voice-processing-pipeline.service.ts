@@ -44,7 +44,11 @@ export class VoiceProcessingPipeline {
         @Inject(forwardRef(() => AIChatService))
         private readonly aiChatService: AIChatService, // AIChatService injection for buildContext
         private readonly limitCheck: LimitCheckService, // Cost tracking uchun
-        private readonly gptStep: GPTStep, // Inject GPTStep instead of creating it
+        private readonly sttStep: STTStep, // Inject STTStep
+        private readonly validationStep: ValidationStep, // Inject ValidationStep
+        private readonly contextStep: ContextStep, // Inject ContextStep
+        private readonly gptStep: GPTStep, // Inject GPTStep
+        private readonly responseStep: ResponseStep, // Inject ResponseStep
     ) { }
 
     /**
@@ -65,10 +69,10 @@ export class VoiceProcessingPipeline {
 
         // STT bosqichini o'tkazib yuboramiz, to'g'ridan-to'g'ri Validation bosqichidan boshlaymiz
         const steps: PipelineStep[] = [
-            new ValidationStep(this.tts, this.messageFactory),
-            new ContextStep(this.aiChatService, this.tts),
+            this.validationStep, // Use injected ValidationStep
+            this.contextStep, // Use injected ContextStep
             this.gptStep, // Use injected GPTStep
-            new ResponseStep(this.messageFactory, this.tts),
+            this.responseStep, // Use injected ResponseStep
         ];
 
         let currentInput: VoiceInput | VoiceOutput = inputWithUsage;
@@ -129,11 +133,11 @@ export class VoiceProcessingPipeline {
         const cleanupResources: Array<{ type: string; resource: any; cleanup: () => Promise<void> }> = [];
 
         const steps: PipelineStep[] = [
-            new STTStep(this.whisper),
-            new ValidationStep(this.tts, this.messageFactory),
-            new ContextStep(this.aiChatService, this.tts),
+            this.sttStep, // Use injected STTStep
+            this.validationStep, // Use injected ValidationStep
+            this.contextStep, // Use injected ContextStep
             this.gptStep, // Use injected GPTStep
-            new ResponseStep(this.messageFactory, this.tts),
+            this.responseStep, // Use injected ResponseStep
         ];
 
         let currentInput: VoiceInput | VoiceOutput = inputWithUsage;
