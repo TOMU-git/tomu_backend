@@ -37,9 +37,9 @@ export class ChatResponseDto {
     @ApiProperty({ description: "Sessiya ID", example: 123 })
     sessionId: number;
     @ApiProperty({ description: "AI javobi (arab tilida)", example: "هَذَا بُرْتُقَالٌ." })
-    text: string;
+    aiResponseText: string;
     @ApiProperty({ description: "AI javobi (o'zbek tarjima)", example: "Bu apelsin.", default: "", required: false })
-    textUz: string;
+    aiResponseUzbek: string;
     @ApiProperty({ description: "Audio URL (TTS)", example: "/upload/audio/tts_1761595335910.mp3", required: false, nullable: true })
     audioUrl?: string;
     @ApiProperty({ description: "Limit ichida", example: true })

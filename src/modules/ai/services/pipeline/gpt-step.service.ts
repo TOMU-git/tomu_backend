@@ -72,7 +72,7 @@ export class GPTStep implements PipelineStep {
         // Agar ACCESS_GENERAL=true bo'lsa, material matching'ni o'tkazib yuboramiz
         if (this.accessGeneral) {
             // Erkin rejim: to'g'ridan-to'g'ri GPT'ga so'rov yuborish
-            // Context va conversation history'ni yubormaymiz - faqat user text
+            // Materiallarni yubormaymiz, lekin conversation history yuboramiz (GPT uchun context)
             const response = await this.generateGPTResponse(
                 userText,
                 normalizedUser,
@@ -80,9 +80,11 @@ export class GPTStep implements PipelineStep {
                 [], // Bo'sh context - materiallarga etibor berilmaydi
                 lastWatchedLessonOrder,
                 { topic: null, keywords: [] }, // Conversation topic'ni ham o'tkazib yuboramiz
-                [], // Bo'sh conversation history - oldingi suhbatlarni ham unutamiz
+                input.conversationHistory || [], // ✅ Conversation history yuboriladi
                 true // freeMode = true
             );
+
+            console.log(`💬 Erkin rejim: ${(input.conversationHistory || []).length} ta xabar history'dan foydalanildi`);
 
             // Translation - erkin rejimda faqat GPT javobini translate qilamiz
             if (!response.aiResponseUz && response.aiResponse && response.aiResponse.trim().length > 0) {

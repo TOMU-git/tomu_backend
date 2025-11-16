@@ -1,4 +1,5 @@
 import { Injectable, Inject, forwardRef } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { TTSService } from "../tts.service";
 import { AIChatService } from "../ai-chat.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
@@ -14,15 +15,63 @@ import { AI_LIMITS } from "../../constants/ai-constants";
  */
 @Injectable()
 export class ContextStep implements PipelineStep {
+    private readonly accessGeneral: boolean;
+
     constructor(
         @Inject(forwardRef(() => AIChatService))
         private readonly aiChatService: AIChatService, // buildContext metodini ishlatish uchun
-        private readonly tts: TTSService // Audio yaratish uchun TTS
-    ) { }
+        private readonly tts: TTSService, // Audio yaratish uchun TTS
+        private readonly configService: ConfigService // ACCESS_GENERAL flag uchun
+    ) {
+        // Environment variable'dan erkin rejim flag'ini o'qish
+        this.accessGeneral = this.configService.get<string>("ACCESS_GENERAL") === "true";
+    }
 
     async execute(input: VoiceInput & { validatedText: string }): Promise<VoiceInput | VoiceOutput> {
         // Foydalanuvchi matnini RAG query sifatida olish
         const userText = input.validatedText || '';
+
+        // ACCESS_GENERAL=true bo'lsa: faqat materiallardan qidirmaslik
+        // Lekin conversation history'ni yig'ish kerak (GPT uchun context)
+        if (this.accessGeneral) {
+            console.log(`🌐 ACCESS_GENERAL rejimi: materiallardan qidirilmaydi, erkin suhbat`);
+            
+            // Suhbat tarixini olish (erkin rejimda ham kerak!)
+            let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+            try {
+                const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
+
+                // Suhbat tarixini GPT uchun formatlash
+                conversationHistory = previousMessages
+                    .filter(msg => {
+                        const content = msg.aiResponseText;
+                        return content && content.trim().length > 0;
+                    })
+                    .slice(-AI_LIMITS.MAX_CONVERSATION_HISTORY)
+                    .map(msg => ({
+                        role: msg.senderType === 'user' ? 'user' as const : 'assistant' as const,
+                        content: msg.aiResponseText || '',
+                    }));
+            } catch (error: any) {
+                // Conversation history olishda xato bo'lsa, bo'sh array bilan davom etamiz
+                conversationHistory = [];
+            }
+
+            console.log(`💬 Conversation history: ${conversationHistory.length} ta xabar`);
+
+            return {
+                ...input,
+                context: [], // Bo'sh context - materiallar yo'q
+                conversationHistory, // ✅ Conversation history QOLADI
+                lastWatchedLessonOrder: 0, // 0 - hech qanday material yo'q
+                profile: null, // Profile'ni ham ignore qilamiz
+            } as VoiceInput & {
+                context: any;
+                conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>;
+                lastWatchedLessonOrder: number;
+                profile?: any;
+            };
+        }
 
         // To'liq kontekst olish (foydalanuvchi profili, progress, dars materiallari)
         // User textini query sifatida yuborish - RAG qidiruvni aniqroq qiladi

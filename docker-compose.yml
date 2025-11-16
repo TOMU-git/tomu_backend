@@ -67,7 +67,7 @@ services:
       - COOKIE_TIME=86400000
       # AI uchun environment variables
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - GPT_MODEL=${GPT_MODEL:-gpt-5}
+      - GPT_MODEL=${GPT_MODEL:-gpt-4o}
       - WHISPER_MODEL=${WHISPER_MODEL:-whisper-1}
       - TTS_MODEL=${TTS_MODEL:-tts-1-hd}
       - TTS_VOICE=${TTS_VOICE:-shimmer}
