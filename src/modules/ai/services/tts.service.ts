@@ -5,9 +5,9 @@ import * as path from "path";
 
 // Environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const TTS_MODEL = process.env.TTS_MODEL || "tts-1-hd";
-const TTS_VOICE = process.env.TTS_VOICE || "shimmer";
-const TTS_SPEED = Number(process.env.TTS_SPEED || 0.9);
+const TTS_MODEL = process.env.TTS_MODEL || "tts-1-hd"; // tts-1-hd (high quality) or tts-1 (faster)
+const TTS_VOICE = process.env.TTS_VOICE || "shimmer"; // alloy, echo, fable, onyx, nova, shimmer
+const TTS_SPEED = Number(process.env.TTS_SPEED || 0.85); // ✅ 0.85 arabcha uchun yaxshiroq (0.25-4.0 range)
 
 // Console verification
 // console.log("🔊 TTS Configuration:");

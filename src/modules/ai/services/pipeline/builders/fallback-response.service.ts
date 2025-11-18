@@ -9,6 +9,7 @@ import { AI_FALLBACK_MESSAGES } from '../../../constants/error-messages';
 import { SIMILARITY_THRESHOLDS } from '../../../constants/gpt-step.constants';
 import { TranslationService } from '../../translation.service';
 import { TranslationLookupService } from '../extractors/translation-lookup.service';
+import { quickEnrichMaterialResponse } from '../../../utils/diacritics-enrichment.util';
 
 export interface FallbackResponseResult {
     aiResponse: string;
@@ -78,6 +79,7 @@ export class FallbackResponseService {
 
     /**
      * Close match help response
+     * ✅ OPTIMIZED: Diacritics enrichment qo'shildi
      */
     async createCloseMatchHelpResponse(
         matchedSentence: string,
@@ -85,7 +87,9 @@ export class FallbackResponseService {
         context: any[],
         lastWatchedLessonOrder: number
     ): Promise<FallbackResponseResult> {
-        const helpResponse = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.arabic + matchedSentence;
+        // Enrich matched sentence with diacritics
+        const enrichedSentence = quickEnrichMaterialResponse(matchedSentence);
+        const helpResponse = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.arabic + enrichedSentence;
 
         let aiResponseUz: string;
         if (translationUz) {
@@ -117,6 +121,7 @@ export class FallbackResponseService {
 
     /**
      * Material response (to'g'ridan-to'g'ri materialdan)
+     * ✅ OPTIMIZED: Diacritics enrichment qo'shildi (GPT'siz, 10-50ms ichida)
      */
     async createMaterialResponse(
         materialResponse: string,
@@ -124,13 +129,21 @@ export class FallbackResponseService {
         context: any[],
         lastWatchedLessonOrder: number
     ): Promise<FallbackResponseResult> {
+        // ⚡ STEP 1: Material javobini diacritics bilan boyitish (fast!)
+        const startTime = Date.now();
+        const enrichedResponse = quickEnrichMaterialResponse(materialResponse);
+        const enrichmentTime = Date.now() - startTime;
+        
+        console.log(`⚡ Material enrichment: ${enrichmentTime}ms (original: "${materialResponse.substring(0, 30)}..." → enriched: "${enrichedResponse.substring(0, 30)}...")`);
+
+        // STEP 2: Translation lookup
         let aiResponseUz: string;
         if (translationUz) {
             aiResponseUz = translationUz;
         } else {
             try {
                 const materialTranslationUz = this.translationLookup.findTranslationUzInMaterials(
-                    materialResponse,
+                    materialResponse, // Use original for translation lookup
                     context,
                     lastWatchedLessonOrder
                 );
@@ -145,7 +158,7 @@ export class FallbackResponseService {
         }
 
         return {
-            aiResponse: materialResponse,
+            aiResponse: enrichedResponse, // ✅ Return enriched version
             aiResponseUz,
             gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
         };
