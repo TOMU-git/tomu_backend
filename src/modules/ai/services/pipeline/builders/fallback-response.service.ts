@@ -10,6 +10,7 @@ import { SIMILARITY_THRESHOLDS } from '../../../constants/gpt-step.constants';
 import { TranslationService } from '../../translation.service';
 import { TranslationLookupService } from '../extractors/translation-lookup.service';
 import { quickEnrichMaterialResponse } from '../../../utils/diacritics-enrichment.util';
+import { GPTService } from '../../gpt.service';
 
 export interface FallbackResponseResult {
     aiResponse: string;
@@ -22,6 +23,7 @@ export class FallbackResponseService {
     constructor(
         private readonly translation: TranslationService,
         private readonly translationLookup: TranslationLookupService,
+        private readonly gpt: GPTService,
     ) { }
 
     /**
@@ -88,7 +90,9 @@ export class FallbackResponseService {
         lastWatchedLessonOrder: number
     ): Promise<FallbackResponseResult> {
         // Enrich matched sentence with diacritics
-        const enrichedSentence = quickEnrichMaterialResponse(matchedSentence);
+        // DISABLED: Diacritics enrichment is disabled - using original text
+        // const enrichedSentence = quickEnrichMaterialResponse(matchedSentence);
+        const enrichedSentence = matchedSentence; // Using original without enrichment
         const helpResponse = AI_FALLBACK_MESSAGES.CLOSE_MATCH_HELP.arabic + enrichedSentence;
 
         let aiResponseUz: string;
@@ -130,11 +134,12 @@ export class FallbackResponseService {
         lastWatchedLessonOrder: number
     ): Promise<FallbackResponseResult> {
         // ⚡ STEP 1: Material javobini diacritics bilan boyitish (fast!)
-        const startTime = Date.now();
-        const enrichedResponse = quickEnrichMaterialResponse(materialResponse);
-        const enrichmentTime = Date.now() - startTime;
-        
-        console.log(`⚡ Material enrichment: ${enrichmentTime}ms (original: "${materialResponse.substring(0, 30)}..." → enriched: "${enrichedResponse.substring(0, 30)}...")`);
+        // DISABLED: Diacritics enrichment is disabled - using original text
+        // const startTime = Date.now();
+        // const enrichedResponse = quickEnrichMaterialResponse(materialResponse);
+        // const enrichmentTime = Date.now() - startTime;
+        // console.log(`⚡ Material enrichment: ${enrichmentTime}ms (original: "${materialResponse.substring(0, 30)}..." → enriched: "${enrichedResponse.substring(0, 30)}...")`);
+        const enrichedResponse = materialResponse; // Using original without enrichment
 
         // STEP 2: Translation lookup
         let aiResponseUz: string;
@@ -158,7 +163,7 @@ export class FallbackResponseService {
         }
 
         return {
-            aiResponse: enrichedResponse, // ✅ Return enriched version
+            aiResponse: enrichedResponse, // Using original material response (diacritics enrichment disabled)
             aiResponseUz,
             gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
         };
@@ -190,6 +195,51 @@ export class FallbackResponseService {
             return await this.translation.translateToUzbek(gptResponse);
         } catch (e) {
             return '';
+        }
+    }
+
+    /**
+     * Material javobga qo'shimcha follow-up savol qo'shish (GPT orqali)
+     * Bu metod material javobni GPT'ga yuboradi va u qo'shimcha savol qo'shadi
+     */
+    async addFollowUpQuestion(
+        materialResponse: string,
+        context: any[],
+        lastWatchedLessonOrder: number,
+        conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
+    ): Promise<string> {
+        try {
+            // Conversation history'ga material javobni qo'shamiz
+            const updatedHistory = [
+                ...conversationHistory,
+                { role: 'assistant' as const, content: materialResponse }
+            ];
+
+            // GPT'ga so'rov: follow-up savol berish
+            const prompt = 'Ask a follow-up question to continue the conversation naturally (just the question, nothing else)';
+
+            const gptResult = await this.gpt.generateWithUsage({
+                prompt: prompt,
+                context: context,
+                language: 'ar',
+                strict: false,
+                conversationHistory: updatedHistory,
+                freeMode: false,
+            });
+
+            const followUpQuestion = gptResult.text?.trim() || '';
+            
+            // Agar GPT savol bergan bo'lsa, material javob + savol qaytarish
+            if (followUpQuestion && followUpQuestion.length > 0) {
+                return `${materialResponse} ${followUpQuestion}`;
+            }
+
+            // Agar GPT javob bermasa, asl material javobni qaytarish
+            return materialResponse;
+        } catch (error) {
+            console.error(`[FallbackResponse] Error adding follow-up question: ${error.message}`);
+            // Xato bo'lsa, asl material javobni qaytarish
+            return materialResponse;
         }
     }
 }

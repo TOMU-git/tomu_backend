@@ -229,12 +229,44 @@ export class GPTStep implements PipelineStep {
             }
 
             // Valid material response
-            return await this.fallbackResponse.createMaterialResponse(
+            const materialResponseResult = await this.fallbackResponse.createMaterialResponse(
                 materialMatch.nextSentence,
                 materialMatch.translationUz,
                 context,
                 lastWatchedLessonOrder
             );
+
+            // Material javobga follow-up savol qo'shish
+            try {
+                console.log('📝 Material javobga follow-up savol qo\'shilmoqda...');
+                const enrichedResponse = await this.fallbackResponse.addFollowUpQuestion(
+                    materialResponseResult.aiResponse,
+                    context,
+                    lastWatchedLessonOrder,
+                    conversationHistory
+                );
+
+                // Agar GPT javob qaytargan bo'lsa va u asl javobdan farq qilsa
+                if (enrichedResponse && enrichedResponse !== materialResponseResult.aiResponse) {
+                    console.log('✅ Follow-up savol qo\'shildi');
+                    // Yangi javobni translate qilish
+                    const enrichedTranslation = await this.fallbackResponse.translateGPTResponse(
+                        enrichedResponse,
+                        context,
+                        lastWatchedLessonOrder
+                    );
+                    return {
+                        aiResponse: enrichedResponse,
+                        aiResponseUz: enrichedTranslation || materialResponseResult.aiResponseUz,
+                        gptUsage: materialResponseResult.gptUsage,
+                    };
+                }
+            } catch (error) {
+                console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);
+            }
+
+            // Agar xato bo'lsa yoki GPT javob bermasa, asl material javobni qaytarish
+            return materialResponseResult;
         }
 
         // 2) Yaqin match (50%+)

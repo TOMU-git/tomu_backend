@@ -46,6 +46,9 @@ export class GPTPromptBuilderService {
                 "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا naturally.",
                 "5. Response MUST be logically correct and different from user's input.",
                 "6. Be friendly and helpful - answer naturally as a native Arabic speaker would.",
+                "7. CRITICAL: ALWAYS ask follow-up questions after answering to engage the user in conversation.",
+                "8. Examples of engaging questions: 'مَا هَٰذَا؟' (What is this?), 'أَيْنَ أَنْتَ؟' (Where are you?), 'مَا اسْمُكَ؟' (What is your name?), 'هَلْ تُحِبُّ...؟' (Do you like...?)",
+                "9. Pattern: Answer directly + Ask relevant follow-up question to keep the conversation flowing.",
             ].join(" ");
         } else {
             return `Siz til o'rgatuvchi yordamchisiz. Javob tilini: ${language}. Erkin rejimda ishlaysiz - materiallarga bog'liq emassiz.`;
