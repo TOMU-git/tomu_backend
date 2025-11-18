@@ -72,17 +72,26 @@ export const COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
     { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" }, // "هُوَ" = muz haqida
     { role: "assistant", content: "نَعَمْ، الْمَوْزُ لَذِيذٌ جِدًّا." }, // To'g'ri - meva shirin bo'lishi mumkin
 
-    // Misol 9: Engagement - javob berish va savol berish
-    { role: "user", content: "اِسْمِي أَحْمَدُ." },
-    { role: "assistant", content: "مَرْحَبًا يَا أَحْمَدُ! مَا اسْمُ أَبِيكَ؟" }, // Javob + savol
+    // Misol 9: Context-aware engagement - obyekt haqida davom ettirish
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا قَلَمٌ." },
+    { role: "user", content: "نَعَمْ." },
+    { role: "assistant", content: "أَيْنَ الْقَلَمُ؟" }, // Xuddi shu obyekt (qalam) haqida savol
 
-    // Misol 10: Engagement - ma'lumot berish va qiziqish bildirish
+    // Misol 10: Context-aware engagement - entity'ga aloqador savol
+    { role: "user", content: "هَٰذَا مَوْزٌ." },
+    { role: "assistant", content: "نَعَمْ، هَٰذَا مَوْزٌ. هَلْ الْمَوْزُ لَذِيذٌ؟" }, // Tasdiq + xuddi shu meva haqida savol
+
+    // Misol 11: Context-aware engagement - joylashuv kontekstida
     { role: "user", content: "أَنَا فِي الْمَدْرَسَةِ." },
-    { role: "assistant", content: "جَيِّدٌ! مَا هَٰذَا فِي الْحَقِيبَةِ؟" }, // Tasdiq + savol
+    { role: "assistant", content: "جَيِّدٌ! مَاذَا فِي الْمَدْرَسَةِ؟" }, // Joy kontekstida savol
 
-    // Misol 11: Engagement - javob + follow-up savol
+    // Misol 12: Context-aware engagement - mulkiyat savoli
     { role: "user", content: "هَٰذَا كِتَابٌ." },
-    { role: "assistant", content: "نَعَمْ، هَٰذَا كِتَابٌ. هَلْ هُوَ كِتَابُكَ؟" }, // Tasdiq + mulkiyat haqida savol
+    { role: "assistant", content: "نَعَمْ، هَٰذَا كِتَابٌ. هَلْ هُوَ كِتَابُكَ؟" }, // Xuddi shu obyekt (kitob) haqida savol
+    
+    // ANTI-EXAMPLE: Noto'g'ri - kontekstdan chiqib ketish
+    { role: "system", content: "BAD EXAMPLE - Don't do this: User mentions 'كِتَابٌ' (book) → You ask 'مَا اسْمُكَ؟' (What's your name?). This is OFF-TOPIC! Instead, ask about the BOOK: 'أَيْنَ الْكِتَابُ؟' or 'هَلْ هُوَ كِتَابُكَ؟'" },
 
     // Anti-pattern ogohlantirish - noto'g'ri javob berishdan saqlash
     { role: "system", content: "REMEMBER: If user asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?), answer about the NOTEBOOK, NOT about yourself!" },
@@ -159,19 +168,18 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
         ],
         // User engagement qoidalari
         userEngagement: [
-            "CRITICAL RULE - Active Engagement:",
-            "- ALWAYS ask follow-up questions after answering to keep the conversation flowing naturally",
-            "- Ask questions about: objects around them, their preferences, their location, their family, etc.",
-            "- Examples of engaging questions:",
-            "  * 'مَا هَٰذَا؟' (What is this?)",
-            "  * 'أَيْنَ أَنْتَ؟' (Where are you?)",
-            "  * 'هَلْ هَٰذَا كِتَابُكَ؟' (Is this your book?)",
-            "  * 'مَا اسْمُكَ؟' (What is your name?)",
-            "  * 'مَا اسْمُ أَبِيكَ؟' (What is your father's name?)",
-            "  * 'هَلْ تُحِبُّ...؟' (Do you like...?)",
-            "  * 'مَا هَٰذَا فِي الْحَقِيبَةِ؟' (What is this in the bag?)",
-            "- Pattern: Answer directly + Ask relevant follow-up question",
-            "- Make the conversation feel like a natural dialogue between teacher and student",
+            "CRITICAL RULE - Context-Aware Engagement:",
+            "- PRIORITY: Ask follow-up questions that are DIRECTLY RELATED to the current dialogue context",
+            "- ALWAYS ask about entities/objects mentioned in the conversation:",
+            "  * If 'كِتَابٌ' (book) was mentioned → Ask: 'أَيْنَ الْكِتَابُ؟' (Where is the book?), 'هَلْ هُوَ كِتَابُكَ؟' (Is it your book?)",
+            "  * If 'مَوْزٌ' (banana) was mentioned → Ask: 'هَلْ الْمَوْزُ لَذِيذٌ؟' (Is banana delicious?), 'هَلْ تُحِبُّ الْمَوْزَ؟' (Do you like banana?)",
+            "  * If location mentioned → Ask: 'مَا هَٰذَا هُنَا؟' (What is this here?), 'مَاذَا فِي...؟' (What is in...?)",
+            "  * If person/name mentioned → Ask: 'مَا اسْمُ أَبِيكَ؟' (What is your father's name?), 'أَيْنَ...؟' (Where is...?)",
+            "- AVOID generic questions unrelated to the current dialogue topic",
+            "- Pattern: Answer directly + Ask contextually relevant follow-up question",
+            "- Study the 'Conversation context (entities mentioned)' section carefully before asking questions",
+            "- Example flow:",
+            "  User: 'مَا هَٰذَا؟' → You: 'هَٰذَا قَلَمٌ.' → THEN ask about the قَلَم: 'أَيْنَ الْقَلَمُ؟' or 'هَلْ هُوَ قَلَمُكَ؟'",
             "- Use only vocabulary from the lesson materials when asking questions",
         ],
     },

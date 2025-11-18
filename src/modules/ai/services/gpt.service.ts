@@ -249,19 +249,19 @@ export class GPTService {
 
             // Debug: GPT response'ni to'liq log qilish
             const firstChoice = res.data?.choices?.[0];
-            this.logger.debug(`🔍 GPT Response structure:`, JSON.stringify({
-                hasChoices: !!res.data?.choices,
-                choicesLength: res.data?.choices?.length,
-                firstChoice: firstChoice ? {
-                    hasMessage: !!firstChoice.message,
-                    hasContent: !!firstChoice.message?.content,
-                    contentType: typeof firstChoice.message?.content,
-                    contentLength: firstChoice.message?.content?.length || 0,
-                    contentPreview: firstChoice.message?.content?.substring(0, 100) || '',
-                    finishReason: firstChoice.finish_reason || 'unknown',
-                    refusal: firstChoice.message?.refusal || null, // ✅ Refusal tekshiruvi
-                } : null
-            }, null, 2));
+            // this.logger.debug(`🔍 GPT Response structure:`, JSON.stringify({
+            //     hasChoices: !!res.data?.choices,
+            //     choicesLength: res.data?.choices?.length,
+            //     firstChoice: firstChoice ? {
+            //         hasMessage: !!firstChoice.message,
+            //         hasContent: !!firstChoice.message?.content,
+            //         contentType: typeof firstChoice.message?.content,
+            //         contentLength: firstChoice.message?.content?.length || 0,
+            //         contentPreview: firstChoice.message?.content?.substring(0, 100) || '',
+            //         finishReason: firstChoice.finish_reason || 'unknown',
+            //         refusal: firstChoice.message?.refusal || null, // ✅ Refusal tekshiruvi
+            //     } : null
+            // }, null, 2));
 
             // Refusal tekshiruvi - agar GPT javob berishni rad etgan bo'lsa
             if (firstChoice?.message?.refusal) {
@@ -279,8 +279,8 @@ export class GPTService {
                 totalTokens: usage.total_tokens || 0,
             } : { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
-            this.logger.debug(`📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
-            this.logger.debug(`📝 GPT Text result: "${text}" (length: ${text.length})`);
+            // this.logger.debug(`📊 GPT Usage: ${usageData.totalTokens} tokens (prompt: ${usageData.promptTokens}, completion: ${usageData.completionTokens})`);
+            // this.logger.debug(`📝 GPT Text result: "${text}" (length: ${text.length})`);
 
             return { text, usage: usageData };
         } catch (e: unknown) {
@@ -318,11 +318,11 @@ export class GPTService {
 
         // Debug: Request parametrlarini log qilish
         this.logger.debug(`📤 GPT Request: ${messages.length} messages, max_tokens: ${this.maxTokens}, temperature: ${this.temperature}`);
-        this.logger.debug(`📝 Messages preview:`, JSON.stringify(
-            messages.map(m => ({ role: m.role, contentLength: m.content.length, preview: m.content.substring(0, 100) })),
-            null,
-            2
-        ));
+        // this.logger.debug(`📝 Messages preview:`, JSON.stringify(
+        //     messages.map(m => ({ role: m.role, contentLength: m.content.length, preview: m.content.substring(0, 100) })),
+        //     null,
+        //     2
+        // ));
 
         return await this.retryHelper.executeWithRetry(
             async () => {
@@ -377,9 +377,9 @@ export class GPTService {
         // "مْ" → "مَا" (question word xatosi)
         corrected = corrected.replace(/\s+م[ٌْ]/g, ' مَا');
 
-        if (corrected !== originalPrompt) {
-            this.logger.debug(`✏️  Auto-corrected prompt: "${originalPrompt}" → "${corrected}"`);
-        }
+        // if (corrected !== originalPrompt) {
+        //     this.logger.debug(`✏️  Auto-corrected prompt: "${originalPrompt}" → "${corrected}"`);
+        // }
 
         return corrected;
     }
@@ -549,7 +549,7 @@ export class GPTService {
                 : "No lesson materials found.";
 
             // Log token usage for monitoring
-            this.logger.debug(`📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
+            // this.logger.debug(`📊 Context formatting: ${totalTokens} tokens used / ${maxContextTokens} available`);
 
             return result;
         } catch (e) {

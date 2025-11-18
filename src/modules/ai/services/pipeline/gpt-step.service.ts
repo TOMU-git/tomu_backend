@@ -27,6 +27,7 @@ import { FallbackResponseService } from "./builders/fallback-response.service";
 @Injectable()
 export class GPTStep implements PipelineStep {
     private readonly accessGeneral: boolean; // Erkin rejim flag'i
+    private readonly enableUserEngagement: boolean; // User engagement flag'i
 
     constructor(
         private readonly configService: ConfigService,
@@ -42,6 +43,9 @@ export class GPTStep implements PipelineStep {
         // Environment variable'dan erkin rejim flag'ini o'qish
         // Default: false (materiallarga asoslangan rejim)
         this.accessGeneral = this.configService.get<string>("ACCESS_GENERAL") === "true";
+        // Environment variable'dan engagement flag'ini o'qish
+        // Default: true (engagement yoqilgan)
+        this.enableUserEngagement = this.configService.get<string>("ENABLE_USER_ENGAGEMENT", "true") === "true";
     }
 
     async execute(input: VoiceInput & { validatedText: string; context: any; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; lastWatchedLessonOrder?: number; profile?: any }): Promise<VoiceInput> {
@@ -236,33 +240,35 @@ export class GPTStep implements PipelineStep {
                 lastWatchedLessonOrder
             );
 
-            // Material javobga follow-up savol qo'shish
-            try {
-                console.log('📝 Material javobga follow-up savol qo\'shilmoqda...');
-                const enrichedResponse = await this.fallbackResponse.addFollowUpQuestion(
-                    materialResponseResult.aiResponse,
-                    context,
-                    lastWatchedLessonOrder,
-                    conversationHistory
-                );
-
-                // Agar GPT javob qaytargan bo'lsa va u asl javobdan farq qilsa
-                if (enrichedResponse && enrichedResponse !== materialResponseResult.aiResponse) {
-                    console.log('✅ Follow-up savol qo\'shildi');
-                    // Yangi javobni translate qilish
-                    const enrichedTranslation = await this.fallbackResponse.translateGPTResponse(
-                        enrichedResponse,
+            // Material javobga follow-up savol qo'shish (faqat engagement yoqilgan bo'lsa)
+            if (this.enableUserEngagement) {
+                try {
+                    console.log('📝 Material javobga follow-up savol qo\'shilmoqda...');
+                    const enrichedResponse = await this.fallbackResponse.addFollowUpQuestion(
+                        materialResponseResult.aiResponse,
                         context,
-                        lastWatchedLessonOrder
+                        lastWatchedLessonOrder,
+                        conversationHistory
                     );
-                    return {
-                        aiResponse: enrichedResponse,
-                        aiResponseUz: enrichedTranslation || materialResponseResult.aiResponseUz,
-                        gptUsage: materialResponseResult.gptUsage,
-                    };
+
+                    // Agar GPT javob qaytargan bo'lsa va u asl javobdan farq qilsa
+                    if (enrichedResponse && enrichedResponse !== materialResponseResult.aiResponse) {
+                        console.log('✅ Follow-up savol qo\'shildi');
+                        // Yangi javobni translate qilish
+                        const enrichedTranslation = await this.fallbackResponse.translateGPTResponse(
+                            enrichedResponse,
+                            context,
+                            lastWatchedLessonOrder
+                        );
+                        return {
+                            aiResponse: enrichedResponse,
+                            aiResponseUz: enrichedTranslation || materialResponseResult.aiResponseUz,
+                            gptUsage: materialResponseResult.gptUsage,
+                        };
+                    }
+                } catch (error) {
+                    console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);
                 }
-            } catch (error) {
-                console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);
             }
 
             // Agar xato bo'lsa yoki GPT javob bermasa, asl material javobni qaytarish
@@ -342,7 +348,7 @@ export class GPTStep implements PipelineStep {
     ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage'] }> {
         // Entity extraction - suhbatdan obyektlar va mavzularni ajratish
         const conversationContext = this.entityExtractor.extractEntities(conversationHistory);
-        const conversationEntitiesStr = this.entityExtractor.formatEntitiesForGPT(conversationContext);
+        const conversationEntitiesStr = this.entityExtractor.formatEntitiesForGPT(conversationContext, this.enableUserEngagement);
 
         // Debug log
         if (conversationEntitiesStr && conversationEntitiesStr.length > 0) {

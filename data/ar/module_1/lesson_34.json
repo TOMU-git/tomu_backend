@@ -1,0 +1,41 @@
+{
+    "id": "ar_m1_l34",
+    "language": "ar",
+    "module": 1,
+    "lesson": 34,
+    "title": "تَأَخَّرَتْ خَدِيجَةُ",
+    "summary": "O'qituvchi va kech qolgan o'quvchi haqida hikoya.",
+    "vocabulary": [
+      { "word": "مُعَلِّمٌ", "translationUz": "o'qituvchi" },
+      { "word": "فَتَحَ", "translationUz": "ochdi" },
+      { "word": "بَابَ", "translationUz": "eshikni" },
+      { "word": "دَخَلَ", "translationUz": "kirdi" },
+      { "word": "بَدَأَ", "translationUz": "boshladi" },
+      { "word": "تَأَخَّرَتْ", "translationUz": "kech qoldi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "جَاءَ الْمُعَلِّمُ الْمَدْرَسَةَ، فَتَحَ بَابَ الْفَصْلِ، ثُمَّ دَخَلَهُ وَبَدَأَ الدَّرْسَ.",
+        "translationUz": "O'qituvchi maktabga keldi, sinf eshigini ochdi, keyin unga kirdi va darsni boshladi.",
+        "next": "جَاءَتْ خَدِيجَةُ بَعْدَ الْمُعَلِّمِ، وَ قَدْ تَأَخَّرَتْ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "جَاءَتْ خَدِيجَةُ بَعْدَ الْمُعَلِّمِ، وَ قَدْ تَأَخَّرَتْ.",
+        "translationUz": "Xadicha o'qituvchidan keyin keldi va u kech qolgan edi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "لِمَاذَا تَأَخَّرَتْ خَدِيجَةُ؟",
+      "هَلْ تَأَخَّرْتَ عَنِ الْمَدْرَسَةِ مِنْ قَبْلُ؟",
+      "مَاذَا فَعَلَ الْمُعَلِّمُ؟",
+      "هَلِ الدَّرْسُ مُهِمٌّ؟",
+      "كَيْفَ تَذْهَبُ إِلَى الْمَدْرَسَةِ؟"
+    ],
+    "context": {
+      "main_topic": "school_lateness",
+      "pattern": "narration → narration"
+    }
+  }

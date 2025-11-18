@@ -1,0 +1,46 @@
+{
+    "id": "ar_m1_l40",
+    "language": "ar",
+    "module": 1,
+    "lesson": 40,
+    "title": "اَلْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ",
+    "summary": "Qizlarning boshlang'ich maktabdagi kunlik faoliyati haqida hikoya.",
+    "vocabulary": [
+      { "word": "مَدْرَسَة", "translationUz": "maktab" },
+      { "word": "إِبْتِدَائِيَّة", "translationUz": "boshlang'ich" },
+      { "word": "دَرَسَتْ", "translationUz": "o'qidi" },
+      { "word": "لَعِبْنَ", "translationUz": "o'ynadi" },
+      { "word": "رَجَعْنَ", "translationUz": "qaytdi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "دَرَسَتْ زَيْنَبُ، وَمَرْيَمُ، وَهِنْدُ فِي الْمَدْرَسَةِ الْإِبْتِدَائِيَّةِ.",
+        "translationUz": "Zaynab, Maryam va Hind boshlang'ich maktabda o'qishdi.",
+        "next": "بَعْدَ الْمَدْرَسَةِ، لَعِبْنَ فِي الْمَلْعَبِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بَعْدَ الْمَدْرَسَةِ، لَعِبْنَ فِي الْمَلْعَبِ.",
+        "translationUz": "Maktabdan keyin ular maydonchada o'ynashdi.",
+        "next": "ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ.",
+        "translationUz": "Keyin o'yindan keyin uyga qaytishdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ دَرَسْتَ فِي مَدْرَسَةٍ إِبْتِدَائِيَّةٍ؟",
+      "مَاذَا تَفْعَلُ بَعْدَ الْمَدْرَسَةِ؟",
+      "هَلْ تُحِبُّ الْمَلْعَبَ؟",
+      "مَعَ مَنْ تَلْعَبُ بَعْدَ الْمَدْرَسَةِ؟",
+      "مَتَى تَرْجِعُ إِلَى بَيْتِكَ؟"
+    ],
+    "context": {
+      "main_topic": "school_routine",
+      "pattern": "narration → narration → narration"
+    }
+  }

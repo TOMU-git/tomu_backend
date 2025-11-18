@@ -1,0 +1,71 @@
+{
+    "id": "ar_m1_l36",
+    "language": "ar",
+    "module": 1,
+    "lesson": 36,
+    "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
+    "summary": "Mushuk va sichqon o'rtasida kutilmagan do'stlik haqida suhbat.",
+    "vocabulary": [
+      { "word": "قِطّ", "translationUz": "mushuk" },
+      { "word": "فَأْر", "translationUz": "sichqon" },
+      { "word": "جُبْن", "translationUz": "pishloq" },
+      { "word": "غَدَاء", "translationUz": "tushlik" },
+      { "word": "سَمَك", "translationUz": "baliq" },
+      { "word": "أَصْدِقَاء", "translationUz": "do'stlar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْقِطّ",
+        "text": "أَهْلًا، أَيُّهَا الفَأْرُ! إِلَى أَيْنَ تَذْهَبُ؟",
+        "translationUz": "Salom, ey sichqon! Qayerga borayapsan?",
+        "next": "أَنَا أَبْحَثُ عَنْ جُبْنٍ لِلْغَدَاءِ."
+      },
+      {
+        "speaker": "اَلْفَأْرُ",
+        "text": "أَنَا أَبْحَثُ عَنْ جُبْنٍ لِلْغَدَاءِ.",
+        "translationUz": "Men tushlik uchun pishloq qidiryapman.",
+        "next": "هَلْ أُسَاعِدُكَ؟"
+      },
+      {
+        "speaker": "اَلْقِطّ",
+        "text": "هَلْ أُسَاعِدُكَ؟",
+        "translationUz": "Senga yordam beraymanmi?",
+        "next": "شُكْرًا، وَلَكِنْ لَا تَأْكُلْنِي!"
+      },
+      {
+        "speaker": "اَلْفَأْرُ",
+        "text": "شُكْرًا، وَلَكِنْ لَا تَأْكُلْنِي!",
+        "translationUz": "Rahmat, lekin meni yema!",
+        "next": "هَادِئٌ أَنَا، أُفَضِّلُ السَّمَكَ."
+      },
+      {
+        "speaker": "اَلْقِطّ",
+        "text": "هَادِئٌ أَنَا، أُفَضِّلُ السَّمَكَ.",
+        "translationUz": "Men tinchman, baliqni afzal ko'raman.",
+        "next": "رَائِع! إِذًا نَكُونُ أَصْدِقَاءَ؟"
+      },
+      {
+        "speaker": "اَلْفَأْرُ",
+        "text": "رَائِع! إِذًا نَكُونُ أَصْدِقَاءَ؟",
+        "translationUz": "Ajoyib! Unda do'st bo'lamizmi?",
+        "next": "نَعَم، نَحْنُ أَصْدِقَاءُ!"
+      },
+      {
+        "speaker": "اَلْقِطّ",
+        "text": "نَعَم، نَحْنُ أَصْدِقَاءُ!",
+        "translationUz": "Ha, biz do'stmiz!",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْقِطَطَ؟",
+      "مَاذَا يَأْكُلُ الْفَأْرُ؟",
+      "هَلْ يُمْكِنُ لِلْقِطِّ وَالْفَأْرِ أَنْ يَكُونَا أَصْدِقَاءَ؟",
+      "مَاذَا تُفَضِّلُ أَنْ تَأْكُلَ؟",
+      "هَلْ لَكَ صَدِيقٌ غَيْرُ مُتَوَقَّعٍ؟"
+    ],
+    "context": {
+      "main_topic": "unexpected_friendship",
+      "pattern": "greeting → answer → offer_help → express_fear → reassure → propose_friendship → accept"
+    }
+  }
