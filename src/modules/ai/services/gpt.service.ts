@@ -174,7 +174,7 @@ export class GPTService {
      * @param params - Generate parametrlari
      * @returns Text va usage ma'lumotlari (cost tracking uchun)
      */
-    async generateWithUsage(params: { prompt: string; context: any; language: string; strict: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; conversationTopic?: { topic: string | null; keywords: string[] }; freeMode?: boolean }): Promise<GPTResponse> {
+    async generateWithUsage(params: { prompt: string; context: any; language: string; strict: boolean; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; conversationTopic?: { topic: string | null; keywords: string[] }; freeMode?: boolean; conversationEntities?: string }): Promise<GPTResponse> {
         // Input validation
         if (!params?.prompt || typeof params.prompt !== 'string' || params.prompt.trim().length === 0) {
             throw new BadRequestException('Prompt must be a non-empty string');
@@ -187,7 +187,7 @@ export class GPTService {
         }
 
         // Reuse existing generate logic but extract usage
-        const { prompt, context, language, strict, conversationHistory = [], conversationTopic, freeMode = false } = params;
+        const { prompt, context, language, strict, conversationHistory = [], conversationTopic, freeMode = false, conversationEntities } = params;
 
         // Prompt correction (same as generate)
         const correctedPrompt = this.correctPrompt(prompt);
@@ -230,6 +230,7 @@ export class GPTService {
             conversationHistory,
             useComprehensiveExamples,
             maxHistoryMessages: this.MAX_CONVERSATION_HISTORY_MESSAGES,
+            conversationEntities, // Entity tracking uchun
         });
 
         // Pre-flight token validation

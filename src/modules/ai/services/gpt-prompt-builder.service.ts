@@ -15,6 +15,7 @@ export interface BuildMessagesParams {
     conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
     useComprehensiveExamples?: boolean;
     maxHistoryMessages?: number;
+    conversationEntities?: string; // Entity'lar haqida ma'lumot (formatted string)
 }
 
 @Injectable()
@@ -92,6 +93,15 @@ export class GPTPromptBuilderService {
 
         systemParts.push(...ARABIC_SYSTEM_PROMPT_RULES.comprehensive.conversationFlow);
         systemParts.push("");
+        
+        // Mantiqiy fikrlash va entity tracking qoidalari
+        systemParts.push(...ARABIC_SYSTEM_PROMPT_RULES.comprehensive.logicalReasoning);
+        systemParts.push("");
+        
+        // User engagement qoidalari
+        systemParts.push(...ARABIC_SYSTEM_PROMPT_RULES.comprehensive.userEngagement);
+        systemParts.push("");
+        
         systemParts.push(...ARABIC_SYSTEM_PROMPT_RULES.comprehensive.otherRules);
 
         return systemParts.join("\n");
@@ -108,6 +118,14 @@ export class GPTPromptBuilderService {
         // Context summary'ni faqat bo'sh bo'lmasa qo'shamiz
         if (params.contextSummary && params.contextSummary.trim().length > 0) {
             messages.push({ role: "system", content: `Lesson materials${params.useComprehensiveExamples ? '' : ' context'}:\n${params.contextSummary}` });
+        }
+
+        // Conversation entities'ni qo'shamiz (entity tracking uchun)
+        if (params.conversationEntities && params.conversationEntities.trim().length > 0) {
+            messages.push({ 
+                role: "system", 
+                content: `Conversation context (entities mentioned):\n${params.conversationEntities}\n\nUse this context to give logical and contextually appropriate responses.` 
+            });
         }
 
         // Add few-shot examples (faqat contextSummary bo'lsa - materiallarga asoslangan rejimda)

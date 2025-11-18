@@ -6,6 +6,7 @@ import { ArabicTextUtils } from "../../utils/arabic-text.util";
 import { normalizeText, createWordSet } from "../../utils/text-normalization.util";
 import { SIMILARITY_THRESHOLDS } from "../../constants/gpt-step.constants";
 import { ConversationTopicExtractorService } from "./extractors/conversation-topic-extractor.service";
+import { ConversationEntityExtractorService } from "./extractors/conversation-entity-extractor.service";
 import { DialogueCorrectionService } from "./correctors/dialogue-correction.service";
 import { ContextFilterService } from "./filters/context-filter.service";
 import { MaterialMatchingService } from "./matchers/material-matching.service";
@@ -31,6 +32,7 @@ export class GPTStep implements PipelineStep {
         private readonly configService: ConfigService,
         private readonly gpt: GPTService,
         private readonly topicExtractor: ConversationTopicExtractorService,
+        private readonly entityExtractor: ConversationEntityExtractorService,
         private readonly dialogueCorrection: DialogueCorrectionService,
         private readonly contextFilter: ContextFilterService,
         private readonly materialMatching: MaterialMatchingService,
@@ -306,6 +308,15 @@ export class GPTStep implements PipelineStep {
         conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
         freeMode: boolean = false
     ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage'] }> {
+        // Entity extraction - suhbatdan obyektlar va mavzularni ajratish
+        const conversationContext = this.entityExtractor.extractEntities(conversationHistory);
+        const conversationEntitiesStr = this.entityExtractor.formatEntitiesForGPT(conversationContext);
+
+        // Debug log
+        if (conversationEntitiesStr && conversationEntitiesStr.length > 0) {
+            console.log(`🔍 Conversation entities topildi:\n${conversationEntitiesStr}`);
+        }
+
         // Erkin rejimda context filter'ni o'tkazib yuboramiz
         const filteredContext = freeMode ? [] : this.contextFilter.filterContextByLessonOrder(context, lastWatchedLessonOrder);
         // Erkin rejimda prompt'ni o'zgartirmaymiz
@@ -319,6 +330,7 @@ export class GPTStep implements PipelineStep {
             conversationHistory: conversationHistory,
             conversationTopic: conversationTopic,
             freeMode: freeMode, // Erkin rejim flag'ini uzatish
+            conversationEntities: conversationEntitiesStr, // Entity tracking uchun
         });
 
         const aiResponse = gptResult.text;

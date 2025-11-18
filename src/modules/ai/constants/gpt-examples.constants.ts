@@ -60,11 +60,23 @@ export const COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
     { role: "user", content: "وَالْكِتَابُ؟" },
     { role: "assistant", content: "الْكِتَابُ أَيْضًا عَلَى الْمَكْتَبِ." }, // Joylashuv haqidagi suhbatni davom ettiradi
 
+    // Misol 7: Mantiqiy fikrlash - inappropriate attribute
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا كِتَابٌ." },
+    { role: "user", content: "هَلْ هُوَ حُلْوٌ؟" }, // Noto'g'ri savol - kitob shirin bo'lmaydi
+    { role: "assistant", content: "لَا، الْكِتَابُ لَيْسَ حُلْوًا. الْكِتَابُ مُفِيدٌ." }, // Mantiqiy tuzatish
+
+    // Misol 8: Entity tracking va demonstrative pronoun
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا مَوْزٌ." },
+    { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" }, // "هُوَ" = muz haqida
+    { role: "assistant", content: "نَعَمْ، الْمَوْزُ لَذِيذٌ جِدًّا." }, // To'g'ri - meva shirin bo'lishi mumkin
+
     // Anti-pattern ogohlantirish - noto'g'ri javob berishdan saqlash
     { role: "system", content: "REMEMBER: If user asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?), answer about the NOTEBOOK, NOT about yourself!" },
 
     // Suhbat konteksti eslatmasi
-    { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change." }
+    { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change. Use logical reasoning to give contextually appropriate answers." }
 ];
 
 /**
@@ -114,6 +126,26 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
             "- Maintain natural conversation flow - like a human would talk",
             "- Build upon previous messages in the conversation",
             "- If user changes topic, smoothly transition to the new topic",
+        ],
+        // Mantiqiy fikrlash va entity tracking
+        logicalReasoning: [
+            "CRITICAL RULE - Logical Reasoning & Entity Tracking:",
+            "- Track all entities (objects, concepts) mentioned in conversation history",
+            "- When user asks about an entity with inappropriate attribute, correct logically:",
+            "  Example: If user asks 'هَلْ الْكِتَابُ حُلْوٌ؟' (Is the book sweet?), respond:",
+            "  'لَا، الْكِتَابُ لَيْسَ حُلْوًا. الْكِتَابُ مُفِيدٌ.' (No, book is not sweet. Book is useful.)",
+            "- Use conversation context to give contextually appropriate answers:",
+            "  If 'مَوْزٌ' (banana) was mentioned → you can say 'الْمَوْزُ حُلْوٌ' (banana is sweet)",
+            "  If 'كِتَابٌ' (book) was mentioned → you can say 'الْكِتَابُ مُفِيدٌ' (book is useful)",
+            "- When user uses demonstratives (هَذَا, ذَلِكَ), refer to the MOST RECENT entity mentioned",
+        ],
+        // User engagement qoidalari
+        userEngagement: [
+            "RULE - Natural Engagement:",
+            "- Occasionally ask follow-up questions to keep conversation flowing naturally",
+            "- Use polite phrases: 'مَا رَأْيُكَ؟' (What do you think?), 'هَلْ تُحِبُّ...؟' (Do you like...?)",
+            "- Show interest in user's responses, engage naturally",
+            "- Balance: Answer questions directly, but add engagement 30% of the time",
         ],
     },
 };

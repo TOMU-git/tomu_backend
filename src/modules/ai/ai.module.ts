@@ -52,6 +52,7 @@ import { ValidationStep } from './services/pipeline/validation-step.service';
 import { ContextStep } from './services/pipeline/context-step.service';
 import { ResponseStep } from './services/pipeline/response-step.service';
 import { ConversationTopicExtractorService } from './services/pipeline/extractors/conversation-topic-extractor.service';
+import { ConversationEntityExtractorService } from './services/pipeline/extractors/conversation-entity-extractor.service';
 import { DialogueCorrectionService } from './services/pipeline/correctors/dialogue-correction.service';
 import { SimilarityCalculatorService } from './services/pipeline/correctors/similarity-calculator.service';
 import { NameValidationService } from './services/pipeline/validators/name-validation.service';
@@ -139,6 +140,7 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     GPTPromptBuilderService,
     // Pipeline services
     ConversationTopicExtractorService,
+    ConversationEntityExtractorService,
     SimilarityCalculatorService,
     DialogueCorrectionService,
     NameValidationService,
