@@ -1,0 +1,52 @@
+{
+  "id": "ar_m1_l27",
+  "language": "ar",
+  "module": 1,
+  "lesson": 27,
+  "title": "مَجْلِسٌ مُفِيدٌ",
+  "summary": "Majlisda joylashish va foydali tadbir haqida hikoya.",
+  "vocabulary": [
+    { "word": "مَجْلِسٌ", "translationUz": "majlis, yig'ilish" },
+    { "word": "مُفِيدٌ", "translationUz": "foydali" },
+    { "word": "أَمَامَ", "translationUz": "oldida" },
+    { "word": "خَلْفَ", "translationUz": "orqasida" },
+    { "word": "جَلَسَ", "translationUz": "o'tirdi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ذَهَبَ عَلِيٌّ إِلَى الْمَجْلِسِ.",
+      "translationUz": "Ali majlisga bordi.",
+      "next": "ذَهَبَ سَلِيمٌ أَيْضًا مَعَ أَصْدِقَائِهِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ذَهَبَ سَلِيمٌ أَيْضًا مَعَ أَصْدِقَائِهِ.",
+      "translationUz": "Salim ham do'stlari bilan bordi.",
+      "next": "رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ.",
+      "translationUz": "Ali Salimni ko'rdi, shuning uchun Ali uning oldida o'tirdi, Salim esa do'stlarining orqasida o'tirdi.",
+      "next": "كَانَ الْمَجْلِسُ مُفِيدًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كَانَ الْمَجْلِسُ مُفِيدًا.",
+      "translationUz": "Majlis foydali bo'ldi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ حَضَرْتَ مَجْلِسًا مِنْ قَبْلُ؟",
+    "مَاذَا تَتَعَلَّمُ فِي الْمَجْلِسِ؟",
+    "لِمَاذَا جَلَسَ عَلِيٌّ أَمَامَ سَلِيمٍ؟",
+    "هَلِ الْمَجْلِسُ كَبِيرٌ؟",
+    "مَنْ حَضَرَ الْمَجْلِسَ مَعَكَ؟"
+  ],
+  "context": {
+    "main_topic": "meeting_positions",
+    "pattern": "narration → narration → narration → narration"
+  }
+}

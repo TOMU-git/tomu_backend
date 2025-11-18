@@ -1,5 +1,27 @@
 # 🔧 Environment Variables Configuration
 
+
+
+
+
+
+# Materiallarni joylashni boshlaymiz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## TTS (Text-to-Speech) Settings
 
 ### TTS_MODEL

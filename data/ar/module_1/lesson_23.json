@@ -1,0 +1,46 @@
+{
+  "id": "ar_m1_l23",
+  "language": "ar",
+  "module": 1,
+  "lesson": 23,
+  "title": "اَلتَّاجِرُ البَخِيلُ",
+  "summary": "Saxiy savdogar va uning xususiyatlari haqida tavsif.",
+  "vocabulary": [
+    { "word": "تَّاجِرٌ", "translationUz": "savdogar" },
+    { "word": "دُكَّانٌ", "translationUz": "do'kon" },
+    { "word": "غَنِيٌّ", "translationUz": "boy" },
+    { "word": "بَخِيلٌ", "translationUz": "saxiy" },
+    { "word": "مَالٌ", "translationUz": "mol" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هَذَا الدُّكَّانُ لِأَحْمَدَ، وَهُوَ تَاجِرٌ.",
+      "translationUz": "Bu do'kon Ahmadga tegishli va u savdogar.",
+      "next": "إِنَّهُ تَاجِرٌ غَنِيٌّ، وَلَكِنَّهُ بَخِيلٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّهُ تَاجِرٌ غَنِيٌّ، وَلَكِنَّهُ بَخِيلٌ جِدًّا.",
+      "translationUz": "U boy savdogar, lekin juda saxiy.",
+      "next": "يُحِبُّ الْمَالَ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "يُحِبُّ الْمَالَ كَثِيرًا.",
+      "translationUz": "U molni juda yaxshi ko'radi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تَعْرِفُ تَاجِرًا بَخِيلًا؟",
+    "مَاذَا يَبِيعُ أَحْمَدُ فِي دُكَّانِهِ؟",
+    "هَلِ الْبُخْلُ صِفَةٌ جَيِّدَةٌ؟",
+    "لِمَاذَا يُحِبُّ أَحْمَدُ الْمَالَ؟",
+    "هَلْ تَذْهَبُ إِلَى دُكَّانِ أَحْمَدَ؟"
+  ],
+  "context": {
+    "main_topic": "character_description",
+    "pattern": "narration → narration → narration"
+  }
+}

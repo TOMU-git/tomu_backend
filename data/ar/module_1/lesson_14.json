@@ -1,0 +1,51 @@
+{
+    "id": "ar_m1_l14",
+    "language": "ar",
+    "module": 1,
+    "lesson": 14,
+    "title": "جَوُّ الْجَبَلِ",
+    "summary": "Tog' tabiatini va uning atrof-muhitini tavsiflash.",
+    "vocabulary": [
+      { "word": "جَبَلٌ", "translationUz": "tog'" },
+      { "word": "مُرْتَفِعٌ جِدًّا", "translationUz": "juda baland" },
+      { "word": "بِجَانِبِ", "translationUz": "yonida" },
+      { "word": "أَنْهَارٌ", "translationUz": "daryolar" },
+      { "word": "أَشْجَارٌ", "translationUz": "daraxtlar" },
+      { "word": "أَزْهَارٌ", "translationUz": "gullar" },
+      { "word": "ثَلْجٌ", "translationUz": "qor" },
+      { "word": "هَوَاءٌ", "translationUz": "havo" },
+      { "word": "نَظِيفٌ", "translationUz": "toza" },
+      { "word": "نَقِيٌّ", "translationUz": "pokiza" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "اَلْجَبَلُ كَبِيرٌ وَ مُرْتَفِعٌ جِدًّا.",
+        "translationUz": "Tog' katta va juda baland.",
+        "next": "بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ.",
+        "translationUz": "Tog'ning yonida daryolar, daraxtlar va gullar bor, shuningdek tog'ning ustida qor ham bor.",
+        "next": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
+        "translationUz": "Tog'dagi havo toza va pokiza.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْجِبَالَ؟",
+      "مَاذَا يُمْكِنُ فِعْلُهُ فِي الْجَبَلِ؟",
+      "هَلْ زُرْتَ جَبَلًا مِنْ قَبْلُ؟",
+      "لِمَاذَا الْهَوَاءُ نَقِيٌّ فِي الْجَبَلِ؟",
+      "هَلْ تَرْكَبُ الْجِبَالَ؟"
+    ],
+    "context": {
+      "main_topic": "mountain_environment",
+      "pattern": "narration → narration → narration"
+    }
+  }
