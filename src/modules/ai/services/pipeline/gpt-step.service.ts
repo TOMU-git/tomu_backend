@@ -221,7 +221,9 @@ export class GPTStep implements PipelineStep {
 
             if (!validation.isValid) {
                 console.log(`⚠️  Material javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-                return this.fallbackResponse.createNotUnderstoodResponse();
+                // Material javob validatsiyadan o'tmaganida ham "materialda yo'q" deb javob berish
+                // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+                return await this.fallbackResponse.createNoMaterialResponse(userText);
             }
 
             // Valid material response
@@ -237,7 +239,7 @@ export class GPTStep implements PipelineStep {
         if (materialMatch.bestMatchScore >= SIMILARITY_THRESHOLDS.SENTENCE_SIMILARITY_HIGH &&
             materialMatch.bestMatchNextSentence &&
             materialMatch.bestMatchNextSentence.length > 1) {
-            
+
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
                 return this.fallbackResponse.createFutureLessonResponse();
             }
@@ -265,7 +267,7 @@ export class GPTStep implements PipelineStep {
             materialMatch.bestMatchScore < SIMILARITY_THRESHOLDS.SENTENCE_SIMILARITY_HIGH &&
             materialMatch.bestMatchSentence &&
             materialMatch.bestMatchSentence.length > 1) {
-            
+
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
                 return this.fallbackResponse.createFutureLessonResponse();
             }
@@ -338,13 +340,9 @@ export class GPTStep implements PipelineStep {
 
         if (!validation.isValid) {
             console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-            if (validation.reason === 'echo') {
-                return this.fallbackResponse.createNotUnderstoodResponse();
-            } else if (validation.reason === 'invalid_vocabulary') {
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
-            } else {
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
-            }
+            // Agar material matching topilmasa va GPT javob invalid bo'lsa,
+            // "materialda yo'q" deb javob berish kerak (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+            return await this.fallbackResponse.createNoMaterialResponse(userText);
         }
 
         // Valid GPT response

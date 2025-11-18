@@ -13,6 +13,8 @@ export interface IndexedChunk {
     translationUz: string | null;
     audioUrl: string | null;
     title: string;
+    next: string | null; // Keyingi gap (dialogue'dan)
+    nextTranslationUz: string | null; // Keyingi gapning tarjimasi
 }
 
 export interface ParsedLesson {
