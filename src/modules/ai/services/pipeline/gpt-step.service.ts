@@ -339,30 +339,39 @@ export class GPTStep implements PipelineStep {
             // Hybrid yondashuv: birinchi materialdan, topilmasa AI o'zi (qat'iy qoidalar bilan)
             if (this.enableUserEngagement) {
                 try {
-                    console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
+                    // ⚠️ RULE: Agar material response o'zi savol bo'lsa, follow-up qo'shmaslik
+                    // Sabab: Bitta response'da 2 ta savol bo'lmasligi kerak
+                    const { isQuestion } = await import('../../utils/question-detector.util');
+                    const materialIsQuestion = isQuestion(materialResponseResult.aiResponse);
                     
-                    const followUpResult = await this.hybridFollowUp.generateFollowUp(
-                        materialResponseResult.aiResponse,
-                        conversationHistory,
-                        context,
-                        lastWatchedLessonOrder
-                    );
-
-                    // Agar follow-up topilsa
-                    if (followUpResult && followUpResult.question) {
-                        console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
-                        
-                        // Material javob + follow-up savol
-                        const enrichedResponse = `${materialResponseResult.aiResponse} ${followUpResult.question}`;
-                        const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
-                        
-                        return {
-                            aiResponse: enrichedResponse,
-                            aiResponseUz: enrichedTranslation,
-                            gptUsage: materialResponseResult.gptUsage,
-                        };
+                    if (materialIsQuestion) {
+                        console.log('ℹ️  Material javob o\'zi savol, follow-up qo\'shilmaydi (1 response = 1 savol)');
                     } else {
-                        console.log('ℹ️  Follow-up topilmadi - asl material javob qaytariladi');
+                        console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
+                        
+                        const followUpResult = await this.hybridFollowUp.generateFollowUp(
+                            materialResponseResult.aiResponse,
+                            conversationHistory,
+                            context,
+                            lastWatchedLessonOrder
+                        );
+
+                        // Agar follow-up topilsa
+                        if (followUpResult && followUpResult.question) {
+                            console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
+                            
+                            // Material javob + follow-up savol
+                            const enrichedResponse = `${materialResponseResult.aiResponse} ${followUpResult.question}`;
+                            const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
+                            
+                            return {
+                                aiResponse: enrichedResponse,
+                                aiResponseUz: enrichedTranslation,
+                                gptUsage: materialResponseResult.gptUsage,
+                            };
+                        } else {
+                            console.log('ℹ️  Follow-up topilmadi - asl material javob qaytariladi');
+                        }
                     }
                 } catch (error) {
                     console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);
