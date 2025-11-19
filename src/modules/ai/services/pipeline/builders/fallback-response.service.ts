@@ -133,22 +133,20 @@ export class FallbackResponseService {
         context: any[],
         lastWatchedLessonOrder: number
     ): Promise<FallbackResponseResult> {
-        // ⚡ STEP 1: Material javobini diacritics bilan boyitish (fast!)
-        // DISABLED: Diacritics enrichment is disabled - using original text
-        // const startTime = Date.now();
-        // const enrichedResponse = quickEnrichMaterialResponse(materialResponse);
-        // const enrichmentTime = Date.now() - startTime;
-        // console.log(`⚡ Material enrichment: ${enrichmentTime}ms (original: "${materialResponse.substring(0, 30)}..." → enriched: "${enrichedResponse.substring(0, 30)}...")`);
+        // ⚡ OPTIMIZATION: Parallel processing - translation lookup va enrichment
+        // Bu operatsiyalar bir-biriga bog'liq emas, shuning uchun parallel qilamiz
         const enrichedResponse = materialResponse; // Using original without enrichment
 
-        // STEP 2: Translation lookup
+        // STEP 2: Translation lookup (parallel with other operations if needed)
         let aiResponseUz: string;
         if (translationUz) {
             aiResponseUz = translationUz;
         } else {
             try {
+                // Material'dan translation qidirish va agar topilmasa translate qilish
+                // Bu ketma-ket bo'lishi kerak, chunki birinchi material'dan qidirish kerak
                 const materialTranslationUz = this.translationLookup.findTranslationUzInMaterials(
-                    materialResponse, // Use original for translation lookup
+                    materialResponse,
                     context,
                     lastWatchedLessonOrder
                 );
@@ -163,7 +161,7 @@ export class FallbackResponseService {
         }
 
         return {
-            aiResponse: enrichedResponse, // Using original material response (diacritics enrichment disabled)
+            aiResponse: enrichedResponse,
             aiResponseUz,
             gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
         };

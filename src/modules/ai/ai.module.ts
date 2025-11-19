@@ -65,6 +65,7 @@ import { FallbackResponseService } from './services/pipeline/builders/fallback-r
 import { MaterialFollowUpService } from './services/pipeline/builders/material-followup.service';
 import { AIFollowUpService } from './services/pipeline/builders/ai-followup.service';
 import { HybridFollowUpService } from './services/pipeline/builders/hybrid-followup.service';
+import { ResponseCacheService } from './services/response-cache.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -133,6 +134,8 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     // Cost tracking servislar
     CostCalculationService,
     LimitCheckService,
+    // Response caching
+    ResponseCacheService,
     // Retry logic
     RetryHelperService,
     // Token management

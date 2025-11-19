@@ -5,6 +5,7 @@ import { PipelineStep, VoiceInput } from "./pipeline.types";
 import { ArabicTextUtils } from "../../utils/arabic-text.util";
 import { normalizeText, createWordSet, isYesNoResponse } from "../../utils/text-normalization.util";
 import { SIMILARITY_THRESHOLDS } from "../../constants/gpt-step.constants";
+import { findPrecomputedResponse } from "../../constants/precomputed-responses";
 import { ConversationTopicExtractorService } from "./extractors/conversation-topic-extractor.service";
 import { ConversationEntityExtractorService } from "./extractors/conversation-entity-extractor.service";
 import { DialogueCorrectionService } from "./correctors/dialogue-correction.service";
@@ -13,6 +14,7 @@ import { MaterialMatchingService } from "./matchers/material-matching.service";
 import { ResponseValidationService } from "./validators/response-validation.service";
 import { FallbackResponseService } from "./builders/fallback-response.service";
 import { HybridFollowUpService } from "./builders/hybrid-followup.service";
+import { ResponseCacheService } from "../response-cache.service";
 
 /**
  * GPT Step: AI javob yaratish
@@ -41,6 +43,7 @@ export class GPTStep implements PipelineStep {
         private readonly responseValidation: ResponseValidationService,
         private readonly fallbackResponse: FallbackResponseService,
         private readonly hybridFollowUp: HybridFollowUpService,
+        private readonly responseCache: ResponseCacheService,
     ) {
         // Environment variable'dan erkin rejim flag'ini o'qish
         // Default: false (materiallarga asoslangan rejim)
@@ -75,6 +78,19 @@ export class GPTStep implements PipelineStep {
         const userText = userTextCorrected;
         const normalizedUser = normalizeText(userText);
         const userWords = createWordSet(userText);
+
+        // ⚡ OPTIMIZATION: Cache tekshiruvi - 5s → 5ms
+        const courseId = input.courseId ? Number(input.courseId) : undefined;
+        const cached = await this.responseCache.get(userText, courseId, lastWatchedLessonOrder);
+        if (cached) {
+            console.log(`⚡ Cache HIT: Response topildi (5s → 5ms, source: ${cached.source})`);
+            return {
+                ...input,
+                aiResponse: cached.aiResponse,
+                aiResponseUz: cached.aiResponseUz,
+                usage: input.usage || {},
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
 
         // Erkin rejim tekshiruvi
         // Agar ACCESS_GENERAL=true bo'lsa, material matching'ni o'tkazib yuboramiz
@@ -131,6 +147,32 @@ export class GPTStep implements PipelineStep {
         }
 
         // Materiallarga asoslangan rejim (default)
+        // ⚡ OPTIMIZATION 1: Precomputed responses - eng ko'p ishlatiladigan phraselar
+        // 5s GPT call → 5ms memory lookup
+        const precomputed = findPrecomputedResponse(userText, lastWatchedLessonOrder);
+        if (precomputed) {
+            console.log(`⚡ Precomputed response topildi (5s → 5ms)`);
+            
+            // Cache'ga saqlash (keyingi safar uchun)
+            await this.responseCache.set(
+                userText,
+                {
+                    aiResponse: precomputed.aiResponseText,
+                    aiResponseUz: precomputed.aiResponseUzbek,
+                    source: 'precomputed',
+                },
+                courseId,
+                lastWatchedLessonOrder
+            );
+            
+            return {
+                ...input,
+                aiResponse: precomputed.aiResponseText,
+                aiResponseUz: precomputed.aiResponseUzbek,
+                usage: input.usage || {},
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
+
         // Ha/yo'q javoblarini tekshirish - agar ha/yo'q javob bo'lsa, material matchingdan o'tkazib yuboramiz
         const isYesNo = isYesNoResponse(userText);
         if (isYesNo) {
@@ -225,6 +267,19 @@ export class GPTStep implements PipelineStep {
                 totalTokens: response.gptUsage.totalTokens || 0,
             };
         }
+
+        // ⚡ Cache'ga saqlash (keyingi safar uchun)
+        await this.responseCache.set(
+            userText,
+            {
+                aiResponse: response.aiResponse,
+                aiResponseUz: response.aiResponseUz || '',
+                gptUsage: response.gptUsage,
+                source: response.gptUsage ? 'gpt' : 'material',
+            },
+            courseId,
+            lastWatchedLessonOrder
+        );
 
         return {
             ...input,

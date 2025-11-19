@@ -55,29 +55,34 @@ export class HybridFollowUpService {
     ): Promise<HybridFollowUpResult | null> {
         console.log('🔄 [HybridFollowUp] Boshlandi...');
 
-        // Phase 1: Material-based follow-up (PRIORITY)
-        console.log('📚 [HybridFollowUp] Phase 1: Materialdan qidirish...');
-        const materialResult = this.materialFollowUp.findFollowUp(
-            currentResponse,
-            conversationHistory,
-            context,
-            lastWatchedLessonOrder
-        );
+        // ⚡ OPTIMIZATION: Parallel processing - Material va AI parallel qidirish
+        // Bu ikki operatsiya bir-biriga bog'liq emas
+        console.log('📚 [HybridFollowUp] Phase 1&2: Material va AI parallel qidirish...');
+        
+        const [materialResult, aiResult] = await Promise.all([
+            // Phase 1: Material-based follow-up
+            Promise.resolve(this.materialFollowUp.findFollowUp(
+                currentResponse,
+                conversationHistory,
+                context,
+                lastWatchedLessonOrder
+            )),
+            // Phase 2: AI-generated follow-up (parallel)
+            this.aiFollowUp.generateFollowUp(
+                currentResponse,
+                conversationHistory,
+                context,
+                lastWatchedLessonOrder
+            )
+        ]);
 
+        // Material result prioritet (yuqori confidence)
         if (materialResult && materialResult.confidence >= this.MIN_CONFIDENCE) {
             console.log(`✅ [HybridFollowUp] Material'dan topildi (confidence: ${materialResult.confidence})`);
             return await this.formatResult(materialResult, 'material-exact');
         }
 
-        // Phase 2: AI-generated follow-up (qat'iy qoidalar bilan)
-        console.log('🤖 [HybridFollowUp] Phase 2: AI yaratmoqda (qat\'iy qoidalar bilan)...');
-        const aiResult = await this.aiFollowUp.generateFollowUp(
-            currentResponse,
-            conversationHistory,
-            context,
-            lastWatchedLessonOrder
-        );
-
+        // AI result (agar material topilmasa)
         if (aiResult && aiResult.confidence >= this.MIN_CONFIDENCE) {
             console.log(`✅ [HybridFollowUp] AI yaratdi (confidence: ${aiResult.confidence})`);
             return await this.formatResult(aiResult, 'ai-generated');
