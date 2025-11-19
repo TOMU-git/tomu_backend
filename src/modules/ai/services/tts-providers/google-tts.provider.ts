@@ -126,10 +126,17 @@ export class GoogleTTSProvider {
                 ? 'https://texttospeech.googleapis.com/v1/text:synthesize'
                 : `https://texttospeech.googleapis.com/v1/text:synthesize?key=${this.apiKey}`;
 
+            // SSML yoki oddiy text'ni aniqlash
+            // Agar text <speak> tag'i bilan boshlansa, SSML formatida yuborish
+            const isSSML = params.text.trim().startsWith('<speak>');
+            const inputField = isSSML ? 'ssml' : 'text';
+
+            this.logger.log(`🔊 Google TTS: ${isSSML ? 'SSML' : 'Text'} format`);
+
             const response = await axios.post(
                 url,
                 {
-                    input: { text: params.text },
+                    input: { [inputField]: params.text }, // ssml yoki text
                     voice: {
                         languageCode: this.languageCode,
                         name: this.voice,

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { GPTService, GPTResponse } from "../gpt.service";
+import { TTSService } from "../tts.service";
 import { PipelineStep, VoiceInput } from "./pipeline.types";
 import { ArabicTextUtils } from "../../utils/arabic-text.util";
 import { normalizeText, createWordSet, isYesNoResponse } from "../../utils/text-normalization.util";
@@ -15,6 +16,7 @@ import { ResponseValidationService } from "./validators/response-validation.serv
 import { FallbackResponseService } from "./builders/fallback-response.service";
 import { HybridFollowUpService } from "./builders/hybrid-followup.service";
 import { ResponseCacheService } from "../response-cache.service";
+import { addPauseBetweenTexts, stripSSML } from "../../utils/ssml.util";
 
 /**
  * GPT Step: AI javob yaratish
@@ -35,6 +37,7 @@ export class GPTStep implements PipelineStep {
     constructor(
         private readonly configService: ConfigService,
         private readonly gpt: GPTService,
+        private readonly tts: TTSService, // SSML qo'llab-quvvatlashni tekshirish uchun
         private readonly topicExtractor: ConversationTopicExtractorService,
         private readonly entityExtractor: ConversationEntityExtractorService,
         private readonly dialogueCorrection: DialogueCorrectionService,
@@ -360,9 +363,27 @@ export class GPTStep implements PipelineStep {
                         if (followUpResult && followUpResult.question) {
                             console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
                             
-                            // Material javob + follow-up savol
-                            const enrichedResponse = `${materialResponseResult.aiResponse} ${followUpResult.question}`;
+                            // ⏸️  SSML BREAK: Javob va savol orasiga pauza qo'shish
+                            // Faqat Google TTS uchun SSML formatida, OpenAI uchun oddiy text
+                            const useSSML = this.tts.supportsSSML();
+                            const pauseDuration = '1.5s'; // 1.5 soniya pauza
+                            
+                            const enrichedResponse = addPauseBetweenTexts(
+                                materialResponseResult.aiResponse,
+                                followUpResult.question,
+                                pauseDuration,
+                                useSSML
+                            );
+                            
+                            // Translation uchun SSML kerak emas
                             const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
+                            
+                            // Log: SSML ishlatilganligini ko'rsatish
+                            if (useSSML) {
+                                console.log(`⏸️  SSML break qo'shildi: ${pauseDuration} pauza`);
+                                // Database saqlash uchun SSML'siz versiya
+                                console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
+                            }
                             
                             return {
                                 aiResponse: enrichedResponse,

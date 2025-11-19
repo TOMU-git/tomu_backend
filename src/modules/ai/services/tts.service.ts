@@ -146,6 +146,23 @@ export class TTSService implements OnModuleInit {
     }
 
     /**
+     * Qaysi TTS provider ishlatilayotganini qaytarish
+     * Bu SSML qo'llab-quvvatlashni aniqlash uchun kerak
+     */
+    getProvider(): 'google' | 'openai' {
+        return this.provider;
+    }
+
+    /**
+     * SSML qo'llab-quvvatlanishini tekshirish
+     * Google TTS SSML'ni to'liq qo'llab-quvvatlaydi
+     * OpenAI TTS SSML'ni qo'llab-quvvatlamaydi
+     */
+    supportsSSML(): boolean {
+        return this.provider === 'google';
+    }
+
+    /**
      * Text -> Speech (usage ma'lumotlari bilan)
      * @param params - Text va language
      * @returns Audio URL va character count (cost tracking uchun)
