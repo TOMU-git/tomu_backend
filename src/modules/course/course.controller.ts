@@ -11,18 +11,22 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  UseGuards,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { UpdateCourseDto } from "./dto/update-course.dto";
 import { ResData } from "src/lib/resData";
 import { ICourseService } from "./interfaces/course.service";
-import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { RoleEnum } from "src/common/enums/enum";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { fileOption } from "src/lib/file";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { Course } from "./entities/course.entity";
+import { CurrentUser } from "src/common/decorator/CurrentUser.decorator";
+import { User } from "../user/entities/user.entity";
+import { OptionalAuthGuard } from "../shared/guards/optional-auth.guard";
 
 @ApiTags("course")
 @Controller("course")
@@ -72,9 +76,14 @@ export class CourseController {
     return await this.courseService.findAll();
   }
 
+  @UseGuards(OptionalAuthGuard)
+  @ApiBearerAuth()
   @Get(":id")
-  async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Course>> {
-    return await this.courseService.findOneById(id);
+  async findOne(
+    @Param("id", ParseIntPipe) id: ID,
+    @CurrentUser() user?: User,
+  ): Promise<ResData<Course & { isActiveForUser: boolean }>> {
+    return await this.courseService.findOneById(id, user);
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)

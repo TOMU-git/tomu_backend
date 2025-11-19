@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../user/entities/user.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { config } from "src/common/config";
+import { OptionalAuthGuard } from "./guards/optional-auth.guard";
 
 @Module({
   imports: [
@@ -19,10 +20,12 @@ import { config } from "src/common/config";
   providers: [
     { provide: "IUserService", useClass: UserService },
     { provide: "IUserRepository", useClass: UserRepository },
+    OptionalAuthGuard,
   ],
   exports: [
     { provide: "IUserService", useClass: UserService },
     { provide: "IUserRepository", useClass: UserRepository },
+    OptionalAuthGuard,
   ],
 })
 export class SharedModule {}
