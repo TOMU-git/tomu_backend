@@ -105,10 +105,22 @@ export class ContextStep implements PipelineStep {
         // Foydalanuvchi hali ko'rmagan darslar haqida gapirishga harakat qilayotganini tekshirish
         const possibleLessons = this.findPossibleFutureLessons(userText, allLessons, lastWatchedLessonOrder);
 
+        // Agar topilgan ma'lumotlardan eng kichik lessonOrder <= currentOrder bo'lsa,
+        // demak foydalanuvchi bu darsga kelgan va xabar chiqmasligi kerak
         if (possibleLessons.futureLessons.length > 0) {
-            // Maxsus javob yaratish (hali kelmagan dars haqida)
-            const message = await this.createFutureLessonMessage(input, lastWatchedLessonOrder, Math.min(...possibleLessons.futureLessons));
-            return { message, session: input.session };
+            const minMentionedOrder = possibleLessons.mentioned.length > 0 
+                ? Math.min(...possibleLessons.mentioned) 
+                : Infinity;
+            
+            // Agar eng kichik mentioned order <= lastWatchedLessonOrder bo'lsa,
+            // demak foydalanuvchi bu darsga kelgan, shuning uchun future lesson xabarini chiqarmaymiz
+            if (minMentionedOrder <= lastWatchedLessonOrder) {
+                // Foydalanuvchi kelgan dars haqida gapiryapti, xabar chiqarmaymiz
+            } else {
+                // Maxsus javob yaratish (hali kelmagan dars haqida)
+                const message = await this.createFutureLessonMessage(input, lastWatchedLessonOrder, Math.min(...possibleLessons.futureLessons));
+                return { message, session: input.session };
+            }
         }
 
         // Suhbat tarixini olish (kontekst uchun)

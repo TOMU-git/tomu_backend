@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { GPTService, GPTResponse } from "../gpt.service";
 import { PipelineStep, VoiceInput } from "./pipeline.types";
 import { ArabicTextUtils } from "../../utils/arabic-text.util";
-import { normalizeText, createWordSet } from "../../utils/text-normalization.util";
+import { normalizeText, createWordSet, isYesNoResponse } from "../../utils/text-normalization.util";
 import { SIMILARITY_THRESHOLDS } from "../../constants/gpt-step.constants";
 import { ConversationTopicExtractorService } from "./extractors/conversation-topic-extractor.service";
 import { ConversationEntityExtractorService } from "./extractors/conversation-entity-extractor.service";
@@ -12,6 +12,7 @@ import { ContextFilterService } from "./filters/context-filter.service";
 import { MaterialMatchingService } from "./matchers/material-matching.service";
 import { ResponseValidationService } from "./validators/response-validation.service";
 import { FallbackResponseService } from "./builders/fallback-response.service";
+import { HybridFollowUpService } from "./builders/hybrid-followup.service";
 
 /**
  * GPT Step: AI javob yaratish
@@ -39,6 +40,7 @@ export class GPTStep implements PipelineStep {
         private readonly materialMatching: MaterialMatchingService,
         private readonly responseValidation: ResponseValidationService,
         private readonly fallbackResponse: FallbackResponseService,
+        private readonly hybridFollowUp: HybridFollowUpService,
     ) {
         // Environment variable'dan erkin rejim flag'ini o'qish
         // Default: false (materiallarga asoslangan rejim)
@@ -129,6 +131,44 @@ export class GPTStep implements PipelineStep {
         }
 
         // Materiallarga asoslangan rejim (default)
+        // Ha/yo'q javoblarini tekshirish - agar ha/yo'q javob bo'lsa, material matchingdan o'tkazib yuboramiz
+        const isYesNo = isYesNoResponse(userText);
+        if (isYesNo) {
+            console.log(`✅ Ha/yo'q javob aniqlandi, material matchingdan o'tkazib yuborilmoqda...`);
+            // Ha/yo'q javoblar uchun to'g'ridan-to'g'ri GPT'ga so'rov yuborish
+            const response = await this.generateGPTResponse(
+                userText,
+                normalizedUser,
+                userWords,
+                input.context,
+                lastWatchedLessonOrder,
+                conversationTopic,
+                input.conversationHistory || [],
+                false // freeMode = false (material context bilan)
+            );
+
+            const aiResponseLatin = ArabicTextUtils.transliterateArabic(response.aiResponse || "");
+            console.log('GPT javobi (Ha/yo\'q javob):', response.aiResponse);
+            console.log('GPT javobi (latin):', aiResponseLatin);
+
+            // Usage ma'lumotlarini to'plash
+            const usage = input.usage || {};
+            if (response.gptUsage) {
+                usage.gpt = {
+                    promptTokens: response.gptUsage.promptTokens || 0,
+                    completionTokens: response.gptUsage.completionTokens || 0,
+                    totalTokens: response.gptUsage.totalTokens || 0,
+                };
+            }
+
+            return {
+                ...input,
+                aiResponse: response.aiResponse,
+                aiResponseUz: response.aiResponseUz || '',
+                usage,
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
+
         // Materiallardan javob topish
         const materialMatch = this.materialMatching.findMaterialResponse(
             userText,
@@ -241,30 +281,33 @@ export class GPTStep implements PipelineStep {
             );
 
             // Material javobga follow-up savol qo'shish (faqat engagement yoqilgan bo'lsa)
+            // Hybrid yondashuv: birinchi materialdan, topilmasa AI o'zi (qat'iy qoidalar bilan)
             if (this.enableUserEngagement) {
                 try {
-                    console.log('📝 Material javobga follow-up savol qo\'shilmoqda...');
-                    const enrichedResponse = await this.fallbackResponse.addFollowUpQuestion(
+                    console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
+                    
+                    const followUpResult = await this.hybridFollowUp.generateFollowUp(
                         materialResponseResult.aiResponse,
+                        conversationHistory,
                         context,
-                        lastWatchedLessonOrder,
-                        conversationHistory
+                        lastWatchedLessonOrder
                     );
 
-                    // Agar GPT javob qaytargan bo'lsa va u asl javobdan farq qilsa
-                    if (enrichedResponse && enrichedResponse !== materialResponseResult.aiResponse) {
-                        console.log('✅ Follow-up savol qo\'shildi');
-                        // Yangi javobni translate qilish
-                        const enrichedTranslation = await this.fallbackResponse.translateGPTResponse(
-                            enrichedResponse,
-                            context,
-                            lastWatchedLessonOrder
-                        );
+                    // Agar follow-up topilsa
+                    if (followUpResult && followUpResult.question) {
+                        console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
+                        
+                        // Material javob + follow-up savol
+                        const enrichedResponse = `${materialResponseResult.aiResponse} ${followUpResult.question}`;
+                        const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
+                        
                         return {
                             aiResponse: enrichedResponse,
-                            aiResponseUz: enrichedTranslation || materialResponseResult.aiResponseUz,
+                            aiResponseUz: enrichedTranslation,
                             gptUsage: materialResponseResult.gptUsage,
                         };
+                    } else {
+                        console.log('ℹ️  Follow-up topilmadi - asl material javob qaytariladi');
                     }
                 } catch (error) {
                     console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);

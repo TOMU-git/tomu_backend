@@ -62,6 +62,9 @@ import { ContextFilterService } from './services/pipeline/filters/context-filter
 import { MaterialMatchingService } from './services/pipeline/matchers/material-matching.service';
 import { ResponseValidationService } from './services/pipeline/validators/response-validation.service';
 import { FallbackResponseService } from './services/pipeline/builders/fallback-response.service';
+import { MaterialFollowUpService } from './services/pipeline/builders/material-followup.service';
+import { AIFollowUpService } from './services/pipeline/builders/ai-followup.service';
+import { HybridFollowUpService } from './services/pipeline/builders/hybrid-followup.service';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -150,6 +153,9 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     MaterialMatchingService,
     ResponseValidationService,
     FallbackResponseService,
+    MaterialFollowUpService,
+    AIFollowUpService,
+    HybridFollowUpService,
     STTStep,
     ValidationStep,
     ContextStep,
