@@ -119,13 +119,25 @@ export class UserCourseRepository implements IUserCourseRepository {
     userId: number,
     courseId: number,
   ): Promise<UserCourse | null> {
-    return await this.userCourseRepository.findOne({
+    console.log('[UserCourseRepository.findByUserIdAndCourseId] Searching - User ID:', userId, 'Course ID:', courseId);
+    
+    const result = await this.userCourseRepository.findOne({
       where: {
         user: { id: userId },
         course: { id: courseId },
       },
       relations: ['user', 'course'], // kerakli joinlar
     });
+    
+    console.log('[UserCourseRepository.findByUserIdAndCourseId] Result:', result ? {
+      id: result.id,
+      userId: result.user?.id,
+      courseId: result.course?.id,
+      isActive: result.isActive,
+      status: result.status
+    } : 'NULL');
+    
+    return result;
   }
 
 }
