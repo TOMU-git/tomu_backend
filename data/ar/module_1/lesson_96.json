@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l96",
+    "language": "ar",
+    "module": 1,
+    "lesson": 96,
+    "title": "صَبَاحٌ فِي الْقَرْيَةِ",
+    "summary": "Qishloq hayotidan lavhalar: hayvonlar va odamlarning kundalik faoliyati haqida.",
+    "vocabulary": [
+      {"word": "صَاحَ", "translationUz": "qichqirdi, sayradi"},
+      {"word": "الدِّيكُ", "translationUz": "xo'roz"},
+      {"word": "الْقَرْيَةِ", "translationUz": "qishloq"},
+      {"word": "بَدَأَ", "translationUz": "boshladi"},
+      {"word": "الظُّهْرِ", "translationUz": "tush"},
+      {"word": "الدَّجَاجَاتُ", "translationUz": "tovuqlar"},
+      {"word": "جَمَعَ", "translationUz": "yig'di"},
+      {"word": "بَيْضَهَا", "translationUz": "uning tuxumlari"},
+      {"word": "أَطْعَمَ", "translationUz": "oziqlantirdi"},
+      {"word": "الْحِصَانَ", "translationUz": "otni"},
+      {"word": "الْبَقَرَةَ", "translationUz": "sigirni"},
+      {"word": "الْحَيَوَانَاتِ", "translationUz": "hayvonlar"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "صَاحَ الدِّيكُ فِي الصَّبَاحِ فِي الْقَرْيَةِ، وَ بَدَأَ النَّاسُ أَعْمَالَهُمْ.",
+        "translationUz": "Qishloqda ertalab xo'roz sayradi va odamlar ishlarini boshladilar.",
+        "next": "وَ قُرْبَ الظُّهْرِ صَاحَتِ الدَّجَاجَاتُ، فَجَمَعَ صَاحِبُ الْمَنْزِلِ بَيْضَهَا،"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ قُرْبَ الظُّهْرِ صَاحَتِ الدَّجَاجَاتُ، فَجَمَعَ صَاحِبُ الْمَنْزِلِ بَيْضَهَا،",
+        "translationUz": "Tushga yaqin tovuqlar qichqirdi va uy egasi ularning tuxumlarini yig'di,",
+        "next": "وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ.",
+        "translationUz": "va otni, sigirni va qolgan hayvonlarni oziqlantirdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا يَفْعَلُ الدِّيكُ فِي الصَّبَاحِ؟",
+      "مَتَى تَصِيحُ الدَّجَاجَاتُ؟",
+      "مَاذَا يَفْعَلُ صَاحِبُ الْمَنْزِلِ؟",
+      "أَيْنَ تَجْرِي هَذِهِ الْأَحْدَاثُ؟",
+      "هَلْ تُحِبُّ الْحَيَاةَ فِي الْقَرْيَةِ؟"
+    ],
+    "context": {
+      "main_topic": "country_life_daily_activities",
+      "pattern": "morning_activities → midday_activities → feeding_animals"
+    }
+  }

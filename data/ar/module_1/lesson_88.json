@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l88",
+    "language": "ar",
+    "module": 1,
+    "lesson": 88,
+    "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٣",
+    "summary": "O'rmonda ajoyib ziyofat va quyosh botgandan keyin uyga qaytish.",
+    "vocabulary": [
+      { "word": "أَقَام", "translationUz": "o'tkazdi" },
+      { "word": "وَلِيمَة", "translationUz": "ziyofat" },
+      { "word": "رَائِع", "translationUz": "ajoyib" },
+      { "word": "غُرُوب", "translationUz": "botish" },
+      { "word": "شَمْس", "translationUz": "quyosh" },
+      { "word": "رَجَع", "translationUz": "qaytdi" },
+      { "word": "غَدًا", "translationUz": "ertaga" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَقَامَ أَحْمَدُ وَ أُسْرَتُهُ وَلِيمَةً رَائِعَةً فِي الْغَابَةِ.",
+        "translationUz": "Ahmad va uning oilasi o'rmonda ajoyib ziyofat o'tkazdi.",
+        "next": "وَ عِنْدَ غُرُوبِ الشَّمْسِ، رَجَعَتِ الْأُسْرَةُ إِلَى الْبَيْتِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ عِنْدَ غُرُوبِ الشَّمْسِ، رَجَعَتِ الْأُسْرَةُ إِلَى الْبَيْتِ.",
+        "translationUz": "Va quyosh botganda, oila uyiga qaytdi.",
+        "next": "غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيرًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيرًا.",
+        "translationUz": "Ertaga Ahmad juda ko'p ishlaydi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ أَقَمْتَ وَلِيمَةً فِي الْغَابَةِ؟",
+      "مَتَى تَرْجِعُ إِلَى بَيْتِكَ مِنَ الرِّحْلَةِ؟",
+      "مَاذَا تَفْعَلُ بَعْدَ الرِّحْلَةِ؟",
+      "هَلْ تُحِبُّ الْوَلَائِمَ فِي الْغَابَةِ؟",
+      "كَيْفَ تَكُونُ رِحْلَتُكَ إِلَى الْغَابَةِ؟"
+    ],
+    "context": {
+      "main_topic": "picnic_return",
+      "pattern": "narration → narration → narration"
+    }
+  }

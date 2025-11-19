@@ -1,0 +1,45 @@
+{
+    "id": "ar_m1_l93",
+    "language": "ar",
+    "module": 1,
+    "lesson": 93,
+    "title": "يَوْمٌ مُمْطِرٌ 2",
+    "summary": "Salmaning yomg‘irli kunda sayrga chiqishi va yomg‘irda qolib ketishi haqida matn.",
+    "vocabulary": [
+      { "word": "السُّحُبَ السَّوْدَاءَ", "translationUz": "qora bulutlar" },
+      { "word": "مَطَرٌ", "translationUz": "yomg‘ir" },
+      { "word": "مِظَلَّةٌ", "translationUz": "soyabon" },
+      { "word": "مُبْتَلَّةً", "translationUz": "ho‘l" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "نَصٌّ",
+        "text": "سلمى تُحِبُّ المَشْيَ عَلَى شَاطِئِ النَّهْرِ.",
+        "translationUz": "Salma daryo bo‘yida yurishni yaxshi ko‘radi.",
+        "next": "نَظَرَتْ إِلَى السَّمَاءِ وَرَأَتِ السُّحُبَ السَّوْدَاءَ."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "نَظَرَتْ إِلَى السَّمَاءِ وَرَأَتِ السُّحُبَ السَّوْدَاءَ، وَبَعْدَ قَلِيلٍ نَزَلَ الْمَطَرُ، وَكَانَتْ بِدُونِ مِظَلَّةٍ.",
+        "translationUz": "U osmonga qaradi va qora bulutlarni ko‘rdi. Ko‘p o‘tmay yomg‘ir yog‘di, u esa soyabonsiz edi.",
+        "next": "لِذَا رَجَعَتْ إِلَى بَيْتِهَا مُبْتَلَّةً."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "لِذَا رَجَعَتْ إِلَى بَيْتِهَا مُبْتَلَّةً.",
+        "translationUz": "Shuning uchun u uyiga ho‘l holda qaytdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "إِلَى أَيْنَ تُحِبُّ سَلْمَى أَنْ تَمْشِيَ؟",
+      "مَاذَا رَأَتْ فِي السَّمَاءِ؟",
+      "هَلْ كَانَتْ مَعَهَا مِظَلَّةٌ؟",
+      "لِمَاذَا رَجَعَتْ إِلَى الْبَيْتِ؟"
+    ],
+    "context": {
+      "main_topic": "short_rainy_day_story",
+      "pattern": "habit → problem → result"
+    }
+  }
+  

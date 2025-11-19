@@ -1,0 +1,59 @@
+{
+    "id": "ar_m1_l59",
+    "language": "ar",
+    "module": 1,
+    "lesson": 59,
+    "title": "أَيُّهُمَا أَطْوَلُ ١",
+    "summary": "O'qituvchi va o'quvchilar o'rtasida banan daraxti va jirafa qaysi biri balandroq ekanligi haqida munozara.",
+    "vocabulary": [
+      { "word": "أَيُّهُمَا", "translationUz": "qaysi biri" },
+      { "word": "أَطْوَل", "translationUz": "balandroq" },
+      { "word": "شَجَر", "translationUz": "daraxt" },
+      { "word": "مَوْز", "translationUz": "banan" },
+      { "word": "زَرَافَة", "translationUz": "jirafa" },
+      { "word": "مُتَسَاوِيَان", "translationUz": "teng" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "سَأَلَتِ المُعَلِّمَةُ الطُّلَّابَ: أَيُّهُمَا أَطْوَلُ، شَجَرُ المَوزِ أَمِ الزَّرَافَةُ؟",
+        "translationUz": "O'qituvchi o'quvchilardan so'radi: Qaysi biri balandroq, banan daraxtimi yoki jirafami?",
+        "next": "أَجَابَ الطُّلَّابُ بِإِجَابَاتٍ مُخْتَلِفَةٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَجَابَ الطُّلَّابُ بِإِجَابَاتٍ مُخْتَلِفَةٍ.",
+        "translationUz": "O'quvchilar turli javoblar berishdi.",
+        "next": "قَالَ أَحْمَدُ: الزَّرَافَةُ أَطْوَلُ."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "قَالَ أَحْمَدُ: الزَّرَافَةُ أَطْوَلُ.",
+        "translationUz": "Ahmad dedi: Jirafa balandroq.",
+        "next": "وَقَالَ سَلِيمٌ: بَلْ شَجَرُ المَوزِ أَطْوَلُ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "وَقَالَ سَلِيمٌ: بَلْ شَجَرُ المَوزِ أَطْوَلُ.",
+        "translationUz": "Va Salim dedi: Yo'q, banan daraxti balandroq.",
+        "next": "وَقَالَتْ آمِنَةُ: هُمَا مُتَسَاوِيَانِ فِي الطُّولِ."
+      },
+      {
+        "speaker": "آمِنَةُ",
+        "text": "وَقَالَتْ آمِنَةُ: هُمَا مُتَسَاوِيَانِ فِي الطُّولِ.",
+        "translationUz": "Va Omina dedi: Ular balandlikda teng.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيُّهُمَا أَطْوَلُ فِي نَظَرِكَ؟",
+      "لِمَاذَا تَعْتَقِدُ أَنَّ الزَّرَافَةَ أَطْوَلُ؟",
+      "هَلْ رَأَيْتَ زَرَافَةً مِنْ قَبْلُ؟",
+      "كَمْ يَبْلُغُ طُولُ شَجَرِ الْمَوْزِ؟",
+      "مَا هُوَ أَطْوَلُ حَيَوَانٍ فِي الْعَالَمِ؟"
+    ],
+    "context": {
+      "main_topic": "comparison_height",
+      "pattern": "ask_question → describe_responses → first_opinion → second_opinion → third_opinion"
+    }
+  }

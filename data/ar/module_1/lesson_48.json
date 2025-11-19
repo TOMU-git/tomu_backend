@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l48",
+    "language": "ar",
+    "module": 1,
+    "lesson": 48,
+    "title": "رِحْلَةُ سَعِيدٍ إِلَى السُّوقِ",
+    "summary": "Uyiga yaqin bozorga borib, meva va sabzavot sotib olish haqida hikoya.",
+    "vocabulary": [
+      { "word": "رِحْلَة", "translationUz": "sayohat" },
+      { "word": "سُوق", "translationUz": "bozor" },
+      { "word": "قَرِيب", "translationUz": "yaqin" },
+      { "word": "اشْتَرَى", "translationUz": "sotib oldi" },
+      { "word": "فَوَاكِه", "translationUz": "mevalar" },
+      { "word": "خُضْرَوَات", "translationUz": "sabzavotlar" },
+      { "word": "لَذِيذَة", "translationUz": "mazali" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ذَهَبَ سَعِيدٌ إِلَى السُّوقِ الْقَرِيبِ مِنْ بَيْتِهِ،",
+        "translationUz": "Said uyiga yaqin bozorga bordi,",
+        "next": "وَاشْتَرَى فَوَاكِهَ وَ خُضْرَوَاتٍ لَذِيذَةً،"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَاشْتَرَى فَوَاكِهَ وَ خُضْرَوَاتٍ لَذِيذَةً،",
+        "translationUz": "va mazali mevalar va sabzavotlar sotib oldi,",
+        "next": "ثُمَّ رَجَعَ إِلَى بَيْتِهِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ثُمَّ رَجَعَ إِلَى بَيْتِهِ.",
+        "translationUz": "keyin uyiga qaytdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَذْهَبُ إِلَى السُّوقِ؟",
+      "مَاذَا تَشْتَرِي فِي السُّوقِ؟",
+      "هَلِ السُّوقُ قَرِيبٌ مِنْ بَيْتِكَ؟",
+      "مَا هِيَ فَوَاكِهُكَ الْمُفَضَّلَةُ؟",
+      "هَلْ تُحِبُّ الْخُضْرَوَاتِ؟"
+    ],
+    "context": {
+      "main_topic": "shopping_trip",
+      "pattern": "narration → narration → narration"
+    }
+  }

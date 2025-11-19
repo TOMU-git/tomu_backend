@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l91",
+    "language": "ar",
+    "module": 1,
+    "lesson": 91,
+    "title": "اَلنَّحْلَةُ",
+    "summary": "Asalarining hayoti, nektar yig‘ishi va asal tayyorlashi haqida qisqa matn.",
+    "vocabulary": [
+      { "word": "اَلنَّحْلَةُ", "translationUz": "asalari" },
+      { "word": "حَشَرَةٌ", "translationUz": "hasharot" },
+      { "word": "عَجِيبَةٌ", "translationUz": "ajoyib" },
+      { "word": "تَجْمَعُ", "translationUz": "yig‘adi" },
+      { "word": "الرَّحِيقَ", "translationUz": "nektar" },
+      { "word": "أَزْهَارِ", "translationUz": "gul(lar)" },
+      { "word": "تَصْنَعُ", "translationUz": "tayyorlaydi" },
+      { "word": "العَسَلَ", "translationUz": "asal" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "نَصٌّ",
+        "text": "اَلنَّحْلَةُ حَشَرَةٌ عَجِيبَةٌ، تَطِيرُ بِسُرْعَةٍ وَتَجْمَعُ الرَّحِيقَ مِنْ أَزْهَارِ النَّبَاتَاتِ وَالأَشْجَارِ، ثُمَّ تَصْنَعُ مِنْهُ العَسَلَ.",
+        "translationUz": "Asalari — ajoyib hasharot. U tez uchadi va o‘simliklar hamda daraxtlar gullaridan nektar yig‘adi, so‘ng undan asal tayyorlaydi.",
+        "next": "اَلنَّحْلَةُ تَنْفَعُ النَّاسَ وَالنَّبَاتَاتِ كَثِيرًا."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "اَلنَّحْلَةُ تَنْفَعُ النَّاسَ وَالنَّبَاتَاتِ كَثِيرًا.",
+        "translationUz": "Asalari odamlar va o‘simliklarga juda katta foyda keltiradi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا تَجْمَعُ النَّحْلَةُ؟",
+      "مِنْ أَيْنَ تَجْمَعُ الرَّحِيقَ؟",
+      "مَاذَا تَصْنَعُ النَّحْلَةُ؟",
+      "هَلْ النَّحْلَةُ مُفِيدَةٌ؟"
+    ],
+    "context": {
+      "main_topic": "animals_information",
+      "pattern": "description → benefit"
+    }
+  }
+  

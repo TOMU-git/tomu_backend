@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l109",
+    "language": "ar",
+    "module": 1,
+    "lesson": 109,
+    "title": "مَكْتَبُ الْمُعَلِّمِ",
+    "summary": "Sinf xonasidagi o'qituvchi va o'quvchilarning mebellarini taqqoslash.",
+    "vocabulary": [
+      {"word": "مَكْتَبُ", "translationUz": "stol"},
+      {"word": "ذَلِكَ", "translationUz": "bu (uzoq)"},
+      {"word": "كُرْسِيُّهُ", "translationUz": "uning stuli"},
+      {"word": "تِلْكَ", "translationUz": "bu (ayol, uzoq)"},
+      {"word": "الطُّلَّابِ", "translationUz": "talabalar"},
+      {"word": "كَرَاسِيُّهُمْ", "translationUz": "ularning stullari"},
+      {"word": "صَغِيرَةٌ", "translationUz": "kichik"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَا مَكْتَبُ الْمُعَلِّمِ، وَ ذَلِكَ كُرْسِيُّهُ.",
+        "translationUz": "Bu o'qituvchining stoli va bu uning stuli.",
+        "next": "وَ تِلْكَ مَكَاتِبُ الطُّلَّابِ وَ كَرَاسِيُّهُمْ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ تِلْكَ مَكَاتِبُ الطُّلَّابِ وَ كَرَاسِيُّهُمْ.",
+        "translationUz": "Va bu talabalarning stollari va ularning stullari.",
+        "next": "مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ.",
+        "translationUz": "O'qituvchining stoli katta va talabalarning stollari kichik.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا يَصِفُ النَّصُّ؟",
+      "كَيْفَ هُوَ مَكْتَبُ الْمُعَلِّمِ؟",
+      "كَيْفَ هِيَ مَكَاتِبُ الطُّلَّابِ؟",
+      "أَيْنَ يَجْلِسُ الْمُعَلِّمُ؟",
+      "هَلْ فِي فَصْلِكَ مَكْتَبٌ كَبِيرٌ؟"
+    ],
+    "context": {
+      "main_topic": "classroom_furniture",
+      "pattern": "teacher_furniture → students_furniture → size_comparison"
+    }
+  } 

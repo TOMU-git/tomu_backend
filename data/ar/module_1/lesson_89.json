@@ -1,0 +1,55 @@
+{
+    "id": "ar_m1_l89",
+    "language": "ar",
+    "module": 1,
+    "lesson": 89,
+    "title": "اَللَّعِبُ فِي الشَّارِعِ",
+    "summary": "Kichik akani ko'chada futbol o'ynashini ko'rib, unga ogohlantirish va uning javobi.",
+    "vocabulary": [
+      { "word": "لَعِب", "translationUz": "o'ynash" },
+      { "word": "شَارِع", "translationUz": "ko'cha" },
+      { "word": "كُرَة", "translationUz": "to'p" },
+      { "word": "قَدَم", "translationUz": "futbol" },
+      { "word": "خَطِير", "translationUz": "xavfli" },
+      { "word": "وَسَط", "translationUz": "o'rta" },
+      { "word": "طَرِيق", "translationUz": "yo'l" },
+      { "word": "جَانِب", "translationUz": "yon" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَجَدْتُ أَخِي الصَّغِيرَ يَلْعَبُ بِالْكُرَةِ فِي الشَّارِعِ، فَسَأَلْتُهُ: \"مَاذَا تَفْعَلُ؟\"",
+        "translationUz": "Men kichik akamni ko'chada to'p o'ynayotganini topdim va undan so'radim: \"Nima qilyapsan?\"",
+        "next": "فَقَالَ: \"أَنَا أَلْعَبُ كُرَةَ الْقَدَمِ.\""
+      },
+      {
+        "speaker": "اَلْأَخُ",
+        "text": "فَقَالَ: \"أَنَا أَلْعَبُ كُرَةَ الْقَدَمِ.\"",
+        "translationUz": "U dedi: \"Men futbol o'ynayapman.\"",
+        "next": "فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\""
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\"",
+        "translationUz": "Men unga dedim: \"Ko'chada o'ynama, bu xavfli!\"",
+        "next": "فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\""
+      },
+      {
+        "speaker": "اَلْأَخُ",
+        "text": "فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\"",
+        "translationUz": "U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida.\"",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَلْعَبُ فِي الشَّارِعِ؟",
+      "أَيْنَ تَلْعَبُ كُرَةَ الْقَدَمِ؟",
+      "لِمَاذَا الْلَّعِبُ فِي الشَّارِعِ خَطِيرٌ؟",
+      "مَاذَا تَفْعَلُ لِتَجَنُّبِ الْخَطَرِ؟",
+      "هَلْ تُحِبُّ كُرَةَ الْقَدَمِ؟"
+    ],
+    "context": {
+      "main_topic": "street_safety",
+      "pattern": "narration_find → ask_what_doing → answer → warn_danger → explain_safety"
+    }
+  }

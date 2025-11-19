@@ -1,0 +1,52 @@
+{
+    "id": "ar_m1_l76",
+    "language": "ar",
+    "module": 1,
+    "lesson": 76,
+    "title": "اَلْقَلَمَانِ المَكْسُورَانِ",
+    "summary": "Sindigan qalamlar va ularning kimga tegishli ekanligi haqida oilaviy suhbat.",
+    "vocabulary": [
+      { "word": "قَلَم", "translationUz": "qalam" },
+      { "word": "مَكْسُور", "translationUz": "sindigan" },
+      { "word": "لِمَنْ", "translationUz": "kim uchun" },
+      { "word": "قَدِيم", "translationUz": "eski" },
+      { "word": "هَذَانِ", "translationUz": "bu ikkita (erkak)" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأَبُ",
+        "text": "لِمَنْ هَذَانِ الْقَلَمَانِ يَا أُمَّ أَحْمَدَ؟",
+        "translationUz": "Bu ikkita qalam kimga tegishli, ey Ahmadning onasi?",
+        "next": "هَذَانِ الْقَلَمَانِ لِسَلْمَى وَلِأَحْمَدَ، يَا أَبَا أَحْمَدَ."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "هَذَانِ الْقَلَمَانِ لِسَلْمَى وَلِأَحْمَدَ، يَا أَبَا أَحْمَدَ.",
+        "translationUz": "Bu ikkita qalam Salmo va Ahmadga tegishli, ey Ahmadning otasi.",
+        "next": "لِمَاذَا هُمَا مَكْسُورَانِ؟"
+      },
+      {
+        "speaker": "اَلْأَبُ",
+        "text": "لِمَاذَا هُمَا مَكْسُورَانِ؟",
+        "translationUz": "Nega ular sindigan?",
+        "next": "لِأَنَّهُمَا قَدِيمَانِ."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "لِأَنَّهُمَا قَدِيمَانِ.",
+        "translationUz": "Chunki ular eskigan.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ لَكَ قَلَمٌ مَكْسُورٌ؟",
+      "مَاذَا تَفْعَلُ بِالْقَلَمِ الْمَكْسُورِ؟",
+      "لِمَاذَا يَكْسُرُ الْقَلَمُ؟",
+      "كَمْ قَلَمًا عِنْدَكَ؟",
+      "مَا لَوْنُ أَقْلَامِكَ؟"
+    ],
+    "context": {
+      "main_topic": "broken_items",
+      "pattern": "ask_owner → identify_owners → ask_reason → explain_reason"
+    }
+  }

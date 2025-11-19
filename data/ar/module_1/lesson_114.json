@@ -1,0 +1,58 @@
+{
+    "id": "ar_m1_l114",
+    "language": "ar",
+    "module": 1,
+    "lesson": 114,
+    "title": "اَلأَطْفَالُ فِي الْحَدِيْقَةِ",
+    "summary": "Murabbiy va qo'riqchi o'rtasida bog'ga kirib-chiqayotgan bolalar soni haqidagi suhbat.",
+    "vocabulary": [
+      {"word": "اَلأَطْفَالُ", "translationUz": "bolalar"},
+      {"word": "الْحَدِيْقَةِ", "translationUz": "bog'"},
+      {"word": "اَلْمُدَرِّبُ", "translationUz": "murabbiy"},
+      {"word": "طِفْلًا", "translationUz": "bola (erkak)"},
+      {"word": "دَخَلَ", "translationUz": "kirdi"},
+      {"word": "اَلْحَارِسُ", "translationUz": "qo'riqchi"},
+      {"word": "ثَمَانِيَةُ", "translationUz": "sakkiz"},
+      {"word": "طِفْلَةً", "translationUz": "bola (ayol)"},
+      {"word": "خَرَجَتْ", "translationUz": "chiqdi (ayol)"},
+      {"word": "تِسْعُ", "translationUz": "to'qqiz"},
+      {"word": "طِفْلَاتٍ", "translationUz": "bolalar (ayol)"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْمُدَرِّبُ",
+        "text": "كَمْ طِفْلًا دَخَلَ لِهَذِهِ الْحَدِيْقَةِ؟",
+        "translationUz": "Bu bog'ga qancha bola kirdi?",
+        "next": "دَخَلَ الْحَدِيْقَةَ ثَمَانِيَةُ أَطْفَالٍ."
+      },
+      {
+        "speaker": "اَلْحَارِسُ",
+        "text": "دَخَلَ الْحَدِيْقَةَ ثَمَانِيَةُ أَطْفَالٍ.",
+        "translationUz": "Bog'ga sakkiz bola kirdi.",
+        "next": "كَمْ طِفْلَةً خَرَجَتْ مِنَ الْحَدِيْقَةِ؟"
+      },
+      {
+        "speaker": "اَلْمُدَرِّبُ",
+        "text": "كَمْ طِفْلَةً خَرَجَتْ مِنَ الْحَدِيْقَةِ؟",
+        "translationUz": "Bog'dan qancha qiz bola chiqdi?",
+        "next": "تِسْعُ طِفْلَاتٍ."
+      },
+      {
+        "speaker": "اَلْحَارِسُ",
+        "text": "تِسْعُ طِفْلَاتٍ.",
+        "translationUz": "To'qqiz qiz bola.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا يَسْأَلُ الْمُدَرِّبُ؟",
+      "كَمْ طِفْلًا دَخَلَ الْحَدِيقَةَ؟",
+      "كَمْ طِفْلَةً خَرَجَتْ مِنَ الْحَدِيقَةِ؟",
+      "مَنْ يَجِيبُ عَلَى الْأَسْئِلَةِ؟",
+      "هَلْ تَذْهَبُ إِلَى الْحَدِيقَةِ؟"
+    ],
+    "context": {
+      "main_topic": "children_count_garden",
+      "pattern": "question_boys_entered → answer → question_girls_exited → answer"
+    }
+  }

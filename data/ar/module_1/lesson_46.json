@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l46",
+    "language": "ar",
+    "module": 1,
+    "lesson": 46,
+    "title": "اَلْمُعَلِّمَةُ المَاهِرَةُ",
+    "summary": "Universitetda ishlaydigan ko'p qirrali va bilimli o'qituvchi haqida.",
+    "vocabulary": [
+      { "word": "مُعَلِّمَة", "translationUz": "o'qituvchi (ayol)" },
+      { "word": "مُدَرِّسَة", "translationUz": "o'qituvchi (ayol)" },
+      { "word": "جَامِعَة", "translationUz": "universitet" },
+      { "word": "هَنْدَسَة", "translationUz": "muhandislik" },
+      { "word": "فِيزِيَاء", "translationUz": "fizika" },
+      { "word": "لُغَات", "translationUz": "tillar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "مَرْيَمُ مُدَرِّسَةٌ فِي الْجَامِعَةِ.",
+        "translationUz": "Maryam universitetda o'qituvchi.",
+        "next": "هِيَ تُدَرِّسُ الْهَنْدَسَةَ وَالْفِيزِيَاءَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ تُدَرِّسُ الْهَنْدَسَةَ وَالْفِيزِيَاءَ.",
+        "translationUz": "U muhandislik va fizikani o'qitadi.",
+        "next": "وَهِيَ تَعْرِفُ أَيْضًا لُغَاتٍ مُخْتَلِفَةً."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَهِيَ تَعْرِفُ أَيْضًا لُغَاتٍ مُخْتَلِفَةً.",
+        "translationUz": "Va u turli tillarni ham biladi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُرِيدُ أَنْ تَكُونَ مُعَلِّمًا؟",
+      "مَاذَا تُدَرِّسُ مَرْيَمُ؟",
+      "هَلْ تَعْرِفُ لُغَاتٍ مُخْتَلِفَةً؟",
+      "أَيْنَ تَعْمَلُ مَرْيَمُ؟",
+      "مَا هِيَ الْمَوَادُّ الدِّرَاسِيَّةُ الَّتِي تُحِبُّهَا؟"
+    ],
+    "context": {
+      "main_topic": "profession_teaching",
+      "pattern": "narration → narration → narration"
+    }
+  }

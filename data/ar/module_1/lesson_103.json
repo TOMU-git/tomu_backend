@@ -1,0 +1,50 @@
+{
+    "id": "ar_m1_l103",
+    "language": "ar",
+    "module": 1,
+    "lesson": 103,
+    "title": "اَلْكَسُولُ",
+    "summary": "Karimning dangasaligi va uning ta'limga ta'siri haqida.",
+    "vocabulary": [
+      {"word": "اَلْكَسُولُ", "translationUz": "dangasa (erkak)"},
+      {"word": "يَذْهَبُ", "translationUz": "boradi"},
+      {"word": "كُلَّ", "translationUz": "har"},
+      {"word": "يَوْمٍ", "translationUz": "kun"},
+      {"word": "يَقْرَأُ", "translationUz": "o'qiydi"},
+      {"word": "يَدْرُسُ", "translationUz": "o'rganadi"},
+      {"word": "جَيِّدًا", "translationUz": "yaxshi"},
+      {"word": "لِأَنَّهُ", "translationUz": "chunki u"},
+      {"word": "جِدًّا", "translationUz": "juda"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "كَرِيمٌ لاَ يَذْهَبُ إِلَى الْمَدْرَسَةِ كُلَّ يَوْمٍ،",
+        "translationUz": "Karim har kuni maktabga bormaydi,",
+        "next": "وَ لاَ يَقْرَأُ وَ لاَ يَدْرُسُ جَيِّدًا،"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ لاَ يَقْرَأُ وَ لاَ يَدْرُسُ جَيِّدًا،",
+        "translationUz": "va yaxshi o'qimaydi va o'rganmaydi,",
+        "next": "لِأَنَّهُ كَسُولٌ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "لِأَنَّهُ كَسُولٌ جِدًّا.",
+        "translationUz": "chunki u juda dangasa.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ يَذْهَبُ كَرِيمٌ إِلَى الْمَدْرَسَةِ؟",
+      "كَيْفَ يَدْرُسُ كَرِيمٌ؟",
+      "لِمَاذَا لاَ يَدْرُسُ كَرِيمٌ جَيِّدًا؟",
+      "هَلْ أَنْتَ كَسُولٌ؟",
+      "مَاذَا يَفْعَلُ الْكَسُولُ؟"
+    ],
+    "context": {
+      "main_topic": "lazy_student_description",
+      "pattern": "school_attendance → study_habits → reason_for_behavior"
+    }
+  }

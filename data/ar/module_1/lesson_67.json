@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l67",
+    "language": "ar",
+    "module": 1,
+    "lesson": 67,
+    "title": "اَلْإِنْسَانُ الْصَّالِحُ",
+    "summary": "Xolidning otasining masjiddagi ibodatlari va solih inson sifatida tavsifi.",
+    "vocabulary": [
+      { "word": "إِنْسَان", "translationUz": "inson" },
+      { "word": "صَالِح", "translationUz": "solih" },
+      { "word": "مَسْجِد", "translationUz": "masjid" },
+      { "word": "أَذَان", "translationUz": "azon" },
+      { "word": "يُصَلِّي", "translationUz": "namoz o'qiydi" },
+      { "word": "نِصْف", "translationUz": "yarim" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَذْهَبُ أَبُو خَالِدٍ إِلَى الْمَسْجِدِ قَبْلَ الْأَذَانِ، وَ يَجْلِسُ فِيهِ، ثُمَّ يُصَلِّي.",
+        "translationUz": "Xolidning otasi azondan oldin masjidga boradi, u yerda o'tiradi, keyin namoz o'qiydi.",
+        "next": "وَ يَرْجِعُ إِلَى بَيْتِهِ بَعْدَ نِصْفِ سَاعَةٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ يَرْجِعُ إِلَى بَيْتِهِ بَعْدَ نِصْفِ سَاعَةٍ.",
+        "translationUz": "Va yarim soatdan keyin uyiga qaytadi.",
+        "next": "هُوَ رَجُلٌ صَالِحٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هُوَ رَجُلٌ صَالِحٌ.",
+        "translationUz": "U solih insondir.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَذْهَبُ إِلَى الْمَسْجِدِ؟",
+      "مَتَى تَذْهَبُ إِلَى الْمَسْجِدِ؟",
+      "مَا هِيَ صِفَاتُ الْإِنْسَانِ الصَّالِحِ؟",
+      "هَلْ أَبُوكَ يَذْهَبُ إِلَى الْمَسْجِدِ؟",
+      "كَيْفَ تَكُونُ إِنْسَانًا صَالِحًا؟"
+    ],
+    "context": {
+      "main_topic": "religious_practice",
+      "pattern": "narration → narration → narration"
+    }
+  }

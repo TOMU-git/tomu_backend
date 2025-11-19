@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l77",
+    "language": "ar",
+    "module": 1,
+    "lesson": 77,
+    "title": "اَلْفُصُولُ الْأَرْبَعَةُ",
+    "summary": "Yilning to'rt fasli va yozni afzal ko'rish haqida.",
+    "vocabulary": [
+      { "word": "فُصُول", "translationUz": "fasllar" },
+      { "word": "أَرْبَعَة", "translationUz": "to'rt" },
+      { "word": "شِتَاء", "translationUz": "qish" },
+      { "word": "رَبِيع", "translationUz": "bahor" },
+      { "word": "صَّيْف", "translationUz": "yoz" },
+      { "word": "خَرِيف", "translationUz": "kuz" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي السَّنَةِ يُوجَدُ أَرْبَعَةُ فُصُولٍ:",
+        "translationUz": "Yilda to'rt fasl mavjud:",
+        "next": "الشِّتَاءُ، وَ الرَّبِيعُ، وَ الصَّيْفُ، وَ الْخَرِيفُ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "الشِّتَاءُ، وَ الرَّبِيعُ، وَ الصَّيْفُ، وَ الْخَرِيفُ.",
+        "translationUz": "Qish, bahor, yoz va kuz.",
+        "next": "أَنَا أُحِبُّ الصَّيْفَ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أُحِبُّ الصَّيْfَ جِدًّا.",
+        "translationUz": "Men yozni juda yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَا هِيَ الْفُصُولُ الْأَرْبَعَةُ؟",
+      "أَيُّ الْفُصُولِ تُحِبُّ؟",
+      "لِمَاذَا تُحِبُّ الصَّيْفَ؟",
+      "مَاذَا تَفْعَلُ فِي كُلِّ فَصْلٍ؟",
+      "أَيُّ فَصْلٍ نَحْنُ فِيهِ الْآنَ؟"
+    ],
+    "context": {
+      "main_topic": "four_seasons",
+      "pattern": "narration → narration → narration"
+    }
+  }

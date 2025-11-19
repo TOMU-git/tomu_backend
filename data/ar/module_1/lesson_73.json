@@ -1,0 +1,58 @@
+{
+    "id": "ar_m1_l73",
+    "language": "ar",
+    "module": 1,
+    "lesson": 73,
+    "title": "أَعْضَاءُ الْإِنْسَانِ",
+    "summary": "Inson tanasining a'zolari va Allohning mukammal yaratilishi haqida.",
+    "vocabulary": [
+      { "word": "أَعْضَاء", "translationUz": "a'zolar" },
+      { "word": "رِجْل", "translationUz": "oyoq" },
+      { "word": "يَد", "translationUz": "qo'l" },
+      { "word": "عَيْن", "translationUz": "ko'z" },
+      { "word": "أُذُن", "translationUz": "quloq" },
+      { "word": "حَاجِب", "translationUz": "qosh" },
+      { "word": "خَد", "translationUz": "yonoq" },
+      { "word": "سَاق", "translationUz": "boldir" },
+      { "word": "كَتِف", "translationUz": "yelka" },
+      { "word": "رُكْبَة", "translationUz": "tizza" },
+      { "word": "تَقْوِيم", "translationUz": "qiyofa" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يُوجَدُ فِي الإِنْسَانِ رِجْلَانِ، وَيَدَانِ، وَعَيْنَانِ، وَأُذُنَانِ، وَحَاجِبَانِ، وَخَدَّانِ، وَسَاقَانِ، وَكَتِفَانِ، وَرُكْبَتَانِ.",
+        "translationUz": "Insonda ikkita oyoq, ikkita qo'l, ikkita ko'z, ikkita quloq, ikkita qosh, ikkita yonoq, ikkita boldir, ikkita yelka va ikkita tizza mavjud.",
+        "next": "خَلَقَ اللهُ الإِنْسَانَ فِي أَحْسَنِ تَقْوِيمٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "خَلَقَ اللهُ الإِنْسَانَ فِي أَحْسَنِ تَقْوِيمٍ.",
+        "translationUz": "Alloh insonni eng go'zal qiyofada yaratdi.",
+        "next": "هَذَا مِنْ رَحْمَةِ رَبِّنَا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَا مِنْ رَحْمَةِ رَبِّنَا.",
+        "translationUz": "Bu Robbimizning rahmatidandir.",
+        "next": "شُكْرًا لَكَ، يَا رَبَّنَا!"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "شُكْرًا لَكَ، يَا رَبَّنَا!",
+        "translationUz": "Sizga minnatdormiz, ey Robbimiz!",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَا هِيَ أَعْضَاءُ جَسَدِكَ؟",
+      "كَمْ عَيْنًا لَدَيْكَ؟",
+      "لِمَاذَا خَلَقَ اللهُ الْإِنْسَانَ فِي أَحْسَنِ تَقْوِيمٍ؟",
+      "مَا هُوَ الْعُضُوُ الَّذِي تُحِبُّهُ أَكْثَرَ؟",
+      "كَيْفَ تَشْكُرُ اللهَ عَلَى نِعْمَةِ الْجَسَدِ؟"
+    ],
+    "context": {
+      "main_topic": "human_body_parts",
+      "pattern": "narration → narration → narration → narration"
+    }
+  }

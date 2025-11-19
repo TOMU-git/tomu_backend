@@ -1,0 +1,58 @@
+{
+    "id": "ar_m1_l86",
+    "language": "ar",
+    "module": 1,
+    "lesson": 86,
+    "title": "رِحْلَةٌ إِلَى الْغَابَةِ ١",
+    "summary": "Ahmadning oilasini o'rmonga sayohatga tayyorlash va har bir a'zoga vazifa topshirish.",
+    "vocabulary": [
+      { "word": "رِحْلَة", "translationUz": "sayohat" },
+      { "word": "غَابَة", "translationUz": "o'rmon" },
+      { "word": "أُسْرَة", "translationUz": "oila" },
+      { "word": "أُرْز", "translationUz": "guruch" },
+      { "word": "بَطَاطِس", "translationUz": "kartoshka" },
+      { "word": "بَصَل", "translationUz": "piyoz" },
+      { "word": "لَحْم", "translationUz": "go'sht" },
+      { "word": "بَطِّيخ", "translationUz": "tarvuz" },
+      { "word": "كُمَّثْرَى", "translationUz": "nok" },
+      { "word": "لَيْمُون", "translationUz": "limon" },
+      { "word": "حِذَاء", "translationUz": "poyabzal" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَرَادَ أَحْمَدُ الذَّهَابَ إِلَى الْغَابَةِ مَعَ أُسْرَتِهِ، فَقَالَ لِزَوْجَتِهِ:",
+        "translationUz": "Ahmad oilasi bilan o'rmonga borishni xohladi va xotiniga dedi:",
+        "next": "خُذِي أُرْزًا، وَ بَطَاطِسَ، وَ بَصَلًا، وَ لَحْمًا."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "خُذِي أُرْزًا، وَ بَطَاطِسَ، وَ بَصَلًا، وَ لَحْمًا.",
+        "translationUz": "Guruch, kartoshka, piyoz va go'sht oling.",
+        "next": "ثُمَّ قَالَ لِابْنِهِ: خُذْ بَطِّيخًا، وَ كُمَّثْرَى، وَ لَيْمُونًا."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "ثُمَّ قَالَ لِابْنِهِ: خُذْ بَطِّيخًا، وَ كُمَّثْرَى، وَ لَيْمُونًا.",
+        "translationUz": "Keyin o'g'liga dedi: Tarvuz, nok va limon ol.",
+        "next": "وَ قَالَ لِابْنَتِهِ: إِلْبَسِي حِذَاءَكِ، لِنَذْهَبْ إِلَى الْغَابَةِ."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "وَ قَالَ لِابْنَتِهِ: إِلْبَسِي حِذَاءَكِ، لِنَذْhَبْ إِلَى الْغَابَةِ.",
+        "translationUz": "Va qiziga dedi: Poyabzalni kiy, o'rmonga boraylik.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُسَافِرُ مَعَ أُسْرَتِكَ؟",
+      "مَاذَا تَأْخُذُ مَعَكَ فِي الرِّحْلَةِ؟",
+      "أَيْنَ تُحِبُّ الذَّهَابَ مَعَ أُسْرَتِكَ؟",
+      "مَنْ يَأْخُذُ الطَّعَامَ فِي رِحْلَتِكُمْ؟",
+      "هَلْ تَتَحَدَّثُ مَعَ أُسْرَتِكَ قَبْلَ السَّفَرِ؟"
+    ],
+    "context": {
+      "main_topic": "trip_preparation",
+      "pattern": "narration → command_to_wife → command_to_son → command_to_daughter"
+    }
+  }

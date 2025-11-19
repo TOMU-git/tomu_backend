@@ -1,0 +1,54 @@
+{
+    "id": "ar_m1_l81",
+    "language": "ar",
+    "module": 1,
+    "lesson": 81,
+    "title": "اَلْمُتْحَفُ",
+    "summary": "Sayyoh va qo'llanma o'rtasida muzeydagi asarlar haqida suhbat.",
+    "vocabulary": [
+      { "word": "مُتْحَف", "translationUz": "muzey" },
+      { "word": "سَائِح", "translationUz": "sayyoh" },
+      { "word": "صُورَة", "translationUz": "rasm" },
+      { "word": "مُرْشِد", "translationUz": "qo'llanma" },
+      { "word": "سَيْف", "translationUz": "qilich" },
+      { "word": "آثَار", "translationUz": "asarlar" },
+      { "word": "مُشَاهَدَة", "translationUz": "ko'rish" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلسَّائِحُ",
+        "text": "هَذَا الْمُتْحَفُ كَبِيرٌ وَ جَمِيلٌ. مِنْ أَيْنَ هَاتَانِ الصُّورَتَانِ؟",
+        "translationUz": "Bu muzey katta va chiroyli. Bu ikkita rasm qayerdan?",
+        "next": "هَاتَانِ الصُّورَتَانِ مِنْ فَرَنْسَا، وَ هَذَانِ اَلسَّيْفَانِ مِنْ إِيرَانَ."
+      },
+      {
+        "speaker": "اَلْمُرْشِدُ",
+        "text": "هَاتَانِ الصُّورَتَانِ مِنْ فَرَنْسَا، وَ هَذَانِ اَلسَّيْفَانِ مِنْ إِيرَانَ.",
+        "translationUz": "Bu ikkita rasm Fransiyadan va bu ikkita qilich Erondan.",
+        "next": "هَلْ تُرِيدُ مُشَاهَدَةَ آثَارٍ أُخْرَى؟"
+      },
+      {
+        "speaker": "اَلْمُرْشِدُ",
+        "text": "هَلْ تُرِيدُ مُشَاهَدَةَ آثَارٍ أُخْرَى؟",
+        "translationUz": "Boshqa asarlarni ko'rishni xohlaysizmi?",
+        "next": "نَعَم، بِكُلِّ سُرُورٍ."
+      },
+      {
+        "speaker": "اَلسَّائِحُ",
+        "text": "نَعَم، بِكُلِّ سُرُورٍ.",
+        "translationUz": "Ha, butun quvonch bilan.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ زُرْتَ مُتْحَفًا مِنْ قَبْلُ؟",
+      "مَاذَا تَرَى فِي الْمُتْحَفِ؟",
+      "مِنْ أَيْنَ تَأْتِي آثَارُ الْمُتْحَفِ؟",
+      "هَلْ تُحِبُّ زِيَارَةَ الْمُتَاحِفِ؟",
+      "مَا هُوَ أَجْمَلُ شَيْءٍ رَأَيْتَهُ فِي مُتْحَفٍ؟"
+    ],
+    "context": {
+      "main_topic": "museum_visit",
+      "pattern": "compliment_ask_origin → answer_origin_offer_more → accept"
+    }
+  }

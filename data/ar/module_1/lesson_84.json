@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l84",
+    "language": "ar",
+    "module": 1,
+    "lesson": 84,
+    "title": "مَائِدَةُ الضُّيُوفِ",
+    "summary": "Mehmonlar uchun dasturxonda turli ovqat va ichimliklar haqida tavsif.",
+    "vocabulary": [
+      { "word": "مَائِدَة", "translationUz": "dasturxon" },
+      { "word": "ضُيُوف", "translationUz": "mehmonlar" },
+      { "word": "أَكْوَاب", "translationUz": "stakanlar" },
+      { "word": "عَصِير", "translationUz": "sharbat" },
+      { "word": "زُجَاجَات", "translationUz": "shishalar" },
+      { "word": "عَسَل", "translationUz": "asal" },
+      { "word": "خُوخ", "translationUz": "shaftoli" },
+      { "word": "لَذِيذ", "translationUz": "mazali" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذِهِ الْمَائِdَةُ لِلضُّيُوفِ، وَ عَلَيْهَا أَرْبَعَةُ أَكْوَابٍ مِنَ الْعَصِيرِ، وَ سِتُّ زُجَاجَاتٍ مِنَ الْعَسَلِ، وَ هُنَاكَ الْمَوْزُ، وَ الْخُوخُ.",
+        "translationUz": "Bu dasturxon mehmonlar uchun va uning ustida to'rtta stakan sharbat, oltita shisha asal, va u yerda banan va shaftoli bor.",
+        "next": "اَلْأَطْعِمَةُ الَّتِي عَلَى الْمَائِدَةِ لَذِيذَةٌ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "اَلْأَطْعِمَةُ الَّتِي عَلَى الْمَائِدَةِ لَذِيذَةٌ جِدًّا.",
+        "translationUz": "Dasturxondagi ovqatlar juda mazali.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ اسْتِقْبَالَ الضُّيُوفِ؟",
+      "مَاذَا تَضَعُ عَلَى مَائِدَةِ الضُّيُوفِ؟",
+      "مَا هُوَ طَعَامُكَ الْمُفَضَّلُ لِلضُّيُوفِ؟",
+      "كَمْ ضَيْفًا تَسْتَقْبِلُ؟",
+      "هَلْ تَأْكُلُ مَعَ ضُيُوفِكَ؟"
+    ],
+    "context": {
+      "main_topic": "guest_table",
+      "pattern": "narration → narration"
+    }
+  }

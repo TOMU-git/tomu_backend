@@ -1,0 +1,65 @@
+{
+    "id": "ar_m1_l51",
+    "language": "ar",
+    "module": 1,
+    "lesson": 51,
+    "title": "مَسْكَنُ الطُّلَّابِ",
+    "summary": "Talabalarning turar joyi va universitetdan keyingi faoliyati haqida suhbat.",
+    "vocabulary": [
+      { "word": "مَسْكَن", "translationUz": "turar joy" },
+      { "word": "طُّلَّاب", "translationUz": "talabalar" },
+      { "word": "جَامِعَة", "translationUz": "universitet" },
+      { "word": "غُرْفَة", "translationUz": "xona" },
+      { "word": "شَقَّة", "translationUz": "kvartira" },
+      { "word": "بَيْت الطُّلَّاب", "translationUz": "talabalar uyi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "هَلْ ذَهَبْتَ إِلَى الْجَامِعَةِ الْيَوْمَ، يَا أَحْمَدُ؟",
+        "translationUz": "Bugun universitetga bordingmi, Ahmad?",
+        "next": "نَعَمْ، ذَهَبْتُ إِلَى الْجَامِعَةِ الْيَوْمَ."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "نَعَمْ، ذَهَبْتُ إِلَى الْجَامِعَةِ الْيَوْمَ.",
+        "translationUz": "Ha, bugun universitetga bordim.",
+        "next": "مَاذَا تَفْعَلُ بَعْدَ الْجَامِعَةِ؟"
+      },
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "مَاذَا تَفْعَلُ بَعْدَ الْجَامِعَةِ؟",
+        "translationUz": "Universitetdan keyin nima qilasan?",
+        "next": "أَرْجِعُ إِلَى غُرْفَتِي."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "أَرْجِعُ إِلَى غُرْفَتِي.",
+        "translationUz": "Xonamga qaytaman.",
+        "next": "هَلْ تَسْكُنُ فِي شَقَّةٍ؟"
+      },
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "هَلْ تَسْكُنُ فِي شَقَّةٍ؟",
+        "translationUz": "Kvartirada yashaysanmi?",
+        "next": "لَا، أَسْكُنُ فِي بَيْتِ الطُّلَّابِ."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "لَا، أَسْكُنُ فِي بَيْتِ الطُّلَّابِ.",
+        "translationUz": "Yo'q, men talabalar uyida yashayman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَسْكُنُ فِي بَيْتِ الطُّلَّابِ؟",
+      "أَيْنَ تَسْكُنُ بَعْدَ الْجَامِعَةِ؟",
+      "مَاذَا تَفْعَلُ فِي غُرْفَتِكَ؟",
+      "هَلْ تُفَضِّلُ بَيْتَ الطُّلَّابِ أَمِ الشَّقَّةَ؟",
+      "كَيْفَ هِيَ غُرْفَتُكَ؟"
+    ],
+    "context": {
+      "main_topic": "student_housing",
+      "pattern": "ask_university → confirm → ask_after_university → answer → ask_housing → answer"
+    }
+  }

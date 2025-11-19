@@ -1,0 +1,41 @@
+{
+    "id": "ar_m1_l47",
+    "language": "ar",
+    "module": 1,
+    "lesson": 47,
+    "title": "اَلْإِسْتِرَاحَةُ",
+    "summary": "Bog'da dam olish uchun erkak va ayolga murojaat qilish.",
+    "vocabulary": [
+      { "word": "إِسْتِرَاحَة", "translationUz": "dam olish" },
+      { "word": "اِذْهَبْ", "translationUz": "bor (erkak)" },
+      { "word": "اِذْهَبِي", "translationUz": "bor (ayol)" },
+      { "word": "اسْتَرِحْ", "translationUz": "dam ol (erkak)" },
+      { "word": "اسْتَرِيحِي", "translationUz": "dam ol (ayol)" },
+      { "word": "حَدِيقَة", "translationUz": "bog'" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "مُتَحَدِّثٌ",
+        "text": "اِذْهَبْ إِلَى الْحَدِيقَةِ يَا مُحَمَّدُ، وَ اسْتَرِحْ هُنَاكَ.",
+        "translationUz": "Bog'ga bor, Muhammad, va u yerda dam ol.",
+        "next": "وَ أَنْتِ أَيْضًا يَا سَلْمَى، اِذْهَبِي إِلَى الْحَدِيقَةِ وَ اسْتَرِيحِي هُنَاكَ."
+      },
+      {
+        "speaker": "مُتَحَدِّثٌ",
+        "text": "وَ أَنْتِ أَيْضًا يَا سَلْمَى، اِذْهَبِي إِلَى الْحَدِيقَةِ وَ اسْتَرِيحِي هُنَاكَ.",
+        "translationUz": "Va sen ham, Salmo, bog'ga bor va u yerda dam ol.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْإِسْتِرَاحَةَ فِي الْحَدِيقَةِ؟",
+      "أَيْنَ تَسْتَرِيحُ عَادَةً؟",
+      "مَاذَا تَفْعَلُ فِي الْحَدِيقَةِ؟",
+      "لِمَاذَا يَجِبُ الْإِسْتِرَاحَةُ؟",
+      "هَلْ تَذْهَبُ إِلَى الْحَدِيقَةِ مَعَ أَصْدِقَائِكَ؟"
+    ],
+    "context": {
+      "main_topic": "rest_commands",
+      "pattern": "command_male → command_female"
+    }
+  }
