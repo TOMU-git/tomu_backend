@@ -1,0 +1,41 @@
+{
+  "id": "ar_m1_l21",
+  "language": "ar",
+  "module": 1,
+  "lesson": 21,
+  "title": "بَقَرَتِي",
+  "summary": "Qishloq hayoti va sigir haqida oddiy hikoya.",
+  "vocabulary": [
+    { "word": "قَرْيَةٌ", "translationUz": "qishloq" },
+    { "word": "بَقَرَةٌ", "translationUz": "sigir" },
+    { "word": "مَزْرَعَةٌ", "translationUz": "ferma" },
+    { "word": "عُشْبٌ", "translationUz": "o't" },
+    { "word": "حَلَبْنَا", "translationUz": "sog'dik" },
+    { "word": "لَبَنٌ", "translationUz": "sut" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هَوَاءُ قَرْيَتِنَا نَقِيٌّ. بَيْتُنَا فِي تِلْكَ الْقَرْيَةِ.",
+      "translationUz": "Qishlog'imizning havosi pokiza. Uyimiz shu qishloqda.",
+      "next": "لَدَيْنَا بَقَرَةٌ وَاحِدَةٌ، اَلْيَوْمَ ذَهَبَتْ تِلْكَ الْبَقَرَةُ إِلَى الْمَزْرَعَةِ لِتَأْكُلَ العُشْبَ، ثُمَّ رَجَعَتْ إِلَى الْبَيْتِ، فَحَلَبْنَا مِنْهَا اللَّبَنَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَدَيْنَا بَقَرَةٌ وَاحِدَةٌ، اَلْيَوْمَ ذَهَبَتْ تِلْكَ الْبَقَرَةُ إِلَى الْمَزْرَعَةِ لِتَأْكُلَ العُشْبَ، ثُمَّ رَجَعَتْ إِلَى الْبَيْتِ، فَحَلَبْنَا مِنْهَا اللَّبَنَ.",
+      "translationUz": "Bizda bitta sigir bor. Bugun u sigir o't yeyish uchun fermaga bordi, keyin uyga qaytdi va biz undan sut sog'dik.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تَعِيشُ فِي قَرْيَةٍ أَمْ مَدِينَةٍ؟",
+    "مَاذَا تَأْكُلُ الْبَقَرَةُ؟",
+    "هَلْ لَدَيْكَ حَيَوَانَاتٌ فِي بَيْتِكَ؟",
+    "كَيْفَ يَكُونُ حَلِيبُ الْبَقَرَةِ؟",
+    "لِمَاذَا ذَهَبَتِ الْبَقَرَةُ إِلَى الْمَزْرَعَةِ؟"
+  ],
+  "context": {
+    "main_topic": "village_life_animals",
+    "pattern": "narration → narration"
+  }
+}

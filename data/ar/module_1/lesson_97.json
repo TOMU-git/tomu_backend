@@ -1,0 +1,63 @@
+{
+  "id": "ar_m1_l97",
+  "language": "ar",
+  "module": 1,
+  "lesson": 97,
+  "title": "أَرُزٌّ بِاللَّحْمِ",
+  "summary": "Ona va qiz o'rtasida ovqat tayyorlash haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "تَفْعَلِينَ", "translationUz": "qilyapsan (ayol)"},
+    {"word": "بِنْتِي", "translationUz": "qizim"},
+    {"word": "أَدْرُسُ", "translationUz": "o'qiyman"},
+    {"word": "اُطْبُخِي", "translationUz": "pishir (ayol)"},
+    {"word": "أَرُزًّا", "translationUz": "guruch"},
+    {"word": "بُخَارِيّا", "translationUz": "bug'doy"},
+    {"word": "أَعْرِفُ", "translationUz": "bilaman"},
+    {"word": "لَكِنْ", "translationUz": "lekin"},
+    {"word": "بِاللَّحْمِ", "translationUz": "gosht bilan"},
+    {"word": "جَيِّدٌ", "translationUz": "yaxshi"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "مَاذَا تَفْعَلِينَ يَا بِنْتِي؟",
+      "translationUz": "Nima qilyapsan, qizim?",
+      "next": "أَدْرُسُ يَا أُمِّي."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "أَدْرُسُ يَا أُمِّي.",
+      "translationUz": "O'qiyman, ona.",
+      "next": "اُطْبُخِي أَرُزًّا بُخَارِيّا."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "اُطْبُخِي أَرُزًّا بُخَارِيّا.",
+      "translationUz": "Bug'doy guruch pishir.",
+      "next": "لاَ أَعْرِفُهُ يَا أُمِّي، وَ لَكِنْ أَطْبُخُ أَرُزّا بِاللَّحْمِ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "لاَ أَعْرِفُهُ يَا أُمِّي، وَ لَكِنْ أَطْبُخُ أَرُزّا بِاللَّحْمِ.",
+      "translationUz": "Bilmayman, ona, lekin men goshtli guruch pishiraman.",
+      "next": "جَيِّدٌ يَا بِنْتِي."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "جَيِّدٌ يَا بِنْتِي.",
+      "translationUz": "Yaxshi, qizim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تُحِبُّ الطَّبْخَ؟",
+    "مَاذَا تَطْبُخُ عَادَةً؟",
+    "هَلْ تَتَحَدَّثُ مَعَ أُمِّكَ كَثِيرًا؟",
+    "مَاذَا تَدْرُسُ لَيْلَى؟",
+    "هَلْ تَأْكُلُ أَرُزًّا بِاللَّحْمِ؟"
+  ],
+  "context": {
+    "main_topic": "cooking_conversation",
+    "pattern": "question_about_activity → response → cooking_request → alternative_offer → approval"
+  }
+}

@@ -1,0 +1,52 @@
+{
+    "id": "ar_m1_l113",
+    "language": "ar",
+    "module": 1,
+    "lesson": 113,
+    "title": "فِي الْحَافِلَةِ",
+    "summary": "Avtobusda sayohat qilish va yo'lovchilar bilan munosabat haqida.",
+    "vocabulary": [
+      {"word": "رَكِبْتُ", "translationUz": "men minidim"},
+      {"word": "الْحَافِلَةَ", "translationUz": "avtobus"},
+      {"word": "مَعِي", "translationUz": "men bilan"},
+      {"word": "ثَلَاثَةُ", "translationUz": "uch"},
+      {"word": "رِجَالٍ", "translationUz": "erkaklar"},
+      {"word": "خَمْسُ", "translationUz": "besh"},
+      {"word": "نِسَاءٍ", "translationUz": "ayollar"},
+      {"word": "سَلَّمْتُ", "translationUz": "men salom berdium"},
+      {"word": "عَلَيْهِمْ", "translationUz": "ularga"},
+      {"word": "وَجَلَسْتُ", "translationUz": "va o'tirdim"},
+      {"word": "الْمَقْعَدِ", "translationUz": "o'rindiq"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "رَكِبْتُ الْحَافِلَةَ.",
+        "translationUz": "Men avtobusga mindim.",
+        "next": "رَكِبَ مَعِي ثَلَاثَةُ رِجَالٍ وَخَمْسُ نِسَاءٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "رَكِبَ مَعِي ثَلَاثَةُ رِجَالٍ وَخَمْسُ نِسَاءٍ.",
+        "translationUz": "Men bilan uch erkak va besh ayol mindi.",
+        "next": "وَأَنَا سَلَّمْتُ عَلَيْهِمْ وَجَلَسْتُ عَلَى الْمَقْعَدِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَأَنَا سَلَّمْتُ عَلَيْهِمْ وَجَلَسْتُ عَلَى الْمَقْعَدِ.",
+        "translationUz": "Va men ularga salom berib, o'rindiqqa o'tirdim.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيْنَ رَكِبَ الرَّجُلُ؟",
+      "كَمْ رَجُلًا رَكِبَ مَعَهُ؟",
+      "كَمْ امْرَأَةً رَكِبَتْ مَعَهُ؟",
+      "مَاذَا فَعَلَ بَعْدَ الرُّكُوبِ؟",
+      "هَلْ تُسَلِّمُ عَلَى النَّاسِ فِي الْحَافِلَةِ؟"
+    ],
+    "context": {
+      "main_topic": "bus_ride_experience",
+      "pattern": "boarding → fellow_passengers → greeting_and_sitting"
+    }
+  }

@@ -1,0 +1,62 @@
+{
+    "id": "ar_m1_l72",
+    "language": "ar",
+    "module": 1,
+    "lesson": 72,
+    "title": "أَشْيَاءُ ضَارَّةٌ",
+    "summary": "Kompyuter va mobil telefonlarning ko'z va aqlga zarari haqida suhbat.",
+    "vocabulary": [
+      { "word": "أَشْيَاء", "translationUz": "narsalar" },
+      { "word": "ضَار", "translationUz": "zararli" },
+      { "word": "حَاسُوب", "translationUz": "kompyuter" },
+      { "word": "هَاتِف", "translationUz": "telefon" },
+      { "word": "مَحْمُول", "translationUz": "mobil" },
+      { "word": "سَوَاء", "translationUz": "teng" },
+      { "word": "نُور", "translationUz": "yorug'lik" },
+      { "word": "عَيْن", "translationUz": "ko'z" },
+      { "word": "عَقْل", "translationUz": "aql" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأُسْتَاذُ",
+        "text": "هَلِ الحَاسُوبُ ضَارٌّ أَمْ هَاتِفُ المَحْمُولِ، يَا طُلَّابُ؟",
+        "translationUz": "Kompyuter zararlimi yoki mobil telefon, ey talabalar?",
+        "next": "قَالَ الطُّلَّابُ: الإِثْنَانِ سَوَاءٌ، يَا أُسْتَاذُ ."
+      },
+      {
+        "speaker": "اَلطُّلَّابُ",
+        "text": "قَالَ الطُّلَّابُ: الإِثْنَانِ سَوَاءٌ، يَا أُسْتَاذُ .",
+        "translationUz": "Talabalar dedi: Ikkalasi teng, ustoz.",
+        "next": "اَلْأُسْتَاذُ: لِمَاذَا يَا طُلَّابُ؟"
+      },
+      {
+        "speaker": "اَلْأُسْتَاذُ",
+        "text": "اَلْأُسْتَاذُ: لِمَاذَا يَا طُلَّابُ؟",
+        "translationUz": "Ustoz: Nega, ey talabalar?",
+        "next": "اَلطُّلَّابُ: لِأَنَّ نُورَهُمَا ضَارٌّ بِالعَيْنِ وَ بِالعَقْلِ."
+      },
+      {
+        "speaker": "اَلطُّلَّابُ",
+        "text": "اَلطُّلَّابُ: لِأَنَّ نُورَهُمَا ضَارٌّ بِالعَيْنِ وَ بِالعَقْلِ.",
+        "translationUz": "Talabalar: Chunki ularning yorug'ligi ko'z va aql uchun zararlidir.",
+        "next": "اَلْأُسْتَاذُ: صَحِيحٌ يَا طُلَّابُ!"
+      },
+      {
+        "speaker": "اَلْأُسْتَاذُ",
+        "text": "اَلْأُسْتَاذُ: صَحِيحٌ يَا طُلَّابُ!",
+        "translationUz": "Ustoz: To'g'ri, ey talabalar!",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلِ الْحَاسُوبُ ضَارٌّ؟",
+      "كَمْ سَاعَةً تَسْتَعْمِلُ الْحَاسُوبَ؟",
+      "مَاذَا تَفْعَلُ لِحِمَايَةِ عَيْنَيْكَ؟",
+      "هَلِ الْهَاتِفُ ضَارٌّ بِالصِّحَّةِ؟",
+      "كَيْفَ تَتَجَنَّبُ ضَرَرَ الْحَاسُوبِ؟"
+    ],
+    "context": {
+      "main_topic": "technology_harm",
+      "pattern": "ask_question → group_answer → ask_reason → explain_reason → confirm"
+    }
+  }

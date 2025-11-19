@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l104",
+    "language": "ar",
+    "module": 1,
+    "lesson": 104,
+    "title": "سَلْمَى كَسْلَانَةٌ",
+    "summary": "Salmaning dangasaligi va uning o'qishga ta'siri haqida.",
+    "vocabulary": [
+      {"word": "كَسْلَانَةٌ", "translationUz": "dangasa (ayol)"},
+      {"word": "تَذْهَبُ", "translationUz": "boradi (ayol)"},
+      {"word": "تَقْرَأُ", "translationUz": "o'qiydi (ayol)"},
+      {"word": "تَدْرُسُ", "translationUz": "o'rganadi (ayol)"},
+      {"word": "كَسُولًةٌ", "translationUz": "dangasa (ayol)"},
+      {"word": "هِيَ", "translationUz": "u (ayol)"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "سَلْمَى لاَ تَذْهَبُ إِلَى الْمَدْرَسَةِ.",
+        "translationUz": "Salmo maktabga bormaydi.",
+        "next": "هِيَ لاَ تَقْرَأُ وَ لاَ تَدْرُسُ جَيِّدًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ لاَ تَقْرَأُ وَ لاَ تَدْرُسُ جَيِّدًا.",
+        "translationUz": "U yaxshi o'qimaydi va o'rganmaydi.",
+        "next": "هِيَ كَسُولًةٌ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ كَسُولًةٌ جِدًّا.",
+        "translationUz": "U juda dangasa.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَذْهَبُ سَلْمَى إِلَى الْمَدْرَسَةِ؟",
+      "كَيْفَ تَدْرُسُ سَلْمَى؟",
+      "لِمَاذَا لاَ تَدْرُسُ سَلْمَى جَيِّدًا؟",
+      "هَلْ أَنْتِ كَسْلَانَةٌ؟",
+      "مَاذَا تَفْعَلُ الْكَسْلَانَةُ؟"
+    ],
+    "context": {
+      "main_topic": "lazy_female_student",
+      "pattern": "school_absence → poor_study_habits → reason_laziness"
+    }
+  }

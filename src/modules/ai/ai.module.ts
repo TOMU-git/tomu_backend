@@ -52,6 +52,7 @@ import { ValidationStep } from './services/pipeline/validation-step.service';
 import { ContextStep } from './services/pipeline/context-step.service';
 import { ResponseStep } from './services/pipeline/response-step.service';
 import { ConversationTopicExtractorService } from './services/pipeline/extractors/conversation-topic-extractor.service';
+import { ConversationEntityExtractorService } from './services/pipeline/extractors/conversation-entity-extractor.service';
 import { DialogueCorrectionService } from './services/pipeline/correctors/dialogue-correction.service';
 import { SimilarityCalculatorService } from './services/pipeline/correctors/similarity-calculator.service';
 import { NameValidationService } from './services/pipeline/validators/name-validation.service';
@@ -61,6 +62,11 @@ import { ContextFilterService } from './services/pipeline/filters/context-filter
 import { MaterialMatchingService } from './services/pipeline/matchers/material-matching.service';
 import { ResponseValidationService } from './services/pipeline/validators/response-validation.service';
 import { FallbackResponseService } from './services/pipeline/builders/fallback-response.service';
+import { MaterialFollowUpService } from './services/pipeline/builders/material-followup.service';
+import { AIFollowUpService } from './services/pipeline/builders/ai-followup.service';
+import { HybridFollowUpService } from './services/pipeline/builders/hybrid-followup.service';
+import { ResponseCacheService } from './services/response-cache.service';
+import { GoogleTTSProvider } from './services/tts-providers/google-tts.provider';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -129,6 +135,10 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     // Cost tracking servislar
     CostCalculationService,
     LimitCheckService,
+    // Response caching
+    ResponseCacheService,
+    // TTS providers
+    GoogleTTSProvider,
     // Retry logic
     RetryHelperService,
     // Token management
@@ -139,6 +149,7 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     GPTPromptBuilderService,
     // Pipeline services
     ConversationTopicExtractorService,
+    ConversationEntityExtractorService,
     SimilarityCalculatorService,
     DialogueCorrectionService,
     NameValidationService,
@@ -148,6 +159,9 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     MaterialMatchingService,
     ResponseValidationService,
     FallbackResponseService,
+    MaterialFollowUpService,
+    AIFollowUpService,
+    HybridFollowUpService,
     STTStep,
     ValidationStep,
     ContextStep,

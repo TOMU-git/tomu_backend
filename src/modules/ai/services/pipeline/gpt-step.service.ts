@@ -1,16 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { GPTService, GPTResponse } from "../gpt.service";
+import { TTSService } from "../tts.service";
 import { PipelineStep, VoiceInput } from "./pipeline.types";
 import { ArabicTextUtils } from "../../utils/arabic-text.util";
-import { normalizeText, createWordSet } from "../../utils/text-normalization.util";
+import { normalizeText, createWordSet, isYesNoResponse } from "../../utils/text-normalization.util";
 import { SIMILARITY_THRESHOLDS } from "../../constants/gpt-step.constants";
+import { findPrecomputedResponse } from "../../constants/precomputed-responses";
 import { ConversationTopicExtractorService } from "./extractors/conversation-topic-extractor.service";
+import { ConversationEntityExtractorService } from "./extractors/conversation-entity-extractor.service";
 import { DialogueCorrectionService } from "./correctors/dialogue-correction.service";
 import { ContextFilterService } from "./filters/context-filter.service";
 import { MaterialMatchingService } from "./matchers/material-matching.service";
 import { ResponseValidationService } from "./validators/response-validation.service";
 import { FallbackResponseService } from "./builders/fallback-response.service";
+import { HybridFollowUpService } from "./builders/hybrid-followup.service";
+import { ResponseCacheService } from "../response-cache.service";
+import { addPauseBetweenTexts, stripSSML } from "../../utils/ssml.util";
 
 /**
  * GPT Step: AI javob yaratish
@@ -26,20 +32,28 @@ import { FallbackResponseService } from "./builders/fallback-response.service";
 @Injectable()
 export class GPTStep implements PipelineStep {
     private readonly accessGeneral: boolean; // Erkin rejim flag'i
+    private readonly enableUserEngagement: boolean; // User engagement flag'i
 
     constructor(
         private readonly configService: ConfigService,
         private readonly gpt: GPTService,
+        private readonly tts: TTSService, // SSML qo'llab-quvvatlashni tekshirish uchun
         private readonly topicExtractor: ConversationTopicExtractorService,
+        private readonly entityExtractor: ConversationEntityExtractorService,
         private readonly dialogueCorrection: DialogueCorrectionService,
         private readonly contextFilter: ContextFilterService,
         private readonly materialMatching: MaterialMatchingService,
         private readonly responseValidation: ResponseValidationService,
         private readonly fallbackResponse: FallbackResponseService,
+        private readonly hybridFollowUp: HybridFollowUpService,
+        private readonly responseCache: ResponseCacheService,
     ) {
         // Environment variable'dan erkin rejim flag'ini o'qish
         // Default: false (materiallarga asoslangan rejim)
         this.accessGeneral = this.configService.get<string>("ACCESS_GENERAL") === "true";
+        // Environment variable'dan engagement flag'ini o'qish
+        // Default: true (engagement yoqilgan)
+        this.enableUserEngagement = this.configService.get<string>("ENABLE_USER_ENGAGEMENT", "true") === "true";
     }
 
     async execute(input: VoiceInput & { validatedText: string; context: any; conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>; lastWatchedLessonOrder?: number; profile?: any }): Promise<VoiceInput> {
@@ -67,6 +81,19 @@ export class GPTStep implements PipelineStep {
         const userText = userTextCorrected;
         const normalizedUser = normalizeText(userText);
         const userWords = createWordSet(userText);
+
+        // ⚡ OPTIMIZATION: Cache tekshiruvi - 5s → 5ms
+        const courseId = input.courseId ? Number(input.courseId) : undefined;
+        const cached = await this.responseCache.get(userText, courseId, lastWatchedLessonOrder);
+        if (cached) {
+            console.log(`⚡ Cache HIT: Response topildi (5s → 5ms, source: ${cached.source})`);
+            return {
+                ...input,
+                aiResponse: cached.aiResponse,
+                aiResponseUz: cached.aiResponseUz,
+                usage: input.usage || {},
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
 
         // Erkin rejim tekshiruvi
         // Agar ACCESS_GENERAL=true bo'lsa, material matching'ni o'tkazib yuboramiz
@@ -123,6 +150,70 @@ export class GPTStep implements PipelineStep {
         }
 
         // Materiallarga asoslangan rejim (default)
+        // ⚡ OPTIMIZATION 1: Precomputed responses - eng ko'p ishlatiladigan phraselar
+        // 5s GPT call → 5ms memory lookup
+        const precomputed = findPrecomputedResponse(userText, lastWatchedLessonOrder);
+        if (precomputed) {
+            console.log(`⚡ Precomputed response topildi (5s → 5ms)`);
+            
+            // Cache'ga saqlash (keyingi safar uchun)
+            await this.responseCache.set(
+                userText,
+                {
+                    aiResponse: precomputed.aiResponseText,
+                    aiResponseUz: precomputed.aiResponseUzbek,
+                    source: 'precomputed',
+                },
+                courseId,
+                lastWatchedLessonOrder
+            );
+            
+            return {
+                ...input,
+                aiResponse: precomputed.aiResponseText,
+                aiResponseUz: precomputed.aiResponseUzbek,
+                usage: input.usage || {},
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
+
+        // Ha/yo'q javoblarini tekshirish - agar ha/yo'q javob bo'lsa, material matchingdan o'tkazib yuboramiz
+        const isYesNo = isYesNoResponse(userText);
+        if (isYesNo) {
+            console.log(`✅ Ha/yo'q javob aniqlandi, material matchingdan o'tkazib yuborilmoqda...`);
+            // Ha/yo'q javoblar uchun to'g'ridan-to'g'ri GPT'ga so'rov yuborish
+            const response = await this.generateGPTResponse(
+                userText,
+                normalizedUser,
+                userWords,
+                input.context,
+                lastWatchedLessonOrder,
+                conversationTopic,
+                input.conversationHistory || [],
+                false // freeMode = false (material context bilan)
+            );
+
+            const aiResponseLatin = ArabicTextUtils.transliterateArabic(response.aiResponse || "");
+            console.log('GPT javobi (Ha/yo\'q javob):', response.aiResponse);
+            console.log('GPT javobi (latin):', aiResponseLatin);
+
+            // Usage ma'lumotlarini to'plash
+            const usage = input.usage || {};
+            if (response.gptUsage) {
+                usage.gpt = {
+                    promptTokens: response.gptUsage.promptTokens || 0,
+                    completionTokens: response.gptUsage.completionTokens || 0,
+                    totalTokens: response.gptUsage.totalTokens || 0,
+                };
+            }
+
+            return {
+                ...input,
+                aiResponse: response.aiResponse,
+                aiResponseUz: response.aiResponseUz || '',
+                usage,
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        }
+
         // Materiallardan javob topish
         const materialMatch = this.materialMatching.findMaterialResponse(
             userText,
@@ -180,6 +271,19 @@ export class GPTStep implements PipelineStep {
             };
         }
 
+        // ⚡ Cache'ga saqlash (keyingi safar uchun)
+        await this.responseCache.set(
+            userText,
+            {
+                aiResponse: response.aiResponse,
+                aiResponseUz: response.aiResponseUz || '',
+                gptUsage: response.gptUsage,
+                source: response.gptUsage ? 'gpt' : 'material',
+            },
+            courseId,
+            lastWatchedLessonOrder
+        );
+
         return {
             ...input,
             aiResponse: response.aiResponse,
@@ -221,23 +325,89 @@ export class GPTStep implements PipelineStep {
 
             if (!validation.isValid) {
                 console.log(`⚠️  Material javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-                return this.fallbackResponse.createNotUnderstoodResponse();
+                // Material javob validatsiyadan o'tmaganida ham "materialda yo'q" deb javob berish
+                // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+                return await this.fallbackResponse.createNoMaterialResponse(userText);
             }
 
             // Valid material response
-            return await this.fallbackResponse.createMaterialResponse(
+            const materialResponseResult = await this.fallbackResponse.createMaterialResponse(
                 materialMatch.nextSentence,
                 materialMatch.translationUz,
                 context,
                 lastWatchedLessonOrder
             );
+
+            // Material javobga follow-up savol qo'shish (faqat engagement yoqilgan bo'lsa)
+            // Hybrid yondashuv: birinchi materialdan, topilmasa AI o'zi (qat'iy qoidalar bilan)
+            if (this.enableUserEngagement) {
+                try {
+                    // ⚠️ RULE: Agar material response o'zi savol bo'lsa, follow-up qo'shmaslik
+                    // Sabab: Bitta response'da 2 ta savol bo'lmasligi kerak
+                    const { isQuestion } = await import('../../utils/question-detector.util');
+                    const materialIsQuestion = isQuestion(materialResponseResult.aiResponse);
+                    
+                    if (materialIsQuestion) {
+                        console.log('ℹ️  Material javob o\'zi savol, follow-up qo\'shilmaydi (1 response = 1 savol)');
+                    } else {
+                        console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
+                        
+                        const followUpResult = await this.hybridFollowUp.generateFollowUp(
+                            materialResponseResult.aiResponse,
+                            conversationHistory,
+                            context,
+                            lastWatchedLessonOrder
+                        );
+
+                        // Agar follow-up topilsa
+                        if (followUpResult && followUpResult.question) {
+                            console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
+                            
+                            // ⏸️  SSML BREAK: Javob va savol orasiga pauza qo'shish
+                            // Faqat Google TTS uchun SSML formatida, OpenAI uchun oddiy text
+                            const useSSML = this.tts.supportsSSML();
+                            const pauseDuration = '1.5s'; // 1.5 soniya pauza
+                            
+                            const enrichedResponse = addPauseBetweenTexts(
+                                materialResponseResult.aiResponse,
+                                followUpResult.question,
+                                pauseDuration,
+                                useSSML
+                            );
+                            
+                            // Translation uchun SSML kerak emas
+                            const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
+                            
+                            // Log: SSML ishlatilganligini ko'rsatish
+                            if (useSSML) {
+                                console.log(`⏸️  SSML break qo'shildi: ${pauseDuration} pauza`);
+                                // Database saqlash uchun SSML'siz versiya
+                                console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
+                            }
+                            
+                            return {
+                                aiResponse: enrichedResponse,
+                                aiResponseUz: enrichedTranslation,
+                                gptUsage: materialResponseResult.gptUsage,
+                            };
+                        } else {
+                            console.log('ℹ️  Follow-up topilmadi - asl material javob qaytariladi');
+                        }
+                    }
+                } catch (error) {
+                    console.error(`⚠️  Follow-up savol qo'shishda xato: ${error.message}`);
+                }
+            }
+
+            // Agar xato bo'lsa yoki GPT javob bermasa, asl material javobni qaytarish
+            return materialResponseResult;
         }
 
         // 2) Yaqin match (50%+)
         if (materialMatch.bestMatchScore >= SIMILARITY_THRESHOLDS.SENTENCE_SIMILARITY_HIGH &&
             materialMatch.bestMatchNextSentence &&
             materialMatch.bestMatchNextSentence.length > 1) {
-            
+
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
                 return this.fallbackResponse.createFutureLessonResponse();
             }
@@ -265,7 +435,7 @@ export class GPTStep implements PipelineStep {
             materialMatch.bestMatchScore < SIMILARITY_THRESHOLDS.SENTENCE_SIMILARITY_HIGH &&
             materialMatch.bestMatchSentence &&
             materialMatch.bestMatchSentence.length > 1) {
-            
+
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
                 return this.fallbackResponse.createFutureLessonResponse();
             }
@@ -304,6 +474,15 @@ export class GPTStep implements PipelineStep {
         conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
         freeMode: boolean = false
     ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage'] }> {
+        // Entity extraction - suhbatdan obyektlar va mavzularni ajratish
+        const conversationContext = this.entityExtractor.extractEntities(conversationHistory);
+        const conversationEntitiesStr = this.entityExtractor.formatEntitiesForGPT(conversationContext, this.enableUserEngagement);
+
+        // Debug log
+        if (conversationEntitiesStr && conversationEntitiesStr.length > 0) {
+            console.log(`🔍 Conversation entities topildi:\n${conversationEntitiesStr}`);
+        }
+
         // Erkin rejimda context filter'ni o'tkazib yuboramiz
         const filteredContext = freeMode ? [] : this.contextFilter.filterContextByLessonOrder(context, lastWatchedLessonOrder);
         // Erkin rejimda prompt'ni o'zgartirmaymiz
@@ -317,6 +496,7 @@ export class GPTStep implements PipelineStep {
             conversationHistory: conversationHistory,
             conversationTopic: conversationTopic,
             freeMode: freeMode, // Erkin rejim flag'ini uzatish
+            conversationEntities: conversationEntitiesStr, // Entity tracking uchun
         });
 
         const aiResponse = gptResult.text;
@@ -338,13 +518,9 @@ export class GPTStep implements PipelineStep {
 
         if (!validation.isValid) {
             console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-            if (validation.reason === 'echo') {
-                return this.fallbackResponse.createNotUnderstoodResponse();
-            } else if (validation.reason === 'invalid_vocabulary') {
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
-            } else {
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
-            }
+            // Agar material matching topilmasa va GPT javob invalid bo'lsa,
+            // "materialda yo'q" deb javob berish kerak (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+            return await this.fallbackResponse.createNoMaterialResponse(userText);
         }
 
         // Valid GPT response

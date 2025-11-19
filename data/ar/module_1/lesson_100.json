@@ -1,0 +1,66 @@
+{
+    "id": "ar_m1_l100",
+    "language": "ar",
+    "module": 1,
+    "lesson": 100,
+    "title": "مَدْرَسَةٌ قَرِيبَةٌ",
+    "summary": "Maktab va sinf xonasining tavsifi, joylashuvi va fizik xususiyatlari.",
+    "vocabulary": [
+      {"word": "مَدْرَسَةٌ", "translationUz": "maktab"},
+      {"word": "قَرِيبَةٌ", "translationUz": "yaqin"},
+      {"word": "كَبِيرَةٌ", "translationUz": "katta"},
+      {"word": "ثَلَاثَةُ", "translationUz": "uch"},
+      {"word": "أَبْوَابٍ", "translationUz": "eshiklar"},
+      {"word": "فُصُولٌ", "translationUz": "sinflar"},
+      {"word": "كَثِيرَةٌ", "translationUz": "ko'p"},
+      {"word": "فَصْلُنَا", "translationUz": "bizning sinfimiz"},
+      {"word": "وَاسِعٌ", "translationUz": "keng"},
+      {"word": "مُنِيرٌ", "translationUz": "yorug'"},
+      {"word": "نَافِذَتَانِ", "translationUz": "ikki deraza"},
+      {"word": "مَكَاتِبُ", "translationUz": "stollar"},
+      {"word": "كَرَاسِيُّ", "translationUz": "stullar"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذِهِ مَدْرَسَتِي، وَ هِيَ قَرِيبَةٌ مِنْ بَيْتِي.",
+        "translationUz": "Bu mening maktabim va u uyimga yaqin.",
+        "next": "هِيَ مَدْرَسَةٌ كَبِيرَةٌ، وَ لَهَا ثَلَاثَةُ أَبْوَابٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ مَدْرَسَةٌ كَبِيرَةٌ، وَ لَهَا ثَلَاثَةُ أَبْوَابٍ.",
+        "translationUz": "U katta maktab va uning uchta eshigi bor.",
+        "next": "فِي الْمَدْرَسَةِ فُصُولٌ كَثِيرَةٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي الْمَدْرَسَةِ فُصُولٌ كَثِيرَةٌ.",
+        "translationUz": "Maktabda ko'p sinflar bor.",
+        "next": "هَذَا فَصْلُنَا، وَ هُوَ وَاسِعٌ وَ مُنِيرٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَا فَصْلُنَا، وَ هُوَ وَاسِعٌ وَ مُنِيرٌ.",
+        "translationUz": "Bu bizning sinfimiz va u keng va yorug'.",
+        "next": "فِيهِ نَافِذَتَانِ كَبِيرَتَانِ، وَ مَكَاتِبُ وَ كَرَاسِيُّ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِيهِ نَافِذَتَانِ كَبِيرَتَانِ، وَ مَكَاتِبُ وَ كَرَاسِيُّ.",
+        "translationUz": "Unda ikkita katta deraza, stollar va stullar bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيْنَ مَدْرَسَتُكَ؟",
+      "هَلْ مَدْرَسَتُكَ كَبِيرَةٌ؟",
+      "كَمْ عَدَدُ الْفُصُولِ فِي مَدْرَسَتِكَ؟",
+      "كَيْفَ هُوَ فَصْلُكَ؟",
+      "مَاذَا فِي فَصْلِكَ؟"
+    ],
+    "context": {
+      "main_topic": "school_description",
+      "pattern": "location → size → classrooms → classroom_description → classroom_contents"
+    }
+  }

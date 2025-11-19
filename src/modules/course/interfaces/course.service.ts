@@ -3,6 +3,7 @@ import { ID } from "src/common/types/type";
 import { CreateCourseDto } from "../dto/create-course.dto";
 import { UpdateCourseDto } from "../dto/update-course.dto";
 import { Course } from "../entities/course.entity";
+import { User } from "src/modules/user/entities/user.entity";
 
 export interface ICourseService {
   create(
@@ -10,7 +11,7 @@ export interface ICourseService {
     file?: Express.Multer.File,
   ): Promise<ResData<Course>>;
   findAll(): Promise<ResData<Array<Course>>>;
-  findOneById(id: ID): Promise<ResData<Course>>;
+  findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>>;
   update(
     id: ID,
     dto: UpdateCourseDto,

@@ -90,6 +90,8 @@ export class ChromaEmbeddingService {
                     translationUz: c.translationUz,
                     audioUrl: c.audioUrl,
                     title: c.title,
+                    next: c.next || null,
+                    nextTranslationUz: c.nextTranslationUz || null,
                 }))
             };
 

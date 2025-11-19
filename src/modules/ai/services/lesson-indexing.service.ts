@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { promises as fs } from "fs";
 import { IndexedChunk, ParsedLesson } from "./types/chroma.types";
+import { normalizeText } from "../utils/text-normalization.util";
 
 /**
  * LessonIndexingService
@@ -24,8 +25,8 @@ export class LessonIndexingService {
             const raw = await fs.readFile(filePath, "utf-8");
             const json = JSON.parse(raw);
             const language: string = json.language;
-            const moduleNumber: number = json.moduleNumber;
-            const lessonOrder: number = json.lessonNumber ?? json.lessonOrder;
+            const moduleNumber: number = json.moduleNumber ?? json.module ?? 1;
+            const lessonOrder: number = json.lessonNumber ?? json.lessonOrder ?? json.lesson ?? 1;
             const title: string = json.title ?? "";
             const dialogue: any[] = Array.isArray(json.dialogue) ? json.dialogue : [];
 
@@ -33,18 +34,48 @@ export class LessonIndexingService {
 
             // 1) Agar dialogue bo'lsa, uni index qilish (asosiy format)
             if (dialogue.length > 0) {
-                chunks = dialogue.map((turn) => ({
-                    id: this.buildChunkId(language, moduleNumber, lessonOrder, turn.turnIndex ?? 0),
-                    language,
-                    moduleNumber,
-                    lessonOrder,
-                    turnIndex: turn.turnIndex ?? 0,
-                    speaker: turn.speaker ?? null,
-                    text: String(turn.text ?? ""),
-                    translationUz: turn.translationUz ?? null,
-                    audioUrl: turn.audioUrl ?? null,
-                    title,
-                }));
+                chunks = dialogue.map((turn, index) => {
+                    // turnIndex ni belgilash - agar materialda turnIndex yo'q bo'lsa, index ishlatiladi
+                    const turnIndex = turn.turnIndex ?? index;
+                    
+                    // next key'ni topish - keyingi turn'dan yoki turn.next'dan
+                    let nextText: string | null = null;
+                    let nextTranslationUz: string | null = null;
+                    
+                    // Avval turn.next key'ni tekshirish (materialda belgilangan)
+                    if (turn.next) {
+                        nextText = String(turn.next);
+                        // next key'ning translationUz'ini topish - dialogue'dan next text'ga mos turn'ni topish
+                        const nextTurn = dialogue.find((t) => {
+                            const normalizedNext = normalizeText(nextText);
+                            const normalizedTurnText = normalizeText(String(t.text ?? ""));
+                            return normalizedTurnText === normalizedNext;
+                        });
+                        nextTranslationUz = nextTurn?.translationUz ?? null;
+                    } else {
+                        // Agar next key yo'q bo'lsa, keyingi turn'dan olish (backward compatibility)
+                        const nextTurn = dialogue[index + 1];
+                        if (nextTurn) {
+                            nextText = String(nextTurn.text ?? "");
+                            nextTranslationUz = nextTurn.translationUz ?? null;
+                        }
+                    }
+                    
+                    return {
+                        id: this.buildChunkId(language, moduleNumber, lessonOrder, turnIndex),
+                        language,
+                        moduleNumber,
+                        lessonOrder,
+                        turnIndex: turnIndex,
+                        speaker: turn.speaker ?? null,
+                        text: String(turn.text ?? ""),
+                        translationUz: turn.translationUz ?? null,
+                        audioUrl: turn.audioUrl ?? null,
+                        title,
+                        next: nextText,
+                        nextTranslationUz: nextTranslationUz,
+                    };
+                });
             }
             // 2) Agar dialogue bo'sh bo'lsa, segments yoki monologue'ni index qilish
             else {
@@ -53,18 +84,23 @@ export class LessonIndexingService {
 
                 // Agar segments bo'lsa, har bir segmentni alohida chunk qilish
                 if (segments.length > 0) {
-                    chunks = segments.map((segment, idx) => ({
-                        id: this.buildChunkId(language, moduleNumber, lessonOrder, segment.index ?? idx),
-                        language,
-                        moduleNumber,
-                        lessonOrder,
-                        turnIndex: segment.index ?? idx,
-                        speaker: null, // Monologue'da speaker yo'q
-                        text: String(segment.text ?? ""),
-                        translationUz: segment.translationUz ?? null,
-                        audioUrl: segment.audioUrl ?? null,
-                        title,
-                    }));
+                    chunks = segments.map((segment, idx) => {
+                        const nextSegment = segments[idx + 1];
+                        return {
+                            id: this.buildChunkId(language, moduleNumber, lessonOrder, segment.index ?? idx),
+                            language,
+                            moduleNumber,
+                            lessonOrder,
+                            turnIndex: segment.index ?? idx,
+                            speaker: null, // Monologue'da speaker yo'q
+                            text: String(segment.text ?? ""),
+                            translationUz: segment.translationUz ?? null,
+                            audioUrl: segment.audioUrl ?? null,
+                            title,
+                            next: nextSegment ? String(nextSegment.text ?? "") : null,
+                            nextTranslationUz: nextSegment?.translationUz ?? null,
+                        };
+                    });
                 }
                 // Agar segments ham yo'q bo'lsa, monologue'ni to'liq chunk qilish
                 else if (monologue && typeof monologue === 'object' && monologue.text) {
@@ -79,6 +115,8 @@ export class LessonIndexingService {
                         translationUz: monologue.translationUz ?? null,
                         audioUrl: monologue.audioUrl ?? null,
                         title,
+                        next: null,
+                        nextTranslationUz: null,
                     }];
                 }
             }

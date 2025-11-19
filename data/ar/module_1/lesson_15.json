@@ -1,0 +1,52 @@
+{
+    "id": "ar_m1_l15",
+    "language": "ar",
+    "module": 1,
+    "lesson": 15,
+    "title": "اَلْوَرْدَةُ الجَمِيلَةُ",
+    "summary": "Gul haqida suhbat: nima ekanligini so'rash va uni tavsiflash.",
+    "vocabulary": [
+      { "word": "وَرْدَةٌ", "translationUz": "gul" },
+      { "word": "جَمِيلَةٌ", "translationUz": "chiroyli" },
+      { "word": "جِدًّا", "translationUz": "juda" },
+      { "word": "هَذِهِ", "translationUz": "bu (ayol)" },
+      { "word": "نَعَم", "translationUz": "ha" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "لَيْلى",
+        "text": "مَا هَذِهِ يَا فَرِيدَةُ؟",
+        "translationUz": "Bu nima, Farida?",
+        "next": "هَذِهِ وَرْدَةٌ."
+      },
+      {
+        "speaker": "فَرِيدَةُ",
+        "text": "هَذِهِ وَرْدَةٌ.",
+        "translationUz": "Bu gul.",
+        "next": "هَلْ هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ؟"
+      },
+      {
+        "speaker": "لَيْلى",
+        "text": "هَلْ هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ؟",
+        "translationUz": "Bu gul chiroylimi?",
+        "next": "نَعَم،هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ جِدًّا."
+      },
+      {
+        "speaker": "فَرِيدَةُ",
+        "text": "نَعَم،هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ جِدًّا.",
+        "translationUz": "Ha, bu gul juda chiroyli.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَا لَوْنُ الْوَرْدَةِ؟",
+      "هَلْ تُحِبُّ الْوُرُودَ؟",
+      "أَيْنَ نَزْرَعُ الْوَرْدَةَ؟",
+      "هَلْ لَدَيْكَ وَرْدَةٌ فِي بَيْتِكَ؟",
+      "مَا هِيَ الْأَزْهَارُ الَّتِي تُحِبُّهَا؟"
+    ],
+    "context": {
+      "main_topic": "flowers_description",
+      "pattern": "ask_what → answer → ask_confirmation → confirm"
+    }
+  }

@@ -60,11 +60,44 @@ export const COMPREHENSIVE_ARABIC_FEW_SHOT_EXAMPLES: GPTMessage[] = [
     { role: "user", content: "وَالْكِتَابُ؟" },
     { role: "assistant", content: "الْكِتَابُ أَيْضًا عَلَى الْمَكْتَبِ." }, // Joylashuv haqidagi suhbatni davom ettiradi
 
+    // Misol 7: Mantiqiy fikrlash - inappropriate attribute
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا كِتَابٌ." },
+    { role: "user", content: "هَلْ هُوَ حُلْوٌ؟" }, // Noto'g'ri savol - kitob shirin bo'lmaydi
+    { role: "assistant", content: "لَا، الْكِتَابُ لَيْسَ حُلْوًا. الْكِتَابُ مُفِيدٌ." }, // Mantiqiy tuzatish
+
+    // Misol 8: Entity tracking va demonstrative pronoun
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا مَوْزٌ." },
+    { role: "user", content: "هَلْ هُوَ لَذِيذٌ؟" }, // "هُوَ" = muz haqida
+    { role: "assistant", content: "نَعَمْ، الْمَوْزُ لَذِيذٌ جِدًّا." }, // To'g'ri - meva shirin bo'lishi mumkin
+
+    // Misol 9: Context-aware engagement - obyekt haqida davom ettirish
+    { role: "user", content: "مَا هَٰذَا؟" },
+    { role: "assistant", content: "هَٰذَا قَلَمٌ." },
+    { role: "user", content: "نَعَمْ." },
+    { role: "assistant", content: "أَيْنَ الْقَلَمُ؟" }, // Xuddi shu obyekt (qalam) haqida savol
+
+    // Misol 10: Context-aware engagement - entity'ga aloqador savol
+    { role: "user", content: "هَٰذَا مَوْزٌ." },
+    { role: "assistant", content: "نَعَمْ، هَٰذَا مَوْزٌ. هَلْ الْمَوْزُ لَذِيذٌ؟" }, // Tasdiq + xuddi shu meva haqida savol
+
+    // Misol 11: Context-aware engagement - joylashuv kontekstida
+    { role: "user", content: "أَنَا فِي الْمَدْرَسَةِ." },
+    { role: "assistant", content: "جَيِّدٌ! مَاذَا فِي الْمَدْرَسَةِ؟" }, // Joy kontekstida savol
+
+    // Misol 12: Context-aware engagement - mulkiyat savoli
+    { role: "user", content: "هَٰذَا كِتَابٌ." },
+    { role: "assistant", content: "نَعَمْ، هَٰذَا كِتَابٌ. هَلْ هُوَ كِتَابُكَ؟" }, // Xuddi shu obyekt (kitob) haqida savol
+    
+    // ANTI-EXAMPLE: Noto'g'ri - kontekstdan chiqib ketish
+    { role: "system", content: "BAD EXAMPLE - Don't do this: User mentions 'كِتَابٌ' (book) → You ask 'مَا اسْمُكَ؟' (What's your name?). This is OFF-TOPIC! Instead, ask about the BOOK: 'أَيْنَ الْكِتَابُ؟' or 'هَلْ هُوَ كِتَابُكَ؟'" },
+
     // Anti-pattern ogohlantirish - noto'g'ri javob berishdan saqlash
     { role: "system", content: "REMEMBER: If user asks 'أَيْنَ الدَّفْتَرُ؟' (where is notebook?), answer about the NOTEBOOK, NOT about yourself!" },
 
     // Suhbat konteksti eslatmasi
-    { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change." }
+    { role: "system", content: "IMPORTANT: Pay attention to conversation history and maintain natural flow. Build upon previous messages, remember names and topics discussed, and smoothly adapt when topics change. Use logical reasoning to give contextually appropriate answers. ENGAGE the user by asking follow-up questions frequently!" }
 ];
 
 /**
@@ -78,11 +111,13 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
         "You are an Arabic language learning assistant for beginners.",
         "RULES:",
         "1. Respond ONLY in Modern Standard Arabic (الفصحى) with FULL diacritical marks (تشكيل) on every letter.",
-        "2. Use ONLY vocabulary and grammar from lesson materials - never use general knowledge.",
-        "3. Give short, clear answers that directly respond (never echo user's words).",
-        "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا based on lesson content.",
-        "5. Response MUST be logically correct and different from user's input.",
-        "6. If user makes pronunciation errors (1-2 wrong letters), find similar sentence/word from lesson materials and ask 'هَلْ تَقْصِدُ ...؟' (Did you mean ...?) to help them.",
+        "2. CRITICAL: Every word MUST have diacritics, especially the LAST letter of each word (this ensures correct TTS pronunciation).",
+        "3. CRITICAL: End every sentence with proper punctuation (period '.', question mark '؟', or exclamation mark '!') for correct TTS intonation.",
+        "4. Use ONLY vocabulary and grammar from lesson materials - never use general knowledge.",
+        "5. Give short, clear answers that directly respond (never echo user's words).",
+        "6. For yes/no questions (هَلْ), answer with نَعَمْ or لَا based on lesson content.",
+        "7. Response MUST be logically correct and different from user's input.",
+        "8. If user makes pronunciation errors (1-2 wrong letters), find similar sentence/word from lesson materials and ask 'هَلْ تَقْصِدُ ...؟' (Did you mean ...?) to help them.",
     ],
     // Keng qamrovli qoidalar - generateWithUsage() uchun
     comprehensive: {
@@ -104,7 +139,11 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
         // Boshqa qoidalar
         otherRules: [
             "Other rules:",
-            "1. Respond in Modern Standard Arabic with full diacritical marks (تشكيل).",
+            "1. CRITICAL - TTS Pronunciation Rules:",
+            "   - Every Arabic letter MUST have full diacritical marks (تشكيل)",
+            "   - Pay SPECIAL attention to the LAST letter of every word (e.g., كِتَابٌ not كِتَاب)",
+            "   - End every sentence with punctuation (period '.', question mark '؟', or exclamation '!')",
+            "   - This ensures the TTS engine pronounces every word correctly and maintains proper intonation",
             "2. Use ONLY vocabulary from the lesson materials provided.",
             "3. Give short, clear answers (never echo user's words).",
             "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا.",
@@ -114,6 +153,34 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
             "- Maintain natural conversation flow - like a human would talk",
             "- Build upon previous messages in the conversation",
             "- If user changes topic, smoothly transition to the new topic",
+        ],
+        // Mantiqiy fikrlash va entity tracking
+        logicalReasoning: [
+            "CRITICAL RULE - Logical Reasoning & Entity Tracking:",
+            "- Track all entities (objects, concepts) mentioned in conversation history",
+            "- When user asks about an entity with inappropriate attribute, correct logically:",
+            "  Example: If user asks 'هَلْ الْكِتَابُ حُلْوٌ؟' (Is the book sweet?), respond:",
+            "  'لَا، الْكِتَابُ لَيْسَ حُلْوًا. الْكِتَابُ مُفِيدٌ.' (No, book is not sweet. Book is useful.)",
+            "- Use conversation context to give contextually appropriate answers:",
+            "  If 'مَوْزٌ' (banana) was mentioned → you can say 'الْمَوْزُ حُلْوٌ' (banana is sweet)",
+            "  If 'كِتَابٌ' (book) was mentioned → you can say 'الْكِتَابُ مُفِيدٌ' (book is useful)",
+            "- When user uses demonstratives (هَذَا, ذَلِكَ), refer to the MOST RECENT entity mentioned",
+        ],
+        // User engagement qoidalari
+        userEngagement: [
+            "CRITICAL RULE - Context-Aware Engagement:",
+            "- PRIORITY: Ask follow-up questions that are DIRECTLY RELATED to the current dialogue context",
+            "- ALWAYS ask about entities/objects mentioned in the conversation:",
+            "  * If 'كِتَابٌ' (book) was mentioned → Ask: 'أَيْنَ الْكِتَابُ؟' (Where is the book?), 'هَلْ هُوَ كِتَابُكَ؟' (Is it your book?)",
+            "  * If 'مَوْزٌ' (banana) was mentioned → Ask: 'هَلْ الْمَوْزُ لَذِيذٌ؟' (Is banana delicious?), 'هَلْ تُحِبُّ الْمَوْزَ؟' (Do you like banana?)",
+            "  * If location mentioned → Ask: 'مَا هَٰذَا هُنَا؟' (What is this here?), 'مَاذَا فِي...؟' (What is in...?)",
+            "  * If person/name mentioned → Ask: 'مَا اسْمُ أَبِيكَ؟' (What is your father's name?), 'أَيْنَ...؟' (Where is...?)",
+            "- AVOID generic questions unrelated to the current dialogue topic",
+            "- Pattern: Answer directly + Ask contextually relevant follow-up question",
+            "- Study the 'Conversation context (entities mentioned)' section carefully before asking questions",
+            "- Example flow:",
+            "  User: 'مَا هَٰذَا؟' → You: 'هَٰذَا قَلَمٌ.' → THEN ask about the قَلَم: 'أَيْنَ الْقَلَمُ؟' or 'هَلْ هُوَ قَلَمُكَ؟'",
+            "- Use only vocabulary from the lesson materials when asking questions",
         ],
     },
 };

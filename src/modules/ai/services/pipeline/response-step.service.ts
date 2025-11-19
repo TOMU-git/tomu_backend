@@ -2,6 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { TTSService } from "../tts.service";
 import { AIChatMessageFactory } from "../ai-chat-message-factory.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
+import { 
+    validateGPTResponseDiacritics, 
+    checkLastLetterDiacriticsInText,
+    logDiacriticsInfo 
+} from "../../utils/diacritics-validator.util";
 
 /**
  * Response Step: Yakuniy xabar yaratish
@@ -21,6 +26,23 @@ export class ResponseStep implements PipelineStep {
         aiResponse: string;
         aiResponseUz: string;
     }): Promise<VoiceOutput> {
+        // ✅ STEP 1: Diacritics validation - TTS uchun muhim!
+        const diacriticsValidation = validateGPTResponseDiacritics(input.aiResponse);
+        const lastLetterCheck = checkLastLetterDiacriticsInText(input.aiResponse);
+
+        // Log diacritics info for debugging
+        logDiacriticsInfo(input.aiResponse, 'AI Response');
+        console.log(`[Response Step] Last letter diacritics: ${lastLetterCheck.wordsWithLastLetterDiacritics}/${lastLetterCheck.totalWords} words (${lastLetterCheck.percentage}%)`);
+
+        // Warning agar diacritics kam bo'lsa
+        if (!diacriticsValidation.isValid) {
+            console.warn(diacriticsValidation.warning);
+        }
+
+        if (lastLetterCheck.percentage < 70) {
+            console.warn(`⚠️  Low last-letter diacritics coverage (${lastLetterCheck.percentage}%). TTS may drop ending sounds!`);
+        }
+
         // TTS orqali audio yaratish (xarajat ma'lumotlari bilan)
         const ttsResult = await this.tts.textToSpeechWithUsage({
             text: input.aiResponse,

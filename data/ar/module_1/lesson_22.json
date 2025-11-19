@@ -1,0 +1,52 @@
+{
+  "id": "ar_m1_l22",
+  "language": "ar",
+  "module": 1,
+  "lesson": 22,
+  "title": "سَقَطَتِ الطِّفْلَةُ",
+  "summary": "O'yin maydonchasi va bolaning baxtsiz hodisasi haqida suhbat.",
+  "vocabulary": [
+    { "word": "طِّفْلَةٌ", "translationUz": "qiz bola" },
+    { "word": "مَلْعَبٌ", "translationUz": "o'yin maydonchasi" },
+    { "word": "ابْنَةُ", "translationUz": "qizi" },
+    { "word": "سَقَطَتْ", "translationUz": "yiqildi" },
+    { "word": "طِينٌ", "translationUz": "loy" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "سَلْمَى",
+      "text": "مَنْ تِلْكَ الطِّفْلَةُ الَّتِي تَلْعَبُ فِي الْمَلْعَبِ؟",
+      "translationUz": "Maydonchada o'ynayotgan qiz bola kim?",
+      "next": "تِلْكَ الطِّفْلَةُ هِيَ ابْنَةُ عَائِشَةَ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "تِلْكَ الطِّفْلَةُ هِيَ ابْنَةُ عَائِشَةَ.",
+      "translationUz": "U qiz bola Oyshaning qizi.",
+      "next": "لَقَدْ سَقَطَتْ فِي الطِّينِ!"
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "لَقَدْ سَقَطَتْ فِي الطِّينِ!",
+      "translationUz": "U loyga yiqildi!",
+      "next": "يَا عَائِشَةُ، إِبْنَتُكِ قَدْ سَقَطَتْ!"
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "يَا عَائِشَةُ، إِبْنَتُكِ قَدْ سَقَطَتْ!",
+      "translationUz": "Ey Oysha, qizing yiqildi!",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلِ الطِّفْلَةُ بِخَيْرٍ؟",
+    "مَاذَا يَجِبُ فِعْلُهُ عِنْدَمَا تَسْقُطُ الطِّفْلَةُ؟",
+    "هَلْ تَلْعَبِينَ فِي الْمَلْعَبِ؟",
+    "مَنْ هِيَ عَائِشَةُ؟",
+    "لِمَاذَا سَقَطَتِ الطِّفْلَةُ؟"
+  ],
+  "context": {
+    "main_topic": "playground_incident",
+    "pattern": "ask_who → identify → report_incident → call_for_help"
+  }
+}

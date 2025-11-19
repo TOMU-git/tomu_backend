@@ -11,6 +11,8 @@ import {
 } from "./exception/course.exception";
 import { IFileService } from "../file/interfaces/file.service";
 import { Course } from "./entities/course.entity";
+import { User } from "../user/entities/user.entity";
+import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -20,7 +22,10 @@ export class CourseService implements ICourseService {
 
     @Inject("IFileService")
     private readonly fileService: IFileService,
-  ) {}
+
+    @Inject("IUserCourseRepository")
+    private readonly userCourseRepository: IUserCourseRepository,
+  ) { }
 
   async create(
     dto: CreateCourseDto,
@@ -60,14 +65,45 @@ export class CourseService implements ICourseService {
     return new ResData<Array<Course>>("ok", 200, data);
   }
 
-  async findOneById(id: ID): Promise<ResData<Course>> {
+  async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>> {
     // ID bo'yicha kursni topish
     const foundData = await this.courseRepository.findById(id);
     if (!foundData) {
       throw new CourseNotFoundException();
     }
 
-    return new ResData<Course>("ok", 200, foundData);
+    // Agar user mavjud bo'lsa, user uchun bu kurs mavjudligini tekshirish
+    let isActiveForUser = false;
+    if (user) {
+      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(
+        user.id,
+        id,
+      );
+
+      // Agar userCourse topilsa (ya'ni user bu kursga ega bo'lsa), isActiveForUser = true
+      if (userCourse) {
+        isActiveForUser = true;
+      }
+    }
+
+    // Response ga isActiveForUser qo'shish
+    // TypeORM entity ni plain object ga aylantirish (metadata muammosini oldini olish uchun)
+    const responseData = {
+      id: foundData.id,
+      title: foundData.title,
+      description: foundData.description,
+      imageUrl: foundData.imageUrl,
+      videoUrl: foundData.videoUrl,
+      mimetype: foundData.mimetype,
+      size: foundData.size,
+      isActive: foundData.isActive,
+      lang: foundData.lang,
+      createdAt: foundData.createdAt,
+      lastUpdatedAt: foundData.lastUpdatedAt,
+      isActiveForUser,
+    } as Course & { isActiveForUser: boolean };
+
+    return new ResData<Course & { isActiveForUser: boolean }>("ok", 200, responseData);
   }
 
   async update(
@@ -75,18 +111,19 @@ export class CourseService implements ICourseService {
     updateCourseDto: UpdateCourseDto,
     file?: Express.Multer.File,
   ): Promise<ResData<Partial<Course>>> {
-    const { data: foundData } = await this.findOneById(id);
+    // update va delete metodlarida faqat kurs mavjudligini tekshirish kerak,
+    // shuning uchun to'g'ridan-to'g'ri repository dan olamiz
+    const foundData = await this.courseRepository.findById(id);
+    if (!foundData) {
+      throw new CourseNotFoundException();
+    }
     // Eski faylni o'chirish agar yangi fayl yuklangan bo'lsa
     if (file && foundData.imageUrl) {
       try {
-        // console.log("ishla")
         // Fayl mavjudligini tekshirish va o'chirish
-        const removeResult = await this.fileService.removeByImageUrl(
+        await this.fileService.removeByImageUrl(
           foundData.imageUrl,
         );
-        if (!removeResult) {
-          // console.log("File not found");
-        }
       } catch (error) {
         console.error("Error occurred while deleting the file:", error.message);
         throw new Error("Faylni o'chirishda xato yuz berdi.");
@@ -117,7 +154,7 @@ export class CourseService implements ICourseService {
     if (updateCourseDto.lang !== undefined && updateCourseDto.lang !== null) {
       foundData.lang = updateCourseDto.lang;
     }
-    
+
     foundData.isActive = updateCourseDto.isActive;
     // Yangilangan ma'lumotlarni birlashtirish
 
@@ -135,7 +172,12 @@ export class CourseService implements ICourseService {
   }
 
   async delete(id: ID): Promise<ResData<Course>> {
-    const { data: foundData } = await this.findOneById(id);
+    // update va delete metodlarida faqat kurs mavjudligini tekshirish kerak,
+    // shuning uchun to'g'ridan-to'g'ri repository dan olamiz
+    const foundData = await this.courseRepository.findById(id);
+    if (!foundData) {
+      throw new CourseNotFoundException();
+    }
     const data = await this.courseRepository.delete(foundData);
     return new ResData<Course>("Course deleted successfully", 200, data);
   }

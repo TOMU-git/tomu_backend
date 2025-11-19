@@ -1,0 +1,56 @@
+{
+    "id": "ar_m1_l102",
+    "language": "ar",
+    "module": 1,
+    "lesson": 102,
+    "title": "قَبْلَ الدَّرْسِ",
+    "summary": "O'qituvchi va o'quvchilar o'rtasida darsga tayyorgarlik haqidagi suhbat.",
+    "vocabulary": [
+      {"word": "قَبْلَ", "translationUz": "oldin"},
+      {"word": "الدَّرْسِ", "translationUz": "dars"},
+      {"word": "اَلْمُعَلِّمُ", "translationUz": "o'qituvchi"},
+      {"word": "يَا", "translationUz": "ey (chaqirish)"},
+      {"word": "تَلَامِيذُ", "translationUz": "o'quvchilar"},
+      {"word": "أُسْتَاذَنَا", "translationUz": "ustozimiz"},
+      {"word": "مُسْتَعِدُّونَ", "translationUz": "tayyormiz"},
+      {"word": "لِلدَّرْسِ", "translationUz": "darsga"},
+      {"word": "نَحْنُ", "translationUz": "biz"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْمُعَلِّمُ",
+        "text": "يَا تَلَامِيذُ!",
+        "translationUz": "Ey o'quvchilar!",
+        "next": "نَعَمْ، يَا أُسْتَاذَنَا."
+      },
+      {
+        "speaker": "اَلتَّلَامِيذُ",
+        "text": "نَعَمْ، يَا أُسْتَاذَنَا.",
+        "translationUz": "Ha, ustozimiz.",
+        "next": "هَلْ أَنْتُمْ مُسْتَعِدُّونَ لِلدَّرْسِ يَا تَلَامِيذُ؟"
+      },
+      {
+        "speaker": "اَلْمُعَلِّمُ",
+        "text": "هَلْ أَنْتُمْ مُسْتَعِدُّونَ لِلدَّرْسِ يَا تَلَامِيذُ؟",
+        "translationUz": "Darsga tayyormisiz, ey o'quvchilar?",
+        "next": "نَعَمْ، نَحْنُ مُسْتَعِدُّونَ لِلدَّرْسِ يَا أُسْتَاذُ."
+      },
+      {
+        "speaker": "اَلتَّلَامِيذُ",
+        "text": "نَعَمْ، نَحْنُ مُسْتَعِدُّونَ لِلدَّرْسِ يَا أُسْتَاذُ.",
+        "translationUz": "Ha, biz darsga tayyormiz, ustoz.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا يَقُولُ الْمُعَلِّمُ قَبْلَ الدَّرْسِ؟",
+      "هَلْ أَنْتَ مُسْتَعِدٌّ لِلدَّرْسِ؟",
+      "مَاذَا تَفْعَلُ قَبْلَ الدَّرْسِ؟",
+      "كَيْفَ تُجِيبُ عَلَى الْمُعَلِّمِ؟",
+      "هَلْ تُحِبُّ دُرُوسَكَ؟"
+    ],
+    "context": {
+      "main_topic": "classroom_preparation",
+      "pattern": "teacher_calls → students_respond → teacher_question → students_confirmation"
+    }
+  }

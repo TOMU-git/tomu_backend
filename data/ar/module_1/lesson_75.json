@@ -1,0 +1,51 @@
+{
+    "id": "ar_m1_l75",
+    "language": "ar",
+    "module": 1,
+    "lesson": 75,
+    "title": "أُسْرَتِي",
+    "summary": "Katta oila a'zolari va ularning soni haqida tavsif.",
+    "vocabulary": [
+      { "word": "أُسْرَة", "translationUz": "oila" },
+      { "word": "ثَمَانِيَّة", "translationUz": "sakkiz" },
+      { "word": "جَد", "translationUz": "bobo" },
+      { "word": "جَدَّة", "translationUz": "buvi" },
+      { "word": "أَب", "translationUz": "ota" },
+      { "word": "أُم", "translationUz": "ona" },
+      { "word": "أَخ", "translationUz": "aka" },
+      { "word": "أُخْت", "translationUz": "opa" },
+      { "word": "كَبِير", "translationUz": "katta" },
+      { "word": "صَغِير", "translationUz": "kichik" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أُسْرَتِي كَبِيرَةٌ.",
+        "translationUz": "Oilam katta.",
+        "next": "فِيهَا ثَمَانِيَّةُ أَشْخَاصٍ:"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِيهَا ثَمَانِيَّةُ أَشْخَاصٍ:",
+        "translationUz": "Undan sakkiz kishi bor:",
+        "next": "جَدِّي، وَ جَدَّتِي، وَ أَبِي، وَ أُمِّي، وَ أَخِي الْكَبِيرُ، وَ وَ أُخْتِي الْكَبِيرَةُ، وَ أُخْتِي الصَّغِيرَةُ، وَ أَنَا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "جَدِّي، وَ جَدَّتِي، وَ أَبِي، وَ أُمِّي، وَ أَخِي الْكَبِيرُ، وَ وَ أُخْتِي الْكَبِيرَةُ، وَ أُخْtِي الصَّغِيرَةُ، وَ أَنَا.",
+        "translationUz": "Bobom, buvim, otam, onam, katta akam, katta opam, kichik opam va men.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ عَدَدُ أُسْرَتِكَ؟",
+      "مَنْ فِي أُسْرَتِكَ؟",
+      "هَلْ أُسْرَتُكَ كَبِيرَةٌ؟",
+      "مَنْ هُوَ الْأَكْبَرُ فِي أُسْرَتِكَ؟",
+      "مَنْ هُوَ الْأَصْغَرُ فِي أُسْرَتِكَ؟"
+    ],
+    "context": {
+      "main_topic": "family_members_extended",
+      "pattern": "narration → narration → narration"
+    }
+  }

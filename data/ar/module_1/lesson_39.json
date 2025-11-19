@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l39",
+    "language": "ar",
+    "module": 1,
+    "lesson": 39,
+    "title": "اَلْأَصْدِقَاءُ الْمُقَرَّبُونَ",
+    "summary": "Yaquin do'stlarning tog'dagi sayohati va vaqt o'tkazishi haqida hikoya.",
+    "vocabulary": [
+      { "word": "أَصْدِقَاء", "translationUz": "do'stlar" },
+      { "word": "مُقَرَّبُونَ", "translationUz": "yaqin" },
+      { "word": "جَبَل", "translationUz": "tog'" },
+      { "word": "نَهْر", "translationUz": "daryo" },
+      { "word": "طَبَخُوا", "translationUz": "pishirdilar" },
+      { "word": "لَحْم", "translationUz": "go'sht" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي يَوْمٍ مِنَ الْأَيَّامِ، ذَهَبَ حَمْزَةُ وَ طَلْحَةُ وَ أُسَامَةُ إِلَى الْجَبَلِ.",
+        "translationUz": "Kunlarning birida, Hamza, Talha va Usoma tog'ga ketishdi.",
+        "next": "جَلَسُوا عِنْدَ الْنَهْرِ، وَ طَبَخُوا اللَّحْمَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "جَلَسُوا عِنْدَ الْنَهْرِ، وَ طَبَخُوا اللَّحْمَ.",
+        "translationUz": "Ular daryo bo'yida o'tirishdi va go'sht pishirdilar.",
+        "next": "هُمْ أَصْدِقَاءٌ مُقَرَّبُونَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هُمْ أَصْدِقَاءٌ مُقَرَّبُونَ.",
+        "translationUz": "Ular yaqin do'stlardir.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ لَكَ أَصْدِقَاءٌ مُقَرَّبُونَ؟",
+      "مَاذَا تَفْعَلُ مَعَ أَصْدِقَائِكَ؟",
+      "هَلْ تُسَافِرُ مَعَ أَصْدِقَائِكَ؟",
+      "أَيْنَ تَذْهَبُ مَعَ أَصْdِقَائِكَ؟",
+      "مَاذَا تُحِبُّ أَنْ تَطْبَخَ؟"
+    ],
+    "context": {
+      "main_topic": "friends_outing",
+      "pattern": "narration → narration → narration"
+    }
+  }

@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l90",
+    "language": "ar",
+    "module": 1,
+    "lesson": 90,
+    "title": "مَاذَا أَكَلْتِ يَا بُنَيَّتِي؟",
+    "summary": "Ona va qiz o'rtasida ovqatlanish haqida suhbat va akaning nima yeganligi haqida.",
+    "vocabulary": [
+      { "word": "أَكَل", "translationUz": "yedi" },
+      { "word": "سَمَك", "translationUz": "baliq" },
+      { "word": "أَرُز", "translationUz": "guruch" },
+      { "word": "لَحْم", "translationUz": "go'sht" },
+      { "word": "خُبْز", "translationUz": "non" },
+      { "word": "فَقَط", "translationUz": "faqat" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "هَلْ أَكَلْتِ السَّمَكَ يَا بُنَيَّتِي؟",
+        "translationUz": "Baliq yedingmi, qizim?",
+        "next": "لا، أَكَلْتُ الأَرُزَّ وَ اللَّحْمَ."
+      },
+      {
+        "speaker": "اَلْبِنْتُ",
+        "text": "لا، أَكَلْتُ الأَرُزَّ وَ اللَّحْمَ.",
+        "translationUz": "Yo'q, men guruch va go'sht yedim.",
+        "next": "وَ مَاذَا أَكَلَ أَخُوكِ أَحْمَدُ؟"
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "وَ مَاذَا أَكَلَ أَخُوكِ أَحْمَدُ؟",
+        "translationUz": "Va akang Ahmad nima yedi?",
+        "next": "هُوَ أَكَلَ الخُبْزَ فَقَطْ."
+      },
+      {
+        "speaker": "اَلْبِنْتُ",
+        "text": "هُوَ أَكَلَ الخُبْزَ فَقَطْ.",
+        "translationUz": "U faqat non yedi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا تَأْكُلُ فِي الْغَدَاءِ؟",
+      "هَلْ تُحِبُّ السَّمَكَ؟",
+      "مَا هُوَ طَعَامُكَ الْمُفَضَّلُ؟",
+      "مَاذَا يَأْكُلُ أَخُوكَ؟",
+      "هَلْ تَأْكُلُ مَعَ أُسْرَتِكَ؟"
+    ],
+    "context": {
+      "main_topic": "meal_inquiry",
+      "pattern": "ask_daughter_food → answer → ask_brother_food → answer"
+    }
+  }

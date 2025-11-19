@@ -131,6 +131,8 @@ export class ChromaSearchService {
                     translationUz: metadatas[i]?.translationUz || '',
                     audioUrl: metadatas[i]?.audioUrl || null,
                     title: metadatas[i]?.title || '',
+                    next: metadatas[i]?.next || null,
+                    nextTranslationUz: metadatas[i]?.nextTranslationUz || null,
                     distance: distances[i] || 0,
                     source: 'chroma'
                 }));

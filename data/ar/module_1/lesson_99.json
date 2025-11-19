@@ -1,0 +1,58 @@
+{
+    "id": "ar_m1_l99",
+    "language": "ar",
+    "module": 1,
+    "lesson": 99,
+    "title": "أُحِبُّ عَائِلَتِي",
+    "summary": "O'zini va oilasini tanishtirish, oila a'zolari haqida ma'lumot.",
+    "vocabulary": [
+      {"word": "عَائِلَتِي", "translationUz": "mening oilam"},
+      {"word": "عُمْرِي", "translationUz": "mening yoshim"},
+      {"word": "عِشْرُونَ", "translationUz": "yigirma"},
+      {"word": "سَنَةً", "translationUz": "yil"},
+      {"word": "أَبِي", "translationUz": "otam"},
+      {"word": "مُدِيرٌ", "translationUz": "menejer, direktor"},
+      {"word": "مَحَلٍّ", "translationUz": "do'kon"},
+      {"word": "أُمِّي", "translationUz": "onam"},
+      {"word": "رَبَّةُ بَيْتٍ", "translationUz": "uy bekasi"},
+      {"word": "أُحِبُّ", "translationUz": "men sevaman"},
+      {"word": "جِدًّا", "translationUz": "juda"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "آمِنَةُ",
+        "text": "أَنَا اِسْمِي آمِنَةُ، وَ عُمْرِي عِشْرُونَ سَنَةً.",
+        "translationUz": "Mening ismim Omina va yoshim yigirma yosh.",
+        "next": "أَبِي اِسْمُهُ كَرِيمٌ، وَ هُوَ مُدِيرٌ فِي الْمَحَلِّ."
+      },
+      {
+        "speaker": "آمِنَةُ",
+        "text": "أَبِي اِسْمُهُ كَرِيمٌ، وَ هُوَ مُدِيرٌ فِي الْمَحَلِّ.",
+        "translationUz": "Otamning ismi Karim va u do'konda menejer.",
+        "next": "وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ."
+      },
+      {
+        "speaker": "آمِنَةُ",
+        "text": "وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ.",
+        "translationUz": "Va onamning ismi Fotima va u uy bekasi.",
+        "next": "أَنَا أُحِبُّهُمَا جِدًّا."
+      },
+      {
+        "speaker": "آمِنَةُ",
+        "text": "أَنَا أُحِبُّهُمَا جِدًّا.",
+        "translationUz": "Men ularni juda yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ عُمْرُكَ؟",
+      "مَاذَا يَعْمَلُ أَبُوكَ؟",
+      "هَلْ أُمُّكَ رَبَّةُ بَيْتٍ؟",
+      "كَمْ عَدَدُ أَفْرَادِ عَائِلَتِكَ؟",
+      "هَلْ تُحِبُّ عَائِلَتَكَ؟"
+    ],
+    "context": {
+      "main_topic": "family_introduction",
+      "pattern": "self_introduction → father_description → mother_description → expression_of_love"
+    }
+  }

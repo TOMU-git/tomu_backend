@@ -1,0 +1,65 @@
+{
+    "id": "ar_m1_l62",
+    "language": "ar",
+    "module": 1,
+    "lesson": 62,
+    "title": "جَامِعَةُ الرِّيَاضِ",
+    "summary": "Pokistonlik va britaniyalik do'stlarning Ar-Riyod universitetida o'qishi va Islomni o'rganishi haqida.",
+    "vocabulary": [
+      { "word": "بَاكِسْتَان", "translationUz": "Pokiston" },
+      { "word": "بِرِيطَانِيَا", "translationUz": "Britaniya" },
+      { "word": "يَتَكَلَّم", "translationUz": "gaplashadi" },
+      { "word": "إِنْجِلِيزِيَّة", "translationUz": "ingliz tili" },
+      { "word": "رِيَاض", "translationUz": "Ar-Riyod" },
+      { "word": "إِسْلَام", "translationUz": "Islom" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَعْقُوبُ مِنْ بَاكِسْتَانَ، وَ وِلْيَمُ مِنْ بِرِيطَانِيَا.",
+        "translationUz": "Yoqub Pokistondan, Uilyam Britaniyadan.",
+        "next": "هُمَا صَدِيقَانِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هُمَا صَدِيقَانِ.",
+        "translationUz": "Ular do'stdirlar.",
+        "next": "يَتَكَلَّمَانِ بِاللُّغَةِ العَرَبِيَّةِ وَالْإِنْجِلِيزِيَّةِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَتَكَلَّمَانِ بِاللُّغَةِ العَرَبِيَّةِ وَالْإِنْجِلِيزِيَّةِ.",
+        "translationUz": "Ular arab va ingliz tillarida gaplashadilar.",
+        "next": "يَدْرُسَانِ فِي جَامِعَةٍ بِالرِّيَاضِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَدْرُسَانِ فِي جَامِعَةٍ بِالرِّيَاضِ.",
+        "translationUz": "Ular Ar-Riyod shahridagi universitetda o'qiydilar.",
+        "next": "وِلْيَمُ يُحِبُّ الْإِسْلَامَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وِلْيَمُ يُحِبُّ الْإِسْلَامَ.",
+        "translationUz": "Uilyam Islomni yaxshi ko'radi.",
+        "next": "وَيَعْقُوبُ يُسَاعِدُهُ عَلَى تَعَلُّمِ الْإِسْلَامِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَيَعْقُوبُ يُسَاعِدُهُ عَلَى تَعَلُّمِ الْإِسْلَامِ.",
+        "translationUz": "Va Yoqub unga Islomni o'rganishda yordam beradi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مِنْ أَيْنَ أَنْتَ؟",
+      "هَلْ تَتَكَلَّمُ لُغَاتٍ مُخْتَلِفَةً؟",
+      "هَلْ تُحِبُّ الْإِسْلَامَ؟",
+      "أَيْنَ تَدْرُسُ؟",
+      "هَلْ لَكَ أَصْدِقَاءُ مِنْ بُلْدَانٍ مُخْتَلِفَةٍ؟"
+    ],
+    "context": {
+      "main_topic": "international_friendship",
+      "pattern": "narration → narration → narration → narration → narration → narration"
+    }
+  }

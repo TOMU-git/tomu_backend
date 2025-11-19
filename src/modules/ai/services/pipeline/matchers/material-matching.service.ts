@@ -62,6 +62,8 @@ export class MaterialMatchingService {
         for (const [lessonOrder, turns] of lessonsMap.entries()) {
             const sortedTurns = turns.sort((a, b) => a.turnIndex - b.turnIndex);
             const sentences = sortedTurns.map(t => ({ text: t.text, translationUz: t.translationUz }));
+            // Turns'ni ham saqlab qolish (next key uchun)
+            const turnsWithNext = sortedTurns;
 
             for (let i = 0; i < sentences.length; i++) {
                 const sentenceData = sentences[i];
@@ -82,44 +84,75 @@ export class MaterialMatchingService {
                 if (matchResult.isMatch) {
                     // Semantic context tekshiruvi
                     if (matchResult.needsSemanticCheck) {
-                        const nextSentenceText = sentences[i + 1]?.text || '';
-                        const semanticMatch = this.validateSemanticContext(userText, s, nextSentenceText);
+                        // next key'ni tekshirish
+                        const matchedTurn = turnsWithNext.find(t => normalizeText(t.text) === normalizedSentence);
+                        const nextText = matchedTurn?.next || sentences[i + 1]?.text || '';
+                        const semanticMatch = this.validateSemanticContext(userText, s, nextText);
                         if (!semanticMatch) {
                             continue;
                         }
                     }
 
-                    // Keyingi gapni topish - user gapining o'zini o'tkazib yuborish
-                    let nextIndex = i + 1;
-                    let candidateData = null;
+                    // Keyingi gapni topish - materialdagi "next" key'ni ishlatish
                     let candidate = '';
-                    let skippedCount = 0;
+                    let candidateTranslationUz: string | null = null;
                     
-                    // Keyingi gapni qidirish - user gapining o'zini o'tkazib yuborish
-                    while (nextIndex < sentences.length) {
-                        candidateData = sentences[nextIndex];
-                        candidate = candidateData?.text || '';
-                        const normalizedCandidate = normalizeText(candidate);
-                        const isCandidateSameAsUser = normalizedCandidate === normalizedUser;
-                        
-                        // Debug: Barcha keyingi gaplarni ko'rsatish
-                        console.log(`   🔍 [${nextIndex}] Gap: "${candidate.substring(0, 40)}" (normalized: "${normalizedCandidate.substring(0, 40)}") - Bir xilmi: ${isCandidateSameAsUser}`);
-                        
-                        // Agar keyingi gap user gapining o'zi bo'lmasa, uni qabul qilamiz
-                        if (candidate && candidate.length > 1 && !isCandidateSameAsUser) {
-                            console.log(`   ✅ Keyingi gap topildi: "${candidate.substring(0, 40)}"`);
-                            break;
+                    // Avval materialdagi "next" key'ni tekshirish
+                    // Debug: turnsWithNext massivida barcha turn'larni ko'rsatish
+                    if (normalizedSentence.includes('ma hdha') || normalizedSentence.includes('ما هذا')) {
+                        console.log(`   🔍 DEBUG: turnsWithNext massivida ${turnsWithNext.length} ta turn bor`);
+                        turnsWithNext.forEach((t, idx) => {
+                            const normalizedTurnText = normalizeText(t.text);
+                            console.log(`   🔍 [${idx}] Turn text: "${t.text.substring(0, 40)}", normalized: "${normalizedTurnText.substring(0, 40)}", next: ${t.next ? `"${t.next.substring(0, 40)}"` : 'null'}`);
+                        });
+                        console.log(`   🔍 DEBUG: normalizedSentence: "${normalizedSentence.substring(0, 40)}"`);
+                    }
+                    const matchedTurn = turnsWithNext.find(t => normalizeText(t.text) === normalizedSentence);
+                    console.log(`   🔍 matchedTurn topildimi: ${matchedTurn ? 'HA' : 'YO\'Q'}`);
+                    if (matchedTurn) {
+                        console.log(`   🔍 matchedTurn.next: ${matchedTurn.next ? `"${matchedTurn.next.substring(0, 40)}"` : 'null/undefined'}`);
+                    }
+                    if (matchedTurn?.next) {
+                        candidate = matchedTurn.next;
+                        candidateTranslationUz = matchedTurn.nextTranslationUz || null;
+                        console.log(`   ✅ Material "next" key topildi: "${candidate.substring(0, 40)}"`);
+                    } else {
+                        if (matchedTurn) {
+                            console.log(`   ⚠️  matchedTurn topildi, lekin next key yo'q yoki null`);
+                        } else {
+                            console.log(`   ⚠️  matchedTurn topilmadi`);
                         }
+                        // Agar "next" key yo'q bo'lsa, keyingi turn'dan olish (backward compatibility)
+                        let nextIndex = i + 1;
+                        let candidateData = null;
+                        let skippedCount = 0;
                         
-                        if (isCandidateSameAsUser) {
-                            skippedCount++;
-                            console.log(`   ⚠️  Keyingi gap user gapining o'zi, o'tkazib yuborildi (${skippedCount})`);
+                        // Keyingi gapni qidirish - user gapining o'zini o'tkazib yuborish
+                        while (nextIndex < sentences.length) {
+                            candidateData = sentences[nextIndex];
+                            candidate = candidateData?.text || '';
+                            const normalizedCandidate = normalizeText(candidate);
+                            const isCandidateSameAsUser = normalizedCandidate === normalizedUser;
+                            
+                            // Debug: Barcha keyingi gaplarni ko'rsatish
+                            console.log(`   🔍 [${nextIndex}] Gap: "${candidate.substring(0, 40)}" (normalized: "${normalizedCandidate.substring(0, 40)}") - Bir xilmi: ${isCandidateSameAsUser}`);
+                            
+                            // Agar keyingi gap user gapining o'zi bo'lmasa, uni qabul qilamiz
+                            if (candidate && candidate.length > 1 && !isCandidateSameAsUser) {
+                                console.log(`   ✅ Keyingi gap topildi: "${candidate.substring(0, 40)}"`);
+                                candidateTranslationUz = candidateData?.translationUz || null;
+                                break;
+                            }
+                            
+                            if (isCandidateSameAsUser) {
+                                skippedCount++;
+                                console.log(`   ⚠️  Keyingi gap user gapining o'zi, o'tkazib yuborildi (${skippedCount})`);
+                            }
+                            
+                            nextIndex++;
                         }
-                        
-                        nextIndex++;
                     }
 
-                    const isLastSentence = nextIndex >= sentences.length;
                     const normalizedFinalCandidate = candidate ? normalizeText(candidate) : '';
                     const isFinalCandidateSameAsUser = normalizedFinalCandidate === normalizedUser;
 
@@ -127,7 +160,7 @@ export class MaterialMatchingService {
                     if (candidate && candidate.length > 1 && !isFinalCandidateSameAsUser) {
                         result.nextSentence = candidate;
                         result.lessonOrder = lessonOrder;
-                        result.translationUz = candidateData?.translationUz || null;
+                        result.translationUz = candidateTranslationUz;
                         // Console log: Exact match topildi
                         console.log(`   ✅ Material match: "${s.substring(0, 40)}" → "${candidate.substring(0, 40)}"`);
                         return result;
@@ -135,7 +168,7 @@ export class MaterialMatchingService {
                         // Keyingi gap user gapining o'zi bo'lsa, bu match'ni o'tkazib yuborish
                         console.log(`   ⚠️  Keyingi gap user gapining o'zi, bu match'ni o'tkazib yuborish`);
                         continue;
-                    } else if (isLastSentence) {
+                    } else if (!candidate || candidate.length <= 1) {
                         console.log(`   ⚠️  Keyingi gap topilmadi, dialogue tugadi`);
                         result.nextSentence = 'DIALOGUE_END';
                         result.lessonOrder = lessonOrder;
@@ -182,8 +215,8 @@ export class MaterialMatchingService {
     /**
      * Context'ni lessonOrder bo'yicha guruhlash
      */
-    private groupContextByLessonOrder(context: any[]): Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null }>> {
-        const lessonsMap = new Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null }>>();
+    private groupContextByLessonOrder(context: any[]): Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null }>> {
+        const lessonsMap = new Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null }>>();
 
         if (Array.isArray(context)) {
             for (const chunk of context) {
@@ -192,13 +225,22 @@ export class MaterialMatchingService {
                 const turnIndex = chunk?.turnIndex ?? 0;
                 const speaker = chunk?.speaker || null;
                 const translationUz: string | null = chunk?.translationUz || null;
+                const next: string | null = chunk?.next || null;
+                const nextTranslationUz: string | null = chunk?.nextTranslationUz || null;
 
                 if (!text || text.trim().length === 0) continue;
+
+                // Debug: next key bor-yo'qligini tekshirish
+                if (text.includes('مَا هَذَا') || text.includes('ما هذا')) {
+                    console.log(`   🔍 DEBUG: Chunk topildi - text: "${text.substring(0, 40)}", next: ${next ? `"${next.substring(0, 40)}"` : 'null/undefined'}, nextTranslationUz: ${nextTranslationUz || 'null'}`);
+                    console.log(`   🔍 DEBUG: Chunk object keys: ${Object.keys(chunk).join(', ')}`);
+                    console.log(`   🔍 DEBUG: Chunk.next directly: ${chunk?.next || 'undefined'}`);
+                }
 
                 if (!lessonsMap.has(lessonOrder)) {
                     lessonsMap.set(lessonOrder, []);
                 }
-                lessonsMap.get(lessonOrder)!.push({ text, turnIndex, speaker, translationUz });
+                lessonsMap.get(lessonOrder)!.push({ text, turnIndex, speaker, translationUz, next, nextTranslationUz });
             }
         }
 

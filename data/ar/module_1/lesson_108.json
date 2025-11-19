@@ -1,0 +1,57 @@
+{
+    "id": "ar_m1_l108",
+    "language": "ar",
+    "module": 1,
+    "lesson": 108,
+    "title": "عَصِيرُ الْمَوْزِ بِاللَّبَنِ",
+    "summary": "Do'stlar o'rtasida sog'liq uchun foydali ichimlik tanlash haqidagi suhbat.",
+    "vocabulary": [
+      {"word": "عَصِيرُ", "translationUz": "sharbat"},
+      {"word": "الْمَوْزِ", "translationUz": "banan"},
+      {"word": "بِاللَّبَنِ", "translationUz": "sut bilan"},
+      {"word": "تَعَالَيْ", "translationUz": "kel (ikkita ayol)"},
+      {"word": "لِنَشْرَبَ", "translationUz": "ichaylik"},
+      {"word": "الْبُرْتُقَالِ", "translationUz": "apelsin"},
+      {"word": "بَلِ", "translationUz": "balki"},
+      {"word": "لِمَاذَا", "translationUz": "nega"},
+      {"word": "مُفِيدٌ", "translationUz": "foydali"},
+      {"word": "جِدًّا", "translationUz": "juda"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "لَيْلَى",
+        "text": "تَعَالَيْ يَا سَلْمَى لِنَشْرَبَ عَصِيرَ الْبُرْتُقَالِ.",
+        "translationUz": "Kel, Salmo, apelsin sharbati ichaylik.",
+        "next": "لاَ تَشْرَبِي عَصِيرَ الْبُرْتُقَالِ، بَلِ اشْرَبِي عَصِيرَ الْمَوْزِ بِاللَّبَنِ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "لاَ تَشْرَبِي عَصِيرَ الْبُرْتُقَالِ، بَلِ اشْرَبِي عَصِيرَ الْمَوْزِ بِاللَّبَنِ.",
+        "translationUz": "Apelsin sharbati ichma, balki bananli sut sharbati ich.",
+        "next": "لِمَاذَا عَصِيرُ الْمَوْزِ بِاللَّبَنِ؟"
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "لِمَاذَا عَصِيرُ الْمَوْزِ بِاللَّبَنِ؟",
+        "translationUz": "Nega bananli sut sharbati?",
+        "next": "لِأَنَّهُ مُفِيدٌ جِدًّا."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "لِأَنَّهُ مُفِيدٌ جِدًّا.",
+        "translationUz": "Chunki u juda foydali.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا تُرِيدُ لَيْلَى أَنْ تَشْرَبَ؟",
+      "مَاذَا تَنْصَحُ سَلْمَى؟",
+      "لِمَاذَا عَصِيرُ الْمَوْزِ بِاللَّبَنِ مُفِيدٌ؟",
+      "هَلْ تُحِبُّ عَصِيرَ الْمَوْزِ؟",
+      "مَاذَا تَشْرَبُ عَادَةً؟"
+    ],
+    "context": {
+      "main_topic": "healthy_drink_choice",
+      "pattern": "invitation → alternative_suggestion → question_about_reason → explanation"
+    }
+  }

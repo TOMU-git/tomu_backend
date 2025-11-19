@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l111",
+    "language": "ar",
+    "module": 1,
+    "lesson": 111,
+    "title": "بَيْتُنَا الصَّغِيرُ",
+    "summary": "Kichik uy va uning atrofidagi joylashuvi haqida tavsif.",
+    "vocabulary": [
+      {"word": "بَيْتُنَا", "translationUz": "bizning uyimiz"},
+      {"word": "الصَّغِيرُ", "translationUz": "kichik"},
+      {"word": "خَمْسُ", "translationUz": "besh"},
+      {"word": "غُرَفٍ", "translationUz": "xonalar"},
+      {"word": "قَرِيبٌ", "translationUz": "yaqin"},
+      {"word": "الْمَسْجِدِ", "translationUz": "masjid"},
+      {"word": "يَجْرِي", "translationUz": "oqadi"},
+      {"word": "جَدْوَلٌ", "translationUz": "daryocha, ariq"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بَيْتُنَا صَغِيرٌ، وَ فِيهِ خَمْسُ غُرَفٍ.",
+        "translationUz": "Bizning uyimiz kichik va unda besh xona bor.",
+        "next": "هُوَ قَرِيبٌ مِنَ الْمَسْجِدِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هُوَ قَرِيبٌ مِنَ الْمَسْجِدِ.",
+        "translationUz": "U masjidga yaqin.",
+        "next": "عِنْدَ بَابِ بَيْتِنَا يَجْرِي جَدْوَلٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "عِنْدَ بَابِ بَيْتِنَا يَجْرِي جَدْوَلٌ.",
+        "translationUz": "Uyimiz eshigi yonida bir daryocha oqadi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَيْفَ هُوَ الْبَيْتُ؟",
+      "كَمْ غُرْفَةً فِي الْبَيْتِ؟",
+      "أَيْنَ يَقَعُ الْبَيْتُ؟",
+      "مَاذَا يَجْرِي عِنْدَ الْبَابِ؟",
+      "هَلْ بَيْتُكَ قَرِيبٌ مِنَ الْمَسْجِدِ؟"
+    ],
+    "context": {
+      "main_topic": "house_description",
+      "pattern": "size_description → location → surrounding_feature"
+    }
+  }

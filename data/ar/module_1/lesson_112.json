@@ -1,0 +1,55 @@
+{
+    "id": "ar_m1_l112",
+    "language": "ar",
+    "module": 1,
+    "lesson": 112,
+    "title": "اَلْمُدِيْرُ و الْمُعَلِّمَةُ",
+    "summary": "Mudir va o'qituvchi o'rtasida talabalar soni haqidagi suhbat.",
+    "vocabulary": [
+      {"word": "اَلْمُدِيرُ", "translationUz": "mudir, direktor"},
+      {"word": "عِنْدَكِ", "translationUz": "sizda (ayol)"},
+      {"word": "طَالِبَاتٌ", "translationUz": "talabalar (ayol)"},
+      {"word": "عِنْدِي", "translationUz": "menda"},
+      {"word": "كَمْ", "translationUz": "qancha"},
+      {"word": "عَدَدُهُنَّ", "translationUz": "ularning soni"},
+      {"word": "طَالِبَتَانِ", "translationUz": "ikki talaba (ayol)"},
+      {"word": "فَقَطْ", "translationUz": "faqat"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْمُدِيرُ",
+        "text": "هَلْ عِنْدَكِ طَالِبَاتٌ؟",
+        "translationUz": "Sizda talabalar bormi?",
+        "next": "نَعَمْ، عِنْدِي طَالِبَاتٌ."
+      },
+      {
+        "speaker": "اَلْمُعَلِّمَةُ",
+        "text": "نَعَمْ، عِنْدِي طَالِبَاتٌ.",
+        "translationUz": "Ha, menda talabalar bor.",
+        "next": "كَمْ عَدَدُهُنَّ؟"
+      },
+      {
+        "speaker": "اَلْمُدِيرُ",
+        "text": "كَمْ عَدَدُهُنَّ؟",
+        "translationUz": "Ular qanchalar?",
+        "next": "عِنْدِي طَالِبَتَانِ فَقَطْ."
+      },
+      {
+        "speaker": "اَلْمُعَلِّمَةُ",
+        "text": "عِنْدِي طَالِبَتَانِ فَقَطْ.",
+        "translationUz": "Menda faqat ikkita talaba bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا يَسْأَلُ الْمُدِيرُ؟",
+      "هَلْ عِنْدَ الْمُعَلِّمَةِ طَالِبَاتٌ؟",
+      "كَمْ طَالِبَةً عِنْدَهَا؟",
+      "مَنْ يَسْأَلُ عَنِ الطَّالِبَاتِ؟",
+      "هَلْ عِنْدَكَ طَالِبَاتٌ فِي فَصْلِكَ؟"
+    ],
+    "context": {
+      "main_topic": "student_count_inquiry",
+      "pattern": "question_about_students → confirmation → question_about_number → specific_answer"
+    }
+  }

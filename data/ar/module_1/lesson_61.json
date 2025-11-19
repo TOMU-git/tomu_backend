@@ -1,0 +1,54 @@
+{
+    "id": "ar_m1_l61",
+    "language": "ar",
+    "module": 1,
+    "lesson": 61,
+    "title": "زِيَارَةٌ إِلَى الْقَرْيَةِ",
+    "summary": "Amakivachchaga qishloqqa tashrif va ularning birgalikda vaqt o'tkazishi haqida.",
+    "vocabulary": [
+      { "word": "زِيَارَة", "translationUz": "tashrif" },
+      { "word": "خَال", "translationUz": "amaki" },
+      { "word": "ابْنُ خَالِي", "translationUz": "amakivachcha" },
+      { "word": "يَوْم", "translationUz": "kun" },
+      { "word": "سَبْت", "translationUz": "shanba" },
+      { "word": "أَحَد", "translationUz": "yakshanba" },
+      { "word": "نَصْعَد", "translationUz": "ko'tarilamiz" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "إِبْرَاهِيمُ ابْنُ خَالِي، وَ هُوَ يَسْكُنُ فِي الْقَرْيَةِ.",
+        "translationUz": "Ibrohim mening amakivachcham va u qishloqda yashaydi.",
+        "next": "يَوْمَيِ السَّبْتِ وَ الأَحَدِ أَذْهَبُ إِلَى بَيْتِ خَالِي."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَوْمَيِ السَّبْتِ وَ الأَحَدِ أَذْهَبُ إِلَى بَيْتِ خَالِي.",
+        "translationUz": "Shanba va yakshanba kunlari men amakimning uyiga boraman.",
+        "next": "نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ مَعًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ mَعًا.",
+        "translationUz": "Biz birga o'ynaymiz va tog'ga ko'tarilamiz.",
+        "next": "أَنَا وَ إِبْرَاهِيمُ صَدِيقَانِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا وَ إِبْرَاهِيمُ صَدِيقَانِ.",
+        "translationUz": "Men va Ibrohim do'stmiz.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَزُورُ أَقَارِبَكَ؟",
+      "أَيْنَ يَسْكُنُ خَالُكَ؟",
+      "مَاذَا تَفْعَلُ مَعَ ابْنِ خَالِكَ؟",
+      "هَلْ تُحِبُّ الْقَرْيَةَ؟",
+      "كَمْ مَرَّةً تَزُورُ خَالَكَ؟"
+    ],
+    "context": {
+      "main_topic": "village_visit",
+      "pattern": "narration → narration → narration → narration"
+    }
+  }

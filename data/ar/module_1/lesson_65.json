@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l65",
+    "language": "ar",
+    "module": 1,
+    "lesson": 65,
+    "title": "عَصِيرُ التُّوتِ",
+    "summary": "Har kuni tut va o'rik sharbatlarini ichish va ularning yurak uchun foydasi haqida.",
+    "vocabulary": [
+      { "word": "عَصِير", "translationUz": "sharbat" },
+      { "word": "تُوت", "translationUz": "tut" },
+      { "word": "نَوْم", "translationUz": "uyqu" },
+      { "word": "اسْتِيقَاظ", "translationUz": "uyg'onish" },
+      { "word": "مِشْمِش", "translationUz": "o'rik" },
+      { "word": "قَلْب", "translationUz": "yurak" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَشْرَبُ عَصِيرَ التُّوتِ كُلَّ يَوْمٍ قَبْلَ النَّوْمِ.",
+        "translationUz": "Men har kuni uxlashdan oldin tut sharbatini ichaman.",
+        "next": "وَبَعْdَ الِاسْتِيقَاظِ أَشْرَبُ عَصِيرَ المِشْمِشِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَبَعْدَ الِاسْتِيقَاظِ أَشْرَبُ عَصِيرَ المِشْمِشِ.",
+        "translationUz": "Va uyg'ongandan keyin o'rik sharbatini ichaman.",
+        "next": "وَهَذَا مُفِيدٌ لِلْقَلْبِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَهَذَا مُفِيدٌ لِلْقَلْبِ.",
+        "translationUz": "Va bu yurak uchun foydali.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَشْرَبُ الْعَصِيرَ؟",
+      "مَا هُوَ عَصِيرُكَ الْمُفَضَّلُ؟",
+      "مَتَى تَشْرَبُ الْعَصِيرَ؟",
+      "هَلِ الْعَصِيرُ مُفِيدٌ لِلصِّحَّةِ؟",
+      "مَاذَا تَفْعَلُ لِصِحَّةِ قَلْبِكَ؟"
+    ],
+    "context": {
+      "main_topic": "healthy_habits",
+      "pattern": "narration → narration → narration"
+    }
+  }

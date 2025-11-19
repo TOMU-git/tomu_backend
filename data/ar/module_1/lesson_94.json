@@ -1,0 +1,39 @@
+{
+    "id": "ar_m1_l94",
+    "language": "ar",
+    "module": 1,
+    "lesson": 94,
+    "title": "فَاطِمَةُ الْمُؤَدَّبَةُ",
+    "summary": "Fatimaning odobli qiz ekani haqida qisqa axloqiy matn.",
+    "vocabulary": [
+      { "word": "مُؤَدَّبَةٌ", "translationUz": "odobli" },
+      { "word": "جِدًّا", "translationUz": "juda" },
+      { "word": "تَرْفَعُ صَوْتَهَا", "translationUz": "ovozini ko‘tarmaydi" },
+      { "word": "أُمِّهَا", "translationUz": "onasi" },
+      { "word": "أُخْتِهَا", "translationUz": "singlisi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "نَصٌّ",
+        "text": "فَاطِمَةُ بِنْتٌ جَيِّدَةٌ. هِيَ مُؤَدَّبَةٌ جِدًّا.",
+        "translationUz": "Fatima yaxshi qiz. U juda odobli.",
+        "next": "لاَ تَرْفَعُ فَاطِمَةُ صَوْتَهَا عَلَى أُمِّهَا وَحَتَّى عَلَى أُخْتِهَا الصَّغِيرَةِ."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "لاَ تَرْفَعُ فَاطِمَةُ صَوْتَهَا عَلَى أُمِّهَا وَحَتَّى عَلَى أُخْتِهَا الصَّغِيرَةِ.",
+        "translationUz": "Fatima na onasiga, na kichik singlisiga ovozini ko‘tarmaydi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ فَاطِمَةُ مُؤَدَّبَةٌ؟",
+      "عَلَى مَنْ لاَ تَرْفَعُ صَوْتَهَا؟",
+      "كَيْفَ هِيَ فَاطِمَةُ؟"
+    ],
+    "context": {
+      "main_topic": "good_behavior",
+      "pattern": "description → example"
+    }
+  }
+  

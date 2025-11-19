@@ -1,0 +1,67 @@
+{
+  "id": "ar_m1_l98",
+  "language": "ar",
+  "module": 1,
+  "lesson": 98,
+  "title": "قَلَمٌ أَزْرَقُ",
+  "summary": "Narsalarning egaligi va ranglari haqida savol-javob.",
+  "vocabulary": [
+    {"word": "قَلَمُ", "translationUz": "qalam"},
+    {"word": "أَزْرَقُ", "translationUz": "ko'k"},
+    {"word": "أَحْمَرُ", "translationUz": "qizil"},
+    {"word": "حَقِيبَةُ", "translationUz": "sumka"},
+    {"word": "هَذَا", "translationUz": "bu (erkak)"},
+    {"word": "هَذِهِ", "translationUz": "bu (ayol)"},
+    {"word": "نَعَمْ", "translationUz": "ha"},
+    {"word": "لاَ", "translationUz": "yo'q"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "هَلْ هَذَا قَلَمُكَ يَا سَعِيدُ؟",
+      "translationUz": "Bu sening qalamingmi, Sa'id?",
+      "next": "لاَ، قَلَمِي أَزْرَقُ."
+    },
+    {
+      "speaker": "سَعِيدٌ",
+      "text": "لاَ، قَلَمِي أَزْرَقُ.",
+      "translationUz": "Yo'q, mening qalamim ko'k.",
+      "next": "هَلْ هَذَا قَلَمُ فَاطِمَةَ؟"
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "هَلْ هَذَا قَلَمُ فَاطِمَةَ؟",
+      "translationUz": "Bu Fotimaning qalamimi?",
+      "next": "لاَ، قَلَمُهَا أَحْمَرُ."
+    },
+    {
+      "speaker": "سَعِيدٌ",
+      "text": "لاَ، قَلَمُهَا أَحْمَرُ.",
+      "translationUz": "Yo'q, uning qalami qizil.",
+      "next": "أَهَذِهِ حَقِيبَتُكَ؟"
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "أَهَذِهِ حَقِيبَتُكَ؟",
+      "translationUz": "Bu sening sumkangmi?",
+      "next": "نَعَمْ، هِيَ حَقِيبَتِي."
+    },
+    {
+      "speaker": "سَعِيدٌ",
+      "text": "نَعَمْ، هِيَ حَقِيبَتِي.",
+      "translationUz": "Ha, bu mening sumkam.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا لَوْنُ قَلَمِكَ؟",
+    "هَلْ هَذِهِ حَقِيبَةُ أَخِيكَ؟",
+    "أَيْنَ حَقِيبَتُكَ؟",
+    "مَاذَا فِي حَقِيبَتِكَ؟",
+    "هَلْ تُحِبُّ الْأَلْوَانَ الزَّرْقَاءَ؟"
+  ],
+  "context": {
+    "main_topic": "possession_colors",
+    "pattern": "question_about_object → denial_with_color → question_about_another → denial_with_color → question_about_bag → confirmation"
+  }
+}

@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l41",
+    "language": "ar",
+    "module": 1,
+    "lesson": 41,
+    "title": "اَلطَّبَّاخُ",
+    "summary": "Oshpazlik kasbi va restoranda ishlash haqida.",
+    "vocabulary": [
+      { "word": "طَبَّاخ", "translationUz": "oshpaz" },
+      { "word": "مَطْعَم", "translationUz": "restoran" },
+      { "word": "يَطْبُخ", "translationUz": "pishiradi" },
+      { "word": "أَطْعِمَة", "translationUz": "ovqatlar" },
+      { "word": "مَاهِرَان", "translationUz": "mohirlar" },
+      { "word": "إِتْقَان", "translationUz": "mohirlik" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "حَمْزَةُ يَعْمَلُ فِي الْمَطْعَمِ.",
+        "translationUz": "Hamza restoranda ishlaydi.",
+        "next": "وَفِيهِ يَعْمَلُ صَدِيقُهُ مَحْمُودٌ أَيْضًا، وَيَطْبُخُ أَطْعِمَةً مُخْتَلِفَةً."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَفِيهِ يَعْمَلُ صَدِيقُهُ مَحْمُودٌ أَيْضًا، وَيَطْبُخُ أَطْعِمَةً مُخْتَلِفَةً.",
+        "translationUz": "U yerda uning do'sti Mahmud ham ishlaydi va turli ovqatlar pishiradi.",
+        "next": "هُمَا طَبَّاخَانِ مَاهِرَانِ، وَيَطْبُخَانِ بِإِتْقَانٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هُمَا طَبَّاخَانِ مَاهِرَانِ، وَيَطْبُخَانِ بِإِتْقَانٍ.",
+        "translationUz": "Ular ikkalasi mohir oshpazlar va mohirlik bilan pishiradilar.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الطَّبْخَ؟",
+      "مَاذَا تَطْبُخُ؟",
+      "هَلْ تَعْمَلُ فِي مَطْعَمٍ؟",
+      "مَا هِيَ أَطْعِمَتُكَ الْمُفَضَّلَةُ؟",
+      "هَلْ تَعْرِفُ طَبَّاخًا مَاهِرًا؟"
+    ],
+    "context": {
+      "main_topic": "profession_cooking",
+      "pattern": "narration → narration → narration"
+    }
+  }

@@ -1,0 +1,52 @@
+{
+  "id": "ar_m1_l25",
+  "language": "ar",
+  "module": 1,
+  "lesson": 25,
+  "title": "اَلْحَدِيقَةُ",
+  "summary": "Bog' va o'rmon o'rtasidagi farqni aniqlash.",
+  "vocabulary": [
+    { "word": "حَدِيقَةٌ", "translationUz": "bog'" },
+    { "word": "غَابَةٌ", "translationUz": "o'rmon" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "لَا", "translationUz": "yo'q" },
+    { "word": "أَيْضًا", "translationUz": "ham" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُتَحَدِّثٌ ١",
+      "text": "هَلْ هَذِهِ حَدِيقَةٌ؟",
+      "translationUz": "Bu bog'mi?",
+      "next": "نَعَمْ، هَذِهِ حَدِيقَةٌ."
+    },
+    {
+      "speaker": "مُتَحَدِّثٌ ٢",
+      "text": "نَعَمْ، هَذِهِ حَدِيقَةٌ.",
+      "translationUz": "Ha, bu bog'.",
+      "next": "هَلْ تِلْكَ حَدِيقَةٌ أَيْضًا؟"
+    },
+    {
+      "speaker": "مُتَحَدِّثٌ ١",
+      "text": "هَلْ تِلْكَ حَدِيقَةٌ أَيْضًا؟",
+      "translationUz": "Bu ham bog'mi?",
+      "next": "لَا، تِلْكَ غَابَةٌ."
+    },
+    {
+      "speaker": "مُتَحَدِّثٌ ٢",
+      "text": "لَا، تِلْكَ غَابَةٌ.",
+      "translationUz": "Yo'q, bu o'rmon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا فَرْقُ بَيْنَ الْحَدِيقَةِ وَالْغَابَةِ؟",
+    "أَيُّهُمْ أَكْبَرُ الْحَدِيقَةُ أَمِ الْغَابَةُ؟",
+    "هَلْ تُحِبُّ الذَّهَابَ إِلَى الْحَدِيقَةِ؟",
+    "مَاذَا تَرَى فِي الْغَابَةِ؟",
+    "هَلْ فِي مَدِينَتِكَ حَدَائِقُ؟"
+  ],
+  "context": {
+    "main_topic": "nature_identification",
+    "pattern": "ask_confirmation → confirm → ask_another → correct"
+  }
+}

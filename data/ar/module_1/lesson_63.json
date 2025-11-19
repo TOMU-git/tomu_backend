@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l63",
+    "language": "ar",
+    "module": 1,
+    "lesson": 63,
+    "title": "أُحِبُّ الصَّيْفَ",
+    "summary": "Yoz fasli va suzish musobaqasidagi muvaffaqiyat haqida.",
+    "vocabulary": [
+      { "word": "صَّيْف", "translationUz": "yoz" },
+      { "word": "مِسْبَح", "translationUz": "suzish havzasi" },
+      { "word": "أَسْبَح", "translationUz": "suzaman" },
+      { "word": "فُزْتُ", "translationUz": "g'olib bo'ldim" },
+      { "word": "مُسَابَقَة", "translationUz": "musobaqa" },
+      { "word": "جُمْهُورِيَّة", "translationUz": "respublika" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "جَاءَ الصَّيْفُ، فِي الصَّيْفِ نَذْهَبُ إِلَى المِسْبَحِ مَعَ الأَصْدِقَاءِ.",
+        "translationUz": "Yoz keldi, yozda biz do'stlar bilan suzish havzasiga boramiz.",
+        "next": "أَنَا أَسْبَحُ جَيِّدًا لِأَنَّنِي فُزْتُ فِي مُسَابَقَةِ الْجُمْهُورِيَّةِ،"
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أَسْبَحُ جَيِّدًا لِأَنَّنِي فُزْتُ فِي مُسَابَقَةِ الْجُمْهُورِيَّةِ،",
+        "translationUz": "Men yaxshi suzaman, chunki respublika musobaqasida g'olib bo'lganman,",
+        "next": "لِذَلِكَ أُحِبُّ الصَّيْفَ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "لِذَلِكَ أُحِبُّ الصَّيْفَ جِدًّا.",
+        "translationUz": "shuning uchun men yozni juda yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الصَّيْفَ؟",
+      "مَاذَا تَفْعَلُ فِي الصَّيْفِ؟",
+      "هَلْ تَعْرِفُ السِّبَاحَةَ؟",
+      "هَلْ فُزْتَ فِي مُسَابَقَةٍ مِنْ قَبْلُ؟",
+      "أَيُّ الْفُصُولِ تُفَضِّلُ؟"
+    ],
+    "context": {
+      "main_topic": "summer_activities",
+      "pattern": "narration → narration → narration"
+    }
+  }

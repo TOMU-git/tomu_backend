@@ -1,0 +1,52 @@
+{
+    "id": "ar_m1_l80",
+    "language": "ar",
+    "module": 1,
+    "lesson": 80,
+    "summary": "Jurnallarning joylashuvi va soni haqida suhbat.",
+    "vocabulary": [
+      { "word": "مَجَلَّة", "translationUz": "jurnal" },
+      { "word": "بَقِيَّة", "translationUz": "qolgan" },
+      { "word": "خَمْس", "translationUz": "besh" },
+      { "word": "مُتَبَقِّي", "translationUz": "qolgan" },
+      { "word": "غُرْفَة", "translationUz": "xona" },
+      { "word": "أُخْرَى", "translationUz": "boshqa" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "يُوسُفُ",
+        "text": "أَيْنَ الْمَجَلَّاتُ يَا مَحْمُودُ؟",
+        "translationUz": "Jurnallar qayerda, Mahmud?",
+        "next": "هَاتَانِ مَجَلَّتَانِ هُنَا، يَا يُوسُفُ."
+      },
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "هَاتَانِ مَجَلَّتَانِ هُنَا، يَا يُوسُفُ.",
+        "translationUz": "Bu yerda ikkita jurnal bor, Yusuf.",
+        "next": "أَيْنَ بَقِيَّةُ المَجَلَّاتِ ؟"
+      },
+      {
+        "speaker": "يُوسُفُ",
+        "text": "أَيْنَ بَقِيَّةُ المَجَلَّاتِ ؟",
+        "translationUz": "Qolgan jurnallar qayerda?",
+        "next": "هُنَاكَ خَمْسُ مَجَلَّاتٍ، وَالْمُتَبَقِّيَةُ فِي الْغُرْفَةِ الْأُخْرَى."
+      },
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "هُنَاكَ خَمْسُ مَجَلَّاتٍ، وَالْمُتَبَقِّيَةُ فِي الْغُرْفَةِ الْأُخْرَى.",
+        "translationUz": "U yerda beshta jurnal bor va qolganlari boshqa xonada.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَقْرَأُ الْمَجَلَّاتِ؟",
+      "كَمْ مَجَلَّةً عِنْدَكَ؟",
+      "أَيْنَ تَضَعُ الْمَجَلَّاتِ؟",
+      "مَا هِيَ مَجَلَّتُكَ الْمُفَضَّلَةُ؟",
+      "هَلْ تُحِبُّ قِرَاءَةَ الْمَجَلَّاتِ؟"
+    ],
+    "context": {
+      "main_topic": "magazines_location",
+      "pattern": "ask_where → point_location → ask_rest → explain_rest"
+    }
+  }
