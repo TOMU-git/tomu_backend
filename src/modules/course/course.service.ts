@@ -66,25 +66,44 @@ export class CourseService implements ICourseService {
   }
 
   async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>> {
+    console.log('[CourseService.findOneById] START - Course ID:', id, 'User:', user ? `ID: ${user.id}` : 'NOT PROVIDED');
+    
     // ID bo'yicha kursni topish
     const foundData = await this.courseRepository.findById(id);
     if (!foundData) {
+      console.log('[CourseService.findOneById] ERROR - Course not found with ID:', id);
       throw new CourseNotFoundException();
     }
+    console.log('[CourseService.findOneById] Course found:', foundData.id, foundData.title);
 
     // Agar user mavjud bo'lsa, user uchun bu kurs mavjudligini tekshirish
     let isActiveForUser = false;
     if (user) {
+      console.log('[CourseService.findOneById] Checking userCourse - User ID:', user.id, 'Course ID:', id);
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(
         user.id,
         id,
       );
-
+      console.log('[CourseService.findOneById] userCourse result:', userCourse ? {
+        id: userCourse.id,
+        userId: userCourse.user?.id,
+        courseId: userCourse.course?.id,
+        isActive: userCourse.isActive,
+        status: userCourse.status
+      } : 'NULL');
+      
       // Agar userCourse topilsa (ya'ni user bu kursga ega bo'lsa), isActiveForUser = true
       if (userCourse) {
         isActiveForUser = true;
+        console.log('[CourseService.findOneById] userCourse found, setting isActiveForUser = true');
+      } else {
+        console.log('[CourseService.findOneById] userCourse NOT found, isActiveForUser remains false');
       }
+    } else {
+      console.log('[CourseService.findOneById] No user provided, isActiveForUser = false');
     }
+
+    console.log('[CourseService.findOneById] FINAL - isActiveForUser:', isActiveForUser);
 
     // Response ga isActiveForUser qo'shish
     // TypeORM entity ni plain object ga aylantirish (metadata muammosini oldini olish uchun)

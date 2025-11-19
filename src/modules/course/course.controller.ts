@@ -83,7 +83,10 @@ export class CourseController {
     @Param("id", ParseIntPipe) id: ID,
     @CurrentUser() user?: User,
   ): Promise<ResData<Course & { isActiveForUser: boolean }>> {
-    return await this.courseService.findOneById(id, user);
+    console.log('[CourseController.findOne] Request received - Course ID:', id, 'User:', user ? `ID: ${user.id}, Email/Phone: ${user.phoneNumber || 'N/A'}` : 'NOT AUTHENTICATED');
+    const result = await this.courseService.findOneById(id, user);
+    console.log('[CourseController.findOne] Response - isActiveForUser:', result.data?.isActiveForUser);
+    return result;
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
