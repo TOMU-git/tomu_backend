@@ -66,6 +66,7 @@ import { MaterialFollowUpService } from './services/pipeline/builders/material-f
 import { AIFollowUpService } from './services/pipeline/builders/ai-followup.service';
 import { HybridFollowUpService } from './services/pipeline/builders/hybrid-followup.service';
 import { ResponseCacheService } from './services/response-cache.service';
+import { GoogleTTSProvider } from './services/tts-providers/google-tts.provider';
 
 // Controller imports
 import { AiChatController } from './controllers/ai-chat.controller';
@@ -136,6 +137,8 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     LimitCheckService,
     // Response caching
     ResponseCacheService,
+    // TTS providers
+    GoogleTTSProvider,
     // Retry logic
     RetryHelperService,
     // Token management
