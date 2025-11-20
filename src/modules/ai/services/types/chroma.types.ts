@@ -15,6 +15,8 @@ export interface IndexedChunk {
     title: string;
     next: string | null; // Keyingi gap (dialogue'dan)
     nextTranslationUz: string | null; // Keyingi gapning tarjimasi
+    nextNext: string | null; // Next'ning next'i (ketma-ketlik uchun)
+    nextNextTranslationUz: string | null; // Next-next'ning tarjimasi
 }
 
 export interface ParsedLesson {

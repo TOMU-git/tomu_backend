@@ -1,20 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import { MaterialFollowUpService, FollowUpQuestion } from "./material-followup.service";
 import { AIFollowUpService } from "./ai-followup.service";
+import { MaterialSequentialFollowUpService } from "./material-sequential-followup.service";
 import { TranslationService } from "../../translation.service";
 
 /**
  * Hybrid Follow-up Service
  * 
- * Gibrid yondashuv: birinchi materialdan, topilmasa AI o'zi (qat'iy qoidalar bilan).
+ * Gibrid yondashuv: birinchi material ketma-ketlik, keyin materialdan, topilmasa AI o'zi.
  * 
- * Strategiya:
- * 1. MaterialFollowUpService - materialdan qidirish (PRIORITY)
- * 2. Agar topilmasa → AIFollowUpService - AI o'zi yaratadi (qat'iy qoidalar bilan)
+ * Strategiya (ustuvorlik tartibi):
+ * 0. MaterialSequentialFollowUpService - material ketma-ketlik (BIRINCHI USTUVORLIK, 95% confidence)
+ * 1. MaterialFollowUpService - materialdan qidirish (IKKINCHI USTUVORLIK, 90% confidence)
+ * 2. Agar topilmasa → AIFollowUpService - AI o'zi yaratadi (UCHINCHI USTUVORLIK, 80% confidence)
  * 3. Agar AI ham yaratmasa → null (savol bermaslik)
  * 
  * Avzalligi:
- * - Material-based (90%+ confidence) > AI-generated (80% confidence)
+ * - Material sequential (95% confidence) > Material-based (90% confidence) > AI-generated (80% confidence)
+ * - Material dialogue ketma-ketligini saqlash
  * - Mavzudan chiqish xavfi minimal
  * - Kafolatli context-aware follow-up
  */
@@ -24,7 +27,7 @@ export interface HybridFollowUpResult {
     questionUz: string;
     source: 'material' | 'ai' | 'pattern';
     confidence: number;
-    method: 'material-exact' | 'material-pattern' | 'ai-generated';
+    method: 'material-sequential' | 'material-exact' | 'material-pattern' | 'ai-generated';
 }
 
 @Injectable()
@@ -35,6 +38,7 @@ export class HybridFollowUpService {
     constructor(
         private readonly materialFollowUp: MaterialFollowUpService,
         private readonly aiFollowUp: AIFollowUpService,
+        private readonly materialSequentialFollowUp: MaterialSequentialFollowUpService,
         private readonly translation: TranslationService
     ) {}
 
@@ -45,15 +49,38 @@ export class HybridFollowUpService {
      * @param conversationHistory - Suhbat tarixi
      * @param context - Dars materiallari
      * @param lastWatchedLessonOrder - Foydalanuvchi progress
+     * @param materialMatch - Material match ma'lumotlari (optional, sequential uchun)
      * @returns Follow-up savol yoki null
      */
     async generateFollowUp(
         currentResponse: string,
         conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
         context: any[],
-        lastWatchedLessonOrder: number
+        lastWatchedLessonOrder: number,
+        materialMatch?: {
+            nextNextSentence: string | null;
+            nextNextTranslationUz: string | null;
+            lessonOrder: number | null;
+        }
     ): Promise<HybridFollowUpResult | null> {
         console.log('🔄 [HybridFollowUp] Boshlandi...');
+
+        // Phase 0: Material ketma-ketlik (BIRINCHI USTUVORLIK)
+        if (materialMatch) {
+            const sequentialResult = this.materialSequentialFollowUp.findSequentialFollowUp({
+                nextSentence: currentResponse,
+                nextNextSentence: materialMatch.nextNextSentence,
+                nextNextTranslationUz: materialMatch.nextNextTranslationUz,
+                lessonOrder: materialMatch.lessonOrder,
+            });
+            
+            if (sequentialResult && sequentialResult.confidence >= this.MIN_CONFIDENCE) {
+                console.log(
+                    `✅ [HybridFollowUp] Material ketma-ketlik topildi (confidence: ${sequentialResult.confidence})`,
+                );
+                return await this.formatResult(sequentialResult, 'material-sequential');
+            }
+        }
 
         // ⚡ OPTIMIZATION: Parallel processing - Material va AI parallel qidirish
         // Bu ikki operatsiya bir-biriga bog'liq emas
@@ -76,13 +103,13 @@ export class HybridFollowUpService {
             )
         ]);
 
-        // Material result prioritet (yuqori confidence)
+        // Phase 1: Material result (ikkinchi ustuvorlik)
         if (materialResult && materialResult.confidence >= this.MIN_CONFIDENCE) {
             console.log(`✅ [HybridFollowUp] Material'dan topildi (confidence: ${materialResult.confidence})`);
             return await this.formatResult(materialResult, 'material-exact');
         }
 
-        // AI result (agar material topilmasa)
+        // Phase 2: AI result (uchinchi ustuvorlik)
         if (aiResult && aiResult.confidence >= this.MIN_CONFIDENCE) {
             console.log(`✅ [HybridFollowUp] AI yaratdi (confidence: ${aiResult.confidence})`);
             return await this.formatResult(aiResult, 'ai-generated');
@@ -98,7 +125,7 @@ export class HybridFollowUpService {
      */
     private async formatResult(
         followUp: FollowUpQuestion,
-        method: 'material-exact' | 'material-pattern' | 'ai-generated'
+        method: 'material-sequential' | 'material-exact' | 'material-pattern' | 'ai-generated'
     ): Promise<HybridFollowUpResult> {
         let questionUz = followUp.questionUz;
 

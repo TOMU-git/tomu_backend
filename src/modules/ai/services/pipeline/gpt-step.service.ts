@@ -352,11 +352,17 @@ export class GPTStep implements PipelineStep {
                     } else {
                         console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
                         
+                        // Material match ma'lumotlarini o'tkazish (sequential follow-up uchun)
                         const followUpResult = await this.hybridFollowUp.generateFollowUp(
                             materialResponseResult.aiResponse,
                             conversationHistory,
                             context,
-                            lastWatchedLessonOrder
+                            lastWatchedLessonOrder,
+                            {
+                                nextNextSentence: materialMatch.nextNextSentence || null,
+                                nextNextTranslationUz: materialMatch.nextNextTranslationUz || null,
+                                lessonOrder: materialMatch.lessonOrder,
+                            }
                         );
 
                         // Agar follow-up topilsa

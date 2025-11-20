@@ -14,6 +14,9 @@ export interface MaterialMatchResult {
     nextSentence: string;
     lessonOrder: number | null;
     translationUz: string | null;
+    // Keyingi gap (next'ning next'i) - material ketma-ketlik uchun
+    nextNextSentence: string | null;
+    nextNextTranslationUz: string | null;
     bestMatchSentence: string;
     bestMatchNextSentence: string;
     bestMatchScore: number;
@@ -42,6 +45,8 @@ export class MaterialMatchingService {
             nextSentence: '',
             lessonOrder: null,
             translationUz: null,
+            nextNextSentence: null,
+            nextNextTranslationUz: null,
             bestMatchSentence: '',
             bestMatchNextSentence: '',
             bestMatchScore: 0,
@@ -161,8 +166,17 @@ export class MaterialMatchingService {
                         result.nextSentence = candidate;
                         result.lessonOrder = lessonOrder;
                         result.translationUz = candidateTranslationUz;
+                        
+                        // Keyingi gapni (next'ning next'ini) topish - to'g'ridan-to'g'ri matchedTurn'dan
+                        // Chunk'ning o'zida nextNext va nextNextTranslationUz mavjud
+                        result.nextNextSentence = matchedTurn?.nextNext || null;
+                        result.nextNextTranslationUz = matchedTurn?.nextNextTranslationUz || null;
+                        
                         // Console log: Exact match topildi
                         console.log(`   ✅ Material match: "${s.substring(0, 40)}" → "${candidate.substring(0, 40)}"`);
+                        if (result.nextNextSentence) {
+                            console.log(`   📌 Next-next sentence: "${result.nextNextSentence.substring(0, 40)}"`);
+                        }
                         return result;
                     } else if (isFinalCandidateSameAsUser) {
                         // Keyingi gap user gapining o'zi bo'lsa, bu match'ni o'tkazib yuborish
@@ -215,8 +229,8 @@ export class MaterialMatchingService {
     /**
      * Context'ni lessonOrder bo'yicha guruhlash
      */
-    private groupContextByLessonOrder(context: any[]): Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null }>> {
-        const lessonsMap = new Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null }>>();
+    private groupContextByLessonOrder(context: any[]): Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null; nextNext: string | null; nextNextTranslationUz: string | null }>> {
+        const lessonsMap = new Map<number, Array<{ text: string; turnIndex: number; speaker: string | null; translationUz: string | null; next: string | null; nextTranslationUz: string | null; nextNext: string | null; nextNextTranslationUz: string | null }>>();
 
         if (Array.isArray(context)) {
             for (const chunk of context) {
@@ -227,20 +241,22 @@ export class MaterialMatchingService {
                 const translationUz: string | null = chunk?.translationUz || null;
                 const next: string | null = chunk?.next || null;
                 const nextTranslationUz: string | null = chunk?.nextTranslationUz || null;
+                const nextNext: string | null = chunk?.nextNext || null;
+                const nextNextTranslationUz: string | null = chunk?.nextNextTranslationUz || null;
 
                 if (!text || text.trim().length === 0) continue;
 
                 // Debug: next key bor-yo'qligini tekshirish
                 if (text.includes('مَا هَذَا') || text.includes('ما هذا')) {
-                    console.log(`   🔍 DEBUG: Chunk topildi - text: "${text.substring(0, 40)}", next: ${next ? `"${next.substring(0, 40)}"` : 'null/undefined'}, nextTranslationUz: ${nextTranslationUz || 'null'}`);
+                    console.log(`   🔍 DEBUG: Chunk topildi - text: "${text.substring(0, 40)}", next: ${next ? `"${next.substring(0, 40)}"` : 'null/undefined'}, nextNext: ${nextNext ? `"${nextNext.substring(0, 40)}"` : 'null'}`);
                     console.log(`   🔍 DEBUG: Chunk object keys: ${Object.keys(chunk).join(', ')}`);
-                    console.log(`   🔍 DEBUG: Chunk.next directly: ${chunk?.next || 'undefined'}`);
+                    console.log(`   🔍 DEBUG: Chunk.next directly: ${chunk?.next || 'undefined'}, Chunk.nextNext: ${chunk?.nextNext || 'undefined'}`);
                 }
 
                 if (!lessonsMap.has(lessonOrder)) {
                     lessonsMap.set(lessonOrder, []);
                 }
-                lessonsMap.get(lessonOrder)!.push({ text, turnIndex, speaker, translationUz, next, nextTranslationUz });
+                lessonsMap.get(lessonOrder)!.push({ text, turnIndex, speaker, translationUz, next, nextTranslationUz, nextNext, nextNextTranslationUz });
             }
         }
 
