@@ -325,7 +325,24 @@ export class GPTStep implements PipelineStep {
 
             if (!validation.isValid) {
                 console.log(`⚠️  Material javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-                // Material javob validatsiyadan o'tmaganida ham "materialda yo'q" deb javob berish
+                
+                // Agar "question_to_question" sabab bo'lsa, GPT'dan javob so'rash
+                if (validation.reason === 'question_to_question') {
+                    console.log('🔄 Material javob savolga savol bilan javob berdi, GPT\'dan javob so\'ralmoqda...');
+                    // GPT'dan javob so'rash (material matching o'tkazib yuboriladi)
+                    return await this.generateGPTResponse(
+                        userText,
+                        normalizedUser,
+                        userWords,
+                        context,
+                        lastWatchedLessonOrder,
+                        conversationTopic,
+                        conversationHistory,
+                        false // freeMode = false (material context bilan)
+                    );
+                }
+                
+                // Boshqa sabablar uchun "materialda yo'q" deb javob berish
                 // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
                 return await this.fallbackResponse.createNoMaterialResponse(userText);
             }
@@ -374,11 +391,16 @@ export class GPTStep implements PipelineStep {
                             const useSSML = this.tts.supportsSSML();
                             const pauseDuration = '1.5s'; // 1.5 soniya pauza
                             
+                            // Follow-up savol ekanligini tekshirish (savol ohangi uchun)
+                            const { isQuestion } = await import('../../utils/question-detector.util');
+                            const isFollowUpQuestion = isQuestion(followUpResult.question);
+                            
                             const enrichedResponse = addPauseBetweenTexts(
                                 materialResponseResult.aiResponse,
                                 followUpResult.question,
                                 pauseDuration,
-                                useSSML
+                                useSSML,
+                                isFollowUpQuestion
                             );
                             
                             // Translation uchun SSML kerak emas
@@ -387,6 +409,9 @@ export class GPTStep implements PipelineStep {
                             // Log: SSML ishlatilganligini ko'rsatish
                             if (useSSML) {
                                 console.log(`⏸️  SSML break qo'shildi: ${pauseDuration} pauza`);
+                                if (isFollowUpQuestion) {
+                                    console.log(`🎵 Savol ohangi qo'shildi (question intonation)`);
+                                }
                                 // Database saqlash uchun SSML'siz versiya
                                 console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
                             }
@@ -524,8 +549,17 @@ export class GPTStep implements PipelineStep {
 
         if (!validation.isValid) {
             console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-            // Agar material matching topilmasa va GPT javob invalid bo'lsa,
-            // "materialda yo'q" deb javob berish kerak (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+            
+            // Agar "question_to_question" sabab bo'lsa, retry yoki fallback
+            if (validation.reason === 'question_to_question') {
+                console.log('🔄 GPT javob savolga savol bilan javob berdi, fallback javob qaytarilmoqda...');
+                // Fallback javob - "materialda yo'q" deb javob berish
+                // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
+                return await this.fallbackResponse.createNoMaterialResponse(userText);
+            }
+            
+            // Boshqa sabablar uchun "materialda yo'q" deb javob berish
+            // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
             return await this.fallbackResponse.createNoMaterialResponse(userText);
         }
 

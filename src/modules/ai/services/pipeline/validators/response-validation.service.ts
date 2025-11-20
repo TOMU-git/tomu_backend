@@ -10,6 +10,7 @@ import { SIMILARITY_THRESHOLDS } from '../../../constants/gpt-step.constants';
 import { ArabicTextUtils } from '../../../utils/arabic-text.util';
 import { AI_FALLBACK_MESSAGES } from '../../../constants/error-messages';
 import { ConversationTopicExtractorService, ConversationTopic } from '../extractors/conversation-topic-extractor.service';
+import { isQuestion } from '../../../utils/question-detector.util';
 
 @Injectable()
 export class ResponseValidationService {
@@ -25,6 +26,15 @@ export class ResponseValidationService {
         normalizedUser: string,
         userWords: Set<string>
     ): { isValid: boolean; reason?: string } {
+        // Savolga savol bilan javob bermaslik qoidasi
+        const userIsQuestion = isQuestion(userText);
+        const responseIsQuestion = isQuestion(response);
+        
+        if (userIsQuestion && responseIsQuestion) {
+            console.log('⚠️  Material javob: User savol berdi, lekin javob ham savol - rad etildi');
+            return { isValid: false, reason: 'question_to_question' };
+        }
+        
         // Echo detection o'chirilgan - material javoblar har doim valid
         // Material javoblar materiallardan kelgani uchun, ular har doim to'g'ri
         return { isValid: true };
@@ -57,7 +67,16 @@ export class ResponseValidationService {
             return { isValid: false, reason: 'unsure' };
         }
 
-        // 3. Echo detection - eng muhim
+        // 3. Savolga savol bilan javob bermaslik qoidasi
+        const userIsQuestion = isQuestion(userText);
+        const responseIsQuestion = isQuestion(response);
+        
+        if (userIsQuestion && responseIsQuestion) {
+            console.log('⚠️  GPT javob: User savol berdi, lekin javob ham savol - rad etildi');
+            return { isValid: false, reason: 'question_to_question' };
+        }
+
+        // 4. Echo detection - eng muhim
         const isEcho = this.detectEcho(response, userText, normalizedUser, userWords);
         if (isEcho) {
             return { isValid: false, reason: 'echo' };
