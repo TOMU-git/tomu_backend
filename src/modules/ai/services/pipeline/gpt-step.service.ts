@@ -412,10 +412,12 @@ export class GPTStep implements PipelineStep {
                                 if (isFollowUpQuestion) {
                                     console.log(`🎵 Savol ohangi qo'shildi (question intonation)`);
                                 }
-                                // Database saqlash uchun SSML'siz versiya
+                                // Database saqlash uchun SSML'siz versiya (ai-chat-message-factory.service.ts da olib tashlanadi)
                                 console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
                             }
                             
+                            // ✅ SSML bilan qaytarish - TTS uchun kerak (pauza ishlashi uchun)
+                            // SSML teglar bazaga saqlashda ai-chat-message-factory.service.ts da olib tashlanadi
                             return {
                                 aiResponse: enrichedResponse,
                                 aiResponseUz: enrichedTranslation,

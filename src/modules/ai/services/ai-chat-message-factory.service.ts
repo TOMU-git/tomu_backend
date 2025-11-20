@@ -4,6 +4,7 @@ import { AI_FALLBACK_MESSAGES } from "../constants/error-messages";
 import { TTSService } from "./tts.service";
 import { TranslationService } from "./translation.service";
 import { ArabicTextUtils } from "../utils/arabic-text.util";
+import { stripSSML } from "../utils/ssml.util";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -198,14 +199,22 @@ export class AIChatMessageFactory {
         message.sessionId = sessionId;
         message.senderType = 'ai';
         message.originalText = null; // Foydalanuvchi xabari alohida saqlanadi
-        message.aiResponseText = aiResponse;
+        
+        // ✅ SSML teglarini olib tashlash - bazaga saqlashdan oldin
+        // TTS uchun SSML audio yaratishda ishlatiladi, lekin bazaga saqlanmaydi
+        const cleanAiResponse = stripSSML(aiResponse || '');
+        message.aiResponseText = cleanAiResponse;
         message.aiResponseUzbek = finalUzbekText;
         message.isWithinLimit = withinLimit;
 
         // Audio strategiyasi - FAQAT ARABCHA!
+        // TTS ga yuborishda SSML bo'lishi mumkin (agar mavjud bo'lsa)
+        // TTS servisi SSML ni to'g'ri qayta ishlaydi
         if (audioUrl) {
             message.audioUrl = audioUrl;
         } else {
+            // TTS ga yuborishda asl aiResponse ishlatiladi (SSML bo'lsa ham)
+            // TTS servisi SSML ni qo'llab-quvvatlaydi
             message.audioUrl = await this.tts.textToSpeech({
                 text: aiResponse || '',
                 language: 'ar'
