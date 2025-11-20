@@ -416,8 +416,12 @@ export class GPTStep implements PipelineStep {
                                 console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
                             }
                             
+                            // ✅ SSML teglarini olib tashlash - bazaga va response body'da chiqmasligi uchun
+                            // TTS uchun SSML response-step.service.ts da qayta qo'shiladi
+                            const cleanResponse = useSSML ? stripSSML(enrichedResponse) : enrichedResponse;
+                            
                             return {
-                                aiResponse: enrichedResponse,
+                                aiResponse: cleanResponse,
                                 aiResponseUz: enrichedTranslation,
                                 gptUsage: materialResponseResult.gptUsage,
                             };
