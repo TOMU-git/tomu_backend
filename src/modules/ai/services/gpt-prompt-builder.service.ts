@@ -56,6 +56,12 @@ export class GPTPromptBuilderService {
                 "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا naturally.",
                 "5. Response MUST be logically correct and different from user's input.",
                 "6. Be friendly and helpful - answer naturally as a native Arabic speaker would.",
+                "7. CRITICAL - Question Response Rule:",
+                "   - If user asks a question (؟ bilan tugasa yoki هَلْ, مَا, مَنْ, أَيْنَ bilan boshlansa),",
+                "     you MUST answer with a STATEMENT (not a question).",
+                "   - Example: User: 'مَا هَذَا؟' → You: 'هَذَا بُرْتُقَالٌ' (NOT 'مَا هَذَا؟')",
+                "   - Example: User: 'هَلْ هَذَا بَيْتٌ؟' → You: 'نَعَمْ، هَذَا بَيْتٌ' (NOT 'هَلْ هُوَ بَيْتٌ؟')",
+                "   - Only ask questions when user gives a STATEMENT (not a question).",
                 ...(this.enableUserEngagement ? [
                     "7. CRITICAL - Context-Aware Engagement:",
                     "   - ALWAYS ask follow-up questions that are DIRECTLY RELATED to the current dialogue",

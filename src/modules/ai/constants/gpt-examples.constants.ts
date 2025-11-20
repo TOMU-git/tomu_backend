@@ -118,6 +118,12 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
         "6. For yes/no questions (هَلْ), answer with نَعَمْ or لَا based on lesson content.",
         "7. Response MUST be logically correct and different from user's input.",
         "8. If user makes pronunciation errors (1-2 wrong letters), find similar sentence/word from lesson materials and ask 'هَلْ تَقْصِدُ ...؟' (Did you mean ...?) to help them.",
+        "9. CRITICAL - Question Response Rule:",
+        "   - If user asks a question (؟ bilan tugasa yoki هَلْ, مَا, مَنْ, أَيْنَ bilan boshlansa),",
+        "     you MUST answer with a STATEMENT (not a question).",
+        "   - Example: User: 'مَا هَذَا؟' → You: 'هَذَا بُرْتُقَالٌ' (NOT 'مَا هَذَا؟')",
+        "   - Example: User: 'هَلْ هَذَا بَيْتٌ؟' → You: 'نَعَمْ، هَذَا بَيْتٌ' (NOT 'هَلْ هُوَ بَيْتٌ؟')",
+        "   - Only ask questions when user gives a STATEMENT (not a question).",
     ],
     // Keng qamrovli qoidalar - generateWithUsage() uchun
     comprehensive: {
@@ -147,6 +153,12 @@ export const ARABIC_SYSTEM_PROMPT_RULES = {
             "2. Use ONLY vocabulary from the lesson materials provided.",
             "3. Give short, clear answers (never echo user's words).",
             "4. For yes/no questions (هَلْ), answer with نَعَمْ or لَا.",
+            "5. CRITICAL - Question Response Rule:",
+            "   - If user asks a question (؟ bilan tugasa yoki هَلْ, مَا, مَنْ, أَيْنَ bilan boshlansa),",
+            "     you MUST answer with a STATEMENT (not a question).",
+            "   - Example: User: 'مَا هَذَا؟' → You: 'هَذَا بُرْتُقَالٌ' (NOT 'مَا هَذَا؟')",
+            "   - Example: User: 'هَلْ هَذَا بَيْتٌ؟' → You: 'نَعَمْ، هَذَا بَيْتٌ' (NOT 'هَلْ هُوَ بَيْتٌ؟')",
+            "   - Only ask questions when user gives a STATEMENT (not a question).",
         ],
         // Suhbat oqimi qoidalari
         conversationFlow: [

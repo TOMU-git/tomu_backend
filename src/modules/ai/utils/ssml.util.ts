@@ -34,17 +34,19 @@ export function wrapSSML(text: string, useSSML: boolean = false): string {
  * 
  * Bu funksiya AI javob va follow-up savol orasiga pauza qo'shadi.
  * Faqat Google TTS ishlatilayotgan bo'lsa SSML formatida qaytaradi.
+ * Agar follow-up savol bo'lsa, savol ohangi qo'shiladi.
  * 
  * @param mainText - Asosiy matn (AI javob)
- * @param followUpText - Follow-up matn (savol)
+ * @param followUpText - Follow-up matn (savol yoki statement)
  * @param pauseDuration - Pauza davomiyligi (soniya yoki strength)
  * @param useSSML - SSML ishlatishmi (Google TTS uchun true)
+ * @param isFollowUpQuestion - Follow-up savol ekanligi (default: false)
  * @returns Birlashtirilgan matn (SSML yoki oddiy)
  * 
  * @example
- * // Google TTS uchun (SSML bilan):
- * addPauseBetweenTexts('السلام عليكم', 'كيف حالك؟', '1.5s', true)
- * // Natija: <speak>السلام عليكم<break time="1.5s"/>كيف حالك؟</speak>
+ * // Google TTS uchun (SSML bilan, savol ohangi bilan):
+ * addPauseBetweenTexts('السلام عليكم', 'كيف حالك؟', '1.5s', true, true)
+ * // Natija: <speak>السلام عليكم<break time="1.5s"/><prosody pitch="+5%">كيف حالك؟</prosody></speak>
  * 
  * @example
  * // OpenAI TTS uchun (SSML siz):
@@ -55,7 +57,8 @@ export function addPauseBetweenTexts(
     mainText: string,
     followUpText: string,
     pauseDuration: string = '1.5s',
-    useSSML: boolean = false
+    useSSML: boolean = false,
+    isFollowUpQuestion: boolean = false
 ): string {
     if (!mainText || !followUpText) {
         return mainText || followUpText || '';
@@ -71,7 +74,12 @@ export function addPauseBetweenTexts(
         ? `<break time="${pauseDuration}"/>`
         : `<break strength="${pauseDuration}"/>`;
 
-    return `<speak>${mainText}${breakTag}${followUpText}</speak>`;
+    // Agar follow-up savol bo'lsa, savol ohangi qo'shish
+    const formattedFollowUp = isFollowUpQuestion
+        ? addQuestionIntonation(followUpText, useSSML)
+        : followUpText;
+
+    return `<speak>${mainText}${breakTag}${formattedFollowUp}</speak>`;
 }
 
 /**
@@ -129,6 +137,33 @@ export function changeSpeakingRate(
     }
 
     return `<prosody rate="${rate}">${text}</prosody>`;
+}
+
+/**
+ * Savol matniga savol ohangi qo'shish
+ * 
+ * Google Cloud TTS'da savol ohangi uchun prosody pitch ishlatiladi.
+ * Savollar uchun oxirida balandlik ko'tariladi (question intonation).
+ * 
+ * @param text - Savol matni
+ * @param useSSML - SSML ishlatishmi (Google TTS uchun true)
+ * @returns SSML yoki oddiy text
+ * 
+ * @example
+ * addQuestionIntonation('أَيْنَ بَيْتٌ؟', true)
+ * // Natija: <prosody pitch="+5%">أَيْنَ بَيْتٌ؟</prosody>
+ */
+export function addQuestionIntonation(
+    text: string,
+    useSSML: boolean = false
+): string {
+    if (!useSSML || !text) {
+        return text;
+    }
+
+    // Savol ohangi: pitch oshirish (oxirida balandlik ko'tariladi)
+    // +5% - 5% balandroq (savol ohangi uchun optimal)
+    return `<prosody pitch="+5%">${text}</prosody>`;
 }
 
 /**

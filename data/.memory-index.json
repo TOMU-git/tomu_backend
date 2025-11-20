@@ -12,7 +12,9 @@
       "audioUrl": null,
       "title": "بُرْتُقَالٌ لَذِيذٌ",
       "next": "هَذَا بُرْتُقَالٌ",
-      "nextTranslationUz": "Bu apelsin."
+      "nextTranslationUz": "Bu apelsin.",
+      "nextNext": "هَلْ هُوَ لَذِيذٌ؟",
+      "nextNextTranslationUz": "U mazalimi?"
     },
     {
       "id": "ar_m1_l1_t1",
@@ -26,7 +28,9 @@
       "audioUrl": null,
       "title": "بُرْتُقَالٌ لَذِيذٌ",
       "next": "هَلْ هُوَ لَذِيذٌ؟",
-      "nextTranslationUz": "U mazalimi?"
+      "nextTranslationUz": "U mazalimi?",
+      "nextNext": "نَعَمْ، هُوَ لَذِيذٌ",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l1_t2",
@@ -40,7 +44,9 @@
       "audioUrl": null,
       "title": "بُرْتُقَالٌ لَذِيذٌ",
       "next": "نَعَمْ، هُوَ لَذِيذٌ",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l1_t3",
@@ -54,7 +60,9 @@
       "audioUrl": null,
       "title": "بُرْتُقَالٌ لَذِيذٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l10_t0",
@@ -68,7 +76,9 @@
       "audioUrl": null,
       "title": "عَلِيٌّ وَالتُّفَّاحَةُ",
       "next": "وَ فِي الطَّرِيقِ نَظَرَ إِلَى شَجَرَةِ التُّفَّاحِ.",
-      "nextTranslationUz": "va yo'lda olma daraxtiga qaradi."
+      "nextTranslationUz": "va yo'lda olma daraxtiga qaradi.",
+      "nextNext": "فَسَقَطَتْ تُفَّاحَةٌ عَلَى رَأْسِهِ.",
+      "nextNextTranslationUz": "va uning boshiga bir olma tushdi."
     },
     {
       "id": "ar_m1_l10_t1",
@@ -82,7 +92,9 @@
       "audioUrl": null,
       "title": "عَلِيٌّ وَالتُّفَّاحَةُ",
       "next": "فَسَقَطَتْ تُفَّاحَةٌ عَلَى رَأْسِهِ.",
-      "nextTranslationUz": "va uning boshiga bir olma tushdi."
+      "nextTranslationUz": "va uning boshiga bir olma tushdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l10_t2",
@@ -96,7 +108,9 @@
       "audioUrl": null,
       "title": "عَلِيٌّ وَالتُّفَّاحَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l100_t0",
@@ -110,7 +124,9 @@
       "audioUrl": null,
       "title": "مَدْرَسَةٌ قَرِيبَةٌ",
       "next": "هِيَ مَدْرَسَةٌ كَبِيرَةٌ، وَ لَهَا ثَلَاثَةُ أَبْوَابٍ.",
-      "nextTranslationUz": "U katta maktab va uning uchta eshigi bor."
+      "nextTranslationUz": "U katta maktab va uning uchta eshigi bor.",
+      "nextNext": "فِي الْمَدْرَسَةِ فُصُولٌ كَثِيرَةٌ.",
+      "nextNextTranslationUz": "Maktabda ko'p sinflar bor."
     },
     {
       "id": "ar_m1_l100_t1",
@@ -124,7 +140,9 @@
       "audioUrl": null,
       "title": "مَدْرَسَةٌ قَرِيبَةٌ",
       "next": "فِي الْمَدْرَسَةِ فُصُولٌ كَثِيرَةٌ.",
-      "nextTranslationUz": "Maktabda ko'p sinflar bor."
+      "nextTranslationUz": "Maktabda ko'p sinflar bor.",
+      "nextNext": "هَذَا فَصْلُنَا، وَ هُوَ وَاسِعٌ وَ مُنِيرٌ.",
+      "nextNextTranslationUz": "Bu bizning sinfimiz va u keng va yorug'."
     },
     {
       "id": "ar_m1_l100_t2",
@@ -138,7 +156,9 @@
       "audioUrl": null,
       "title": "مَدْرَسَةٌ قَرِيبَةٌ",
       "next": "هَذَا فَصْلُنَا، وَ هُوَ وَاسِعٌ وَ مُنِيرٌ.",
-      "nextTranslationUz": "Bu bizning sinfimiz va u keng va yorug'."
+      "nextTranslationUz": "Bu bizning sinfimiz va u keng va yorug'.",
+      "nextNext": "فِيهِ نَافِذَتَانِ كَبِيرَتَانِ، وَ مَكَاتِبُ وَ كَرَاسِيُّ.",
+      "nextNextTranslationUz": "Unda ikkita katta deraza, stollar va stullar bor."
     },
     {
       "id": "ar_m1_l100_t3",
@@ -152,7 +172,9 @@
       "audioUrl": null,
       "title": "مَدْرَسَةٌ قَرِيبَةٌ",
       "next": "فِيهِ نَافِذَتَانِ كَبِيرَتَانِ، وَ مَكَاتِبُ وَ كَرَاسِيُّ.",
-      "nextTranslationUz": "Unda ikkita katta deraza, stollar va stullar bor."
+      "nextTranslationUz": "Unda ikkita katta deraza, stollar va stullar bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l100_t4",
@@ -166,7 +188,9 @@
       "audioUrl": null,
       "title": "مَدْرَسَةٌ قَرِيبَةٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l101_t0",
@@ -180,7 +204,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": "لا، مِسْطَرَتِي زَرْقَاءُ.",
-      "nextTranslationUz": "Yo'q, mening chizg'ichim ko'k."
+      "nextTranslationUz": "Yo'q, mening chizg'ichim ko'k.",
+      "nextNext": "هَلْ هِيَ مِسْطَرَةُ سَلْمَى؟",
+      "nextNextTranslationUz": "Bu Salmaning chizg'ichimi?"
     },
     {
       "id": "ar_m1_l101_t1",
@@ -194,7 +220,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": "هَلْ هِيَ مِسْطَرَةُ سَلْمَى؟",
-      "nextTranslationUz": "Bu Salmaning chizg'ichimi?"
+      "nextTranslationUz": "Bu Salmaning chizg'ichimi?",
+      "nextNext": "لا، مِسْطَرَتُهَا حَمْرَاءُ.",
+      "nextNextTranslationUz": "Yo'q, uning chizg'ichi qizil."
     },
     {
       "id": "ar_m1_l101_t2",
@@ -208,7 +236,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": "لا، مِسْطَرَتُهَا حَمْرَاءُ.",
-      "nextTranslationUz": "Yo'q, uning chizg'ichi qizil."
+      "nextTranslationUz": "Yo'q, uning chizg'ichi qizil.",
+      "nextNext": "هَلْ هَذِهِ كُرَّاسَتُكِ؟",
+      "nextNextTranslationUz": "Bu sening daftaringmi?"
     },
     {
       "id": "ar_m1_l101_t3",
@@ -222,7 +252,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": "هَلْ هَذِهِ كُرَّاسَتُكِ؟",
-      "nextTranslationUz": "Bu sening daftaringmi?"
+      "nextTranslationUz": "Bu sening daftaringmi?",
+      "nextNext": "نَعَم، هَذِهِ كُرَّاسَتِي.",
+      "nextNextTranslationUz": "Ha, bu mening daftarim."
     },
     {
       "id": "ar_m1_l101_t4",
@@ -236,7 +268,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": "نَعَم، هَذِهِ كُرَّاسَتِي.",
-      "nextTranslationUz": "Ha, bu mening daftarim."
+      "nextTranslationUz": "Ha, bu mening daftarim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l101_t5",
@@ -250,7 +284,9 @@
       "audioUrl": null,
       "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l102_t0",
@@ -264,7 +300,9 @@
       "audioUrl": null,
       "title": "قَبْلَ الدَّرْسِ",
       "next": "نَعَمْ، يَا أُسْتَاذَنَا.",
-      "nextTranslationUz": "Ha, ustozimiz."
+      "nextTranslationUz": "Ha, ustozimiz.",
+      "nextNext": "هَلْ أَنْتُمْ مُسْتَعِدُّونَ لِلدَّرْسِ يَا تَلَامِيذُ؟",
+      "nextNextTranslationUz": "Darsga tayyormisiz, ey o'quvchilar?"
     },
     {
       "id": "ar_m1_l102_t1",
@@ -278,7 +316,9 @@
       "audioUrl": null,
       "title": "قَبْلَ الدَّرْسِ",
       "next": "هَلْ أَنْتُمْ مُسْتَعِدُّونَ لِلدَّرْسِ يَا تَلَامِيذُ؟",
-      "nextTranslationUz": "Darsga tayyormisiz, ey o'quvchilar?"
+      "nextTranslationUz": "Darsga tayyormisiz, ey o'quvchilar?",
+      "nextNext": "نَعَمْ، نَحْنُ مُسْتَعِدُّونَ لِلدَّرْسِ يَا أُسْتَاذُ.",
+      "nextNextTranslationUz": "Ha, biz darsga tayyormiz, ustoz."
     },
     {
       "id": "ar_m1_l102_t2",
@@ -292,7 +332,9 @@
       "audioUrl": null,
       "title": "قَبْلَ الدَّرْسِ",
       "next": "نَعَمْ، نَحْنُ مُسْتَعِدُّونَ لِلدَّرْسِ يَا أُسْتَاذُ.",
-      "nextTranslationUz": "Ha, biz darsga tayyormiz, ustoz."
+      "nextTranslationUz": "Ha, biz darsga tayyormiz, ustoz.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l102_t3",
@@ -306,7 +348,9 @@
       "audioUrl": null,
       "title": "قَبْلَ الدَّرْسِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l103_t0",
@@ -320,7 +364,9 @@
       "audioUrl": null,
       "title": "اَلْكَسُولُ",
       "next": "وَ لاَ يَقْرَأُ وَ لاَ يَدْرُسُ جَيِّدًا،",
-      "nextTranslationUz": "va yaxshi o'qimaydi va o'rganmaydi,"
+      "nextTranslationUz": "va yaxshi o'qimaydi va o'rganmaydi,",
+      "nextNext": "لِأَنَّهُ كَسُولٌ جِدًّا.",
+      "nextNextTranslationUz": "chunki u juda dangasa."
     },
     {
       "id": "ar_m1_l103_t1",
@@ -334,7 +380,9 @@
       "audioUrl": null,
       "title": "اَلْكَسُولُ",
       "next": "لِأَنَّهُ كَسُولٌ جِدًّا.",
-      "nextTranslationUz": "chunki u juda dangasa."
+      "nextTranslationUz": "chunki u juda dangasa.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l103_t2",
@@ -348,7 +396,9 @@
       "audioUrl": null,
       "title": "اَلْكَسُولُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l104_t0",
@@ -362,7 +412,9 @@
       "audioUrl": null,
       "title": "سَلْمَى كَسْلَانَةٌ",
       "next": "هِيَ لاَ تَقْرَأُ وَ لاَ تَدْرُسُ جَيِّدًا.",
-      "nextTranslationUz": "U yaxshi o'qimaydi va o'rganmaydi."
+      "nextTranslationUz": "U yaxshi o'qimaydi va o'rganmaydi.",
+      "nextNext": "هِيَ كَسُولًةٌ جِدًّا.",
+      "nextNextTranslationUz": "U juda dangasa."
     },
     {
       "id": "ar_m1_l104_t1",
@@ -376,7 +428,9 @@
       "audioUrl": null,
       "title": "سَلْمَى كَسْلَانَةٌ",
       "next": "هِيَ كَسُولًةٌ جِدًّا.",
-      "nextTranslationUz": "U juda dangasa."
+      "nextTranslationUz": "U juda dangasa.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l104_t2",
@@ -390,7 +444,9 @@
       "audioUrl": null,
       "title": "سَلْمَى كَسْلَانَةٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l105_t0",
@@ -404,7 +460,9 @@
       "audioUrl": null,
       "title": "نَصِيحَةُ الطَّبِيبِ",
       "next": "فَذَهَبْتُ إِلَى الطَّبِيبِ، فَقَالَ لِي: \"لاَ تَشْرَبِ الْمَاءَ الْبَارِدَ، بَلِ اشْرَبِ اللَّبَنَ أَوِ الْعَصِيرَ.\"",
-      "nextTranslationUz": "Shifokorga bordim, u menga dedi: \"Sovuq suv ichma, balki sut yoki sharbat ich.\""
+      "nextTranslationUz": "Shifokorga bordim, u menga dedi: \"Sovuq suv ichma, balki sut yoki sharbat ich.\"",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l105_t1",
@@ -418,7 +476,9 @@
       "audioUrl": null,
       "title": "نَصِيحَةُ الطَّبِيبِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l106_t0",
@@ -432,7 +492,9 @@
       "audioUrl": null,
       "title": "رَسْمٌ فِي الْجِدَارِ",
       "next": "أَرْسُمُ صُورَةً.",
-      "nextTranslationUz": "Rasm chizayapman."
+      "nextTranslationUz": "Rasm chizayapman.",
+      "nextNext": "حَسَنًا، أُرْسُمِي عَلَى الْوَرَقِ يَا بُنَيَّتِي، وَلَكِنْ لاَ تَرْسُمِي عَلَى الْجِدَارِ.",
+      "nextNextTranslationUz": "Yaxshi, qog'ozga chiz, qizchaqonim, lekin devorga chizma."
     },
     {
       "id": "ar_m1_l106_t1",
@@ -446,7 +508,9 @@
       "audioUrl": null,
       "title": "رَسْمٌ فِي الْجِدَارِ",
       "next": "حَسَنًا، أُرْسُمِي عَلَى الْوَرَقِ يَا بُنَيَّتِي، وَلَكِنْ لاَ تَرْسُمِي عَلَى الْجِدَارِ.",
-      "nextTranslationUz": "Yaxshi, qog'ozga chiz, qizchaqonim, lekin devorga chizma."
+      "nextTranslationUz": "Yaxshi, qog'ozga chiz, qizchaqonim, lekin devorga chizma.",
+      "nextNext": "حَسَنًا يَا أُمِّي.",
+      "nextNextTranslationUz": "Yaxshi, ona."
     },
     {
       "id": "ar_m1_l106_t2",
@@ -460,7 +524,9 @@
       "audioUrl": null,
       "title": "رَسْمٌ فِي الْجِدَارِ",
       "next": "حَسَنًا يَا أُمِّي.",
-      "nextTranslationUz": "Yaxshi, ona."
+      "nextTranslationUz": "Yaxshi, ona.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l106_t3",
@@ -474,7 +540,9 @@
       "audioUrl": null,
       "title": "رَسْمٌ فِي الْجِدَارِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l107_t0",
@@ -488,7 +556,9 @@
       "audioUrl": null,
       "title": "عَمَلُ وَالِدَيَّ",
       "next": "وَ أُمِّي إِسْمُهَا عَائِشَةُ، وَهِيَ مُعَلِّمَةٌ تَعْمَلُ فِي الْمَدْرَسَةِ.",
-      "nextTranslationUz": "Va onamning ismi Oisha va u maktabda ishlaydigan o'qituvchi."
+      "nextTranslationUz": "Va onamning ismi Oisha va u maktabda ishlaydigan o'qituvchi.",
+      "nextNext": "يَذْهَبُ أَبِي إِلَى الشَّرِكَةِ فِي السَّاعَةِ الثَّامِنَةِ، وَتَذْهَبُ أُمِّي إِلَى الْمَدْرَسَةِ فِي السَّاعَةِ الثَّامِنَةِ وَالنِّصْفِ.",
+      "nextNextTranslationUz": "Otam soat sakkizda kompaniyaga boradi va onam soat sakkiz yarimda maktabga boradi."
     },
     {
       "id": "ar_m1_l107_t1",
@@ -502,7 +572,9 @@
       "audioUrl": null,
       "title": "عَمَلُ وَالِدَيَّ",
       "next": "يَذْهَبُ أَبِي إِلَى الشَّرِكَةِ فِي السَّاعَةِ الثَّامِنَةِ، وَتَذْهَبُ أُمِّي إِلَى الْمَدْرَسَةِ فِي السَّاعَةِ الثَّامِنَةِ وَالنِّصْفِ.",
-      "nextTranslationUz": "Otam soat sakkizda kompaniyaga boradi va onam soat sakkiz yarimda maktabga boradi."
+      "nextTranslationUz": "Otam soat sakkizda kompaniyaga boradi va onam soat sakkiz yarimda maktabga boradi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l107_t2",
@@ -516,7 +588,9 @@
       "audioUrl": null,
       "title": "عَمَلُ وَالِدَيَّ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l108_t0",
@@ -530,7 +604,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ الْمَوْزِ بِاللَّبَنِ",
       "next": "لاَ تَشْرَبِي عَصِيرَ الْبُرْتُقَالِ، بَلِ اشْرَبِي عَصِيرَ الْمَوْزِ بِاللَّبَنِ.",
-      "nextTranslationUz": "Apelsin sharbati ichma, balki bananli sut sharbati ich."
+      "nextTranslationUz": "Apelsin sharbati ichma, balki bananli sut sharbati ich.",
+      "nextNext": "لِمَاذَا عَصِيرُ الْمَوْزِ بِاللَّبَنِ؟",
+      "nextNextTranslationUz": "Nega bananli sut sharbati?"
     },
     {
       "id": "ar_m1_l108_t1",
@@ -544,7 +620,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ الْمَوْزِ بِاللَّبَنِ",
       "next": "لِمَاذَا عَصِيرُ الْمَوْزِ بِاللَّبَنِ؟",
-      "nextTranslationUz": "Nega bananli sut sharbati?"
+      "nextTranslationUz": "Nega bananli sut sharbati?",
+      "nextNext": "لِأَنَّهُ مُفِيدٌ جِدًّا.",
+      "nextNextTranslationUz": "Chunki u juda foydali."
     },
     {
       "id": "ar_m1_l108_t2",
@@ -558,7 +636,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ الْمَوْزِ بِاللَّبَنِ",
       "next": "لِأَنَّهُ مُفِيدٌ جِدًّا.",
-      "nextTranslationUz": "Chunki u juda foydali."
+      "nextTranslationUz": "Chunki u juda foydali.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l108_t3",
@@ -572,7 +652,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ الْمَوْزِ بِاللَّبَنِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l109_t0",
@@ -586,7 +668,9 @@
       "audioUrl": null,
       "title": "مَكْتَبُ الْمُعَلِّمِ",
       "next": "وَ تِلْكَ مَكَاتِبُ الطُّلَّابِ وَ كَرَاسِيُّهُمْ.",
-      "nextTranslationUz": "Va bu talabalarning stollari va ularning stullari."
+      "nextTranslationUz": "Va bu talabalarning stollari va ularning stullari.",
+      "nextNext": "مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ.",
+      "nextNextTranslationUz": "O'qituvchining stoli katta va talabalarning stollari kichik."
     },
     {
       "id": "ar_m1_l109_t1",
@@ -600,7 +684,9 @@
       "audioUrl": null,
       "title": "مَكْتَبُ الْمُعَلِّمِ",
       "next": "مَكْتَبُ الْمُعَلِّمِ كَبِيرٌ، وَ مَكَاتِبُ الطُّلَّابِ صَغِيرَةٌ.",
-      "nextTranslationUz": "O'qituvchining stoli katta va talabalarning stollari kichik."
+      "nextTranslationUz": "O'qituvchining stoli katta va talabalarning stollari kichik.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l109_t2",
@@ -614,7 +700,9 @@
       "audioUrl": null,
       "title": "مَكْتَبُ الْمُعَلِّمِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l11_t0",
@@ -628,7 +716,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ زَيْنَبَ وَ مَرْيَمَ",
       "next": "إِسْمِي مَرْيَمُ.",
-      "nextTranslationUz": "Ismim Maryam."
+      "nextTranslationUz": "Ismim Maryam.",
+      "nextNext": "مَا اسْمُ أَبِيكِ يَا مَرْيَمُ؟",
+      "nextNextTranslationUz": "Otangning ismi nima, Maryam?"
     },
     {
       "id": "ar_m1_l11_t1",
@@ -642,7 +732,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ زَيْنَبَ وَ مَرْيَمَ",
       "next": "مَا اسْمُ أَبِيكِ يَا مَرْيَمُ؟",
-      "nextTranslationUz": "Otangning ismi nima, Maryam?"
+      "nextTranslationUz": "Otangning ismi nima, Maryam?",
+      "nextNext": "إِسْمُ أَبِي مَحْمُودٌ، أَنَا بِنْتُ مَحْمُودٍ.",
+      "nextNextTranslationUz": "Otamning ismi Mahmud, men Mahmudning qiziman."
     },
     {
       "id": "ar_m1_l11_t2",
@@ -656,7 +748,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ زَيْنَبَ وَ مَرْيَمَ",
       "next": "إِسْمُ أَبِي مَحْمُودٌ، أَنَا بِنْتُ مَحْمُودٍ.",
-      "nextTranslationUz": "Otamning ismi Mahmud, men Mahmudning qiziman."
+      "nextTranslationUz": "Otamning ismi Mahmud, men Mahmudning qiziman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l11_t3",
@@ -670,7 +764,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ زَيْنَبَ وَ مَرْيَمَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l110_t0",
@@ -684,7 +780,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": "وَعَلَيْكِ السَّلَامُ يَا بِنْتِي.",
-      "nextTranslationUz": "Va sizga ham salom, qizim."
+      "nextTranslationUz": "Va sizga ham salom, qizim.",
+      "nextNext": "مَتَى تَرْجِعِينَ يَا أُمِّي؟",
+      "nextNextTranslationUz": "Qachon qaytasiz, ona?"
     },
     {
       "id": "ar_m1_l110_t1",
@@ -698,7 +796,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": "مَتَى تَرْجِعِينَ يَا أُمِّي؟",
-      "nextTranslationUz": "Qachon qaytasiz, ona?"
+      "nextTranslationUz": "Qachon qaytasiz, ona?",
+      "nextNext": "أَنَا عِنْدَ الْبَابِ، اِفْتَحِي الْبَابَ يَا بِنْتِي.",
+      "nextNextTranslationUz": "Men eshik oldidaman, eshikni och, qizim."
     },
     {
       "id": "ar_m1_l110_t2",
@@ -712,7 +812,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": "أَنَا عِنْدَ الْبَابِ، اِفْتَحِي الْبَابَ يَا بِنْتِي.",
-      "nextTranslationUz": "Men eshik oldidaman, eshikni och, qizim."
+      "nextTranslationUz": "Men eshik oldidaman, eshikni och, qizim.",
+      "nextNext": "حَسَنًا يَا أُمِّي.",
+      "nextNextTranslationUz": "Yaxshi, ona."
     },
     {
       "id": "ar_m1_l110_t3",
@@ -726,7 +828,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": "حَسَنًا يَا أُمِّي.",
-      "nextTranslationUz": "Yaxshi, ona."
+      "nextTranslationUz": "Yaxshi, ona.",
+      "nextNext": "شُكْرًا يَا بِنْتِي.",
+      "nextNextTranslationUz": "Rahmat, qizim."
     },
     {
       "id": "ar_m1_l110_t4",
@@ -740,7 +844,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": "شُكْرًا يَا بِنْتِي.",
-      "nextTranslationUz": "Rahmat, qizim."
+      "nextTranslationUz": "Rahmat, qizim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l110_t5",
@@ -754,7 +860,9 @@
       "audioUrl": null,
       "title": "أَنَا عِنْدَ الْبَابِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l111_t0",
@@ -768,7 +876,9 @@
       "audioUrl": null,
       "title": "بَيْتُنَا الصَّغِيرُ",
       "next": "هُوَ قَرِيبٌ مِنَ الْمَسْجِدِ.",
-      "nextTranslationUz": "U masjidga yaqin."
+      "nextTranslationUz": "U masjidga yaqin.",
+      "nextNext": "عِنْدَ بَابِ بَيْتِنَا يَجْرِي جَدْوَلٌ.",
+      "nextNextTranslationUz": "Uyimiz eshigi yonida bir daryocha oqadi."
     },
     {
       "id": "ar_m1_l111_t1",
@@ -782,7 +892,9 @@
       "audioUrl": null,
       "title": "بَيْتُنَا الصَّغِيرُ",
       "next": "عِنْدَ بَابِ بَيْتِنَا يَجْرِي جَدْوَلٌ.",
-      "nextTranslationUz": "Uyimiz eshigi yonida bir daryocha oqadi."
+      "nextTranslationUz": "Uyimiz eshigi yonida bir daryocha oqadi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l111_t2",
@@ -796,7 +908,9 @@
       "audioUrl": null,
       "title": "بَيْتُنَا الصَّغِيرُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l112_t0",
@@ -810,7 +924,9 @@
       "audioUrl": null,
       "title": "اَلْمُدِيْرُ و الْمُعَلِّمَةُ",
       "next": "نَعَمْ، عِنْدِي طَالِبَاتٌ.",
-      "nextTranslationUz": "Ha, menda talabalar bor."
+      "nextTranslationUz": "Ha, menda talabalar bor.",
+      "nextNext": "كَمْ عَدَدُهُنَّ؟",
+      "nextNextTranslationUz": "Ular qanchalar?"
     },
     {
       "id": "ar_m1_l112_t1",
@@ -824,7 +940,9 @@
       "audioUrl": null,
       "title": "اَلْمُدِيْرُ و الْمُعَلِّمَةُ",
       "next": "كَمْ عَدَدُهُنَّ؟",
-      "nextTranslationUz": "Ular qanchalar?"
+      "nextTranslationUz": "Ular qanchalar?",
+      "nextNext": "عِنْدِي طَالِبَتَانِ فَقَطْ.",
+      "nextNextTranslationUz": "Menda faqat ikkita talaba bor."
     },
     {
       "id": "ar_m1_l112_t2",
@@ -838,7 +956,9 @@
       "audioUrl": null,
       "title": "اَلْمُدِيْرُ و الْمُعَلِّمَةُ",
       "next": "عِنْدِي طَالِبَتَانِ فَقَطْ.",
-      "nextTranslationUz": "Menda faqat ikkita talaba bor."
+      "nextTranslationUz": "Menda faqat ikkita talaba bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l112_t3",
@@ -852,7 +972,9 @@
       "audioUrl": null,
       "title": "اَلْمُدِيْرُ و الْمُعَلِّمَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l113_t0",
@@ -866,7 +988,9 @@
       "audioUrl": null,
       "title": "فِي الْحَافِلَةِ",
       "next": "رَكِبَ مَعِي ثَلَاثَةُ رِجَالٍ وَخَمْسُ نِسَاءٍ.",
-      "nextTranslationUz": "Men bilan uch erkak va besh ayol mindi."
+      "nextTranslationUz": "Men bilan uch erkak va besh ayol mindi.",
+      "nextNext": "وَأَنَا سَلَّمْتُ عَلَيْهِمْ وَجَلَسْتُ عَلَى الْمَقْعَدِ.",
+      "nextNextTranslationUz": "Va men ularga salom berib, o'rindiqqa o'tirdim."
     },
     {
       "id": "ar_m1_l113_t1",
@@ -880,7 +1004,9 @@
       "audioUrl": null,
       "title": "فِي الْحَافِلَةِ",
       "next": "وَأَنَا سَلَّمْتُ عَلَيْهِمْ وَجَلَسْتُ عَلَى الْمَقْعَدِ.",
-      "nextTranslationUz": "Va men ularga salom berib, o'rindiqqa o'tirdim."
+      "nextTranslationUz": "Va men ularga salom berib, o'rindiqqa o'tirdim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l113_t2",
@@ -894,7 +1020,9 @@
       "audioUrl": null,
       "title": "فِي الْحَافِلَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l114_t0",
@@ -908,7 +1036,9 @@
       "audioUrl": null,
       "title": "اَلأَطْفَالُ فِي الْحَدِيْقَةِ",
       "next": "دَخَلَ الْحَدِيْقَةَ ثَمَانِيَةُ أَطْفَالٍ.",
-      "nextTranslationUz": "Bog'ga sakkiz bola kirdi."
+      "nextTranslationUz": "Bog'ga sakkiz bola kirdi.",
+      "nextNext": "كَمْ طِفْلَةً خَرَجَتْ مِنَ الْحَدِيْقَةِ؟",
+      "nextNextTranslationUz": "Bog'dan qancha qiz bola chiqdi?"
     },
     {
       "id": "ar_m1_l114_t1",
@@ -922,7 +1052,9 @@
       "audioUrl": null,
       "title": "اَلأَطْفَالُ فِي الْحَدِيْقَةِ",
       "next": "كَمْ طِفْلَةً خَرَجَتْ مِنَ الْحَدِيْقَةِ؟",
-      "nextTranslationUz": "Bog'dan qancha qiz bola chiqdi?"
+      "nextTranslationUz": "Bog'dan qancha qiz bola chiqdi?",
+      "nextNext": "تِسْعُ طِفْلَاتٍ.",
+      "nextNextTranslationUz": "To'qqiz qiz bola."
     },
     {
       "id": "ar_m1_l114_t2",
@@ -936,7 +1068,9 @@
       "audioUrl": null,
       "title": "اَلأَطْفَالُ فِي الْحَدِيْقَةِ",
       "next": "تِسْعُ طِفْلَاتٍ.",
-      "nextTranslationUz": "To'qqiz qiz bola."
+      "nextTranslationUz": "To'qqiz qiz bola.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l114_t3",
@@ -950,7 +1084,9 @@
       "audioUrl": null,
       "title": "اَلأَطْفَالُ فِي الْحَدِيْقَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l115_t0",
@@ -964,7 +1100,9 @@
       "audioUrl": null,
       "title": "فِي السُّوقِ",
       "next": "وَ اشْتَرَيْتُ أَيْضًا عَشَرَ مُوْزَاتٍ وَ عَشْرَ فَرَاوِلَاتٍ.",
-      "nextTranslationUz": "Va men shuningdek o'n ta banan va o'n ta qulupnay sotib oldim."
+      "nextTranslationUz": "Va men shuningdek o'n ta banan va o'n ta qulupnay sotib oldim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l115_t1",
@@ -978,7 +1116,9 @@
       "audioUrl": null,
       "title": "فِي السُّوقِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l12_t0",
@@ -992,7 +1132,9 @@
       "audioUrl": null,
       "title": "اَلْفَصْلُ",
       "next": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.",
-      "nextTranslationUz": "Sinf xonasida rasm, stol va stul bor."
+      "nextTranslationUz": "Sinf xonasida rasm, stol va stul bor.",
+      "nextNext": "الْقَلَمُ وَ الدَّفْتَرُ عَلَى الْمَكْتَبِ.",
+      "nextNextTranslationUz": "Qalam va daftar stolning ustida."
     },
     {
       "id": "ar_m1_l12_t1",
@@ -1006,7 +1148,9 @@
       "audioUrl": null,
       "title": "اَلْفَصْلُ",
       "next": "الْقَلَمُ وَ الدَّفْتَرُ عَلَى الْمَكْتَبِ.",
-      "nextTranslationUz": "Qalam va daftar stolning ustida."
+      "nextTranslationUz": "Qalam va daftar stolning ustida.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l12_t2",
@@ -1020,7 +1164,9 @@
       "audioUrl": null,
       "title": "اَلْفَصْلُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l13_t0",
@@ -1034,7 +1180,9 @@
       "audioUrl": null,
       "title": "اَلسُّوقُ",
       "next": "فِي السُّوقِ تُفَّاحٌ وعِنَبٌ وَتَمْرٌ وَمَوْزٌ وَبُرْتُقَالٌ.",
-      "nextTranslationUz": "Bozorda olma, uzum, xurmo, banan va apelsin bor."
+      "nextTranslationUz": "Bozorda olma, uzum, xurmo, banan va apelsin bor.",
+      "nextNext": "فِي السُّوقِ أَيْضًا بَصَلٌ وَجَزَرٌ وَ بَطَاطِسٌ وَ كُرُنْبٌ وَ ثُومٌ.",
+      "nextNextTranslationUz": "Bozorda shuningdek piyoz, sabzi, kartoshka, karam va sarimsoq ham bor."
     },
     {
       "id": "ar_m1_l13_t1",
@@ -1048,7 +1196,9 @@
       "audioUrl": null,
       "title": "اَلسُّوقُ",
       "next": "فِي السُّوقِ أَيْضًا بَصَلٌ وَجَزَرٌ وَ بَطَاطِسٌ وَ كُرُنْبٌ وَ ثُومٌ.",
-      "nextTranslationUz": "Bozorda shuningdek piyoz, sabzi, kartoshka, karam va sarimsoq ham bor."
+      "nextTranslationUz": "Bozorda shuningdek piyoz, sabzi, kartoshka, karam va sarimsoq ham bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l13_t2",
@@ -1062,7 +1212,9 @@
       "audioUrl": null,
       "title": "اَلسُّوقُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l14_t0",
@@ -1076,7 +1228,9 @@
       "audioUrl": null,
       "title": "جَوُّ الْجَبَلِ",
       "next": "بِجَانِبِ الْجَبَلِ أَنْهَارٌ وَ أَشْجَارٌ وَ أَزْهَارٌ وَ أَيْضًا عَلَى الْجَبَلِ ثَلْجٌ.",
-      "nextTranslationUz": "Tog'ning yonida daryolar, daraxtlar va gullar bor, shuningdek tog'ning ustida qor ham bor."
+      "nextTranslationUz": "Tog'ning yonida daryolar, daraxtlar va gullar bor, shuningdek tog'ning ustida qor ham bor.",
+      "nextNext": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
+      "nextNextTranslationUz": "Tog'dagi havo toza va pokiza."
     },
     {
       "id": "ar_m1_l14_t1",
@@ -1090,7 +1244,9 @@
       "audioUrl": null,
       "title": "جَوُّ الْجَبَلِ",
       "next": "اَلْهَوَاءُ فِي الْجَبَلِ نَظِيفٌ وَ نَقِيٌّ.",
-      "nextTranslationUz": "Tog'dagi havo toza va pokiza."
+      "nextTranslationUz": "Tog'dagi havo toza va pokiza.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l14_t2",
@@ -1104,7 +1260,9 @@
       "audioUrl": null,
       "title": "جَوُّ الْجَبَلِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l15_t0",
@@ -1118,7 +1276,9 @@
       "audioUrl": null,
       "title": "اَلْوَرْدَةُ الجَمِيلَةُ",
       "next": "هَذِهِ وَرْدَةٌ.",
-      "nextTranslationUz": "Bu gul."
+      "nextTranslationUz": "Bu gul.",
+      "nextNext": "هَلْ هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ؟",
+      "nextNextTranslationUz": "Bu gul chiroylimi?"
     },
     {
       "id": "ar_m1_l15_t1",
@@ -1132,7 +1292,9 @@
       "audioUrl": null,
       "title": "اَلْوَرْدَةُ الجَمِيلَةُ",
       "next": "هَلْ هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ؟",
-      "nextTranslationUz": "Bu gul chiroylimi?"
+      "nextTranslationUz": "Bu gul chiroylimi?",
+      "nextNext": "نَعَم،هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ جِدًّا.",
+      "nextNextTranslationUz": "Ha, bu gul juda chiroyli."
     },
     {
       "id": "ar_m1_l15_t2",
@@ -1146,7 +1308,9 @@
       "audioUrl": null,
       "title": "اَلْوَرْدَةُ الجَمِيلَةُ",
       "next": "نَعَم،هَذِهِ الْوَرْدَةُ جَمِيْلَةٌ جِدًّا.",
-      "nextTranslationUz": "Ha, bu gul juda chiroyli."
+      "nextTranslationUz": "Ha, bu gul juda chiroyli.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l15_t3",
@@ -1160,7 +1324,9 @@
       "audioUrl": null,
       "title": "اَلْوَرْدَةُ الجَمِيلَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l16_t0",
@@ -1174,7 +1340,9 @@
       "audioUrl": null,
       "title": "اَلْزَّهْرَةُ",
       "next": "هَذِهِ زَهْرَةٌ يَا آمِنَةُ.",
-      "nextTranslationUz": "Bu gul, Omina."
+      "nextTranslationUz": "Bu gul, Omina.",
+      "nextNext": "وَ هَذِهِ زَهْرَةٌ أَيْضًا؟",
+      "nextNextTranslationUz": "Bu ham gulmi?"
     },
     {
       "id": "ar_m1_l16_t1",
@@ -1188,7 +1356,9 @@
       "audioUrl": null,
       "title": "اَلْزَّهْرَةُ",
       "next": "وَ هَذِهِ زَهْرَةٌ أَيْضًا؟",
-      "nextTranslationUz": "Bu ham gulmi?"
+      "nextTranslationUz": "Bu ham gulmi?",
+      "nextNext": "نَعَم , هَذِهِ زَهْرَةٌ أَيْضًا.",
+      "nextNextTranslationUz": "Ha, bu ham gul."
     },
     {
       "id": "ar_m1_l16_t2",
@@ -1202,7 +1372,9 @@
       "audioUrl": null,
       "title": "اَلْزَّهْرَةُ",
       "next": "نَعَم , هَذِهِ زَهْرَةٌ أَيْضًا.",
-      "nextTranslationUz": "Ha, bu ham gul."
+      "nextTranslationUz": "Ha, bu ham gul.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l16_t3",
@@ -1216,7 +1388,9 @@
       "audioUrl": null,
       "title": "اَلْزَّهْرَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l17_t0",
@@ -1230,7 +1404,9 @@
       "audioUrl": null,
       "title": "تُفَّاحَةٌ لِأُمِّي",
       "next": "هَذِهِ تُفَّاحَةٌ يَا سَلْمَى.",
-      "nextTranslationUz": "Bu olma, Salmo."
+      "nextTranslationUz": "Bu olma, Salmo.",
+      "nextNext": "لِمَنْ هَذِهِ التُّفَّاحَةُ؟",
+      "nextNextTranslationUz": "Bu olma kim uchun?"
     },
     {
       "id": "ar_m1_l17_t1",
@@ -1244,7 +1420,9 @@
       "audioUrl": null,
       "title": "تُفَّاحَةٌ لِأُمِّي",
       "next": "لِمَنْ هَذِهِ التُّفَّاحَةُ؟",
-      "nextTranslationUz": "Bu olma kim uchun?"
+      "nextTranslationUz": "Bu olma kim uchun?",
+      "nextNext": "هَذِهِ الْتُّفَّاحَةُ لِأُمِّي.",
+      "nextNextTranslationUz": "Bu olma onam uchun."
     },
     {
       "id": "ar_m1_l17_t2",
@@ -1258,7 +1436,9 @@
       "audioUrl": null,
       "title": "تُفَّاحَةٌ لِأُمِّي",
       "next": "هَذِهِ الْتُّفَّاحَةُ لِأُمِّي.",
-      "nextTranslationUz": "Bu olma onam uchun."
+      "nextTranslationUz": "Bu olma onam uchun.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l17_t3",
@@ -1272,7 +1452,9 @@
       "audioUrl": null,
       "title": "تُفَّاحَةٌ لِأُمِّي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l18_t0",
@@ -1286,7 +1468,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": "وَعَلَيْكُمُ السَّلاَمُ يَا آمِنَةُ.",
-      "nextTranslationUz": "Va alaykum assalom, Omina."
+      "nextTranslationUz": "Va alaykum assalom, Omina.",
+      "nextNext": "مَنْ هَذِهِ يَا فَاطِمَةُ؟",
+      "nextNextTranslationUz": "Bu kim, Fotima?"
     },
     {
       "id": "ar_m1_l18_t1",
@@ -1300,7 +1484,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": "مَنْ هَذِهِ يَا فَاطِمَةُ؟",
-      "nextTranslationUz": "Bu kim, Fotima?"
+      "nextTranslationUz": "Bu kim, Fotima?",
+      "nextNext": "هَذِهِ صَدِيقَتِي خَدِيجَةُ.",
+      "nextNextTranslationUz": "Bu mening do'stim Xadicha."
     },
     {
       "id": "ar_m1_l18_t2",
@@ -1314,7 +1500,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": "هَذِهِ صَدِيقَتِي خَدِيجَةُ.",
-      "nextTranslationUz": "Bu mening do'stim Xadicha."
+      "nextTranslationUz": "Bu mening do'stim Xadicha.",
+      "nextNext": "هَلْ هِيَ طَبِيبَةٌ؟",
+      "nextNextTranslationUz": "U shifokormi?"
     },
     {
       "id": "ar_m1_l18_t3",
@@ -1328,7 +1516,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": "هَلْ هِيَ طَبِيبَةٌ؟",
-      "nextTranslationUz": "U shifokormi?"
+      "nextTranslationUz": "U shifokormi?",
+      "nextNext": "نَعْم , هِيَ طَبِيبَةٌ مَاهِرَةٌ.",
+      "nextNextTranslationUz": "Ha, u mohir shifokor."
     },
     {
       "id": "ar_m1_l18_t4",
@@ -1342,7 +1532,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": "نَعْم , هِيَ طَبِيبَةٌ مَاهِرَةٌ.",
-      "nextTranslationUz": "Ha, u mohir shifokor."
+      "nextTranslationUz": "Ha, u mohir shifokor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l18_t5",
@@ -1356,7 +1548,9 @@
       "audioUrl": null,
       "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l19_t0",
@@ -1370,7 +1564,9 @@
       "audioUrl": null,
       "title": "شُكْرًا يَا أُخْتِي",
       "next": "أَيْنَ الْمِلْعَقَةُ يَا زَيْنَبُ؟",
-      "nextTranslationUz": "Qoshiq qayerda, Zaynab?"
+      "nextTranslationUz": "Qoshiq qayerda, Zaynab?",
+      "nextNext": "اَلْمِلْعَقَةُ عَلَى الْفُرْنِ.",
+      "nextNextTranslationUz": "Qoshiq pechning ustida."
     },
     {
       "id": "ar_m1_l19_t1",
@@ -1384,7 +1580,9 @@
       "audioUrl": null,
       "title": "شُكْرًا يَا أُخْتِي",
       "next": "اَلْمِلْعَقَةُ عَلَى الْفُرْنِ.",
-      "nextTranslationUz": "Qoshiq pechning ustida."
+      "nextTranslationUz": "Qoshiq pechning ustida.",
+      "nextNext": "شُكْرًا يَا أُخْتِي.",
+      "nextNextTranslationUz": "Rahmat, opam/singlim."
     },
     {
       "id": "ar_m1_l19_t2",
@@ -1398,7 +1596,9 @@
       "audioUrl": null,
       "title": "شُكْرًا يَا أُخْتِي",
       "next": "شُكْرًا يَا أُخْتِي.",
-      "nextTranslationUz": "Rahmat, opam/singlim."
+      "nextTranslationUz": "Rahmat, opam/singlim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l19_t3",
@@ -1412,7 +1612,9 @@
       "audioUrl": null,
       "title": "شُكْرًا يَا أُخْتِي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l2_t0",
@@ -1426,7 +1628,9 @@
       "audioUrl": null,
       "title": "بَيْتٌ",
       "next": "هَذَا بَيْتٌ، يَا مُحَمَّدُ.",
-      "nextTranslationUz": "Bu uy, Muhammad."
+      "nextTranslationUz": "Bu uy, Muhammad.",
+      "nextNext": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟",
+      "nextNextTranslationUz": "Bu ham uy emasmi?"
     },
     {
       "id": "ar_m1_l2_t1",
@@ -1440,7 +1644,9 @@
       "audioUrl": null,
       "title": "بَيْتٌ",
       "next": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟",
-      "nextTranslationUz": "Bu ham uy emasmi?"
+      "nextTranslationUz": "Bu ham uy emasmi?",
+      "nextNext": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
+      "nextNextTranslationUz": "Ha, bu ham uy."
     },
     {
       "id": "ar_m1_l2_t2",
@@ -1454,7 +1660,9 @@
       "audioUrl": null,
       "title": "بَيْتٌ",
       "next": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
-      "nextTranslationUz": "Ha, bu ham uy."
+      "nextTranslationUz": "Ha, bu ham uy.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l2_t3",
@@ -1468,7 +1676,9 @@
       "audioUrl": null,
       "title": "بَيْتٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l20_t0",
@@ -1482,7 +1692,9 @@
       "audioUrl": null,
       "title": "رَجُلٌ غَرِيبٌ",
       "next": "تِلْكَ الْحَدِيقَةُ لِلْأَطْفَالِ.",
-      "nextTranslationUz": "Bu bog' bolalar uchun."
+      "nextTranslationUz": "Bu bog' bolalar uchun.",
+      "nextNext": "لِمَاذَا هُنَاكَ ذَلِكَ رَجُلٌ مَعَ الْكَلْبِ؟",
+      "nextNextTranslationUz": "Nega u yerda it bilan bir erkak bor?"
     },
     {
       "id": "ar_m1_l20_t1",
@@ -1496,7 +1708,9 @@
       "audioUrl": null,
       "title": "رَجُلٌ غَرِيبٌ",
       "next": "لِمَاذَا هُنَاكَ ذَلِكَ رَجُلٌ مَعَ الْكَلْبِ؟",
-      "nextTranslationUz": "Nega u yerda it bilan bir erkak bor?"
+      "nextTranslationUz": "Nega u yerda it bilan bir erkak bor?",
+      "nextNext": "يَا رَجُلُ أُخْرُجْ مِنْ هُنَاكَ!",
+      "nextNextTranslationUz": "Ey erkak, u yerdan chiq!"
     },
     {
       "id": "ar_m1_l20_t2",
@@ -1510,7 +1724,9 @@
       "audioUrl": null,
       "title": "رَجُلٌ غَرِيبٌ",
       "next": "يَا رَجُلُ أُخْرُجْ مِنْ هُنَاكَ!",
-      "nextTranslationUz": "Ey erkak, u yerdan chiq!"
+      "nextTranslationUz": "Ey erkak, u yerdan chiq!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l20_t3",
@@ -1524,7 +1740,9 @@
       "audioUrl": null,
       "title": "رَجُلٌ غَرِيبٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l21_t0",
@@ -1538,7 +1756,9 @@
       "audioUrl": null,
       "title": "بَقَرَتِي",
       "next": "لَدَيْنَا بَقَرَةٌ وَاحِدَةٌ، اَلْيَوْمَ ذَهَبَتْ تِلْكَ الْبَقَرَةُ إِلَى الْمَزْرَعَةِ لِتَأْكُلَ العُشْبَ، ثُمَّ رَجَعَتْ إِلَى الْبَيْتِ، فَحَلَبْنَا مِنْهَا اللَّبَنَ.",
-      "nextTranslationUz": "Bizda bitta sigir bor. Bugun u sigir o't yeyish uchun fermaga bordi, keyin uyga qaytdi va biz undan sut sog'dik."
+      "nextTranslationUz": "Bizda bitta sigir bor. Bugun u sigir o't yeyish uchun fermaga bordi, keyin uyga qaytdi va biz undan sut sog'dik.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l21_t1",
@@ -1552,7 +1772,9 @@
       "audioUrl": null,
       "title": "بَقَرَتِي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l22_t0",
@@ -1566,7 +1788,9 @@
       "audioUrl": null,
       "title": "سَقَطَتِ الطِّفْلَةُ",
       "next": "تِلْكَ الطِّفْلَةُ هِيَ ابْنَةُ عَائِشَةَ.",
-      "nextTranslationUz": "U qiz bola Oyshaning qizi."
+      "nextTranslationUz": "U qiz bola Oyshaning qizi.",
+      "nextNext": "لَقَدْ سَقَطَتْ فِي الطِّينِ!",
+      "nextNextTranslationUz": "U loyga yiqildi!"
     },
     {
       "id": "ar_m1_l22_t1",
@@ -1580,7 +1804,9 @@
       "audioUrl": null,
       "title": "سَقَطَتِ الطِّفْلَةُ",
       "next": "لَقَدْ سَقَطَتْ فِي الطِّينِ!",
-      "nextTranslationUz": "U loyga yiqildi!"
+      "nextTranslationUz": "U loyga yiqildi!",
+      "nextNext": "يَا عَائِشَةُ، إِبْنَتُكِ قَدْ سَقَطَتْ!",
+      "nextNextTranslationUz": "Ey Oysha, qizing yiqildi!"
     },
     {
       "id": "ar_m1_l22_t2",
@@ -1594,7 +1820,9 @@
       "audioUrl": null,
       "title": "سَقَطَتِ الطِّفْلَةُ",
       "next": "يَا عَائِشَةُ، إِبْنَتُكِ قَدْ سَقَطَتْ!",
-      "nextTranslationUz": "Ey Oysha, qizing yiqildi!"
+      "nextTranslationUz": "Ey Oysha, qizing yiqildi!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l22_t3",
@@ -1608,7 +1836,9 @@
       "audioUrl": null,
       "title": "سَقَطَتِ الطِّفْلَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l23_t0",
@@ -1622,7 +1852,9 @@
       "audioUrl": null,
       "title": "اَلتَّاجِرُ البَخِيلُ",
       "next": "إِنَّهُ تَاجِرٌ غَنِيٌّ، وَلَكِنَّهُ بَخِيلٌ جِدًّا.",
-      "nextTranslationUz": "U boy savdogar, lekin juda saxiy."
+      "nextTranslationUz": "U boy savdogar, lekin juda saxiy.",
+      "nextNext": "يُحِبُّ الْمَالَ كَثِيرًا.",
+      "nextNextTranslationUz": "U molni juda yaxshi ko'radi."
     },
     {
       "id": "ar_m1_l23_t1",
@@ -1636,7 +1868,9 @@
       "audioUrl": null,
       "title": "اَلتَّاجِرُ البَخِيلُ",
       "next": "يُحِبُّ الْمَالَ كَثِيرًا.",
-      "nextTranslationUz": "U molni juda yaxshi ko'radi."
+      "nextTranslationUz": "U molni juda yaxshi ko'radi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l23_t2",
@@ -1650,7 +1884,9 @@
       "audioUrl": null,
       "title": "اَلتَّاجِرُ البَخِيلُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l24_t0",
@@ -1664,7 +1900,9 @@
       "audioUrl": null,
       "title": "اَلْمُمَرِّضَةُ المَاهِرَةُ",
       "next": "ذَلِكَ الْمُسْتَشْفَى فِي مَرْكَزِ الْمَدِينَةِ.",
-      "nextTranslationUz": "Bu kasalxona shahar markazida joylashgan."
+      "nextTranslationUz": "Bu kasalxona shahar markazida joylashgan.",
+      "nextNext": "وَهِيَ تُسَاعِدُ الْمَرْضَى دَائِمًا.",
+      "nextNextTranslationUz": "U har doim bemorlarga yordam beradi."
     },
     {
       "id": "ar_m1_l24_t1",
@@ -1678,7 +1916,9 @@
       "audioUrl": null,
       "title": "اَلْمُمَرِّضَةُ المَاهِرَةُ",
       "next": "وَهِيَ تُسَاعِدُ الْمَرْضَى دَائِمًا.",
-      "nextTranslationUz": "U har doim bemorlarga yordam beradi."
+      "nextTranslationUz": "U har doim bemorlarga yordam beradi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l24_t2",
@@ -1692,7 +1932,9 @@
       "audioUrl": null,
       "title": "اَلْمُمَرِّضَةُ المَاهِرَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l25_t0",
@@ -1706,7 +1948,9 @@
       "audioUrl": null,
       "title": "اَلْحَدِيقَةُ",
       "next": "نَعَمْ، هَذِهِ حَدِيقَةٌ.",
-      "nextTranslationUz": "Ha, bu bog'."
+      "nextTranslationUz": "Ha, bu bog'.",
+      "nextNext": "هَلْ تِلْكَ حَدِيقَةٌ أَيْضًا؟",
+      "nextNextTranslationUz": "Bu ham bog'mi?"
     },
     {
       "id": "ar_m1_l25_t1",
@@ -1720,7 +1964,9 @@
       "audioUrl": null,
       "title": "اَلْحَدِيقَةُ",
       "next": "هَلْ تِلْكَ حَدِيقَةٌ أَيْضًا؟",
-      "nextTranslationUz": "Bu ham bog'mi?"
+      "nextTranslationUz": "Bu ham bog'mi?",
+      "nextNext": "لَا، تِلْكَ غَابَةٌ.",
+      "nextNextTranslationUz": "Yo'q, bu o'rmon."
     },
     {
       "id": "ar_m1_l25_t2",
@@ -1734,7 +1980,9 @@
       "audioUrl": null,
       "title": "اَلْحَدِيقَةُ",
       "next": "لَا، تِلْكَ غَابَةٌ.",
-      "nextTranslationUz": "Yo'q, bu o'rmon."
+      "nextTranslationUz": "Yo'q, bu o'rmon.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l25_t3",
@@ -1748,7 +1996,9 @@
       "audioUrl": null,
       "title": "اَلْحَدِيقَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l26_t0",
@@ -1762,7 +2012,9 @@
       "audioUrl": null,
       "title": "فِي الْغُرْفَةِ",
       "next": "أَنَا فِي الْغُرْفَةِ.",
-      "nextTranslationUz": "Men xonadaman."
+      "nextTranslationUz": "Men xonadaman.",
+      "nextNext": "أَيْنَ أَنْتِ يَا فِيرُوزَةُ؟",
+      "nextNextTranslationUz": "Qayerdasan, Firuza?"
     },
     {
       "id": "ar_m1_l26_t1",
@@ -1776,7 +2028,9 @@
       "audioUrl": null,
       "title": "فِي الْغُرْفَةِ",
       "next": "أَيْنَ أَنْتِ يَا فِيرُوزَةُ؟",
-      "nextTranslationUz": "Qayerdasan, Firuza?"
+      "nextTranslationUz": "Qayerdasan, Firuza?",
+      "nextNext": "أَنَا فِي الْمَدْرَسَةِ.",
+      "nextNextTranslationUz": "Men maktabdaman."
     },
     {
       "id": "ar_m1_l26_t2",
@@ -1790,7 +2044,9 @@
       "audioUrl": null,
       "title": "فِي الْغُرْفَةِ",
       "next": "أَنَا فِي الْمَدْرَسَةِ.",
-      "nextTranslationUz": "Men maktabdaman."
+      "nextTranslationUz": "Men maktabdaman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l26_t3",
@@ -1804,7 +2060,9 @@
       "audioUrl": null,
       "title": "فِي الْغُرْفَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l27_t0",
@@ -1818,7 +2076,9 @@
       "audioUrl": null,
       "title": "مَجْلِسٌ مُفِيدٌ",
       "next": "ذَهَبَ سَلِيمٌ أَيْضًا مَعَ أَصْدِقَائِهِ.",
-      "nextTranslationUz": "Salim ham do'stlari bilan bordi."
+      "nextTranslationUz": "Salim ham do'stlari bilan bordi.",
+      "nextNext": "رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ.",
+      "nextNextTranslationUz": "Ali Salimni ko'rdi, shuning uchun Ali uning oldida o'tirdi, Salim esa do'stlarining orqasida o'tirdi."
     },
     {
       "id": "ar_m1_l27_t1",
@@ -1832,7 +2092,9 @@
       "audioUrl": null,
       "title": "مَجْلِسٌ مُفِيدٌ",
       "next": "رَأَى عَلِيٌّ سَلِيمًا، فَجَلَسَ عَلِيٌّ أَمَامَهُ، وَجَلَسَ سَلِيمٌ خَلْفَ أَصْدِقَائِهِ.",
-      "nextTranslationUz": "Ali Salimni ko'rdi, shuning uchun Ali uning oldida o'tirdi, Salim esa do'stlarining orqasida o'tirdi."
+      "nextTranslationUz": "Ali Salimni ko'rdi, shuning uchun Ali uning oldida o'tirdi, Salim esa do'stlarining orqasida o'tirdi.",
+      "nextNext": "كَانَ الْمَجْلِسُ مُفِيدًا.",
+      "nextNextTranslationUz": "Majlis foydali bo'ldi."
     },
     {
       "id": "ar_m1_l27_t2",
@@ -1846,7 +2108,9 @@
       "audioUrl": null,
       "title": "مَجْلِسٌ مُفِيدٌ",
       "next": "كَانَ الْمَجْلِسُ مُفِيدًا.",
-      "nextTranslationUz": "Majlis foydali bo'ldi."
+      "nextTranslationUz": "Majlis foydali bo'ldi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l27_t3",
@@ -1860,7 +2124,9 @@
       "audioUrl": null,
       "title": "مَجْلِسٌ مُفِيدٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l28_t0",
@@ -1874,7 +2140,9 @@
       "audioUrl": null,
       "title": "حَدِيقَةُ الْحَيَوَانَاتِ",
       "next": "رَقَبَةُ الزَّرَافَةِ طَوِيلَةٌ، وَعَيْنُ الْغَزَالَةِ جَمِيلَةٌ.",
-      "nextTranslationUz": "Jirafaning bo'yni uzun, kiyikning ko'zlari chiroyli."
+      "nextTranslationUz": "Jirafaning bo'yni uzun, kiyikning ko'zlari chiroyli.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l28_t1",
@@ -1888,7 +2156,9 @@
       "audioUrl": null,
       "title": "حَدِيقَةُ الْحَيَوَانَاتِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l29_t0",
@@ -1902,7 +2172,9 @@
       "audioUrl": null,
       "title": "فِي الْقَرْيَةِ",
       "next": "جَوُّ الْقَرْيَةِ نَقِيٌّ وَمُنْعِشٌ.",
-      "nextTranslationUz": "Qishloq havosi toza va serhavo."
+      "nextTranslationUz": "Qishloq havosi toza va serhavo.",
+      "nextNext": "فِي الْقَرْيَةِ جِبَالٌ، وَ أَشْجَارٌ، وَ مَرَاعٍ خَضْرَاءُ.",
+      "nextNextTranslationUz": "Qishloqda tog'lar, daraxtlar va yashil o'tloqlar bor."
     },
     {
       "id": "ar_m1_l29_t1",
@@ -1916,7 +2188,9 @@
       "audioUrl": null,
       "title": "فِي الْقَرْيَةِ",
       "next": "فِي الْقَرْيَةِ جِبَالٌ، وَ أَشْجَارٌ، وَ مَرَاعٍ خَضْرَاءُ.",
-      "nextTranslationUz": "Qishloqda tog'lar, daraxtlar va yashil o'tloqlar bor."
+      "nextTranslationUz": "Qishloqda tog'lar, daraxtlar va yashil o'tloqlar bor.",
+      "nextNext": "كُلُّ الْحَيَوَانَاتِ فِي الْقَرْيَةِ أَلِيفَةٌ، مِثَالًا: بَقَرَةٌ، وَ شَاةٌ، وَ مَاعِزٌ، وَ فَرَسٌ، وَ غَيْرُ ذَلِكَ.",
+      "nextNextTranslationUz": "Qishloqdagi barcha hayvonlar uy hayvonlari, masalan: sigir, qo'y, echki, ot va boshqalar."
     },
     {
       "id": "ar_m1_l29_t2",
@@ -1930,7 +2204,9 @@
       "audioUrl": null,
       "title": "فِي الْقَرْيَةِ",
       "next": "كُلُّ الْحَيَوَانَاتِ فِي الْقَرْيَةِ أَلِيفَةٌ، مِثَالًا: بَقَرَةٌ، وَ شَاةٌ، وَ مَاعِزٌ، وَ فَرَسٌ، وَ غَيْرُ ذَلِكَ.",
-      "nextTranslationUz": "Qishloqdagi barcha hayvonlar uy hayvonlari, masalan: sigir, qo'y, echki, ot va boshqalar."
+      "nextTranslationUz": "Qishloqdagi barcha hayvonlar uy hayvonlari, masalan: sigir, qo'y, echki, ot va boshqalar.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l29_t3",
@@ -1944,7 +2220,9 @@
       "audioUrl": null,
       "title": "فِي الْقَرْيَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l3_t0",
@@ -1958,7 +2236,9 @@
       "audioUrl": null,
       "title": "مَوْزٌ لَذِيذٌ",
       "next": "هَذَا مَوْزٌ، يَا كَرِيمُ.",
-      "nextTranslationUz": "Bu banan, Karim."
+      "nextTranslationUz": "Bu banan, Karim.",
+      "nextNext": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟",
+      "nextNextTranslationUz": "Bu banan mazalimi?"
     },
     {
       "id": "ar_m1_l3_t1",
@@ -1972,7 +2252,9 @@
       "audioUrl": null,
       "title": "مَوْزٌ لَذِيذٌ",
       "next": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟",
-      "nextTranslationUz": "Bu banan mazalimi?"
+      "nextTranslationUz": "Bu banan mazalimi?",
+      "nextNext": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
+      "nextNextTranslationUz": "Ha, u mazali."
     },
     {
       "id": "ar_m1_l3_t2",
@@ -1986,7 +2268,9 @@
       "audioUrl": null,
       "title": "مَوْزٌ لَذِيذٌ",
       "next": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
-      "nextTranslationUz": "Ha, u mazali."
+      "nextTranslationUz": "Ha, u mazali.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l3_t3",
@@ -2000,7 +2284,9 @@
       "audioUrl": null,
       "title": "مَوْزٌ لَذِيذٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l30_t0",
@@ -2014,7 +2300,9 @@
       "audioUrl": null,
       "title": "اَللُّغَةُ الْعَرَبِيَّةُ",
       "next": "تَتَحَدَّثُ بِهَذِهِ اللُّغَةِ كَثِيرٌ مِنَ الدُّوَلِ،",
-      "nextTranslationUz": "Bu til bilan ko'plab davlatlarda gapiriladi,"
+      "nextTranslationUz": "Bu til bilan ko'plab davlatlarda gapiriladi,",
+      "nextNext": "وَأَكْثَرُهَا فِي شِمَالِ إِفْرِيقِيَا وَآسِيَا.",
+      "nextNextTranslationUz": "va ularning aksariyati Shimoliy Afrika va Osiyoda."
     },
     {
       "id": "ar_m1_l30_t1",
@@ -2028,7 +2316,9 @@
       "audioUrl": null,
       "title": "اَللُّغَةُ الْعَرَبِيَّةُ",
       "next": "وَأَكْثَرُهَا فِي شِمَالِ إِفْرِيقِيَا وَآسِيَا.",
-      "nextTranslationUz": "va ularning aksariyati Shimoliy Afrika va Osiyoda."
+      "nextTranslationUz": "va ularning aksariyati Shimoliy Afrika va Osiyoda.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l30_t2",
@@ -2042,7 +2332,9 @@
       "audioUrl": null,
       "title": "اَللُّغَةُ الْعَرَبِيَّةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l31_t0",
@@ -2056,7 +2348,9 @@
       "audioUrl": null,
       "title": "اَلْغَابَةُ الكَبِيرَةُ",
       "next": "فِي الْغَابَةِ أَشْجَارٌ، وَ أَزْهَارٌ، وَ حَيَوَانَاتٌ مُخْتَلِفَةٌ.",
-      "nextTranslationUz": "O'rmonda daraxtlar, gullar va turli hayvonlar bor."
+      "nextTranslationUz": "O'rmonda daraxtlar, gullar va turli hayvonlar bor.",
+      "nextNext": "مِنَ الْحَيَوَانَاتِ مِثَالًا: أَسَدٌ، وَ ثَعْلَبٌ، وَ ذِئْبٌ، وَ فِيلٌ، وَ زَرَافَةٌ، وَ غَيْرُ ذَلِكَ.",
+      "nextNextTranslationUz": "Hayvonlardan masalan: sher, tulki, bo'ri, fil, jirafa va boshqalar."
     },
     {
       "id": "ar_m1_l31_t1",
@@ -2070,7 +2364,9 @@
       "audioUrl": null,
       "title": "اَلْغَابَةُ الكَبِيرَةُ",
       "next": "مِنَ الْحَيَوَانَاتِ مِثَالًا: أَسَدٌ، وَ ثَعْلَبٌ، وَ ذِئْبٌ، وَ فِيلٌ، وَ زَرَافَةٌ، وَ غَيْرُ ذَلِكَ.",
-      "nextTranslationUz": "Hayvonlardan masalan: sher, tulki, bo'ri, fil, jirafa va boshqalar."
+      "nextTranslationUz": "Hayvonlardan masalan: sher, tulki, bo'ri, fil, jirafa va boshqalar.",
+      "nextNext": "الْغَابَةُ رَائِعَةٌ وَ مُدْهِشَةٌ جِدًّا.",
+      "nextNextTranslationUz": "O'rmon juda ajoyib va hayratlanarli."
     },
     {
       "id": "ar_m1_l31_t2",
@@ -2084,7 +2380,9 @@
       "audioUrl": null,
       "title": "اَلْغَابَةُ الكَبِيرَةُ",
       "next": "الْغَابَةُ رَائِعَةٌ وَ مُدْهِشَةٌ جِدًّا.",
-      "nextTranslationUz": "O'rmon juda ajoyib va hayratlanarli."
+      "nextTranslationUz": "O'rmon juda ajoyib va hayratlanarli.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l31_t3",
@@ -2098,7 +2396,9 @@
       "audioUrl": null,
       "title": "اَلْغَابَةُ الكَبِيرَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l32_t0",
@@ -2112,7 +2412,9 @@
       "audioUrl": null,
       "title": "سَائِقُ الْحَافِلَةِ",
       "next": "سَاقَ السَّائِقُ الْحَافِلَةَ بِسُرْعَةٍ شَدِيدَةٍ، وَ وَصَلَ مُحَمَّدٌ إِلَى الْعَمَلِ مُبَكِّرًا.",
-      "nextTranslationUz": "Haydovchi avtobusni juda tez haydadi va Muhammad ishga erta keldi."
+      "nextTranslationUz": "Haydovchi avtobusni juda tez haydadi va Muhammad ishga erta keldi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l32_t1",
@@ -2126,7 +2428,9 @@
       "audioUrl": null,
       "title": "سَائِقُ الْحَافِلَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l33_t0",
@@ -2140,7 +2444,9 @@
       "audioUrl": null,
       "title": "بِنْتُ خَدِيجَةَ",
       "next": "هِيَ تَلْعَبُ فِي الْمَلْعَبِ كُلَّ يَوْمٍ.",
-      "nextTranslationUz": "U har kuni maydonchada o'ynaydi."
+      "nextTranslationUz": "U har kuni maydonchada o'ynaydi.",
+      "nextNext": "هِيَ ذَكِيَّةٌ وَجَمِيلَةٌ.",
+      "nextNextTranslationUz": "U aqlli va chiroyli."
     },
     {
       "id": "ar_m1_l33_t1",
@@ -2154,7 +2460,9 @@
       "audioUrl": null,
       "title": "بِنْتُ خَدِيجَةَ",
       "next": "هِيَ ذَكِيَّةٌ وَجَمِيلَةٌ.",
-      "nextTranslationUz": "U aqlli va chiroyli."
+      "nextTranslationUz": "U aqlli va chiroyli.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l33_t2",
@@ -2168,7 +2476,9 @@
       "audioUrl": null,
       "title": "بِنْتُ خَدِيجَةَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l34_t0",
@@ -2182,7 +2492,9 @@
       "audioUrl": null,
       "title": "تَأَخَّرَتْ خَدِيجَةُ",
       "next": "جَاءَتْ خَدِيجَةُ بَعْدَ الْمُعَلِّمِ، وَ قَدْ تَأَخَّرَتْ.",
-      "nextTranslationUz": "Xadicha o'qituvchidan keyin keldi va u kech qolgan edi."
+      "nextTranslationUz": "Xadicha o'qituvchidan keyin keldi va u kech qolgan edi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l34_t1",
@@ -2196,7 +2508,9 @@
       "audioUrl": null,
       "title": "تَأَخَّرَتْ خَدِيجَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l35_t0",
@@ -2210,7 +2524,9 @@
       "audioUrl": null,
       "title": "اَلْأَبُ وَ مَحْمُودٌ",
       "next": "عَشَرَةُ كُتُبٍ.",
-      "nextTranslationUz": "O'nta kitob."
+      "nextTranslationUz": "O'nta kitob.",
+      "nextNext": "لِمَاذَا قُلْتَ عَشَرَةً؟",
+      "nextNextTranslationUz": "Nega o'nta deding?"
     },
     {
       "id": "ar_m1_l35_t1",
@@ -2224,7 +2540,9 @@
       "audioUrl": null,
       "title": "اَلْأَبُ وَ مَحْمُودٌ",
       "next": "لِمَاذَا قُلْتَ عَشَرَةً؟",
-      "nextTranslationUz": "Nega o'nta deding?"
+      "nextTranslationUz": "Nega o'nta deding?",
+      "nextNext": "بَقِيَتْ عِنْدَكَ سَبْعَةُ كُتُبٍ، وَ ثَلَاثَةُ كُتُبٍ فِي الْخِزَانَةِ.",
+      "nextNextTranslationUz": "Sizda ettita kitob qoldi, va uchtasi shkafda."
     },
     {
       "id": "ar_m1_l35_t2",
@@ -2238,7 +2556,9 @@
       "audioUrl": null,
       "title": "اَلْأَبُ وَ مَحْمُودٌ",
       "next": "بَقِيَتْ عِنْدَكَ سَبْعَةُ كُتُبٍ، وَ ثَلَاثَةُ كُتُبٍ فِي الْخِزَانَةِ.",
-      "nextTranslationUz": "Sizda ettita kitob qoldi, va uchtasi shkafda."
+      "nextTranslationUz": "Sizda ettita kitob qoldi, va uchtasi shkafda.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l35_t3",
@@ -2252,7 +2572,9 @@
       "audioUrl": null,
       "title": "اَلْأَبُ وَ مَحْمُودٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l36_t0",
@@ -2266,7 +2588,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "أَنَا أَبْحَثُ عَنْ جُبْنٍ لِلْغَدَاءِ.",
-      "nextTranslationUz": "Men tushlik uchun pishloq qidiryapman."
+      "nextTranslationUz": "Men tushlik uchun pishloq qidiryapman.",
+      "nextNext": "هَلْ أُسَاعِدُكَ؟",
+      "nextNextTranslationUz": "Senga yordam beraymanmi?"
     },
     {
       "id": "ar_m1_l36_t1",
@@ -2280,7 +2604,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "هَلْ أُسَاعِدُكَ؟",
-      "nextTranslationUz": "Senga yordam beraymanmi?"
+      "nextTranslationUz": "Senga yordam beraymanmi?",
+      "nextNext": "شُكْرًا، وَلَكِنْ لَا تَأْكُلْنِي!",
+      "nextNextTranslationUz": "Rahmat, lekin meni yema!"
     },
     {
       "id": "ar_m1_l36_t2",
@@ -2294,7 +2620,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "شُكْرًا، وَلَكِنْ لَا تَأْكُلْنِي!",
-      "nextTranslationUz": "Rahmat, lekin meni yema!"
+      "nextTranslationUz": "Rahmat, lekin meni yema!",
+      "nextNext": "هَادِئٌ أَنَا، أُفَضِّلُ السَّمَكَ.",
+      "nextNextTranslationUz": "Men tinchman, baliqni afzal ko'raman."
     },
     {
       "id": "ar_m1_l36_t3",
@@ -2308,7 +2636,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "هَادِئٌ أَنَا، أُفَضِّلُ السَّمَكَ.",
-      "nextTranslationUz": "Men tinchman, baliqni afzal ko'raman."
+      "nextTranslationUz": "Men tinchman, baliqni afzal ko'raman.",
+      "nextNext": "رَائِع! إِذًا نَكُونُ أَصْدِقَاءَ؟",
+      "nextNextTranslationUz": "Ajoyib! Unda do'st bo'lamizmi?"
     },
     {
       "id": "ar_m1_l36_t4",
@@ -2322,7 +2652,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "رَائِع! إِذًا نَكُونُ أَصْدِقَاءَ؟",
-      "nextTranslationUz": "Ajoyib! Unda do'st bo'lamizmi?"
+      "nextTranslationUz": "Ajoyib! Unda do'st bo'lamizmi?",
+      "nextNext": "نَعَم، نَحْنُ أَصْدِقَاءُ!",
+      "nextNextTranslationUz": "Ha, biz do'stmiz!"
     },
     {
       "id": "ar_m1_l36_t5",
@@ -2336,7 +2668,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": "نَعَم، نَحْنُ أَصْدِقَاءُ!",
-      "nextTranslationUz": "Ha, biz do'stmiz!"
+      "nextTranslationUz": "Ha, biz do'stmiz!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l36_t6",
@@ -2350,7 +2684,9 @@
       "audioUrl": null,
       "title": "صَدَاقَةٌ غَيْرُ مُتَوَقَّعَةٍ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l37_t0",
@@ -2364,7 +2700,9 @@
       "audioUrl": null,
       "title": "عَائِلَتُنَا",
       "next": "نَعَمْ، عِنْدِي عَائِلَةٌ وَ عَائِلَتِي كَبِيرَةٌ.",
-      "nextTranslationUz": "Ha, oilam bor va oilam katta."
+      "nextTranslationUz": "Ha, oilam bor va oilam katta.",
+      "nextNext": "نَحْنُ خَمْسَةُ أَشْخَاصٍ: أَبِي، وَ أُمِّي، وَ أَخِي، وَ أُخْتِي، وَ أَنَا.",
+      "nextNextTranslationUz": "Biz besh kishimiz: otam, onam, akam, opam va men."
     },
     {
       "id": "ar_m1_l37_t1",
@@ -2378,7 +2716,9 @@
       "audioUrl": null,
       "title": "عَائِلَتُنَا",
       "next": "نَحْنُ خَمْسَةُ أَشْخَاصٍ: أَبِي، وَ أُمِّي، وَ أَخِي، وَ أُخْتِي، وَ أَنَا.",
-      "nextTranslationUz": "Biz besh kishimiz: otam, onam, akam, opam va men."
+      "nextTranslationUz": "Biz besh kishimiz: otam, onam, akam, opam va men.",
+      "nextNext": "لِي وَ لِأَخِي غُرْفَةٌ صَغِيرَةٌ.",
+      "nextNextTranslationUz": "Mening va akamning kichik xonamiz bor."
     },
     {
       "id": "ar_m1_l37_t2",
@@ -2392,7 +2732,9 @@
       "audioUrl": null,
       "title": "عَائِلَتُنَا",
       "next": "لِي وَ لِأَخِي غُرْفَةٌ صَغِيرَةٌ.",
-      "nextTranslationUz": "Mening va akamning kichik xonamiz bor."
+      "nextTranslationUz": "Mening va akamning kichik xonamiz bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l37_t3",
@@ -2406,7 +2748,9 @@
       "audioUrl": null,
       "title": "عَائِلَتُنَا",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l38_t0",
@@ -2420,7 +2764,9 @@
       "audioUrl": null,
       "title": "مُحَمَّدٌ فِي الْحَدِيقَةِ",
       "next": "كُلَّ يَوْمٍ يَخْرُجُ إِلَى الْحَدِيقَةِ، وَهُنَاكَ يَلْعَبُ الْكُرَةَ مَعَ كَرِيمٍ.",
-      "nextTranslationUz": "U har kuni bog'ga chiqadi va u yerda Karim bilan to'p o'ynaydi."
+      "nextTranslationUz": "U har kuni bog'ga chiqadi va u yerda Karim bilan to'p o'ynaydi.",
+      "nextNext": "قَبْلَ الْمَغْرِبِ، يَعُودُ مُحَمَّدٌ إِلَى الْبَيْتِ، وَ يَعُودُ كَرِيمٌ إِلَى بَيْتِهِ أَيْضًا.",
+      "nextNextTranslationUz": "Shomdan oldin Muhammad uyga qaytadi va Karim ham o'z uyiga qaytadi."
     },
     {
       "id": "ar_m1_l38_t1",
@@ -2434,7 +2780,9 @@
       "audioUrl": null,
       "title": "مُحَمَّدٌ فِي الْحَدِيقَةِ",
       "next": "قَبْلَ الْمَغْرِبِ، يَعُودُ مُحَمَّدٌ إِلَى الْبَيْتِ، وَ يَعُودُ كَرِيمٌ إِلَى بَيْتِهِ أَيْضًا.",
-      "nextTranslationUz": "Shomdan oldin Muhammad uyga qaytadi va Karim ham o'z uyiga qaytadi."
+      "nextTranslationUz": "Shomdan oldin Muhammad uyga qaytadi va Karim ham o'z uyiga qaytadi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l38_t2",
@@ -2448,7 +2796,9 @@
       "audioUrl": null,
       "title": "مُحَمَّدٌ فِي الْحَدِيقَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l39_t0",
@@ -2462,7 +2812,9 @@
       "audioUrl": null,
       "title": "اَلْأَصْدِقَاءُ الْمُقَرَّبُونَ",
       "next": "جَلَسُوا عِنْدَ الْنَهْرِ، وَ طَبَخُوا اللَّحْمَ.",
-      "nextTranslationUz": "Ular daryo bo'yida o'tirishdi va go'sht pishirdilar."
+      "nextTranslationUz": "Ular daryo bo'yida o'tirishdi va go'sht pishirdilar.",
+      "nextNext": "هُمْ أَصْدِقَاءٌ مُقَرَّبُونَ.",
+      "nextNextTranslationUz": "Ular yaqin do'stlardir."
     },
     {
       "id": "ar_m1_l39_t1",
@@ -2476,7 +2828,9 @@
       "audioUrl": null,
       "title": "اَلْأَصْدِقَاءُ الْمُقَرَّبُونَ",
       "next": "هُمْ أَصْدِقَاءٌ مُقَرَّبُونَ.",
-      "nextTranslationUz": "Ular yaqin do'stlardir."
+      "nextTranslationUz": "Ular yaqin do'stlardir.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l39_t2",
@@ -2490,7 +2844,9 @@
       "audioUrl": null,
       "title": "اَلْأَصْدِقَاءُ الْمُقَرَّبُونَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l4_t0",
@@ -2504,7 +2860,9 @@
       "audioUrl": null,
       "title": "تَاجِرٌ",
       "next": "هَذَا تَاجِرٌ، يَا أَحْمَدُ.",
-      "nextTranslationUz": "Bu savdogar, Ahmad."
+      "nextTranslationUz": "Bu savdogar, Ahmad.",
+      "nextNext": "هَلْ ذَلِكَ مُهَنْدِسٌ؟",
+      "nextNextTranslationUz": "U (narigi) muhandismi?"
     },
     {
       "id": "ar_m1_l4_t1",
@@ -2518,7 +2876,9 @@
       "audioUrl": null,
       "title": "تَاجِرٌ",
       "next": "هَلْ ذَلِكَ مُهَنْدِسٌ؟",
-      "nextTranslationUz": "U (narigi) muhandismi?"
+      "nextTranslationUz": "U (narigi) muhandismi?",
+      "nextNext": "لَا، هُوَ تَاجِرٌ أَيْضًا.",
+      "nextNextTranslationUz": "Yo'q, u ham savdogar."
     },
     {
       "id": "ar_m1_l4_t2",
@@ -2532,7 +2892,9 @@
       "audioUrl": null,
       "title": "تَاجِرٌ",
       "next": "لَا، هُوَ تَاجِرٌ أَيْضًا.",
-      "nextTranslationUz": "Yo'q, u ham savdogar."
+      "nextTranslationUz": "Yo'q, u ham savdogar.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l4_t3",
@@ -2546,7 +2908,9 @@
       "audioUrl": null,
       "title": "تَاجِرٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l40_t0",
@@ -2560,7 +2924,9 @@
       "audioUrl": null,
       "title": "اَلْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ",
       "next": "بَعْدَ الْمَدْرَسَةِ، لَعِبْنَ فِي الْمَلْعَبِ.",
-      "nextTranslationUz": "Maktabdan keyin ular maydonchada o'ynashdi."
+      "nextTranslationUz": "Maktabdan keyin ular maydonchada o'ynashdi.",
+      "nextNext": "ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ.",
+      "nextNextTranslationUz": "Keyin o'yindan keyin uyga qaytishdi."
     },
     {
       "id": "ar_m1_l40_t1",
@@ -2574,7 +2940,9 @@
       "audioUrl": null,
       "title": "اَلْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ",
       "next": "ثُمَّ رَجَعْنَ إِلَى الْبَيْتِ بَعْدَ اللَّعِبِ.",
-      "nextTranslationUz": "Keyin o'yindan keyin uyga qaytishdi."
+      "nextTranslationUz": "Keyin o'yindan keyin uyga qaytishdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l40_t2",
@@ -2588,7 +2956,9 @@
       "audioUrl": null,
       "title": "اَلْمَدْرَسَةُ الْإِبْتِدَائِيَّةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l41_t0",
@@ -2602,7 +2972,9 @@
       "audioUrl": null,
       "title": "اَلطَّبَّاخُ",
       "next": "وَفِيهِ يَعْمَلُ صَدِيقُهُ مَحْمُودٌ أَيْضًا، وَيَطْبُخُ أَطْعِمَةً مُخْتَلِفَةً.",
-      "nextTranslationUz": "U yerda uning do'sti Mahmud ham ishlaydi va turli ovqatlar pishiradi."
+      "nextTranslationUz": "U yerda uning do'sti Mahmud ham ishlaydi va turli ovqatlar pishiradi.",
+      "nextNext": "هُمَا طَبَّاخَانِ مَاهِرَانِ، وَيَطْبُخَانِ بِإِتْقَانٍ.",
+      "nextNextTranslationUz": "Ular ikkalasi mohir oshpazlar va mohirlik bilan pishiradilar."
     },
     {
       "id": "ar_m1_l41_t1",
@@ -2616,7 +2988,9 @@
       "audioUrl": null,
       "title": "اَلطَّبَّاخُ",
       "next": "هُمَا طَبَّاخَانِ مَاهِرَانِ، وَيَطْبُخَانِ بِإِتْقَانٍ.",
-      "nextTranslationUz": "Ular ikkalasi mohir oshpazlar va mohirlik bilan pishiradilar."
+      "nextTranslationUz": "Ular ikkalasi mohir oshpazlar va mohirlik bilan pishiradilar.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l41_t2",
@@ -2630,7 +3004,9 @@
       "audioUrl": null,
       "title": "اَلطَّبَّاخُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l42_t0",
@@ -2644,7 +3020,9 @@
       "audioUrl": null,
       "title": "أَثاثُ الْبَيْتِ",
       "next": "أَسْكُنُ فِي شَقَّةٍ.",
-      "nextTranslationUz": "Men kvartirada yashayman."
+      "nextTranslationUz": "Men kvartirada yashayman.",
+      "nextNext": "هَلْ فِيهَا أَثَاثٌ؟",
+      "nextNextTranslationUz": "Unda mebellarmi?"
     },
     {
       "id": "ar_m1_l42_t1",
@@ -2658,7 +3036,9 @@
       "audioUrl": null,
       "title": "أَثاثُ الْبَيْتِ",
       "next": "هَلْ فِيهَا أَثَاثٌ؟",
-      "nextTranslationUz": "Unda mebellarmi?"
+      "nextTranslationUz": "Unda mebellarmi?",
+      "nextNext": "نَعَم، فِيهَا كُرْسِيٌّ، وَ طَاوِلَةٌ، وَ خِزَانَةٌ، وَ ثَلَّاجَةٌ، وَ أَشْيَاءُ أُخْرَى.",
+      "nextNextTranslationUz": "Ha, unda stul, stol, shkaf, muzlatgich va boshqa narsalar bor."
     },
     {
       "id": "ar_m1_l42_t2",
@@ -2672,7 +3052,9 @@
       "audioUrl": null,
       "title": "أَثاثُ الْبَيْتِ",
       "next": "نَعَم، فِيهَا كُرْسِيٌّ، وَ طَاوِلَةٌ، وَ خِزَانَةٌ، وَ ثَلَّاجَةٌ، وَ أَشْيَاءُ أُخْرَى.",
-      "nextTranslationUz": "Ha, unda stul, stol, shkaf, muzlatgich va boshqa narsalar bor."
+      "nextTranslationUz": "Ha, unda stul, stol, shkaf, muzlatgich va boshqa narsalar bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l42_t3",
@@ -2686,7 +3068,9 @@
       "audioUrl": null,
       "title": "أَثاثُ الْبَيْتِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l43_t0",
@@ -2700,7 +3084,9 @@
       "audioUrl": null,
       "title": "أَسْكُنُ فِي طَشْقَنْدَ",
       "next": "بَيْتِي فِي مَرْكَزِ الْمَدِينَةِ.",
-      "nextTranslationUz": "Uyim shahar markazida."
+      "nextTranslationUz": "Uyim shahar markazida.",
+      "nextNext": "وَ مَكْتَبِي هُنَاكَ أَيْضًا.",
+      "nextNextTranslationUz": "Va mening ofisim ham u yerda."
     },
     {
       "id": "ar_m1_l43_t1",
@@ -2714,7 +3100,9 @@
       "audioUrl": null,
       "title": "أَسْكُنُ فِي طَشْقَنْدَ",
       "next": "وَ مَكْتَبِي هُنَاكَ أَيْضًا.",
-      "nextTranslationUz": "Va mening ofisim ham u yerda."
+      "nextTranslationUz": "Va mening ofisim ham u yerda.",
+      "nextNext": "أَنَا أُحِبُّ مَدِينَةَ طَشْقَنْدَ جِدًّا.",
+      "nextNextTranslationUz": "Men Toshkent shahrini juda yaxshi ko'raman."
     },
     {
       "id": "ar_m1_l43_t2",
@@ -2728,7 +3116,9 @@
       "audioUrl": null,
       "title": "أَسْكُنُ فِي طَشْقَنْدَ",
       "next": "أَنَا أُحِبُّ مَدِينَةَ طَشْقَنْدَ جِدًّا.",
-      "nextTranslationUz": "Men Toshkent shahrini juda yaxshi ko'raman."
+      "nextTranslationUz": "Men Toshkent shahrini juda yaxshi ko'raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l43_t3",
@@ -2742,7 +3132,9 @@
       "audioUrl": null,
       "title": "أَسْكُنُ فِي طَشْقَنْدَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l44_t0",
@@ -2756,7 +3148,9 @@
       "audioUrl": null,
       "title": "حُبُّ الْوَالِدَيْنِ",
       "next": "عَمِلَ أَبِي كَثِيرًا جِدًّا.",
-      "nextTranslationUz": "Otam juda ko'p ishladi."
+      "nextTranslationUz": "Otam juda ko'p ishladi.",
+      "nextNext": "وَ أُمِّي طَبَخَتِ الْحَلْوَى وَ نَظَّفَتِ الْبَيْتَ.",
+      "nextNextTranslationUz": "Va onam shirinlik pishirdi va uyni tozaladi."
     },
     {
       "id": "ar_m1_l44_t1",
@@ -2770,7 +3164,9 @@
       "audioUrl": null,
       "title": "حُبُّ الْوَالِدَيْنِ",
       "next": "وَ أُمِّي طَبَخَتِ الْحَلْوَى وَ نَظَّفَتِ الْبَيْتَ.",
-      "nextTranslationUz": "Va onam shirinlik pishirdi va uyni tozaladi."
+      "nextTranslationUz": "Va onam shirinlik pishirdi va uyni tozaladi.",
+      "nextNext": "أَنَا أُحِبُّ أُمِّي وَ أَبِي.",
+      "nextNextTranslationUz": "Men onam va otamni yaxshi ko'raman."
     },
     {
       "id": "ar_m1_l44_t2",
@@ -2784,7 +3180,9 @@
       "audioUrl": null,
       "title": "حُبُّ الْوَالِدَيْنِ",
       "next": "أَنَا أُحِبُّ أُمِّي وَ أَبِي.",
-      "nextTranslationUz": "Men onam va otamni yaxshi ko'raman."
+      "nextTranslationUz": "Men onam va otamni yaxshi ko'raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l44_t3",
@@ -2798,7 +3196,9 @@
       "audioUrl": null,
       "title": "حُبُّ الْوَالِدَيْنِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l45_t0",
@@ -2812,7 +3212,9 @@
       "audioUrl": null,
       "title": "اَلدُّبُّ الْكَبِيرُ",
       "next": "فَهَرَبَ كَرِيمٌ مِنَ الدُّبِّ، وَ جَرَى الدُّبُّ خَلْفَهُ.",
-      "nextTranslationUz": "Shuning uchun Karim ayiqdan qochdi va ayiq uning orqasidan yugurdi."
+      "nextTranslationUz": "Shuning uchun Karim ayiqdan qochdi va ayiq uning orqasidan yugurdi.",
+      "nextNext": "وَ لَكِنَّ كَرِيمًا نَجَا مِنْهُ وَ رَجَعَ إِلَى بَيْتِهِ سَالِمًا.",
+      "nextNextTranslationUz": "Lekin Karim undan qutuldi va uyiga sog'-salomat qaytdi."
     },
     {
       "id": "ar_m1_l45_t1",
@@ -2826,7 +3228,9 @@
       "audioUrl": null,
       "title": "اَلدُّبُّ الْكَبِيرُ",
       "next": "وَ لَكِنَّ كَرِيمًا نَجَا مِنْهُ وَ رَجَعَ إِلَى بَيْتِهِ سَالِمًا.",
-      "nextTranslationUz": "Lekin Karim undan qutuldi va uyiga sog'-salomat qaytdi."
+      "nextTranslationUz": "Lekin Karim undan qutuldi va uyiga sog'-salomat qaytdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l45_t2",
@@ -2840,7 +3244,9 @@
       "audioUrl": null,
       "title": "اَلدُّبُّ الْكَبِيرُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l46_t0",
@@ -2854,7 +3260,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَةُ المَاهِرَةُ",
       "next": "هِيَ تُدَرِّسُ الْهَنْدَسَةَ وَالْفِيزِيَاءَ.",
-      "nextTranslationUz": "U muhandislik va fizikani o'qitadi."
+      "nextTranslationUz": "U muhandislik va fizikani o'qitadi.",
+      "nextNext": "وَهِيَ تَعْرِفُ أَيْضًا لُغَاتٍ مُخْتَلِفَةً.",
+      "nextNextTranslationUz": "Va u turli tillarni ham biladi."
     },
     {
       "id": "ar_m1_l46_t1",
@@ -2868,7 +3276,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَةُ المَاهِرَةُ",
       "next": "وَهِيَ تَعْرِفُ أَيْضًا لُغَاتٍ مُخْتَلِفَةً.",
-      "nextTranslationUz": "Va u turli tillarni ham biladi."
+      "nextTranslationUz": "Va u turli tillarni ham biladi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l46_t2",
@@ -2882,7 +3292,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَةُ المَاهِرَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l47_t0",
@@ -2896,7 +3308,9 @@
       "audioUrl": null,
       "title": "اَلْإِسْتِرَاحَةُ",
       "next": "وَ أَنْتِ أَيْضًا يَا سَلْمَى، اِذْهَبِي إِلَى الْحَدِيقَةِ وَ اسْتَرِيحِي هُنَاكَ.",
-      "nextTranslationUz": "Va sen ham, Salmo, bog'ga bor va u yerda dam ol."
+      "nextTranslationUz": "Va sen ham, Salmo, bog'ga bor va u yerda dam ol.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l47_t1",
@@ -2910,7 +3324,9 @@
       "audioUrl": null,
       "title": "اَلْإِسْتِرَاحَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l48_t0",
@@ -2924,7 +3340,9 @@
       "audioUrl": null,
       "title": "رِحْلَةُ سَعِيدٍ إِلَى السُّوقِ",
       "next": "وَاشْتَرَى فَوَاكِهَ وَ خُضْرَوَاتٍ لَذِيذَةً،",
-      "nextTranslationUz": "va mazali mevalar va sabzavotlar sotib oldi,"
+      "nextTranslationUz": "va mazali mevalar va sabzavotlar sotib oldi,",
+      "nextNext": "ثُمَّ رَجَعَ إِلَى بَيْتِهِ.",
+      "nextNextTranslationUz": "keyin uyiga qaytdi."
     },
     {
       "id": "ar_m1_l48_t1",
@@ -2938,7 +3356,9 @@
       "audioUrl": null,
       "title": "رِحْلَةُ سَعِيدٍ إِلَى السُّوقِ",
       "next": "ثُمَّ رَجَعَ إِلَى بَيْتِهِ.",
-      "nextTranslationUz": "keyin uyiga qaytdi."
+      "nextTranslationUz": "keyin uyiga qaytdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l48_t2",
@@ -2952,7 +3372,9 @@
       "audioUrl": null,
       "title": "رِحْلَةُ سَعِيدٍ إِلَى السُّوقِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l49_t0",
@@ -2966,7 +3388,9 @@
       "audioUrl": null,
       "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
       "next": "اَلْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ زَوْجَةُ أَخِي.",
-      "nextTranslationUz": "Bog'da o'tirgan ayol mening akamning xotini."
+      "nextTranslationUz": "Bog'da o'tirgan ayol mening akamning xotini.",
+      "nextNext": "لِمَاذَا هِيَ حَزِينَةٌ؟",
+      "nextNextTranslationUz": "Nega u g'amgin?"
     },
     {
       "id": "ar_m1_l49_t1",
@@ -2980,7 +3404,9 @@
       "audioUrl": null,
       "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
       "next": "لِمَاذَا هِيَ حَزِينَةٌ؟",
-      "nextTranslationUz": "Nega u g'amgin?"
+      "nextTranslationUz": "Nega u g'amgin?",
+      "nextNext": "هِيَ مَرِيضَةٌ قَلِيلًا.",
+      "nextNextTranslationUz": "U ozgina kasal."
     },
     {
       "id": "ar_m1_l49_t2",
@@ -2994,7 +3420,9 @@
       "audioUrl": null,
       "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
       "next": "هِيَ مَرِيضَةٌ قَلِيلًا.",
-      "nextTranslationUz": "U ozgina kasal."
+      "nextTranslationUz": "U ozgina kasal.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l49_t3",
@@ -3008,7 +3436,9 @@
       "audioUrl": null,
       "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l5_t0",
@@ -3022,7 +3452,9 @@
       "audioUrl": null,
       "title": "مَسْجِدٌ جَمِيلٌ",
       "next": "أَهَذَا مَسْجِدٌ أَيْضًا؟",
-      "nextTranslationUz": "Bu ham masjidmi?"
+      "nextTranslationUz": "Bu ham masjidmi?",
+      "nextNext": "لَا، هَذَا بَيْتٌ.",
+      "nextNextTranslationUz": "Yo'q, bu uy."
     },
     {
       "id": "ar_m1_l5_t1",
@@ -3036,7 +3468,9 @@
       "audioUrl": null,
       "title": "مَسْجِدٌ جَمِيلٌ",
       "next": "لَا، هَذَا بَيْتٌ.",
-      "nextTranslationUz": "Yo'q, bu uy."
+      "nextTranslationUz": "Yo'q, bu uy.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l5_t2",
@@ -3050,7 +3484,9 @@
       "audioUrl": null,
       "title": "مَسْجِدٌ جَمِيلٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l50_t0",
@@ -3064,7 +3500,9 @@
       "audioUrl": null,
       "title": "عُلْبَةُ الْقَهْوَةِ",
       "next": "الْفِنْجَانُ خَلْفَ الْفُرْنِ.",
-      "nextTranslationUz": "Finjon pechning orqasida."
+      "nextTranslationUz": "Finjon pechning orqasida.",
+      "nextNext": "وَ أَيْنَ الْقَهْوَةُ الَّتِي اشْتَرَيْتُهَا أَمْسِ؟",
+      "nextNextTranslationUz": "Va kecha sotib olgan qahvam qayerda?"
     },
     {
       "id": "ar_m1_l50_t1",
@@ -3078,7 +3516,9 @@
       "audioUrl": null,
       "title": "عُلْبَةُ الْقَهْوَةِ",
       "next": "وَ أَيْنَ الْقَهْوَةُ الَّتِي اشْتَرَيْتُهَا أَمْسِ؟",
-      "nextTranslationUz": "Va kecha sotib olgan qahvam qayerda?"
+      "nextTranslationUz": "Va kecha sotib olgan qahvam qayerda?",
+      "nextNext": "الْقَهْوَةُ فِي الْفُرْنِ.",
+      "nextNextTranslationUz": "Qahva pechda."
     },
     {
       "id": "ar_m1_l50_t2",
@@ -3092,7 +3532,9 @@
       "audioUrl": null,
       "title": "عُلْبَةُ الْقَهْوَةِ",
       "next": "الْقَهْوَةُ فِي الْفُرْنِ.",
-      "nextTranslationUz": "Qahva pechda."
+      "nextTranslationUz": "Qahva pechda.",
+      "nextNext": "يَا سَلْمَى، هُنَاكَ عُلْبَةٌ خَاصَّةٌ لِلْقَهْوَةِ.",
+      "nextNextTranslationUz": "Ey Salmo, qahva uchun maxsus quti bor."
     },
     {
       "id": "ar_m1_l50_t3",
@@ -3106,7 +3548,9 @@
       "audioUrl": null,
       "title": "عُلْبَةُ الْقَهْوَةِ",
       "next": "يَا سَلْمَى، هُنَاكَ عُلْبَةٌ خَاصَّةٌ لِلْقَهْوَةِ.",
-      "nextTranslationUz": "Ey Salmo, qahva uchun maxsus quti bor."
+      "nextTranslationUz": "Ey Salmo, qahva uchun maxsus quti bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l50_t4",
@@ -3120,7 +3564,9 @@
       "audioUrl": null,
       "title": "عُلْبَةُ الْقَهْوَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l51_t0",
@@ -3134,7 +3580,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": "نَعَمْ، ذَهَبْتُ إِلَى الْجَامِعَةِ الْيَوْمَ.",
-      "nextTranslationUz": "Ha, bugun universitetga bordim."
+      "nextTranslationUz": "Ha, bugun universitetga bordim.",
+      "nextNext": "مَاذَا تَفْعَلُ بَعْدَ الْجَامِعَةِ؟",
+      "nextNextTranslationUz": "Universitetdan keyin nima qilasan?"
     },
     {
       "id": "ar_m1_l51_t1",
@@ -3148,7 +3596,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": "مَاذَا تَفْعَلُ بَعْدَ الْجَامِعَةِ؟",
-      "nextTranslationUz": "Universitetdan keyin nima qilasan?"
+      "nextTranslationUz": "Universitetdan keyin nima qilasan?",
+      "nextNext": "أَرْجِعُ إِلَى غُرْفَتِي.",
+      "nextNextTranslationUz": "Xonamga qaytaman."
     },
     {
       "id": "ar_m1_l51_t2",
@@ -3162,7 +3612,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": "أَرْجِعُ إِلَى غُرْفَتِي.",
-      "nextTranslationUz": "Xonamga qaytaman."
+      "nextTranslationUz": "Xonamga qaytaman.",
+      "nextNext": "هَلْ تَسْكُنُ فِي شَقَّةٍ؟",
+      "nextNextTranslationUz": "Kvartirada yashaysanmi?"
     },
     {
       "id": "ar_m1_l51_t3",
@@ -3176,7 +3628,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": "هَلْ تَسْكُنُ فِي شَقَّةٍ؟",
-      "nextTranslationUz": "Kvartirada yashaysanmi?"
+      "nextTranslationUz": "Kvartirada yashaysanmi?",
+      "nextNext": "لَا، أَسْكُنُ فِي بَيْتِ الطُّلَّابِ.",
+      "nextNextTranslationUz": "Yo'q, men talabalar uyida yashayman."
     },
     {
       "id": "ar_m1_l51_t4",
@@ -3190,7 +3644,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": "لَا، أَسْكُنُ فِي بَيْتِ الطُّلَّابِ.",
-      "nextTranslationUz": "Yo'q, men talabalar uyida yashayman."
+      "nextTranslationUz": "Yo'q, men talabalar uyida yashayman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l51_t5",
@@ -3204,7 +3660,9 @@
       "audioUrl": null,
       "title": "مَسْكَنُ الطُّلَّابِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l52_t0",
@@ -3218,7 +3676,9 @@
       "audioUrl": null,
       "title": "شَارِعُ الْمَحْكَمَةِ",
       "next": "أَسْكُنُ فِي الشَّارِعِ الَّذِي أَمَامَ الْمَحْكَمَةِ.",
-      "nextTranslationUz": "Men sud oldidagi ko'chada yashayman."
+      "nextTranslationUz": "Men sud oldidagi ko'chada yashayman.",
+      "nextNext": "هَلْ يَعْمَلُ أَبُوكَ فِي الْمَحْكَمَةِ؟",
+      "nextNextTranslationUz": "Otang sudda ishlaydimi?"
     },
     {
       "id": "ar_m1_l52_t1",
@@ -3232,7 +3692,9 @@
       "audioUrl": null,
       "title": "شَارِعُ الْمَحْكَمَةِ",
       "next": "هَلْ يَعْمَلُ أَبُوكَ فِي الْمَحْكَمَةِ؟",
-      "nextTranslationUz": "Otang sudda ishlaydimi?"
+      "nextTranslationUz": "Otang sudda ishlaydimi?",
+      "nextNext": "لَا، أَبِي يَعْمَلُ فِي الْوِزَارَةِ.",
+      "nextNextTranslationUz": "Yo'q, otam vazirlikda ishlaydi."
     },
     {
       "id": "ar_m1_l52_t2",
@@ -3246,7 +3708,9 @@
       "audioUrl": null,
       "title": "شَارِعُ الْمَحْكَمَةِ",
       "next": "لَا، أَبِي يَعْمَلُ فِي الْوِزَارَةِ.",
-      "nextTranslationUz": "Yo'q, otam vazirlikda ishlaydi."
+      "nextTranslationUz": "Yo'q, otam vazirlikda ishlaydi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l52_t3",
@@ -3260,7 +3724,9 @@
       "audioUrl": null,
       "title": "شَارِعُ الْمَحْكَمَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l53_t0",
@@ -3274,7 +3740,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": "هَؤُلاَءِ الرِّجَالُ فَلَّاحُونَ.",
-      "nextTranslationUz": "Bu erkaklar dehqonlar."
+      "nextTranslationUz": "Bu erkaklar dehqonlar.",
+      "nextNext": "مِنْ أَيْنَ هُمْ؟",
+      "nextNextTranslationUz": "Ular qayerdan?"
     },
     {
       "id": "ar_m1_l53_t1",
@@ -3288,7 +3756,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": "مِنْ أَيْنَ هُمْ؟",
-      "nextTranslationUz": "Ular qayerdan?"
+      "nextTranslationUz": "Ular qayerdan?",
+      "nextNext": "هُمْ مِنْ مِصْرَ.",
+      "nextNextTranslationUz": "Ular Misrdan."
     },
     {
       "id": "ar_m1_l53_t2",
@@ -3302,7 +3772,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": "هُمْ مِنْ مِصْرَ.",
-      "nextTranslationUz": "Ular Misrdan."
+      "nextTranslationUz": "Ular Misrdan.",
+      "nextNext": "مَاذَا يَفْعَلُونَ هُنَا؟",
+      "nextNextTranslationUz": "Ular bu yerda nima qilishyapti?"
     },
     {
       "id": "ar_m1_l53_t3",
@@ -3316,7 +3788,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": "مَاذَا يَفْعَلُونَ هُنَا؟",
-      "nextTranslationUz": "Ular bu yerda nima qilishyapti?"
+      "nextTranslationUz": "Ular bu yerda nima qilishyapti?",
+      "nextNext": "يَزْرَعُونَ الشَّمَّامَ؛ لِأَنَّ الشَّمَّامَ فِي مِصْرَ لَذِيذٌ.",
+      "nextNextTranslationUz": "Ular qovun yetishtirishyaptilar, chunki Misrda qovun mazali."
     },
     {
       "id": "ar_m1_l53_t4",
@@ -3330,7 +3804,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": "يَزْرَعُونَ الشَّمَّامَ؛ لِأَنَّ الشَّمَّامَ فِي مِصْرَ لَذِيذٌ.",
-      "nextTranslationUz": "Ular qovun yetishtirishyaptilar, chunki Misrda qovun mazali."
+      "nextTranslationUz": "Ular qovun yetishtirishyaptilar, chunki Misrda qovun mazali.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l53_t5",
@@ -3344,7 +3820,9 @@
       "audioUrl": null,
       "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l54_t0",
@@ -3358,7 +3836,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَاتُ الْعَرَبِيَّاتُ",
       "next": "عَدَدُ هَؤُلَاءِ الْمُعَلِّمَاتِ سَبْعٌ.",
-      "nextTranslationUz": "Bu o'qituvchilarning soni yetti."
+      "nextTranslationUz": "Bu o'qituvchilarning soni yetti.",
+      "nextNext": "هَؤُلَاءِ الْمُعَلِّمَاتُ مَاهِرَاتٌ جِدًّا.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l54_t1",
@@ -3372,7 +3852,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَاتُ الْعَرَبِيَّاتُ",
       "next": "هَؤُلَاءِ الْمُعَلِّمَاتُ مَاهِرَاتٌ جِدًّا.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l54_t2",
@@ -3386,7 +3868,9 @@
       "audioUrl": null,
       "title": "اَلْمُعَلِّمَاتُ الْعَرَبِيَّاتُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l55_t0",
@@ -3400,7 +3884,9 @@
       "audioUrl": null,
       "title": "اَلْجَزَّارُونَ",
       "next": "لاَ، لَا أَعْرِفُ مَنْ هُمْ.",
-      "nextTranslationUz": "Yo'q, ular kimligini bilmayman."
+      "nextTranslationUz": "Yo'q, ular kimligini bilmayman.",
+      "nextNext": "أُولَئِكَ جَزَّارُونَ.",
+      "nextNextTranslationUz": "Ular qassoblar."
     },
     {
       "id": "ar_m1_l55_t1",
@@ -3414,7 +3900,9 @@
       "audioUrl": null,
       "title": "اَلْجَزَّارُونَ",
       "next": "أُولَئِكَ جَزَّارُونَ.",
-      "nextTranslationUz": "Ular qassoblar."
+      "nextTranslationUz": "Ular qassoblar.",
+      "nextNext": "مَاذَا يَفْعَلُونَ هُنَا؟",
+      "nextNextTranslationUz": "Ular bu yerda nima qilishyapti?"
     },
     {
       "id": "ar_m1_l55_t2",
@@ -3428,7 +3916,9 @@
       "audioUrl": null,
       "title": "اَلْجَزَّارُونَ",
       "next": "مَاذَا يَفْعَلُونَ هُنَا؟",
-      "nextTranslationUz": "Ular bu yerda nima qilishyapti?"
+      "nextTranslationUz": "Ular bu yerda nima qilishyapti?",
+      "nextNext": "يَذْبَحُ أُولَئِكَ الْجَزَّارُونَ الْخَرُوفَ لِلْعِيدِ.",
+      "nextNextTranslationUz": "U qassoblar bayram uchun qo'zini so'yishyapti."
     },
     {
       "id": "ar_m1_l55_t3",
@@ -3442,7 +3932,9 @@
       "audioUrl": null,
       "title": "اَلْجَزَّارُونَ",
       "next": "يَذْبَحُ أُولَئِكَ الْجَزَّارُونَ الْخَرُوفَ لِلْعِيدِ.",
-      "nextTranslationUz": "U qassoblar bayram uchun qo'zini so'yishyapti."
+      "nextTranslationUz": "U qassoblar bayram uchun qo'zini so'yishyapti.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l55_t4",
@@ -3456,7 +3948,9 @@
       "audioUrl": null,
       "title": "اَلْجَزَّارُونَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l56_t0",
@@ -3470,7 +3964,9 @@
       "audioUrl": null,
       "title": "عَمَّاتِي",
       "next": "هَؤُلَاءِ الْعَمَّاتُ نِسَاءٌ طَيِّبَاتٌ.",
-      "nextTranslationUz": "Bu xolalar mehribon ayollardir."
+      "nextTranslationUz": "Bu xolalar mehribon ayollardir.",
+      "nextNext": "جَاءَتْ هَؤُلَاءِ الْعَمَّاتُ بِالْحَافِلَةِ مِنَ الْقَرْيَةِ.",
+      "nextNextTranslationUz": "Bu xolalar qishloqdan avtobusda keldi."
     },
     {
       "id": "ar_m1_l56_t1",
@@ -3484,7 +3980,9 @@
       "audioUrl": null,
       "title": "عَمَّاتِي",
       "next": "جَاءَتْ هَؤُلَاءِ الْعَمَّاتُ بِالْحَافِلَةِ مِنَ الْقَرْيَةِ.",
-      "nextTranslationUz": "Bu xolalar qishloqdan avtobusda keldi."
+      "nextTranslationUz": "Bu xolalar qishloqdan avtobusda keldi.",
+      "nextNext": "خَالِدٌ يُحِبُّهُنَّ كَثِيرًا.",
+      "nextNextTranslationUz": "Xolid ularni juda yaxshi ko'radi."
     },
     {
       "id": "ar_m1_l56_t2",
@@ -3498,7 +3996,9 @@
       "audioUrl": null,
       "title": "عَمَّاتِي",
       "next": "خَالِدٌ يُحِبُّهُنَّ كَثِيرًا.",
-      "nextTranslationUz": "Xolid ularni juda yaxshi ko'radi."
+      "nextTranslationUz": "Xolid ularni juda yaxshi ko'radi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l56_t3",
@@ -3512,7 +4012,9 @@
       "audioUrl": null,
       "title": "عَمَّاتِي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l57_t0",
@@ -3526,7 +4028,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "وَعَلَيْكُمُ السَّلَامُ.",
-      "nextTranslationUz": "Va alaykum assalom."
+      "nextTranslationUz": "Va alaykum assalom.",
+      "nextNext": "مَا اسْمُكَ يَا أَخِي؟",
+      "nextNextTranslationUz": "Isming nima, akam?"
     },
     {
       "id": "ar_m1_l57_t1",
@@ -3540,7 +4044,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "مَا اسْمُكَ يَا أَخِي؟",
-      "nextTranslationUz": "Isming nima, akam?"
+      "nextTranslationUz": "Isming nima, akam?",
+      "nextNext": "إِسْمِي جَمَالٌ، وَمَا اسْمُكَ يَا أَخِي العَزِيزُ؟",
+      "nextNextTranslationUz": "Ismim Jamol, sening isming nima, aziz akam?"
     },
     {
       "id": "ar_m1_l57_t2",
@@ -3554,7 +4060,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "إِسْمِي جَمَالٌ، وَمَا اسْمُكَ يَا أَخِي العَزِيزُ؟",
-      "nextTranslationUz": "Ismim Jamol, sening isming nima, aziz akam?"
+      "nextTranslationUz": "Ismim Jamol, sening isming nima, aziz akam?",
+      "nextNext": "إِسْمِي نَادِرٌ.",
+      "nextNextTranslationUz": "Ismim Nodir."
     },
     {
       "id": "ar_m1_l57_t3",
@@ -3568,7 +4076,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "إِسْمِي نَادِرٌ.",
-      "nextTranslationUz": "Ismim Nodir."
+      "nextTranslationUz": "Ismim Nodir.",
+      "nextNext": "مِنْ أَيِّ بَلَدٍ أَنْتَ؟",
+      "nextNextTranslationUz": "Qaysi mamlakatdansan?"
     },
     {
       "id": "ar_m1_l57_t4",
@@ -3582,7 +4092,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "مِنْ أَيِّ بَلَدٍ أَنْتَ؟",
-      "nextTranslationUz": "Qaysi mamlakatdansan?"
+      "nextTranslationUz": "Qaysi mamlakatdansan?",
+      "nextNext": "أَنَا مِنْ أُوزْبَكِسْتَانَ، وَأَنْتَ؟",
+      "nextNextTranslationUz": "Men O'zbekistondanman, senchi?"
     },
     {
       "id": "ar_m1_l57_t5",
@@ -3596,7 +4108,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "أَنَا مِنْ أُوزْبَكِسْتَانَ، وَأَنْتَ؟",
-      "nextTranslationUz": "Men O'zbekistondanman, senchi?"
+      "nextTranslationUz": "Men O'zbekistondanman, senchi?",
+      "nextNext": "أَنَا مِنْ مِصْرَ.",
+      "nextNextTranslationUz": "Men Misrdanman."
     },
     {
       "id": "ar_m1_l57_t6",
@@ -3610,7 +4124,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "أَنَا مِنْ مِصْرَ.",
-      "nextTranslationUz": "Men Misrdanman."
+      "nextTranslationUz": "Men Misrdanman.",
+      "nextNext": "أَهْلًا وَسَهْلًا!",
+      "nextNextTranslationUz": "Xush kelibsiz!"
     },
     {
       "id": "ar_m1_l57_t7",
@@ -3624,7 +4140,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "أَهْلًا وَسَهْلًا!",
-      "nextTranslationUz": "Xush kelibsiz!"
+      "nextTranslationUz": "Xush kelibsiz!",
+      "nextNext": "أَهْلًا بِكَ!",
+      "nextNextTranslationUz": "Xush ko'rdim seni!"
     },
     {
       "id": "ar_m1_l57_t8",
@@ -3638,7 +4156,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": "أَهْلًا بِكَ!",
-      "nextTranslationUz": "Xush ko'rdim seni!"
+      "nextTranslationUz": "Xush ko'rdim seni!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l57_t9",
@@ -3652,7 +4172,9 @@
       "audioUrl": null,
       "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l58_t0",
@@ -3666,7 +4188,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "أَدْرُسُ فِي جَامِعَةِ الأَزْهَرِ الشَّرِيفِ.",
-      "nextTranslationUz": "Azhar universitetida o'qiyman."
+      "nextTranslationUz": "Azhar universitetida o'qiyman.",
+      "nextNext": "فِي أَيِّ كُلِّيَّةٍ؟",
+      "nextNextTranslationUz": "Qaysi fakultetda?"
     },
     {
       "id": "ar_m1_l58_t1",
@@ -3680,7 +4204,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "فِي أَيِّ كُلِّيَّةٍ؟",
-      "nextTranslationUz": "Qaysi fakultetda?"
+      "nextTranslationUz": "Qaysi fakultetda?",
+      "nextNext": "فِي كُلِّيَّةِ الطِّبِّ.",
+      "nextNextTranslationUz": "Tibbiyot fakultetida."
     },
     {
       "id": "ar_m1_l58_t2",
@@ -3694,7 +4220,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "فِي كُلِّيَّةِ الطِّبِّ.",
-      "nextTranslationUz": "Tibbiyot fakultetida."
+      "nextTranslationUz": "Tibbiyot fakultetida.",
+      "nextNext": "فِي أَيِّ سَنَةٍ تَدْرُسِينَ؟",
+      "nextNextTranslationUz": "Qaysi yilda o'qiysan?"
     },
     {
       "id": "ar_m1_l58_t3",
@@ -3708,7 +4236,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "فِي أَيِّ سَنَةٍ تَدْرُسِينَ؟",
-      "nextTranslationUz": "Qaysi yilda o'qiysan?"
+      "nextTranslationUz": "Qaysi yilda o'qiysan?",
+      "nextNext": "فِي السَّنَةِ الثَّالِثَةِ.",
+      "nextNextTranslationUz": "Uchinchi yilda."
     },
     {
       "id": "ar_m1_l58_t4",
@@ -3722,7 +4252,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "فِي السَّنَةِ الثَّالِثَةِ.",
-      "nextTranslationUz": "Uchinchi yilda."
+      "nextTranslationUz": "Uchinchi yilda.",
+      "nextNext": "أَنَا أَيْضًا أَدْرُسُ فِي كُلِّيَّةِ الطِّبِّ فِي السَّنَةِ الثَّالِثَةِ.",
+      "nextNextTranslationUz": "Men ham tibbiyot fakultetida uchinchi yilda o'qiyman."
     },
     {
       "id": "ar_m1_l58_t5",
@@ -3736,7 +4268,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": "أَنَا أَيْضًا أَدْرُسُ فِي كُلِّيَّةِ الطِّبِّ فِي السَّنَةِ الثَّالِثَةِ.",
-      "nextTranslationUz": "Men ham tibbiyot fakultetida uchinchi yilda o'qiyman."
+      "nextTranslationUz": "Men ham tibbiyot fakultetida uchinchi yilda o'qiyman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l58_t6",
@@ -3750,7 +4284,9 @@
       "audioUrl": null,
       "title": "كُلِّيَّةُ الطِّبِّ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l59_t0",
@@ -3764,7 +4300,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ١",
       "next": "أَجَابَ الطُّلَّابُ بِإِجَابَاتٍ مُخْتَلِفَةٍ.",
-      "nextTranslationUz": "O'quvchilar turli javoblar berishdi."
+      "nextTranslationUz": "O'quvchilar turli javoblar berishdi.",
+      "nextNext": "قَالَ أَحْمَدُ: الزَّرَافَةُ أَطْوَلُ.",
+      "nextNextTranslationUz": "Ahmad dedi: Jirafa balandroq."
     },
     {
       "id": "ar_m1_l59_t1",
@@ -3778,7 +4316,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ١",
       "next": "قَالَ أَحْمَدُ: الزَّرَافَةُ أَطْوَلُ.",
-      "nextTranslationUz": "Ahmad dedi: Jirafa balandroq."
+      "nextTranslationUz": "Ahmad dedi: Jirafa balandroq.",
+      "nextNext": "وَقَالَ سَلِيمٌ: بَلْ شَجَرُ المَوزِ أَطْوَلُ.",
+      "nextNextTranslationUz": "Va Salim dedi: Yo'q, banan daraxti balandroq."
     },
     {
       "id": "ar_m1_l59_t2",
@@ -3792,7 +4332,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ١",
       "next": "وَقَالَ سَلِيمٌ: بَلْ شَجَرُ المَوزِ أَطْوَلُ.",
-      "nextTranslationUz": "Va Salim dedi: Yo'q, banan daraxti balandroq."
+      "nextTranslationUz": "Va Salim dedi: Yo'q, banan daraxti balandroq.",
+      "nextNext": "وَقَالَتْ آمِنَةُ: هُمَا مُتَسَاوِيَانِ فِي الطُّولِ.",
+      "nextNextTranslationUz": "Va Omina dedi: Ular balandlikda teng."
     },
     {
       "id": "ar_m1_l59_t3",
@@ -3806,7 +4348,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ١",
       "next": "وَقَالَتْ آمِنَةُ: هُمَا مُتَسَاوِيَانِ فِي الطُّولِ.",
-      "nextTranslationUz": "Va Omina dedi: Ular balandlikda teng."
+      "nextTranslationUz": "Va Omina dedi: Ular balandlikda teng.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l59_t4",
@@ -3820,7 +4364,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ١",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l6_t0",
@@ -3834,7 +4380,9 @@
       "audioUrl": null,
       "title": "اَلْكُرْسِيُّ",
       "next": "هَذَا مُعَلِّمٌ، يَا سَعِيدُ.",
-      "nextTranslationUz": "Bu o'qituvchi, Said."
+      "nextTranslationUz": "Bu o'qituvchi, Said.",
+      "nextNext": "وَمَا هَذَا الَّذِي خَلْفَ الْمُعَلِّمِ؟",
+      "nextNextTranslationUz": "O'qituvchining orqasidagi bu narsa nima?"
     },
     {
       "id": "ar_m1_l6_t1",
@@ -3848,7 +4396,9 @@
       "audioUrl": null,
       "title": "اَلْكُرْسِيُّ",
       "next": "وَمَا هَذَا الَّذِي خَلْفَ الْمُعَلِّمِ؟",
-      "nextTranslationUz": "O'qituvchining orqasidagi bu narsa nima?"
+      "nextTranslationUz": "O'qituvchining orqasidagi bu narsa nima?",
+      "nextNext": "خَلْفَ الْمُعَلِّمِ كُرْسِيٌّ.",
+      "nextNextTranslationUz": "O'qituvchining orqasida stul bor."
     },
     {
       "id": "ar_m1_l6_t2",
@@ -3862,7 +4412,9 @@
       "audioUrl": null,
       "title": "اَلْكُرْسِيُّ",
       "next": "خَلْفَ الْمُعَلِّمِ كُرْسِيٌّ.",
-      "nextTranslationUz": "O'qituvchining orqasida stul bor."
+      "nextTranslationUz": "O'qituvchining orqasida stul bor.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l6_t3",
@@ -3876,7 +4428,9 @@
       "audioUrl": null,
       "title": "اَلْكُرْسِيُّ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l60_t0",
@@ -3890,7 +4444,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ٢",
       "next": "لِأَنَّ طُولَ الزَّرَافَةِ يَصِلُ إِلَى خَمْسَةٍ أَوْ سِتَّةِ أَمْتَارٍ، أَمَّا شَجَرُ المَوزِ فَهُوَ أَقْصَرُ مِنْ ذَلِكَ.",
-      "nextTranslationUz": "Chunki jirafaning balandligi besh yoki olti metrga yetadi, ammo banan daraxti bundan qisqaroq."
+      "nextTranslationUz": "Chunki jirafaning balandligi besh yoki olti metrga yetadi, ammo banan daraxti bundan qisqaroq.",
+      "nextNext": "صَحِيحٌ، يَا بُنَيَّ، الزَّرَافَةُ أَطْوَلُ.",
+      "nextNextTranslationUz": "To'g'ri, o'g'lim, jirafa balandroq."
     },
     {
       "id": "ar_m1_l60_t1",
@@ -3904,7 +4460,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ٢",
       "next": "صَحِيحٌ، يَا بُنَيَّ، الزَّرَافَةُ أَطْوَلُ.",
-      "nextTranslationUz": "To'g'ri, o'g'lim, jirafa balandroq."
+      "nextTranslationUz": "To'g'ri, o'g'lim, jirafa balandroq.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l60_t2",
@@ -3918,7 +4476,9 @@
       "audioUrl": null,
       "title": "أَيُّهُمَا أَطْوَلُ ٢",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l61_t0",
@@ -3932,7 +4492,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْقَرْيَةِ",
       "next": "يَوْمَيِ السَّبْتِ وَ الأَحَدِ أَذْهَبُ إِلَى بَيْتِ خَالِي.",
-      "nextTranslationUz": "Shanba va yakshanba kunlari men amakimning uyiga boraman."
+      "nextTranslationUz": "Shanba va yakshanba kunlari men amakimning uyiga boraman.",
+      "nextNext": "نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ مَعًا.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l61_t1",
@@ -3946,7 +4508,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْقَرْيَةِ",
       "next": "نَلْعَبُ وَ نَصْعَدُ الْجَبَلَ مَعًا.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l61_t2",
@@ -3960,7 +4524,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْقَرْيَةِ",
       "next": "أَنَا وَ إِبْرَاهِيمُ صَدِيقَانِ.",
-      "nextTranslationUz": "Men va Ibrohim do'stmiz."
+      "nextTranslationUz": "Men va Ibrohim do'stmiz.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l61_t3",
@@ -3974,7 +4540,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْقَرْيَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l62_t0",
@@ -3988,7 +4556,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": "هُمَا صَدِيقَانِ.",
-      "nextTranslationUz": "Ular do'stdirlar."
+      "nextTranslationUz": "Ular do'stdirlar.",
+      "nextNext": "يَتَكَلَّمَانِ بِاللُّغَةِ العَرَبِيَّةِ وَالْإِنْجِلِيزِيَّةِ.",
+      "nextNextTranslationUz": "Ular arab va ingliz tillarida gaplashadilar."
     },
     {
       "id": "ar_m1_l62_t1",
@@ -4002,7 +4572,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": "يَتَكَلَّمَانِ بِاللُّغَةِ العَرَبِيَّةِ وَالْإِنْجِلِيزِيَّةِ.",
-      "nextTranslationUz": "Ular arab va ingliz tillarida gaplashadilar."
+      "nextTranslationUz": "Ular arab va ingliz tillarida gaplashadilar.",
+      "nextNext": "يَدْرُسَانِ فِي جَامِعَةٍ بِالرِّيَاضِ.",
+      "nextNextTranslationUz": "Ular Ar-Riyod shahridagi universitetda o'qiydilar."
     },
     {
       "id": "ar_m1_l62_t2",
@@ -4016,7 +4588,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": "يَدْرُسَانِ فِي جَامِعَةٍ بِالرِّيَاضِ.",
-      "nextTranslationUz": "Ular Ar-Riyod shahridagi universitetda o'qiydilar."
+      "nextTranslationUz": "Ular Ar-Riyod shahridagi universitetda o'qiydilar.",
+      "nextNext": "وِلْيَمُ يُحِبُّ الْإِسْلَامَ.",
+      "nextNextTranslationUz": "Uilyam Islomni yaxshi ko'radi."
     },
     {
       "id": "ar_m1_l62_t3",
@@ -4030,7 +4604,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": "وِلْيَمُ يُحِبُّ الْإِسْلَامَ.",
-      "nextTranslationUz": "Uilyam Islomni yaxshi ko'radi."
+      "nextTranslationUz": "Uilyam Islomni yaxshi ko'radi.",
+      "nextNext": "وَيَعْقُوبُ يُسَاعِدُهُ عَلَى تَعَلُّمِ الْإِسْلَامِ.",
+      "nextNextTranslationUz": "Va Yoqub unga Islomni o'rganishda yordam beradi."
     },
     {
       "id": "ar_m1_l62_t4",
@@ -4044,7 +4620,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": "وَيَعْقُوبُ يُسَاعِدُهُ عَلَى تَعَلُّمِ الْإِسْلَامِ.",
-      "nextTranslationUz": "Va Yoqub unga Islomni o'rganishda yordam beradi."
+      "nextTranslationUz": "Va Yoqub unga Islomni o'rganishda yordam beradi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l62_t5",
@@ -4058,7 +4636,9 @@
       "audioUrl": null,
       "title": "جَامِعَةُ الرِّيَاضِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l63_t0",
@@ -4072,7 +4652,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ الصَّيْفَ",
       "next": "أَنَا أَسْبَحُ جَيِّدًا لِأَنَّنِي فُزْتُ فِي مُسَابَقَةِ الْجُمْهُورِيَّةِ،",
-      "nextTranslationUz": "Men yaxshi suzaman, chunki respublika musobaqasida g'olib bo'lganman,"
+      "nextTranslationUz": "Men yaxshi suzaman, chunki respublika musobaqasida g'olib bo'lganman,",
+      "nextNext": "لِذَلِكَ أُحِبُّ الصَّيْفَ جِدًّا.",
+      "nextNextTranslationUz": "shuning uchun men yozni juda yaxshi ko'raman."
     },
     {
       "id": "ar_m1_l63_t1",
@@ -4086,7 +4668,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ الصَّيْفَ",
       "next": "لِذَلِكَ أُحِبُّ الصَّيْفَ جِدًّا.",
-      "nextTranslationUz": "shuning uchun men yozni juda yaxshi ko'raman."
+      "nextTranslationUz": "shuning uchun men yozni juda yaxshi ko'raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l63_t2",
@@ -4100,7 +4684,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ الصَّيْفَ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l64_t0",
@@ -4114,7 +4700,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
       "next": "حَضَّرَتْ حَقِيبَةَ السَّفَرِ بَعْدَ الظُّهْرِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l64_t1",
@@ -4128,7 +4716,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
       "next": "سَفَرُهَا فِي السَّاعَةِ السَّابِعَةِ مَسَاءً.",
-      "nextTranslationUz": "Uning sayohati kechki soat yettida."
+      "nextTranslationUz": "Uning sayohati kechki soat yettida.",
+      "nextNext": "وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ.",
+      "nextNextTranslationUz": "Va samolyot besh soat davom etadi."
     },
     {
       "id": "ar_m1_l64_t2",
@@ -4142,7 +4732,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
       "next": "وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ.",
-      "nextTranslationUz": "Va samolyot besh soat davom etadi."
+      "nextTranslationUz": "Va samolyot besh soat davom etadi.",
+      "nextNext": "تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ فِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l64_t3",
@@ -4156,7 +4748,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
       "next": "تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ فِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l64_t4",
@@ -4170,7 +4764,9 @@
       "audioUrl": null,
       "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l65_t0",
@@ -4184,7 +4780,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ التُّوتِ",
       "next": "وَبَعْdَ الِاسْتِيقَاظِ أَشْرَبُ عَصِيرَ المِشْمِشِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l65_t1",
@@ -4198,7 +4796,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ التُّوتِ",
       "next": "وَهَذَا مُفِيدٌ لِلْقَلْبِ.",
-      "nextTranslationUz": "Va bu yurak uchun foydali."
+      "nextTranslationUz": "Va bu yurak uchun foydali.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l65_t2",
@@ -4212,7 +4812,9 @@
       "audioUrl": null,
       "title": "عَصِيرُ التُّوتِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l66_t0",
@@ -4226,7 +4828,9 @@
       "audioUrl": null,
       "title": "اَلْغُرَابُ",
       "next": "يَطِيرُ إِلَى أُوزْبَكِسْتَانَ قَبْلَ فَصْلِ الشِّتَاءِ، وَ بَعْدَ انْتِهَاءِ الشِّتَاءِ فِي فَصْلِ الرَّبِيعِ، يَرْجِعُ إِلَى أَمَاكِنَ بَارِdَةٍ أُخْرَى.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l66_t1",
@@ -4240,7 +4844,9 @@
       "audioUrl": null,
       "title": "اَلْغُرَابُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l67_t0",
@@ -4254,7 +4860,9 @@
       "audioUrl": null,
       "title": "اَلْإِنْسَانُ الْصَّالِحُ",
       "next": "وَ يَرْجِعُ إِلَى بَيْتِهِ بَعْدَ نِصْفِ سَاعَةٍ.",
-      "nextTranslationUz": "Va yarim soatdan keyin uyiga qaytadi."
+      "nextTranslationUz": "Va yarim soatdan keyin uyiga qaytadi.",
+      "nextNext": "هُوَ رَجُلٌ صَالِحٌ.",
+      "nextNextTranslationUz": "U solih insondir."
     },
     {
       "id": "ar_m1_l67_t1",
@@ -4268,7 +4876,9 @@
       "audioUrl": null,
       "title": "اَلْإِنْسَانُ الْصَّالِحُ",
       "next": "هُوَ رَجُلٌ صَالِحٌ.",
-      "nextTranslationUz": "U solih insondir."
+      "nextTranslationUz": "U solih insondir.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l67_t2",
@@ -4282,7 +4892,9 @@
       "audioUrl": null,
       "title": "اَلْإِنْسَانُ الْصَّالِحُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l68_t0",
@@ -4296,7 +4908,9 @@
       "audioUrl": null,
       "title": "لَيْلَى يَوْمُهَا",
       "next": "وَ تَذْهَبُ إِلَى الْمَعْهَدِ قَبْلَ الظُّهْرِ، وَ تَرْجِعُ بَعْدَ الْعَصْرِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l68_t1",
@@ -4310,7 +4924,9 @@
       "audioUrl": null,
       "title": "لَيْلَى يَوْمُهَا",
       "next": "ثُمَّ تَتَنَاوَلُ الْعَشَاءَ، وَ تَكْتُبُ دُرُوسَهَا.",
-      "nextTranslationUz": "Keyin kechki ovqatni yeydi va darslarini yozadi."
+      "nextTranslationUz": "Keyin kechki ovqatni yeydi va darslarini yozadi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l68_t2",
@@ -4324,7 +4940,9 @@
       "audioUrl": null,
       "title": "لَيْلَى يَوْمُهَا",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l69_t0",
@@ -4338,7 +4956,9 @@
       "audioUrl": null,
       "title": "جَمَالُ الأَزْhَارِ",
       "next": "مِنَ الأَزْهَارِ: اَلتُّولِيبُ، وَالْأُورْكِيدُ، وَغَيْرُهُمَا.",
-      "nextTranslationUz": "Gullardan: lola, orkideya va boshqalar."
+      "nextTranslationUz": "Gullardan: lola, orkideya va boshqalar.",
+      "nextNext": "أَنَا أُحِبُّ التُّولِيبَ، وَأُخْتِي الْكُبْرَى تُحِبُّ الأُورْكِيدَ.",
+      "nextNextTranslationUz": "Men lolani yaxshi ko'raman, katta opam esa orkideyani yaxshi ko'radi."
     },
     {
       "id": "ar_m1_l69_t1",
@@ -4352,7 +4972,9 @@
       "audioUrl": null,
       "title": "جَمَالُ الأَزْhَارِ",
       "next": "أَنَا أُحِبُّ التُّولِيبَ، وَأُخْتِي الْكُبْرَى تُحِبُّ الأُورْكِيدَ.",
-      "nextTranslationUz": "Men lolani yaxshi ko'raman, katta opam esa orkideyani yaxshi ko'radi."
+      "nextTranslationUz": "Men lolani yaxshi ko'raman, katta opam esa orkideyani yaxshi ko'radi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l69_t2",
@@ -4366,7 +4988,9 @@
       "audioUrl": null,
       "title": "جَمَالُ الأَزْhَارِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l7_t0",
@@ -4380,7 +5004,9 @@
       "audioUrl": null,
       "title": "اَلْمَسْجِدُ الْبَعِيدُ",
       "next": "أَذَلِكَ مَسْجِدٌ أَيْضًا؟",
-      "nextTranslationUz": "U ham masjidmi?"
+      "nextTranslationUz": "U ham masjidmi?",
+      "nextNext": "لَا، ذَلِكَ بَيْتٌ.",
+      "nextNextTranslationUz": "Yo'q, u uy."
     },
     {
       "id": "ar_m1_l7_t1",
@@ -4394,7 +5020,9 @@
       "audioUrl": null,
       "title": "اَلْمَسْجِدُ الْبَعِيدُ",
       "next": "لَا، ذَلِكَ بَيْتٌ.",
-      "nextTranslationUz": "Yo'q, u uy."
+      "nextTranslationUz": "Yo'q, u uy.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l7_t2",
@@ -4408,7 +5036,9 @@
       "audioUrl": null,
       "title": "اَلْمَسْجِدُ الْبَعِيدُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l70_t0",
@@ -4422,7 +5052,9 @@
       "audioUrl": null,
       "title": "أَنْوَاعُ الْعِنَبِ",
       "next": "مِثَالًا : عِنَبٌ أَحْمَرُ، عِنَبٌ أَصْفَرُ، عِنَبٌ أَسْوَدُ، وَعِنَبٌ أَبْيَضُ.",
-      "nextTranslationUz": "Masalan: qizil uzum, sariq uzum, qora uzum va oq uzum."
+      "nextTranslationUz": "Masalan: qizil uzum, sariq uzum, qora uzum va oq uzum.",
+      "nextNext": "عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ.",
+      "nextNextTranslationUz": "O'zbekiston uzumi asal kabi va u butun dunyoda mashhur."
     },
     {
       "id": "ar_m1_l70_t1",
@@ -4436,7 +5068,9 @@
       "audioUrl": null,
       "title": "أَنْوَاعُ الْعِنَبِ",
       "next": "عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ.",
-      "nextTranslationUz": "O'zbekiston uzumi asal kabi va u butun dunyoda mashhur."
+      "nextTranslationUz": "O'zbekiston uzumi asal kabi va u butun dunyoda mashhur.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l70_t2",
@@ -4450,7 +5084,9 @@
       "audioUrl": null,
       "title": "أَنْوَاعُ الْعِنَبِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l71_t0",
@@ -4464,7 +5100,9 @@
       "audioUrl": null,
       "title": "اَلْبَيْتُ الْجَدِيدُ",
       "next": "بَيْتُنَا مُمْتَلِئٌ بِالْأَثَاثِ الْجَدِيدِ, وَ أَنَا أُحِبُّ بَيْتَنَا.",
-      "nextTranslationUz": "Uyimiz yangi mebellar bilan to'la va men uyimizni yaxshi ko'raman."
+      "nextTranslationUz": "Uyimiz yangi mebellar bilan to'la va men uyimizni yaxshi ko'raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l71_t1",
@@ -4478,7 +5116,9 @@
       "audioUrl": null,
       "title": "اَلْبَيْتُ الْجَدِيدُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l72_t0",
@@ -4492,7 +5132,9 @@
       "audioUrl": null,
       "title": "أَشْيَاءُ ضَارَّةٌ",
       "next": "قَالَ الطُّلَّابُ: الإِثْنَانِ سَوَاءٌ، يَا أُسْتَاذُ .",
-      "nextTranslationUz": "Talabalar dedi: Ikkalasi teng, ustoz."
+      "nextTranslationUz": "Talabalar dedi: Ikkalasi teng, ustoz.",
+      "nextNext": "اَلْأُسْتَاذُ: لِمَاذَا يَا طُلَّابُ؟",
+      "nextNextTranslationUz": "Ustoz: Nega, ey talabalar?"
     },
     {
       "id": "ar_m1_l72_t1",
@@ -4506,7 +5148,9 @@
       "audioUrl": null,
       "title": "أَشْيَاءُ ضَارَّةٌ",
       "next": "اَلْأُسْتَاذُ: لِمَاذَا يَا طُلَّابُ؟",
-      "nextTranslationUz": "Ustoz: Nega, ey talabalar?"
+      "nextTranslationUz": "Ustoz: Nega, ey talabalar?",
+      "nextNext": "اَلطُّلَّابُ: لِأَنَّ نُورَهُمَا ضَارٌّ بِالعَيْنِ وَ بِالعَقْلِ.",
+      "nextNextTranslationUz": "Talabalar: Chunki ularning yorug'ligi ko'z va aql uchun zararlidir."
     },
     {
       "id": "ar_m1_l72_t2",
@@ -4520,7 +5164,9 @@
       "audioUrl": null,
       "title": "أَشْيَاءُ ضَارَّةٌ",
       "next": "اَلطُّلَّابُ: لِأَنَّ نُورَهُمَا ضَارٌّ بِالعَيْنِ وَ بِالعَقْلِ.",
-      "nextTranslationUz": "Talabalar: Chunki ularning yorug'ligi ko'z va aql uchun zararlidir."
+      "nextTranslationUz": "Talabalar: Chunki ularning yorug'ligi ko'z va aql uchun zararlidir.",
+      "nextNext": "اَلْأُسْتَاذُ: صَحِيحٌ يَا طُلَّابُ!",
+      "nextNextTranslationUz": "Ustoz: To'g'ri, ey talabalar!"
     },
     {
       "id": "ar_m1_l72_t3",
@@ -4534,7 +5180,9 @@
       "audioUrl": null,
       "title": "أَشْيَاءُ ضَارَّةٌ",
       "next": "اَلْأُسْتَاذُ: صَحِيحٌ يَا طُلَّابُ!",
-      "nextTranslationUz": "Ustoz: To'g'ri, ey talabalar!"
+      "nextTranslationUz": "Ustoz: To'g'ri, ey talabalar!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l72_t4",
@@ -4548,7 +5196,9 @@
       "audioUrl": null,
       "title": "أَشْيَاءُ ضَارَّةٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l73_t0",
@@ -4562,7 +5212,9 @@
       "audioUrl": null,
       "title": "أَعْضَاءُ الْإِنْسَانِ",
       "next": "خَلَقَ اللهُ الإِنْسَانَ فِي أَحْسَنِ تَقْوِيمٍ.",
-      "nextTranslationUz": "Alloh insonni eng go'zal qiyofada yaratdi."
+      "nextTranslationUz": "Alloh insonni eng go'zal qiyofada yaratdi.",
+      "nextNext": "هَذَا مِنْ رَحْمَةِ رَبِّنَا.",
+      "nextNextTranslationUz": "Bu Robbimizning rahmatidandir."
     },
     {
       "id": "ar_m1_l73_t1",
@@ -4576,7 +5228,9 @@
       "audioUrl": null,
       "title": "أَعْضَاءُ الْإِنْسَانِ",
       "next": "هَذَا مِنْ رَحْمَةِ رَبِّنَا.",
-      "nextTranslationUz": "Bu Robbimizning rahmatidandir."
+      "nextTranslationUz": "Bu Robbimizning rahmatidandir.",
+      "nextNext": "شُكْرًا لَكَ، يَا رَبَّنَا!",
+      "nextNextTranslationUz": "Sizga minnatdormiz, ey Robbimiz!"
     },
     {
       "id": "ar_m1_l73_t2",
@@ -4590,7 +5244,9 @@
       "audioUrl": null,
       "title": "أَعْضَاءُ الْإِنْسَانِ",
       "next": "شُكْرًا لَكَ، يَا رَبَّنَا!",
-      "nextTranslationUz": "Sizga minnatdormiz, ey Robbimiz!"
+      "nextTranslationUz": "Sizga minnatdormiz, ey Robbimiz!",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l73_t3",
@@ -4604,7 +5260,9 @@
       "audioUrl": null,
       "title": "أَعْضَاءُ الْإِنْسَانِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l74_t0",
@@ -4618,7 +5276,9 @@
       "audioUrl": null,
       "title": "بَعْدَ الدَّرْسِ",
       "next": "يَجْلِسَانِ فِي حُجْرَةِ الْجُلُوسِ, وَ يُشَاهِدَانِ التِّلْفَازَ، ثُمَّ يَقْرَآنِ الْجَرِيدَةَ، وَ يَكْتُبَانِ فِي دَفْتَرِهِمَا بِالْقَلَمِ الْأَزْرَقِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l74_t1",
@@ -4632,7 +5292,9 @@
       "audioUrl": null,
       "title": "بَعْدَ الدَّرْسِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l75_t0",
@@ -4646,7 +5308,9 @@
       "audioUrl": null,
       "title": "أُسْرَتِي",
       "next": "فِيهَا ثَمَانِيَّةُ أَشْخَاصٍ:",
-      "nextTranslationUz": "Undan sakkiz kishi bor:"
+      "nextTranslationUz": "Undan sakkiz kishi bor:",
+      "nextNext": "جَدِّي، وَ جَدَّتِي، وَ أَبِي، وَ أُمِّي، وَ أَخِي الْكَبِيرُ، وَ وَ أُخْتِي الْكَبِيرَةُ، وَ أُخْتِي الصَّغِيرَةُ، وَ أَنَا.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l75_t1",
@@ -4660,7 +5324,9 @@
       "audioUrl": null,
       "title": "أُسْرَتِي",
       "next": "جَدِّي، وَ جَدَّتِي، وَ أَبِي، وَ أُمِّي، وَ أَخِي الْكَبِيرُ، وَ وَ أُخْتِي الْكَبِيرَةُ، وَ أُخْتِي الصَّغِيرَةُ، وَ أَنَا.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l75_t2",
@@ -4674,7 +5340,9 @@
       "audioUrl": null,
       "title": "أُسْرَتِي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l76_t0",
@@ -4688,7 +5356,9 @@
       "audioUrl": null,
       "title": "اَلْقَلَمَانِ المَكْسُورَانِ",
       "next": "هَذَانِ الْقَلَمَانِ لِسَلْمَى وَلِأَحْمَدَ، يَا أَبَا أَحْمَدَ.",
-      "nextTranslationUz": "Bu ikkita qalam Salmo va Ahmadga tegishli, ey Ahmadning otasi."
+      "nextTranslationUz": "Bu ikkita qalam Salmo va Ahmadga tegishli, ey Ahmadning otasi.",
+      "nextNext": "لِمَاذَا هُمَا مَكْسُورَانِ؟",
+      "nextNextTranslationUz": "Nega ular sindigan?"
     },
     {
       "id": "ar_m1_l76_t1",
@@ -4702,7 +5372,9 @@
       "audioUrl": null,
       "title": "اَلْقَلَمَانِ المَكْسُورَانِ",
       "next": "لِمَاذَا هُمَا مَكْسُورَانِ؟",
-      "nextTranslationUz": "Nega ular sindigan?"
+      "nextTranslationUz": "Nega ular sindigan?",
+      "nextNext": "لِأَنَّهُمَا قَدِيمَانِ.",
+      "nextNextTranslationUz": "Chunki ular eskigan."
     },
     {
       "id": "ar_m1_l76_t2",
@@ -4716,7 +5388,9 @@
       "audioUrl": null,
       "title": "اَلْقَلَمَانِ المَكْسُورَانِ",
       "next": "لِأَنَّهُمَا قَدِيمَانِ.",
-      "nextTranslationUz": "Chunki ular eskigan."
+      "nextTranslationUz": "Chunki ular eskigan.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l76_t3",
@@ -4730,7 +5404,9 @@
       "audioUrl": null,
       "title": "اَلْقَلَمَانِ المَكْسُورَانِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l77_t0",
@@ -4744,7 +5420,9 @@
       "audioUrl": null,
       "title": "اَلْفُصُولُ الْأَرْبَعَةُ",
       "next": "الشِّتَاءُ، وَ الرَّبِيعُ، وَ الصَّيْفُ، وَ الْخَرِيفُ.",
-      "nextTranslationUz": "Qish, bahor, yoz va kuz."
+      "nextTranslationUz": "Qish, bahor, yoz va kuz.",
+      "nextNext": "أَنَا أُحِبُّ الصَّيْفَ جِدًّا.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l77_t1",
@@ -4758,7 +5436,9 @@
       "audioUrl": null,
       "title": "اَلْفُصُولُ الْأَرْبَعَةُ",
       "next": "أَنَا أُحِبُّ الصَّيْفَ جِدًّا.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l77_t2",
@@ -4772,7 +5452,9 @@
       "audioUrl": null,
       "title": "اَلْفُصُولُ الْأَرْبَعَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l78_t0",
@@ -4786,7 +5468,9 @@
       "audioUrl": null,
       "title": "اَلْأَرَانِبُ",
       "next": "هِيَ تَأْكُلُ الْجَزَرَ، وَالْكُرُنْبَ، وَالْأَعْشَابَ.",
-      "nextTranslationUz": "Ular sabzi, karam va o'tlar bilan oziqlanadi."
+      "nextTranslationUz": "Ular sabzi, karam va o'tlar bilan oziqlanadi.",
+      "nextNext": "وَزْنُ الْأَرْنَبِ يَبْلُغُ حَتَّى خَمْسَةَ كِيلُوجْرَامَاتٍ.",
+      "nextNextTranslationUz": "Quyonning vazni besh kilogrammgacha yetadi."
     },
     {
       "id": "ar_m1_l78_t1",
@@ -4800,7 +5484,9 @@
       "audioUrl": null,
       "title": "اَلْأَرَانِبُ",
       "next": "وَزْنُ الْأَرْنَبِ يَبْلُغُ حَتَّى خَمْسَةَ كِيلُوجْرَامَاتٍ.",
-      "nextTranslationUz": "Quyonning vazni besh kilogrammgacha yetadi."
+      "nextTranslationUz": "Quyonning vazni besh kilogrammgacha yetadi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l78_t2",
@@ -4814,7 +5500,9 @@
       "audioUrl": null,
       "title": "اَلْأَرَانِبُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l79_t0",
@@ -4828,7 +5516,9 @@
       "audioUrl": null,
       "title": "اَلزَّوْجَانِ",
       "next": "حَقِيبَةُ الأَوْلَادِ فِي الخِزَانَةِ.",
-      "nextTranslationUz": "Bolalar sumkasi shkafda."
+      "nextTranslationUz": "Bolalar sumkasi shkafda.",
+      "nextNext": "هَاتَانِ حَقِيبَتَانِ لِلَيْلَى ولِأَحْمَدَ.",
+      "nextNextTranslationUz": "Bu ikkita sumka Laylo va Ahmadga tegishli."
     },
     {
       "id": "ar_m1_l79_t1",
@@ -4842,7 +5532,9 @@
       "audioUrl": null,
       "title": "اَلزَّوْجَانِ",
       "next": "هَاتَانِ حَقِيبَتَانِ لِلَيْلَى ولِأَحْمَدَ.",
-      "nextTranslationUz": "Bu ikkita sumka Laylo va Ahmadga tegishli."
+      "nextTranslationUz": "Bu ikkita sumka Laylo va Ahmadga tegishli.",
+      "nextNext": "حَقِيبَةٌ سَوْدَاءُ لِأَحْمَدَ، وَحَقِيبَةٌ وَرْدِيَّةٌ لِلَيْلَى.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l79_t2",
@@ -4856,7 +5548,9 @@
       "audioUrl": null,
       "title": "اَلزَّوْجَانِ",
       "next": "حَقِيبَةٌ سَوْدَاءُ لِأَحْمَدَ، وَحَقِيبَةٌ وَرْدِيَّةٌ لِلَيْلَى.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l79_t3",
@@ -4870,7 +5564,9 @@
       "audioUrl": null,
       "title": "اَلزَّوْجَانِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l8_t0",
@@ -4884,7 +5580,9 @@
       "audioUrl": null,
       "title": "فِي الْبَيْتِ",
       "next": "أَنَا فِي الْمَسْجِدِ. وَأَيْنَ أَنْتَ يَا كَرِيمُ؟",
-      "nextTranslationUz": "Men masjiddaman. Sen qayerdasan, Karim?"
+      "nextTranslationUz": "Men masjiddaman. Sen qayerdasan, Karim?",
+      "nextNext": "أَنَا فِي الْبَيْتِ.",
+      "nextNextTranslationUz": "Men uyda."
     },
     {
       "id": "ar_m1_l8_t1",
@@ -4898,7 +5596,9 @@
       "audioUrl": null,
       "title": "فِي الْبَيْتِ",
       "next": "أَنَا فِي الْبَيْتِ.",
-      "nextTranslationUz": "Men uyda."
+      "nextTranslationUz": "Men uyda.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l8_t2",
@@ -4912,7 +5612,9 @@
       "audioUrl": null,
       "title": "فِي الْبَيْتِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l80_t0",
@@ -4926,7 +5628,9 @@
       "audioUrl": null,
       "title": "",
       "next": "هَاتَانِ مَجَلَّتَانِ هُنَا، يَا يُوسُفُ.",
-      "nextTranslationUz": "Bu yerda ikkita jurnal bor, Yusuf."
+      "nextTranslationUz": "Bu yerda ikkita jurnal bor, Yusuf.",
+      "nextNext": "أَيْنَ بَقِيَّةُ المَجَلَّاتِ ؟",
+      "nextNextTranslationUz": "Qolgan jurnallar qayerda?"
     },
     {
       "id": "ar_m1_l80_t1",
@@ -4940,7 +5644,9 @@
       "audioUrl": null,
       "title": "",
       "next": "أَيْنَ بَقِيَّةُ المَجَلَّاتِ ؟",
-      "nextTranslationUz": "Qolgan jurnallar qayerda?"
+      "nextTranslationUz": "Qolgan jurnallar qayerda?",
+      "nextNext": "هُنَاكَ خَمْسُ مَجَلَّاتٍ، وَالْمُتَبَقِّيَةُ فِي الْغُرْفَةِ الْأُخْرَى.",
+      "nextNextTranslationUz": "U yerda beshta jurnal bor va qolganlari boshqa xonada."
     },
     {
       "id": "ar_m1_l80_t2",
@@ -4954,7 +5660,9 @@
       "audioUrl": null,
       "title": "",
       "next": "هُنَاكَ خَمْسُ مَجَلَّاتٍ، وَالْمُتَبَقِّيَةُ فِي الْغُرْفَةِ الْأُخْرَى.",
-      "nextTranslationUz": "U yerda beshta jurnal bor va qolganlari boshqa xonada."
+      "nextTranslationUz": "U yerda beshta jurnal bor va qolganlari boshqa xonada.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l80_t3",
@@ -4968,7 +5676,9 @@
       "audioUrl": null,
       "title": "",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l81_t0",
@@ -4982,7 +5692,9 @@
       "audioUrl": null,
       "title": "اَلْمُتْحَفُ",
       "next": "هَاتَانِ الصُّورَتَانِ مِنْ فَرَنْسَا، وَ هَذَانِ اَلسَّيْفَانِ مِنْ إِيرَانَ.",
-      "nextTranslationUz": "Bu ikkita rasm Fransiyadan va bu ikkita qilich Erondan."
+      "nextTranslationUz": "Bu ikkita rasm Fransiyadan va bu ikkita qilich Erondan.",
+      "nextNext": "هَلْ تُرِيدُ مُشَاهَدَةَ آثَارٍ أُخْرَى؟",
+      "nextNextTranslationUz": "Boshqa asarlarni ko'rishni xohlaysizmi?"
     },
     {
       "id": "ar_m1_l81_t1",
@@ -4996,7 +5708,9 @@
       "audioUrl": null,
       "title": "اَلْمُتْحَفُ",
       "next": "هَلْ تُرِيدُ مُشَاهَدَةَ آثَارٍ أُخْرَى؟",
-      "nextTranslationUz": "Boshqa asarlarni ko'rishni xohlaysizmi?"
+      "nextTranslationUz": "Boshqa asarlarni ko'rishni xohlaysizmi?",
+      "nextNext": "نَعَم، بِكُلِّ سُرُورٍ.",
+      "nextNextTranslationUz": "Ha, butun quvonch bilan."
     },
     {
       "id": "ar_m1_l81_t2",
@@ -5010,7 +5724,9 @@
       "audioUrl": null,
       "title": "اَلْمُتْحَفُ",
       "next": "نَعَم، بِكُلِّ سُرُورٍ.",
-      "nextTranslationUz": "Ha, butun quvonch bilan."
+      "nextTranslationUz": "Ha, butun quvonch bilan.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l81_t3",
@@ -5024,7 +5740,9 @@
       "audioUrl": null,
       "title": "اَلْمُتْحَفُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l82_t0",
@@ -5038,7 +5756,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": "لِي ثَلَاثَةُ إِخْوَةٍ.",
-      "nextTranslationUz": "Mening uchta akam bor."
+      "nextTranslationUz": "Mening uchta akam bor.",
+      "nextNext": "وَ كَمْ أُخْتًا لَكَ يَا سَعِيدُ؟",
+      "nextNextTranslationUz": "Va nechta opang bor, Said?"
     },
     {
       "id": "ar_m1_l82_t1",
@@ -5052,7 +5772,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": "وَ كَمْ أُخْتًا لَكَ يَا سَعِيدُ؟",
-      "nextTranslationUz": "Va nechta opang bor, Said?"
+      "nextTranslationUz": "Va nechta opang bor, Said?",
+      "nextNext": "لِي أُخْتٌ وَاحِدَةٌ.",
+      "nextNextTranslationUz": "Mening bitta opam bor."
     },
     {
       "id": "ar_m1_l82_t2",
@@ -5066,7 +5788,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": "لِي أُخْتٌ وَاحِدَةٌ.",
-      "nextTranslationUz": "Mening bitta opam bor."
+      "nextTranslationUz": "Mening bitta opam bor.",
+      "nextNext": "هَلْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟",
+      "nextNextTranslationUz": "Ular maktabda o'qiydilarmi?"
     },
     {
       "id": "ar_m1_l82_t3",
@@ -5080,7 +5804,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": "هَلْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟",
-      "nextTranslationUz": "Ular maktabda o'qiydilarmi?"
+      "nextTranslationUz": "Ular maktabda o'qiydilarmi?",
+      "nextNext": "نَعَم، هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ.",
+      "nextNextTranslationUz": "Ha, ular maktabda o'qiydilar."
     },
     {
       "id": "ar_m1_l82_t4",
@@ -5094,7 +5820,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": "نَعَم، هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ.",
-      "nextTranslationUz": "Ha, ular maktabda o'qiydilar."
+      "nextTranslationUz": "Ha, ular maktabda o'qiydilar.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l82_t5",
@@ -5108,7 +5836,9 @@
       "audioUrl": null,
       "title": "إِخْوَةُ سَعِيدٍ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l83_t0",
@@ -5122,7 +5852,9 @@
       "audioUrl": null,
       "title": "شِرَاءُ الْخُبْزِ",
       "next": "إِشْتَرَيْتُ أَرْبَعَةَ أَخْبَازٍ يَا أُمِّي.",
-      "nextTranslationUz": "To'rtta non sotib oldim, ona."
+      "nextTranslationUz": "To'rtta non sotib oldim, ona.",
+      "nextNext": "بِكَمْ إِشْتَرَيْتَ؟",
+      "nextNextTranslationUz": "Qancha to'lading?"
     },
     {
       "id": "ar_m1_l83_t1",
@@ -5136,7 +5868,9 @@
       "audioUrl": null,
       "title": "شِرَاءُ الْخُبْزِ",
       "next": "بِكَمْ إِشْتَرَيْتَ؟",
-      "nextTranslationUz": "Qancha to'lading?"
+      "nextTranslationUz": "Qancha to'lading?",
+      "nextNext": "اَلْخُبْزُ الْوَاحِdُ بِجُنَيْهَيْنِ، لِذَلِكَ سَيَكُونُ ثَمَنُ الْأَرْبَعَةِ ثَمَانِيَةَ جُنَيْهَاتٍ.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l83_t2",
@@ -5150,7 +5884,9 @@
       "audioUrl": null,
       "title": "شِرَاءُ الْخُبْزِ",
       "next": "اَلْخُبْزُ الْوَاحِdُ بِجُنَيْهَيْنِ، لِذَلِكَ سَيَكُونُ ثَمَنُ الْأَرْبَعَةِ ثَمَانِيَةَ جُنَيْهَاتٍ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l83_t3",
@@ -5164,7 +5900,9 @@
       "audioUrl": null,
       "title": "شِرَاءُ الْخُبْزِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l84_t0",
@@ -5178,7 +5916,9 @@
       "audioUrl": null,
       "title": "مَائِدَةُ الضُّيُوفِ",
       "next": "اَلْأَطْعِمَةُ الَّتِي عَلَى الْمَائِدَةِ لَذِيذَةٌ جِدًّا.",
-      "nextTranslationUz": "Dasturxondagi ovqatlar juda mazali."
+      "nextTranslationUz": "Dasturxondagi ovqatlar juda mazali.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l84_t1",
@@ -5192,7 +5932,9 @@
       "audioUrl": null,
       "title": "مَائِدَةُ الضُّيُوفِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l85_t0",
@@ -5206,7 +5948,9 @@
       "audioUrl": null,
       "title": "أَنْهَارُ آسِيَا الْوُسْطَى",
       "next": "هَذَانِ النَّهْرَانِ هُمَا أَكْبَرُ أَنْهَارِ هَذِهِ الْمِنْطَقَةِ.",
-      "nextTranslationUz": "Bu ikkita daryo bu mintaqaning eng katta daryolaridir."
+      "nextTranslationUz": "Bu ikkita daryo bu mintaqaning eng katta daryolaridir.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l85_t1",
@@ -5220,7 +5964,9 @@
       "audioUrl": null,
       "title": "أَنْهَارُ آسِيَا الْوُسْطَى",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l86_t0",
@@ -5234,7 +5980,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ١",
       "next": "خُذِي أُرْزًا، وَ بَطَاطِسَ، وَ بَصَلًا، وَ لَحْمًا.",
-      "nextTranslationUz": "Guruch, kartoshka, piyoz va go'sht oling."
+      "nextTranslationUz": "Guruch, kartoshka, piyoz va go'sht oling.",
+      "nextNext": "ثُمَّ قَالَ لِابْنِهِ: خُذْ بَطِّيخًا، وَ كُمَّثْرَى، وَ لَيْمُونًا.",
+      "nextNextTranslationUz": "Keyin o'g'liga dedi: Tarvuz, nok va limon ol."
     },
     {
       "id": "ar_m1_l86_t1",
@@ -5248,7 +5996,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ١",
       "next": "ثُمَّ قَالَ لِابْنِهِ: خُذْ بَطِّيخًا، وَ كُمَّثْرَى، وَ لَيْمُونًا.",
-      "nextTranslationUz": "Keyin o'g'liga dedi: Tarvuz, nok va limon ol."
+      "nextTranslationUz": "Keyin o'g'liga dedi: Tarvuz, nok va limon ol.",
+      "nextNext": "وَ قَالَ لِابْنَتِهِ: إِلْبَسِي حِذَاءَكِ، لِنَذْهَبْ إِلَى الْغَابَةِ.",
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l86_t2",
@@ -5262,7 +6012,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ١",
       "next": "وَ قَالَ لِابْنَتِهِ: إِلْبَسِي حِذَاءَكِ، لِنَذْهَبْ إِلَى الْغَابَةِ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l86_t3",
@@ -5276,7 +6028,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ١",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l87_t0",
@@ -5290,7 +6044,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٢",
       "next": "وَ عِنْدَمَا وَ صَلَتِ الْأُسْرَةُ إِلَى الْغَابَةِ، جَلَسُوا عِنْدَ النَّهْرِ.",
-      "nextTranslationUz": "Va oila o'rmonga yetib kelganda, ular daryo bo'yida o'tirishdi."
+      "nextTranslationUz": "Va oila o'rmonga yetib kelganda, ular daryo bo'yida o'tirishdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l87_t1",
@@ -5304,7 +6060,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٢",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l88_t0",
@@ -5318,7 +6076,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٣",
       "next": "وَ عِنْدَ غُرُوبِ الشَّمْسِ، رَجَعَتِ الْأُسْرَةُ إِلَى الْبَيْتِ.",
-      "nextTranslationUz": "Va quyosh botganda, oila uyiga qaytdi."
+      "nextTranslationUz": "Va quyosh botganda, oila uyiga qaytdi.",
+      "nextNext": "غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيرًا.",
+      "nextNextTranslationUz": "Ertaga Ahmad juda ko'p ishlaydi."
     },
     {
       "id": "ar_m1_l88_t1",
@@ -5332,7 +6092,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٣",
       "next": "غَدًا أَحْمَدُ سَيَعْمَلُ كَثِيرًا.",
-      "nextTranslationUz": "Ertaga Ahmad juda ko'p ishlaydi."
+      "nextTranslationUz": "Ertaga Ahmad juda ko'p ishlaydi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l88_t2",
@@ -5346,7 +6108,9 @@
       "audioUrl": null,
       "title": "رِحْلَةٌ إِلَى الْغَابَةِ ٣",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l89_t0",
@@ -5360,7 +6124,9 @@
       "audioUrl": null,
       "title": "اَللَّعِبُ فِي الشَّارِعِ",
       "next": "فَقَالَ: \"أَنَا أَلْعَبُ كُرَةَ الْقَدَمِ.\"",
-      "nextTranslationUz": "U dedi: \"Men futbol o'ynayapman.\""
+      "nextTranslationUz": "U dedi: \"Men futbol o'ynayapman.\"",
+      "nextNext": "فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\"",
+      "nextNextTranslationUz": "Men unga dedim: \"Ko'chada o'ynama, bu xavfli!\""
     },
     {
       "id": "ar_m1_l89_t1",
@@ -5374,7 +6140,9 @@
       "audioUrl": null,
       "title": "اَللَّعِبُ فِي الشَّارِعِ",
       "next": "فَقُلْتُ لَهُ: \"لاَ تَلْعَبْ فِي الشَّارِعِ، فَهُوَ خَطِيرٌ!\"",
-      "nextTranslationUz": "Men unga dedim: \"Ko'chada o'ynama, bu xavfli!\""
+      "nextTranslationUz": "Men unga dedim: \"Ko'chada o'ynama, bu xavfli!\"",
+      "nextNext": "فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\"",
+      "nextNextTranslationUz": "U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida.\""
     },
     {
       "id": "ar_m1_l89_t2",
@@ -5388,7 +6156,9 @@
       "audioUrl": null,
       "title": "اَللَّعِبُ فِي الشَّارِعِ",
       "next": "فَأَجَابَ: \"أَنَا لاَ أَلْعَبُ فِي وَسَطِ الطَّرِيقِ، بَلْ فِي جَانِبِهِ.\"",
-      "nextTranslationUz": "U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida.\""
+      "nextTranslationUz": "U javob berdi: \"Men yo'lning o'rtasida o'ynamayman, balki uning yonida.\"",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l89_t3",
@@ -5402,7 +6172,9 @@
       "audioUrl": null,
       "title": "اَللَّعِبُ فِي الشَّارِعِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l9_t0",
@@ -5416,7 +6188,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "وَعَلَيْكُمُ السَّلَامُ.",
-      "nextTranslationUz": "Va alaykum assalom."
+      "nextTranslationUz": "Va alaykum assalom.",
+      "nextNext": "مَا اسْمُكَ؟",
+      "nextNextTranslationUz": "Isming nima?"
     },
     {
       "id": "ar_m1_l9_t1",
@@ -5430,7 +6204,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "مَا اسْمُكَ؟",
-      "nextTranslationUz": "Isming nima?"
+      "nextTranslationUz": "Isming nima?",
+      "nextNext": "اِسْمِي فَرِيدٌ، وَمَا اسْمُكَ؟",
+      "nextNextTranslationUz": "Ismim Farid, sening isming nima?"
     },
     {
       "id": "ar_m1_l9_t2",
@@ -5444,7 +6220,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "اِسْمِي فَرِيدٌ، وَمَا اسْمُكَ؟",
-      "nextTranslationUz": "Ismim Farid, sening isming nima?"
+      "nextTranslationUz": "Ismim Farid, sening isming nima?",
+      "nextNext": "اِسْمِي مُحَمَّدٌ.",
+      "nextNextTranslationUz": "Ismim Muhammad."
     },
     {
       "id": "ar_m1_l9_t3",
@@ -5458,7 +6236,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "اِسْمِي مُحَمَّدٌ.",
-      "nextTranslationUz": "Ismim Muhammad."
+      "nextTranslationUz": "Ismim Muhammad.",
+      "nextNext": "مِنْ أَيْنَ أَنْتَ يَا مُحَمَّدُ؟",
+      "nextNextTranslationUz": "Qayerdansan, Muhammad?"
     },
     {
       "id": "ar_m1_l9_t4",
@@ -5472,7 +6252,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "مِنْ أَيْنَ أَنْتَ يَا مُحَمَّدُ؟",
-      "nextTranslationUz": "Qayerdansan, Muhammad?"
+      "nextTranslationUz": "Qayerdansan, Muhammad?",
+      "nextNext": "أَنَا مِنْ مِصْرَ، وَمِنْ أَيْنَ أَنْتَ يَا فَرِيدُ؟",
+      "nextNextTranslationUz": "Men Misrdanman. Sen qayerdansan, Farid?"
     },
     {
       "id": "ar_m1_l9_t5",
@@ -5486,7 +6268,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "أَنَا مِنْ مِصْرَ، وَمِنْ أَيْنَ أَنْتَ يَا فَرِيدُ؟",
-      "nextTranslationUz": "Men Misrdanman. Sen qayerdansan, Farid?"
+      "nextTranslationUz": "Men Misrdanman. Sen qayerdansan, Farid?",
+      "nextNext": "أَنَا مِنْ أُوزْبَكِسْتَانَ.",
+      "nextNextTranslationUz": "Men O'zbekistondanman."
     },
     {
       "id": "ar_m1_l9_t6",
@@ -5500,7 +6284,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "أَنَا مِنْ أُوزْبَكِسْتَانَ.",
-      "nextTranslationUz": "Men O'zbekistondanman."
+      "nextTranslationUz": "Men O'zbekistondanman.",
+      "nextNext": "أَهْلًا وَسَهْلًا!",
+      "nextNextTranslationUz": "Xush kelibsiz!"
     },
     {
       "id": "ar_m1_l9_t7",
@@ -5514,7 +6300,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "أَهْلًا وَسَهْلًا!",
-      "nextTranslationUz": "Xush kelibsiz!"
+      "nextTranslationUz": "Xush kelibsiz!",
+      "nextNext": "أَهْلًا بِكَ.",
+      "nextNextTranslationUz": "Xush ko'rdim seni."
     },
     {
       "id": "ar_m1_l9_t8",
@@ -5528,7 +6316,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": "أَهْلًا بِكَ.",
-      "nextTranslationUz": "Xush ko'rdim seni."
+      "nextTranslationUz": "Xush ko'rdim seni.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l9_t9",
@@ -5542,7 +6332,9 @@
       "audioUrl": null,
       "title": "اَلتَّعَارُفُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l90_t0",
@@ -5556,7 +6348,9 @@
       "audioUrl": null,
       "title": "مَاذَا أَكَلْتِ يَا بُنَيَّتِي؟",
       "next": "لا، أَكَلْتُ الأَرُزَّ وَ اللَّحْمَ.",
-      "nextTranslationUz": "Yo'q, men guruch va go'sht yedim."
+      "nextTranslationUz": "Yo'q, men guruch va go'sht yedim.",
+      "nextNext": "وَ مَاذَا أَكَلَ أَخُوكِ أَحْمَدُ؟",
+      "nextNextTranslationUz": "Va akang Ahmad nima yedi?"
     },
     {
       "id": "ar_m1_l90_t1",
@@ -5570,7 +6364,9 @@
       "audioUrl": null,
       "title": "مَاذَا أَكَلْتِ يَا بُنَيَّتِي؟",
       "next": "وَ مَاذَا أَكَلَ أَخُوكِ أَحْمَدُ؟",
-      "nextTranslationUz": "Va akang Ahmad nima yedi?"
+      "nextTranslationUz": "Va akang Ahmad nima yedi?",
+      "nextNext": "هُوَ أَكَلَ الخُبْزَ فَقَطْ.",
+      "nextNextTranslationUz": "U faqat non yedi."
     },
     {
       "id": "ar_m1_l90_t2",
@@ -5584,7 +6380,9 @@
       "audioUrl": null,
       "title": "مَاذَا أَكَلْتِ يَا بُنَيَّتِي؟",
       "next": "هُوَ أَكَلَ الخُبْزَ فَقَطْ.",
-      "nextTranslationUz": "U faqat non yedi."
+      "nextTranslationUz": "U faqat non yedi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l90_t3",
@@ -5598,7 +6396,9 @@
       "audioUrl": null,
       "title": "مَاذَا أَكَلْتِ يَا بُنَيَّتِي؟",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l91_t0",
@@ -5612,7 +6412,9 @@
       "audioUrl": null,
       "title": "اَلنَّحْلَةُ",
       "next": "اَلنَّحْلَةُ تَنْفَعُ النَّاسَ وَالنَّبَاتَاتِ كَثِيرًا.",
-      "nextTranslationUz": "Asalari odamlar va o‘simliklarga juda katta foyda keltiradi."
+      "nextTranslationUz": "Asalari odamlar va o‘simliklarga juda katta foyda keltiradi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l91_t1",
@@ -5626,7 +6428,9 @@
       "audioUrl": null,
       "title": "اَلنَّحْلَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l92_t0",
@@ -5640,7 +6444,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُشْمِسٌ",
       "next": "هِيَ أَخَذَتْ نَظَّارَتَهَا وَ لَبِسَتْ لِبَاسًا خَفِيفًا وَ مَشَتْ عَلَى السَّاحِلِ.",
-      "nextTranslationUz": "U ko‘zoynagini oldi, yengil kiyim kiydi va sohil bo‘ylab yurdi."
+      "nextTranslationUz": "U ko‘zoynagini oldi, yengil kiyim kiydi va sohil bo‘ylab yurdi.",
+      "nextNext": "وَ شَاهَدَتْ سَفِينَةً كَبِيرَةً تُبْحِرُ فِي الْبَحْرِ.",
+      "nextNextTranslationUz": "U dengizda suzayotgan katta kemani ko‘rdi."
     },
     {
       "id": "ar_m1_l92_t1",
@@ -5654,7 +6460,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُشْمِسٌ",
       "next": "وَ شَاهَدَتْ سَفِينَةً كَبِيرَةً تُبْحِرُ فِي الْبَحْرِ.",
-      "nextTranslationUz": "U dengizda suzayotgan katta kemani ko‘rdi."
+      "nextTranslationUz": "U dengizda suzayotgan katta kemani ko‘rdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l92_t2",
@@ -5668,7 +6476,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُشْمِسٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l93_t0",
@@ -5682,7 +6492,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُمْطِرٌ 2",
       "next": "نَظَرَتْ إِلَى السَّمَاءِ وَرَأَتِ السُّحُبَ السَّوْدَاءَ.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l93_t1",
@@ -5696,7 +6508,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُمْطِرٌ 2",
       "next": "لِذَا رَجَعَتْ إِلَى بَيْتِهَا مُبْتَلَّةً.",
-      "nextTranslationUz": "Shuning uchun u uyiga ho‘l holda qaytdi."
+      "nextTranslationUz": "Shuning uchun u uyiga ho‘l holda qaytdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l93_t2",
@@ -5710,7 +6524,9 @@
       "audioUrl": null,
       "title": "يَوْمٌ مُمْطِرٌ 2",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l94_t0",
@@ -5724,7 +6540,9 @@
       "audioUrl": null,
       "title": "فَاطِمَةُ الْمُؤَدَّبَةُ",
       "next": "لاَ تَرْفَعُ فَاطِمَةُ صَوْتَهَا عَلَى أُمِّهَا وَحَتَّى عَلَى أُخْتِهَا الصَّغِيرَةِ.",
-      "nextTranslationUz": "Fatima na onasiga, na kichik singlisiga ovozini ko‘tarmaydi."
+      "nextTranslationUz": "Fatima na onasiga, na kichik singlisiga ovozini ko‘tarmaydi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l94_t1",
@@ -5738,7 +6556,9 @@
       "audioUrl": null,
       "title": "فَاطِمَةُ الْمُؤَدَّبَةُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l95_t0",
@@ -5752,7 +6572,9 @@
       "audioUrl": null,
       "title": "أَخَوَاتٌ",
       "next": "هُنَّ مُؤَدَّبَاتٌ جِدًّا.",
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l95_t1",
@@ -5766,7 +6588,9 @@
       "audioUrl": null,
       "title": "أَخَوَاتٌ",
       "next": "أَنَا أُحِبُّهُنَّ جِدًّا.",
-      "nextTranslationUz": "Men ularni juda yaxshi ko‘raman."
+      "nextTranslationUz": "Men ularni juda yaxshi ko‘raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l95_t2",
@@ -5780,7 +6604,9 @@
       "audioUrl": null,
       "title": "أَخَوَاتٌ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l96_t0",
@@ -5794,7 +6620,9 @@
       "audioUrl": null,
       "title": "صَبَاحٌ فِي الْقَرْيَةِ",
       "next": "وَ قُرْبَ الظُّهْرِ صَاحَتِ الدَّجَاجَاتُ، فَجَمَعَ صَاحِبُ الْمَنْزِلِ بَيْضَهَا،",
-      "nextTranslationUz": "Tushga yaqin tovuqlar qichqirdi va uy egasi ularning tuxumlarini yig'di,"
+      "nextTranslationUz": "Tushga yaqin tovuqlar qichqirdi va uy egasi ularning tuxumlarini yig'di,",
+      "nextNext": "وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ.",
+      "nextNextTranslationUz": "va otni, sigirni va qolgan hayvonlarni oziqlantirdi."
     },
     {
       "id": "ar_m1_l96_t1",
@@ -5808,7 +6636,9 @@
       "audioUrl": null,
       "title": "صَبَاحٌ فِي الْقَرْيَةِ",
       "next": "وَ أَطْعَمَ الْحِصَانَ وَ الْبَقَرَةَ وَ بَقِيَّةَ الْحَيَوَانَاتِ.",
-      "nextTranslationUz": "va otni, sigirni va qolgan hayvonlarni oziqlantirdi."
+      "nextTranslationUz": "va otni, sigirni va qolgan hayvonlarni oziqlantirdi.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l96_t2",
@@ -5822,7 +6652,9 @@
       "audioUrl": null,
       "title": "صَبَاحٌ فِي الْقَرْيَةِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l97_t0",
@@ -5836,7 +6668,9 @@
       "audioUrl": null,
       "title": "أَرُزٌّ بِاللَّحْمِ",
       "next": "أَدْرُسُ يَا أُمِّي.",
-      "nextTranslationUz": "O'qiyman, ona."
+      "nextTranslationUz": "O'qiyman, ona.",
+      "nextNext": "اُطْبُخِي أَرُزًّا بُخَارِيّا.",
+      "nextNextTranslationUz": "Bug'doy guruch pishir."
     },
     {
       "id": "ar_m1_l97_t1",
@@ -5850,7 +6684,9 @@
       "audioUrl": null,
       "title": "أَرُزٌّ بِاللَّحْمِ",
       "next": "اُطْبُخِي أَرُزًّا بُخَارِيّا.",
-      "nextTranslationUz": "Bug'doy guruch pishir."
+      "nextTranslationUz": "Bug'doy guruch pishir.",
+      "nextNext": "لاَ أَعْرِفُهُ يَا أُمِّي، وَ لَكِنْ أَطْبُخُ أَرُزّا بِاللَّحْمِ.",
+      "nextNextTranslationUz": "Bilmayman, ona, lekin men goshtli guruch pishiraman."
     },
     {
       "id": "ar_m1_l97_t2",
@@ -5864,7 +6700,9 @@
       "audioUrl": null,
       "title": "أَرُزٌّ بِاللَّحْمِ",
       "next": "لاَ أَعْرِفُهُ يَا أُمِّي، وَ لَكِنْ أَطْبُخُ أَرُزّا بِاللَّحْمِ.",
-      "nextTranslationUz": "Bilmayman, ona, lekin men goshtli guruch pishiraman."
+      "nextTranslationUz": "Bilmayman, ona, lekin men goshtli guruch pishiraman.",
+      "nextNext": "جَيِّدٌ يَا بِنْتِي.",
+      "nextNextTranslationUz": "Yaxshi, qizim."
     },
     {
       "id": "ar_m1_l97_t3",
@@ -5878,7 +6716,9 @@
       "audioUrl": null,
       "title": "أَرُزٌّ بِاللَّحْمِ",
       "next": "جَيِّدٌ يَا بِنْتِي.",
-      "nextTranslationUz": "Yaxshi, qizim."
+      "nextTranslationUz": "Yaxshi, qizim.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l97_t4",
@@ -5892,7 +6732,9 @@
       "audioUrl": null,
       "title": "أَرُزٌّ بِاللَّحْمِ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l98_t0",
@@ -5906,7 +6748,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": "لاَ، قَلَمِي أَزْرَقُ.",
-      "nextTranslationUz": "Yo'q, mening qalamim ko'k."
+      "nextTranslationUz": "Yo'q, mening qalamim ko'k.",
+      "nextNext": "هَلْ هَذَا قَلَمُ فَاطِمَةَ؟",
+      "nextNextTranslationUz": "Bu Fotimaning qalamimi?"
     },
     {
       "id": "ar_m1_l98_t1",
@@ -5920,7 +6764,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": "هَلْ هَذَا قَلَمُ فَاطِمَةَ؟",
-      "nextTranslationUz": "Bu Fotimaning qalamimi?"
+      "nextTranslationUz": "Bu Fotimaning qalamimi?",
+      "nextNext": "لاَ، قَلَمُهَا أَحْمَرُ.",
+      "nextNextTranslationUz": "Yo'q, uning qalami qizil."
     },
     {
       "id": "ar_m1_l98_t2",
@@ -5934,7 +6780,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": "لاَ، قَلَمُهَا أَحْمَرُ.",
-      "nextTranslationUz": "Yo'q, uning qalami qizil."
+      "nextTranslationUz": "Yo'q, uning qalami qizil.",
+      "nextNext": "أَهَذِهِ حَقِيبَتُكَ؟",
+      "nextNextTranslationUz": "Bu sening sumkangmi?"
     },
     {
       "id": "ar_m1_l98_t3",
@@ -5948,7 +6796,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": "أَهَذِهِ حَقِيبَتُكَ؟",
-      "nextTranslationUz": "Bu sening sumkangmi?"
+      "nextTranslationUz": "Bu sening sumkangmi?",
+      "nextNext": "نَعَمْ، هِيَ حَقِيبَتِي.",
+      "nextNextTranslationUz": "Ha, bu mening sumkam."
     },
     {
       "id": "ar_m1_l98_t4",
@@ -5962,7 +6812,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": "نَعَمْ، هِيَ حَقِيبَتِي.",
-      "nextTranslationUz": "Ha, bu mening sumkam."
+      "nextTranslationUz": "Ha, bu mening sumkam.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l98_t5",
@@ -5976,7 +6828,9 @@
       "audioUrl": null,
       "title": "قَلَمٌ أَزْرَقُ",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l99_t0",
@@ -5990,7 +6844,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ عَائِلَتِي",
       "next": "أَبِي اِسْمُهُ كَرِيمٌ، وَ هُوَ مُدِيرٌ فِي الْمَحَلِّ.",
-      "nextTranslationUz": "Otamning ismi Karim va u do'konda menejer."
+      "nextTranslationUz": "Otamning ismi Karim va u do'konda menejer.",
+      "nextNext": "وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ.",
+      "nextNextTranslationUz": "Va onamning ismi Fotima va u uy bekasi."
     },
     {
       "id": "ar_m1_l99_t1",
@@ -6004,7 +6860,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ عَائِلَتِي",
       "next": "وَ أُمِّي اِسْمُهَا فَاطِمَةُ، وَ هِيَ رَبَّةُ بَيْتٍ.",
-      "nextTranslationUz": "Va onamning ismi Fotima va u uy bekasi."
+      "nextTranslationUz": "Va onamning ismi Fotima va u uy bekasi.",
+      "nextNext": "أَنَا أُحِبُّهُمَا جِدًّا.",
+      "nextNextTranslationUz": "Men ularni juda yaxshi ko'raman."
     },
     {
       "id": "ar_m1_l99_t2",
@@ -6018,7 +6876,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ عَائِلَتِي",
       "next": "أَنَا أُحِبُّهُمَا جِدًّا.",
-      "nextTranslationUz": "Men ularni juda yaxshi ko'raman."
+      "nextTranslationUz": "Men ularni juda yaxshi ko'raman.",
+      "nextNext": null,
+      "nextNextTranslationUz": null
     },
     {
       "id": "ar_m1_l99_t3",
@@ -6032,7 +6892,9 @@
       "audioUrl": null,
       "title": "أُحِبُّ عَائِلَتِي",
       "next": null,
-      "nextTranslationUz": null
+      "nextTranslationUz": null,
+      "nextNext": null,
+      "nextNextTranslationUz": null
     }
   ]
 }
