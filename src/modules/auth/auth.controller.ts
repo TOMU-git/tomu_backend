@@ -1,11 +1,11 @@
-import {Controller,Get,Post,Body,Inject,Res,Query} from "@nestjs/common";
+import {Controller,Get,Post,Body,Inject,Res,Query,UseGuards} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
   CreateAdminDto,
   CreateStudentDto,
   CreateTeacherDto,
 } from "../user/dto/create-users.dto";
-import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiQuery, ApiTags, ApiTooManyRequestsResponse } from "@nestjs/swagger";
 import { Response } from "express";
 import { PhoneNumberAlreadyExist } from "./exception/auth.exception";
 import {
@@ -18,6 +18,7 @@ import {
 import { IUserService } from "../user/interfaces/user.service";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
+import { SmsRateLimitGuard } from "./guards/sms-rate-limit.guard";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -150,7 +151,15 @@ export class AuthController {
 
   // **** Sending sms to user **** //
 
+  @ApiOperation({
+    summary: "Send SMS verification code",
+    description: "Send SMS verification code to phone number. Limited to 5 requests per minute per phone number.",
+  })
+  @ApiTooManyRequestsResponse({
+    description: "Too many requests. Maximum 5 requests per minute per phone number.",
+  })
   @Post("send-sms")
+  @UseGuards(SmsRateLimitGuard)
   async SentSms(@Body() sentSms: SentSmsDto) {
     return await this.authService.sentSms(sentSms);
   }

@@ -97,7 +97,7 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-
+      
       // ✅ Kunlik limit tekshiruvi
       const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
       if (dailyWatchedCount >= 10) {
