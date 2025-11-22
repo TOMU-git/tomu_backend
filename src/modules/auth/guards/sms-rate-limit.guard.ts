@@ -11,7 +11,7 @@ import { Cache } from "cache-manager";
 
 @Injectable()
 export class SmsRateLimitGuard implements CanActivate {
-  private readonly MAX_REQUESTS = 5; // 5 ta so'rov
+  private readonly MAX_REQUESTS = 2; // 5 ta so'rov
   private readonly WINDOW_MS = 60 * 1000; // 1 daqiqa (60000 ms)
 
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
