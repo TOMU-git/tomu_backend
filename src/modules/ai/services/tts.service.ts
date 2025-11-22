@@ -65,16 +65,16 @@ export class TTSService implements OnModuleInit {
      */
     private async initializeProvider() {
         if (this.initialized) return;
-        
+
         const configuredProvider = this.configService.get<string>('TTS_PROVIDER', 'openai');
         this.logger.log(`🔊 [TTS] Initializing TTS provider (configured: ${configuredProvider})...`);
-        
+
         // Google TTS ni lazy load qilish (optional dependency)
         if (this.provider === 'google') {
             try {
                 const { GoogleTTSProvider } = require('./tts-providers/google-tts.provider');
                 this.googleTTS = new GoogleTTSProvider(this.configService);
-                
+
                 if (this.googleTTS.isAvailable()) {
                     const info = this.googleTTS.getInfo();
                     this.logger.log(`✅ [TTS] Provider: Google Cloud TTS`);
@@ -194,11 +194,35 @@ export class TTSService implements OnModuleInit {
     }
 
     /**
+     * SSML tag'larini olib tashlash (OpenAI TTS uchun)
+     * OpenAI TTS SSML ni qo'llab-quvvatlamaydi
+     */
+    private cleanSSMLForOpenAI(text: string): string {
+        // SSML opening tag'larini olib tashlash
+        text = text.replace(/<[^>]*>/g, '');
+        // Speak tag'larini olib tashlash
+        text = text.replace(/<\/speak>/gi, '');
+        // Qolgan SSML elementlarini olib tashlash
+        text = text.replace(/<\/?[^>]+(>|$)/g, '');
+        // Ko'p bo'shliqlarni bitta bo'shliqqa almashtirish
+        text = text.replace(/\s+/g, ' ').trim();
+        return text;
+    }
+
+    /**
      * OpenAI TTS orqali audio yaratish (fallback)
      */
     private async generateWithOpenAI(params: { text: string; language: string }): Promise<TTSResponse> {
         if (!OPENAI_API_KEY) {
             return { audioUrl: "/upload/audio/placeholder.mp3", characters: 0 };
+        }
+
+        // OpenAI TTS SSML ni qo'llab-quvvatlamaydi, shuning uchun SSML tag'larini olib tashlash
+        const cleanText = this.cleanSSMLForOpenAI(params.text);
+
+        // Log for debugging
+        if (params.text !== cleanText) {
+            this.logger.debug(`🧹 [TTS] SSML cleaned for OpenAI: ${params.text.length} -> ${cleanText.length} chars`);
         }
 
         try {
@@ -207,7 +231,7 @@ export class TTSService implements OnModuleInit {
                 {
                     model: TTS_MODEL,
                     voice: TTS_VOICE,
-                    input: params.text,
+                    input: cleanText,
                     speed: TTS_SPEED,
                     response_format: "mp3",
                 },
