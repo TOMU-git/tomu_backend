@@ -65,6 +65,7 @@ import { FallbackResponseService } from './services/pipeline/builders/fallback-r
 import { MaterialFollowUpService } from './services/pipeline/builders/material-followup.service';
 import { AIFollowUpService } from './services/pipeline/builders/ai-followup.service';
 import { MaterialSequentialFollowUpService } from './services/pipeline/builders/material-sequential-followup.service';
+import { UserLastMessageFollowUpService } from './services/pipeline/builders/user-last-message-followup.service';
 import { HybridFollowUpService } from './services/pipeline/builders/hybrid-followup.service';
 import { ResponseCacheService } from './services/response-cache.service';
 import { GoogleTTSProvider } from './services/tts-providers/google-tts.provider';
@@ -163,6 +164,7 @@ import { UserCoursesModule } from '../user-courses/user-courses.module';
     MaterialFollowUpService,
     AIFollowUpService,
     MaterialSequentialFollowUpService,
+    UserLastMessageFollowUpService,
     HybridFollowUpService,
     STTStep,
     ValidationStep,

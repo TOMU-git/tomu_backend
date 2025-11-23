@@ -2,24 +2,26 @@ import { Injectable } from "@nestjs/common";
 import { MaterialFollowUpService, FollowUpQuestion } from "./material-followup.service";
 import { AIFollowUpService } from "./ai-followup.service";
 import { MaterialSequentialFollowUpService } from "./material-sequential-followup.service";
+import { UserLastMessageFollowUpService } from "./user-last-message-followup.service";
 import { TranslationService } from "../../translation.service";
 
 /**
  * Hybrid Follow-up Service
  * 
- * Gibrid yondashuv: birinchi material ketma-ketlik, keyin materialdan, topilmasa AI o'zi.
+ * YANGI LOGIKA: User oxirgi gapiga fokus, keyin tarix, keyin AI fallback
  * 
  * Strategiya (ustuvorlik tartibi):
- * 0. MaterialSequentialFollowUpService - material ketma-ketlik (BIRINCHI USTUVORLIK, 95% confidence)
- * 1. MaterialFollowUpService - materialdan qidirish (IKKINCHI USTUVORLIK, 90% confidence)
- * 2. Agar topilmasa → AIFollowUpService - AI o'zi yaratadi (UCHINCHI USTUVORLIK, 80% confidence)
- * 3. Agar AI ham yaratmasa → null (savol bermaslik)
+ * 1. MaterialSequentialFollowUpService - material ketma-ketlik (BIRINCHI USTUVORLIK, 95% confidence)
+ * 2. UserLastMessageFollowUpService - user oxirgi gapidan entity (IKKINCHI USTUVORLIK, 92% confidence)
+ * 3. MaterialFollowUpService - oxirgi 2 xabardan entity (UCHINCHI USTUVORLIK, 88% confidence)
+ * 4. AIFollowUpService - AI generic fallback (TO'RTINCHI USTUVORLIK, 80% confidence)
  * 
- * Avzalligi:
- * - Material sequential (95% confidence) > Material-based (90% confidence) > AI-generated (80% confidence)
- * - Material dialogue ketma-ketligini saqlash
- * - Mavzudan chiqish xavfi minimal
- * - Kafolatli context-aware follow-up
+ * Avzalliklari:
+ * - Material dialogue ketma-ketligini saqlash (95%)
+ * - User hozirgi gapiga aniq javob (92%)
+ * - Yaqin tarix context (88%)
+ * - Har doim savol berish (80% fallback)
+ * - Tez va samarali (1-2 xabar tahlil, 5 emas)
  */
 
 export interface HybridFollowUpResult {
@@ -27,7 +29,7 @@ export interface HybridFollowUpResult {
     questionUz: string;
     source: 'material' | 'ai' | 'pattern';
     confidence: number;
-    method: 'material-sequential' | 'material-exact' | 'material-pattern' | 'ai-generated';
+    method: 'material-sequential' | 'user-last-message' | 'recent-history' | 'ai-generated';
 }
 
 @Injectable()
@@ -39,8 +41,9 @@ export class HybridFollowUpService {
         private readonly materialFollowUp: MaterialFollowUpService,
         private readonly aiFollowUp: AIFollowUpService,
         private readonly materialSequentialFollowUp: MaterialSequentialFollowUpService,
+        private readonly userLastMessageFollowUp: UserLastMessageFollowUpService,
         private readonly translation: TranslationService
-    ) {}
+    ) { }
 
     /**
      * Hybrid follow-up savol yaratish
@@ -63,9 +66,9 @@ export class HybridFollowUpService {
             lessonOrder: number | null;
         }
     ): Promise<HybridFollowUpResult | null> {
-        console.log('🔄 [HybridFollowUp] Boshlandi...');
+        console.log('🔄 [HybridFollowUp] YANGI LOGIKA: Boshlandi...');
 
-        // Phase 0: Material ketma-ketlik (BIRINCHI USTUVORLIK)
+        // Phase 1: Material ketma-ketlik (BIRINCHI USTUVORLIK - 95%)
         if (materialMatch) {
             const sequentialResult = this.materialSequentialFollowUp.findSequentialFollowUp({
                 nextSentence: currentResponse,
@@ -73,50 +76,58 @@ export class HybridFollowUpService {
                 nextNextTranslationUz: materialMatch.nextNextTranslationUz,
                 lessonOrder: materialMatch.lessonOrder,
             });
-            
+
             if (sequentialResult && sequentialResult.confidence >= this.MIN_CONFIDENCE) {
                 console.log(
-                    `✅ [HybridFollowUp] Material ketma-ketlik topildi (confidence: ${sequentialResult.confidence})`,
+                    `✅ [HybridFollowUp] Phase 1: Material ketma-ketlik topildi (confidence: ${sequentialResult.confidence})`,
                 );
                 return await this.formatResult(sequentialResult, 'material-sequential');
             }
         }
 
-        // ⚡ OPTIMIZATION: Parallel processing - Material va AI parallel qidirish
-        // Bu ikki operatsiya bir-biriga bog'liq emas
-        console.log('📚 [HybridFollowUp] Phase 1&2: Material va AI parallel qidirish...');
-        
-        const [materialResult, aiResult] = await Promise.all([
-            // Phase 1: Material-based follow-up
-            Promise.resolve(this.materialFollowUp.findFollowUp(
-                currentResponse,
-                conversationHistory,
-                context,
-                lastWatchedLessonOrder
-            )),
-            // Phase 2: AI-generated follow-up (parallel)
-            this.aiFollowUp.generateFollowUp(
-                currentResponse,
-                conversationHistory,
-                context,
-                lastWatchedLessonOrder
-            )
-        ]);
+        // Phase 2: User oxirgi gapidan entity (IKKINCHI USTUVORLIK - 92%)
+        console.log('🗣️ [HybridFollowUp] Phase 2: User oxirgi gapidan entity qidirish...');
+        const userLastMessageResult = this.userLastMessageFollowUp.findFollowUpFromLastMessage(
+            conversationHistory,
+            context,
+            lastWatchedLessonOrder
+        );
 
-        // Phase 1: Material result (ikkinchi ustuvorlik)
-        if (materialResult && materialResult.confidence >= this.MIN_CONFIDENCE) {
-            console.log(`✅ [HybridFollowUp] Material'dan topildi (confidence: ${materialResult.confidence})`);
-            return await this.formatResult(materialResult, 'material-exact');
+        if (userLastMessageResult && userLastMessageResult.confidence >= this.MIN_CONFIDENCE) {
+            console.log(`✅ [HybridFollowUp] Phase 2: User oxirgi gapidan topildi (confidence: ${userLastMessageResult.confidence})`);
+            return await this.formatResult(userLastMessageResult, 'user-last-message');
         }
 
-        // Phase 2: AI result (uchinchi ustuvorlik)
+        // Phase 3: Oxirgi 2 xabardan entity (UCHINCHI USTUVORLIK - 88%)
+        console.log('📚 [HybridFollowUp] Phase 3: Oxirgi 2 xabardan entity qidirish...');
+        const recentHistoryResult = this.materialFollowUp.findFollowUpFromRecentHistory(
+            conversationHistory,
+            context,
+            lastWatchedLessonOrder,
+            2 // Oxirgi 2 xabar
+        );
+
+        if (recentHistoryResult && recentHistoryResult.confidence >= this.MIN_CONFIDENCE) {
+            console.log(`✅ [HybridFollowUp] Phase 3: Oxirgi 2 xabardan topildi (confidence: ${recentHistoryResult.confidence})`);
+            return await this.formatResult(recentHistoryResult, 'recent-history');
+        }
+
+        // Phase 4: AI generic fallback (TO'RTINCHI USTUVORLIK - 80%)
+        console.log('🤖 [HybridFollowUp] Phase 4: AI generic fallback...');
+        const aiResult = await this.aiFollowUp.generateFollowUp(
+            currentResponse,
+            conversationHistory,
+            context,
+            lastWatchedLessonOrder
+        );
+
         if (aiResult && aiResult.confidence >= this.MIN_CONFIDENCE) {
-            console.log(`✅ [HybridFollowUp] AI yaratdi (confidence: ${aiResult.confidence})`);
+            console.log(`✅ [HybridFollowUp] Phase 4: AI yaratdi (confidence: ${aiResult.confidence})`);
             return await this.formatResult(aiResult, 'ai-generated');
         }
 
-        // Phase 3: Topilmadi - savol bermaslik
-        console.log('❌ [HybridFollowUp] Follow-up topilmadi yoki confidence past');
+        // Hech narsa topilmadi
+        console.log('❌ [HybridFollowUp] Follow-up topilmadi (barcha phase muvaffaqiyatsiz)');
         return null;
     }
 
@@ -125,7 +136,7 @@ export class HybridFollowUpService {
      */
     private async formatResult(
         followUp: FollowUpQuestion,
-        method: 'material-sequential' | 'material-exact' | 'material-pattern' | 'ai-generated'
+        method: 'material-sequential' | 'user-last-message' | 'recent-history' | 'ai-generated'
     ): Promise<HybridFollowUpResult> {
         let questionUz = followUp.questionUz;
 
