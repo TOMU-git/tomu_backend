@@ -233,8 +233,8 @@ export class AiChatController {
         // History so'rovi - faqat message'larni qaytarish
         if (history === 'history') {
             const messages = await this.chat.getMessages(sessionId, userId);
-            // Oxirgi 25 ta message'ni qaytarish
-            const limitedMessages = messages.slice(-25).map(msg => ({
+            // Oxirgi 15 ta message'ni qaytarish
+            const limitedMessages = messages.slice(-15).map(msg => ({
                 id: msg.id,
                 sessionId: msg.sessionId,
                 senderType: msg.senderType,
@@ -275,9 +275,9 @@ export class AiChatController {
                 mimetype: file?.mimetype
             });
 
-            // Message'larni olish (oxirgi 25 ta)
+            // Message'larni olish (oxirgi 15 ta)
             const messages = await this.chat.getMessages(sessionId, userId);
-            const limitedMessages = messages.slice(-25).map(m => ({
+            const limitedMessages = messages.slice(-15).map(m => ({
                 id: m.id,
                 sessionId: m.sessionId,
                 senderType: m.senderType,
@@ -305,7 +305,7 @@ export class AiChatController {
             if (error instanceof LimitExceededException) {
                 // Message'larni olish
                 const messages = await this.chat.getMessages(sessionId, userId);
-                const limitedMessages = messages.slice(-25).map(m => ({
+                const limitedMessages = messages.slice(-15).map(m => ({
                     id: m.id,
                     createdAt: m.createdAt,
                     lastUpdatedAt: m.lastUpdatedAt,

@@ -64,6 +64,63 @@ export class MaterialFollowUpService {
     }
 
     /**
+     * Oxirgi N ta xabardan follow-up qidirish
+     * 
+     * @param conversationHistory - Suhbat tarixi
+     * @param context - Dars materiallari
+     * @param lastWatchedLessonOrder - Foydalanuvchi progress
+     * @param messageCount - Nechta oxirgi xabarni tahlil qilish (default: 2)
+     * @returns Follow-up savol yoki null
+     */
+    findFollowUpFromRecentHistory(
+        conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
+        context: any[],
+        lastWatchedLessonOrder: number,
+        messageCount: number = 2
+    ): FollowUpQuestion | null {
+        if (conversationHistory.length === 0) {
+            return null;
+        }
+
+        console.log(`[MaterialFollowUp] Oxirgi ${messageCount} xabardan entity qidirish...`);
+
+        // Oxirgi N ta xabarni olish
+        const recentMessages = conversationHistory.slice(-messageCount);
+
+        // Har bir xabardan entity ajratish (teskari tartibda - eng oxirgisidan)
+        for (let i = recentMessages.length - 1; i >= 0; i--) {
+            const message = recentMessages[i];
+            const entity = this.extractEntity(message.content);
+
+            if (entity) {
+                console.log(`[MaterialFollowUp] Entity topildi oxirgi ${recentMessages.length - i} xabarda: ${entity}`);
+
+                // Entity'ga mos follow-up topish
+                const followUpPattern = this.findEntityFollowUpPattern(entity, context, lastWatchedLessonOrder);
+                if (followUpPattern) {
+                    // Confidence'ni biroz pasaytirish (chunki bu oxirgi gap emas)
+                    return {
+                        ...followUpPattern,
+                        confidence: 0.88, // Phase 3 confidence
+                    };
+                }
+
+                // Generic pattern
+                const genericPattern = this.getGenericFollowUpPattern(entity, message.content);
+                if (genericPattern) {
+                    return {
+                        ...genericPattern,
+                        confidence: 0.85, // Biroz pastroq
+                    };
+                }
+            }
+        }
+
+        console.log(`[MaterialFollowUp] Oxirgi ${messageCount} xabarda entity topilmadi`);
+        return null;
+    }
+
+    /**
      * Response'dan entity ajratish
      */
     private extractEntity(response: string): string | null {
@@ -82,12 +139,12 @@ export class MaterialFollowUpService {
             { ar: ['كُرْسِي', 'كرسي'], name: 'كُرْسِيٌّ' },
             { ar: ['حَقِيبَة', 'حقيبة'], name: 'حَقِيبَةٌ' },
             { ar: ['بَيْت', 'بيت'], name: 'بَيْتٌ' },
-            
+
             // Kasblar
             { ar: ['طَبِيب', 'طبيب'], name: 'طَبِيبٌ' },
             { ar: ['مُعَلِّم', 'معلم'], name: 'مُعَلِّمٌ' },
             { ar: ['طَالِب', 'طالب'], name: 'طَالِبٌ' },
-            
+
             // Joylar
             { ar: ['مَدْرَسَة', 'مدرسة'], name: 'مَدْرَسَةٌ' },
             { ar: ['مَسْجِد', 'مسجد'], name: 'مَسْجِدٌ' },
@@ -127,7 +184,7 @@ export class MaterialFollowUpService {
             // Dialog pattern'ni qidirish
             // Pattern: statement → follow-up question
             const lines = content.split('\n').filter((l: string) => l.trim().length > 0);
-            
+
             for (let i = 0; i < lines.length - 1; i++) {
                 const currentLine = lines[i];
                 const nextLine = lines[i + 1];
@@ -217,6 +274,8 @@ export class MaterialFollowUpService {
         return 'unknown';
     }
 }
+
+
 
 
 

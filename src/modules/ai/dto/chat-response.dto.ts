@@ -47,7 +47,7 @@ export class ChatResponseDto {
     @ApiProperty({ description: "Yaratilgan vaqt", example: "2024-01-01T12:05:00.000Z" })
     createdAt: Date;
     @ApiProperty({
-        description: "Sessiya xabarlari (oxirgi 20 ta)",
+        description: "Sessiya xabarlari (oxirgi 15 ta)",
         type: [ChatMessageDto],
         required: false
     })
