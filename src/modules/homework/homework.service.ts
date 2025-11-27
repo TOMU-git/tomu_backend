@@ -1,18 +1,19 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { IHomeworkService } from "./interfaces/homework.service";
 import { IHomeworkRepository } from "./interfaces/homework.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
-import { IHomeworkService } from "./interfaces/homework.service";
+import { Homework } from "./entities/homework.entity";
+import { CreateHomeworkDto } from "./dto/create-homework.dto";
+import { UpdateHomeworkDto } from "./dto/update-homework.dto";
 import {
   HomeworkNotFoundException,
   HomeworkOrderAlreadyExistException,
 } from "./exception/homework.exception";
-import { UpdateHomeworkDto } from "./dto/update-homework.dto";
-import { CreateHomeworkDto } from "./dto/create-homework.dto";
-import { Homework } from "./entities/homework.entity";
+import { VimeoService } from "../lesson/vimeo.service";
 import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
-import { VimeoService } from "../lesson/vimeo.service";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from "src/common/utils/helper";
 
 @Injectable()
 export class HomeworkService implements IHomeworkService {
@@ -77,7 +78,7 @@ export class HomeworkService implements IHomeworkService {
     newHomework = Object.assign(newHomework, createHomeworkDto);
     const newData = await this.homeworkRepository.create(newHomework);
 
-    return new ResData<Homework>("Homework created successfully", 201, newData);
+    return new ResData<Homework>("Homework created successfully", 201, addVimeoEmbedUrl(newData));
   }
 
   /**
@@ -87,7 +88,7 @@ export class HomeworkService implements IHomeworkService {
   async findAll(): Promise<ResData<Array<Homework>>> {
     const data = await this.homeworkRepository.findAll();
 
-    return new ResData<Array<Homework>>("ok", 200, data);
+    return new ResData<Array<Homework>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   /**
@@ -102,7 +103,7 @@ export class HomeworkService implements IHomeworkService {
       throw new HomeworkNotFoundException();
     }
 
-    return new ResData<Homework>("ok", 200, foundData);
+    return new ResData<Homework>("ok", 200, addVimeoEmbedUrl(foundData));
   }
 
   /**
@@ -161,7 +162,7 @@ export class HomeworkService implements IHomeworkService {
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
-      data,
+      addVimeoEmbedUrl(data),
     );
   }
 
@@ -182,7 +183,7 @@ export class HomeworkService implements IHomeworkService {
     return new ResData<Homework[]>(
       "Homeworks by blockId fetched successfully",
       200,
-      homeworks,
+      addVimeoEmbedUrlToArray(homeworks),
     );
   }
 
@@ -204,7 +205,7 @@ export class HomeworkService implements IHomeworkService {
     return new ResData<Array<Homework>>(
       "Videos fetched successfully",
       200,
-      data,
+      addVimeoEmbedUrlToArray(data),
     );
   }
 
@@ -218,6 +219,6 @@ export class HomeworkService implements IHomeworkService {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.homeworkRepository.delete(foundData);
 
-    return new ResData<Homework>("Homework deleted successfully", 200, data);
+    return new ResData<Homework>("Homework deleted successfully", 200, addVimeoEmbedUrl(data));
   }
 }

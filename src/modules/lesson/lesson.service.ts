@@ -14,6 +14,7 @@ import {
 import { VimeoService } from "./vimeo.service";
 import { QueryFailedError } from 'typeorm';
 import { IBlockRepository } from "../block/interfaces/block.repository";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from "src/common/utils/helper";
 
 // `LessonService` klassi, ILessonService interfeysini implementatsiya qiladi va darslarni boshqarish uchun asosiy servis vazifasini bajaradi.
 @Injectable()
@@ -84,7 +85,7 @@ export class LessonService implements ILessonService {
     return new ResData<Lesson>(
       "Dars muvaffaqiyatli yaratildi",
       201,
-      savedLesson,
+      addVimeoEmbedUrl(savedLesson),
     );
   }
 
@@ -98,7 +99,7 @@ export class LessonService implements ILessonService {
     return new ResData<Lesson[]>(
       "Boshlang'ich 10 ta darslar",
       200,
-      foundVideos,
+      addVimeoEmbedUrlToArray(foundVideos),
     );
   }
 
@@ -108,7 +109,7 @@ export class LessonService implements ILessonService {
    */
   async findAll(): Promise<ResData<Array<Lesson>>> {
     const data = await this.lessonRepository.findAll();
-    return new ResData<Array<Lesson>>("ok", 200, data);
+    return new ResData<Array<Lesson>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   /**d
@@ -123,7 +124,7 @@ export class LessonService implements ILessonService {
       throw new LessonNotFoundException();
     }
 
-    return new ResData<Lesson>("ok", 200, foundData);
+    return new ResData<Lesson>("ok", 200, addVimeoEmbedUrl(foundData));
   }
 
   /**
@@ -143,7 +144,7 @@ export class LessonService implements ILessonService {
     return new ResData<Lesson[]>(
       "Lessons by blockId fetched successfully",
       200,
-      lessons,
+      addVimeoEmbedUrlToArray(lessons),
     );
   }
 
@@ -202,7 +203,7 @@ export class LessonService implements ILessonService {
 
     const data = await this.lessonRepository.update(foundData);
 
-    return new ResData<Lesson>("Lesson updated successfully", 200, data);
+    return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));
   }
 
 
@@ -227,7 +228,7 @@ export class LessonService implements ILessonService {
       foundBlock.countVideos = Number(foundBlock.countVideos) - 1;
       await this.blockRepository.update(foundBlock);
 
-      return new ResData<Lesson>("Lesson deleted successfully", 200, data);
+      return new ResData<Lesson>("Lesson deleted successfully", 200, addVimeoEmbedUrl(data));
     } catch (error) {
       // Agar foreign key xatosi bo‘lsa — lesson_progress bilan bog‘liq
       if (

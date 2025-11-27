@@ -10,6 +10,7 @@ import { VimeoService } from '../lesson/vimeo.service';
 import { ICourseRepository } from '../course/interfaces/course.repository';
 import { CourseNotFoundException } from '../course/exception/course.exception';
 import { AlphabetOrderAlreadyExistException } from './exception/alphabet.exception';
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from 'src/common/utils/helper';
 
 @Injectable()
 export class AlphabetService implements IAlphabetService {
@@ -65,13 +66,13 @@ export class AlphabetService implements IAlphabetService {
     return new ResData<Alphabet>(
       'Alifbo muvaffaqiyatli yaratildi',
       201,
-      savedAlphabet,
+      addVimeoEmbedUrl(savedAlphabet),
     );
   }
 
   async findAll(): Promise<ResData<Array<Alphabet>>> {
     const data = await this.alphabetRepository.findAll();
-    return new ResData<Array<Alphabet>>('ok', 200, data);
+    return new ResData<Array<Alphabet>>('ok', 200, addVimeoEmbedUrlToArray(data));
   }
 
   async findOneById(id: ID): Promise<ResData<Alphabet>> {
@@ -80,7 +81,7 @@ export class AlphabetService implements IAlphabetService {
       throw new AlphabetOrderAlreadyExistException();
     }
 
-    return new ResData<Alphabet>('ok', 200, foundData);
+    return new ResData<Alphabet>('ok', 200, addVimeoEmbedUrl(foundData));
   }
 
   async getAlphabetsByCourseId(courseId: ID): Promise<ResData<Alphabet[]>> {
@@ -94,7 +95,7 @@ export class AlphabetService implements IAlphabetService {
     return new ResData<Alphabet[]>(
       'Alphabets by courseId fetched successfully',
       200,
-      alphabets,
+      addVimeoEmbedUrlToArray(alphabets),
     );
   }
 
@@ -150,13 +151,13 @@ export class AlphabetService implements IAlphabetService {
 
     const data = await this.alphabetRepository.update(foundData);
 
-    return new ResData<Alphabet>('Alphabet updated successfully', 200, data);
+    return new ResData<Alphabet>('Alphabet updated successfully', 200, addVimeoEmbedUrl(data));
   }
 
   async delete(id: ID): Promise<ResData<Alphabet>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.alphabetRepository.delete(foundData);
 
-    return new ResData<Alphabet>('Alphabet deleted successfully', 200, data);
+    return new ResData<Alphabet>('Alphabet deleted successfully', 200, addVimeoEmbedUrl(data));
   }
 }
