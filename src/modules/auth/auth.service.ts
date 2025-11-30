@@ -99,35 +99,63 @@ export class AuthService implements IAuthService {
     refreshToken: string,
     res: Response,
   ): Promise<ResData<ILoginData>> {
-    const verified = await this.jwtService.verifyAsync(refreshToken, {
-      secret: config.jwtRefreshKey,
-    });
-    if (!verified) {
-      throw new InvalidRefreshToken();
+    console.log('🔄 REFRESH TOKEN REQUEST STARTED');
+    console.log('📝 Incoming refresh token:', refreshToken?.substring(0, 20) + '...');
+
+    try {
+      const verified = await this.jwtService.verifyAsync(refreshToken, {
+        secret: config.jwtRefreshKey,
+      });
+      console.log('✅ Token verified successfully for user ID:', verified.id);
+
+      if (!verified) {
+        console.log('❌ Token verification failed');
+        throw new InvalidRefreshToken();
+      }
+
+      const { data: foundUser } = await this.userService.findOneById(verified.id);
+      console.log('👤 Found user:', foundUser?.id, foundUser?.firstName);
+
+      // const tokenMatch = await compare(refreshToken, foundUser.hashed_refresh_token);
+      // if (!foundUser) {
+      //   throw new InvalidRefreshToken();
+      // }
+
+      console.log('🔑 Generating new access token with secret:', config.jwtSecretKey?.substring(0, 5) + '...');
+      const access_token = await this.jwtService.signAsync(
+        { id: foundUser.id },
+        { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
+      );
+      console.log('✅ New access token generated:', access_token?.substring(0, 20) + '...');
+
+      console.log('🔄 Generating new refresh token with secret:', config.jwtRefreshKey?.substring(0, 5) + '...');
+      const refresh_token = await this.jwtService.signAsync(
+        { id: foundUser.id },
+        { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
+      );
+      console.log('✅ New refresh token generated:', refresh_token?.substring(0, 20) + '...');
+
+      foundUser.hashed_refresh_token = await hashed(refresh_token);
+      const updated = await this.userRepository.update(foundUser);
+      console.log('💾 User updated with new hashed refresh token');
+
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: config.jwtCookieTime,
+      });
+
+      console.log('🍪 Cookie set successfully');
+      console.log('✅ REFRESH TOKEN REQUEST COMPLETED SUCCESSFULLY');
+
+      return new ResData<ILoginData>("User refreshed", HttpStatus.OK, {
+        data: updated,
+        tokens: { access_token, refresh_token },
+      });
+    } catch (error) {
+      console.log('❌ REFRESH TOKEN ERROR:', error.message);
+      console.log('📊 Error details:', error);
+      throw error;
     }
-    const { data: foundUser } = await this.userService.findOneById(verified.id);
-    // const tokenMatch = await compare(refreshToken, foundUser.hashed_refresh_token);
-    // if (!foundUser) {
-    //   throw new InvalidRefreshToken();
-    // }
-    const access_token = await this.jwtService.signAsync(
-      { id: foundUser.id },
-      { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
-    );
-    const refresh_token = await this.jwtService.signAsync(
-      { id: foundUser.id },
-      { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
-    );
-    foundUser.hashed_refresh_token = await hashed(refresh_token);
-    const updated = await this.userRepository.update(foundUser);
-    res.cookie("refresh_token", refresh_token, {
-      httpOnly: true,
-      maxAge: config.jwtCookieTime,
-    });
-    return new ResData<ILoginData>("User refreshed", HttpStatus.OK, {
-      data: updated,
-      tokens: { access_token, refresh_token },
-    });
   }
 
   // *** Admin register only *** //
