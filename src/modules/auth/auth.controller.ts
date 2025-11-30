@@ -1,4 +1,4 @@
-import {Controller,Get,Post,Body,Inject,Res,Query,UseGuards} from "@nestjs/common";
+import { Controller, Get, Post, Body, Inject, Res, Query, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
   CreateAdminDto,
@@ -18,7 +18,7 @@ import {
 import { IUserService } from "../user/interfaces/user.service";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
-import { SmsRateLimitGuard } from "./guards/sms-rate-limit.guard";
+import { SmsRateLimitGuard, RateLimitGuard } from "./guards/sms-rate-limit.guard";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -26,7 +26,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     @Inject("IUserService") private readonly userService: IUserService,
-  ) {}
+  ) { }
   // **** Login for all users **** //
 
   @ApiOperation({
@@ -102,6 +102,7 @@ export class AuthController {
     type: String,
     description: "For regenerating the refresh token",
   })
+  @UseGuards(RateLimitGuard(5)) // 5 ta so'rov minutiga
   @Get("refresh")
   async refresh(
     @Query("refresh_token") refreshToken: string,
