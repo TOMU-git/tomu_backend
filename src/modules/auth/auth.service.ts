@@ -110,7 +110,10 @@ export class AuthService implements IAuthService {
     // if (!foundUser) {
     //   throw new InvalidRefreshToken();
     // }
-    const access_token = await this.jwtService.signAsync({ id: foundUser.id });
+    const access_token = await this.jwtService.signAsync(
+      { id: foundUser.id },
+      { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
+    );
     const refresh_token = await this.jwtService.signAsync(
       { id: foundUser.id },
       { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
