@@ -13,6 +13,7 @@ import { IFileService } from "../file/interfaces/file.service";
 import { Course } from "./entities/course.entity";
 import { User } from "../user/entities/user.entity";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray, generateVimeoEmbedUrl } from "src/common/utils/helper";
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -55,19 +56,19 @@ export class CourseService implements ICourseService {
     });
 
     const newData = await this.courseRepository.create(newCourse);
-    return new ResData<Course>("Course created successfully", 201, newData);
+    return new ResData<Course>("Course created successfully", 201, addVimeoEmbedUrl(newData));
   }
 
   async findAll(): Promise<ResData<Array<Course>>> {
     // Barcha kurslarni olish
     const data = await this.courseRepository.findAll();
 
-    return new ResData<Array<Course>>("ok", 200, data);
+    return new ResData<Array<Course>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>> {
     console.log('[CourseService.findOneById] START - Course ID:', id, 'User:', user ? `ID: ${user.id}` : 'NOT PROVIDED');
-    
+
     // ID bo'yicha kursni topish
     const foundData = await this.courseRepository.findById(id);
     if (!foundData) {
@@ -91,7 +92,7 @@ export class CourseService implements ICourseService {
         isActive: userCourse.isActive,
         status: userCourse.status
       } : 'NULL');
-      
+
       // Agar userCourse topilsa (ya'ni user bu kursga ega bo'lsa), isActiveForUser = true
       if (userCourse) {
         isActiveForUser = true;
@@ -113,6 +114,7 @@ export class CourseService implements ICourseService {
       description: foundData.description,
       imageUrl: foundData.imageUrl,
       videoUrl: foundData.videoUrl,
+      vimeoEmbedUrl: foundData.videoUrl ? generateVimeoEmbedUrl(foundData.videoUrl) : null,
       mimetype: foundData.mimetype,
       size: foundData.size,
       isActive: foundData.isActive,
@@ -120,7 +122,7 @@ export class CourseService implements ICourseService {
       createdAt: foundData.createdAt,
       lastUpdatedAt: foundData.lastUpdatedAt,
       isActiveForUser,
-    } as Course & { isActiveForUser: boolean };
+    } as Course & { isActiveForUser: boolean; vimeoEmbedUrl?: string };
 
     return new ResData<Course & { isActiveForUser: boolean }>("ok", 200, responseData);
   }
@@ -129,7 +131,7 @@ export class CourseService implements ICourseService {
     id: ID,
     updateCourseDto: UpdateCourseDto,
     file?: Express.Multer.File,
-  ): Promise<ResData<Partial<Course>>> {
+  ): Promise<ResData<Partial<Course> & { vimeoEmbedUrl?: string }>> {
     // update va delete metodlarida faqat kurs mavjudligini tekshirish kerak,
     // shuning uchun to'g'ridan-to'g'ri repository dan olamiz
     const foundData = await this.courseRepository.findById(id);
@@ -181,10 +183,11 @@ export class CourseService implements ICourseService {
     const data = await this.courseRepository.update(foundData);
 
     // Faqat yangilangan ma'lumotlarni qaytaramiz
-    return new ResData<Partial<Course>>("Course updated successfully", 200, {
+    return new ResData<Partial<Course> & { vimeoEmbedUrl?: string }>("Course updated successfully", 200, {
       title: data.title,
       description: data.description,
       videoUrl: data.videoUrl,
+      vimeoEmbedUrl: data.videoUrl ? generateVimeoEmbedUrl(data.videoUrl) : null,
       imageUrl: data.imageUrl,
       lang: data.lang,
     });
@@ -198,6 +201,6 @@ export class CourseService implements ICourseService {
       throw new CourseNotFoundException();
     }
     const data = await this.courseRepository.delete(foundData);
-    return new ResData<Course>("Course deleted successfully", 200, data);
+    return new ResData<Course>("Course deleted successfully", 200, addVimeoEmbedUrl(data));
   }
 }

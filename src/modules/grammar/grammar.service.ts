@@ -15,6 +15,7 @@ import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { VimeoService } from "../lesson/vimeo.service";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from "src/common/utils/helper";
 
 @Injectable()
 export class GrammarService implements IGrammarService {
@@ -65,7 +66,7 @@ export class GrammarService implements IGrammarService {
     return new ResData<Grammar>(
       "Grammar created successfully",
       201,
-      savedGrammar,
+      addVimeoEmbedUrl(savedGrammar),
     );
   }
 
@@ -80,7 +81,7 @@ export class GrammarService implements IGrammarService {
     return {
       message,
       statusCode: 200,
-      data: foundGrammars,
+      data: addVimeoEmbedUrlToArray(foundGrammars),
       isPaid: !!isPaid
     };
   }
@@ -91,7 +92,7 @@ export class GrammarService implements IGrammarService {
     if (data.length === 0) {
       return new ResData<Grammar[]>("Not any grammar yet", 200, data);
     }
-    return new ResData<Array<Grammar>>("ok", 200, data);
+    return new ResData<Array<Grammar>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   async findOneById(id: ID): Promise<ResData<Grammar>> {
@@ -99,7 +100,7 @@ export class GrammarService implements IGrammarService {
     if (!foundData) {
       throw new GrammarNotFoundException();
     }
-    return new ResData<Grammar>("ok", 200, foundData);
+    return new ResData<Grammar>("ok", 200, addVimeoEmbedUrl(foundData));
   }
 
   async update(
@@ -140,13 +141,13 @@ export class GrammarService implements IGrammarService {
 
     const data = await this.grammarRepository.update(foundData);
 
-    return new ResData<Grammar>("Grammar updated successfully", 200, data);
+    return new ResData<Grammar>("Grammar updated successfully", 200, addVimeoEmbedUrl(data));
   }
 
   async delete(id: ID): Promise<ResData<Grammar>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.grammarRepository.delete(foundData);
 
-    return new ResData<Grammar>("Grammar deleted successfully", 200, data);
+    return new ResData<Grammar>("Grammar deleted successfully", 200, addVimeoEmbedUrl(data));
   }
 }
