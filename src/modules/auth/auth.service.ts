@@ -206,16 +206,34 @@ export class AuthService implements IAuthService {
   }
 
   async sentSms(sendSmsDto: SentSmsDto): Promise<ResData<SmsSent>> {
-    const generatedCode = generate();
+    console.log('[Auth Service] sentSms called for phone:', sendSmsDto.phone);
 
-    const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
+    try {
+      const generatedCode = generate();
+      console.log('[Auth Service] Generated verification code:', generatedCode);
 
-    await this.smsService.sendSMS(sendSmsDto.phone, message);
+      const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
+      console.log('[Auth Service] Message prepared, calling SMS service...');
 
-    await this.cacheManager.set(sendSmsDto.phone, generatedCode, 120000);
-    return new ResData<SmsSent>("Message sent successfully", 200, {
-      status: "success",
-    });
+      await this.smsService.sendSMS(sendSmsDto.phone, message);
+      console.log('[Auth Service] SMS service call completed successfully');
+
+      await this.cacheManager.set(sendSmsDto.phone, generatedCode, 120000);
+      console.log('[Auth Service] Verification code cached for 2 minutes');
+
+      return new ResData<SmsSent>("Message sent successfully", 200, {
+        status: "success",
+      });
+    } catch (error) {
+      console.error('[Auth Service] Error in sentSms:', error.message);
+      console.error('[Auth Service] Error stack:', error.stack);
+      console.error('[Auth Service] Error details:', {
+        name: error.name,
+        status: error.status,
+        response: error.response,
+      });
+      throw error;
+    }
   }
 
   async forgotPass(dto: ForgotPassword): Promise<ResData<SmsSent>> {
