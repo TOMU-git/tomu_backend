@@ -162,7 +162,28 @@ export class AuthController {
   @Post("send-sms")
   @UseGuards(SmsRateLimitGuard)
   async SentSms(@Body() sentSms: SentSmsDto) {
-    return await this.authService.sentSms(sentSms);
+    console.log('[Auth Controller] POST /send-sms endpoint hit');
+    console.log('[Auth Controller] Request body:', sentSms);
+    console.log('[Auth Controller] Request headers:', sentSms);
+    console.log('[Auth Controller] Request query:', sentSms);
+    console.log('[Auth Controller] Request params:', sentSms);
+
+    try {
+      const result = await this.authService.sentSms(sentSms);
+      console.log('[Auth Controller] SMS sent successfully, returning result');
+      console.log('[Auth Controller] Response body:', result);
+      console.log('[Auth Controller] Response headers:', result);
+      console.log('[Auth Controller] Response status code:', result);
+      return result;
+    } catch (error) {
+      console.error('[Auth Controller] Error in SentSms endpoint:', error.message);
+      console.error('[Auth Controller] Error details:', {
+        name: error.name,
+        status: error.status,
+        stack: error.stack,
+      });
+      throw error;
+    }
   }
 
   // **** Register for admins and teachers **** //
