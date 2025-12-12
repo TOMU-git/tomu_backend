@@ -102,7 +102,7 @@ export class AuthController {
     type: String,
     description: "For regenerating the refresh token",
   })
-  @UseGuards(RateLimitGuard(5)) // 5 ta so'rov minutiga
+  @UseGuards(RateLimitGuard(20)) // 20 ta so'rov minutiga
   @Get("refresh")
   async refresh(
     @Query("refresh_token") refreshToken: string,
