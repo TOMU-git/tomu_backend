@@ -59,9 +59,10 @@ export class CourseService implements ICourseService {
     return new ResData<Course>("Course created successfully", 201, addVimeoEmbedUrl(newData));
   }
 
-  async findAll(): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>> {
-    // Barcha kurslarni count bilan olish
-    const data = await this.courseRepository.findAllWithCounts();
+  async findAll(user?: User): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>>> {
+    // Barcha kurslarni count va isActiveForUser bilan olish
+    // Agar user mavjud bo'lsa, uning ID'sini uzatamiz
+    const data = await this.courseRepository.findAllWithCounts(user?.id);
 
     // Vimeo embed URL qo'shamiz
     const dataWithVimeo = data.map(course => ({
@@ -69,7 +70,7 @@ export class CourseService implements ICourseService {
       vimeoEmbedUrl: course.videoUrl ? generateVimeoEmbedUrl(course.videoUrl) : null,
     }));
 
-    return new ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>("ok", 200, dataWithVimeo);
+    return new ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>>("ok", 200, dataWithVimeo);
   }
 
   async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {

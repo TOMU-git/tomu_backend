@@ -22,7 +22,7 @@ export class CourseRepository implements ICourseRepository {
     return await this.courseRepository.find({});
   }
 
-  async findAllWithCounts(): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
+  async findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>> {
     const queryBuilder = this.courseRepository
       .createQueryBuilder('course')
       .leftJoin('course.alphabets', 'alphabet')
@@ -42,7 +42,27 @@ export class CourseRepository implements ICourseRepository {
       .addSelect('course.last_update_at', 'lastUpdatedAt')
       .addSelect('COUNT(DISTINCT "alphabet"."id")', 'alphabetCount')
       .addSelect('COUNT(DISTINCT "lesson"."id")', 'lessonCount')
-      .addSelect('COUNT(DISTINCT "grammar"."id")', 'grammarCount')
+      .addSelect('COUNT(DISTINCT "grammar"."id")', 'grammarCount');
+
+    // Agar userId berilgan bo'lsa, user_courses bilan JOIN qilamiz
+    if (userId) {
+      queryBuilder
+        .leftJoin(
+          'user_courses',
+          'userCourse',
+          '"userCourse"."course_id" = "course"."id" AND "userCourse"."user_id" = :userId',
+          { userId }
+        )
+        .addSelect(
+          'MAX(CASE WHEN "userCourse"."id" IS NOT NULL THEN 1 ELSE 0 END)',
+          'isActiveForUser'
+        );
+    } else {
+      // userId yo'q bo'lsa, isActiveForUser har doim 0
+      queryBuilder.addSelect('0', 'isActiveForUser');
+    }
+
+    queryBuilder
       .groupBy('course.id')
       .addGroupBy('course.title')
       .addGroupBy('course.description')
@@ -55,50 +75,7 @@ export class CourseRepository implements ICourseRepository {
       .addGroupBy('course.created_at')
       .addGroupBy('course.last_update_at');
 
-    // Debug: SQL query'ni ko'rish
-    console.log('[CourseRepository.findAllWithCounts] SQL:', queryBuilder.getSql());
-
     const results = await queryBuilder.getRawMany();
-    console.log('[CourseRepository.findAllWithCounts] Raw results:', JSON.stringify(results, null, 2));
-
-    // Debug: Birinchi kurs uchun to'g'ridan-to'g'ri tekshirish
-    if (results.length > 0) {
-      const firstCourseId = results[0].id;
-      const alphabetCheck = await this.courseRepository.query(
-        'SELECT COUNT(*) as count FROM alphabets WHERE course_id = $1',
-        [firstCourseId]
-      );
-      const lessonCheck = await this.courseRepository.query(
-        'SELECT COUNT(*) as count FROM lessons WHERE course_id = $1',
-        [firstCourseId]
-      );
-      const grammarCheck = await this.courseRepository.query(
-        'SELECT COUNT(*) as count FROM grammars WHERE course_id = $1',
-        [firstCourseId]
-      );
-      console.log(`[CourseRepository.findAllWithCounts] Direct count check for course ${firstCourseId}:`);
-      console.log('  - Alphabets:', alphabetCheck[0].count);
-      console.log('  - Lessons:', lessonCheck[0].count);
-      console.log('  - Grammars:', grammarCheck[0].count);
-
-      // Umumiy ma'lumotlar mavjudligini tekshirish
-      const totalAlphabets = await this.courseRepository.query('SELECT COUNT(*) as count FROM alphabets');
-      const totalLessons = await this.courseRepository.query('SELECT COUNT(*) as count FROM lessons');
-      const totalGrammars = await this.courseRepository.query('SELECT COUNT(*) as count FROM grammars');
-      console.log('[CourseRepository.findAllWithCounts] Total counts in database:');
-      console.log('  - Total Alphabets:', totalAlphabets[0].count);
-      console.log('  - Total Lessons:', totalLessons[0].count);
-      console.log('  - Total Grammars:', totalGrammars[0].count);
-
-      // Birinchi lesson/alphabet/grammar'ning course_id'sini ko'rish
-      const sampleLesson = await this.courseRepository.query('SELECT id, course_id FROM lessons LIMIT 1');
-      const sampleAlphabet = await this.courseRepository.query('SELECT id, course_id FROM alphabets LIMIT 1');
-      const sampleGrammar = await this.courseRepository.query('SELECT id, course_id FROM grammars LIMIT 1');
-      console.log('[CourseRepository.findAllWithCounts] Sample records:');
-      console.log('  - Sample Lesson:', sampleLesson[0]);
-      console.log('  - Sample Alphabet:', sampleAlphabet[0]);
-      console.log('  - Sample Grammar:', sampleGrammar[0]);
-    }
 
     return results.map(row => ({
       id: row.id,
@@ -116,7 +93,8 @@ export class CourseRepository implements ICourseRepository {
       lessonCount: parseInt(row.lessonCount) || 0,
       grammarCount: parseInt(row.grammarCount) || 0,
       homeworkCount: parseInt(row.lessonCount) || 0,
-    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }));
+      isActiveForUser: row.isActiveForUser === 1 || row.isActiveForUser === '1' || row.isActiveForUser === true,
+    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }));
   }
 
   async update(entity: Course): Promise<Course> {
