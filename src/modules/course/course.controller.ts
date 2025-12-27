@@ -71,9 +71,13 @@ export class CourseController {
     return await this.courseService.create(createCourseDto, file);
   }
 
+  @UseGuards(OptionalAuthGuard)
+  @ApiBearerAuth()
   @Get()
-  async findAll(): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>> {
-    return await this.courseService.findAll();
+  async findAll(
+    @CurrentUser() user?: User,
+  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>>> {
+    return await this.courseService.findAll(user);
   }
 
   @UseGuards(OptionalAuthGuard)

@@ -4,7 +4,7 @@ import { Course } from "../entities/course.entity";
 export interface ICourseRepository {
   create(dto: Course): Promise<Course>;
   findAll(): Promise<Array<Course>>;
-  findAllWithCounts(): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>;
+  findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>>;
   update(entity: Course): Promise<Course>;
   delete(entity: Course): Promise<Course>;
   findById(id: ID): Promise<Course | null>;
