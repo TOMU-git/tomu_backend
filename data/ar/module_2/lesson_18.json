@@ -1,0 +1,50 @@
+{
+  "id": "ar_m2_l18",
+  "language": "ar",
+  "module": 2,
+  "lesson": 18,
+  "title": "اَلْمَسْجِدُ  فِي حَيِّنَا",
+  "summary": "Mahalladagi katta minorali masjid va undan chiqayotgan oq soqolli, yaxshi keksa odamlar haqida.",
+  "vocabulary": [
+    {"word": "اَلْمَسْجِدُ", "translationUz": "masjid"},
+    {"word": "فِي", "translationUz": "da"},
+    {"word": "حَيِّنَا", "translationUz": "bizning mahallamiz"},
+    {"word": "ذَلِكَ", "translationUz": "bu (uzoq)"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "ذُو", "translationUz": "ega bo'lgan"},
+    {"word": "مَنَارَةٍ", "translationUz": "minora"},
+    {"word": "كَبِيرَةٍ", "translationUz": "katta"},
+    {"word": "أُولَئِكَ", "translationUz": "bu (uzoqda)"},
+    {"word": "الشُّيُوخُ", "translationUz": "keksalar, pirimardlar"},
+    {"word": "يَخْرُجُونَ", "translationUz": "chiqayotgan"},
+    {"word": "ذَوُو", "translationUz": "ega bo'lgan"},
+    {"word": "لِحًى", "translationUz": "soqollar"},
+    {"word": "بَيْضَاءَ", "translationUz": "oq"},
+    {"word": "طَيِّبُونَ", "translationUz": "yaxshi, ezgu"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ذَلِكَ الْمَسْجِدُ الَّذِي فِي حَيِّنَا ذُو مَنَارَةٍ كَبِيرَةٍ.",
+      "translationUz": "Bu bizning mahallamizdagi masjid katta minoraga ega.",
+      "next": "وَ أُولَئِكَ الشُّيُوخُ الَّذِينَ يَخْرُجُونَ مِنَ الْمَسْجِدِ ذَوُو لِحًى بَيْضَاءَ طَيِّبُونَ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ أُولَئِكَ الشُّيُوخُ الَّذِينَ يَخْرُجُونَ مِنَ الْمَسْجِدِ ذَوُو لِحًى بَيْضَاءَ طَيِّبُونَ جِدًّا.",
+      "translationUz": "Va masjiddan chiqayotgan bu oq soqolli keksalar juda yaxshi odamlardir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَقَعُ الْمَسْجِدُ؟",
+    "مَاذَا لَهُ مِنْ خَصَائِصِ؟",
+    "مَنْ هُمْ الْأَشْخَاصُ الَّذِينَ يَخْرُجُونَ مِنَ الْمَسْجِدِ؟",
+    "كَيْفَ هُمْ؟",
+    "هَلْ فِي حَيِّكَ مَسْجِدٌ كَبِيرٌ؟"
+  ],
+  "context": {
+    "main_topic": "mosque_in_neighborhood",
+    "pattern": "mosque_description → elderly_people_description"
+  }
+}

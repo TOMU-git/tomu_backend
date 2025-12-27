@@ -1,0 +1,52 @@
+{
+  "id": "ar_m2_l23",
+  "language": "ar",
+  "module": 2,
+  "lesson": 23,
+  "title": "اَلْفُلْفُلُ الْحَارُّ",
+  "summary": "Pomidor va qalampirning lazzatliligi, lekin qalampirning juda achchiq bo'lishi va odamlar unga munosabati haqida.",
+  "vocabulary": [
+    {"word": "اَلْفُلْفُلُ", "translationUz": "qalampir"},
+    {"word": "الْحَارُّ", "translationUz": "achchiq, issiq"},
+    {"word": "اَلطَّمَاطِمُ", "translationUz": "pomidor"},
+    {"word": "لَذِيذَةٌ", "translationUz": "lazzatli (ayol)"},
+    {"word": "وَلَكِنَّهُ", "translationUz": "lekin u"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "كَثِيرٌ", "translationUz": "ko'p"},
+    {"word": "يَأْكُلُونَ", "translationUz": "yeydilar"},
+    {"word": "كَثِيرًا", "translationUz": "ko'p"},
+    {"word": "الأَحْيَانِ", "translationUz": "vaqtlar"},
+    {"word": "مَعَ", "translationUz": "bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلطَّمَاطِمُ لَذِيذَةٌ، وَ الْفُلْفُلُ لَذِيذٌ أَيْضًا، وَ لَكِنَّهُ حَارٌّ جِدًّا.",
+      "translationUz": "Pomidor lazzatli va qalampir ham lazzatli, lekin u juda achchiq.",
+      "next": " لِذَلِكَ كَثِيرٌ مِنَ النَّاسِ لَا يَأْكُلُونَ الْفُلْفُلَ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لِذَلِكَ كَثِيرٌ مِنَ النَّاسِ لَا يَأْكُلُونَ الْفُلْفُلَ كَثِيرًا.",
+      "translationUz": "Shuning uchun ko'p odamlar qalampirni ko'p yemaydilar.",
+      "next": " فِي بَعْضِ الأَحْيَانِ، يَأْكُلُ النَّاسُ الْفُلْفُلَ مَعَ الطَّعَامِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " فِي بَعْضِ الأَحْيَانِ، يَأْكُلُ النَّاسُ الْفُلْفُلَ مَعَ الطَّعَامِ.",
+      "translationUz": "Ba'zan odamlar qalampirni ovqat bilan birga yeydilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ الطَّمَاطِمُ؟",
+    "كَيْفَ هُوَ الْفُلْفُلُ؟",
+    "لِمَاذَا لَا يَأْكُلُ كَثِيرٌ مِنَ النَّاسِ الْفُلْفُلَ كَثِيرًا؟",
+    "مَتَى يَأْكُلُ النَّاسُ الْفُلْفُلَ؟",
+    "هَلْ تُحِبُّ الْفُلْفُلَ الْحَارَّ؟"
+  ],
+  "context": {
+    "main_topic": "hot_pepper_description",
+    "pattern": "taste_comparison → reason_for_limited_consumption → occasional_consumption"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l8",
+  "language": "ar",
+  "module": 2,
+  "lesson": 8,
+  "title": "اَلْخَمْرُ",
+  "summary": "Aqlli odamning araq ichmasligi va shifokorlarning bu yomon odat haqidagi ogohlantirishi.",
+  "vocabulary": [
+    {"word": "اَلْخَمْرُ", "translationUz": "araq, spirtli ichimlik"},
+    {"word": "الْإِنْسَانَ", "translationUz": "inson"},
+    {"word": "الْعَاقِلَ", "translationUz": "aql-idrokli, aqlli"},
+    {"word": "لَا يَشْرَبُ", "translationUz": "ichmaydi"},
+    {"word": "قَدْ", "translationUz": "albatta, haqiqatan"},
+    {"word": "قَالَ", "translationUz": "dedi"},
+    {"word": "الْأَطِبَّاءُ", "translationUz": "shifokorlar"},
+    {"word": "هَذِهِ", "translationUz": "bu (ayol)"},
+    {"word": "الْعَادَةَ", "translationUz": "odat"},
+    {"word": "السَّيِّئَةَ", "translationUz": "yomon"},
+    {"word": "ضَارَّةٌ", "translationUz": "zararli"},
+    {"word": "بِصِحَّةِ", "translationUz": "sog'lig'iga"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "فَإِنَّنِي", "translationUz": "shuning uchun men"},
+    {"word": "أَكْرَهُ", "translationUz": "yomon ko'raman"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ الْإِنْسَانَ الْعَاقِلَ لَا يَشْرَبُ الْخَمْرَ،",
+      "translationUz": "Albatta, aql-idrokli odam araq ichmaydi,",
+      "next": " وَ قَدْ قَالَ الْأَطِبَّاءُ: إِنَّ هَذِهِ الْعَادَةَ السَّيِّئَةَ ضَارَّةٌ جِدًّا بِصِحَّةِ الْإِنْسَانِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ قَدْ قَالَ الْأَطِبَّاءُ: إِنَّ هَذِهِ الْعَادَةَ السَّيِّئَةَ ضَارَّةٌ جِدًّا بِصِحَّةِ الْإِنْسَانِ.",
+      "translationUz": "va albatta shifokorlar dedi: \"Albatta bu yomon odat insonning sog'lig'iga juda zararli.\"",
+      "next": " لِذَلِكَ فَإِنَّنِي أَكْرَهُ هَذِهِ الْعَادَةَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لِذَلِكَ فَإِنَّنِي أَكْرَهُ هَذِهِ الْعَادَةَ.",
+      "translationUz": "Shuning uchun men bu odatni yomon ko'raman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا لَا يَفْعَلُ الْإِنْسَانُ الْعَاقِلُ؟",
+    "مَاذَا قَالَ الْأَطِبَّاءُ؟",
+    "كَيْفَ هِيَ عَادَةُ شُرْبِ الْخَمْرِ؟",
+    "لِمَاذَا يَكْرَهُ الْكَاتِبُ هَذِهِ الْعَادَةَ؟",
+    "هَلْ تَشْرَبُ الْخَمْرَ؟"
+  ],
+  "context": {
+    "main_topic": "alcohol_warning",
+    "pattern": "wise_person_behavior → doctors_warning → personal_opinion"
+  }
+}

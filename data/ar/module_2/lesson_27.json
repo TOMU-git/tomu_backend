@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l27",
+  "language": "ar",
+  "module": 2,
+  "lesson": 27,
+  "title": "صَدِيْقَاتُ آمِنَةَ",
+  "summary": "Ominaning uyida uning do'stlari bilan bo'lgan vaqt, ularning tovuq go'shtidan pishirgan lazzatli sho'rva yeyishlari va kasblari haqida.",
+  "vocabulary": [
+    {"word": "صَدِيْقَاتُ", "translationUz": "do'stlar (ayollar)"},
+    {"word": "كَانَتْ", "translationUz": "edi (ayol)"},
+    {"word": "زَيْنَبُ", "translationUz": "Zaynab"},
+    {"word": "وَفَاطِمَةُ", "translationUz": "va Fotima"},
+    {"word": "وَسَلْمَى", "translationUz": "va Salmo"},
+    {"word": "طَبَّاخَةً", "translationUz": "oshpaz (ayol)"},
+    {"word": "مَاهِرَةً", "translationUz": "mohir (ayol)"},
+    {"word": "طَبَخَتْ", "translationUz": "pishirdi (ayol)"},
+    {"word": "حَسَاءً", "translationUz": "sho'rva"},
+    {"word": "لَحْمِ", "translationUz": "go'shti"},
+    {"word": "الدَّجَاجِ", "translationUz": "tovuq"},
+    {"word": "أَكَلْنَ", "translationUz": "yedilar (ayollar)"},
+    {"word": "شَكَرْنَ", "translationUz": "rahmat bildirdilar (ayollar)"},
+    {"word": "لَسْنَ", "translationUz": "ular emas (ayollar)"},
+    {"word": "طَبِيبَاتٍ", "translationUz": "shifokorlar (ayollar)"},
+    {"word": "مُدَرِّسَاتٌ", "translationUz": "o'qituvchilar (ayollar)"},
+    {"word": "يَعْمَلْنَ", "translationUz": "ishlaydilar (ayollar)"},
+    {"word": "وَاحِدَةٍ", "translationUz": "bir"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كَانَتْ زَيْنَبُ وَفَاطِمَةُ وَسَلْمَى فِي بَيْتِ آمِنَةَ.",
+      "translationUz": "Zaynab, Fotima va Salmo Ominaning uyida edilar.",
+      "next": "آمِنَةُ لَيْسَتْ طَبَّاخَةً مَاهِرَةً، وَ لَكِنْ طَبَخَتْ حَسَاءً لَذِيذًا مِنْ لَحْمِ الدَّجَاجِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "آمِنَةُ لَيْسَتْ طَبَّاخَةً مَاهِرَةً، وَ لَكِنْ طَبَخَتْ حَسَاءً لَذِيذًا مِنْ لَحْمِ الدَّجَاجِ.",
+      "translationUz": "Omina mohir oshpaz emas, lekin u tovuq go'shtidan lazzatli sho'rva pishirdi.",
+      "next": "الصَّدِيقَاتُ الثَّلَاثُ أَكَلْنَ الْحَسَاءَ، وَ شَكَرْنَ آمِنَةَ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "الصَّدِيقَاتُ الثَّلَاثُ أَكَلْنَ الْحَسَاءَ، وَ شَكَرْنَ آمِنَةَ كَثِيرًا.",
+      "translationUz": "Uch do'st sho'rva yedilar va Ominaga ko'p rahmat bildirdilar.",
+      "next": "صَدِيقَاتُ آمِنَةَ لَسْنَ طَبِيبَاتٍ، بَلْ هُنَّ مُدَرِّسَاتٌ، وَ يَعْمَلْنَ فِي مَدْرَسَةٍ وَاحِدَةٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "صَدِيقَاتُ آمِنَةَ لَسْنَ طَبِيبَاتٍ، bَلْ هُنَّ مُدَرِّسَاتٌ، وَ يَعْمَلْنَ فِي مَدْرَسَةٍ وَاحِدَةٍ.",
+      "translationUz": "Ominaning do'stlari shifokor emaslar, balki ular o'qituvchilar va bir maktabda ishlaydilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ كَانَ فِي بَيْتِ آمِنَةَ؟",
+    "مَاذَا طَبَخَتْ آمِنَةُ؟",
+    "كَيْفَ كَانَ الْحَسَاءُ؟",
+    "مَاذَا فَعَلَتِ الصَّدِيقَاتُ بَعْدَ الْأَكْلِ؟",
+    "مَا مِهْنَةُ صَدِيقَاتِ آمِنَةَ؟"
+  ],
+  "context": {
+    "main_topic": "friends_gathering_cooking",
+    "pattern": "friends_gathering → cooking_description → meal_enjoyment → professions_revealed"
+  }
+}

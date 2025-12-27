@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l141",
+  "language": "ar",
+  "module": 1,
+  "lesson": 141,
+  "title": "الخَرِيطَةُ وَبُلْدَانُ العَالَمِ",
+
+  "summary": "Dunyo xaritasi va undagi qit’alar hamda davlatlar haqida oddiy tushuntirish.",
+
+  "vocabulary": [
+    { "word": "خَرِيطَةٌ", "translationUz": "xarita" },
+    { "word": "بَلَدٌ", "translationUz": "davlat" },
+    { "word": "قَارَّةٌ", "translationUz": "qit’a" },
+    { "word": "كَثِيرٌ", "translationUz": "ko‘p" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "كَمْ بَلَدًا فِي الْعَالَمِ هَلْ تَعْرِفُ يَا أَحْمَدُ؟",
+      "translationUz": "Dunyo bo‘ylab nechta davlat borligini bilasanmi, Ahmad?",
+      "next": "لَا يَا صَدِيقِي يَعْقُوبُ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لَا يَا صَدِيقِي يَعْقُوبُ.",
+      "translationUz": "Yo‘q, do‘stim Ya‘qub.",
+      "next": "هَذِهِ خَرِيطَةُ الْعَالَمِ وَ بِهَا سَبْعُ قَارَّاتٍ وَ بُلْدانٌ كَثِيرَةٌ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "هَذِهِ خَرِيطَةُ الْعَالَمِ وَ بِهَا سَبْعُ قَارَّاتٍ وَ بُلْدانٌ كَثِيرَةٌ.",
+      "translationUz": "Bu dunyo xaritasi va unda yetti qit’a va ko‘plab davlatlar mavjud.",
+      "next": "هَلْ زُرْتَ بَعْضَ هَذِهِ الْبُلْدَانِ؟"
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "نَعَمْ، زُرْتُ بَعْضَهَا.",
+      "translationUz": "Ha, men ba’zi davlatlarni ko‘rdim.",
+      "next": null
+    }
+  ]
+}

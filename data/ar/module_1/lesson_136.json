@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l136",
+  "language": "ar",
+  "module": 1,
+  "lesson": 136,
+  "title": "اَلشَّايُ والْقَهْوَةُ",
+
+  "summary": "Turli vaqtlarda choy va qahva ichish odatlari va ular bilan birga ovqatlanish.",
+
+  "vocabulary": [
+    { "word": "شَايٌ", "translationUz": "choy" },
+    { "word": "قَهْوَةٌ", "translationUz": "qahva" },
+    { "word": "سُكَّرٌ", "translationUz": "shakar" },
+    { "word": "غَدَاءٌ", "translationUz": "tushlik" },
+    { "word": "عَشَاءٌ", "translationUz": "kechki ovqat" },
+    { "word": "جُبْنٌ", "translationUz": "pishloq" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الشَّخْصُ",
+      "text": "أَشْرَبُ الْقَهْوَةَ مَعَ السُّكَّرِ صَبَاحًا، وَ لَكِنِّي أَشْرَبُ الْقَهْوَةَ فِي الْغَدَاءِ بِدُونِ سُكَّرٍ.",
+      "translationUz": "Men qahvani ertalab shakar bilan ichaman, lekin tushlikda shakarsiz ichaman.",
+      "next": "وَفِي الْعَشَاءِ أَشْرَبُ الشَّايَ الْأَخْضَر وَ آكُلُ الجُبْنَ."
+    },
+    {
+      "speaker": "الشَّخْصُ",
+      "text": "وَفِي الْعَشَاءِ أَشْرَبُ الشَّايَ الْأَخْضَر وَ آكُلُ الجُبْنَ.",
+      "translationUz": "Kechki ovqatda yashil choy ichaman va pishloq yeyman.",
+      "next": "هَلْ تُحِبُّ أَنْ تَشْرَبَ الشَّايَ أَمِ الْقَهْوَةَ؟"
+    },
+    {
+      "speaker": "الشَّخْصُ",
+      "text": "هَلْ تُحِبُّ أَنْ تَشْرَبَ الشَّايَ أَمِ الْقَهْوَةَ؟",
+      "translationUz": "Choymi yo qahvami ichishni yoqtirasiz?",
+      "next": "أَشْرَبُ كِلَاهُمَا أَيًّا أَمْتَحَنُهُم."
+    },
+    {
+      "speaker": "الشَّخْصُ",
+      "text": "أَشْرَبُ كِلَاهُمَا أَيًّا أَمْتَحَنُهُم.",
+      "translationUz": "Men ikkisini ham ichaman va tanlayman.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا هِيَ مَشْرُوبَاتُكَ المُفَضَّلَةُ؟",
+    "هَلْ تَشْرَبُ الشَّايَ أَوِ الْقَهْوَةَ؟",
+    "مَتَى تَشْرَبُهُم؟"
+  ],
+
+  "context": {
+    "main_topic": "drinks",
+    "pattern": "statement → statement → question → answer"
+  }
+}

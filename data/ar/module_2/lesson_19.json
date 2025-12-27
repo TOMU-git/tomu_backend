@@ -1,0 +1,61 @@
+{
+  "id": "ar_m2_l19",
+  "language": "ar",
+  "module": 2,
+  "lesson": 19,
+  "title": "اَلْجَدُّ و الْحَفِيْدُ",
+  "summary": "Buva va nabirasi o'rtasida eshik ochish va sariq rangli kitob olish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْجَدُّ", "translationUz": "buva"},
+    {"word": "الْحَفِيْدُ", "translationUz": "nabira"},
+    {"word": "أَأَنْتَ", "translationUz": "sansanmi"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "فَتَحْتَ", "translationUz": "ochding"},
+    {"word": "الْبَابَ", "translationUz": "eshikni"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "دَخَلْتَ", "translationUz": "kirding"},
+    {"word": "الْغُرْفَةَ", "translationUz": "xonaga"},
+    {"word": "لِآخُذَ", "translationUz": "olish uchun"},
+    {"word": "كِتَابًا", "translationUz": "kitob"},
+    {"word": "ذَا", "translationUz": "ega bo'lgan"},
+    {"word": "لَوْنٍ", "translationUz": "rang"},
+    {"word": "أَصْفَرَ", "translationUz": "sariq"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْجَدُّ",
+      "text": "أَأَنْتَ الَّذِي فَتَحْتَ الْبَابَ يَا أَحْمَدُ؟",
+      "translationUz": "Eshikni ochgan sensanmi, Ahmad?",
+      "next": " أَحْمَدُ: نَعَمْ يَا جَدِّي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "نَعَمْ يَا جَدِّي.",
+      "translationUz": "Ha, buvajon.",
+      "next": " اَلْجَدُّ: لِمَاذَا دَخَلْتَ الْغُرْفَةَ؟"
+    },
+    {
+      "speaker": "اَلْجَدُّ",
+      "text": "لِمَاذَا دَخَلْتَ الْغُرْفَةَ؟",
+      "translationUz": "Nega xonaga kirding?",
+      "next": " أَحْمَدُ: لِآخُذَ كِتَابًا ذَا لَوْنٍ أَصْفَرَ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لِآخُذَ كِتَابًا ذَا لَوْنٍ أَصْفَرَ.",
+      "translationUz": "Sariq rangli kitob olish uchun.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ الْجَدُّ؟",
+    "مَاذَا يُجِيبُ الْحَفِيدُ؟",
+    "لِمَاذَا دَخَلَ أَحْمَدُ الْغُرْفَةَ؟",
+    "مَا لَوْنُ الْكِتَابِ؟",
+    "هَلْ تُحِبُّ الْقِرَاءَةَ؟"
+  ],
+  "context": {
+    "main_topic": "grandfather_grandson_conversation",
+    "pattern": "question_about_door → confirmation → reason_for_entry → explanation"
+  }
+}

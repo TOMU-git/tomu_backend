@@ -1,0 +1,68 @@
+{
+  "id": "ar_m2_l39",
+  "language": "ar",
+  "module": 2,
+  "lesson": 39,
+  "title": "قِرَاءَةُ الْكُتُبِ",
+  "summary": "Muhammad va Mahmud o'rtasida kitob o'qishga bo'lgan qarama-qarshi munosabatlar haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "قِرَاءَةُ", "translationUz": "o'qish"},
+    {"word": "الْكُتُبِ", "translationUz": "kitoblar"},
+    {"word": "تَقْرَأُ", "translationUz": "o'qiysan"},
+    {"word": "مَحْمُودُ", "translationUz": "Mahmud"},
+    {"word": "هِيَ", "translationUz": "u"},
+    {"word": "أَفْضَلُ", "translationUz": "eng yaxshi"},
+    {"word": "مَا", "translationUz": "narsa"},
+    {"word": "أَشْغَلُ", "translationUz": "band qilaman"},
+    {"word": "نَفْسِي", "translationUz": "o'zimni"},
+    {"word": "بِهِ", "translationUz": "bilan"},
+    {"word": "لَكِنِّي", "translationUz": "lekin men"},
+    {"word": "لَا أُحِبُّ", "translationUz": "yoqtirmayman"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "كُرَةَ الْقَدَمِ", "translationUz": "futbol"},
+    {"word": "فَقَطْ", "translationUz": "faqat"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَلْ تَقْرَأُ الْكُتُبَ يَا مَحْمُودُ？",
+      "translationUz": "Kitob o'qiysanmi, Mahmud?",
+      "next": " مَحْمُودٌ: نَعَمْ يَا مُحَمَّدُ، قِرَاءَةُ الْكُتُبِ هِيَ أَفْضَلُ مَا أَشْغَلُ نَفْسِي بِهِ."
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "نَعَمْ يَا مُحَمَّدُ، قِرَاءَةُ الْكُتُبِ هِيَ أَفْضَلُ مَا أَشْغَلُ نَفْسِي بِهِ.",
+      "translationUz": "Ha, Muhammad, kitob o'qish men o'zimni band qiladigan eng yaxshi narsadir.",
+      "next": " مُحَمَّدٌ: لَكِنِّي لَا أُحِبُّ قِرَاءَةَ الْكُتُبِ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "لَكِنِّي لَا أُحِبُّ قِرَاءَةَ الْكُتُبِ.",
+      "translationUz": "Lekin men kitob o'qishni yoqtirmayman.",
+      "next": " مَحْمُودٌ: لِمَاذَا يَا مُحَمَّدُ？"
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "لِمَاذَا يَا مُحَمَّدُ？",
+      "translationUz": "Nega, Muhammad?",
+      "next": " مُحَمَّدٌ: أَنَا أُحِبُّ كُرَةَ الْقَدَمِ فَقَطْ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "أَنَا أُحِبُّ كُرَةَ الْقَدَمِ فَقَطْ.",
+      "translationUz": "Men faqat futbolni sevaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ مُحَمَّدٌ؟",
+    "كَيْفَ يُجِيبُ مَحْمُودٌ؟",
+    "مَاذَا يَقُولُ مُحَمَّدُ عَنْ قِرَاءَةِ الْكُتُبِ؟",
+    "مَاذَا يُحِبُّ مُحَمَّدُ بَدَلًا مِنَ الْقِرَاءَةِ؟",
+    "هَلْ تُحِبُّ قِرَاءَةَ الْكُتُبِ؟"
+  ],
+  "context": {
+    "main_topic": "book_reading_conversation",
+    "pattern": "reading_question → positive_answer → negative_preference → reason_inquiry → alternative_preference"
+  }
+}

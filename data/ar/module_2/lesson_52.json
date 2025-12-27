@@ -1,0 +1,71 @@
+{
+  "id": "ar_m2_l52",
+  "language": "ar",
+  "module": 2,
+  "lesson": 52,
+  "title": "جَارَتِي",
+  "summary": "Maryam va Fotima o'rtasida tanishtirish va mahalla joylashuvi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "جَارَتِي", "translationUz": "qo'shnim (ayol)"},
+    {"word": "أَ أَنْتِ", "translationUz": "sansizmi"},
+    {"word": "بِنْتُ", "translationUz": "qizi"},
+    {"word": "خَدِيجَةَ", "translationUz": "Xadichaning"},
+    {"word": "الَّتِي", "translationUz": "qaysi (ayol)"},
+    {"word": "تَسْكُنُ", "translationUz": "yashaydi (ayol)"},
+    {"word": "حَيِّ", "translationUz": "mahalla"},
+    {"word": "الْمَطَارِ", "translationUz": "aeroport"},
+    {"word": "أَلَيْسَ", "translationUz": "shunday emasmi"},
+    {"word": "كَذَلِكَ", "translationUz": "shunday"},
+    {"word": "بَلَى", "translationUz": "ha (tasdiq)"},
+    {"word": "إِسْمِي", "translationUz": "mening ismim"},
+    {"word": "بَيْتُنَا", "translationUz": "bizning uyimiz"},
+    {"word": "بَعِيدٌ", "translationUz": "uzoq"},
+    {"word": "عَنْ", "translationUz": "dan"},
+    {"word": "بَيْتِكُمْ", "translationUz": "sizning uyingiz"},
+    {"word": "مَسْرُورَةٌ", "translationUz": "xursand (ayol)"},
+    {"word": "بِرُؤْيَتِكِ", "translationUz": "sizni ko'rganimdan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "أَ أَنْتِ فَاطِمَةُ بِنْتُ خَدِيجَةَ الَّتِي تَسْكُنُ فِي حَيِّ الْمَطَارِ؟ أَلَيْسَ كَذَلِكَ؟",
+      "translationUz": "Siz aeroport mahallasida yashaydigan Xadichaning qizi Fotimamisan? Shunday emasmi?",
+      "next": " فَاطِمَةُ: بَلَى، أَنَا بِنْتُ خَدِيجَةَ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "بَلَى، أَنَا بِنْتُ خَدِيجَةَ.",
+      "translationUz": "Ha, men Xadichaning qiziman.",
+      "next": " مَرْيَمُ: إِسْمِي مَرْيَمُ، وَبَيْتُنَا بَعِيدٌ قَلِيلًا عَنْ بَيْتِكُمْ."
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "إِسْمِي مَرْيَمُ، وَبَيْتُنَا بَعِيدٌ قَلِيلًا عَنْ بَيْتِكُمْ.",
+      "translationUz": "Mening ismim Maryam, va bizning uyimiz sizning uyingizdan ozgina uzoqda.",
+      "next": " فَاطِمَةُ: أَنَا مَسْرُورَةٌ بِرُؤْيَتِكِ يَا مَرْيَمُ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "أَنَا مَسْرُورَةٌ بِرُؤْيَتِكِ yَا مَرْيَمُ.",
+      "translationUz": "Men sizni ko'rganimdan xursandman, Maryam.",
+      "next": " مَرْيَمُ: أَنَا أَيْضًا يَا فَاطِمَةُ."
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "أَنَا أَيْضًا yَا فَاطِمَةُ.",
+      "translationUz": "Men ham, Fotima.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ تَسْأَلُ مَرْيَمُ؟",
+    "مَا اسْمُ الْمَرْأَةِ الَّتِي تُكَلِّمُهَا؟",
+    "أَيْنَ تَسْكُنُ فَاطِمَةُ؟",
+    "مَا اسْمُ السَّائِلَةِ؟",
+    "كَيْفَ تَرُدُّ فَاطِمَةُ عَلَى التَّعَارُفِ؟"
+  ],
+  "context": {
+    "main_topic": "neighbor_introduction",
+    "pattern": "identity_verification → confirmation → self_introduction_and_location → pleasure_expression → mutual_feeling"
+  }
+}

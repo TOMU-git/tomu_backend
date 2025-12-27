@@ -1,0 +1,69 @@
+{
+  "id": "ar_m2_l92",
+  "language": "ar",
+  "module": 2,
+  "lesson": 92,
+  "title": "لَا أَتَنَاوَلُ الْفُطُورَ",
+  "summary": "Nonushta qilmaganlik, sababi (kech uyg‘onish) va universitetga shoshilish haqida suhbat, va so‘ngida onaning maslahati.",
+  "vocabulary": [
+    { "word": "يَتَنَاوَلُ", "translationUz": "yeydi, ichadi (ovqatlanish)" },
+    { "word": "فُطُورٌ", "translationUz": "nonushta" },
+    { "word": "دَرَسَ", "translationUz": "o‘qidi" },
+    { "word": "مُنْتَصَفُ", "translationUz": "yarim" },
+    { "word": "لَيْلٌ", "translationUz": "tun" },
+    { "word": "اِسْتَيْقَظَ", "translationUz": "uyg‘ondi" },
+    { "word": "مُتَأَخِّرًا", "translationUz": "kech" },
+    { "word": "يُسْرِعُ", "translationUz": "shoshiladi" },
+    { "word": "جَامِعَةٌ", "translationUz": "universitet" },
+    { "word": "سَمْعًا وَطَاعَةً", "translationUz": "tingladim va bo‘yndoqdaman" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "أُمٌّ",
+      "text": "هَلْ تَنَاوَلْتِ الْفُطُورَ يَا لَيْلَى؟",
+      "translationUz": "Nonushta qildingmi, Laylo?",
+      "next": "لَا يَا أُمِّي."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "لَا يَا أُمِّي.",
+      "translationUz": "Yo‘q onajon.",
+      "next": "لِمَ لَمْ تَتَنَاوَلِي الْفُطُورَ يَا لَيْلَى؟"
+    },
+    {
+      "speaker": "أُمٌّ",
+      "text": "لِمَ لَمْ تَتَنَاوَلِي الْفُطُورَ يَا لَيْلَى؟",
+      "translationUz": "Nega nonushta qilmading, Laylo?",
+      "next": "دَرَسْتُ حَتَّى مُنْتَصَفِ اللَّيْلِ وَاسْتَيْقَظْتُ مُتَأَخِّرَةً، وَالآنَ أُسْرِعُ إِلَى الْجَامِعَةِ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "دَرَسْتُ حَتَّى مُنْتَصَفِ اللَّيْلِ وَاسْتَيْقَظْتُ مُتَأَخِّرَةً، وَالآنَ أُسْرِعُ إِلَى الْجَامِعَةِ.",
+      "translationUz": "Tun yarmigacha o‘qidim va kech uyg‘ondim, va endi universitetga shoshilyapman.",
+      "next": "تَنَاوَلِي شَيْئًا قَبْلَ أَنْ تَذْهَبِي إِلَى الْجَامِعَةِ يَا لَيْلَى."
+    },
+    {
+      "speaker": "أُمٌّ",
+      "text": "تَنَاوَلِي شَيْئًا قَبْلَ أَنْ تَذْهَبِي إِلَى الْجَامِعَةِ يَا لَيْلَى.",
+      "translationUz": "Universitetga borishdan oldin biror narsa ye, Laylo.",
+      "next": "سَمْعًا وَ طَاعَةً يَا أُمِّي."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "سَمْعًا وَ طَاعَةً يَا أُمِّي.",
+      "translationUz": "Tingladim va bo‘yndoqdaman, onajon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَأْكُلُ عَادَةً فِي الْفُطُورِ؟",
+    "لِمَاذَا دَرَسْتِ حَتَّى مُنْتَصَفِ اللَّيْلِ؟",
+    "هَلْ تَسْتَيْقِظُ مُتَأَخِّرَةً كَثِيرًا؟",
+    "كَيْفَ هِيَ الْجَامِعَةُ؟",
+    "لِمَاذَا الْفُطُورُ مُهِمٌّ؟"
+  ],
+  "context": {
+    "main_topic": "breakfast_rush_advice",
+    "pattern": "question_about_breakfast → negative_answer → question_about_reason → explanation_with_two_reasons → advice → polite_acceptance"
+  }
+}

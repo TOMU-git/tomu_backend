@@ -1,0 +1,67 @@
+{
+  "id": "ar_m2_l34",
+  "language": "ar",
+  "module": 2,
+  "lesson": 34,
+  "title": "أُسْرَتِي الكَبِيْرَةُ",
+  "summary": "Oila a'zolari haqida ma'lumot: katta o'g'il, bitta aka va uchta opa-singil, ularning ta'lim olish joylari va sevgisi haqida.",
+  "vocabulary": [
+    {"word": "أُسْرَتِي", "translationUz": "mening oilam"},
+    {"word": "الكَبِيْرَةُ", "translationUz": "katta"},
+    {"word": "أَكْبَرُ", "translationUz": "eng katta"},
+    {"word": "وَلَدٍ", "translationUz": "bola, o'g'il"},
+    {"word": "عَائِلَتِي", "translationUz": "mening oilam"},
+    {"word": "لِي", "translationUz": "menda"},
+    {"word": "أَخٌ", "translationUz": "aka"},
+    {"word": "وَاحِدٌ", "translationUz": "bitta"},
+    {"word": "ثَلَاثُ", "translationUz": "uch"},
+    {"word": "أَخَوَاتٍ", "translationUz": "opa-singillar"},
+    {"word": "يَدْرُسُونَ", "translationUz": "o'qiydilar"},
+    {"word": "أَدْرُسُ", "translationUz": "o'qiyman"},
+    {"word": "الْجَامِعَةِ", "translationUz": "universitet"},
+    {"word": "أُحِبُّ", "translationUz": "sevaman"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أَكْبَرُ وَلَدٍ فِي عَائِلَتِي.",
+      "translationUz": "Men oilamdagi eng katta o'g'ilman.",
+      "next": " لِي أَخٌ وَاحِدٌ، وَ ثَلَاثُ  أَخَوَاتٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لِي أَخٌ وَاحِدٌ، وَ ثَلَاثُ  أَخَوَاتٍ.",
+      "translationUz": "Menda bitta akam va uchta opa-singillarim bor.",
+      "next": "أَخِي وَ أَخَوَاتِي يَدْرُسُونَ فِي  الْمَدْرَسَةِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَخِي وَ أَخَوَاتِي يَدْرُسُونَ فِي  الْمَدْرَسَةِ،",
+      "translationUz": "Akam va opa-singillarim maktabda o'qiydilar,",
+      "next": " وَ أَنَا أَدْرُسُ فِي الْجَامِعَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ أَنَا أَدْرُسُ fī al-jāmiʿah.",
+      "translationUz": "va men universitetda o'qiyman.",
+      "next": " أَنَا أُحِبُّ أَخِي وَ أَخَوَاتِي."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَنَا أُحِبُّ أَخِي وَ أَخَوَاتِي.",
+      "translationUz": "Men akam va opa-singillarimni sevaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ هُوَ الْكَبِيرُ فِي الْعَائِلَةِ؟",
+    "كَمْ عَدَدُ إِخْوَتِهِ؟",
+    "أَيْنَ يَدْرُسُ أَخُوهُ وَ أَخَوَاتُهُ؟",
+    "أَيْنَ يَدْرُسُ هُوَ؟",
+    "مَاذَا يَقُولُ عَنْ مَشَاعِرِهِ نَحْوَ إِخْوَتِهِ؟"
+  ],
+  "context": {
+    "main_topic": "my_big_family",
+    "pattern": "position_in_family → siblings_count → siblings_education → own_education → love_for_siblings"
+  }
+}

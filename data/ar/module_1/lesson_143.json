@@ -1,0 +1,45 @@
+{
+  "id": "ar_m1_l143",
+  "language": "ar",
+  "module": 1,
+  "lesson": 143,
+  "title": "حُبُّ الْفَوَاكِهِ",
+
+  "summary": "Mevalarni sevish va sevimli mevalarni nomlash.",
+
+  "vocabulary": [
+    { "word": "فَوَاكِهٌ", "translationUz": "mevalar" },
+    { "word": "تِينٌ", "translationUz": "anjir" },
+    { "word": "مَوْزٌ", "translationUz": "banan" },
+    { "word": "بُرْتُقَالٌ", "translationUz": "apelsin" },
+    { "word": "تُفَّاحٌ", "translationUz": "olma" },
+    { "word": "تُوتٌ", "translationUz": "olxo‘ri" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "لَيْلَى",
+      "text": "هَلْ تُحِبِّينَ الفَوَاكِهَ يَا سَلْمَى؟",
+      "translationUz": "Salma, mevalarni yoqtirasizmi?",
+      "next": "نَعَمْ، أُحِبُّ التِّينَ وَ المَوْزَ وَ البُرْتُقَالَ وَ التُّفَّاحَ وَ التُّوتَ."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "نَعَمْ، أُحِبُّ التِّينَ وَ المَوْزَ وَ البُرْتُقَالَ وَ التُّفَّاحَ وَ التُّوتَ.",
+      "translationUz": "Ha, men anjir, banan, apelsin, olma va olxo‘ri yoqtiraman.",
+      "next": "رَائِعٌ، أَنَا أَيْضًا أُحِبُّ الفَوَاكِهَ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "رَائِعٌ، أَنَا أَيْضًا أُحِبُّ الفَوَاكِهَ الَّتِي تُحِبِّينَهَا.",
+      "translationUz": "Zo‘r, men ham sen yoqtirgan mevalarni yoqtiraman.",
+      "next": "مَا هِيَ فَوَاكِهَكِ المُفَضَّلَةُ؟"
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "أُحِبُّ التُّفَّاحَ وَ التُّوتَ أَكْثَرَ.",
+      "translationUz": "Men olma va olxo‘rini ko‘proq yoqtiraman.",
+      "next": null
+    }
+  ]
+}

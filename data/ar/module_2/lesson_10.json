@@ -1,0 +1,62 @@
+{
+  "id": "ar_m2_l10",
+  "language": "ar",
+  "module": 2,
+  "lesson": 10,
+  "title": "اَلصَّلَاةُ",
+  "summary": "Musulmonlar ko'pligi, islomning besh ustuni va namoz vaqtlari haqida.",
+  "vocabulary": [
+    {"word": "اَلصَّلَاةُ", "translationUz": "namoz"},
+    {"word": "الْمُسْلِمِينَ", "translationUz": "musulmonlar"},
+    {"word": "كَثِيرُونَ", "translationUz": "ko'p"},
+    {"word": "اَلْحَمْدُ لِلَّهِ", "translationUz": "Barcha maqtov Allohga"},
+    {"word": "نَحْنُ", "translationUz": "biz"},
+    {"word": "مُسْلِمُونَ", "translationUz": "musulmonmiz"},
+    {"word": "الصَّلَوَاتُ", "translationUz": "namozlar"},
+    {"word": "الْخَمْسُ", "translationUz": "besh"},
+    {"word": "أَرْكَانِ", "translationUz": "ustunlar, asoslar"},
+    {"word": "الْإِسْلَامِ", "translationUz": "Islom"},
+    {"word": "صَلَاةُ الْفَجْرِ", "translationUz": "bomdod namozi"},
+    {"word": "صَلَاةُ الظُّهْرِ", "translationUz": "peshin namozi"},
+    {"word": "صَلَاةُ الْعَصْرِ", "translationUz": "asr namozi"},
+    {"word": "صَلَاةُ الْمَغْرِبِ", "translationUz": "shom namozi"},
+    {"word": "صَلَاةُ الْعِشَاءِ", "translationUz": "xufton namozi"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ الْمُسْلِمِينَ كَثِيرُونَ جِدًّا.",
+      "translationUz": "Albatta musulmonlar juda ko'p.",
+      "next": " اَلْحَمْدُ لِلَّهِ، نَحْنُ أَيْضًا مُسْلِمُونَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " اَلْحَمْدُ لِلَّهِ، نَحْنُ أَيْضًا مُسْلِمُونَ.",
+      "translationUz": "Barcha maqtov Allohga, biz ham musulmonmiz.",
+      "next": "وَ الصَّلَوَاتُ الْخَمْسُ مِنْ أَرْكَانِ الْإِسْلَامِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ الصَّلَوَاتُ الْخَمْسُ مِنْ أَرْكَانِ الْإِسْلَامِ،",
+      "translationUz": "Va besh vaqt namoz Islomning ustunlaridandir,",
+      "next": "وَ هِيَ:صَلَاةُ الْفَجْرِ، وَ صَلَاةُ الظُّهْرِ، وَ صَلَاةُ الْعَصْرِ, وَ صَلَاةُ الْمَغْرِبِ، وَ صَلَاةُ الْعِشَاءِ"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ هِيَ:صَلَاةُ الْفَجْرِ، وَ صَلَاةُ الظُّهْرِ، وَ صَلَاةُ الْعَصْرِ, وَ صَلَاةُ الْمَغْرِبِ، وَ صَلَاةُ الْعِشَاءِ",
+      "translationUz": "Va ular: bomdod namozi, peshin namozi, asr namozi, shom namozi va xufton namozi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ عَدَدُ الْمُسْلِمِينَ؟",
+    "مَنْ هُمُ الْمُسْلِمُونَ؟",
+    "كَمْ صَلَاةً فِي الْيَوْمِ؟",
+    "مَا هِيَ أَرْكَانُ الْإِسْلَامِ؟",
+    "مَا هِيَ أَسْمَاءُ الصَّلَوَاتِ الْخَمْسِ؟"
+  ],
+  "context": {
+    "main_topic": "muslims_and_prayers",
+    "pattern": "muslim_population → gratitude → pillars_of_islam → prayer_times_listing"
+  }
+}

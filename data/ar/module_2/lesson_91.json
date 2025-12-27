@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l91",
+  "language": "ar",
+  "module": 2,
+  "lesson": 91,
+  "title": "لَا تَتَأَخَّرِي",
+  "summary": "Darsga kech qolish sababini yo‘l tirbandligi bilan izohlash, kechikishni qayta takrorlamaslik haqida ogohlantirish.",
+  "vocabulary": [
+    { "word": "تَأَخَّرَ", "translationUz": "kechikdi, kech qoldi" },
+    { "word": "دَرْسٌ", "translationUz": "dars" },
+    { "word": "طَرِيقٌ", "translationUz": "yo‘l" },
+    { "word": "مُزْدَحِمٌ", "translationUz": "tirband, gavjum" },
+    { "word": "سَبَبٌ", "translationUz": "sabab" },
+    { "word": "سَارَ", "translationUz": "harakatlandi, yurdi" },
+    { "word": "حَافِلَةٌ", "translationUz": "avtobus" },
+    { "word": "بِبُطْءٍ", "translationUz": "sekinlik bilan" },
+    { "word": "مَرَّةً أُخْرَى", "translationUz": "yana bir bor" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُعَلِّمَةٌ",
+      "text": "لِمَاذَا تَأَخَّرْتِ عَنِ الدَّرْسِ يَا فَاطِمَةُ؟",
+      "translationUz": "Nima uchun darsga kech qolding, Fotima?",
+      "next": "لِأَنَّ الطَّرِيقَ كَانَ مُزْدَحِمًا، وَ لِهَذَا السَّبَبِ سَارَتِ الْحَافِلَةُ بِبُطْئٍ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "لِأَنَّ الطَّرِيقَ كَانَ مُزْدَحِمًا، وَ لِهَذَا السَّبَبِ سَارَتِ الْحَافِلَةُ بِبُطْئٍ.",
+      "translationUz": "Chunki yo‘l tirband edi, va shu sababli avtobus sekin harakatlandi.",
+      "next": "حَسَنًا يَا فَاطِمَةُ، لَا تَتَأَخَّرِي مَرَّةً أُخْرَى."
+    },
+    {
+      "speaker": "مُعَلِّمَةٌ",
+      "text": "حَسَنًا يَا فَاطِمَةُ، لَا تَتَأَخَّرِي مَرَّةً أُخْرَى.",
+      "translationUz": "Yaxshi, Fotima, yana bir bor kech qolma.",
+      "next": "حَسَنًا يَا مُعَلِّمَتِي."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "حَسَنًا يَا مُعَلِّمَتِي.",
+      "translationUz": "Yaxshi, o‘qituvchijon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ تَأْتِي إِلَى الْمَدْرَسَةِ؟",
+    "هَلْ يَكُونُ الطَّرِيقُ مُزْدَحِمًا دَائِمًا؟",
+    "مَاذَا يَجِبُ أَنْ تَفْعَلَ إِذَا تَأَخَّرْتَ؟",
+    "هَلْ تَتَأَخَّرِينَ كَثِيرًا؟",
+    "مَا هِيَ مُشْكِلَةُ الزِّحَامِ؟"
+  ],
+  "context": {
+    "main_topic": "lateness_excuse_warning",
+    "pattern": "question_about_lateness → explanation_with_reason → warning → agreement"
+  }
+}

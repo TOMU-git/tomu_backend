@@ -1,0 +1,45 @@
+{
+  "id": "ar_m1_l142",
+  "language": "ar",
+  "module": 1,
+  "lesson": 142,
+  "title": "الفِيلُ",
+
+  "summary": "Filning tashqi ko‘rinishi, ovqatlanishi va yashash joylari haqida oddiy ma’lumot.",
+
+  "vocabulary": [
+    { "word": "فِيلٌ", "translationUz": "fil" },
+    { "word": "خُرْطُومٌ", "translationUz": "trunk" },
+    { "word": "أُذُنٌ", "translationUz": "quloq" },
+    { "word": "أَعْشَابٌ", "translationUz": "o‘tlar" },
+    { "word": "آسِيَا", "translationUz": "Osiyo" },
+    { "word": "إِفْرِيقِيَا", "translationUz": "Afrika" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "لِلْفِيلِ خُرْطُومٌ طَوِيلٌ وَ أُذُنَانِ كَبِيرَتَانِ.",
+      "translationUz": "Filning uzun trunki va katta quloqlari bor.",
+      "next": "هُوَ حَيَوَانٌ ضَخْمٌ جِدًّا."
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "هُوَ يَأْكُلُ الأَعْشَابَ وَ يَشْرَبُ كَثِيرًا مِنَ المَاءِ.",
+      "translationUz": "U turli o‘tlarni yeydi va ko‘p suv ichadi.",
+      "next": "يَعِيشُ فِي آسِيَا وَ إِفْرِيقِيَا."
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "يَعِيشُ فِي آسِيَا وَ إِفْرِيقِيَا.",
+      "translationUz": "Fil Osiyo va Afrikada yashaydi.",
+      "next": "هَلْ زُرْتَ حَدِيقَةَ حَيَوَانَاتٍ؟"
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "نَعَمْ، رَأَيْتُ الفِيلَ هُنَاكَ.",
+      "translationUz": "Ha, men u yerda filni ko‘rdim.",
+      "next": null
+    }
+  ]
+}

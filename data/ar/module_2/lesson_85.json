@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l85",
+  "language": "ar",
+  "module": 2,
+  "lesson": 85,
+  "title": "اَلْحُوتُ الْأَزْرَقُ 1",
+  "summary": "Dunyodagi eng katta hayvon haqida fikr almashish, noto‘g‘ri tushunchani tuzatish, 'بَلْ' (balki) qarama-qarshilik bog‘lovchisini o‘rganish.",
+  "vocabulary": [
+    { "word": "حُوتٌ", "translationUz": "kit" },
+    { "word": "أَزْرَقُ", "translationUz": "ko‘k" },
+    { "word": "أَكْبَرُ", "translationUz": "eng katta" },
+    { "word": "حَيَوَانٌ", "translationUz": "hayvon" },
+    { "word": "عَالَمٌ", "translationUz": "dunyo" },
+    { "word": "أَظُنُّ", "translationUz": "menimcha, o‘ylaymanki" },
+    { "word": "أَنَّ", "translationUz": "(ki)" },
+    { "word": "سَمَكَةٌ", "translationUz": "baliq" },
+    { "word": "ضَخْمٌ", "translationUz": "ulkan" },
+    { "word": "لَيْسَ", "translationUz": "emas" },
+    { "word": "بَلْ", "translationUz": "balki" },
+    { "word": "ثَدْيِيٌّ", "translationUz": "sutemizuvchi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "حُسَيْنٌ",
+      "text": "مَا هُوَ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ يَا حَمْزَةُ؟",
+      "translationUz": "Dunyodagi eng katta hayvon nima, Hamza?",
+      "next": "أَظُنُّ أَنَّ الْحُوتَ الْأَزْرَقَ هُوَ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "أَظُنُّ أَنَّ الْحُوتَ الْأَزْرَقَ هُوَ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ.",
+      "translationUz": "Menimcha, ko‘k kit dunyodagi eng katta hayvon.",
+      "next": "أَلَيْسَ الْحُوتُ الْأَزْرَقُ سَمَكَةً ضَخْمَةً؟"
+    },
+    {
+      "speaker": "حُسَيْنٌ",
+      "text": "أَلَيْسَ الْحُوتُ الْأَزْرَقُ سَمَكَةً ضَخْمَةً؟",
+      "translationUz": "Ko‘k kit ulkan baliq emasmi?",
+      "next": "لَا، لَيْسَ سَمَكَةً، بَلْ هُوَ حَيَوَانٌ ثَدْيِيٌّ."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "لَا، لَيْسَ سَمَكَةً، بَلْ هُوَ حَيَوَانٌ ثَدْيِيٌّ.",
+      "translationUz": "Yo‘q, u baliq emas, balki sutemizuvchi hayvon.",
+      "next": "كُنْتُ لَا أَعْرِفُ ذَلِكَ يَا حَمْزَةُ."
+    },
+    {
+      "speaker": "حُسَيْنٌ",
+      "text": "كُنْتُ لَا أَعْرِفُ ذَلِكَ يَا حَمْزَةُ.",
+      "translationUz": "Men buni bilmasdim, Hamza.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ يَبْلُغُ حَجْمُ الْحُوتِ الْأَزْرَقِ؟",
+    "مَاذَا يَأْكُلُ الْحُوتُ الْأَزْرَقُ؟",
+    "أَيْنَ يَعِيشُ الْحُوتُ الْأَزْرَقُ؟",
+    "مَا الْفَرْقُ بَيْنَ الْحُوتِ وَ السَّمَكَةِ؟",
+    "هَلْ تُحِبُّ أَنْ تَرَى حُوتًا أَزْرَقَ؟"
+  ],
+  "context": {
+    "main_topic": "animals_facts_corrections",
+    "pattern": "general_question → opinion_and_answer → confirming_question → correction → admission_of_ignorance"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "ar_m2_l104",
+  "language": "ar",
+  "module": 2,
+  "lesson": 104,
+  "title": "فِي الدُّكَّانِ",
+  "summary": "Do‘konda asosiy oziq-ovqat mahsulotlarini (shakar, qahva, yog‘, non) sotib olish va yana ikki narsa (asal va sut) qo‘shimcha qilish.",
+  "vocabulary": [
+    { "word": "دُكَّانٌ", "translationUz": "do‘kon" },
+    { "word": "زَبُونٌ", "translationUz": "xaridor, mijoz" },
+    { "word": "بَائِعٌ", "translationUz": "sotuvchi" },
+    { "word": "سُكَّرٌ", "translationUz": "shakar" },
+    { "word": "قَهْوَةٌ", "translationUz": "qahva" },
+    { "word": "زُّبْدَةُ", "translationUz": "sariyog‘" },
+    { "word": "خُبْزٌ", "translationUz": "non" },
+    { "word": "تَفَضَّلْ", "translationUz": "marhamat, buyuring" },
+    { "word": "سَيِّدٌ", "translationUz": "janob, xo‘jayin" },
+    { "word": "عَسَلٌ", "translationUz": "asal" },
+    { "word": "لَبَنٌ", "translationUz": "sut" },
+    { "word": "حَاضِرٌ", "translationUz": "hazir, bunday" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "أَنَا أُرِيدُ أَنْ أَشْتَرِيَ السُّكَّرَ، وَالْقَهْوَةَ، وَالزُّبْدَةَ، وَالْخُبْزَ.",
+      "translationUz": "Men shakar, qahva, sariyog‘ va non sotib olmoqchiman.",
+      "next": "تَفَضَّلْ يَا سَيِّدِي، هَلْ تُرِيدُ شَيْئًا آخَرَ؟"
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "تَفَضَّلْ يَا سَيِّدِي، هَلْ تُرِيدُ شَيْئًا آخَرَ؟",
+      "translationUz": "Marhamat janobim, yana biror narsa xohlaysizmi?",
+      "next": "نَعَمْ، أَعْطِنِي عَسَلًا وَ لَبَنًا."
+    },
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "نَعَمْ، أَعْطِنِي عَسَلًا وَ لَبَنًا.",
+      "translationUz": "Ha, menga asal va sut bering.",
+      "next": "حَاضِرٌ يَا سَيِّدِي."
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "حَاضِرٌ يَا سَيِّدِي.",
+      "translationUz": "Bunday janobim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ ثَمَنُ السُّكَّرِ؟",
+    "هَلْ هَذِهِ السِّلَعُ طَازِجَةٌ؟",
+    "مَتَى تَذْهَبُ إِلَى الدُّكَّانِ؟",
+    "لِمَاذَا تَشْتَرِي الْقَهْوَةَ؟",
+    "هَلْ تُوجَدُ سِلَعٌ أُخْرَى فِي الدُّكَّانِ؟"
+  ],
+  "context": {
+    "main_topic": "grocery_shopping_basics",
+    "pattern": "listing_of_items_to_buy → polite_offer_and_question → additional_request → confirmation"
+  }
+}

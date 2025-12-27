@@ -1,0 +1,61 @@
+{
+  "id": "ar_m2_l102",
+  "language": "ar",
+  "module": 2,
+  "lesson": 102,
+  "title": "إِعْدَادُ الْعَشَاءِ",
+  "summary": "Ona va qizi o‘rtasida kechki ovqatni tayyorlash haqidagi bahs: meva-sabzavotlarni kesish va qizning istaksizligi.",
+  "vocabulary": [
+    { "word": "يُعْطِي", "translationUz": "beradi" },
+    { "word": "سِكِّينٌ", "translationUz": "pichoq" },
+    { "word": "عَشَاءٌ", "translationUz": "kechki ovqat" },
+    { "word": "يَقْطَعُ", "translationUz": "kesadi" },
+    { "word": "سَلَطَةٌ", "translationUz": "salat" },
+    { "word": "كُرُنْبٌ", "translationUz": "karam" },
+    { "word": "كُمَّثْرَى", "translationUz": "nok" },
+    { "word": "تِّينٌ", "translationUz": "anjir" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلأُمُّ",
+      "text": "أَعْطِنِي السِّكِّينَ يَا لَيْلَى.",
+      "translationUz": "Menga pichoqni ber, Laylo.",
+      "next": "مَاذَا سَتَفْعَلِينَ بِالسِّكِّينِ يَا أُمِّي؟"
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "مَاذَا سَتَفْعَلِينَ بِالسِّكِّينِ يَا أُمِّي؟",
+      "translationUz": "Pichoq bilan nima qilmoqchisiz, onajon?",
+      "next": "سَأَقْطَعُ الْفَوَاكِهَ وَالْخُضْرَوَاتِ لِلْعَشَاءِ."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "سَأَقْطَعُ الْفَوَاكِهَ وَالْخُضْرَوَاتِ لِلْعَشَاءِ.",
+      "translationUz": "Kechki ovqat uchun meva va sabzavotlarni kesmoqchiman.",
+      "next": "لَكِنَّنِي لَا أُرِيدُ أَنْ آكُلَ الْفَوَاكِهَ وَالْخُضْرَوَاتِ عَلَى الْعَشَاءِ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "لَكِنَّنِي لَا أُرِيدُ أَنْ آكُلَ الْفَوَاكِهَ وَالْخُضْرَوَاتِ عَلَى الْعَشَاءِ.",
+      "translationUz": "Lekin men kechki ovqatda meva va sabzavot yemoqchi emasman.",
+      "next": "أَبُوكِ يُرِيدُ أَنْ يَأْكُلَ السَّلَطَةَ مِنَ الطَّمَاطِمِ وَ الْكُرُنْبِ، وَ يُرِيدُ أَيْضًا أَنْ يَأْكُلَ الْكُمَّثْرَى وَ التُّفَّاحَ وَ التِّينَ."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "أَبُوكِ يُرِيدُ أَنْ يَأْكُلَ السَّلَطَةَ مِنَ الطَّمَاطِمِ وَ الْكُرُنْبِ، وَ يُرِيدُ أَيْضًا أَنْ يَأْكُلَ الْكُمَّثْرَى وَ التُّفَّاحَ وَ التِّينَ.",
+      "translationUz": "Otan pomidor va karam salatini yemoqchi va shuningdek nok, olma va anjir yemoqchi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تُحِبُّ أَنْ تَأْكُلَ فِي الْعَشَاءِ؟",
+    "هَلْ تُحِبُّ السَّلَطَةَ؟",
+    "مَا هِيَ فَوَائِدُ الْفَوَاكِهِ؟",
+    "لِمَاذَا يُرِيدُ أَبُوكَ السَّلَطَةَ؟",
+    "هَلْ تَتَعَاوَنُ فِي إِعْدَادِ الْعَشَاءِ؟"
+  ],
+  "context": {
+    "main_topic": "dinner_preparation_preferences",
+    "pattern": "request_for_knife → question_about_intent → explanation_of_cutting → expression_of_dislike → reason_father's_wishes"
+  }
+}

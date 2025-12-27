@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l118",
+  "language": "ar",
+  "module": 1,
+  "lesson": 118,
+  "title": "أَيَّامُ الأُسْبُوعِ",
+
+  "summary": "Haftaning kunlarini o‘rganish va sinfdagi sodda savol-javoblar orqali mustahkamlash.",
+
+  "vocabulary": [
+    { "word": "أُسْبُوعٌ", "translationUz": "hafta" },
+    { "word": "أَيَّامٌ", "translationUz": "kunlar" },
+    { "word": "الْجُمُعَةُ", "translationUz": "juma" },
+    { "word": "السَّبْتُ", "translationUz": "shanba" },
+    { "word": "الأَحَدُ", "translationUz": "yakshanba" },
+    { "word": "سَبْعَةٌ", "translationUz": "yetti" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "كَمْ يَوْمًا فِي الأُسْبُوعِ؟",
+      "translationUz": "Haftada nechta kun bor?",
+      "next": "سَبْعَةُ أَيَّامٍ."
+    },
+    {
+      "speaker": "الطُّلَّابُ",
+      "text": "سَبْعَةُ أَيَّامٍ.",
+      "translationUz": "Yetti kun.",
+      "next": "هَلْ تَعْرِفُونَ الأَيَّامَ؟"
+    },
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "هَلْ تَعْرِفُونَ الأَيَّامَ؟",
+      "translationUz": "Kunlarni bilasizlarmi?",
+      "next": "نَعَمْ، الْجُمُعَةُ وَالسَّبْتُ."
+    },
+    {
+      "speaker": "الطُّلَّابُ",
+      "text": "نَعَمْ، الْجُمُعَةُ وَالسَّبْتُ.",
+      "translationUz": "Ha, juma va shanba.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا هُوَ يَوْمُ الْيَوْمِ؟",
+    "مَا أَفْضَلُ يَوْمٍ عِنْدَكَ؟",
+    "هَلْ تُحِبُّ الْجُمُعَةَ؟"
+  ],
+
+  "context": {
+    "main_topic": "days of the week",
+    "pattern": "question → answer → question → answer"
+  }
+}

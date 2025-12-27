@@ -1,0 +1,77 @@
+{
+  "id": "ar_m2_l67",
+  "language": "ar",
+  "module": 2,
+  "lesson": 67,
+  "title": "مِتْرُو طَشْقَنْدَ",
+  "summary": "Toshkent metrosining umumiy transport vositalaridan biri, keng va uzun bo'lishi, qatnov relslarining uzunligi va odamlar tomonidan arzon narxi tufayli kundalik foydalanilishi haqida.",
+  "vocabulary": [
+    {"word": "مِتْرُو", "translationUz": "metro"},
+    {"word": "طَشْقَنْدَ", "translationUz": "Toshkent"},
+    {"word": "أَحَدُ", "translationUz": "biri"},
+    {"word": "وَسَائِلِ", "translationUz": "vositalari"},
+    {"word": "النَّقْلِ", "translationUz": "transport"},
+    {"word": "الْعَامَّةِ", "translationUz": "umumiy"},
+    {"word": "كَبِيرٌ", "translationUz": "katta"},
+    {"word": "طَوِيلٌ", "translationUz": "uzun"},
+    {"word": "يَبْلُغُ", "translationUz": "yetadi"},
+    {"word": "طُولُ", "translationUz": "uzunligi"},
+    {"word": "الْقَضِيبِ", "translationUz": "sim, rels"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "يَسِيرُ", "translationUz": "harakatlanadi"},
+    {"word": "عَلَيْهِ", "translationUz": "uning ustida"},
+    {"word": "وَاحِدًا وَ سَبْعِينَ", "translationUz": "yetmish bir"},
+    {"word": "كِيلُومِتْرًا", "translationUz": "kilometr"},
+    {"word": "تَقْرِيْبًا", "translationUz": "taxminan"},
+    {"word": "يَسْتَخْدِمُهُ", "translationUz": "undan foydalanadi"},
+    {"word": "كَثِيرٌ", "translationUz": "ko'p"},
+    {"word": "النَّاسِ", "translationUz": "odamlar"},
+    {"word": "كُلَّ يَوْمٍ", "translationUz": "har kun"},
+    {"word": "لِأَنَّ", "translationUz": "chunki"},
+    {"word": "تَذْكِرَتَهُ", "translationUz": "uning chiptasi"},
+    {"word": "رَخِيصَةٌ", "translationUz": "arzon (ayol)"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "الْمِتْرُو أَحَدُ وَسَائِلِ النَّقْلِ الْعَامَّةِ.",
+      "translationUz": "Metro umumiy transport vositalaridan biri.",
+      "next": "مِتْرُو طَشْقَنْدَ كَبِيرٌ وَ طَوِيلٌ جِدًّا،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مِتْرُو طَشْقَنْدَ كَبِيرٌ وَ طَوِيلٌ جِدًّا،",
+      "translationUz": "Toshkent metrosi juda katta va uzun,",
+      "next": "وَ يَبْلُغُ طُولُ الْقَضِيبِ الَّذِي يَسِيرُ عَلَيْهِ وَاحِدًا وَ سَبْعِينَ كِيلُومِتْرًا تَقْرِيْبًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ يَبْلُغُ طُولُ الْقَضِيبِ الَّذِي يَسِيرُ عَلَيْهِ وَاحِدًا وَ سَبْعِينَ كِيلُومِتْرًا تَقْرِيْبًا.",
+      "translationUz": "va uning ustida harakatlanadigan simning uzunligi taxminan yetmish bir kilometrga yetadi.",
+      "next": "يَسْتَخْدِمُهُ كَثِيرٌ مِنَ النَّاسِ كُلَّ يَوْمٍ"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "يَسْتَخْدِمُهُ كَثِيرٌ مِنَ النَّاسِ كُلَّ يَوْمٍ",
+      "translationUz": "Ko'p odamlar har kuni undan foydalanadi",
+      "next": "لِأَنَّ تَذْكِرَتَهُ رَخِيصَةٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِأَنَّ تَذْكِرَتَهُ رَخِيصَةٌ جِدًّا.",
+      "translationUz": "chunki uning chiptasi juda arzon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هُوَ الْمِتْرُو؟",
+    "كَيْفَ هُوَ مِتْرُو طَشْقَنْدَ؟",
+    "كَمْ يَبْلُغُ طُولُ الْقَضِيبِ؟",
+    "مَنْ يَسْتَخْدِمُ الْمِتْرُو؟",
+    "لِمَاذَا يَسْتَخْدِمُهُ كَثِيرٌ مِنَ النَّاسِ؟"
+  ],
+  "context": {
+    "main_topic": "tashkent_metro_description",
+    "pattern": "transport_type → size_description → track_length → usage_frequency → price_reason"
+  }
+}

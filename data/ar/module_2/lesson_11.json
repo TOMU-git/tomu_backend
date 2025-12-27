@@ -1,0 +1,57 @@
+{
+  "id": "ar_m2_l11",
+  "language": "ar",
+  "module": 2,
+  "lesson": 11,
+  "title": "اَلْحُقُولُ الْخَصِبَةُ",
+  "summary": "O'zbekistonning unumdor dalalari va u yerda yetishtiriladigan turli ekinlar haqida.",
+  "vocabulary": [
+    {"word": "اَلْحُقُولُ", "translationUz": "dalalar"},
+    {"word": "الْخَصِبَةُ", "translationUz": "unumdor"},
+    {"word": "أُوزْبَكِسْتَانَ", "translationUz": "O'zbekiston"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "يَزْرَعُ", "translationUz": "ekadi"},
+    {"word": "أَهْلُ", "translationUz": "aholi, xalq"},
+    {"word": "الْحُبُوبَ", "translationUz": "donali ekinlar"},
+    {"word": "الْقُطْنَ", "translationUz": "paxta"},
+    {"word": "الْفَوَاكِهَ", "translationUz": "mevalar"},
+    {"word": "الْخَضْرَوَاتِ", "translationUz": "sabzavotlar"},
+    {"word": "الْمُخْتَلِفَةَ", "translationUz": "turlicha"},
+    {"word": "الْوَاسِعَةِ", "translationUz": "keng"},
+    {"word": "إِنَّنِي", "translationUz": "albatta men"},
+    {"word": "أُحِبُّ", "translationUz": "sevaman"},
+    {"word": "وَطَنِي", "translationUz": "vatanim"},
+    {"word": "الْأُمَّ", "translationUz": "ona"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ حُقُولَ أُوزْبَكِسْتَانَ خَصِبَةٌ جِدًّا.",
+      "translationUz": "Albatta O'zbekiston dalalari juda unumdor.",
+      "next": " لِذَلِكَ، يَزْرَعُ أَهْلُ أُوزْبَكِسْتَانَ الْحُبُوبَ،  وَ الْقُطْنَ، وَ الْفَوَاكِهَ، وَ الْخَضْرَوَاتِ الْمُخْتَلِفَةَ فِي الْحُقُولِ الْوَاسِعَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لِذَلِكَ، يَزْرَعُ أَهْلُ أُوزْبَكِسْتَانَ الْحُبُوبَ،  وَ الْقُطْنَ، وَ الْفَوَاكِهَ، وَ الْخَضْرَوَاتِ الْمُخْتَلِفَةَ fī al-ḥuqūl al-wāsiʿah.",
+      "translationUz": "Shuning uchun O'zbekiston aholisi keng dalalarda donali ekinlar, paxta, mevalar va turlicha sabzavotlarni ekadi.",
+      "next": " إِنَّنِي أُحِبُّ وَطَنِي الْأُمَّ: أُوزْبَكِسْتَانَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " إِنَّنِي أُحِبُّ وَطَنِي الْأُمَّ: أُوزْبَكِسْتَانَ.",
+      "translationUz": "Albatta men ona vatanimni: O'zbekistoni sevaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هِيَ حُقُولُ أُوزْبَكِسْتَانَ؟",
+    "مَاذَا يَزْرَعُ أَهْلُ أُوزْبَكِsْتَانَ؟",
+    "فِي أَيْنَ يَزْرَعُونَ؟",
+    "كَيْفَ يَشْعُرُ الْكَاتِبُ نَحْوَ وَطَنِهِ؟",
+    "هَلْ تُحِبُّ وَطَنَكَ؟"
+  ],
+  "context": {
+    "main_topic": "fertile_fields_uzbekistan",
+    "pattern": "fertility_description → crops_planted → love_for_homeland"
+  }
+}

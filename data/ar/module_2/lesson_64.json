@@ -1,0 +1,66 @@
+{
+  "id": "ar_m2_l64",
+  "language": "ar",
+  "module": 2,
+  "lesson": 64,
+  "title": "اَلْحِمْيَةُ الغِذَائِيَّةُ 1",
+  "summary": "Nabira va buvisi o'rtasida go'shtli sho'rva taklifi va buvining parhez rejimiga rioya qilganligi sababli rad etishi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْحِمْيَةُ", "translationUz": "parhez, dieta"},
+    {"word": "الْغِذَائِيَّةُ", "translationUz": "oziq-ovqat"},
+    {"word": "طَبَخْتُ", "translationUz": "pishirdim (ayol)"},
+    {"word": "حَسَاءً", "translationUz": "sho'rva"},
+    {"word": "مِنَ", "translationUz": "dan"},
+    {"word": "اللَّحْمِ", "translationUz": "go'sht"},
+    {"word": "هَيَّا", "translationUz": "haydi"},
+    {"word": "نَأْكُلُ", "translationUz": "yeylik"},
+    {"word": "لَا", "translationUz": "yo'q"},
+    {"word": "أَنَا", "translationUz": "men"},
+    {"word": "لَنْ آكُلَ", "translationUz": "yemayman"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "هَلْ", "translationUz": "mi"},
+    {"word": "مَرِيضَةٌ", "translationUz": "kasal (ayol)"},
+    {"word": "لَسْتُ", "translationUz": "emasman"},
+    {"word": "أَتَّبِعُ", "translationUz": "rioya qilaman"},
+    {"word": "حِمْيَةً", "translationUz": "parhez"},
+    {"word": "غِذَائِيَّةً", "translationUz": "oziq-ovqat"},
+    {"word": "فَقَطْ", "translationUz": "faqat"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "طَبَخْتُ حَسَاءً مِنَ اللَّحْمِ هَيَّا نَأْكُلُ يَا جَدَّتِي.",
+      "translationUz": "Go'shtli sho'rva pishirdim, haydi yeylik, buvijon.",
+      "next": "اَلْجَدَّةُ: لَا، أَنَا لَنْ آكُلَ يَا حَفِيدَتِي."
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "لَا، أَنَا لَنْ آكُلَ yَا حَفِيدَتِي.",
+      "translationUz": "Yo'q, men yemayman, nabirachim.",
+      "next": "اَلْحَفِيدَةُ: لِمَاذَا يَا جَدَّتِي, هَلْ أَنْتِ مَرِيضَةٌ؟"
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "لِمَاذَا yَا جَدَّتِي, هَلْ أَنْتِ مَرِيضَةٌ？",
+      "translationUz": "Nega, buvijon, kasalmisiz?",
+      "next": "اَلْجَدَّةُ: أَنَا لَسْتُ مَرِيضَةً، أَنَا أَتَّبِعُ حِمْيَةً غِذَائِيَّةً فَقَطْ."
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "أَنَا لَسْتُ mَرِيضَةً، أَنَا أَتَّبِعُ حِمْيَةً غِذَائِيَّةً فَقَطْ.",
+      "translationUz": "Men kasal emasman, men faqat oziq-ovqat parheziga rioya qilyapman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا طَبَخَتِ الْحَفِيدَةُ؟",
+    "مَاذَا تَقْتَرِحُ الْحَفِيدَةُ؟",
+    "كَيْفَ تُجِيبُ الْجَدَّةُ؟",
+    "لِمَاذَا لَا تُرِيدُ الْجَدَّةُ الْأَكْلَ؟",
+    "هَلْ الْجَدَّةُ مَرِيضَةٌ؟"
+  ],
+  "context": {
+    "main_topic": "diet_conversation_part1",
+    "pattern": "food_invitation → refusal → health_concern_question → diet_explanation"
+  }
+}

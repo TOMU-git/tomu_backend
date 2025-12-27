@@ -1,0 +1,73 @@
+{
+  "id": "ar_m2_l71",
+  "language": "ar",
+  "module": 2,
+  "lesson": 71,
+  "title": "ٱلتِّمْسَاحُ ٱلْمُفْتَرِسُ",
+  "summary": "Timsohning yirtqich hayvon bo'lishi, ko'llar va daryolarda yashashi, katta va o'tkir tishlari va harakatlanuvchi har qanday hayvonni osonlikcha ovlash qobiliyati haqida.",
+  "vocabulary": [
+    {"word": "ٱلتِّمْسَاحُ", "translationUz": "timsoh"},
+    {"word": "ٱلْمُفْتَرِسُ", "translationUz": "yirtqich"},
+    {"word": "حَيَوَانٌ", "translationUz": "hayvon"},
+    {"word": "يَعِيشُ", "translationUz": "yashaydi"},
+    {"word": "الْبُحَيْرَاتِ", "translationUz": "ko'llar"},
+    {"word": "الْأَنْهَارِ", "translationUz": "daryolar"},
+    {"word": "لَهُ", "translationUz": "uning uchun"},
+    {"word": "أَسْنَانٌ", "translationUz": "tishlar"},
+    {"word": "كَبِيرَةٌ", "translationUz": "katta"},
+    {"word": "حَادَّةٌ", "translationUz": "o'tkir"},
+    {"word": "يَصِيدُ", "translationUz": "ovlaydi"},
+    {"word": "الْحَيَوَانَاتِ", "translationUz": "hayvonlarni"},
+    {"word": "الضَّخْمَةَ", "translationUz": "katta, ulkan"},
+    {"word": "بِسُهُولَةٍ", "translationUz": "osonlik bilan"},
+    {"word": "يَأْكُلُ", "translationUz": "yeydi"},
+    {"word": "كُلَّ", "translationUz": "har qanday"},
+    {"word": "مَا", "translationUz": "narsa"},
+    {"word": "يَتَحَرَّكُ", "translationUz": "harakatlanadi"},
+    {"word": "عَلَى وَجْهِ", "translationUz": "yuzida"},
+    {"word": "الْأَرْضِ", "translationUz": "yer"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلتِّمْسَاحُ حَيَوَانٌ مُفْتَرِسٌ،",
+      "translationUz": "Timsoh yirtqich hayvondir,",
+      "next": " يَعِيشُ فِي الْبُحَيْرَاتِ وَ الْأَنْهَارِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " يَعِيشُ فِي الْبُحَيْرَاتِ وَ الْأَنْهَارِ.",
+      "translationUz": "u ko'llar va daryolarda yashaydi.",
+      "next": " لَهُ أَسْنَانٌ كَبِيرَةٌ وَ حَادَّةٌ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لَهُ أَسْنَانٌ كَبِيرَةٌ وَ حَادَّةٌ，",
+      "translationUz": "uning katta va o'tkir tishlari bor,",
+      "next": " وَ هُوَ يَصِيدُ الْحَيَوَانَاتِ الضَّخْمَةَ بِسُهُولَةٍ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ هُوَ يَصِيدُ الْحَيَوَانَاتِ الضَّخْمَةَ بِسُهُولَةٍ，",
+      "translationUz": "va u katta hayvonlarni osonlikcha ovlaydi,",
+      "next": " وَ يَأْكُلُ كُلَّ مَا يَتَحَرَّكُ عَلَى وَجْهِ الْأَرْضِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ يَأْكُلُ كُلَّ مَا يَتَحَرَّكُ عَلَى وَجْهِ الْأَرْضِ.",
+      "translationUz": "va yer yuzida harakatlanadigan har qanday narsani yeydi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ التِّمْسَاحُ؟",
+    "أَيْنَ يَعِيشُ التِّمْسَاحُ؟",
+    "كَيْفَ هِيَ أَسْنَانُهُ؟",
+    "مَاذَا يَصِيدُ التِّمْسَاحُ؟",
+    "مَاذَا يَأْكُلُ التِّمْسَاحُ؟"
+  ],
+  "context": {
+    "main_topic": "predator_crocodile",
+    "pattern": "predator_nature → habitat → teeth_description → hunting_ability → eating_habits"
+  }
+}

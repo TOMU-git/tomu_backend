@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l86",
+  "language": "ar",
+  "module": 2,
+  "lesson": 86,
+  "title": "الْحُوتُ الْأَزْرَقُ 2",
+  "summary": "Boshqa noto‘g‘ri tushunchani tuzatish va bili manbasini (sevimli fan) ochib berish.",
+  "vocabulary": [
+    { "word": "أَظُنُّ", "translationUz": "deb o‘ylardim, o‘ylagandim" },
+    { "word": "فِيلٌ", "translationUz": "fil" },
+    { "word": "خَطَأٌ", "translationUz": "xato" },
+    { "word": "صَدِيقٌ", "translationUz": "do‘st" },
+    { "word": "مَعْلُومَاتٌ", "translationUz": "ma’lumotlar" },
+    { "word": "أَدْرُسُ", "translationUz": "o‘qiyman, o‘rganaman" },
+    { "word": "أَحْيَاءٌ", "translationUz": "biologiya" },
+    { "word": "مَادَّةٌ", "translationUz": "fan, predmet" },
+    { "word": "مُفَضَّلٌ", "translationUz": "sevimli, afzal" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "حُسَيْنٌ",
+      "text": "كُنْتُ أَظُنُّ أَنَّ الْفِيلَ أَكْبَرُ حَيَوَانٍ فِي الْعَالَمِ.",
+      "translationUz": "Men fil dunyodagi eng katta hayvon deb o‘ylagandim.",
+      "next": "هَذَا خَطَأٌ يَا صَدِيقِي."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "هَذَا خَطَأٌ يَا صَدِيقِي.",
+      "translationUz": "Bu xato, do‘stim.",
+      "next": "مِنْ أَيْنَ تَعْرِفُ هَذِهِ الْمَعْلُومَاتِ الْكَثِيرَةَ؟"
+    },
+    {
+      "speaker": "حُسَيْنٌ",
+      "text": "مِنْ أَيْنَ تَعْرِفُ هَذِهِ الْمَعْلُومَاتِ الْكَثِيرَةَ؟",
+      "translationUz": "Bu ko‘p ma’lumotlarni qayerdan bilasank?",
+      "next": "أَدْرُسُ الأَحْيَاءَ جَيِّدًا، وَ هِيَ مَادَّتِي الْمُفَضَّلَةُ."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "أَدْرُسُ الأَحْيَاءَ جَيِّدًا، وَ هِيَ مَادَّتِي الْمُفَضَّلَةُ.",
+      "translationUz": "Men biologiyani yaxshi o‘rganaman, va u mening sevimli fanim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هِيَ مَادَّتُكَ الْمُفَضَّلَةُ؟",
+    "هَلْ تُحِبُّ الْعُلُومَ؟",
+    "مَاذَا تَدْرُسُ فِي مَادَّةِ الْأَحْيَاءِ؟",
+    "هَلْ تَعْرِفُ حَيَوَانَاتٍ أُخْرَى كَبِيرَةً؟",
+    "لِمَاذَا الْأَحْيَاءُ مَادَّتُكَ الْمُفَضَّلَةُ؟"
+  ],
+  "context": {
+    "main_topic": "correcting_misconceptions_subjects",
+    "pattern": "statement_of_past_belief → correction → question_about_source → explanation_of_interest"
+  }
+}

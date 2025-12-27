@@ -1,0 +1,71 @@
+{
+  "id": "ar_m2_l6",
+  "language": "ar",
+  "module": 2,
+  "lesson": 6,
+  "title": "الفَقْرُ لَيْسَ عَيْبًا",
+  "summary": "Ahmad va Sami o'rtasida qashshoqlik, boylik va baxt haqidagi falsafiy suhbat.",
+  "vocabulary": [
+    {"word": "الفَقْرُ", "translationUz": "qashshoqlik"},
+    {"word": "لَيْسَ", "translationUz": "emas"},
+    {"word": "عَيْبًا", "translationUz": "nuqson, ayb"},
+    {"word": "فَقِيرٌ", "translationUz": "qashshoq"},
+    {"word": "لَكِنِّي", "translationUz": "lekin men"},
+    {"word": "سَعِيدٌ", "translationUz": "baxtli"},
+    {"word": "كَيْفَ", "translationUz": "qanday"},
+    {"word": "تَكُونُ", "translationUz": "bo'lasan"},
+    {"word": "بَل", "translationUz": "balki"},
+    {"word": "إِمْتِحَانٌ", "translationUz": "imtihon, sinov"},
+    {"word": "اَلْمَالُ", "translationUz": "mol, boylik"},
+    {"word": "لَا يُعْطِي", "translationUz": "bermaydi"},
+    {"word": "السَّعَادَةَ", "translationUz": "baxt"},
+    {"word": "صَحِيحٌ", "translationUz": "to'g'ri"},
+    {"word": "اَلْقَلْبُ", "translationUz": "yurag, qalb"},
+    {"word": "الطَّيِّبُ", "translationUz": "yaxshi, pok"},
+    {"word": "أَفْضَلُ", "translationUz": "eng yaxshi"},
+    {"word": "مِنَ", "translationUz": "dan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَنَا فَقِيرٌ، لَكِنِّي سَعِيدٌ.",
+      "translationUz": "Men qashshoqman, lekin baxtliman.",
+      "next": "كَيْفَ تَكُونُ سَعِيدًا وَأَنْتَ فَقِيرٌ؟"
+    },
+    {
+      "speaker": "سَامِي",
+      "text": "كَيْفَ تَكُونُ سَعِيدًا وَأَنْتَ فَقِيرٌ؟",
+      "translationUz": "Qanday qilib qashshoq bo'lib baxtli bo'lasan?",
+      "next": "الفَقْرُ لَيْسَ عَيْبًا، بَل هُوَ إِمْتِحَانٌ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "الفَقْرُ لَيْسَ عَيْبًا، بَل هُوَ إِمْتِحَانٌ.",
+      "translationUz": "Qashshoqlik ayb emas, balki sinovdir.",
+      "next": "نَعَمْ، اَلْمَالُ لَا يُعْطِي السَّعَادَةَ."
+    },
+    {
+      "speaker": "سَامِي",
+      "text": "نَعَمْ، اَلْمَالُ لَا يُعْطِي السَّعَادَةَ.",
+      "translationUz": "Ha, boylik baxt bermaydi.",
+      "next": "صَحِيحٌ، اَلْقَلْبُ الطَّيِّبُ أَفْضَلُ مِنَ الْمَالِ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "صَحِيحٌ، اَلْقَلْبُ الطَّيِّبُ أَفْضَلُ مِنَ الْمَالِ.",
+      "translationUz": "To'g'ri, pok yurak boylikdan afzal.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا قَالَ أَحْمَدُ عَنْ نَفْسِهِ؟",
+    "كَيْفَ رَدَّ سَامِي عَلَى أَحْمَدَ؟",
+    "مَاذَا يَعْنِي أَحْمَدُ بِـ\"إِمْتِحَانٌ\"؟",
+    "مَاذَا يَقُولَانِ عَنِ الْمَالِ وَالسَّعَادَةِ؟",
+    "مَا هُوَ الأَفْضَلُ حَسَبَ أَحْمَدَ؟"
+  ],
+  "context": {
+    "main_topic": "poverty_happiness_philosophy",
+    "pattern": "statement → question → explanation → agreement → moral_conclusion"
+  }
+}

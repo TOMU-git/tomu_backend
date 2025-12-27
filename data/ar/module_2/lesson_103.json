@@ -1,0 +1,45 @@
+{
+  "id": "ar_m2_l103",
+  "language": "ar",
+  "module": 2,
+  "lesson": 103,
+  "title": "إِعْدَادِ الْعَشَاءِ 2",
+  "summary": "Kechki ovqat sifatida meva-sabzavotlarni qabul qilmaslik va bu masalada otaning istagiga rozi bo‘lish.",
+  "vocabulary": [
+    { "word": "لَيْسَتْ", "translationUz": "emas (ayol)" },
+    { "word": "قُولِي", "translationUz": "ayting (bir kishi ayolga)" },
+    { "word": "كَلَامٌ", "translationUz": "so‘z, gap" },
+    { "word": "مَا", "translationUz": "nima (nisbiy olmosh)" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "لَيْلَى",
+      "text": "أَنَا أَظُنُّ أَنَّ الْخُضْرَوَاتِ وَ الْفَوَاكِهَ لَيْسَتْ عَشَاءً.",
+      "translationUz": "Menimcha, sabzavotlar va mevalar kechki ovqat emas.",
+      "next": "قُولِي هَذَا الْكَلَامَ لِأَبِيكِ يَا لَيْلَى."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "قُولِي هَذَا الْكَلَامَ لِأَبِيكِ يَا لَيْلَى.",
+      "translationUz": "Bu gapni otangga ayt, Laylo.",
+      "next": "حَسَنًا يَا أُمِّي، سَنَأْكُلُ مَا يُرِيدُهُ أَبِي."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "حَسَنًا يَا أُمِّي، سَنَأْكُلُ مَا يُرِيدُهُ أَبِي.",
+      "translationUz": "Yaxshi onajon, otam xohlagan narsani yeymiz.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ قُلْتَ هَذَا الْكَلَامَ لِأَبِيكَ؟",
+    "مَاذَا رَدَّ أَبُوكَ؟",
+    "هَلْ تَأْكُلُ مَا يُحِبُّهُ وَالِدَاكَ؟",
+    "كَيْفَ كَانَ الْعَشَاءُ؟",
+    "هَلْ أَنْتَ رَاضِيَةٌ عَنِ الْعَشَاءِ؟"
+  ],
+  "context": {
+    "main_topic": "accepting_fathers_choice",
+    "pattern": "expression_of_opinion → suggestion_to_tell_father → agreement_to_eat_what_father_wants"
+  }
+}

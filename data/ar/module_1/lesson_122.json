@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l122",
+  "language": "ar",
+  "module": 1,
+  "lesson": 122,
+  "title": "أَقَارِبُ الزَّوْجِ",
+
+  "summary": "Qarindoshlar haqida gapirish va “kimlar?” hamda “qayerdan?” savollarini ishlatish.",
+
+  "vocabulary": [
+    { "word": "أَقَارِبُ", "translationUz": "qarindoshlar" },
+    { "word": "زَوْجٌ", "translationUz": "er" },
+    { "word": "نِسَاءٌ", "translationUz": "ayollar" },
+    { "word": "رِجَالٌ", "translationUz": "erkaklar" },
+    { "word": "مِنْ أَيْنَ", "translationUz": "qayerdan" },
+    { "word": "مَنْ", "translationUz": "kim" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "أَسْمَى",
+      "text": "مَنْ هَؤُلَاءِ النِّسَاءُ؟",
+      "translationUz": "Bu ayollar kimlar?",
+      "next": "هُنَّ أَقَارِبُ زَوْجِي."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "هُنَّ أَقَارِبُ زَوْجِي.",
+      "translationUz": "Ular erimning qarindoshlari.",
+      "next": "مِنْ أَيْنَ حَضَرْنَ؟"
+    },
+    {
+      "speaker": "أَسْمَى",
+      "text": "مِنْ أَيْنَ حَضَرْنَ؟",
+      "translationUz": "Qayerdan kelishgan?",
+      "next": "حَضَرْنَ مِنْ بَغْدَادَ."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "حَضَرْنَ مِنْ بَغْدَادَ.",
+      "translationUz": "Ular Bag‘doddan kelishgan.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَنْ هَؤُلَاءِ الرِّجَالُ؟",
+    "هَلْ هُمْ أَقَارِبُكَ؟",
+    "مِنْ أَيْنَ أَقَارِبُكَ؟"
+  ],
+
+  "context": {
+    "main_topic": "family",
+    "pattern": "question → answer → question → answer"
+  }
+}

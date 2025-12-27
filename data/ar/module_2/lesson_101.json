@@ -1,0 +1,54 @@
+{
+  "id": "ar_m2_l101",
+  "language": "ar",
+  "module": 2,
+  "lesson": 101,
+  "title": "اَلطَّبْشُورَةُ",
+  "summary": "Sinfda bo‘r yo‘qligi va o‘quvchidan uni boshqa sinf yoki do‘kondan olib kelishni so‘rash.",
+  "vocabulary": [
+    { "word": "طَبْشُورَةٌ", "translationUz": "bo‘r, tabashura" },
+    { "word": "فَصْلٌ", "translationUz": "sinf, darsxona" },
+    { "word": "يَبْحَثُ", "translationUz": "qidiradi" },
+    { "word": "يُحْضِرُ", "translationUz": "olib keladi" },
+    { "word": "آخَرَ", "translationUz": "boshqa" },
+    { "word": "مَتْجَرٌ", "translationUz": "do‘kon" },
+    { "word": "بِجَانِبِ", "translationUz": "yonida" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُعَلِّمٌ",
+      "text": "لَا تُوجَدُ طَبْشُورَةٌ فِي الْفَصْلِ، إِبْحَثْ لَنَا عَنْ وَاحِدَةٍ يَا أَحْمَدُ.",
+      "translationUz": "Sinfda bo‘r yo‘q, biz uchun birini qidirib top, Ahmad.",
+      "next": "وَ لَكِنْ مِنْ أَيْنَ أُحْضِرُ الطَّبْشُورَةَ يَا مُعَلِّمُ؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "وَ لَكِنْ مِنْ أَيْنَ أُحْضِرُ الطَّبْشُورَةَ يَا مُعَلِّمُ؟",
+      "translationUz": "Lekin bo‘rni qayerdan olib kelay, o‘qituvchijon?",
+      "next": "مِنْ فَصْلٍ آخَرَ أَوْ مِنَ الْمَتْجَرِ الَّذِي يَقَعُ بِجَانِبِ الْمَدْرَسَةِ."
+    },
+    {
+      "speaker": "مُعَلِّمٌ",
+      "text": "مِنْ فَصْلٍ آخَرَ أَوْ مِنَ الْمَتْجَرِ الَّذِي يَقَعُ بِجَانِبِ الْمَدْرَسَةِ.",
+      "translationUz": "Boshqa sinfdan yoki maktab yonidagi do‘kondan.",
+      "next": "حَسَنًا يَا مُعَلِّم"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "حَسَنًا يَا مُعَلِّم",
+      "translationUz": "Yaxshi, o‘qituvchijon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ وَجَدْتَ الطَّبْشُورَةَ؟",
+    "لِمَاذَا لَا تُوجَدُ الطَّبْشُورَةُ؟",
+    "مَنْ يَسْتَخْدِمُ الطَّبْشُورَةَ؟",
+    "مَاذَا يَكْتُبُ الْمُعَلِّمُ بِالطَّبْشُورَةِ؟",
+    "هَلْ تَسْتَخْدِمُ الطَّبْشُورَةَ فِي بَيْتِكَ؟"
+  ],
+  "context": {
+    "main_topic": "classroom_errand",
+    "pattern": "statement_of_problem_and_request → question_about_source → two_possible_sources → agreement"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "ar_m2_l46",
+  "language": "ar",
+  "module": 2,
+  "lesson": 46,
+  "title": "عَلَمُ أُوزْبَكِسْتَانَ",
+  "summary": "O'zbekiston bayrog'ining tarkibi (o'n ikkita yulduz va bir hilal), ranglari (oq, ko'k, yashil), ularning ma'nolari va bayroqning mustaqillik ramzi bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "عَلَمُ", "translationUz": "bayroq"},
+    {"word": "أُوزْبَكِسْتَانَ", "translationUz": "O'zbekiston"},
+    {"word": "إِثْنَا عَشَرَ", "translationUz": "o'n ikki"},
+    {"word": "نَجْمًا", "translationUz": "yulduz"},
+    {"word": "هِلَالٌ", "translationUz": "hilal, yarim oy"},
+    {"word": "وَاحِدٌ", "translationUz": "bitta"},
+    {"word": "لَوْنُهُ", "translationUz": "uning rangi"},
+    {"word": "أَبْيَضُ", "translationUz": "oq"},
+    {"word": "أَزْرَقُ", "translationUz": "ko'k"},
+    {"word": "أَخْضَرُ", "translationUz": "yashil"},
+    {"word": "لِكُلِّ", "translationUz": "har bir uchun"},
+    {"word": "مَعْنًى", "translationUz": "ma'no"},
+    {"word": "خَاصٌّ", "translationUz": "maxsus"},
+    {"word": "رَمْزُ", "translationUz": "ramz, belgi"},
+    {"word": "الْإِسْتِقْلَالِ", "translationUz": "mustaqillik"},
+    {"word": "دَوْلَةٍ", "translationUz": "davlat"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي عَلَمِ أُوزْبَكِسْتَانَ إِثْنَا عَشَرَ نَجْمًا وَ هِلَالٌ وَاحِدٌ،",
+      "translationUz": "O'zbekiston bayrog'ida o'n ikki yulduz va bir hilal bor,",
+      "next": "وَ لَوْنُهُ أَبْيَضُ وَ أَزْرَقُ وَ أَخْضَرُ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَوْنُهُ أَبْيَضُ وَ أَزْرَقُ وَ أَخْضَرُ،",
+      "translationUz": "va uning rangi oq, ko'k va yashil,",
+      "next": "وَ لِكُلِّ لَوْنٍ مَعْنًى خَاصٌّ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لِكُلِّ لَوْنٍ mَعْنًى خَاصٌّ.",
+      "translationUz": "va har bir rangning o'ziga xos ma'nosi bor.",
+      "next": "اَلْعَلَمُ رَمْزُ الْإِسْتِقْلَالِ لِكُلّ دَوْلَةٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْعَلَمُ رَمْزُ الْإِسْتِقْلَالِ لِكُلّ دَوْلَةٍ.",
+      "translationUz": "Bayroq har bir davlat uchun mustaqillik ramzidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا فِي عَلَمِ أُوزْبَكِسْتَانَ؟",
+    "كَمْ نَجْمًا فِيهِ؟",
+    "كَمْ هِلَالًا فِيهِ؟",
+    "مَا هِيَ أَلْوَانُ الْعَلَمِ؟",
+    "مَاذَا يُمَثِّلُ الْعَلَمُ؟"
+  ],
+  "context": {
+    "main_topic": "uzbekistan_flag_description",
+    "pattern": "symbols_description → colors_description → meaning_of_colors → flag_significance"
+  }
+}

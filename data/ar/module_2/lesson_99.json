@@ -1,0 +1,49 @@
+{
+  "id": "ar_m2_l99",
+  "language": "ar",
+  "module": 2,
+  "lesson": 99,
+  "title": "مَحَاصِيلُ فَصْلِ الرَّبِيعِ 3",
+  "summary": "Maxsus qovun va tarvuzning mazasi va qimmatligi haqida gapirish, biroq dehqonlarning yaxshi niyati tufayli arzon narxda sotishlari haqida.",
+  "vocabulary": [
+    { "word": "لَا سِيَّمَا", "translationUz": "ayniqsa, xususan" },
+    { "word": "فَإِنَّ", "translationUz": "chunki, albatta" },
+    { "word": "بِالتَّأْكِيدِ", "translationUz": "albatta" },
+    { "word": "سِعْرٌ", "translationUz": "narx, baho" },
+    { "word": "عَالٍ", "translationUz": "yuqori, qimmat" },
+    { "word": "طَيِّبٌ", "translationUz": "yaxshi, mehribon" },
+    { "word": "رَخِيصٌ", "translationUz": "arzon" },
+    { "word": "قَدْرَ الْإِمْكَانِ", "translationUz": "imkon qadar" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَا سِيَّمَا الْبِطِّيخُ وَ الشَّمَّامُ، فَإِنَّهُمَا لَذِيذَانِ كَالْعَسَلِ،",
+      "translationUz": "Xususan tarvuz va qovun, chunki ular asal kabi mazali,",
+      "next": "وَ بِالتَّأْكِيدِ سِعْرُهُمَا يَكُونُ عَالِيًا فِي الْمَدِينَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ بِالتَّأْكِيدِ سِعْرُهُمَا يَكُونُ عَالِيًا فِي الْمَدِينَةِ.",
+      "translationUz": "va albatta ularning narxi shaharda yuqori bo‘ladi.",
+      "next": "لَكِنَّ الْفَلَّاحِينَ طَيِّبُونَ، يَبِيعُونَهُمَا بِسِعْرٍ رَخِيصٍ قَدْرَ الْإِمْكَانِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَكِنَّ الْفَلَّاحِينَ طَيِّبُونَ، يَبِيعُونَهُمَا بِسِعْرٍ رَخِيصٍ قَدْرَ الْإِمْكَانِ.",
+      "translationUz": "Lekin dehqonlar yaxshi odamlar, ular ularni imkon qadar arzon narxda sotadilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "لِمَاذَا سِعْرُ الْبِطِّيخِ عَالٍ فِي الْمَدِينَةِ؟",
+    "مَا هِيَ أَفْضَلُ ثَمَرَةٍ لَكَ؟",
+    "هَلْ تَأْكُلُ الْبِطِّيخَ فِي الصَّيْفِ؟",
+    "لِمَاذَا الْفَلَّاحُونَ طَيِّبُونَ فِي نَظَرِكَ؟",
+    "كَمْ يَكُونُ سِعْرُ الْبِطِّيخِ؟"
+  ],
+  "context": {
+    "main_topic": "quality_price_kindness",
+    "pattern": "special_mention_and_praise → expected_high_price → farmers_kindness_and_low_price"
+  }
+}

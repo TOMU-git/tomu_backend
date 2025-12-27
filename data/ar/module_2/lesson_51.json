@@ -1,0 +1,68 @@
+{
+  "id": "ar_m2_l51",
+  "language": "ar",
+  "module": 2,
+  "lesson": 51,
+  "title": "صَدِيْقِي الرِّيَاضِيُّ",
+  "summary": "Ahmad va Muhammad o'rtasida sportga qiziqish, sevimli sport turlari va uzoq vaqt davomida sport bilan shug'ullanish haqida suhbat.",
+  "vocabulary": [
+    {"word": "صَدِيْقِي", "translationUz": "do'stim"},
+    {"word": "الرِّيَاضِيُّ", "translationUz": "sportchi"},
+    {"word": "الرِّيَاضَةَ", "translationUz": "sport"},
+    {"word": "أَيَّ", "translationUz": "qaysi"},
+    {"word": "رِّيَاضَةٍ", "translationUz": "sport"},
+    {"word": "كُرَةُ الْقَدَمِ", "translationUz": "futbol"},
+    {"word": "كُرَةُ السَّلَّةِ", "translationUz": "basketbol"},
+    {"word": "كُرَةُ الطَّائِرَةِ", "translationUz": "voleybol"},
+    {"word": "السِّبَاحَةُ", "translationUz": "suzish"},
+    {"word": "أُمَارِسُ", "translationUz": "mashq qilaman"},
+    {"word": "مُنْذُ", "translationUz": "beri, dan"},
+    {"word": "ثَلَاثَ عَشَرَةَ", "translationUz": "o'n uch"},
+    {"word": "سَنَةً", "translationUz": "yil"},
+    {"word": "مَا شَاءَ اللهُ", "translationUz": "Allohning xohlagani"},
+    {"word": "جَيِّدٌ", "translationUz": "yaxshi"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "هَلْ تُحِبُّ الرِّيَاضَةَ يَا مُحَمَّدُ؟",
+      "translationUz": "Sportni sevasizmi, Muhammad?",
+      "next": "مُحَمَّدٌ: نَعَمْ، أُحِبُّ الرِّيَاضَةَ يَا أَحْمَدُ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "نَعَمْ، أُحِبُّ الرِّيَاضَةَ يَا أَحْمَدُ.",
+      "translationUz": "Ha, sportni sevaman, Ahmad.",
+      "next": "أَحْمَدُ: أَيَّ رِّيَاضَةٍ تُحِبُّ؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَيَّ رِّيَاضَةٍ تُحِبُّ？",
+      "translationUz": "Qaysi sportni sevasiz?",
+      "next": "مُحَمَّدٌ: كُرَةُ الْقَدَمِ وَ كُرَةُ السَّلَّةِ وَ كُرَةُ الطَّائِرَةِ وَ السِّبَاحَةُ، وَ أَنَا أُمَارِسُ الرِّيَاضَةَ مُنْذُ ثَلَاثَ عَشَرَةَ سَنَةً."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "كُرَةُ الْقَدَمِ وَ كُرَةُ السَّلَّةِ وَ كُرَةُ الطَّائِرَةِ وَ السِّبَاحَةُ، وَ أَنَا أُمَارِسُ الرِّيَاضَةَ مُنْذُ ثَلَاثَ عَشَرَةَ سَنَةً.",
+      "translationUz": "Futbol, basketbol, voleybol va suzish, va men o'n uch yildan beri sport bilan shug'ullanaman.",
+      "next": " أَحْمَدُ: مَا شَاءَ اللهُ، أَنْتَ رِيَاضِيٌّ جَيِّدٌ يَا صَدِيقِي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "مَا شَاءَ اللهُ، أَنْتَ رِيَاضِيٌّ جَيِّدٌ يَا صَدِيقِي.",
+      "translationUz": "Allohning xohlagani, sen yaxshi sportchisan, do'stim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ أَحْمَدُ مُحَمَّدًا؟",
+    "مَاذَا يُجِيبُ مُحَمَّدٌ؟",
+    "مَا هِيَ أَنْوَاعُ الرِّيَاضَةِ الَّتِي يُحِبُّهَا مُحَمَّدٌ؟",
+    "مُنْذُ كَمْ وَهُوَ يُمَارِسُ الرِّيَاضَةَ؟",
+    "كَيْفَ يُثْنِي أَحْمَدُ عَلَى مُحَمَّدٍ؟"
+  ],
+  "context": {
+    "main_topic": "my_sporty_friend",
+    "pattern": "sport_liking_question → affirmation → specific_sports_question → sports_list_and_practice → compliment"
+  }
+}

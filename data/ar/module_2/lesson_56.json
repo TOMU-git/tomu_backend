@@ -1,0 +1,66 @@
+{
+  "id": "ar_m2_l56",
+  "language": "ar",
+  "module": 2,
+  "lesson": 56,
+  "title": "اَلْأَوْلَادُ النُّشَطاءُ",
+  "summary": "Maktabdan chiqib kutubxonaga boradigan, kitob o'qishni yaxshi ko'radigan va o'qishda yaxshi bo'lgan faol bolalar haqida.",
+  "vocabulary": [
+    {"word": "اَلْأَوْلَادُ", "translationUz": "bolalar"},
+    {"word": "النُّشَطاءُ", "translationUz": "faollar"},
+    {"word": "خَرَجُوا", "translationUz": "chiqdilar"},
+    {"word": "مِنَ", "translationUz": "dan"},
+    {"word": "الْمَدْرَسَةِ", "translationUz": "maktab"},
+    {"word": "وَ ذَهَبُوا", "translationUz": "va bordilar"},
+    {"word": "الْمَكْتَبَةِ", "translationUz": "kutubxona"},
+    {"word": "يُحِبُّونَ", "translationUz": "yoqtirdilar"},
+    {"word": "قِرَاءَةَ", "translationUz": "o'qishni"},
+    {"word": "الْكُتُبِ", "translationUz": "kitoblarni"},
+    {"word": "لَيْسُوا", "translationUz": "ular emas"},
+    {"word": "كُسَالَى", "translationUz": "dangasalar"},
+    {"word": "بَلْ", "translationUz": "balki"},
+    {"word": "نَشِيطُونَ", "translationUz": "faollar"},
+    {"word": "الَّذِينَ", "translationUz": "qaysilar"},
+    {"word": "يَدْرُسُونَ", "translationUz": "o'qiydilar"},
+    {"word": "جَيِّدًا", "translationUz": "yaxshi"},
+    {"word": "يَتَّصِفُونَ", "translationUz": "xususiyatga ega"},
+    {"word": "بِالنَّشَاط", "translationUz": "faollik bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْأَوْلَادُ خَرَجُوا مِنَ الْمَدْرَسَةِ وَ ذَهَبُوا إِلَى الْمَكْتَبَةِ.",
+      "translationUz": "Bolalar maktabdan chiqib kutubxonaga bordilar.",
+      "next": "هُمْ يُحِبُّونَ قِرَاءَةَ الْكُتُبِ كَثِيرًا،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هُمْ يُحِبُّونَ قِرَاءَةَ الْكُتُبِ كَثِيرًا،",
+      "translationUz": "Ular kitob o'qishni juda yaxshi ko'radilar,",
+      "next": "وَ هُمْ لَيْسُوا كُسَالَى بَلْ نَشِيطُونَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ هُمْ لَيْسُوا كُسَالَى بَلْ نَشِيطُونَ.",
+      "translationUz": "va ular dangasa emaslar, balki faollardir.",
+      "next": "اَلْأَوْلَادُ الَّذِينَ يَدْرُسُونَ فِي الْمَدْرَسَةِ جَيِّدًا يَتَّصِفُونَ بِالنَّشَاط"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْأَوْلَادُ الَّذِينَ يَدْرُسُونَ فِي الْمَدْرَسَةِ جَيِّدًا يَتَّصِفُونَ بِالنَّشَاط",
+      "translationUz": "Maktabda yaxshi o'qiydigan bolalar faollik xususiyatiga ega.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا فَعَلَ الْأَوْلَادُ بَعْدَ الْخُرُوجِ مِنَ الْمَدْرَسَةِ؟",
+    "مَاذَا يُحِبُّونَ فِعْلَهُ؟",
+    "هَلْ هُمْ كُسَالَى؟",
+    "مَا صِفَتُهُمْ؟",
+    "مَنْ هُمُ الْأَوْلَادُ الَّذِينَ يَتَّصِفُونَ بِالنَّشَاط؟"
+  ],
+  "context": {
+    "main_topic": "active_children_description",
+    "pattern": "after_school_activity → reading_preference → energy_description → studious_children_trait"
+  }
+}

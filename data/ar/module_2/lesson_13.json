@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l13",
+  "language": "ar",
+  "module": 2,
+  "lesson": 13,
+  "title": "اَلثَّوْرُ الْأَحْمَرُ",
+  "summary": "Qishloqda yashovchi cho'ponning hayoti va uning qizil rangli, semiz ho'kizini tasvirlashi.",
+  "vocabulary": [
+    {"word": "اَلثَّوْرُ", "translationUz": "ho'kiz, buqa"},
+    {"word": "الْأَحْمَرُ", "translationUz": "qizil"},
+    {"word": "رَاعٍ", "translationUz": "cho'pon"},
+    {"word": "أَسْكُنُ", "translationUz": "yashayman"},
+    {"word": "الْقَرْيَةِ", "translationUz": "qishloq"},
+    {"word": "حَيَاةُ", "translationUz": "hayot"},
+    {"word": "صَعْبَةٌ", "translationUz": "qiyin"},
+    {"word": "قَلِيلًا", "translationUz": "ozgina"},
+    {"word": "عِنْدِي", "translationUz": "menda bor"},
+    {"word": "أَبْقَارٌ", "translationUz": "sigirlar"},
+    {"word": "أَغْنَامٌ", "translationUz": "qo'ylar"},
+    {"word": "سَمِينٌ", "translationUz": "semiz"},
+    {"word": "قَرْنَانِ", "translationUz": "ikki shox"},
+    {"word": "طَوِيلَانِ", "translationUz": "uzun (ikkita)"},
+    {"word": "لَوْنُهُ", "translationUz": "uning rangi"},
+    {"word": "يُحِبُّ", "translationUz": "yoqtiradi"},
+    {"word": "أَكْلَ", "translationUz": "eyishni"},
+    {"word": "الْعُشْبَ", "translationUz": "o't"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا رَاعٍ وَ أَسْكُنُ فِي الْقَرْيَةِ.",
+      "translationUz": "Men cho'ponman va qishloqda yashayman.",
+      "next": "حَيَاةُ الْقَرْيَةِ صَعْبَةٌ قَلِيلًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "حَيَاةُ الْقَرْيَةِ صَعْبَةٌ قَلِيلًا.",
+      "translationUz": "Qishloq hayoti ozgina qiyin.",
+      "next": " عِنْدِي أَبْقَارٌ وَ أَغْنَامٌ وَ ثَوْرٌ سَمِينٌ لَهُ قَرْنَانِ طَوِيلَانِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " عِنْدِي أَبْقَارٌ وَ أَغْنَامٌ وَ ثَوْرٌ سَمِينٌ لَهُ قَرْنَانِ طَوِيلَانِ.",
+      "translationUz": "Menda sigirlar, qo'ylar va ikki uzun shoxli semiz ho'kiz bor.",
+      "next": " لَوْنُهُ أَحْمَرُ وَ يُحِبُّ أَكْلَ الْعُشْبَ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لَوْنُهُ أَحْمَرُ وَ يُحِبُّ أَكْلَ الْعُشْبَ كَثِيرًا.",
+      "translationUz": "Uning rangi qizil va o'tni ko'p yeyishni yoqtiradi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا مِهْنَةُ الرَّجُلِ؟",
+    "أَيْنَ يَسْكُنُ؟",
+    "كَيْفَ هِيَ حَيَاةُ الْقَرْيَةِ؟",
+    "مَاذَا عِنْدَهُ مِنَ الْحَيَوَانَاتِ؟",
+    "كَيْفَ يَصِفُ الثَّوْرَ؟"
+  ],
+  "context": {
+    "main_topic": "village_shepherd_life",
+    "pattern": "profession_and_location → village_life_difficulty → animals_owned → bull_description"
+  }
+}

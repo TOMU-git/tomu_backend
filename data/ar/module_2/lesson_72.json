@@ -1,0 +1,79 @@
+{
+  "id": "ar_m2_l72",
+  "language": "ar",
+  "module": 2,
+  "lesson": 72,
+  "title": "بَخَّاخَةٌ ضِدَّ الْحَسَاسِيَةِ",
+  "summary": "Omina va Zaynab o'rtasida qo'ldagi narsa, allergiya uchun purkagich va bahorda uning ko'p ishlatilishi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "بَخَّاخَةٌ", "translationUz": "purkagich, sprеy"},
+    {"word": "ضِدَّ", "translationUz": "qarshi"},
+    {"word": "الْحَسَاسِيَةِ", "translationUz": "allergiya"},
+    {"word": "مَا هُوَ", "translationUz": "nima"},
+    {"word": "الشَّيْءُ", "translationUz": "narsa"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "فِي", "translationUz": "ichida"},
+    {"word": "يَدِكِ", "translationUz": "sizning qo'lingizda"},
+    {"word": "اسْتِخْدَامُهَا", "translationUz": "uning ishlatilishi"},
+    {"word": "لَدَيَّ", "translationUz": "menda bor"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "أَسْتَخْدِمُهَا", "translationUz": "undan foydalanaman"},
+    {"word": "أَيَّامِ", "translationUz": "kunlar"},
+    {"word": "الرَّبِيعِ", "translationUz": "bahor"},
+    {"word": "شَفَاكِ", "translationUz": "sizga shifo bersin"},
+    {"word": "اللَّهُ", "translationUz": "Alloh"},
+    {"word": "شِفَاءً", "translationUz": "shifo"},
+    {"word": "عَاجِلًا", "translationUz": "tez"},
+    {"word": "شُكْرًا", "translationUz": "rahmat"},
+    {"word": "جَزِيلًا", "translationUz": "ko'p"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "آمِنَةُ",
+      "text": "مَا هُوَ الشَّيْءُ الَّذِي فِي يَدِكِ يَا زَيْنَبُ？",
+      "translationUz": "Qo'lingizdagi narsa nima, Zaynab?",
+      "next": "زَيْنَبُ: هَذِهِ بَخَّاخَةٌ يَا آمِنَةُ."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "هَذِهِ بَخَّاخَةٌ yَا آمِنَةُ.",
+      "translationUz": "Bu purkagich, Omina.",
+      "next": "آمِنَةُ: مَا هُوَ اسْتِخْدَامُهَا؟"
+    },
+    {
+      "speaker": "آمِنَةُ",
+      "text": "مَا هُوَ اسْتِخْدَامُهَا？",
+      "translationUz": "Uning ishlatilishi nima?",
+      "next": "زَيْنَبُ: لَدَيَّ حَسَّاسِيَةٌ، لِذَلِكَ أَسْتَخْدِمُهَا كَثِيرًا فِي أَيَّامِ الرَّبِيعِ."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "لَدَيَّ حَسَّاسِيَةٌ، لِذَلِكَ أَسْتَخْدِمُهَا كَثِيرًا فِي أَيَّامِ الرَّبِيعِ.",
+      "translationUz": "Menda allergiya bor, shuning uchun men bahor kunlarida undan ko'p foydalanaman.",
+      "next": "آمِنَةُ: شَفَاكِ اللَّهُ شِفَاءً عَاجِلًا."
+    },
+    {
+      "speaker": "آمِنَةُ",
+      "text": "شَفَاكِ اللَّهُ شِفَاءً عَاجِلًا.",
+      "translationUz": "Alloh sizga tez shifo bersin.",
+      "next": "زَيْنَبُ: شُكْرًا جَزِيلًا يَا صَدِيقَتِي."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "شُكْرًا جَزِيلًا yَا صَدِيقَتِي.",
+      "translationUz": "Katta rahmat, do'stim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَسْأَلُ آمِنَةُ زَيْنَبَ؟",
+    "مَا هُوَ الشَّيْءُ الَّذِي فِي يَدِ زَيْنَبَ؟",
+    "لِمَاذَا تَسْتَخْدِمُ زَيْنَبُ الْبَخَّاخَةَ؟",
+    "مَتَى تَسْتَخْدِمُهَا كَثِيرًا؟",
+    "مَاذَا تَقُولُ آمِنَةُ لِزَيْنَبَ؟"
+  ],
+  "context": {
+    "main_topic": "allergy_spray_conversation",
+    "pattern": "object_question → identification → usage_question → allergy_explanation → well_wish → thanks"
+  }
+}

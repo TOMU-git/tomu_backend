@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l130",
+  "language": "ar",
+  "module": 1,
+  "lesson": 130,
+  "title": "بِرِيطَانْيَا",
+
+  "summary": "Mamlakatlar, poytaxt va ob-havo haqida sodda gaplar tuzishni o‘rganish.",
+
+  "vocabulary": [
+    { "word": "بِرِيطَانْيَا", "translationUz": "Buyuk Britaniya" },
+    { "word": "دَوْلَةٌ", "translationUz": "davlat" },
+    { "word": "عَاصِمَةٌ", "translationUz": "poytaxt" },
+    { "word": "لَنْدَنُ", "translationUz": "London" },
+    { "word": "جَزِيرَةٌ", "translationUz": "oroli" },
+    { "word": "مَطَرٌ", "translationUz": "yomg‘ir" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "مَا هَذِهِ الدَّوْلَةُ؟",
+      "translationUz": "Bu davlat nima?",
+      "next": "هَذِهِ بِرِيطَانْيَا."
+    },
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "هَذِهِ بِرِيطَانْيَا.",
+      "translationUz": "Bu Buyuk Britaniya.",
+      "next": "مَا عَاصِمَتُهَا؟"
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "مَا عَاصِمَتُهَا؟",
+      "translationUz": "Poytaxti qayer?",
+      "next": "لَنْدَنُ."
+    },
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "لَنْدَنُ.",
+      "translationUz": "London.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ هِيَ جَزِيرَةٌ؟",
+    "مَا الطَّقْسُ هُنَاكَ؟",
+    "هَلْ تَزُورُ بِنْتَكَ هُنَاكَ؟"
+  ],
+
+  "context": {
+    "main_topic": "countries",
+    "pattern": "question → answer → question → answer"
+  }
+}

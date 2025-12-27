@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l139",
+  "language": "ar",
+  "module": 1,
+  "lesson": 139,
+  "title": "الظَّبْيُ الْجَمِيلُ",
+
+  "summary": "Hayvonlarni tasvirlash: tezligi, ovqatlanishi va tashqi ko‘rinishi.",
+
+  "vocabulary": [
+    { "word": "ظَبْيٌ", "translationUz": "antilopa" },
+    { "word": "سَرِيعٌ", "translationUz": "tez" },
+    { "word": "أَعْشَابٌ", "translationUz": "o‘tlar" },
+    { "word": "أَوْرَاقٌ", "translationUz": "barglar" },
+    { "word": "قَرْنٌ", "translationUz": "tuxum / shox" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "مَا هَذَا الْحَيَوَانُ؟",
+      "translationUz": "Bu hayvon nima?",
+      "next": "هُوَ سَرِيعٌ وَ جَمِيلٌ."
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "هُوَ يَأْكُلُ الْأَعْشَابَ وَ أَوْرَاقَ الْأَشْجَارِ.",
+      "translationUz": "U o‘t va daraxt barglarini yeydi.",
+      "next": "لِلظَّبْيِ قَرْنَانِ طَوِيلَانِ وَ أَرْبَعُ أَرْجُلٍ."
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "لِلظَّبْيِ قَرْنَانِ طَوِيلَانِ، وَ أَرْبَعُ أَرْجُلٍ وَ ذَيْلٌ قَصِيرٌ.",
+      "translationUz": "Antilopaning ikki uzun shoxi, to‘rt oyog‘i va qisqa dum bor.",
+      "next": "مِثْلَ ذَيْلِ الْمَاعِزِ."
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "مِثْلَ ذَيْلِ الْمَاعِزِ.",
+      "translationUz": "Dumi echki dumiga o‘xshaydi.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "أَيْنَ يَسْكُنُ الْظَّبْيُ؟",
+    "مَا أَكَلَهُ الْظَّبْيُ؟",
+    "هَلْ هُوَ سَرِيعٌ جِدًّا؟"
+  ],
+
+  "context": {
+    "main_topic": "animals",
+    "pattern": "question → statement → statement → statement"
+  }
+}

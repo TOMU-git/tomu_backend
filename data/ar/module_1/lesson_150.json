@@ -1,0 +1,59 @@
+{
+  "id": "ar_m1_l150",
+  "language": "ar",
+  "module": 1,
+  "lesson": 150,
+  "title": "تَعَلُّمُ اللُّغَاتِ سَهْلٌ",
+  "summary": "Maktabda til o'rganishning qiyinligi haqida do'stlar o'rtasidagi suhbat.",
+  "vocabulary": [
+    {"word": "تَعَلُّمُ", "translationUz": "o'rganish"},
+    {"word": "اللُّغَاتِ", "translationUz": "tillar"},
+    {"word": "سَهْلٌ", "translationUz": "oson"},
+    {"word": "كُنْتُ", "translationUz": "men edim"},
+    {"word": "فَسَأَلْتُ", "translationUz": "shunda men so'radim"},
+    {"word": "صَدِيقِي", "translationUz": "do'stim"},
+    {"word": "أَيُّهُمَا", "translationUz": "qaysi biri"},
+    {"word": "أَصْعَبُ", "translationUz": "qiyinroq"},
+    {"word": "اللُّغَةُ", "translationUz": "til"},
+    {"word": "الْعَرَبِيَّةُ", "translationUz": "arab tili"},
+    {"word": "أَمِ", "translationUz": "yoki"},
+    {"word": "الْإِنْجِلِيزِيَّةُ", "translationUz": "ingliz tili"},
+    {"word": "فَقَالَ", "translationUz": "shunda dedi"},
+    {"word": "سَهْلَتَانِ", "translationUz": "oson (ikkita)"},
+    {"word": "إِذَا", "translationUz": "agar"},
+    {"word": "دَرَسْتَ", "translationUz": "o'rgansang"},
+    {"word": "بِجِدٍّ", "translationUz": "jiddiy"},
+    {"word": "وَنَشَاطٍ", "translationUz": "va faollik bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كُنْتُ فِي الْمَدْرَسَةِ، فَسَأَلْتُ صَدِيقِي:",
+      "translationUz": "Men maktabda edim, shunda do'stimdan so'radim:",
+      "next": " أَيُّهُمَا أَصْعَبُ، اللُّغَةُ  الْعَرَبِيَّةُ أَمِ الْإِنْجِلِيزِيَّةُ؟"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَيُّهُمَا أَصْعَبُ، اللُّغَةُ  الْعَرَبِيَّةُ أَمِ الْإِنْجِلِيزِيَّةُ؟",
+      "translationUz": "Qaysi biri qiyinroq, arab tili yoki ingliz tili?",
+      "next": "فَقَالَ لِي: اَللُّغَةُ الْعَرَبِيَّةُ وَاللُّغَةُ الْإِنْجِلِيزِيَّةُ سَهْلَتَانِ إِذَا دَرَسْتَ بِجِدٍّ وَنَشَاطٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَقَالَ لِي: اَللُّغَةُ الْعَرَبِيَّةُ وَاللُّغَةُ الْإِنْجِلِيزِيَّةُ سَهْلَتَانِ إِذَا دَرَسْتَ بِجِدٍّ وَنَشَاطٍ.",
+      "translationUz": "U menga dedi: \"Arab tili ham, ingliz tili ham oson, agar sen jiddiy va faol o'rgansang.\"",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ كَانَ الشَّخْصُ؟",
+    "مَاذَا سَأَلَ صَدِيقَهُ؟",
+    "مَاذَا أَجَابَ الصَّدِيقُ؟",
+    "كَيْفَ تَصْبُحُ اللُّغَاتُ سَهْلَةً؟",
+    "هَلْ تُعْتَبَرُ اللُّغَةُ الْعَرَبِيَّةُ صَعْبَةً؟"
+  ],
+  "context": {
+    "main_topic": "language_learning_difficulty",
+    "pattern": "setting_and_question → comparison_question → answer_with_condition"
+  }
+}

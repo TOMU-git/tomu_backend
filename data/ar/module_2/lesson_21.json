@@ -1,0 +1,47 @@
+{
+  "id": "ar_m2_l21",
+  "language": "ar",
+  "module": 2,
+  "lesson": 21,
+  "title": "جِبَالُ آسِيَا",
+  "summary": "Osiyo tog'larining balandligi va ba'zi joylarda hatto yozda ham cho'qqilarida qor bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "جِبَالُ", "translationUz": "tog'lar"},
+    {"word": "آسِيَا", "translationUz": "Osiyo"},
+    {"word": "عَالِيَةٌ", "translationUz": "baland"},
+    {"word": "بَعْضِ", "translationUz": "ba'zi"},
+    {"word": "الْمَنَاطِقِ", "translationUz": "joylar, hududlar"},
+    {"word": "يَكُونُ", "translationUz": "bo'ladi"},
+    {"word": "الثَّلْجُ", "translationUz": "qor"},
+    {"word": "مَوْجُودًا", "translationUz": "mavjud"},
+    {"word": "قِمَمِ", "translationUz": "cho'qqilari"},
+    {"word": "حَتَّى", "translationUz": "hatto"},
+    {"word": "فَصْلِ", "translationUz": "fasl"},
+    {"word": "الصَّيْفِ", "translationUz": "yoz"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "جِبَالُ آسِيَا عَالِيَةٌ جِدًّا.",
+      "translationUz": "Osiyo tog'lari juda baland.",
+      "next": " فِي بَعْضِ الْمَنَاطِقِ، يَكُونُ الثَّلْجُ مَوْجُودًا عَلَى قِمَمِ الْجِبَالِ، حَتَّى فِي فَصْلِ الصَّيْفِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " فِي بَعْضِ الْمَنَاطِقِ، يَكُونُ الثَّلْجُ مَوْجُودًا عَلَى قِمَمِ الْجِبَالِ، حَتَّى فِي فَصْلِ الصَّيْفِ.",
+      "translationUz": "Ba'zi hududlarda tog' cho'qqilarida qor mavjud bo'ladi, hatto yoz faslida ham.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ تَقَعُ هَذِهِ الْجِبَالُ؟",
+    "كَيْفَ هِيَ جِبَالُ آسِيَا؟",
+    "مَاذَا يَكُونُ مَوْجُودًا عَلَى قِمَمِ الْجِبَالِ؟",
+    "مَتَى يَكُونُ الثَّلْجُ مَوْجُودًا؟",
+    "هَلْ رَأَيْتَ جَبَلًا عَالِيًا مِنْ قَبْلُ؟"
+  ],
+  "context": {
+    "main_topic": "asian_mountains_snow",
+    "pattern": "height_description → snow_description_even_summer"
+  }
+}

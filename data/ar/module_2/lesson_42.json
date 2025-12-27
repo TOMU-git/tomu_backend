@@ -1,0 +1,60 @@
+{
+  "id": "ar_m2_l42",
+  "language": "ar",
+  "module": 2,
+  "lesson": 42,
+  "title": "اَلشَّمْسُ مِصْبَاحُ الْكَوْنِ",
+  "summary": "Quyoshning uydagi chiroq kabi yerni yoritishi, uning nurining zarurligi va o'simliklar o'sishi uchun ahamiyati haqida.",
+  "vocabulary": [
+    {"word": "اَلشَّمْسُ", "translationUz": "quyosh"},
+    {"word": "مِصْبَاحُ", "translationUz": "chiroq"},
+    {"word": "الْكَوْنِ", "translationUz": "koinot, olam"},
+    {"word": "تُنِيرُ", "translationUz": "yoritadi"},
+    {"word": "الْأَرْضَ", "translationUz": "yerni"},
+    {"word": "كَأَنَّهَا", "translationUz": "go'yo u"},
+    {"word": "الْمِصْبَاحُ", "translationUz": "chiroq"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "سَقْفِ", "translationUz": "shipi"},
+    {"word": "الْبَيْتِ", "translationUz": "uyning"},
+    {"word": "ضَوْءُ", "translationUz": "nuri"},
+    {"word": "شَيْءٌ", "translationUz": "narsa"},
+    {"word": "ضَرُورِيٌّ", "translationUz": "zarur"},
+    {"word": "لِلْأَرْضِ", "translationUz": "yer uchun"},
+    {"word": "النَّبَاتَاتُ", "translationUz": "o'simliklar"},
+    {"word": "الْأَشْجَارُ", "translationUz": "daraxtlar"},
+    {"word": "فِي حَاجَةٍ", "translationUz": "ehtiyoj"},
+    {"word": "إِلَيْهِ", "translationUz": "unga"},
+    {"word": "لِتَنْمُوَ", "translationUz": "o'sishlari uchun"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلشَّمْسُ تُنِيرُ الْأَرْضَ كَأَنَّهَا الْمِصْبَاحُ الَّذِي فِي سَقْفِ الْبَيْتِ.",
+      "translationUz": "Quyosh yerni yoritadi, go'yo u uyning shipidagi chiroqdir.",
+      "next": "ضَوْءُ الشَّمْسِ شَيْءٌ ضَرُورِيٌّ لِلْأَرْضِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ضَوْءُ الشَّمْسِ شَيْءٌ ضَرُورِيٌّ لِلْأَرْضِ،",
+      "translationUz": "Quyosh nuri yerga zarur narsadir,",
+      "next": "وَ النَّبَاتَاتُ وَ الْأَشْجَارُ فِي حَاجَةٍ إِلَيْهِ لِتَنْمُوَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ النَّبَاتَاتُ وَ الْأَشْجَارُ فِي حَاجَةٍ إِلَيْهِ لِتَنْمُوَ.",
+      "translationUz": "va o'simliklar va daraxtlar o'sishi uchun unga muhtoj.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَفْعَلُ الشَّمْسُ؟",
+    "بِمَ تُشَبَّهُ الشَّمْسُ؟",
+    "لِمَاذَا يَعْتَبَرُ ضَوْءُ الشَّمْسِ ضَرُورِيًّا؟",
+    "مَنْ يَحْتَاجُ إِلَى ضَوْءِ الشَّمْسِ؟",
+    "لِمَاذَا تَحْتَاجُ النَّبَاتَاتُ إِلَى الشَّمْسِ؟"
+  ],
+  "context": {
+    "main_topic": "sun_as_universe_lamp",
+    "pattern": "sun_metaphor → sunlight_importance → plants_need"
+  }
+}

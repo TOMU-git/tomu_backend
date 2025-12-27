@@ -1,0 +1,63 @@
+{
+  "id": "ar_m2_l3",
+  "language": "ar",
+  "module": 2,
+  "lesson": 3,
+  "title": "عَشَاءٌ لَذِيْذٌ",
+  "summary": "Ishdan qaytgandan so'ng och va chanqoq erga xotinining pishirgan lazzatli kechki ovqati haqida.",
+  "vocabulary": [
+    {"word": "عَشَاءٌ", "translationUz": "kechki ovqat"},
+    {"word": "لَذِيْذٌ", "translationUz": "lazzatli"},
+    {"word": "عَادَ", "translationUz": "qaytdi"},
+    {"word": "الْعَمَلِ", "translationUz": "ishdan"},
+    {"word": "جَائِعٌ", "translationUz": "och"},
+    {"word": "عَطْشَانُ", "translationUz": "chanqoq"},
+    {"word": "زَوْجَتُهُ", "translationUz": "uning xotini"},
+    {"word": "طَبَخَتْ", "translationUz": "pishirdi (ayol)"},
+    {"word": "طَعَامًا", "translationUz": "ovqat"},
+    {"word": "الزَّوْجَانِ", "translationUz": "er-xotin"},
+    {"word": "أَكَلَ", "translationUz": "yedi"},
+    {"word": "بَعْدَ", "translationUz": "keyin"},
+    {"word": "شَرِبَ", "translationUz": "ichdi"},
+    {"word": "عَصِيرَ الْجَزَرِ", "translationUz": "sabzi sharbati"},
+    {"word": "قَهْوَةً", "translationUz": "qahva"},
+    {"word": "بِاللَّبَنِ", "translationUz": "sut bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَحْمَدُ عَادَ مِنَ الْعَمَلِ وَ هُوَ جَائِعٌ وَ عَطْشَانُ.",
+      "translationUz": "Ahmad ishdan och va chanqoq holatda qaytdi.",
+      "next": " وَ زَوْجَتُهُ زَيْنَبُ طَبَخَتْ طَعَامًا لَذِيذًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ زَوْجَتُهُ زَيْنَبُ طَبَخَتْ طَعَامًا لَذِيذًا.",
+      "translationUz": "Va uning xotini Zaynab lazzatli ovqat pishirdi.",
+      "next": " أَكَلَ الزَّوْجَانِ الطَّعَامَ اللَّذِيذَ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَكَلَ الزَّوْجَانِ الطَّعَامَ اللَّذِيذَ،",
+      "translationUz": "Er-xotin lazzatli ovqatni yedilar,",
+      "next": " وَ بَعْدَ الطَّعَامِ شَرِبَ أَحْمَدُ عَصِيرَ الْجَزَرِ، وَ شَرِبَتْ زَوْجَتُهُ قَهْوَةً بِاللَّبَنِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ بَعْدَ الطَّعَامِ شَرِبَ أَحْمَدُ عَصِيرَ الْجَزَرِ، وَ شَرِبَتْ زَوْجَتُهُ قَهْوَةً بِاللَّبَنِ.",
+      "translationUz": "Va ovqatdan keyin Ahmad sabzi sharbati ichdi, xotin esa sutli qahva ichdi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ عَادَ أَحْمَدُ مِنَ الْعَمَلِ؟",
+    "مَاذَا فَعَلَتْ زَوْجَتُهُ؟",
+    "كَيْفَ كَانَ الطَّعَامُ؟",
+    "مَاذَا شَرِبَ أَحْمَدُ بَعْدَ الطَّعَامِ؟",
+    "مَاذَا شَرِبَتِ الزَّوْجَةُ؟"
+  ],
+  "context": {
+    "main_topic": "delicious_dinner",
+    "pattern": "husband_returns_hungry → wife_cooks → couple_eats → after_dinner_drinks"
+  }
+}

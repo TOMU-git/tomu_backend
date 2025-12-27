@@ -1,0 +1,73 @@
+{
+  "id": "ar_m2_l65",
+  "language": "ar",
+  "module": 2,
+  "lesson": 65,
+  "title": "اَلْحِمْيَةُ الغِذَائِيَّةُ 2",
+  "summary": "Nabira va buvisi o'rtasida parhezning zarurati, sog'liqqa foydasi va keksalik davrida vazn oshishi haqidagi muhokama.",
+  "vocabulary": [
+    {"word": "ضَرُورِيَّةً", "translationUz": "zarur"},
+    {"word": "لِأَنَّهَا", "translationUz": "chunki u"},
+    {"word": "مُفِيدَةٌ", "translationUz": "foydali (ayol)"},
+    {"word": "لِلصِّحَّةِ", "translationUz": "sog'liq uchun"},
+    {"word": "كَمَا", "translationUz": "xuddi ... kabi"},
+    {"word": "تَعْرِفِينَ", "translationUz": "bilasiz (ayol)"},
+    {"word": "عَجُوزٌ", "translationUz": "keksa (ayol)"},
+    {"word": "وَزَادَ", "translationUz": "oshdi"},
+    {"word": "وَزْنِي", "translationUz": "mening vaznim"},
+    {"word": "لَيْسَ", "translationUz": "emas"},
+    {"word": "جَيِّدًا", "translationUz": "yaxshi"},
+    {"word": "إِذًا", "translationUz": "shunday bo'lsa"},
+    {"word": "مَاذَا", "translationUz": "nima"},
+    {"word": "تَأْكُلِينَ", "translationUz": "yeyapsiz (ayol)"},
+    {"word": "آكُلُ", "translationUz": "yeyman"},
+    {"word": "بَيْضًا", "translationUz": "tuxum"},
+    {"word": "مَسْلُوقًا", "translationUz": "qaynatilgan"},
+    {"word": "مَعَ", "translationUz": "bilan"},
+    {"word": "الْخُبْزِ", "translationUz": "non"},
+    {"word": "كَما تُرِيدِينَ", "translationUz": "xohlagancha"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "الْحِمْيَةُ الْغِذَائِيَّةُ لَيْسَتْ ضَرُورِيَّةً يَا جَدَّتِي.",
+      "translationUz": "Oziq-ovqat parhezi zarur emas, buvijon.",
+      "next": "اَلْجَدَّةُ: ضَرُورِيَّةٌ يَا حَفِيدَتِي، لِأَنَّهَا مُفِيدَةٌ لِلصِّحَّةِ، وَكَمَا تَعْرِفِينَ أَنَا عَجُوزٌ وَزَادَ وَزْنِي، وَهَذَا لَيْسَ جَيِّدًا لِي."
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "ضَرُورِيَّةٌ yَا حَفِيدَتِي، لِأَنَّهَا مُفِيدَةٌ لِلصِّحَّةِ، وَكَمَا تَعْرِفِينَ أَنَا عَجُوزٌ وَزَادَ وَزْنِي، وَهَذَا لَيْسَ جَيِّدًا لِي.",
+      "translationUz": "Zarur, nabirachim, chunki u sog'liq uchun foydali, va siz bilasizki men keksaman va vaznim oshdi, va bu men uchun yaxshi emas.",
+      "next": "اَلْحَفِيدَةُ: حَسَنًا، إِذًا مَاذَا تَأْكُلِينَ؟"
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "حَسَنًا، إِذًا مَاذَا تَأْكُلِينَ？",
+      "translationUz": "Yaxshi, shunday bo'lsa nima yeyapsiz?",
+      "next": "اَلْجَدَّةُ: آكُلُ بَيْضًا مَسْلُوقًا مَعَ الْخُبْزِ فَقَطْ."
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "آكُلُ بَيْضًا مَسْلُوقًا مَعَ الْخُبْزِ فَقَطْ.",
+      "translationUz": "Men faqat qaynatilgan tuxum bilan non yeyman.",
+      "next": "اَلْحَفِيدَةُ: حَسَنًا يَا جَدَّتِي، كَمَا تُرِيدِينَ."
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "حَسَنًا yَا جَدَّتِي، كَمَا تُرِيدِينَ.",
+      "translationUz": "Yaxshi, buvijon, xohlagancha.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَقُولُ الْحَفِيدَةُ عَنِ الْحِمْيَةِ؟",
+    "لِمَاذَا تُرِيدُ الْجَدَّةُ الْحِمْيَةَ؟",
+    "مَا الْأَسْبَابُ الَّتِي تَذْكُرُهَا الْجَدَّةُ؟",
+    "مَاذَا تَأْكُلُ الْجَدَّةُ فِي حِمْيَتِهَا؟",
+    "كَيْفَ تَرُدُّ الْحَفِيدَةُ عَلَى شَرْحِ الْجَدَّةِ؟"
+  ],
+  "context": {
+    "main_topic": "diet_conversation_part2",
+    "pattern": "diet_necessity_question → diet_importance_explanation → food_inquiry → food_revelation → acceptance"
+  }
+}

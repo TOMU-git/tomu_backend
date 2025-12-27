@@ -1,0 +1,50 @@
+{
+  "id": "ar_m1_l126",
+  "language": "ar",
+  "module": 1,
+  "lesson": 126,
+  "title": "فُندُقُ أُوزْبَكِسْتَانَ",
+
+  "summary": "Mehmonxona va yo‘nalishlarni so‘rash, sodda savol-javoblar orqali yo‘l topishni o‘rganish.",
+
+  "vocabulary": [
+    { "word": "فُنْدُقٌ", "translationUz": "mehmonxona" },
+    { "word": "سَائِحٌ", "translationUz": "sayyoh" },
+    { "word": "سَائِقٌ", "translationUz": "haydovchi" },
+    { "word": "أَعْرِفُ", "translationUz": "bilaman" },
+    { "word": "هَيَّا", "translationUz": "keling / haydi" },
+    { "word": "قَرِيبٌ", "translationUz": "yaqin" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "السَّائِحُ",
+      "text": "هَلْ تَعْرِفُ فُنْدُقًا قَرِيبًا؟",
+      "translationUz": "Yaqin mehmonxona bilasizmi?",
+      "next": "نَعَمْ، أَعْرِفُ فُنْدُقَ أُوزْبَكِسْتَانَ."
+    },
+    {
+      "speaker": "السَّائِقُ",
+      "text": "نَعَمْ، أَعْرِفُ فُنْدُقَ أُوزْبَكِسْتَانَ.",
+      "translationUz": "Ha, 'O‘zbekiston' mehmonxonasini bilaman.",
+      "next": "هَيَّا بِنَا."
+    },
+    {
+      "speaker": "السَّائِحُ",
+      "text": "هَيَّا بِنَا.",
+      "translationUz": "Keling, ketamiz.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "أَيْنَ الْفُنْدُقُ؟",
+    "كَمْ يَبْعُدُ عَنِ هُنَا؟",
+    "هَلْ تُحِبُّ السَّفَرَ؟"
+  ],
+
+  "context": {
+    "main_topic": "hotel and directions",
+    "pattern": "question → answer → question → answer"
+  }
+}

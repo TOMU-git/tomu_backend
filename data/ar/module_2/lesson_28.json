@@ -1,0 +1,63 @@
+{
+  "id": "ar_m2_l28",
+  "language": "ar",
+  "module": 2,
+  "lesson": 28,
+  "title": "زِيَارَةُ الْعَمِّ",
+  "summary": "Ota va bolalari o'rtasida tog'aga tashrif buyurishga tayyorlik haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "زِيَارَةُ", "translationUz": "tashrif"},
+    {"word": "الْعَمِّ", "translationUz": "tog'a, amaki"},
+    {"word": "اَلْأَبُ", "translationUz": "ota"},
+    {"word": "يَا أَوْلَادُ", "translationUz": "ey bolalar"},
+    {"word": "مُسْتَعِدُّونَ", "translationUz": "tayyormiz"},
+    {"word": "لِزِيَارَةِ", "translationUz": "tashrif uchun"},
+    {"word": "عَمِّكُمْ", "translationUz": "sizning tog'angiz"},
+    {"word": "اَلْأَوْلَادُ", "translationUz": "bolalar"},
+    {"word": "لَسْنَا", "translationUz": "biz emasmiz"},
+    {"word": "مُسْتَعِدِّينَ", "translationUz": "tayyor"},
+    {"word": "أَخُونَا", "translationUz": "bizning ukamiz"},
+    {"word": "الصَّغِيرُ", "translationUz": "kichik"},
+    {"word": "لَمْ يَعُدْ", "translationUz": "qaytmadi"},
+    {"word": "مِنَ", "translationUz": "dan"},
+    {"word": "حَتَّى", "translationUz": "gacha"},
+    {"word": "الْآنَ", "translationUz": "hozir"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "يَا أَوْلَادُ، هَلْ أَنْتُمْ مُسْتَعِدُّونَ لِزِيَارَةِ عَمِّكُمْ؟",
+      "translationUz": "Ey bolalar, tog'angizga tashrifga tayyormisiz?",
+      "next": "اَلْأَوْلَادُ: لَا، يَا أَبَانَا، نَحْنُ لَسْنَا مُسْتَعِدِّينَ."
+    },
+    {
+      "speaker": "اَلْأَوْلَادُ",
+      "text": "لَا، يَا أَبَانَا، نَحْنُ لَسْنَا مُسْتَعِدِّينَ.",
+      "translationUz": "Yo'q, otajon, biz tayyor emasmiz.",
+      "next": "اَلْأَبُ: لِمَاذَا، يَا أَوْلَادُ؟"
+    },
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "لِمَاذَا، يَا أَوْلَادُ؟",
+      "translationUz": "Nega, bolalar?",
+      "next": "اَلْأَوْلَادُ: أَخُونَا الصَّغِيرُ لَمْ يَعُدْ مِنَ الْمَدْرَسَةِ حَتَّى الْآنَ."
+    },
+    {
+      "speaker": "اَلْأَوْلَادُ",
+      "text": "أَخُونَا الصَّغِيرُ لَمْ يَعُدْ مِنَ الْمَدْرَسَةِ حَتَّى الْآنَ.",
+      "translationUz": "Bizning kichik ukamiz hozirgacha maktabdan qaytmadi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَقْتَرِحُ الْأَبُ؟",
+    "هَلْ الْأَوْلَادُ مُسْتَعِدُّونَ؟",
+    "لِمَاذَا لَيْسُوا مُسْتَعِدِّينَ؟",
+    "أَيْنَ أَخُوهُمُ الصَّغِيرُ؟",
+    "مَتَى يَعُودُ مِنَ الْمَدْرَسَةِ؟"
+  ],
+  "context": {
+    "main_topic": "uncle_visit_preparation",
+    "pattern": "preparation_question → negative_response → reason_inquiry → explanation"
+  }
+}

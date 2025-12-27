@@ -59,18 +59,24 @@ export class CourseService implements ICourseService {
     return new ResData<Course>("Course created successfully", 201, addVimeoEmbedUrl(newData));
   }
 
-  async findAll(): Promise<ResData<Array<Course>>> {
-    // Barcha kurslarni olish
-    const data = await this.courseRepository.findAll();
+  async findAll(): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>> {
+    // Barcha kurslarni count bilan olish
+    const data = await this.courseRepository.findAllWithCounts();
 
-    return new ResData<Array<Course>>("ok", 200, addVimeoEmbedUrlToArray(data));
+    // Vimeo embed URL qo'shamiz
+    const dataWithVimeo = data.map(course => ({
+      ...course,
+      vimeoEmbedUrl: course.videoUrl ? generateVimeoEmbedUrl(course.videoUrl) : null,
+    }));
+
+    return new ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>("ok", 200, dataWithVimeo);
   }
 
-  async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>> {
+  async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
     console.log('[CourseService.findOneById] START - Course ID:', id, 'User:', user ? `ID: ${user.id}` : 'NOT PROVIDED');
 
-    // ID bo'yicha kursni topish
-    const foundData = await this.courseRepository.findById(id);
+    // ID bo'yicha kursni count bilan topish
+    const foundData = await this.courseRepository.findByIdWithCounts(id);
     if (!foundData) {
       console.log('[CourseService.findOneById] ERROR - Course not found with ID:', id);
       throw new CourseNotFoundException();
@@ -106,7 +112,7 @@ export class CourseService implements ICourseService {
 
     console.log('[CourseService.findOneById] FINAL - isActiveForUser:', isActiveForUser);
 
-    // Response ga isActiveForUser qo'shish
+    // Response ga isActiveForUser va count ma'lumotlarini qo'shish
     // TypeORM entity ni plain object ga aylantirish (metadata muammosini oldini olish uchun)
     const responseData = {
       id: foundData.id,
@@ -122,9 +128,13 @@ export class CourseService implements ICourseService {
       createdAt: foundData.createdAt,
       lastUpdatedAt: foundData.lastUpdatedAt,
       isActiveForUser,
-    } as Course & { isActiveForUser: boolean; vimeoEmbedUrl?: string };
+      alphabetCount: foundData.alphabetCount,
+      lessonCount: foundData.lessonCount,
+      grammarCount: foundData.grammarCount,
+      homeworkCount: foundData.homeworkCount,
+    } as Course & { isActiveForUser: boolean; vimeoEmbedUrl?: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number };
 
-    return new ResData<Course & { isActiveForUser: boolean }>("ok", 200, responseData);
+    return new ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>("ok", 200, responseData);
   }
 
   async update(

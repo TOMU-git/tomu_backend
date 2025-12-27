@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l29",
+  "language": "ar",
+  "module": 2,
+  "lesson": 29,
+  "title": "سُرْعَةُ الأَرْنَبِ",
+  "summary": "Quyonning kichik hayvon bo'lishiga qaramay tez yugurishi, uzun oyoqlari va yirtqich hayvonlardan qochish qobiliyati haqida.",
+  "vocabulary": [
+    {"word": "سُرْعَةُ", "translationUz": "tezlik"},
+    {"word": "الأَرْنَبُ", "translationUz": "quyon"},
+    {"word": "حَيَوَانٌ", "translationUz": "hayvon"},
+    {"word": "صَغِيرٌ", "translationUz": "kichik"},
+    {"word": "يَجْرِي", "translationUz": "yuguradi"},
+    {"word": "بِسُرْعَةٍ", "translationUz": "tezlik bilan"},
+    {"word": "لَهُ", "translationUz": "uning uchun"},
+    {"word": "أَرْبَعُ", "translationUz": "to'rtta"},
+    {"word": "أَرْجُلٍ", "translationUz": "oyoqlar"},
+    {"word": "طَوِيلَةٍ", "translationUz": "uzun"},
+    {"word": "بِسَبَبِ", "translationUz": "sabab"},
+    {"word": "سُرْعَتِهِ", "translationUz": "uning tezligi"},
+    {"word": "يَنْجُو", "translationUz": "qochadi, omon qoladi"},
+    {"word": "الْحَيَوَانَاتِ", "translationUz": "hayvonlar"},
+    {"word": "الْمُفْتَرِسَةِ", "translationUz": "yirtqich"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْأَرْنَبُ حَيَوَانٌ صَغِيرٌ، وَ لَكِنَّهُ يَجْرِي بِسُرْعَةٍ.",
+      "translationUz": "Quyon kichik hayvon, lekin u tez yuguradi.",
+      "next": " لَهُ أَرْبَعُ أَرْجُلٍ طَوِيلَةٍ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لَهُ أَرْبَعُ أَرْجُلٍ طَوِيلَةٍ،",
+      "translationUz": "Uning to'rtta uzun oyog'i bor,",
+      "next": " وَ بِسَبَبِ سُرْعَتِهِ يَنْجُو مِنَ الْحَيَوَانَاتِ الْمُفْتَرِسَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ بِسَبَبِ سُرْعَتِهِ يَنْجُو مِنَ الْحَيَوَانَاتِ الْمُفْتَرِسَةِ.",
+      "translationUz": "va uning tezligi tufayli u yirtqich hayvonlardan qochadi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ الْأَرْنَبُ؟",
+    "كَيْفَ يَجْرِي؟",
+    "كَمْ رِجْلًا لَهُ؟",
+    "كَيْفَ هِيَ أَرْجُلُهُ؟",
+    "لِمَاذَا يَنْجُو مِنَ الْحَيَوَانَاتِ الْمُفْتَرِسَةِ؟"
+  ],
+  "context": {
+    "main_topic": "rabbit_speed_description",
+    "pattern": "size_and_speed → leg_description → survival_advantage"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "ar_m2_l93",
+  "language": "ar",
+  "module": 2,
+  "lesson": 93,
+  "title": "إِنْكَسَرَتِ الْمِكْوَاةُ",
+  "summary": "Kiyimlarni yuvish va temir bilan tekislash haqida suhbat, lekin temir ishlamay qolganligi sababli temirlash amalga oshmaganligi haqida.",
+  "vocabulary": [
+    { "word": "غَسَلَ", "translationUz": "yuvdi" },
+    { "word": "قَمِيصٌ", "translationUz": "ko‘ylak" },
+    { "word": "بِنْطَالٌ", "translationUz": "shim" },
+    { "word": "خِزَانَةُ مَلَابِسِ", "translationUz": "kiyim javoni" },
+    { "word": "كَوَى", "translationUz": "temirladi, tekisladi" },
+    { "word": "مِكْوَاةٌ", "translationUz": "temir" },
+    { "word": "يَعْمَلُ", "translationUz": "ishlaydi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مَحْمُودٌ",
+      "text": "هَلْ غَسَلْتِ قَمِيصِي وَبِنْطَالِي يَا سَلْمَى؟",
+      "translationUz": "Mening ko‘ylagim va shimimni yuvingmi, Salma?",
+      "next": "نَعَمْ، غَسَلْتُهُمَا وَمَلَابِسُكَ فِي خِزَانَةِ الْمَلَابِسِ."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "نَعَمْ، غَسَلْتُهُمَا وَمَلَابِسُكَ فِي خِزَانَةِ الْمَلَابِسِ.",
+      "translationUz": "Ha, ularni yuvdim va kiyimlaring kiyim javonida.",
+      "next": "هَلْ كَوَيْتِهَا؟"
+    },
+    {
+      "speaker": "مَحْمُودٌ",
+      "text": "هَلْ كَوَيْتِهَا؟",
+      "translationUz": "Ularini temirladingmi?",
+      "next": "لَا يَا مَحْمُودُ."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "لَا يَا مَحْمُودُ.",
+      "translationUz": "Yo‘q, Mahmud.",
+      "next": "لِمَاذَا مَا كَوَيْتِهَا ؟"
+    },
+    {
+      "speaker": "مَحْمُودٌ",
+      "text": "لِمَاذَا مَا كَوَيْتِهَا ؟",
+      "translationUz": "Nima uchun ularni temirlamading?",
+      "next": "لِأَنَّ الْمِكْوَاةَ لَا تَعْمَلُ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "لِأَنَّ الْمِكْوَاةَ لَا تَعْمَلُ.",
+      "translationUz": "Chunki temir ishlamayapti.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا حَصَلَ لِلْمِكْوَاةِ؟",
+    "هَلْ سَتَشْتَرِي مِكْوَاةً جَدِيدَةً؟",
+    "هَلْ تَعْرِفُ تَصْلِيحَ الْمِكْوَاةِ؟",
+    "كَمْ مَرَّةً تَكْوِي مَلَابِسَكَ؟",
+    "لِمَاذَا نَكْوِي الْمَلَابِسَ؟"
+  ],
+  "context": {
+    "main_topic": "laundry_ironing_problem",
+    "pattern": "question_about_laundry → confirmation_and_location → question_about_ironing → negative_answer → question_about_reason → explanation_of_malfunction"
+  }
+}

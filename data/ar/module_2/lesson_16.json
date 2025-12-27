@@ -1,0 +1,50 @@
+{
+  "id": "ar_m2_l16",
+  "language": "ar",
+  "module": 2,
+  "lesson": 16,
+  "title": "سَائِحَاتٌ مِنْ كَنَدَا",
+  "summary": "Kanadadan kelgan qizil sumkali ayol sayyohlar va ularning avtobus kutayotgan holati haqida.",
+  "vocabulary": [
+    {"word": "سَائِحَاتٌ", "translationUz": "sayyohlar (ayollar)"},
+    {"word": "مِنْ", "translationUz": "dan"},
+    {"word": "كَنَدَا", "translationUz": "Kanada"},
+    {"word": "أُولَئِكَ", "translationUz": "bu (uzoqda)"},
+    {"word": "النِّسَاءُ", "translationUz": "ayollar"},
+    {"word": "ذَوَاتُ", "translationUz": "ega bo'lgan (ayollar)"},
+    {"word": "الْحَقِيبَةِ", "translationUz": "sumka"},
+    {"word": "الْحَمْرَاءِ", "translationUz": "qizil"},
+    {"word": "هُنَّ", "translationUz": "ular (ayollar)"},
+    {"word": "الْآنَ", "translationUz": "hozir"},
+    {"word": "يَنْتَظِرْنَ", "translationUz": "kutmoqda (ayollar)"},
+    {"word": "الْحَافِلَةَ", "translationUz": "avtobus"},
+    {"word": "لِيَصِلْنَ", "translationUz": "yetishlari uchun"},
+    {"word": "إِلَى", "translationUz": "ga"},
+    {"word": "الْفُنْدُقِ", "translationUz": "mehmonxona"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أُولَئِكَ النِّسَاءُ ذَوَاتُ الْحَقِيبَةِ الْحَمْرَاءِ سَائِحَاتٌ مِنْ كَنَدَا.",
+      "translationUz": "Bu qizil sumkali ayollar Kanadadan kelgan sayyohlardir.",
+      "next": " هُنَّ الْآنَ يَنْتَظِرْنَ الْحَافِلَةَ لِيَصِلْنَ إِلَى الْفُنْدُقِ."
+    },
+    {
+      "speaker": "رِوَاיَةٌ",
+      "text": " هُنَّ الْآنَ يَنْتَظِرْنَ الْحَافِلَةَ لِيَصِلْنَ إِلَى الْفُنْدُقِ.",
+      "translationUz": "Ular hozir mehmonxonaga yetish uchun avtobus kutmoqdalar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ هُنَّ النِّسَاءُ؟",
+    "مِنْ أَيْنَ هُنَّ؟",
+    "مَاذَا لَوْنُ حَقَائِبِهِنَّ؟",
+    "مَاذَا يَفْعَلْنَ الْآنَ؟",
+    "لِمَاذَا يَنْتَظِرْنَ الْحَافِلَةَ؟"
+  ],
+  "context": {
+    "main_topic": "canadian_female_tourists",
+    "pattern": "tourist_identification → current_activity"
+  }
+}

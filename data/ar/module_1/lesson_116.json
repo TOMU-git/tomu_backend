@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l116",
+  "language": "ar",
+  "module": 1,
+  "lesson": 116,
+  "title": "اِلْعَبْ بِالْكُرَةِ",
+
+  "summary": "Kundalik hayotdagi o‘yinlar haqida gapirish, buyruq va taqiqlarni sodda shaklda o‘rganish.",
+
+  "vocabulary": [
+    { "word": "كُرَةٌ", "translationUz": "koptok" },
+    { "word": "يَلْعَبُ", "translationUz": "o‘ynaydi" },
+    { "word": "التُّرَابُ", "translationUz": "tuproq" },
+    { "word": "الشَّارِعُ", "translationUz": "ko‘cha" },
+    { "word": "لاَ", "translationUz": "yo‘q / inkor" },
+    { "word": "أَخٌ", "translationUz": "aka / uka" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الْمُتَكَلِّمُ",
+      "text": "مَاذَا يَفْعَلُ أَخُوكَ؟",
+      "translationUz": "Akan nima qilayapti?",
+      "next": "يَلْعَبُ بِالتُّرَابِ."
+    },
+    {
+      "speaker": "الطِّفْلُ",
+      "text": "يَلْعَبُ بِالتُّرَابِ.",
+      "translationUz": "U tuproq bilan o‘ynayapti.",
+      "next": "هَلْ هَذَا صَحِيحٌ؟"
+    },
+    {
+      "speaker": "الْمُتَكَلِّمُ",
+      "text": "هَلْ هَذَا صَحِيحٌ؟",
+      "translationUz": "Bu to‘g‘rimi?",
+      "next": "لاَ، اِلْعَبْ بِالْكُرَةِ."
+    },
+    {
+      "speaker": "الطِّفْلُ",
+      "text": "لاَ، اِلْعَبْ بِالْكُرَةِ.",
+      "translationUz": "Yo‘q, koptok bilan o‘yna.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تُحِبُّ اللَّعِبَ بِالْكُرَةِ؟",
+    "أَيْنَ تَلْعَبُ؟",
+    "هَلْ تَلْعَبُ فِي الشَّارِعِ؟"
+  ],
+
+  "context": {
+    "main_object": "ball",
+    "pattern": "question → answer → question → answer"
+  }
+}

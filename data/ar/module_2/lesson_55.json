@@ -1,0 +1,71 @@
+{
+  "id": "ar_m2_l55",
+  "language": "ar",
+  "module": 2,
+  "lesson": 54,
+  "lesson": 55,
+  "title": "كَازَاخِسْتَانُ",
+  "summary": "Muhammad va Mahmud o'rtasida Qozog'istonning O'rta Osiyodagi eng katta davlat, uning landshafti va iqtisodiyoti haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "كَازَاخِسْتَانُ", "translationUz": "Qozog'iston"},
+    {"word": "أَكْبَرُ", "translationUz": "eng katta"},
+    {"word": "دَوْلَةٍ", "translationUz": "davlat"},
+    {"word": "آسِيَا الْوُسْطَى", "translationUz": "O'rta Osiyo"},
+    {"word": "أَلَيْسَ", "translationUz": "shunday emasmi"},
+    {"word": "كَذَلِكَ", "translationUz": "shunday"},
+    {"word": "بَلَى", "translationUz": "ha (tasdiq)"},
+    {"word": "صَحَارَى", "translationUz": "cho'llar"},
+    {"word": "وَاسِعَةٌ", "translationUz": "keng"},
+    {"word": "حُقُولٌ", "translationUz": "dalalar"},
+    {"word": "خَضْرَاءُ", "translationUz": "yashil"},
+    {"word": "صِنَاعِيَّةٌ", "translationUz": "sanoat"},
+    {"word": "زِرَاعِيَّةٌ", "translationUz": "qishloq xo'jaligi"},
+    {"word": "مِنْ أَيْنَ", "translationUz": "qayerdan"},
+    {"word": "تَعْرِفُ", "translationUz": "bilasiz"},
+    {"word": "الْمَعْلُومَاتِ", "translationUz": "ma'lumotlar"},
+    {"word": "الْجُغْرَافيَا", "translationUz": "geografiya"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "كَازَاخِسْتَانُ أَكْبَرُ دَوْلَةٍ فِي آسِيَا الْوُسْطَى، أَلَيْسَ كَذَلِكَ يَا مَحْمُودُ؟",
+      "translationUz": "Qozog'iston O'rta Osiyodagi eng katta davlat, shunday emasmi, Mahmud?",
+      "next": "مَحْمُودٌ: بَلَى، يَا مُحَمَّدُ."
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "بَلَى، yَا مُحَمَّدُ.",
+      "translationUz": "Ha, Muhammad.",
+      "next": "مُحَمَّدٌ: فِي كازَاخِسْتَانَ صَحَارَى وَاسِعَةٌ وَحُقُولٌ خَضْرَاءُ كَثِيرَةٌ، وَ هِيَ دَوْلَةٌ صِنَاعِيَّةٌ وَ زِرَاعِيَّةٌ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "فِي كازَاخِسْتَانَ صَحَارَى وَاسِعَةٌ وَحُقُولٌ خَضْرَاءُ كَثِيرَةٌ، وَ هِيَ دَوْلَةٌ صِنَاعِيَّةٌ وَ زِرَاعِيَّةٌ.",
+      "translationUz": "Qozog'istonda keng cho'llar va ko'p yashil dalalar bor, va u sanoat va qishloq xo'jaligi davlatidir.",
+      "next": "مَحْمُودٌ: مِنْ أَيْنَ تَعْرِفُ هَذِهِ الْمَعْلُومَاتِ يَا مُحَمَّدُ؟"
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "مِنْ أَيْنَ تَعْرِفُ هَذِهِ الْمَعْلُومَاتِ yَا مُحَمَّدُ？",
+      "translationUz": "Bu ma'lumotlarni qayerdan bilasiz, Muhammad?",
+      "next": "مُحَمَّدٌ: أَعْرِفُ الْجُغْرَافيَا جَيِّدًا."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "أَعْرِفُ الْجُغْرَافيَا جَيِّدًا.",
+      "translationUz": "Men geografiyani yaxshi bilaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هِيَ الْدَّوْلَةُ الْأَكْبَرُ فِي آسِيَا الْوُسْطَى؟",
+    "مَاذَا يُوجَدُ فِي كازَاخِسْتَانَ؟",
+    "كَيْفَ هِيَ دَوْلَةُ كازَاخِسْتَانَ؟",
+    "مَاذَا يَسْأَلُ مَحْمُودُ؟",
+    "لِمَاذَا يَعْرِفُ مُحَمَّدُ هَذِهِ الْمَعْلُومَاتِ؟"
+  ],
+  "context": {
+    "main_topic": "kazakhstan_description",
+    "pattern": "geographical_fact → agreement → detailed_description → source_inquiry → knowledge_explanation"
+  }
+}

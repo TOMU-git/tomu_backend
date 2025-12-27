@@ -1,0 +1,53 @@
+{
+  "id": "ar_m2_l105",
+  "language": "ar",
+  "module": 2,
+  "lesson": 105,
+  "title": "فِي الدُّكَّانِ 2",
+  "summary": "Xarajatni hisoblash va baholash, sotuvchining o‘z do‘koni mahalladagi eng arzonligini da’vo qilish.",
+  "vocabulary": [
+    { "word": "حِسَابٌ", "translationUz": "hisob, to‘lov" },
+    { "word": "خَمْسَةٌ وَ عِشْرُونَ", "translationUz": "yigirma besh" },
+    { "word": "رِيَالٌ", "translationUz": "riyal (pul birligi)" },
+    { "word": "كَثِيرٌ", "translationUz": "ko‘p" },
+    { "word": "حَيٌّ", "translationUz": "mahalla, kvartal" },
+    { "word": "أَرْخَصُ", "translationUz": "eng arzon" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "كَمِ الْحِسَابُ؟",
+      "translationUz": "Hisob qancha?",
+      "next": "الْحِسَابُ خَمْسَةٌ وَعِشْرُونَ رِيَالًا."
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "الْحِسَابُ خَمْسَةٌ وَعِشْرُونَ رِيَالًا.",
+      "translationUz": "Hisob yigirma besh riyal.",
+      "next": "أَلَيْسَ هَذَا كَثِيرًا؟"
+    },
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "أَلَيْسَ هَذَا كَثِيرًا؟",
+      "translationUz": "Bu ko‘p emasmi?",
+      "next": "لَا يَا سَيِّدِي، دُكَّانِي أَرْخَصُ دُكَّانٍ فِي هَذَا الْحَيِّ."
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "لَا يَا سَيِّدِي، دُكَّانِي أَرْخَصُ دُكَّانٍ fِي هَذَا الْحَيِّ.",
+      "translationUz": "Yo‘q janobim, mening do‘konim bu mahalladagi eng arzon do‘kon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ هَذَا السِّعْرُ حَقِيقًا رَخِيصٌ؟",
+    "أَيْنَ هُوَ أَقْرَبُ دُكَّانٍ؟",
+    "هَلْ تَشْتَرِي دَائِمًا مِنْ هَذَا الدُّكَّانِ؟",
+    "كَيْفَ تَعْرِفُ أَنَّ الدُّكَّانَ رَخِيصٌ؟",
+    "مَاذَا سَتَفْعَلُ بَعْدَ الشِّرَاءِ؟"
+  ],
+  "context": {
+    "main_topic": "price_negotiation_claim",
+    "pattern": "question_about_total → statement_of_price → question_about_high_price → claim_of_being_cheapest"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l131",
+  "language": "ar",
+  "module": 1,
+  "lesson": 131,
+  "title": "إِشْتَرَيْتُ دَرَّاجَةً",
+
+  "summary": "Do‘stlar bilan yangi velosipedni sotib olish va undan foydalanish haqida gaplashishni o‘rganish.",
+
+  "vocabulary": [
+    { "word": "دَرَّاجَةٌ", "translationUz": "velosiped" },
+    { "word": "جَدِيدٌ", "translationUz": "yangi" },
+    { "word": "أَحْمَرُ", "translationUz": "qizil" },
+    { "word": "اِشْتَرَيْتُ", "translationUz": "sotib oldim" },
+    { "word": "نَرْكَبُ", "translationUz": "minamiz" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "صَدِيقٌ",
+      "text": "أَيْنَ دَرَّاجَتُكَ؟",
+      "translationUz": "Velosipeding qayerda?",
+      "next": "بِعْتُهَا وَ اشْتَرَيْتُ دَرَّاجَةً جَدِيدَةً."
+    },
+    {
+      "speaker": "الصَّدِيقُ",
+      "text": "بِعْتُهَا وَ اشْتَرَيْتُ دَرَّاجَةً جَدِيدَةً، وَ لَوْنُهَا أَحْمَرُ.",
+      "translationUz": "Men uni sotdim va yangi velosiped oldim, rangi qizil.",
+      "next": "هَلْ نَرْكَبُ دَرَّاجَتَكَ؟"
+    },
+    {
+      "speaker": "الصَّدِيقُ",
+      "text": "هَلْ نَرْكَبُ دَرَّاجَتَكَ الَّتِي اشْتَرَيْتَهَا؟",
+      "translationUz": "Sotib olgan velosipedimizga minamizmi?",
+      "next": "نَعَمْ، يَا صَدِيقِي."
+    },
+    {
+      "speaker": "الصَّدِيقُ",
+      "text": "نَعَمْ، يَا صَدِيقِي.",
+      "translationUz": "Ha, do‘stim.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا لَوْنُ دَرَّاجَتِكَ؟",
+    "أَيْنَ اشْتَرَيْتَهَا؟",
+    "هَلْ تُحِبُّ الرّكُوبَ عَلَيْهَا؟"
+  ],
+
+  "context": {
+    "main_topic": "bicycle",
+    "pattern": "question → answer → question → answer"
+  }
+}

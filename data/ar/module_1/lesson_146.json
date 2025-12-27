@@ -1,0 +1,57 @@
+{
+  "id": "ar_m1_l146",
+  "language": "ar",
+  "module": 1,
+  "lesson": 146,
+  "title": "اَلْمِعْطَفُ",
+  "summary": "Er-xotin o'rtasida sovuq havoda palto qidirish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْمِعْطَفُ", "translationUz": "palto, ustki kiyim"},
+    {"word": "اَلزَّوْجُ", "translationUz": "er"},
+    {"word": "اَلْجَوُّ", "translationUz": "havo"},
+    {"word": "بَارِدٌ", "translationUz": "sovuq"},
+    {"word": "الْخَارِجِ", "translationUz": "tashqari"},
+    {"word": "أُمَّ أَحْمَدَ", "translationUz": "Ahmadning onasi (xonim)"},
+    {"word": "اَلزَّوْجَةُ", "translationUz": "xotin"},
+    {"word": "أَبَا أَحْمَدَ", "translationUz": "Ahmadning otasi (janob)"},
+    {"word": "شُكْرًا لَكِ", "translationUz": "rahmat sizga (ayolga)"},
+    {"word": "عَلَى الرَّحْبِ وَ السَّعَةِ", "translationUz": "marhamat, keng kenglikda"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلزَّوْجُ",
+      "text": "اَلْجَوُّ بَارِدٌ فِي الْخَارِجِ، أَيْنَ مِعْطَفِي يَا أُمَّ أَحْمَدَ؟",
+      "translationUz": "Tashqarida havo sovuq, mening paltom qayerda, Ahmadning onasi?",
+      "next": "هَذَا مِعْطَفُكَ يَا أَبَا أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجَةُ",
+      "text": "هَذَا مِعْطَفُكَ يَا أَبَا أَحْمَدَ.",
+      "translationUz": "Bu sening paltong, Ahmadning otasi.",
+      "next": "شُكْرًا لَكِ يَا أُمَّ أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجُ",
+      "text": "شُكْرًا لَكِ يَا أُمَّ أَحْمَدَ.",
+      "translationUz": "Rahmat sizga, Ahmadning onasi.",
+      "next": "عَلَى الرَّحْبِ وَ السَّعَةِ يَا أَبَا أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجَةُ",
+      "text": "عَلَى الرَّحْبِ وَ السَّعَةِ يَا أَبَا أَحْمَدَ.",
+      "translationUz": "Marhamat, keng kenglikda, Ahmadning otasi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ الْجَوُّ فِي الْخَارِجِ؟",
+    "مَاذَا يَطْلُبُ الرَّجُلُ؟",
+    "مَاذَا تُعْطِي الْمَرْأَةُ لِرَجُلِهَا؟",
+    "كَيْفَ يُشَكِّرُ الرَّجُلُ امْرَأَتَهُ؟",
+    "مَاذَا تَقُولُ عِنْدَمَا يُشَكِّرُكَ أَحَدٌ؟"
+  ],
+  "context": {
+    "main_topic": "coat_request_cold_weather",
+    "pattern": "weather_comment_and_request → response → thanks → welcome_response"
+  }
+}
