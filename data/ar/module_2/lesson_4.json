@@ -1,0 +1,69 @@
+{
+  "id": "ar_m2_l4",
+  "language": "ar",
+  "module": 2,
+  "lesson": 4,
+  "title": "اَلْفَرَاشَةُ",
+  "summary": "Kepa (kapalak)ning go'zalligi, parvoz qilishi va qisqa umri haqida.",
+  "vocabulary": [
+    {"word": "اَلْفَرَاشَةُ", "translationUz": "kepa (kapalak)"},
+    {"word": "عَجِيبَةٌ", "translationUz": "ajoyib, g'alati"},
+    {"word": "تَطِيرُ", "translationUz": "uchadi (ayol)"},
+    {"word": "مَكَانٍ", "translationUz": "joy"},
+    {"word": "آخَرَ", "translationUz": "boshqa"},
+    {"word": "تُحِبُّ", "translationUz": "yoqtiradi (ayol)"},
+    {"word": "رَائِحَةَ", "translationUz": "hid"},
+    {"word": "الْأَزْهَارِ", "translationUz": "gullarning"},
+    {"word": "الْحَشَرَاتِ", "translationUz": "hasharotlar"},
+    {"word": "لَكِنَّهَا", "translationUz": "lekin u (ayol)"},
+    {"word": "لَا تَعِيشُ", "translationUz": "yashamaydi"},
+    {"word": "طَوِيلًا", "translationUz": "uzoq"},
+    {"word": "تَعِيشُ", "translationUz": "yashaydi (ayol)"},
+    {"word": "ثَلَاثَةَ", "translationUz": "uch"},
+    {"word": "أَيَّامٍ", "translationUz": "kunlar"},
+    {"word": "فَقَطْ", "translationUz": "faqat"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْفَرَاشَةُ جَمِيلَةٌ وَ عَجِيبَةٌ.",
+      "translationUz": "Kepa go'zal va ajoyib.",
+      "next": "هِيَ تَطِيرُ مِنْ مَكَانٍ إِلَى مَكَانٍ آخَرَ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هِيَ تَطِيرُ مِنْ مَكَانٍ إِلَى مَكَانٍ آخَرَ،",
+      "translationUz": "U bir joydan boshqa joyga uchadi,",
+      "next": "وَ تُحِبُّ رَائِحَةَ الْأَزْهَارِ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ تُحِبُّ رَائِحَةَ الْأَزْهَارِ جِدًّا.",
+      "translationUz": "va gullarning hidini juda yoqtiradi.",
+      "next": "اَلْفَرَاشَةُ مِنْ أَجْمَلِ الْحَشَرَاتِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْفَرَاشَةُ مِنْ أَجْمَلِ الْحَشَرَاتِ،",
+      "translationUz": "Kepa eng chiroyli hasharotlardan,",
+      "next": "وَ لَكِنَّهَا لَا تَعِيشُ طَوِيلًا، فَهِيَ تَعِيشُ ثَلَاثَةَ أَيَّامٍ فَقَطْ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنَّهَا لَا تَعِيشُ طَوِيلًا، فَهِيَ تَعِيشُ ثَلَاثَةَ أَيَّامٍ فَقَطْ.",
+      "translationUz": "lekin u uzoq yashamaydi, u faqat uch kun yashaydi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ تَصِفُ الْفَرَاشَةَ؟",
+    "إِلَى أَيْنَ تَطِيرُ الْفَرَاشَةُ؟",
+    "مَاذَا تُحِبُّ الْفَرَاشَةُ؟",
+    "مِنْ أَيْنَ هِيَ مِنَ الْحَشَرَاتِ؟",
+    "كَمْ تَعِيشُ الْفَرَاشَةُ؟"
+  ],
+  "context": {
+    "main_topic": "butterfly_description",
+    "pattern": "beauty_description → flying_behavior → scent_preference → beauty_ranking → short_lifespan"
+  }
+}

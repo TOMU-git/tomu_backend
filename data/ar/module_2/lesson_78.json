@@ -1,0 +1,70 @@
+{
+  "id": "ar_m2_l78",
+  "language": "ar",
+  "module": 2,
+  "lesson": 78,
+  "title": "اَلْقَمِيصُ الْأَبْيَضُ",
+  "summary": "Yangi odamni, ayniqsa kiyimi orqali tanishtirish, 'ذُو' (ega, sohib) iborasini qo‘llash va o‘rtaqlik munosabatlari haqida gaplashish.",
+  "vocabulary": [
+    { "word": "قَمِيصٌ", "translationUz": "ko‘ylak" },
+    { "word": "أَبْيَضُ", "translationUz": "oq" },
+    { "word": "وَلَدٌ", "translationUz": "bola, o‘g‘il" },
+    { "word": "بِجَانِبِ", "translationUz": "yonida, qoshida" },
+    { "word": "ذُو", "translationUz": "ega, sohib (erkaklar uchun)" },
+    { "word": "صَدِيقٌ", "translationUz": "do‘st" },
+    { "word": "يَدْرُسُ", "translationUz": "o‘qiydi (o‘qimoq)" },
+    { "word": "نَفْسُ", "translationUz": "o‘zi, bir xil" },
+    { "word": "مَعًا", "translationUz": "birga" },
+    { "word": "مَسْرُورٌ", "translationUz": "xursand, baxtli" },
+    { "word": "رُؤْيَةٌ", "translationUz": "ko‘rish" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "مَنْ هَذَا الْوَلَدُ الَّذِي بِجَانِبِكَ، ذُو الْقَمِيصِ الْأَبْيَضِ، يَا يَعْقُوبُ؟",
+      "translationUz": "Kim bu yoningdagi, oq ko‘ylak kiygan bola, Yoqub?",
+      "next": "هُوَ صَدِيقِي، وَاسْمُهُ أَحْمَدُ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "هُوَ صَدِيقِي، وَاسْمُهُ أَحْمَدُ.",
+      "translationUz": "U mening do‘stim, ismi Ahmad.",
+      "next": "هَلْ تَدْرُسَانِ فِي نَفْسِ الْمَدْرَسَةِ؟"
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "هَلْ تَدْرُسَانِ فِي نَفْسِ الْمَدْرَسَةِ؟",
+      "translationUz": "Sizlar bir maktabda o‘qiysizlarmi?",
+      "next": "نَعَمْ، نَدْرُسُ فِي نَفْسِ الْمَدْرَسَةِ مَعًا."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "نَعَمْ، نَدْرُسُ فِي نَفْسِ الْمَدْرَسَةِ مَعًا.",
+      "translationUz": "Ha, biz bir maktabda birga o‘qiymiz.",
+      "next": "أَنَا مَسْرُورٌ جِدًّا بِرُؤْيَتِكُمَا."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "أَنَا مَسْرُورٌ جِدًّا بِرُؤْيَتِكُمَا.",
+      "translationUz": "Sizlarni ko‘rganimdan juda xursandman.",
+      "next": "نَحْنُ أَيْضًا، يَا حَمْزَةُ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "نَحْنُ أَيْضًا، يَا حَمْزَةُ.",
+      "translationUz": "Biz ham, Hamza.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ تَعْرِفُ أَحْمَدَ؟",
+    "هَلْ أَحْمَدُ طَالِبٌ مُجْتَهِدٌ؟",
+    "مَاذَا يَلْبَسُ صَدِيقُكَ عَادَةً؟",
+    "أَيْنَ مَدْرَسَتُكُمَا؟",
+    "هَلْ تَلْعَبُونَ مَعًا بَعْدَ الْمَدْرَسَةِ؟"
+  ],
+  "context": {
+    "main_topic": "introductions_descriptions",
+    "pattern": "question_about_person (description) → introduction → question_about_commonality → confirmation → polite_expression → reciprocal_politeness"
+  }
+}

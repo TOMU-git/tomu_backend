@@ -1,0 +1,44 @@
+{
+  "id": "ar_m1_l144",
+  "language": "ar",
+  "module": 1,
+  "lesson": 144,
+  "title": "اَلثُّومُ",
+
+  "summary": "Sarimsoqning foydalari va uni odamlar ko‘pincha yoqtirmasligi.",
+
+  "vocabulary": [
+    { "word": "ثُومٌ", "translationUz": "sarimsoq" },
+    { "word": "خُضَارٌ", "translationUz": "sabzavot" },
+    { "word": "حَارٌّ", "translationUz": "issiqlik / achchiqlik" },
+    { "word": "مُفِيدٌ", "translationUz": "foydali" },
+    { "word": "صِحَّةٌ", "translationUz": "salomatlik" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "الثُّومُ خُضَارٌ حَارٌّ جِدًّا.",
+      "translationUz": "Sarimsoq juda achchiq sabzavotdir.",
+      "next": "أَكْثَرُ النَّاسِ لَا يُحِبُّونَ رَائِحَتَهُ."
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "لَكِنَّهُ مُفِيدٌ جِدًّا لِصِحَّةِ الإِنْسَانِ.",
+      "translationUz": "Ammo u inson salomatligi uchun juda foydalidir.",
+      "next": "هَلْ تَأْكُلُ الثُّومَ؟"
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "نَعَمْ، أَكُلُهُ أَبْيَضًا وَ أَخْضَرًا.",
+      "translationUz": "Ha, men uni oq va yashil holda yeyman.",
+      "next": "أَيُّ طَبِيبٍ يَنصَحُ بِهِ؟"
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "الطَّبِيبُ يُوصِي بِالثُّومِ لِصِحَّةِ القَلْبِ.",
+      "translationUz": "Shifokor sarimsoqni yurak sog‘ligi uchun tavsiya qiladi.",
+      "next": null
+    }
+  ]
+}

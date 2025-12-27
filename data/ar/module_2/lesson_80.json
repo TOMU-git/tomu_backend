@@ -1,0 +1,67 @@
+{
+  "id": "ar_m2_l80",
+  "language": "ar",
+  "module": 2,
+  "lesson": 80,
+  "title": "وَجْبَةٌ شَهِيَّةٌ 1",
+  "summary": "O‘zi pishirgan taomni taqdim etish va maqtov olish, salat retseptini tarkibiy qismlari bilan bayon qilish.",
+  "vocabulary": [
+    { "word": "وَجْبَةٌ", "translationUz": "ovqat, taom" },
+    { "word": "شَهِيَّةٌ", "translationUz": "mazali" },
+    { "word": "طَبَخَ", "translationUz": "pishirdi (pishirmoq)" },
+    { "word": "بِنَفْسِي", "translationUz": "o‘zim" },
+    { "word": "طَعْمٌ", "translationUz": "ta'm, maza" },
+    { "word": "لَذِيذٌ", "translationUz": "mazali" },
+    { "word": "حَتَّى الآنَ", "translationUz": "hozirgacha" },
+    { "word": "صَنَعَ", "translationUz": "tayyorladi, yasadi (tayyorlamoq)" },
+    { "word": "سَلَطَةٌ", "translationUz": "salat" },
+    { "word": "طَمَاطِمُ", "translationUz": "pomidor" },
+    { "word": "خِيَارٌ", "translationUz": "bodring" },
+    { "word": "بَاذِنْجَانٌ", "translationUz": "baqlajon" },
+    { "word": "بَصَلٌ", "translationUz": "piyoz" },
+    { "word": "كُرُنْبٌ", "translationUz": "karam" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْبِنْتُ",
+      "text": "طَبَخْتُ هٰذِهِ السَّمَكَةَ بِنَفْسِي يَا أَبِي.",
+      "translationUz": "Bu baliqni o‘zim pishirdim, dadajon.",
+      "next": "طَعْمُهَا لَذِيذٌ، لَمْ آكُلْ مِثْلَ هٰذِهِ السَّمَكَةِ حَتَّى الآنَ يَا ابْنَتِي."
+    },
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "طَعْمُهَا لَذِيذٌ، لَمْ آكُلْ مِثْلَ هٰذِهِ السَّمَكَةِ حَتَّى الآنَ يَا ابْنَتِي.",
+      "translationUz": "Uning ta'mi mazali, men hozirgacha bunday baliq yemagandim, qizim.",
+      "next": "شُكْرًا جَزِيلًا يَا أَبِي."
+    },
+    {
+      "speaker": "اَلْبِنْتُ",
+      "text": "شُكْرًا جَزِيلًا يَا أَبِي.",
+      "translationUz": "Katta rahmat, dadajon.",
+      "next": "مِمَّ صَنَعْتِ هٰذِهِ السَّلَطَةَ؟"
+    },
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "مِمَّ صَنَعْتِ هٰذِهِ السَّلَطَةَ؟",
+      "translationUz": "Bu salatni nimalardan tayyorlading?",
+      "next": "صَنَعْتُهَا مِنَ الطَّمَاطِمِ، وَ الْخِيَارِ، وَ الْبَاذِنْجَانِ، وَ الْبَصَلِ، وَ الْكُرُنْبِ."
+    },
+    {
+      "speaker": "اَلْبِنْتُ",
+      "text": "صَنَعْتُهَا مِنَ الطَّمَاطِمِ، وَ الْخِيَارِ، وَ الْبَاذِنْجَانِ، وَ الْبَصَلِ، وَ الْكُرُنْبِ.",
+      "translationUz": "Uni pomidor, bodring, baqlajon, piyoz va karamdan tayyorladim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَطْبُخِينَ عَادَةً؟",
+    "هَلْ تَتَعَلَّمِينَ الطَّبْخَ؟",
+    "مَاذَا تُحِبُّ أَنْ تَأْكُلَ يَا أَبَتِ؟",
+    "كَيْفَ تُعِدُّينَ السَّمَكَةَ؟",
+    "هَلْ تَأْكُلُ الْخُضْرَوَاتِ كَثِيرًا؟"
+  ],
+  "context": {
+    "main_topic": "cooking_compliments_ingredients",
+    "pattern": "presentation_of_food → compliment_and_praise → thanks → question_about_ingredients → listing_ingredients"
+  }
+}

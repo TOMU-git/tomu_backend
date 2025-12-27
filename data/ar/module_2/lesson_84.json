@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l84",
+  "language": "ar",
+  "module": 2,
+  "lesson": 84,
+  "title": "أَنْوَاعُ الْحَشَرَاتِ 2",
+  "summary": "Hashoratlarning foydasi va zararini aniq misollar bilan tushuntirish, 'لِ' maqsad bildiruvchi bog‘lovchi va 'كَذَلِكَ' (shunday) iborasini o‘rganish.",
+  "vocabulary": [
+    { "word": "يَجْمَعُ", "translationUz": "to‘playdi, yig‘adi" },
+    { "word": "رَحِيقٌ", "translationUz": "gul sharbati, nektar" },
+    { "word": "لِ", "translationUz": "uchun (maqsad)" },
+    { "word": "تُنْتِجُ", "translationUz": "ishlab chiqaradi, hosil qiladi" },
+    { "word": "عَسَلٌ", "translationUz": "asal" },
+    { "word": "ضَارٌّ", "translationUz": "zararli" },
+    { "word": "لَيْسَ", "translationUz": "emas" },
+    { "word": "كَذَلِكَ", "translationUz": "shunday, unday emas" },
+    { "word": "ثِمَارٌ", "translationUz": "mevalar" },
+    { "word": "حُبُوبٌ", "translationUz": "donali ekinlar" },
+    { "word": "يُضِرُّ", "translationUz": "zarar yetkazadi" },
+    { "word": "زِرَاعَةٌ", "translationUz": "qishloq xo‘jaligi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلنَّحْلَةُ تَجْمَعُ الرَّحِيقَ لِتُنْتِجَ الْعَسَلَ،",
+      "translationUz": "Asalari asal ishlab chiqarish uchun gul sharbatini to‘playdi,",
+      "next": "وَ النَّمْلَةُ تَأْكُلُ الْحَشَرَاتِ الضَّارَّةَ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ النَّمْلَةُ تَأْكُلُ الْحَشَرَاتِ الضَّارَّةَ،",
+      "translationUz": "va chumoli zararli hashoratlarni yeydi,",
+      "next": "وَ لَكِنَّ الدُّودَةَ وَ الْخُنْفُسَاءَ لَيْسَتَا كَذَلِكَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنَّ الدُّودَةَ وَ الْخُنْفُسَاءَ لَيْسَتَا كَذَلِكَ.",
+      "translationUz": "lekin qurt va qo‘ng‘iz shunday emas.",
+      "next": "فَهُمَا تَأْكُلَانِ الثِّمَارَ وَ الْحُبُوبَ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَهُمَا تَأْكُلَانِ الثِّمَارَ وَ الْحُبُوبَ،",
+      "translationUz": "Chunki ular mevalar va donalarni yeydi,",
+      "next": "وَ تُضِرَّانِ الزِّرَاعَةَ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ تُضِرَّانِ الزِّرَاعَةَ كَثِيرًا.",
+      "translationUz": "va qishloq xo‘jaligiga juda ko‘p zarar yetkazadi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ يَصْنَعُ النَّحْلُ الْعَسَلَ؟",
+    "مَا فَائِدَةُ النَّمْلِ فِي الْبُسْتَانِ؟",
+    "كَيْفَ تُضِرُّ الدُّودَةُ الْمَزْرَعَةَ؟",
+    "هَلْ يُوجَدُ حَلٌّ لِحَشَرَاتٍ ضَارَّةٍ؟",
+    "مَاذَا تَأْكُلُ الْخُنْفُسَاءُ؟"
+  ],
+  "context": {
+    "main_topic": "insects_benefits_vs_harm",
+    "pattern": "example_of_beneficial → another_beneficial → contrast → harmful_actions → consequence"
+  }
+}

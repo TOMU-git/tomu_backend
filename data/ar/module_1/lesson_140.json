@@ -1,0 +1,57 @@
+{
+  "id": "ar_m1_l140",
+  "language": "ar",
+  "module": 1,
+  "lesson": 140,
+  "title": "الوَلَدُ الجَوْعَانُ",
+
+  "summary": "Ovqat pishirish va farzandning uni yoqtirishini ifodalash.",
+
+  "vocabulary": [
+    { "word": "وَلَدٌ", "translationUz": "bola" },
+    { "word": "أُمٌّ", "translationUz": "ona" },
+    { "word": "حَسَاءٌ", "translationUz": "sho‘rva" },
+    { "word": "بَاذِنْجَانٌ", "translationUz": "baqlajon" },
+    { "word": "جَزَرٌ", "translationUz": "sabzi" },
+    { "word": "كُرُنْبٌ", "translationUz": "karam" },
+    { "word": "طَمَاطِمٌ", "translationUz": "pomidor" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الولدُ",
+      "text": "مَاذَا تَطْبُخِينَ الْيَوْمَ يَا أُمِّي؟",
+      "translationUz": "Bugun nima pishiryapsan, ona?",
+      "next": "أَطْبُخُ الْحَسَاءَ مِنَ الْبَاذِنْجَانِ وَ الطَّمَاطِمِ وَ الْجَزَرِ وَ الْكُرُنْبِ."
+    },
+    {
+      "speaker": "الأُمُّ",
+      "text": "أَطْبُخُ الْحَسَاءَ مِنَ الْبَاذِنْجَانِ وَ الطَّمَاطِمِ وَ الْجَزَرِ وَ الْكُرُنْبِ.",
+      "translationUz": "Men baqlajon, pomidor, sabzi va karamdan sho‘rva pishiraman.",
+      "next": "رَائِعٌ! أَنَا أُحِبُّ الْحَسَاءَ بِالْخُضْرَوَاتِ."
+    },
+    {
+      "speaker": "الولدُ",
+      "text": "رَائِعٌ! أَنَا أُحِبُّ الْحَسَاءَ بِالْخُضْرَوَاتِ يَا أُمِّي.",
+      "translationUz": "Zo‘r! Men sabzavotli sho‘rvani yaxshi ko‘raman, ona.",
+      "next": "هَلْ تَطْبُخِينَ أَيْضًا لَحْمًا؟"
+    },
+    {
+      "speaker": "الأُمُّ",
+      "text": "نَعَمْ، أَطْبُخُ أَيْضًا لَحْمًا أَيًّا مَرَّةً.",
+      "translationUz": "Ha, ba’zan go‘sht ham pishiraman.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا أَكَلَتْ الْيَوْمَ؟",
+    "هَلْ تُحِبُّ الْحَسَاءَ؟",
+    "مَا هِيَ خُضْرَوَاتُكَ المُفَضَّلَةُ؟"
+  ],
+
+  "context": {
+    "main_topic": "cooking",
+    "pattern": "question → statement → question → answer"
+  }
+}

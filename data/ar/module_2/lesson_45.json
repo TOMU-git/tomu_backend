@@ -1,0 +1,62 @@
+{
+  "id": "ar_m2_l45",
+  "language": "ar",
+  "module": 2,
+  "lesson": 45,
+  "title": "كُرَةُ الْقَدَمِ",
+  "summary": "Ahmad va Ya'qub o'rtasida futbol jamoalaridagi o'yinchilar soni va kechqurun futbol o'ynash taklifi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "كُرَةُ", "translationUz": "to'p"},
+    {"word": "الْقَدَمِ", "translationUz": "oyoq, futbol"},
+    {"word": "لَاعِبًا", "translationUz": "o'yinchi"},
+    {"word": "يَلْعَبُ", "translationUz": "o'ynaydi"},
+    {"word": "فَرِيقِ", "translationUz": "jamoa"},
+    {"word": "كُلِّ", "translationUz": "har bir"},
+    {"word": "أَحَدَ عَشَرَ", "translationUz": "o'n bir"},
+    {"word": "الْمَلْعَبِ", "translationUz": "maydon"},
+    {"word": "فَرِيقَانِ", "translationUz": "ikki jamoa"},
+    {"word": "فَيَكُونُ", "translationUz": "shunday bo'ladi"},
+    {"word": "عَدَدُ", "translationUz": "soni"},
+    {"word": "إِثْنَيْنِ وَعِشْرِينَ", "translationUz": "yigirma ikki"},
+    {"word": "أَحْسَنْتَ", "translationUz": "a'lo, yaxshi qilding"},
+    {"word": "نَلْعَبُ", "translationUz": "o'ynaymiz"},
+    {"word": "مَسَاءً", "translationUz": "kechqurun"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "كَمْ لَاعِبًا يَلْعَبُ فِي فَرِيقِ كُرَةِ الْقَدَمِ، يَا يَعْقُوبُ？",
+      "translationUz": "Futbol jamoasida qancha o'yinchi o'ynaydi, Ya'qub?",
+      "next": "يَعْقُوبُ: فِي كُلِّ فَرِيقٍ يَلْعَبُ أَحَدَ عَشَرَ لَاعِبًا، وَ فِي الْمَلْعَبِ يَلْعَبُ فَرِيقَانِ، فَيَكُونُ عَدَدُ اللَّاعِبِينَ إِثْنَيْنِ وَعِشْرِينَ لَاعِبًا."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "فِي كُلِّ فَرِيقٍ يَلْعَبُ أَحَدَ عَشَرَ لَاعِبًا، وَ فِي الْمَلْعَبِ يَلْعَبُ fَرِيقَانِ، فَيَكُونُ عَدَدُ اللَّاعِبِينَ إِثْنَيْنِ وَعِشْرِينَ لَاعِبًا.",
+      "translationUz": "Har bir jamoada o'n bir o'yinchi o'ynaydi, va maydonda ikkita jamoa o'ynaydi, shunday bo'lsa o'yinchilar soni yigirma ikkita bo'ladi.",
+      "next": "أَحْمَدُ: أَحْسَنْتَ يَا يَعْقُوبُ. هَلْ نَلْعَبُ كُرَةَ الْقَدَمِ الْيَوْمَ مَسَاءً؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَحْسَنْتَ yَا يَعْقُوبُ. هَلْ نَلْعَبُ كُرَةَ الْقَدَمِ الْيَوْمَ mَسَاءً？",
+      "translationUz": "A'lo, Ya'qub. Bugun kechqurun futbol o'ynaymizmi?",
+      "next": "يَعْقُوبُ: نَعَمْ، يَا أَحْمَدُ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "نَعَمْ، يَا أَحْمَدُ.",
+      "translationUz": "Ha, Ahmad.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ أَحْمَدُ؟",
+    "مَاذَا يُجِيبُ يَعْقُوبُ؟",
+    "كَمْ لَاعِبًا يَلْعَبُ فِي كُلِّ فَرِيقٍ؟",
+    "كَمْ يَكُونُ الْعَدَدُ الْكُلِّيُّ فِي الْمَلْعَبِ؟",
+    "مَاذَا يَقْتَرِحُ أَحْمَدُ فِي النِّهَايَةِ؟"
+  ],
+  "context": {
+    "main_topic": "football_players_count",
+    "pattern": "player_count_question → detailed_answer → compliment_and_invitation → acceptance"
+  }
+}

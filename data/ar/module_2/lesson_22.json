@@ -1,0 +1,53 @@
+{
+  "id": "ar_m2_l22",
+  "language": "ar",
+  "module": 2,
+  "lesson": 22,
+  "title": "اِرْتِفَاعُ الأَسْعَارِ",
+  "summary": "Muhammad va Ahmad o'rtasida ovqat narxlarining qish mavsumida oshishi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اِرْتِفَاعُ", "translationUz": "oshishi, ko'tarilishi"},
+    {"word": "الأَسْعَارِ", "translationUz": "narxlar"},
+    {"word": "فِي هَذِهِ الْأَيَّامِ", "translationUz": "bu kunlarda"},
+    {"word": "سِعْرُ", "translationUz": "narxi"},
+    {"word": "الْأَطْعِمَةِ", "translationUz": "ovqatlarning"},
+    {"word": "غَالٍ", "translationUz": "qimmat"},
+    {"word": "أَيَّامُ", "translationUz": "kunlari"},
+    {"word": "الشِّتَاءِ", "translationUz": "qish"},
+    {"word": "فِي الشِّتَاءِ", "translationUz": "qishda"},
+    {"word": "تَزْدَادُ", "translationUz": "oshadi"},
+    {"word": "هَكَذَا", "translationUz": "shunday"},
+    {"word": "مُحِقٌّ", "translationUz": "haqli, to'g'ri"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "فِي هَذِهِ الْأَيَّامِ، سِعْرُ الْأَطْعِمَةِ غَالٍ قَلِيلًا يَا أَحْمَدُ.",
+      "translationUz": "Bu kunlarda ovqat narxi ozgina qimmat, Ahmad.",
+      "next": "أَحْمَدُ: نَعَمْ، يَا مُحَمَّدُ، هَذِهِ أَيَّامُ الشِّتَاءِ. وَ فِي الشِّتَاءِ تَزْدَادُ الأَسْعَارُ هَكَذَا."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "نَعَمْ، يَا مُحَمَّدُ، هَذِهِ أَيَّامُ الشِّتَاءِ. وَ فِي الشِّتَاءِ تَزْدَادُ الأَسْعَارُ هَكَذَا.",
+      "translationUz": "Ha, Muhammad, bu qish kunlari. Va qishda narxlar shunday oshadi.",
+      "next": "مُحَمَّدٌ: أَنْتَ مُحِقٌّ، يَا صَدِيقِي."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "أَنْتَ مُحِقٌّ، يَا صَدِيقِي.",
+      "translationUz": "Sen haqlisan, do'stim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَقُولُ مُحَمَّدُ عَنْ أَسْعَارِ الْأَطْعِمَةِ؟",
+    "لِمَاذَا تَزْدَادُ الْأَسْعَارُ فِي الشِّتَاءِ؟",
+    "كَيْفَ يَرُدُّ أَحْمَدُ عَلَى مُحَمَّدٍ؟",
+    "مَاذَا يَقُولُ مُحَمَّدُ فِي النِّهَايَةِ؟",
+    "هَلْ تُلَاحِظُ اِرْتِفَاعَ الْأَسْعَارِ فِي الشِّتَاءِ؟"
+  ],
+  "context": {
+    "main_topic": "winter_price_increase",
+    "pattern": "price_observation → seasonal_explanation → agreement"
+  }
+}

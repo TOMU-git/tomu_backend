@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l119",
+  "language": "ar",
+  "module": 1,
+  "lesson": 119,
+  "title": "تَأَخَّرَ زَيْدٌ",
+
+  "summary": "Kech qolish mavzusida gapirish va sababni juda sodda jumlalar bilan tushuntirish.",
+
+  "vocabulary": [
+    { "word": "تَأَخَّرَ", "translationUz": "kech qoldi" },
+    { "word": "الْمَدْرَسَةُ", "translationUz": "maktab" },
+    { "word": "الطَّرِيقُ", "translationUz": "yo‘l" },
+    { "word": "مُزْدَحِمٌ", "translationUz": "tiqilinch" },
+    { "word": "لِمَاذَا", "translationUz": "nima uchun" },
+    { "word": "قَلِيلًا", "translationUz": "biroz" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الأُسْتَاذُ",
+      "text": "لِمَاذَا تَأَخَّرْتَ؟",
+      "translationUz": "Nega kech qolding?",
+      "next": "تَأَخَّرْتُ قَلِيلًا."
+    },
+    {
+      "speaker": "زَيْدٌ",
+      "text": "تَأَخَّرْتُ قَلِيلًا.",
+      "translationUz": "Biroz kech qoldim.",
+      "next": "هَلْ الطَّرِيقُ مُزْدَحِمٌ؟"
+    },
+    {
+      "speaker": "الأُسْتَاذُ",
+      "text": "هَلْ الطَّرِيقُ مُزْدَحِمٌ؟",
+      "translationUz": "Yo‘l tirbandmi?",
+      "next": "نَعَمْ، مُزْدَحِمٌ جِدًّا."
+    },
+    {
+      "speaker": "زَيْدٌ",
+      "text": "نَعَمْ، مُزْدَحِمٌ جِدًّا.",
+      "translationUz": "Ha, juda tirband.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تَتَأَخَّرُ كَثِيرًا؟",
+    "كَيْفَ تَذْهَبُ إِلَى الْمَدْرَسَةِ؟",
+    "هَلْ الطَّرِيقُ بَعِيدٌ؟"
+  ],
+
+  "context": {
+    "main_topic": "being late",
+    "pattern": "question → answer → question → answer"
+  }
+}

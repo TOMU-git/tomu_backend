@@ -1,0 +1,72 @@
+{
+  "id": "ar_m2_l9",
+  "language": "ar",
+  "module": 2,
+  "lesson": 9,
+  "title": "أَفْضَلُ صَدِيْقَةٍ",
+  "summary": "Laylo va Salmo o'rtasida do'stlik va kutubxonaga borish taklifi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "أَفْضَلُ", "translationUz": "eng yaxshi"},
+    {"word": "صَدِيْقَةٍ", "translationUz": "do'st (ayol)"},
+    {"word": "صَبَاحُ الْخَيْرِ", "translationUz": "xayrli tong"},
+    {"word": "صَبَاحُ النُّورِ", "translationUz": "nurli tong"},
+    {"word": "تَعْلَمِينَ", "translationUz": "bilasizmi (ayol)"},
+    {"word": "أَنَّكِ", "translationUz": "chunki sen (ayol)"},
+    {"word": "أَقْرَبُ", "translationUz": "eng yaqin"},
+    {"word": "إِلَيَّ", "translationUz": "menga"},
+    {"word": "كَذَلِكَ", "translationUz": "shuningdek"},
+    {"word": "هَلْ", "translationUz": "mi"},
+    {"word": "نَذْهَبُ", "translationUz": "boramiz"},
+    {"word": "الْمَكْتَبَةِ", "translationUz": "kutubxona"},
+    {"word": "هَيَّا بِنَا", "translationUz": "haydi, keling"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "لَيْلَى",
+      "text": "صَبَاحُ الْخَيْرِ يَا سَلْمَى.",
+      "translationUz": "Xayrli tong, Salmo.",
+      "next": "صَبَاحُ النُّورِ يَا لَيْلَى."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "صَبَاحُ النُّورِ يَا لَيْلَى.",
+      "translationUz": "Nurli tong, Laylo.",
+      "next": "هَلْ تَعْلَمِينَ أَنَّكِ أَقْرَبُ صَدِيقَةٍ إِلَيَّ؟"
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "هَلْ تَعْلَمِينَ أَنَّكِ أَقْرَبُ صَدِيقَةٍ إِلَيَّ؟",
+      "translationUz": "Bilasizmi, siz menga eng yaqin do'stimsiz?",
+      "next": "وَأَنْتِ أَيْضًا كَذَلِكَ."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "وَأَنْتِ أَيْضًا كَذَلِكَ.",
+      "translationUz": "Siz ham menga shundaysiz.",
+      "next": "هَلْ نَذْهَبُ إِلَى الْمَكْتَبَةِ؟"
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "هَلْ نَذْهَبُ إِلَى الْمَكْتَبَةِ？",
+      "translationUz": "Kutubxonaga boramizmi?",
+      "next": "نَعَمْ، هَيَّا بِنَا يَا صَدِيقَتِي."
+    },
+    {
+      "speaker": "سَلْمَى",
+      "text": "نَعَمْ، هَيَّا بِنَا يَا صَدِيقَتِي.",
+      "translationUz": "Ha, haydi, do'stim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ بَدَأَتِ الْمُحَادَثَةُ؟",
+    "مَاذَا قَالَتْ لَيْلَى لِسَلْمَى؟",
+    "كَيْفَ رَدَّتْ سَلْمَى؟",
+    "إِلَى أَيْنَ تَقْتَرِحُ لَيْلَى أَنْ تَذْهَبَا؟",
+    "هَلْ تُحِبُّ الذَّهَابَ إِلَى الْمَكْتَبَةِ؟"
+  ],
+  "context": {
+    "main_topic": "best_friends_conversation",
+    "pattern": "greeting → greeting → friendship_declaration → mutual_feeling → suggestion → acceptance"
+  }
+}

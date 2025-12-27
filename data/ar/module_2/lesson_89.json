@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l89",
+  "language": "ar",
+  "module": 2,
+  "lesson": 89,
+  "title": "اَلْوَقْتُ الْكَثِيْرُ 1",
+  "summary": "O‘qishni kechiktirish, 12 oylik vaqt borligi haqidagi bahona va oylarning nomlarini so‘rash.",
+  "vocabulary": [
+    { "word": "وَقْتٌ", "translationUz": "vaqt" },
+    { "word": "كَسُولٌ", "translationUz": "dam qaytaruvchi, yalqov" },
+    { "word": "لَيْسَ", "translationUz": "emas" },
+    { "word": "إِثْنَا عَشَرَ", "translationUz": "o‘n ikki" },
+    { "word": "شَهْرٌ (ج: شُهُور)", "translationUz": "oy" },
+    { "word": "دِرَاسَةٌ", "translationUz": "o‘qish, tahsil" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "أُمٌّ",
+      "text": "مَتَى تَدْرُسُ يَا أَحْمَدُ؟",
+      "translationUz": "Qachon o‘qiysan, Ahmad?",
+      "next": "بَعْدَ قَلِيلٍ يَا أُمِّي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "بَعْدَ قَلِيلٍ يَا أُمِّي.",
+      "translationUz": "Bir ozdan keyin, onajon.",
+      "next": "أَنْتَ كَسُولٌ جِدًّا يَا أَحْمَدُ."
+    },
+    {
+      "speaker": "أُمٌّ",
+      "text": "أَنْتَ كَسُولٌ جِدًّا يَا أَحْمَدُ.",
+      "translationUz": "Sen juda yalqovsan, Ahmad.",
+      "next": "لَا يَا أُمِّي، أَنَا لَسْتُ كَسُولًا، يُوجَدُ لَدَيَّ إِثْنَا عَشَرَ شَهْرًا لِلدِّرَاسَةِ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لَا يَا أُمِّي، أَنَا لَسْتُ كَسُولًا، يُوجَدُ لَدَيَّ إِثْنَا عَشَرَ شَهْرًا لِلدِّرَاسَةِ.",
+      "translationUz": "Yo‘q onajon, men yalqov emasman. Mening o‘qish uchun o‘n ikki oyim bor.",
+      "next": "مَا هِيَ الشُّهُورُ يَا أَحْمَدُ؟"
+    },
+    {
+      "speaker": "أُمٌّ",
+      "text": "مَا هِيَ الشُّهُورُ يَا أَحْمَدُ؟",
+      "translationUz": "Qaysi oylar, Ahmad?",
+      "next": "يَنَايَرُ وَ فِبْرَايَرُ وَ مَارِسُ وَ أَبْرِيلُ وَ مَايُو وَ يُونْيُو وَ يُولْيُو وَ أُغُسْطُسُ وَ سِبْتَمْبَرُ وَ أُكْتُوبَرُ وَ نُوفَمْبَرُ وَ دِيسَمْبَرُ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "يَنَايَرُ وَ فِبْرَايَرُ وَ مَارِسُ وَ أَبْرِيلُ وَ مَايُو وَ يُونْيُو وَ يُولْيُو وَ أُغُسْطُسُ وَ سِبْتَمْبَرُ وَ أُكْتُوبَرُ وَ نُوفَمْبَرُ وَ دِيسَمْبَرُ.",
+      "translationUz": "Yanvar, fevral, mart, aprel, may, iyun, iyul, avgust, sentabr, oktabr, noyabr, dekabr.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَدْرُسُ يَا أَحْمَدُ؟",
+    "هَلْ وَقْتُكَ كَافٍ لِلدِّرَاسَةِ؟",
+    "مَا هُوَ الْيَوْمُ؟",
+    "فِي أَيِّ شَهْرٍ نَحْنُ؟",
+    "كَمْ يَبْقَى مِنْ وَقْتِ الدِّرَاسَةِ؟"
+  ],
+  "context": {
+    "main_topic": "procrastination_months",
+    "pattern": "question_about_studying → procrastination → accusation_of_laziness → excuse_of_having_time → question_about_months → listing_months"
+  }
+}

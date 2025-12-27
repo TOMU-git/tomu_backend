@@ -1,0 +1,57 @@
+{
+  "id": "ar_m2_l96",
+  "language": "ar",
+  "module": 2,
+  "lesson": 96,
+  "title": "يَعْقُوبُ وَ أَصْدِقَائُهُ 2",
+  "summary": "Ovqatdan keyin yana narsa yeyish yoki shirinlik istash, va yangi ichimlik taklifi haqida suhbat.",
+  "vocabulary": [
+    { "word": "شَبِعَ", "translationUz": "to‘ydi" },
+    { "word": "كَعْكَةٌ", "translationUz": "tort, pirog" },
+    { "word": "جَوْزٌ", "translationUz": "yong‘oq" },
+    { "word": "رُمَّانٌ", "translationUz": "anor" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأَصْدِقَاءُ",
+      "text": "هَلْ نَأْكُلُ شَيْئًا آخَرَ؟",
+      "translationUz": "Yana biror narsa yeydikmi?",
+      "next": "لَا، أَنَا شَبِعْتُ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "لَا، أَنَا شَبِعْتُ.",
+      "translationUz": "Yo‘q, men to‘ydim.",
+      "next": "نَحْنُ أَيْضًا شَبِعْنَا، وَلَكِنَّنَا نُرِيدُ كَعْكَةً."
+    },
+    {
+      "speaker": "اَلْأَصْdِقَاءُ",
+      "text": "نَحْنُ أَيْضًا شَبِعْنَا، وَلَكِنَّنَا نُرِيدُ كَعْكَةً.",
+      "translationUz": "Biz ham to‘ydik, lekin tort xohlaymiz.",
+      "next": "حَسَنًا، نَأْكُلُ كَعْكَةً بِالْجَوْزِ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "حَسَنًا، نَأْكُلُ كَعْكَةً بِالْجَوْزِ.",
+      "translationUz": "Yaxshi, yong‘oqli tort yeylik.",
+      "next": "وَ نَشْرَبُ عَصِيرَ الرُّمَّانِ."
+    },
+    {
+      "speaker": "اَلْأَصْدِقَاءُ",
+      "text": "وَ نَشْرَبُ عَصِيرَ الرُّمَّانِ.",
+      "translationUz": "Va anor sharbati ichaylik.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تُحِبُّ الْكَعْكَ؟",
+    "مَاذَا تَكُونُ الْكَعْكَةُ بِالْجَوْزِ؟",
+    "لِمَاذَا تَشْرَبُ عَصِيرَ الرُّمَّانِ؟",
+    "كَيْفَ تَكُونُ نُهَايَةُ الْغَدَاءِ؟",
+    "هَلْ أَصْبَحْتُمْ جِيَاعًا مِنْ جَدِيدٍ؟"
+  ],
+  "context": {
+    "main_topic": "dessert_discussion",
+    "pattern": "question_about_more_food → statement_of_fullness → agreement_but_desire_for_dessert → suggestion_of_type → addition_of_drink"
+  }
+}

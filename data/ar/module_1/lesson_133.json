@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l133",
+  "language": "ar",
+  "module": 1,
+  "lesson": 133,
+  "title": "صَيْدُ السَّمَكِ",
+
+  "summary": "Baliq ovlash va ovlangan baliqlarni tayyorlab yeyish haqida gaplashish.",
+
+  "vocabulary": [
+    { "word": "صَيْدٌ", "translationUz": "ov" },
+    { "word": "سَمَكٌ", "translationUz": "baliq" },
+    { "word": "جَبَلٌ", "translationUz": "tog‘" },
+    { "word": "طَبَخْنَا", "translationUz": "pishirdik" },
+    { "word": "أَكَلْنَاهَا", "translationUz": "yedik" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الصَّدِيقَانِ",
+      "text": "أَيْنَ ذَهَبْتُم لِصَيْدِ السَّمَكِ؟",
+      "translationUz": "Qayerga baliq oviga bordingizlar?",
+      "next": "صَعِدْنَا إِلَى الْجَبَلِ."
+    },
+    {
+      "speaker": "الصَّدِيقُ",
+      "text": "صَعِدْنَا إِلَى الْجَبَلِ مَعَ صَدِيقِي.",
+      "translationUz": "Men do‘stim bilan tog‘ga chiqdik.",
+      "next": "صِدْنَا أَسْمَاكًا كَثِيرَةً."
+    },
+    {
+      "speaker": "الصَّدِيقَانِ",
+      "text": "صِدْنَا أَسْمَاكًا كَثِيرَةً.",
+      "translationUz": "Ko‘p baliq ovladik.",
+      "next": "طَبَخْنَا الأَسْمَاكَ وَ أَكَلْنَاهَا."
+    },
+    {
+      "speaker": "الصَّدِيقَانِ",
+      "text": "طَبَخْنَا الأَسْمَاكَ وَ أَكَلْنَاهَا.",
+      "translationUz": "Baliqlarni pishirdik va yedik.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "أَيْنَ صِدْتُم الْبَالِي؟",
+    "مَا أَكَلْتُم بَعْدَ الصَّيْدِ؟",
+    "هَلْ أَحْبَبْتُم الصَّيْدَ؟"
+  ],
+
+  "context": {
+    "main_topic": "fishing",
+    "pattern": "question → answer → question → answer"
+  }
+}

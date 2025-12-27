@@ -1,0 +1,64 @@
+{
+  "id": "ar_m2_l40",
+  "language": "ar",
+  "module": 2,
+  "lesson": 40,
+  "title": "وَرَقَةٌ عَلَى الْحَائِطِ",
+  "summary": "Ikki aka-uka maktabdan qaytib, devordagi varaqni ko'rish, uni o'qish va unda uy keraklarining yozilganligini aniqlash haqida.",
+  "vocabulary": [
+    {"word": "وَرَقَةٌ", "translationUz": "varaq, qog'oz"},
+    {"word": "عَلَى", "translationUz": "ustida"},
+    {"word": "الْحَائِطِ", "translationUz": "devor"},
+    {"word": "جَاءَ", "translationUz": "keldi"},
+    {"word": "الأَخَوَانِ", "translationUz": "ikki aka-uka"},
+    {"word": "خَالِدٌ", "translationUz": "Xolid"},
+    {"word": "وَسَعِيدٌ", "translationUz": "va Sa'id"},
+    {"word": "مِنَ", "translationUz": "dan"},
+    {"word": "فَرَأَى", "translationUz": "shunda ko'rdi"},
+    {"word": "كَتَبَتْهَا", "translationUz": "uni yozgan"},
+    {"word": "أُمُّهُ", "translationUz": "uning onasi"},
+    {"word": "أَخَذَ", "translationUz": "olib"},
+    {"word": "وَقَرَأَهَا", "translationUz": "va uni o'qidi"},
+    {"word": "كَانَتْ", "translationUz": "edi"},
+    {"word": "تَحْتَوِي", "translationUz": "o'z ichiga oladi"},
+    {"word": "حَاجَاتِ", "translationUz": "keraklari"},
+    {"word": "الْمَنْزِلِ", "translationUz": "uy"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "جَاءَ الأَخَوَانِ خَالِدٌ وَسَعِيدٌ مِنَ الْمَدْرَسَةِ،",
+      "translationUz": "Xolid va Sa'id ismli ikkita aka-uka maktabdan keldilar,",
+      "next": " فَرَأَى سَعِيدٌ وَرَقَةً عَلَى الْحَائِطِ كَتَبَتْهَا أُمُّهُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " فَرَأَى سَعِيدٌ وَرَقَةً عَلَى الْحَائِطِ كَتَبَتْهَا أُمُّهُ.",
+      "translationUz": "shunda Sa'id onasi yozgan varaqni devorda ko'rdi.",
+      "next": " أَخَذَ سَعِيدٌ الْوَرَقَةَ وَ قَرَأَهَا،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَخَذَ سَعِيدٌ الْوَرَقَةَ وَ قَرَأَهَا،",
+      "translationUz": "Sa'id varaqni olib o'qidi,",
+      "next": "وَ كَانَتْ تَحْتَوِي عَلَى حَاجَاتِ الْمَنْزِلِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ كَانَتْ تَحْتَوِي عَلَى حَاجَاتِ الْمَنْزِلِ.",
+      "translationUz": "va u uy keraklarini o'z ichiga olardi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ جَاءَ مِنَ الْمَدْرَسَةِ؟",
+    "مَاذَا رَأَى سَعِيدٌ؟",
+    "عَلَى أَيْنَ كَانَتِ الْوَرَقَةُ؟",
+    "مَنْ كَتَبَ الْوَرَقَةَ؟",
+    "مَاذَا كَانَ مَكْتُوبًا فِي الْوَرَقَةِ؟"
+  ],
+  "context": {
+    "main_topic": "wall_note_discovery",
+    "pattern": "brothers_arrival → note_discovery → reading_note → content_revelation"
+  }
+}

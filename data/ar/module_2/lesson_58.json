@@ -1,0 +1,60 @@
+{
+  "id": "ar_m2_l58",
+  "language": "ar",
+  "module": 2,
+  "lesson": 58,
+  "title": "فَتَيَاتٌ حَسَنَاتُ الخُلُقِ",
+  "summary": "Xulq-atvori yaxshi bo'lgan Fotima, Zaynab va Oisha ismli qizlarning xonaki va maktabdagi faoliyatlari haqida.",
+  "vocabulary": [
+    {"word": "فَتَيَاتٌ", "translationUz": "qizlar"},
+    {"word": "حَسَنَاتُ", "translationUz": "yaxshi"},
+    {"word": "الخُلُقِ", "translationUz": "xulq-atvor"},
+    {"word": "بَنَاتٌ", "translationUz": "qizlar"},
+    {"word": "ذَوَاتُ", "translationUz": "ega bo'lgan (ayollar)"},
+    {"word": "أَدَبٍ", "translationUz": "adab"},
+    {"word": "دَائِمًا", "translationUz": "doimo"},
+    {"word": "يُسَاعِدْنَ", "translationUz": "yordam beradilar (ayollar)"},
+    {"word": "أُمَّهَاتِهِنَّ", "translationUz": "ularning onalari"},
+    {"word": "يُنَظِّفْنَ", "translationUz": "tozalaydilar (ayollar)"},
+    {"word": "الْبَيْتَ", "translationUz": "uy"},
+    {"word": "يَطْبُخْنَ", "translationUz": "pishiradilar (ayollar)"},
+    {"word": "الْأَطْعِمَةَ", "translationUz": "ovqatlar"},
+    {"word": "الشَّهِيَّةَ", "translationUz": "ishlatuvchi"},
+    {"word": "يَغْسِلْنَ", "translationUz": "yuvadilar (ayollar)"},
+    {"word": "الْأَطْبَاقَ", "translationUz": "idishlarni"},
+    {"word": "الصَّبَاحِ", "translationUz": "ertalab"},
+    {"word": "يَرْكَبْنَ", "translationUz": "minadilar (ayollar)"},
+    {"word": "الْحَافِلَةَ", "translationUz": "avtobus"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَاطِمَةُ وَزَيْنَبُ وَعَائِشَةُ بَنَاتٌ ذَوَاتُ خُلُقٍ وَ أَدَبٍ.",
+      "translationUz": "Fotima, Zaynab va Oisha yaxshi xulq-atvor va adabga ega qizlardir.",
+      "next": " هُنَّ دَائِمًا يُسَاعِدْنَ أُمَّهَاتِهِنَّ وَ يُنَظِّفْنَ الْبَيْتَ وَ يَطْبُخْنَ الْأَطْعِمَةَ الشَّهِيَّةَ وَيَغْسِلْنَ الْأَطْبَاقَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " هُنَّ دَائِمًا يُسَاعِدْنَ أُمَّهَاتِهِنَّ وَ يُنَظِّفْنَ الْبَيْتَ وَ يَطْبُخْنَ الْأَطْعِمَةَ الشَّهِيَّةَ وَيَغْسِلْنَ الْأَطْبَاقَ.",
+      "translationUz": "Ular doimo onalariga yordam beradilar, uyni tozalaydilar, mazali ovqatlar pishiradilar va idishlarni yuvadilar.",
+      "next": "فِي الصَّبَاحِ يَرْكَبْنَ الْحَافِلَةَ وَيَذْهَبْنَ إِلَى الْمَدْرَسَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي الصَّبَاحِ يَرْكَبْنَ الْحَافِلَةَ وَيَذْهَبْنَ إِلَى الْمَدْرَسَةِ.",
+      "translationUz": "Ertalab ular avtobusga minib maktabga boradilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ هُنَّ الْبَنَاتُ؟",
+    "كَيْفَ هُنَّ؟",
+    "مَاذَا يَفْعَلْنَ فِي الْبَيْتِ؟",
+    "كَيْفَ يَذْهَبْنَ إِلَى الْمَدْرَسَةِ؟",
+    "هَلْ تُسَاعِدُ أُمَّكَ فِي الْبَيْتِ؟"
+  ],
+  "context": {
+    "main_topic": "well_mannered_girls",
+    "pattern": "character_description → household_activities → school_routine"
+  }
+}

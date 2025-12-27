@@ -1,0 +1,45 @@
+{
+  "id": "ar_m2_l90",
+  "language": "ar",
+  "module": 2,
+  "lesson": 90,
+  "title": "اَلْوَقْتُ الْكَثِيْرُ 2",
+  "summary": "Oylar o‘tmaydigan narsa emasligini va vaqtni qadrlash haqidagi maqol bilan ogohlantirish.",
+  "vocabulary": [
+    { "word": "تَمُرُّ", "translationUz": "o‘tadi, o‘tib ketadi" },
+    { "word": "تَنْسَى", "translationUz": "unutma" },
+    { "word": "سَيْفٌ", "translationUz": "qilich" },
+    { "word": "يَقْطَعُ", "translationUz": "kesadi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "أُمٌّ",
+      "text": "هَلْ تَظُنُّ أَنَّ هَذِهِ الشُّهُورَ لاَ تَمُرُّ؟",
+      "translationUz": "Bu oylar o‘tmaydi deb o‘ylaysanmi?",
+      "next": "نَعَمْ يَا أُمِّي، لَا تَمُرُّ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "نَعَمْ يَا أُمِّي، لَا تَمُرُّ.",
+      "translationUz": "Ha onajon, o‘tmaydi.",
+      "next": "يَا أَحْمَدُ، لَا تَنْسَ أَنَّ الْوَقْتَ كَالْسَّيْفِ إِنْ لَمْ تَقْطَعْهُ قَطَعَكَ."
+    },
+    {
+      "speaker": "أُمٌّ",
+      "text": "يَا أَحْمَدُ، لَا تَنْسَ أَنَّ الْوَقْتَ كَالْسَّيْفِ إِنْ لَمْ تَقْطَعْهُ قَطَعَكَ.",
+      "translationUz": "Ahmad, unutma, vaqt qilich kabi, agar sen uni kesmasang, u seni kesadi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَعْنِي هَذَا الْمَثَلُ؟",
+    "لِمَاذَا يَجِبُ أَنْ نَسْتَفِيدَ مِنَ الْوَقْتِ؟",
+    "كَيْفَ تَسْتَفِيدُ مِنْ وَقْتِكَ؟",
+    "مَتَى سَتَبْدَأُ بِالدِّرَاسَةِ؟",
+    "هَلْ هَذَا الْمَثَلُ صَحِيحٌ؟"
+  ],
+  "context": {
+    "main_topic": "time_proverb_warning",
+    "pattern": "question_about_time_passing → wrong_belief → proverb_and_warning"
+  }
+}

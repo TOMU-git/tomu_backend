@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l138",
+  "language": "ar",
+  "module": 1,
+  "lesson": 138,
+  "title": "شِرَاءُ الْمَاءِ فِي الْمَطَارِ",
+
+  "summary": "Havo portda suv sotib olish va narxni muhokama qilish haqida oddiy dialoglar.",
+
+  "vocabulary": [
+    { "word": "مَاءٌ", "translationUz": "suv" },
+    { "word": "مَطَارٌ", "translationUz": "aeroport" },
+    { "word": "بَائِعٌ", "translationUz": "sotuvchi" },
+    { "word": "غَالٍ", "translationUz": "qimmat" },
+    { "word": "عَطْشَانٌ", "translationUz": "chanqagan" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "السَّائِحُ",
+      "text": "أَنَا فِي الْمَطَارِ، أَرَدْتُ شُرْبَ الْمَاءِ.",
+      "translationUz": "Men aeroportdaman, suv ichmoqchi edim.",
+      "next": "ذَهَبْتُ إِلَى المَتْجَرِ هُنَاكَ."
+    },
+    {
+      "speaker": "السَّائِحُ",
+      "text": "سَأَلْتُ الْبَائِعَ عَنْ سِعْرِ الْمَاءِ، فَكَانَ غَالِيًا.",
+      "translationUz": "Sotuvchidan suv narxini so‘radim, u qimmat edi.",
+      "next": "لَكِنِّي اشْتَرَيْتُهُ لأَنَّنِي كُنْتُ عَطْشَانَ."
+    },
+    {
+      "speaker": "السَّائِحُ",
+      "text": "لَكِنِّي اشْتَرَيْتُهُ لأَنَّنِي كُنْتُ عَطْشَانَ.",
+      "translationUz": "Lekin men uni sotib oldim, chunki chanqagan edim.",
+      "next": "هَلْ تَشْرَبُ الْمَاءَ فِي الطَّيَّارَةِ أَيْضًا؟"
+    },
+    {
+      "speaker": "السَّائِحُ",
+      "text": "نَعَمْ، أَشْرَبُ الْمَاءَ أَيْضًا.",
+      "translationUz": "Ha, men samolyotda ham suv ichaman.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "بِكَمِ السَّكِيكَةُ؟",
+    "هَلْ تُحِبُّ شُرْبَ الْمَاءِ؟",
+    "مَا هِيَ أَشْهَرُ مَتَاجِرِ الْمَطَارِ؟"
+  ],
+
+  "context": {
+    "main_topic": "buying water",
+    "pattern": "statement → statement → statement → answer"
+  }
+}

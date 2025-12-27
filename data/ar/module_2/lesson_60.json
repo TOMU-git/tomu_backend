@@ -1,0 +1,77 @@
+{
+  "id": "ar_m2_l60",
+  "language": "ar",
+  "module": 2,
+  "lesson": 60,
+  "title": "اَلْحَسَاسِيَةُ",
+  "summary": "Bahor faslida gullarning hidi yoki chang bosqichlaridan kelib chiqadigan allergiya, yomon o'z-o'zini his qilish va yozni kutish haqida.",
+  "vocabulary": [
+    {"word": "اَلْحَسَاسِيَةُ", "translationUz": "allergiya"},
+    {"word": "بَدَأَ", "translationUz": "boshladi"},
+    {"word": "الرَّبِيعُ", "translationUz": "bahor"},
+    {"word": "فِي هَذَا", "translationUz": "bu"},
+    {"word": "الْفَصْلِ", "translationUz": "fasl"},
+    {"word": "أَشْعُرُ", "translationUz": "his qilaman"},
+    {"word": "بِشُعُورٍ", "translationUz": "his bilan"},
+    {"word": "سَيِّئٍ", "translationUz": "yomon"},
+    {"word": "لِأَنَّ", "translationUz": "chunki"},
+    {"word": "لَدَيَّ", "translationUz": "menda bor"},
+    {"word": "عِنْدَمَا", "translationUz": "qachonki"},
+    {"word": "أَشُمُّ", "translationUz": "hidlayman"},
+    {"word": "رَائِحَةَ", "translationUz": "hid"},
+    {"word": "الْأَزْهَارِ", "translationUz": "gullarning"},
+    {"word": "تَدْخُلُ", "translationUz": "kirib"},
+    {"word": "فِي", "translationUz": "ichiga"},
+    {"word": "أَنْفِي", "translationUz": "burnimga"},
+    {"word": "حُبُوبُ", "translationUz": "donalar"},
+    {"word": "الْلِّقَاحِ", "translationUz": "chang, gul changi"},
+    {"word": "أَسْعُلُ", "translationUz": "yo'talayman"},
+    {"word": "أَنْتَظِرُ", "translationUz": "kutaman"},
+    {"word": "الصَّيْفَ", "translationUz": "yozni"},
+    {"word": "بِفَارِغِ", "translationUz": "to'la"},
+    {"word": "الصَّبْر", "translationUz": "sabr"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بَدَأَ الرَّبِيعُ.",
+      "translationUz": "Bahor boshlandi.",
+      "next": "فِي هَذَا الْفَصْلِ أَشْعُرُ بِشُعُورٍ سَيِّئٍ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي هَذَا الْفَصْلِ أَشْعُرُ بِشُعُورٍ سَيِّئٍ،",
+      "translationUz": "Bu faslda men yomon o'z-o'zini his qilaman,",
+      "next": "لِأَنَّ لَدَيَّ حَسَّاسِيَّةً،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِأَنَّ لَدَيَّ حَسَّاسِيَّةً،",
+      "translationUz": "chunki menda allergiya bor,",
+      "next": "وَ عِنْدَمَا أَشُمُّ رَائِحَةَ الْأَزْهَارِ أَوْ تَدْخُلُ فِي أَنْفِي حُبُوبُ اللِّقَاحِ، أَسْعُلُ كَثِيرًا، وَ أَشْعُرُ بِأَلَمٍ فِي أَنْفِي."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ عِنْدَمَا أَشُمُّ رَائِحَةَ الْأَزْهَارِ أَوْ تَدْخُلُ فِي أَنْفِي حُبُوبُ اللِّقَاحِ، أَسْعُلُ كَثِيرًا، وَ أَشْعُرُ بِأَلَمٍ فِي أَنْفِي.",
+      "translationUz": "va qachonki men gullarning hidini his qilsam yoki chang donalari burnimga kirsa, men ko'p yo'talayman va burnimda og'riq his qilaman.",
+      "next": " أَنْتَظِرُ الصَّيْفَ بِفَارِغِ الصَّبْر"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَنْتَظِرُ الصَّيْفَ بِفَارِغِ الصَّبْر",
+      "translationUz": "Men yozni sabr bilan kutaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَتَى بَدَأَ الرَّبِيعُ؟",
+    "كَيْفَ يَشْعُرُ الشَّخْصُ فِي هَذَا الْفَصْلِ؟",
+    "لِمَاذَا يَشْعُرُ بِشُعُورٍ سَيِّئٍ؟",
+    "مَاذَا يَحْدُثُ عِنْدَمَا يَشُمُّ رَائِحَةَ الْأَزْهَارِ؟",
+    "مَاذَا يَفْعَلُ فِي النِّهَايَةِ؟"
+  ],
+  "context": {
+    "main_topic": "allergy_in_spring",
+    "pattern": "season_start → bad_feeling → allergy_reason → symptoms_description → anticipation"
+  }
+}

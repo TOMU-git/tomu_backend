@@ -1,0 +1,58 @@
+{
+  "id": "ar_m2_l48",
+  "language": "ar",
+  "module": 2,
+  "lesson": 48,
+  "title": "أَهَمِّيَّةُ الوَقْتِ",
+  "summary": "Vaqtning tarkibi (24 soat, 60 daqiqa, 60 soniya) va har bir soniyaning hayotimizdagi ahamiyati haqida.",
+  "vocabulary": [
+    {"word": "أَهَمِّيَّةُ", "translationUz": "ahamiyat"},
+    {"word": "الوَقْتِ", "translationUz": "vaqt"},
+    {"word": "الْيَوْمِ", "translationUz": "kun"},
+    {"word": "أَرْبَعٌ وَ عِشْرُونَ", "translationUz": "yigirma to'rtta"},
+    {"word": "سَاعَةً", "translationUz": "soat"},
+    {"word": "السَّاعَةِ", "translationUz": "soat"},
+    {"word": "سِتُّونَ", "translationUz": "oltmish"},
+    {"word": "دَقِيقَةً", "translationUz": "daqida"},
+    {"word": "الدَّقِيقَةِ", "translationUz": "daqiqa"},
+    {"word": "سِتُّونَ", "translationUz": "oltmish"},
+    {"word": "ثَانِيَةً", "translationUz": "soniya"},
+    {"word": "كُلُّ", "translationUz": "har bir"},
+    {"word": "ثَانِيَةٍ", "translationUz": "soniya"},
+    {"word": "لَهَا", "translationUz": "uning uchun"},
+    {"word": "حَيَاتِنَا", "translationUz": "bizning hayotimiz"},
+    {"word": "مِيزَانُ", "translationUz": "tarozi, o'lchov"},
+    {"word": "الْحَيَاةِ", "translationUz": "hayot"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي الْيَوْمِ أَرْبَعٌ وَ عِشْرُونَ سَاعَةً، وَ فِي السَّاعَةِ سِتُّونَ دَقِيقَةً، وَ فِي الدَّقِيقَةِ سِتُّونَ ثَانِيَةً.",
+      "translationUz": "Kunda yigirma to'rtta soat bor, va soatda oltmish daqiqa, va daqiqada oltmish soniya.",
+      "next": " كُلُّ ثَانِيَةٍ لَهَا أَهَمِّيَّةٌ فِي حَيَاتِنَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " كُلُّ ثَانِيَةٍ لَهَا أَهَمِّيَّةٌ فِي حَيَاتِنَا.",
+      "translationUz": "Har bir soniya hayotimizda ahamiyatga ega.",
+      "next": " اَلْوَقْتُ هُوَ مِيزَانُ الْحَيَاةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " اَلْوَقْتُ هُوَ مِيزَانُ الْحَيَاةِ.",
+      "translationUz": "Vaqt hayotning tarozisidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ سَاعَةً فِي الْيَوْمِ؟",
+    "كَمْ دَقِيقَةً فِي السَّاعَةِ؟",
+    "كَمْ ثَانِيَةً فِي الدَّقِيقَةِ؟",
+    "مَا أَهَمِّيَّةُ كُلِّ ثَانِيَةٍ؟",
+    "بِمَ يُشَبَّهُ الْوَقْتُ؟"
+  ],
+  "context": {
+    "main_topic": "time_importance",
+    "pattern": "time_breakdown → second_importance → time_metaphor"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l137",
+  "language": "ar",
+  "module": 1,
+  "lesson": 137,
+  "title": "اَلذُّبَابَةُ المُزْعِجَةُ",
+
+  "summary": "Hayvonlarning kichik voqealarga reaksiyasini tasvirlash va sodda dialoglar orqali ifodalash.",
+
+  "vocabulary": [
+    { "word": "ذُبَابَةٌ", "translationUz": "chivin" },
+    { "word": "كَلْبٌ", "translationUz": "it" },
+    { "word": "نَائِمٌ", "translationUz": "uyquda" },
+    { "word": "ضَرَبَ", "translationUz": "urdi" },
+    { "word": "طَارَتْ", "translationUz": "uchdi" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "نَزَلَتْ ذُبَابَةٌ عَلَى أَنْفِ كَلْبٍ.",
+      "translationUz": "Itning buruniga chivin tushdi.",
+      "next": "الْكَلْبُ اسْتَيْقَظَ وَ ضَرَبَهَا."
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "الْكَلْبُ اسْتَيْقَظَ وَ ضَرَبَهَا.",
+      "translationUz": "It uyg‘ondi va chivinni urdi.",
+      "next": "ثُمَّ طَارَتِ الذُّبَابَةُ إِلَى مَكَانٍ آخَرَ."
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "ثُمَّ طَارَتِ الذُّبَابَةُ إِلَى مَكَانٍ آخَرَ.",
+      "translationUz": "Chivin boshqa joyga uchib ketdi.",
+      "next": "هَلْ يُحِبُّ الْكَلْبُ الذُّبَابَةَ؟"
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "لَا، لَا يُحِبُّهَا.",
+      "translationUz": "Yo‘q, it uni yoqtirmaydi.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا ذَا فَعَلَ الْكَلْبُ؟",
+    "هَلْ تَطِيرُ الذُّبَابَةُ؟",
+    "مَا هِيَ حَيَوَانَاتُكَ المُفَضَّلَةُ؟"
+  ],
+
+  "context": {
+    "main_topic": "animals",
+    "pattern": "statement → statement → statement → answer"
+  }
+}

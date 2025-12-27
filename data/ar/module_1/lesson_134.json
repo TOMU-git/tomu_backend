@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l134",
+  "language": "ar",
+  "module": 1,
+  "lesson": 134,
+  "title": "بَطَّتِي الجَمِيلَةُ",
+
+  "summary": "Uy hayvonlarini tasvirlash va ularning kundalik odatlarini aytish.",
+
+  "vocabulary": [
+    { "word": "بَطَّةٌ", "translationUz": "o‘rdak" },
+    { "word": "جَمِيلَةٌ", "translationUz": "chiroyli" },
+    { "word": "جَارٌ", "translationUz": "qo‘shni" },
+    { "word": "تَطِيرُ", "translationUz": "uchadi" },
+    { "word": "تَأْكُلُ", "translationUz": "yeydi" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "أَيْنَ تَذْهَبُ بَطَّتِي؟",
+      "translationUz": "Mening o‘rdagim qayerga boradi?",
+      "next": "تَطِيرُ إِلَى بَيْتِ جَارِي."
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "تَطِيرُ إِلَى بَيْتِ جَارِي وَ تَأْكُلُ الْحُبُوبَ.",
+      "translationUz": "U qo‘shnining uyiga uchadi va don yeydi.",
+      "next": "جَارِي لَا يُحِبُّهَا، وَلَكِنِّي أُحِبُّهَا."
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "جَارِي لَا يُحِبُّ بَطَّتِي، وَلَكِنِّي أُحِبُّهَا.",
+      "translationUz": "Qo‘shnim o‘rdagimni yoqtirmaydi, lekin men yaxshi ko‘raman.",
+      "next": "أُحِبُّ بَيْضَهَا."
+    },
+    {
+      "speaker": "الصَّاحِبُ",
+      "text": "أُحِبُّ بَيْضَهَا.",
+      "translationUz": "Men uning tuxumlarini ham yaxshi ko‘raman.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مَا اسْمُ بَطَّتِكَ؟",
+    "هَلْ تُحِبُّ الْحَيَوَانَاتِ؟",
+    "أَيْنَ تَطِيرُ يَوْمِيًا؟"
+  ],
+
+  "context": {
+    "main_topic": "pets",
+    "pattern": "question → answer → question → answer"
+  }
+}

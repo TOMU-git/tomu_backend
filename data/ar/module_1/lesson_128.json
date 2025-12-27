@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l128",
+  "language": "ar",
+  "module": 1,
+  "lesson": 128,
+  "title": "بَائِعُ الْبَالُونَاتِ",
+
+  "summary": "Savdo mavzusida sodda savol-javoblar, narxlarni so‘rash va ranglarni aytishni o‘rganish.",
+
+  "vocabulary": [
+    { "word": "بَالُونَةٌ", "translationUz": "shar" },
+    { "word": "سِعْرٌ", "translationUz": "narx" },
+    { "word": "بَيْضَاءُ", "translationUz": "oq" },
+    { "word": "خَضْرَاءُ", "translationUz": "yashil" },
+    { "word": "أَرِيدُ", "translationUz": "xohlayman" },
+    { "word": "مُخْتَلِفٌ", "translationUz": "turli" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الطِّفْلُ",
+      "text": "بِكَمْ هَذِهِ الْبَالُونَاتُ؟",
+      "translationUz": "Bu sharlar qancha turadi?",
+      "next": "سِعْرُهَا مُخْتَلِفٌ."
+    },
+    {
+      "speaker": "بَائِعُ الْبَالُونَاتِ",
+      "text": "سِعْرُهَا مُخْتَلِفٌ.",
+      "translationUz": "Narxlari turlicha.",
+      "next": "أُرِيدُ الْبَالُونَةَ الْخَضْرَاءَ وَ الصَّفْرَاءَ."
+    },
+    {
+      "speaker": "الطِّفْلُ",
+      "text": "أُرِيدُ الْبَالُونَةَ الْخَضْرَاءَ وَ الصَّفْرَاءَ.",
+      "translationUz": "Men yashil va sariq sharlarni xohlayman.",
+      "next": "تَفَضَّلْ يَا وَلَدُ."
+    },
+    {
+      "speaker": "بَائِعُ الْبَالُونَاتِ",
+      "text": "تَفَضَّلْ يَا وَلَدُ.",
+      "translationUz": "Mana ol, bola.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "بِكَمْ هِيَ الْبَالُونَةُ الْحَمْرَاءُ؟",
+    "هَلْ هُوَ رَخِيصٌ؟",
+    "مَا أَلْوَانُ الْبَالُونَاتِ؟"
+  ],
+
+  "context": {
+    "main_topic": "shopping",
+    "pattern": "question → answer → question → answer"
+  }
+}

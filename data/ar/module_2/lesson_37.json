@@ -1,0 +1,52 @@
+{
+  "id": "ar_m2_l37",
+  "language": "ar",
+  "module": 2,
+  "lesson": 37,
+  "title": "اَلشَّاحِنَةُ",
+  "summary": "Mashina va yuk mashinasi o'rtasidagi tezlik taqqoslash va yuk mashinasining sekin harakatlanishining sabablari haqida.",
+  "vocabulary": [
+    {"word": "اَلشَّاحِنَةُ", "translationUz": "yuk mashinasi"},
+    {"word": "اَلسَّيَّارَةُ", "translationUz": "mashina"},
+    {"word": "أَسْرَعُ", "translationUz": "tezroq"},
+    {"word": "تَسِيرُ", "translationUz": "harakatlanadi"},
+    {"word": "بِبُطْئٍ", "translationUz": "sekinlik bilan"},
+    {"word": "أَكْثَرَ", "translationUz": "ko'proq"},
+    {"word": "لِأَنَّ", "translationUz": "chunki"},
+    {"word": "حَجْمَهَا", "translationUz": "uning hajmi"},
+    {"word": "أَكْبَرُ", "translationUz": "kattaroq"},
+    {"word": "وَزْنَهَا", "translationUz": "uning og'irligi"},
+    {"word": "أَثْقَلُ", "translationUz": "og'irroq"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلسَّيَّارَةُ أَسْرَعُ مِنَ الشَّاحِنَةِ.",
+      "translationUz": "Mashina yuk mashinasidan tezroq.",
+      "next": " اَلشَّاحِنَةُ تَسِيرُ بِبُطْئٍ أَكْثَرَ مِنَ السَّيَّارَةِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " اَلشَّاحِنَةُ تَسِيرُ بِبُطْئٍ أَكْثَرَ مِنَ السَّيَّارَةِ،",
+      "translationUz": "Yuk mashinasi mashinadan ko'proq sekinlik bilan harakatlanadi,",
+      "next": "لِأَنَّ حَجْمَهَا أَكْبَرُ وَ وَزْنَهَا أَثْقَلُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِأَنَّ حَجْمَهَا أَكْبَرُ وَ وَزْنَهَا أَثْقَلُ.",
+      "translationUz": "chunki uning hajmi kattaroq va og'irligi og'irroq.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا الْفَرْقُ بَيْنَ السَّيَّارَةِ وَالشَّاحِنَةِ؟",
+    "كَيْفَ تَسِيرُ الشَّاحِنَةُ؟",
+    "لِمَاذَا تَسِيرُ بِبُطْءٍ؟",
+    "مَا هِيَ سَبَبُ بُطْئِهَا؟",
+    "هَلْ تَسْتَخْدِمُ الشَّاحِنَةَ؟"
+  ],
+  "context": {
+    "main_topic": "truck_car_comparison",
+    "pattern": "speed_comparison → slowness_description → reasons_for_slowness"
+  }
+}

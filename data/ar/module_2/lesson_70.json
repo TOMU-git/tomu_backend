@@ -1,0 +1,67 @@
+{
+  "id": "ar_m2_l70",
+  "language": "ar",
+  "module": 2,
+  "lesson": 70,
+  "title": "اَلْمُسْتَشْفَى و الصَّيْدَلِيَّةُ",
+  "summary": "Ahmad va Hamza o'rtasida kasalxona va dorixona o'rtasidagi farqni aniqlash haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْمُسْتَشْفَى", "translationUz": "kasalxona"},
+    {"word": "وَ", "translationUz": "va"},
+    {"word": "الصَّيْدَلِيَّةُ", "translationUz": "dorixona"},
+    {"word": "أَهَذَا", "translationUz": "bu ...mi"},
+    {"word": "أَمَا رَأَيْتَهَا", "translationUz": "hech ko'rmadingmi uni"},
+    {"word": "مَا", "translationUz": "nima"},
+    {"word": "الْفَرْقُ", "translationUz": "farq"},
+    {"word": "بَيْنَ", "translationUz": "o'rtasida"},
+    {"word": "الصَّيْدَلِيَّةِ", "translationUz": "dorixona"},
+    {"word": "يَعْمَلُ", "translationUz": "ishlaydi"},
+    {"word": "الصَّيْدَلِيُّونَ", "translationUz": "dorixona xodimlari"},
+    {"word": "الْأَطِبَّاءُ", "translationUz": "shifokorlar"},
+    {"word": "فَهِمْتُ", "translationUz": "tushundim"},
+    {"word": "الْآنَ", "translationUz": "endi"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَهَذَا مُسْتَشْفَى يَا حَمْزَةُ؟",
+      "translationUz": "Bu kasalxonami, Hamza?",
+      "next": "حَمْزَةُ: أَمَا رَأَيْتَهَا؟ هَذِهِ صَيْدَلِيَّةٌ يَا صَدِيقِي."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "أَمَا رَأَيْتَهَا؟ هَذِهِ صَيْدَلِيَّةٌ yَا صَدِيقِي.",
+      "translationUz": "Hech ko'rmadingmi uni? Bu dorixona, do'stim.",
+      "next": "أَحْمَدُ:مَا الْفَرْقُ بَيْنَ الصَّيْدَلِيَّةِ وَ الْمُسْتَشْفَى؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "مَا الْفَرْقُ بَيْنَ الصَّيْدَلِيَّةِ وَ الْمُسْتَشْفَى？",
+      "translationUz": "Dorixona va kasalxona o'rtasidagi farq nima?",
+      "next": "حَمْزَةُ: فِي الصَّيْدَلِيَّةِ يَعْمَلُ الصَّيْدَلِيُّونَ، وَ فِي الْمُسْتَشْفَى يَعْمَلُ الْأَطِبَّاءُ."
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "فِي الصَّيْدَلِيَّةِ يَعْمَلُ الصَّيْدَلِيُّونَ، وَ fِي الْمُسْتَشْفَى يَعْمَلُ الْأَطِبَّاءُ.",
+      "translationUz": "Dorixonada dorixona xodimlari ishlaydi va kasalxonada shifokorlar ishlaydi.",
+      "next": "أَحْمَدُ: فَهِمْتُ الْآنَ يَا صَدِيقِي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "فَهِمْتُ الْآنَ yَا صَدِيقِي.",
+      "translationUz": "Endi tushundim, do'stim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ أَحْمَدُ؟",
+    "كَيْفَ يُجِيبُ حَمْزَةُ؟",
+    "مَاذَا يَسْأَلُ أَحْمَدُ بَعْدَ ذَلِكَ؟",
+    "مَا الْفَرْقُ الَّذِي يَذْكُرُهُ حَمْزَةُ؟",
+    "هَلْ يَفْهَمُ أَحْمَدُ فِي النِّهَايَةِ؟"
+  ],
+  "context": {
+    "main_topic": "hospital_pharmacy_difference",
+    "pattern": "misidentification_question → correction → difference_question → explanation → understanding"
+  }
+}

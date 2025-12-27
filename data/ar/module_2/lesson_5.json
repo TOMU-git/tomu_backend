@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l5",
+  "language": "ar",
+  "module": 2,
+  "lesson": 5,
+  "title": "اَلطَّاوُوسُ",
+  "summary": "Tovus qushining go'zalligi, rang-barang patlari va dunyodagi o'rni haqida.",
+  "vocabulary": [
+    {"word": "اَلطَّاوُوسُ", "translationUz": "tovus"},
+    {"word": "أَحَدِ", "translationUz": "biri"},
+    {"word": "أَجْمَلَ", "translationUz": "eng chiroyli"},
+    {"word": "الطُّيُورِ", "translationUz": "qushlar"},
+    {"word": "عَلَى وَجْهِ الْأَرْضِ", "translationUz": "yer yuzida"},
+    {"word": "أَلْوَانُ", "translationUz": "ranglar"},
+    {"word": "رِيشِهِ", "translationUz": "uning patlari"},
+    {"word": "مُخْتَلِفَةٌ", "translationUz": "turlich, har xil"},
+    {"word": "خَضْرَاءُ", "translationUz": "yashil"},
+    {"word": "حَمْرَاءُ", "translationUz": "qizil"},
+    {"word": "صَفْرَاءُ", "translationUz": "sariq"},
+    {"word": "زَرْقَاءُ", "translationUz": "ko'k"},
+    {"word": "غَيْرُهَا", "translationUz": "boshqalar"},
+    {"word": "مَشْهُورٌ", "translationUz": "mashhur"},
+    {"word": "بِجَمَالِهِ", "translationUz": "o'zining go'zalligi bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلطَّاوُوسُ مِنْ أَحَدِ أَجْمَلَ الطُّيُورِ  عَلَى وَجْهِ الْأَرْضِ.",
+      "translationUz": "Tovus yer yuzidagi eng chiroyli qushlardan biri.",
+      "next": "أَلْوَانُ رِيشِهِ مُخْtَلِفَةٌ: خَضْرَاءُ، وَ حَمْرَاءُ،  وَصَفْرَاءُ، وَ زَرْقَاءُ، وَ غَيْرُهَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَلْوَانُ رِيشِهِ مُخْتَلِفَةٌ: خَضْرَاءُ، وَ حَمْرَاءُ،  وَصَفْرَاءُ، وَ زَرْقَاءُ، وَ غَيْرُهَا.",
+      "translationUz": "Uning patlarining ranglari har xil: yashil, qizil, sariq, ko'k va boshqalar.",
+      "next": "اَلطَّاوُوسُ مَشْهُورٌ جِدًّا بِجَمَالِهِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلطَّاوُوسُ мَشْهُورٌ جِدًّا بِجَمَالِهِ.",
+      "translationUz": "Tovus o'zining go'zalligi bilan juda mashhur.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هُوَ الطَّاوُوسُ؟",
+    "كَيْفَ تُصَفُّ الطَّاوُوسُ بَيْنَ الطُّيُورِ؟",
+    "مَا هِيَ أَلْوَانُ رِيشِهِ؟",
+    "لِمَاذَا هُوَ مَشْهُورٌ؟",
+    "هَلْ رَأَيْتَ طَاوُوسًا مِنْ قَبْلُ؟"
+  ],
+  "context": {
+    "main_topic": "peacock_description",
+    "pattern": "beauty_ranking → feather_colors → fame_reason"
+  }
+}

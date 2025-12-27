@@ -10,8 +10,8 @@ export interface ICourseService {
     dto: CreateCourseDto,
     file?: Express.Multer.File,
   ): Promise<ResData<Course>>;
-  findAll(): Promise<ResData<Array<Course>>>;
-  findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean }>>;
+  findAll(): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>>;
+  findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>>;
   update(
     id: ID,
     dto: UpdateCourseDto,

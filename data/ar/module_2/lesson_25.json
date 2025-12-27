@@ -1,0 +1,62 @@
+{
+  "id": "ar_m2_l25",
+  "language": "ar",
+  "module": 2,
+  "lesson": 25,
+  "title": "اَلْوَلَدُ الْكَسْلَانُ",
+  "summary": "Ona va uyi Ahmad o'rtasida ko'p uxlash va xonasini tartibga solish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْوَلَدُ", "translationUz": "bola"},
+    {"word": "الْكَسْلَانُ", "translationUz": "dangasa"},
+    {"word": "تَنَامُ", "translationUz": "uxlaysan"},
+    {"word": "مَرِيضٌ", "translationUz": "kasal"},
+    {"word": "لَسْتُ", "translationUz": "men emasman"},
+    {"word": "مَتَى", "translationUz": "qachon"},
+    {"word": "تُرَتِّبُ", "translationUz": "tartibga solasan"},
+    {"word": "غُرْفَتَكَ", "translationUz": "xonangni"},
+    {"word": "اَلْيَوْمَ", "translationUz": "bugun"},
+    {"word": "يَوْمُ", "translationUz": "kuni"},
+    {"word": "الْأَحَدِ", "translationUz": "yakshanba"},
+    {"word": "سَأَنَامُ", "translationUz": "uxlayman"},
+    {"word": "ثُمَّ", "translationUz": "keyin"},
+    {"word": "بَعْدَ", "translationUz": "keyin"},
+    {"word": "سَأُرَتِّبُ", "translationUz": "tartibga solaman"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "لِمَاذَا تَنَامُ كَثِيرًا يَا أَحْمَدُ؟ هَلْ أَنْتَ مَرِيضٌ؟",
+      "translationUz": "Nega ko'p uxlayapsan, Ahmad? Kasalmisan?",
+      "next": "أَحْمَدُ: لَا، لَسْتُ مَرِيضًا يَا أُمِّي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لَا، لَسْتُ mَرِيضًا يَا أُمِّي.",
+      "translationUz": "Yo'q, kasal emasman, ona.",
+      "next": "اَلْأُمُّ: مَتَى تُرَتِّبُ غُرْفَتَكَ؟"
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "مَتَى تُرَتِّبُ غُرْفَتَكَ؟",
+      "translationUz": "Qachon xonangni tartibga solasan?",
+      "next": "أَحْمَدُ: اَلْيَوْمَ يَوْمُ الْأَحَدِ، سَأَنَامُ قَلِيلًا، ثُمَّ بَعْدَ الظُّهْرِ سَأُرَتِّبُ غُرْفَتِي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "اَلْيَوْمَ يَوْمُ الْأَحَدِ، سَأَنَامُ قَلِيلًا، ثُمَّ بَعْدَ الظُّهْرِ سَأُرَتِّبُ غُرْفَتِي.",
+      "translationUz": "Bugun yakshanba, men ozgina uxlayman, keyin tushdan keyin xonamni tartibga solaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا تَلْحَظُ الْأُمُّ عَلَى أَحْمَدَ؟",
+    "مَاذَا تَسْأَلُهُ بَعْدَ ذَلِكَ؟",
+    "كَيْفَ يُجِيبُ أَحْمَدُ؟",
+    "مَاذَا يَعِدُ بِفِعْلِهِ؟",
+    "هَلْ تُرَتِّبُ غُرْفَتَكَ كُلَّ يَوْمٍ؟"
+  ],
+  "context": {
+    "main_topic": "lazy_boy_conversation",
+    "pattern": "sleep_question_and_health → denial → room_organization_question → plan_and_promise"
+  }
+}

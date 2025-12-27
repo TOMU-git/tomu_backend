@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l31",
+  "language": "ar",
+  "module": 2,
+  "lesson": 31,
+  "title": "اَلْأَطْعِمَةُ الصِّيْنِيَّةُ",
+  "summary": "Kecha do'stlar bilan Xitoy restoraniga borish, lekin ovqatlarning juda achchiq bo'lishi va ozgina yeyish haqida.",
+  "vocabulary": [
+    {"word": "اَلْأَطْعِمَةُ", "translationUz": "ovqatlar"},
+    {"word": "الصِّيْنِيَّةُ", "translationUz": "xitoy"},
+    {"word": "أَمْسِ", "translationUz": "kecha"},
+    {"word": "ذَهَبْنَا", "translationUz": "bordik"},
+    {"word": "الْمَطْعَمِ", "translationUz": "restoran"},
+    {"word": "الصِّينِيِّ", "translationUz": "xitoy"},
+    {"word": "مَعَ", "translationUz": "bilan"},
+    {"word": "أَصْدِقَائِي", "translationUz": "do'stlarim bilan"},
+    {"word": "كَانَتْ", "translationUz": "edi (ayol)"},
+    {"word": "حَارَّةً", "translationUz": "achchiq (ayol)"},
+    {"word": "أَكَلْنَا", "translationUz": "yedik"},
+    {"word": "مِنْهَا", "translationUz": "undan"},
+    {"word": "ثُمَّ", "translationUz": "keyin"},
+    {"word": "رَجَعْنَا", "translationUz": "qaytdik"},
+    {"word": "بُيُوتِنَا", "translationUz": "uyimizga"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَمْسِ ذَهَبْنَا إِلَى الْمَطْعَمِ الصِّينِيِّ مَعَ أَصْدِقَائِي,",
+      "translationUz": "Kecha biz do'stlarim bilan Xitoy restoraniga bordik,",
+      "next": "وَ لَكِنَّ الْأَطْعِمَةَ الصِّينِيَّةَ كَانَتْ  حَارَّةً"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنَّ الْأَطْعِمَةَ الصِّينِيَّةَ كَانَتْ  حَارَّةً",
+      "translationUz": "lekin Xitoy ovqatlari juda achchiq edi",
+      "next": "وَ أَكَلْنَا مِنْهَا قَلِيلًا، ثُمَّ رَجَعْنَا إِلَى بُيُوتِنَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ أَكَلْنَا مِنْهَا قَلِيلًا، ثُمَّ رَجَعْنَا إِلَى بُيُوتِنَا.",
+      "translationUz": "va biz undan ozgina yedik, keyin uylarimizga qaytdik.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَتَى ذَهَبُوا إِلَى الْمَطْعَمِ؟",
+    "مَعَ مَنْ ذَهَبُوا؟",
+    "كَيْفَ كَانَتِ الْأَطْعِمَةُ الصِّينِيَّةُ؟",
+    "كَمْ أَكَلُوا مِنَ الطَّعَامِ؟",
+    "إِلَى أَيْنَ رَجَعُوا؟"
+  ],
+  "context": {
+    "main_topic": "chinese_food_experience",
+    "pattern": "restaurant_visit → food_spiciness → limited_eating_and_return"
+  }
+}

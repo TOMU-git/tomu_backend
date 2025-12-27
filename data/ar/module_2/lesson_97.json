@@ -1,0 +1,58 @@
+{
+  "id": "ar_m2_l97",
+  "language": "ar",
+  "module": 2,
+  "lesson": 98,
+  "title": "مَحَاصِيلُ فَصْلِ الرَّبِيعِ 1",
+  "summary": "Dehqonlarning hayoti, ularning hayvonlari, bahor faslida ekiladigan meva va sabzavotlar haqida tasvirlash.",
+  "vocabulary": [
+    { "word": "فَلَّاحٌ", "translationUz": "dehqon" },
+    { "word": "يَحْرِثُ", "translationUz": "haydaydi, shudgor qiladi" },
+    { "word": "أَرْضٌ", "translationUz": "yer, tuproq" },
+    { "word": "يَسْكُنُ", "translationUz": "yashaydi" },
+    { "word": "قَرْيَةٌ", "translationUz": "qishloq" },
+    { "word": "قَوِيٌّ", "translationUz": "kuchli" },
+    { "word": "يَجُرُّ", "translationUz": "tortadi" },
+    { "word": "مِحْرَاثٌ", "translationUz": "plug, omoch" },
+    { "word": "فَصْلُ", "translationUz": "fasl" },
+    { "word": "رَبِيعٌ", "translationUz": "bahor" },
+    { "word": "يَزْرَعُ", "translationUz": "ekadi" },
+    { "word": "شَمَّامٌ", "translationUz": "qovun" },
+    { "word": "بِطِّيخٌ", "translationUz": "tarvuz" },
+    { "word": "بَصَلٌ", "translationUz": "piyoz" },
+    { "word": "ثُّومٌ", "translationUz": "sarimsoq" },
+    { "word": "خُضْرَوَاتٌ", "translationUz": "sabzavotlar" },
+    { "word": "فَوَاكِهُ", "translationUz": "mevalar" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أُولَئِكَ الْفَلَّاحُونَ الَّذِينَ يَحْرِثُونَ الْأَرْضَ بِثَوْرِهِمْ، يَسْكُنُونَ فِي قَرْيَةٍ صَغِيرَةٍ.",
+      "translationUz": "Buqa bilan yer haydagan o‘sha dehqonlar, kichik bir qishloqda yashaydilar.",
+      "next": "ثَوْرُهُمْ قَوِيٌّ وَ يَجُرُّ الْمِحْرَاثَ بِسُرْعَةٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ثَوْرُهُمْ قَوِيٌّ وَ يَجُرُّ الْمِحْرَاثَ بِسُرْعَةٍ.",
+      "translationUz": "Ularning buqasi kuchli va plugni tez tortadi.",
+      "next": "الْآنَ فَصْلُ الرَّبِيعِ، وَالْفَلَّاحُونَ يَزْرَعُونَ الشَّمَّامَ وَ الْبِطِّيخَ وَ الْبَصَلَ وَ الثُّومَ وَ الطَّمَاطِمَ وَ الْبَاذِنْجَانَ وَ خُضْرَوَاتٍ وَ فَوَاكِهَ أُخْرَى."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "الْآنَ فَصْلُ الرَّبِيعِ، وَالْفَلَّاحُونَ يَزْرَعُونَ الشَّمَّامَ وَ الْبِطِّيخَ وَ الْبَصَلَ وَ الثُّومَ وَ الطَّمَاطِمَ وَ الْبَاذِنْجَانَ وَ خُضْرَوَاتٍ وَ فَوَاكِهَ أُخْرَى.",
+      "translationUz": "Endi bahor fasli, va dehqonlar qovun, tarvuz, piyoz, sarimsoq, pomidor, baqlajon va boshqa sabzavot va mevalarni ekishmoqda.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ حَيَاةُ الْفَلَّاحِ؟",
+    "مَا فَائِدَةُ الثَّوْرِ لِلْفَلَّاحِ؟",
+    "مَاذَا تَزْرَعُ فِي بُسْتَانِكَ؟",
+    "هَلْ زُرْتَ قَرْيَةً قَبْلَ هَذَا؟",
+    "لِمَاذَا الْبَذْرُ فِي الرَّبِيعِ؟"
+  ],
+  "context": {
+    "main_topic": "farmers_life_spring",
+    "pattern": "description_of_farmers_and_location → description_of_ox → description_of_season_and_crops"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "ar_m2_l30",
+  "language": "ar",
+  "module": 2,
+  "lesson": 30,
+  "title": "اَلْفُقَرَاءُ السُّعَدَاءُ",
+  "summary": "Kambag'allar boylar kabi yashamasliklari, kichik uylarda yashashiga qaramay baxtli bo'lishlari haqida.",
+  "vocabulary": [
+    {"word": "اَلْفُقَرَاءُ", "translationUz": "kambag'allar"},
+    {"word": "السُّعَدَاءُ", "translationUz": "baxtlilar"},
+    {"word": "لَيْسُوا", "translationUz": "ular emas"},
+    {"word": "كَالْأَغْنِيَاءِ", "translationUz": "boylar kabi"},
+    {"word": "يَعِيشُونَ", "translationUz": "yashaydilar"},
+    {"word": "مِثْلَهُمْ", "translationUz": "ular kabi"},
+    {"word": "بُيُوتٍ", "translationUz": "uylar"},
+    {"word": "كَبِيرَةٍ", "translationUz": "katta"},
+    {"word": "يَسْكُنُونَ", "translationUz": "yashaydilar"},
+    {"word": "بُيُوتِهِمِ", "translationUz": "ularning uylari"},
+    {"word": "الصَّغِيرَةِ", "translationUz": "kichik"},
+    {"word": "وَلَكِنَّهُمْ", "translationUz": "lekin ular"},
+    {"word": "سُعَدَاءُ", "translationUz": "baxtlilar"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ الْفُقَرَاءَ لَيْسُوا كَالْأَغْنِيَاءِ، وَلَا يَعِيشُونَ مِثْلَهُمْ فِي بُيُوتٍ كَبِيرَةٍ.",
+      "translationUz": "Albatta kambag'allar boylar kabi emas va ular kabi katta uylarda yashamaydilar.",
+      "next": " اَلْفُقَرَاءُ يَسْكُنُونَ فِي بُيُوتِهِمِ الصَّغِيرَةِ، وَ لَكِنَّهُمْ سُعَدَاءُ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " اَلْفُقَرَاءُ يَسْكُنُونَ فِي bُيُوتِهِمِ الصَّغِيرَةِ، وَ لَكِنَّهُمْ سُعَدَاءُ جِدًّا.",
+      "translationUz": "Kambag'allar o'zlarining kichik uylarida yashaydilar, lekin ular juda baxtlidirlar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا لَيْسَ الْفُقَرَاءُ؟",
+    "أَيْنَ يَعِيشُ الْأَغْنِيَاءُ؟",
+    "أَيْنَ يَسْكُنُ الْفُقَرَاءُ؟",
+    "كَيْفَ هُمْ الْفُقَرَاءُ؟",
+    "هَلْ الْبَيْتُ الْكَبِيرُ يَجْلِبُ السَّعَادَةَ؟"
+  ],
+  "context": {
+    "main_topic": "happy_poor_people",
+    "pattern": "comparison_with_rich → living_conditions_and_happiness"
+  }
+}

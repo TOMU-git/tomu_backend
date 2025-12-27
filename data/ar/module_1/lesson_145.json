@@ -1,0 +1,45 @@
+{
+  "id": "ar_m1_l145",
+  "language": "ar",
+  "module": 1,
+  "lesson": 145,
+  "title": "اَلشَّمْسُ و الْقَمَرُ",
+
+  "summary": "Quyosh va oy, ularning joylashuvi va Yer bilan aloqasi.",
+
+  "vocabulary": [
+    { "word": "شَمْسٌ", "translationUz": "quyosh" },
+    { "word": "قَمَرٌ", "translationUz": "oy" },
+    { "word": "سَمَاءٌ", "translationUz": "osmon" },
+    { "word": "نُجْمٌ", "translationUz": "yulduz" },
+    { "word": "ضَوْءٌ", "translationUz": "yorug‘lik" },
+    { "word": "حَرَارَةٌ", "translationUz": "harorat" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "الشَّمْسُ وَ الْقَمَرُ فِي السَّمَاءِ.",
+      "translationUz": "Quyosh va oy osmonning ichida.",
+      "next": "الشَّمْسُ نَجْمٌ كَبِيرٌ بَعِيدٌ عَنِ الْأَرْضِ."
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "الشَّمْسُ يُعْطِي الْأَرْضَ الضَّوْءَ وَ الْحَرَارَةَ.",
+      "translationUz": "Quyosh Yerga yorug‘lik va issiqlik beradi.",
+      "next": "وَالْقَمَرُ رَفِيقُ الْأَرْضِ لِأَنَّهُ قَرِيبٌ مِنْهَا."
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "الْقَمَرُ يَسَاعِدُ فِي الإضَاءَةِ لَيْلًا.",
+      "translationUz": "Oy kechasi yorug‘lik beradi.",
+      "next": "هَلْ تَرَى الشَّمْسَ وَ الْقَمَرَ فِي نَفْسِ الْوَقْتِ؟"
+    },
+    {
+      "speaker": "المُعَلِّمُ",
+      "text": "نَعَمْ أَرَى بَعْضَ الْمَرَّاتِ الشَّمْسَ وَ الْقَمَرَ مَعًا.",
+      "translationUz": "Ha, ba’zan men Quyosh va Oyni birga ko‘raman.",
+      "next": null
+    }
+  ]
+}

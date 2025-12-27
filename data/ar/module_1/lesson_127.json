@@ -1,0 +1,50 @@
+{
+  "id": "ar_m1_l127",
+  "language": "ar",
+  "module": 1,
+  "lesson": 127,
+  "title": "اَلْأَطْبَاقُ فِي الْمَطْبَخِ",
+
+  "summary": "Oshxona buyumlarini nomlash va ularni maqsadiga qarab ajratishni o‘rganish.",
+
+  "vocabulary": [
+    { "word": "طَبَقٌ", "translationUz": "tovoq" },
+    { "word": "كَعْكَةٌ", "translationUz": "tort" },
+    { "word": "سَلَطَةٌ", "translationUz": "salat" },
+    { "word": "مَطْبَخٌ", "translationUz": "oshxona" },
+    { "word": "أُمٌّ", "translationUz": "ona" },
+    { "word": "بِنْتٌ", "translationUz": "qiz" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الطِّفْلَةُ",
+      "text": "لِمَاذَا هَذَانِ الطَّبَقَانِ؟",
+      "translationUz": "Bu ikkita tovoq nima uchun?",
+      "next": "هَذَا لِلْكَعْكَةِ وَ ذَلِكَ لِلسَّلَطَةِ."
+    },
+    {
+      "speaker": "الأُمُّ",
+      "text": "هَذَا لِلْكَعْكَةِ وَ ذَلِكَ لِلسَّلَطَةِ.",
+      "translationUz": "Bu tort uchun, u esa salat uchun.",
+      "next": "أَنَا أَخَذْتُ الطَّبَقَ وَ الْكُوبَ."
+    },
+    {
+      "speaker": "الطِّفْلَةُ",
+      "text": "أَنَا أَخَذْتُ الطَّبَقَ وَ الْكُوبَ.",
+      "translationUz": "Men tovoq va stakanni oldim.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "لِمَاذَا هَذَا الطَّبَقُ؟",
+    "مَا هُوَ الْكُوبُ؟",
+    "هَلْ تُسْتَعْمَلُ هَذِهِ الطَّبَاقُ؟"
+  ],
+
+  "context": {
+    "main_topic": "kitchen objects",
+    "pattern": "question → answer → question → answer"
+  }
+}

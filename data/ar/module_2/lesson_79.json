@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l79",
+  "language": "ar",
+  "module": 2,
+  "lesson": 79,
+  "title": "قِطَّتِي الْكَسُولَةُ",
+  "summary": "Mushukni rangi va xatti-harakati bilan tavsiflash, 'ذَاتُ' (ega, sohib) iborasini qo‘llash, fe'lning hozirgi zamon shakllari va muntazam kun tartibini o‘rganish.",
+  "vocabulary": [
+    { "word": "قِطَّةٌ", "translationUz": "mushuk" },
+    { "word": "كَسُولٌ", "translationUz": "dam qaytaruvchi, yalqov" },
+    { "word": "ذَاتُ", "translationUz": "ega, sohib (ayollar uchun)" },
+    { "word": "لَوْنٌ", "translationUz": "rang" },
+    { "word": "أَسْوَدُ", "translationUz": "qora" },
+    { "word": "طَعَامٌ", "translationUz": "ovqat" },
+    { "word": "مِنْ ... إِلَى", "translationUz": "dan ... gacha" },
+    { "word": "الصَّبَاحِ", "translationUz": "ertalab" },
+    { "word": "الْمَسَاءِ", "translationUz": "kechqurun" },
+    { "word": "تَصِيدُ", "translationUz": "ovlaydi (ovlamoq)" },
+    { "word": "فَأْرٌ (ج: فِئْرَان)", "translationUz": "sichqon" },
+    { "word": "تَنَامُ", "translationUz": "uxlaydi (uxlamoq)" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَدَيَّ قِطَّةٌ جَمِيلَةٌ، ذَاتُ لَوْنٍ أَسْوَدَ.",
+      "translationUz": "Mening chiroyli, qora rangli mushugim bor.",
+      "next": "أُحِبُّهَا كَثِيرًا، وَ لَكِنَّهَا كَسُولَةٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أُحِبُّهَا كَثِيرًا، وَ لَكِنَّهَا كَسُولَةٌ جِدًّا.",
+      "translationUz": "Men uni juda yaxshi ko‘raman, lekin u juda yalqov.",
+      "next": "هِيَ تَأْكُلُ الطَّعَامَ مِنَ الصَّبَاحِ إِلَى الْمَسَاءِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هِيَ تَأْكُلُ الطَّعَامَ مِنَ الصَّبَاحِ إِلَى الْمَسَاءِ،",
+      "translationUz": "U ertalabdan kechgacha ovqat yeydi,",
+      "next": "وَ لَكِنَّهَا لَا تَصِيدُ الْفِئْرَانَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنَّهَا لَا تَصِيدُ الْفِئْرَانَ.",
+      "translationUz": "lekin sichqon ovlamaydi.",
+      "next": "وَ هِيَ تَنَامُ وَ تَأْكُلُ فَقَطْ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ هِيَ تَنَامُ وَ تَأْكُلُ فَقَطْ.",
+      "translationUz": "U faqat uxlaydi va yeydi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَفْعَلُ الْقِطُّ الْجَيِّدُ؟",
+    "هَلْ تُحِبُّ الْقِطَطَ؟",
+    "كَيْفَ تَعْتَبِرُ قِطَّكَ كَسُولًا؟",
+    "مَاذَا تَطْبُخُ لِقِطَّتِكَ؟",
+    "أَيْنَ تَنَامُ قِطَّتُكَ؟"
+  ],
+  "context": {
+    "main_topic": "describing_pets_habits",
+    "pattern": "narration_description → affection_with_contrast → eating_habit → negative_habit → final_summary"
+  }
+}   

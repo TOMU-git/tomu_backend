@@ -1,0 +1,68 @@
+{
+  "id": "ar_m2_l69",
+  "language": "ar",
+  "module": 2,
+  "lesson": 69,
+  "title": "مَكْتَبُ التَّرْجَمَةِ",
+  "summary": "Tarjima byurosida ishlash, uning Istambul shahridagi asosiy yo'lga qarashi va ba'zida Turkiya bosh vaziri korteji o'tishi haqida.",
+  "vocabulary": [
+    {"word": "مَكْتَبُ", "translationUz": "byuro, ofis"},
+    {"word": "التَّرْجَمَةِ", "translationUz": "tarjima"},
+    {"word": "أَعْمَلُ", "translationUz": "ishlayman"},
+    {"word": "يُطِلُّ", "translationUz": "qaraydi"},
+    {"word": "عَلَى", "translationUz": "ga"},
+    {"word": "الطَّرِيقِ", "translationUz": "yo'l"},
+    {"word": "أَحَدُ", "translationUz": "biri"},
+    {"word": "الطُّرُقِ", "translationUz": "yo'llar"},
+    {"word": "الْأَسَاسِيَّةِ", "translationUz": "asosiy"},
+    {"word": "مَدِينَةِ", "translationUz": "shahar"},
+    {"word": "إِسْطَنْبُولَ", "translationUz": "Istanbul"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "بَعْضِ", "translationUz": "ba'zi"},
+    {"word": "الْأَحْيَانِ", "translationUz": "vaqtlar"},
+    {"word": "يَمُرُّ", "translationUz": "o'tadi"},
+    {"word": "بِهِ", "translationUz": "uning yonidan"},
+    {"word": "مَوْكِبُ", "translationUz": "kortej, qator"},
+    {"word": "رَئِيسِ", "translationUz": "bosh"},
+    {"word": "الْوُزَرَاءِ", "translationUz": "vazirlar"},
+    {"word": "جُمْهُورِيَّةِ", "translationUz": "respublika"},
+    {"word": "تُرْكِيَا", "translationUz": "Turkiya"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أَعْمَلُ فِي مَكْتَبِ تَرْجَمَةٍ.",
+      "translationUz": "Men tarjima byurosida ishlayman.",
+      "next": "مَكْتَبِي يُطِلُّ عَلَى الطَّرِيقِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مَكْتَبِي يُطِلُّ عَلَى الطَّرِيقِ،",
+      "translationUz": "Mening ofisim yo'lga qaraydi,",
+      "next": " وَ هُوَ أَحَدُ الطُّرُقِ الْأَسَاسِيَّةِ فِي مَدِينَةِ إِسْطَنْبُولَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ هُوَ أَحَدُ الطُّرُقِ الْأَسَاسِيَّةِ فِي مَدِينَةِ إِsْطَنْبُولَ.",
+      "translationUz": "va u Istanbul shahridagi asosiy yo'llardan biridir.",
+      "next": "لِذَلِكَ، فِي بَعْضِ الْأَحْيَانِ، يَمُرُّ بِهِ مَوْكِبُ رَئِيسِ الْوُزَرَاءِ لِجُمْهُورِيَّةِ تُرْكِيَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِذَلِكَ، فِي بَعْضِ الْأَحْيَانِ، يَمُرُّ بِهِ مَوْكِبُ رَئِيسِ الْوُزَرَاءِ لِجُمْهُورِيَّةِ تُرْكِيَا.",
+      "translationUz": "Shuning uchun ba'zida Turkiya Respublikasi bosh vazirining korteji uning yonidan o'tadi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَعْمَلُ الْكَاتِبُ؟",
+    "أَيْنَ يُطِلُّ مَكْتَبُهُ؟",
+    "مَا هُوَ هَذَا الطَّرِيقُ؟",
+    "مَاذَا يَحْدُثُ فِي بَعْضِ الْأَحْيَانِ؟",
+    "مَنْ يَمُرُّ بِالطَّرِيقِ؟"
+  ],
+  "context": {
+    "main_topic": "translation_office_description",
+    "pattern": "workplace → office_location → road_importance → occasional_event"
+  }
+}

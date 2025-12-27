@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l125",
+  "language": "ar",
+  "module": 1,
+  "lesson": 125,
+  "title": "الْحُوتُ الأَزْرَقُ",
+
+  "summary": "Hayvonlar haqida gapirish, ularning qayerda yashashi va qanday ekanini aytish.",
+
+  "vocabulary": [
+    { "word": "حُوتٌ", "translationUz": "kit" },
+    { "word": "أَزْرَقُ", "translationUz": "ko‘k" },
+    { "word": "مُحِيطٌ", "translationUz": "okean" },
+    { "word": "حَيَوَانٌ", "translationUz": "hayvon" },
+    { "word": "كَبِيرٌ", "translationUz": "katta" },
+    { "word": "يَعِيشُ", "translationUz": "yashaydi" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "مَا هَذَا؟",
+      "translationUz": "Bu nima?",
+      "next": "هَذَا حُوتٌ أَزْرَقُ."
+    },
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "هَذَا حُوتٌ أَزْرَقُ.",
+      "translationUz": "Bu ko‘k kit.",
+      "next": "هَلْ هُوَ كَبِيرٌ؟"
+    },
+    {
+      "speaker": "الطَّالِبُ",
+      "text": "هَلْ هُوَ كَبِيرٌ؟",
+      "translationUz": "U kattami?",
+      "next": "نَعَمْ، كَبِيرٌ جِدًّا."
+    },
+    {
+      "speaker": "الْمُعَلِّمُ",
+      "text": "نَعَمْ، كَبِيرٌ جِدًّا.",
+      "translationUz": "Ha, juda katta.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "أَيْنَ يَعِيشُ الْحُوتُ؟",
+    "هَلْ تُحِبُّ الْحَيَوَانَاتِ؟",
+    "مَا أَكْبَرُ حَيَوَانٍ؟"
+  ],
+
+  "context": {
+    "main_topic": "animals",
+    "pattern": "question → answer → question → answer"
+  }
+}

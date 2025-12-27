@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l132",
+  "language": "ar",
+  "module": 1,
+  "lesson": 132,
+  "title": "اَلْبِنْطَالُ الجَدِيدُ",
+
+  "summary": "Yangi kiyim sotib olish va narxini so‘rash haqida oddiy dialoglar.",
+
+  "vocabulary": [
+    { "word": "بِنْطَالٌ", "translationUz": "shim" },
+    { "word": "جَدِيدٌ", "translationUz": "yangi" },
+    { "word": "مَحَلٌّ", "translationUz": "do‘kon" },
+    { "word": "سِعْرٌ", "translationUz": "narx" },
+    { "word": "أُرِيدُ", "translationUz": "xohlayman" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "عَلِيٌّ",
+      "text": "هَلِ الْبِنْطَالُ جَدِيدٌ؟",
+      "translationUz": "Shim yangi emasmi?",
+      "next": "نَعَمْ، إِشْتَرَيْتُهُ مِنْ مَحَلِّ الْمَلَابِسِ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "نَعَمْ، إِشْتَرَيْتُهُ مِنْ مَحَلِّ الْمَلَابِسِ.",
+      "translationUz": "Ha, uni do‘kondan oldim.",
+      "next": "بِكَمِ إِشْتَرَيْتَهُ؟"
+    },
+    {
+      "speaker": "عَلِيٌّ",
+      "text": "بِكَمِ إِشْتَرَيْتَهُ؟",
+      "translationUz": "Qancha bahoga olding?",
+      "next": "سِعْرُهُ ثَمَانُونَ جُنَيْهًا."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "سِعْرُهُ ثَمَانُونَ جُنَيْهًا.",
+      "translationUz": "Narxi 80 juneyh.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "مِنْ أَيْنَ شَرَيْتَهُ؟",
+    "هَلْ لَهُ لَوْنٌ جَمِيلٌ؟",
+    "هَلْ تُرِيدُ شِمَالاً مِثْلَهُ؟"
+  ],
+
+  "context": {
+    "main_topic": "clothes shopping",
+    "pattern": "question → answer → question → answer"
+  }
+}

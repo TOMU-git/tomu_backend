@@ -1,0 +1,71 @@
+{
+  "id": "ar_m2_l73",
+  "language": "ar",
+  "module": 2,
+  "lesson": 73,
+  "title": "هِوَايَتِي زِرَاعَةُ الزُّهُورِ",
+  "summary": "Uyning yonidagi kichik bog'chada gullar ekish, haftada ikki marta sug'orish va gullarni sotmaslik haqida.",
+  "vocabulary": [
+    {"word": "هِوَايَتِي", "translationUz": "mening hobbiyim"},
+    {"word": "زِرَاعَةُ", "translationUz": "ekish, yetishtirish"},
+    {"word": "الزُّهُورِ", "translationUz": "gullar"},
+    {"word": "لَدَيَّ", "translationUz": "menda bor"},
+    {"word": "بُسْتَانٌ", "translationUz": "bog'cha"},
+    {"word": "صَغِيرٌ", "translationUz": "kichik"},
+    {"word": "بِجَانِبِ", "translationUz": "yonida"},
+    {"word": "بَيْتِي", "translationUz": "mening uyim"},
+    {"word": "لَسْتُ", "translationUz": "emasman"},
+    {"word": "بُسْتَانِيًّا", "translationUz": "bog'bon"},
+    {"word": "الْمُفَضَّلَةُ", "translationUz": "sevimli"},
+    {"word": "أَزْرَعُ", "translationUz": "ekaman"},
+    {"word": "وُرُودًا", "translationUz": "atirgullar"},
+    {"word": "بَنَفْسَجًا", "translationUz": "benafsha"},
+    {"word": "رَيْحَانًا", "translationUz": "rayhon"},
+    {"word": "زُهُورًا", "translationUz": "gullar"},
+    {"word": "أُخْرَى", "translationUz": "boshqa"},
+    {"word": "أَسْقِيهَا", "translationUz": "ularni sug'oraman"},
+    {"word": "الْأُسْبُوعِ", "translationUz": "hafta"},
+    {"word": "مَرَّتَيْنِ", "translationUz": "ikki marta"},
+    {"word": "أُحِبُّ", "translationUz": "sevaman"},
+    {"word": "زُهُورِي", "translationUz": "gullarimni"},
+    {"word": "لَا أَبِيعُهَا", "translationUz": "sotmayman"},
+    {"word": "لِأَحَدٍ", "translationUz": "hech kimga"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَدَيَّ بُسْتَانٌ صَغِيرٌ بِجَانِبِ بَيْتِي.",
+      "translationUz": "Mening uyimning yonida kichik bog'cham bor.",
+      "next": "أَنَا لَسْتُ بُسْتَانِيًّا، وَ لَكِنَّ زِرَاعَةَ الزُّهُورِ هِوَايَتِي الْمُفَضَّلَةُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا لَسْتُ بُسْتَانِيًّا، وَ لَكِنَّ زِرَاعَةَ الزُّهُورِ hِوَايَتِي الْمُفَضَّلَةُ.",
+      "translationUz": "Men bog'bon emasman, lekin gullar ekish mening sevimli hobbiyim.",
+      "next": "أَنَا أَزْرَعُ فِي بُسْتَانِي وُرُودًا وَ بَنَفْسَجًا وَ رَيْحَانًا  وَ زُهُورًا أُخْرَى، وَ أَسْقِيهَا فِي الْأُسْبُوعِ مَرَّتَيْنِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أَزْرَعُ فِي بُسْتَانِي وُرُودًا وَ بَنَفْسَجًا وَ رَيْحَانًا  وَ زُهُورًا أُخْرَى، وَ أَسْقِيهَا فِي الْأُسْبُوعِ mَرَّتَيْنِ.",
+      "translationUz": "Men bog'chimda atirgul, benafsha, rayhon va boshqa gullarni ekaman va ularni haftada ikki marta sug'oraman.",
+      "next": "أُحِبُّ زُهُورِي وَ لَا أَبِيعُهَا  لِأَحَدٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أُحِبُّ زُهُورِي وَ لَا أَبِيعُهَا  لِأَحَدٍ.",
+      "translationUz": "Men gullarimni sevaman va ularni hech kimga sotmayman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَقَعُ الْبُسْتَانُ؟",
+    "هَلْ هُوَ بُسْتَانِيٌّ؟",
+    "مَا هِيَ هِوَايَتُهُ؟",
+    "مَاذَا يَزْرَعُ فِي بُسْتَانِهِ؟",
+    "كَمْ مَرَّةً يَسْقِي زُهُورَهُ؟"
+  ],
+  "context": {
+    "main_topic": "flower_gardening_hobby",
+    "pattern": "garden_location → hobby_description → flowers_planted → watering_schedule → love_for_flowers"
+  }
+}

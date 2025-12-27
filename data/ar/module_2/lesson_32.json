@@ -1,0 +1,61 @@
+{
+  "id": "ar_m2_l32",
+  "language": "ar",
+  "module": 2,
+  "lesson": 32,
+  "title": "اَلسُّلَحْفَاةُ",
+  "summary": "Toshbaqalarning cho'l va o'rmonlarda yashashi, ba'zilari dengizda bo'lishi, sekin yurishi, lekin aqlli va sabrli bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "اَلسُّلَحْفَاةُ", "translationUz": "toshbaqa"},
+    {"word": "أَكْثَرُ", "translationUz": "aksariyat"},
+    {"word": "السَّلَاحِفِ", "translationUz": "toshbaqalar"},
+    {"word": "تَعِيشُ", "translationUz": "yashaydi"},
+    {"word": "الْغَابَاتِ", "translationUz": "o'rmonlar"},
+    {"word": "بَعْضُهَا", "translationUz": "ularning ba'zilari"},
+    {"word": "الْبِحَارِ", "translationUz": "dengizlar"},
+    {"word": "تَمْشِي", "translationUz": "yuradi"},
+    {"word": "بِبُطْءٍ", "translationUz": "sekinlik bilan"},
+    {"word": "ذَكِيَّةٌ", "translationUz": "aqlli (ayol)"},
+    {"word": "صَبُورَةٌ", "translationUz": "sabrli (ayol)"},
+    {"word": "تَأْكُلُ", "translationUz": "yeydi"},
+    {"word": "الْأَعْشَابَ", "translationUz": "o'tlar"},
+    {"word": "الْخُضْرَوَاتِ", "translationUz": "sabzavotlar"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَكْثَرُ السَّلَاحِفِ تَعِيشُ فِي الصَّحَارَى وَ الْغَابَاتِ،",
+      "translationUz": "Aksariyat toshbaqalar cho'l va o'rmonlarda yashaydilar,",
+      "next": "وَ بَعْضُهَا فِي الْبِحَارِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ بَعْضُهَا فِي الْبِحَارِ.",
+      "translationUz": "va ba'zilari dengizlarda.",
+      "next": " اَلسُّلَحْفَاةُ تَمْشِي بِبُطْءٍ، وَ لَكِنَّهَا ذَكِيَّةٌ وَ صَبُورَةٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " اَلسُّلَحْفَاةُ تَمْشِي بِبُطْءٍ، وَ لَكِنَّهَا ذَكِيَّةٌ وَ صَبُورَةٌ جِدًّا.",
+      "translationUz": "Toshbaqa sekin yuradi, lekin u juda aqlli va sabrlidir.",
+      "next": "هِيَ تَأْكُلُ الْأَعْشَابَ وَ الْخُضْرَوَاتِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هِيَ تَأْكُلُ الْأَعْشَابَ وَ الْخُضْرَوَاتِ.",
+      "translationUz": "U o'tlar va sabzavotlar yeydi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ تَعِيشُ أَكْثَرُ السَّلَاحِفِ؟",
+    "أَيْنَ تَعِيشُ بَعْضُ السَّلَاحِفِ؟",
+    "كَيْفَ تَمْشِي السُّلَحْفَاةُ؟",
+    "مَا صِفَاتُهَا؟",
+    "مَاذَا تَأْكُلُ السُّلَحْفَاةُ؟"
+  ],
+  "context": {
+    "main_topic": "turtle_description",
+    "pattern": "habitats → sea_turtles → walking_speed_and_qualities → diet"
+  }
+}

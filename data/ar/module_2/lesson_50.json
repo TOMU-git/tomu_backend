@@ -1,0 +1,55 @@
+{
+  "id": "ar_m2_l50",
+  "language": "ar",
+  "module": 2,
+  "lesson": 50,
+  "title": "مَخْبَزُ حَيِّنَا",
+  "summary": "Mahallamizdagi nonvoyxonaning lazzatli noni bilan mashhurligi, unda o'n besh nonvoy ishlashi va mahalla aholisining uni yoqtirishi haqida.",
+  "vocabulary": [
+    {"word": "مَخْبَزُ", "translationUz": "nonvoyxona"},
+    {"word": "حَيِّنَا", "translationUz": "bizning mahallamiz"},
+    {"word": "هَذَا", "translationUz": "bu"},
+    {"word": "الَّذِي", "translationUz": "qaysi"},
+    {"word": "مَشْهُورٌ", "translationUz": "mashhur"},
+    {"word": "بِخُبْزِهِ", "translationUz": "uning noni bilan"},
+    {"word": "اللَّذِيذِ", "translationUz": "lazzatli"},
+    {"word": "وَفِيهِ", "translationUz": "va unda"},
+    {"word": "يَعْمَلُ", "translationUz": "ishlaydi"},
+    {"word": "خَمْسَةَ عَشَرَ", "translationUz": "o'n besh"},
+    {"word": "خَبَّازًا", "translationUz": "nonvoy"},
+    {"word": "سُكَّانُ", "translationUz": "aholisi"},
+    {"word": "يُحِبُّونَ", "translationUz": "yoqtirdilar"},
+    {"word": "وَخُبْزَهُ", "translationUz": "va uning nonini"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ هَذَا الْمَخْبَزَ الَّذِي فِي حَيِّنا مَشْهُورٌ جِدًّا بِخُبْزِهِ اللَّذِيذِ،",
+      "translationUz": "Albatta bu bizning mahallamizdagi nonvoyxona nonining lazzatliligi bilan juda mashhur,",
+      "next": "وَفِيهِ يَعْمَلُ خَمْسَةَ عَشَرَ خَبَّازًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَفِيهِ يَعْمَلُ خَمْسَةَ عَشَرَ خَبَّازًا.",
+      "translationUz": "va unda o'n besh nonvoy ishlaydi.",
+      "next": "سُكَّانُ حَيِّنا يُحِبُّونَ الْمَخْبَزَ وَخُبْزَهُ اللَّذِيذَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "سُكَّانُ حَيِّنا يُحِبُّونَ الْمَخْبَزَ وَخُبْزَهُ اللَّذِيذَ.",
+      "translationUz": "Bizning mahalla aholisi nonvoyxonani va uning lazzatli nonini yaxshi ko'radilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَقَعُ الْمَخْبَزُ؟",
+    "لِمَاذَا هُوَ مَشْهُورٌ؟",
+    "كَمْ خَبَّازًا يَعْمَلُ فِيهِ؟",
+    "مَاذَا يَفْعَلُ سُكَّانُ الْحَيِّ؟",
+    "هَلْ فِي حَيِّكَ مَخْبَزٌ مَشْهُورٌ؟"
+  ],
+  "context": {
+    "main_topic": "neighborhood_bakery",
+    "pattern": "bakery_fame → workers_count → residents_appreciation"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l121",
+  "language": "ar",
+  "module": 1,
+  "lesson": 121,
+  "title": "رِحْلَةٌ فِي الْمُحِيطِ",
+
+  "summary": "Sayohat haqida gapirish, qayerda bo‘lganini va kim bilan borganini sodda savol-javoblar orqali aytish.",
+
+  "vocabulary": [
+    { "word": "رِحْلَةٌ", "translationUz": "sayohat" },
+    { "word": "مُحِيطٌ", "translationUz": "okean" },
+    { "word": "سَافَرَ", "translationUz": "sayohat qildi" },
+    { "word": "أُسْرَةٌ", "translationUz": "oila" },
+    { "word": "أَيْنَ", "translationUz": "qayerda" },
+    { "word": "نَعَمْ", "translationUz": "ha" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "سَلِيمٌ",
+      "text": "أَيْنَ كُنْتَ يَا كَرِيمُ؟",
+      "translationUz": "Qayerda eding, Karim?",
+      "next": "كُنْتُ فِي رِحْلَةٍ فِي الْمُحِيطِ."
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "كُنْتُ فِي رِحْلَةٍ فِي الْمُحِيطِ.",
+      "translationUz": "Men okeanda sayohatda edim.",
+      "next": "هَلْ سَافَرْتَ مَعَ أُسْرَتِكَ؟"
+    },
+    {
+      "speaker": "سَلِيمٌ",
+      "text": "هَلْ سَافَرْتَ مَعَ أُسْرَتِكَ؟",
+      "translationUz": "Oilang bilan sayohat qildingmi?",
+      "next": "نَعَمْ، سَافَرْتُ مَعَ أُسْرَتِي."
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "نَعَمْ، سَافَرْتُ مَعَ أُسْرَتِي.",
+      "translationUz": "Ha, oilam bilan sayohat qildim.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تُحِبُّ السَّفَرَ؟",
+    "أَيْنَ تُسَافِرُ عَادَةً؟",
+    "مَعَ مَنْ تُسَافِرُ؟"
+  ],
+
+  "context": {
+    "main_topic": "travel",
+    "pattern": "question → answer → question → answer"
+  }
+}

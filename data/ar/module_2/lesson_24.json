@@ -1,0 +1,68 @@
+{
+  "id": "ar_m2_l24",
+  "language": "ar",
+  "module": 2,
+  "lesson": 24,
+  "title": "حِوَارٌ عَنِ الْإِخْوَةِ",
+  "summary": "Laylo va Maryam o'rtasida aka-uka va opa-singillari haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "حِوَارٌ", "translationUz": "suhbat"},
+    {"word": "عَنِ", "translationUz": "haqida"},
+    {"word": "الْإِخْوَةِ", "translationUz": "aka-ukalar"},
+    {"word": "لَدَيْكِ", "translationUz": "sizda (ayol)"},
+    {"word": "إِخْوَةٌ", "translationUz": "aka-ukalar"},
+    {"word": "لَدَيَّ", "translationUz": "menda"},
+    {"word": "أَرْبَعَةُ", "translationUz": "to'rtta"},
+    {"word": "يَدْرُسُونَ", "translationUz": "o'qiydilar"},
+    {"word": "فَقَطْ", "translationUz": "faqat"},
+    {"word": "أَخِي", "translationUz": "mening akam"},
+    {"word": "الْكَبِيرُ", "translationUz": "katta"},
+    {"word": "لَيْسَ", "translationUz": "emas"},
+    {"word": "بَلْ", "translationUz": "balki"},
+    {"word": "أُخْتٌ", "translationUz": "opa-singil"},
+    {"word": "وَاحِدَةٌ", "translationUz": "bitta"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "لَيْلَى",
+      "text": "هَلْ لَدَيْكِ إِخْوَةٌ يَا مَرْيَمُ؟",
+      "translationUz": "Sizda aka-ukalar bormi, Maryam?",
+      "next": "مَرْيَمُ: نَعَم، لَدَيَّ أَرْبَعَةُ إِخْوَةٍ."
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "نَعَم، لَدَيَّ أَرْبَعَةُ إِخْوَةٍ.",
+      "translationUz": "Ha, menda to'rtta aka-uka bor.",
+      "next": "لَيْلَى: هَلْ هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟"
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "هَلْ هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟",
+      "translationUz": "Ular maktabda o'qiydilarmi?",
+      "next": "مَرْيَمُ: نَعَم، فَقَطْ أَخِي الْكَبِيرُ يَدْرُسُ فِي الْجَامِعَةِ. وَ هَلْ لَدَيْكِ أَيْضًا إِخْوَةٌ يَا لَيْلَى؟"
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "نَعَم، فَقَطْ أَخِي الْكَبِيرُ يَدْرُسُ fī al-jāmiʿah. وَ هَلْ لَدَيْكِ أَيْضًا إِخْوَةٌ يَا لَيْلَى؟",
+      "translationUz": "Ha, faqat mening katta akam universitetda o'qiydi. Va sizda ham aka-ukalar bormi, Laylo?",
+      "next": "لَيْلَى: لَا، لَيْسَ لَدَيَّ إِخْوَةٌ، بَلْ أُخْتٌ وَاحِدَةٌ فَقَطْ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "لَا، لَيْسَ لَدَيَّ إِخْوَةٌ، بَلْ أُخْتٌ وَاحِدَةٌ فَقَطْ.",
+      "translationUz": "Yo'q, menda aka-ukalar yo'q, balki faqat bitta opa-singilim bor.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ عَدَدُ إِخْوَةِ مَرْيَمَ؟",
+    "أَيْنَ يَدْرُسُ أَخُوهَا الْكَبِيرُ؟",
+    "مَاذَا تَسْأَلُ مَرْيَمُ لَيْلَى؟",
+    "هَلْ لَدَى لَيْلَى إِخْوَةٌ؟",
+    "مَاذَا لَدَيْهَا بَدَلًا مِنَ الْإِخْوَةِ؟"
+  ],
+  "context": {
+    "main_topic": "siblings_conversation",
+    "pattern": "siblings_question → number_answer → school_question → clarification_and_return_question → different_situation"
+  }
+}

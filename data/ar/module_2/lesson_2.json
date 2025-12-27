@@ -1,0 +1,61 @@
+{
+  "id": "ar_m2_l2",
+  "language": "ar",
+  "module": 2,
+  "lesson": 2,
+  "title": "وَ إِيْرَانُ",
+  "summary": "Pokiston va Eronning joylashuvi, go'zalligi va turizm imkoniyatlari haqida.",
+  "vocabulary": [
+    {"word": "بَاكِسْتَانُ", "translationUz": "Pokiston"},
+    {"word": "إِيْرَانُ", "translationUz": "Eron"},
+    {"word": "بَلَدَانِ", "translationUz": "ikki mamlakat"},
+    {"word": "جَمِيلَانِ", "translationUz": "go'zal (ikkita)"},
+    {"word": "هَذَانِ", "translationUz": "bu ikkita"},
+    {"word": "الْبَلَدَانِ", "translationUz": "ikki mamlakat"},
+    {"word": "قَارَّةِ", "translationUz": "qit'a"},
+    {"word": "آسِيَا", "translationUz": "Osiyo"},
+    {"word": "الْأَمَاكِنِ", "translationUz": "joylar"},
+    {"word": "الْمَشْهُورَةِ", "translationUz": "mashhur"},
+    {"word": "بِالسِّيَاحَةِ", "translationUz": "turizm bilan"},
+    {"word": "لَهُمَا", "translationUz": "ular uchun (ikkalasi)"},
+    {"word": "طَبِيعَةٌ", "translationUz": "tabiat"},
+    {"word": "خَاصَّةٌ", "translationUz": "maxsus, o'ziga xos"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بَاكِسْتَانُ وَ إِيْرَانُ بَلَدَانِ جَمِيلَانِ.",
+      "translationUz": "Pokiston va Eron ikki go'zal mamlakat.",
+      "next": "هَذَانِ الْبَلَدَانِ فِي قَارَّةِ آسِيَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هَذَانِ الْبَلَدَانِ فِي قَارَّةِ آسِيَا.",
+      "translationUz": "Bu ikki mamlakat Osiyo qit'asida.",
+      "next": " هُمَا مِنَ الْأَمَاكِنِ الْمَشْهُورَةِ بِالسِّيَاحَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " هُمَا مِنَ الْأَمَاكِنِ الْمَشْهُورَةِ بِالسِّيَاحَةِ.",
+      "translationUz": "Ular turizm bilan mashhur joylardan.",
+      "next": " لَهُمَا طَبِيعَةٌ خَاصَّةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لَهُمَا طَبِيعَةٌ خَاصَّةٌ.",
+      "translationUz": "Ularning o'ziga xos tabiati bor.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ تَقَعُ بَاكِسْتَانُ وَ إِيرَانُ؟",
+    "كَيْفَ هُمَا هَذَانِ الْبَلَدَانِ؟",
+    "لِمَاذَا هُمَا مَشْهُورَانِ؟",
+    "مَاذَا يَمْتَازَانِ بِهِ؟",
+    "هَلْ زُرْتَ أَحَدَ هَذَيْنِ الْبَلَدَيْنِ؟"
+  ],
+  "context": {
+    "main_topic": "countries_description",
+    "pattern": "beauty_description → location → tourism_fame → special_nature"
+  }
+}

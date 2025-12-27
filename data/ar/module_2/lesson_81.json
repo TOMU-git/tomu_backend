@@ -1,0 +1,55 @@
+{
+  "id": "ar_m2_l81",
+  "language": "ar",
+  "module": 2,
+  "lesson": 81,
+  "title": "وَجْبَةٌ شَهِيَّةٌ 2",
+  "summary": "Maqtov va poklanishni davom ettirish, 'أَمْهَرُ' (eng mahoratli) daraja shakli va 'مِنِّي' (mendan) qiyoslashni o‘rganish.",
+  "vocabulary": [
+    { "word": "سَلَطَةٌ", "translationUz": "salat" },
+    { "word": "لَذِيذٌ", "translationUz": "mazali" },
+    { "word": "كَمَا تَعْرِفُ", "translationUz": "bilganingdek" },
+    { "word": "أَمْهَرُ", "translationUz": "eng mahoratli, eng mohir" },
+    { "word": "طَبَّاخَةٌ", "translationUz": "oshpaz (ayol)" },
+    { "word": "مَنْ", "translationUz": "kim (nisbiy olmosh)" },
+    { "word": "يَطْبُخُ", "translationUz": "pishiradi (pishirmoq)" },
+    { "word": "مِنِّي", "translationUz": "mendan" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "سَلَطَتُكِ أَيْضًا لَذِيذَةٌ جِدًّا.",
+      "translationUz": "Sening salating ham juda mazali.",
+      "next": "كَمَا تَعْرِفُ، أَنَا أَمْهَرُ طَبَّاخَةٍ فِي بَيْتِنَا."
+    },
+    {
+      "speaker": "اَلْبِنْتُ",
+      "text": "كَمَا تَعْرِفُ، أَنَا أَمْهَرُ طَبَّاخَةٍ فِي بَيْتِنَا.",
+      "translationUz": "Bilganingdek, men uyimizdagi eng mohir oshpazman.",
+      "next": "نَعَمْ، أَنْتِ أَمْهَرُ مَنْ يَطْبُخُ الطَّعَامَ."
+    },
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "نَعَمْ، أَنْتِ أَمْهَرُ مَنْ يَطْبُخُ الطَّعَامَ.",
+      "translationUz": "Ha, sen ovqat pishiradiganlarning eng mohirisan.",
+      "next": "وَلَكِنَّ أُمِّي أَمْهَرُ مِنِّي."
+    },
+    {
+      "speaker": "اَلْبِنْتُ",
+      "text": "وَلَكِنَّ أُمِّي أَمْهَرُ مِنِّي.",
+      "translationUz": "Lekin onam mendan ham mohirroq.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ يَطْبُخُ فِي بَيْتِكُمْ عَادَةً؟",
+    "هَلْ أُمُّكَ طَبَّاخَةٌ جَيِّدَةٌ؟",
+    "مَاذَا تَطْبُخُ أُمُّكَ؟",
+    "هَلْ تَتَعَلَّمِينَ الطَّبْخَ مِنْ أُمِّكِ؟",
+    "لِمَاذَا تُحِبُّينَ الطَّبْخَ؟"
+  ],
+  "context": {
+    "main_topic": "comparisons_humility",
+    "pattern": "additional_compliment → claim_of_skill → confirmation_of_skill → humility_by_comparison"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "ar_m1_l149",
+  "language": "ar",
+  "module": 1,
+  "lesson": 149,
+  "title": "غُرَفُ بَيْتِنَا",
+  "summary": "Uydagi besh xonaning turi va ularning xususiyatlari haqida tavsif.",
+  "vocabulary": [
+    {"word": "غُرَفُ", "translationUz": "xonalar"},
+    {"word": "غُرْفَةُ", "translationUz": "xona"},
+    {"word": "الجُلُوسِ", "translationUz": "o'tirish"},
+    {"word": "النَّوْمِ", "translationUz": "uxlash"},
+    {"word": "الطَّعَامِ", "translationUz": "ovqatlanish"},
+    {"word": "لِلدِّرَاسَةِ", "translationUz": "o'qish uchun"},
+    {"word": "الأَطْفَالِ", "translationUz": "bolalar"},
+    {"word": "مُنِيرَةٌ", "translationUz": "yorug'"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي بَيْتِنَا خَمْسُ غُرَفٍ، وَ هِيَ:",
+      "translationUz": "Bizning uyimizda besh xona bor va ular:",
+      "next": "غُرْفَةُ الجُلُوسِ، وَ غُرْفَةُ النَّوْمِ، وَ غُرْفَةُ الطَّعَامِ، وَ غُرْفَةٌ لِلدِّرَاسَةِ، وَ غُرْفَةُ نَوْمِ الأَطْفَالِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "غُرْفَةُ الجُلُوسِ، وَ غُرْفَةُ النَّوْمِ، وَ غُرْفَةُ الطَّعَامِ، وَ غُرْفَةٌ لِلدِّرَاسَةِ، وَ غُرْفَةُ نَوْمِ الأَطْفَالِ.",
+      "translationUz": "Mehmonxona, yotoqxona, oshxona, o'qish xonasi va bolalar yotoqxonasi.",
+      "next": "غُرَفُ بَيْتِنَا مُنِيرَةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "غُرَفُ بَيْتِنَا مُنِيرَةٌ.",
+      "translationUz": "Bizning uyimizning xonalari yorug'.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ غُرْفَةً فِي الْبَيْتِ؟",
+    "مَا هِيَ أَسْمَاءُ الْغُرَفِ؟",
+    "أَيْنَ تَجْلِسُ مَعَ الْعَائِلَةِ؟",
+    "أَيْنَ تَنَامُ فِي الْبَيْتِ؟",
+    "هَلْ غُرَفُ بَيْتِكَ مُنِيرَةٌ؟"
+  ],
+  "context": {
+    "main_topic": "house_rooms_description",
+    "pattern": "room_count_introduction → room_listing → room_quality"
+  }
+}

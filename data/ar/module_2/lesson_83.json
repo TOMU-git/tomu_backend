@@ -1,0 +1,52 @@
+{
+  "id": "ar_m2_l83",
+  "language": "ar",
+  "module": 2,
+  "lesson": 83,
+  "title": "أَنْوَاعُ الْحَشَرَاتِ",
+  "summary": "Hashoratlar turlarini va ularning foydali yoki zararli ekanligini umumiy tasvirlash.",
+  "vocabulary": [
+    { "word": "أَنْوَاعٌ", "translationUz": "turlar" },
+    { "word": "حَشَرَاتٌ", "translationUz": "hashoratlar" },
+    { "word": "مُخْتَلِفٌ", "translationUz": "turli, farqli" },
+    { "word": "فَرَاشَةٌ", "translationUz": "kapalak" },
+    { "word": "نَحْلَةٌ", "translationUz": "asalari" },
+    { "word": "نَمْلَةٌ", "translationUz": "chumoli" },
+    { "word": "خُنْفُسَاءُ", "translationUz": "qo‘ng‘iz" },
+    { "word": "دُّودَةٌ", "translationUz": "qurt" },
+    { "word": "مُفِيدٌ", "translationUz": "foydali" },
+    { "word": "ضَرَرٌ", "translationUz": "zarar" },
+    { "word": "كَبِيرٌ", "translationUz": "katta" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنْوَاعُ الْحَشَرَاتِ مُخْتَلِفَةٌ جِدًّا.",
+      "translationUz": "Hashoratlar turlari juda xilma-xil.",
+      "next": "مِثْلُ: الْفَرَاشَةِ، وَالنَّحْلَةِ، وَالنَّمْلَةِ، وَالْخُنْفُسَاءِ، وَ الدُّودَةِ، وَ غَيْرِهَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مِثْلُ: الْفَرَاشَةِ، وَالنَّحْلَةِ، وَالنَّمْلَةِ، وَالْخُنْفُسَاءِ، وَ الدُّودَةِ، وَ غَيْرِهَا.",
+      "translationUz": "Masalan: kapalak, asalari, chumoli, qo‘ng‘iz, qurt va boshqalar.",
+      "next": "بَعْضُ الْحَشَرَاتِ مُفِيدٌ، وَبَعْضُهَا ذُو ضَرَرٍ كَبِيرٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بَعْضُ الْحَشَرَاتِ مُفِيدٌ، وَبَعْضُهَا ذُو ضَرَرٍ كَبِيرٍ.",
+      "translationUz": "Ba‘zi hashoratlar foydali, ba‘zilari esa katta zarar keltiradi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هِيَ أَكْثَرُ الْحَشَرَاتِ فَائِدَةً؟",
+    "مَا هِيَ أَكْثَرُ الْحَشَرَاتِ ضَرَرًا؟",
+    "هَلْ تَخَافُ مِنَ الْحَشَرَاتِ؟",
+    "أَيَّةُ حَشَرَةٍ تُعْجِبُكَ؟",
+    "لِمَاذَا تَكُونُ بَعْضُ الْحَشَرَاتِ مُضِرَّةً؟"
+  ],
+  "context": {
+    "main_topic": "insects_types_benefits",
+    "pattern": "general_statement → examples → classification"
+  }
+}
