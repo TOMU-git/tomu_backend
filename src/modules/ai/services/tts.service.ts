@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import axios from "axios";
 import { promises as fs } from "fs";
 import * as path from "path";
+import { AudioUtils } from "../utils/audio.util";
 
 // Environment variables (OpenAI TTS - fallback)
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
@@ -30,6 +31,7 @@ export interface TTSUsage {
 export interface TTSResponse {
     audioUrl: string;
     characters?: number;
+    duration?: number; // Audio davomiyligi (soniyalarda)
 }
 
 /**
@@ -242,12 +244,16 @@ export class TTSService implements OnModuleInit {
             await fs.mkdir(outDir, { recursive: true });
             const filename = `tts_openai_${Date.now()}.mp3`;
             const full = path.join(outDir, filename);
-            await fs.writeFile(full, Buffer.from(res.data as any));
+            const audioBuffer = Buffer.from(res.data as any);
+            await fs.writeFile(full, audioBuffer);
 
             const audioUrl = `/upload/audio/${filename}`;
             const characters = params.text.length;
 
-            return { audioUrl, characters };
+            // Audio duration'ni hisoblash
+            const duration = await AudioUtils.getAudioDuration(full, audioBuffer.length);
+
+            return { audioUrl, characters, duration };
         } catch (e: any) {
             this.logger.error(`❌ OpenAI TTS Error: ${e.message}`);
             return { audioUrl: "/upload/audio/placeholder.mp3", characters: 0 };

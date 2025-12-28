@@ -39,6 +39,36 @@ export class AudioUtils {
             });
         }
     }
+
+    /**
+     * Audio file duration'ni aniqlash (approximate)
+     * File size va bitrate'dan duration'ni hisoblash
+     * @param filePath - Audio file path
+     * @param fileSize - File size (bytes)
+     * @returns Duration in seconds (approximate)
+     */
+    static async getAudioDuration(filePath: string, fileSize?: number): Promise<number> {
+        try {
+            const fs = require('fs').promises;
+
+            // File size'ni olish (agar berilmagan bo'lsa)
+            if (!fileSize) {
+                const stats = await fs.stat(filePath);
+                fileSize = stats.size;
+            }
+
+            // MP3 uchun approximate formula:
+            // Duration (seconds) = File Size (bytes) / (Bitrate (kbps) * 1000 / 8)
+            // Average bitrate: 128 kbps (OpenAI TTS default)
+            const averageBitrate = 128; // kbps
+            const duration = fileSize / (averageBitrate * 1000 / 8);
+
+            return Math.round(duration * 10) / 10; // 1 decimal place
+        } catch (error: any) {
+            console.error(`[AudioUtils] Error getting audio duration: ${error.message}`);
+            return 0; // Xato bo'lsa 0 qaytarish
+        }
+    }
 }
 
 

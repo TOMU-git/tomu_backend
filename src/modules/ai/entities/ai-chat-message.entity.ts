@@ -39,6 +39,12 @@ export class AIChatMessage extends BaseEntity {
     @Column({ type: "varchar", length: 500, name: "audio_url", nullable: true })
     audioUrl: string;
 
+    // Audio davomiyligi (soniyalarda)
+    // User message: user yuborgan audio duration
+    // AI message: AI TTS audio duration
+    @Column({ type: "float", name: "audio_duration", nullable: true })
+    audioDuration: number;
+
     // Ushbu javob 7-modul chegarasi ichida bo'ldimi-yo'qmi
     @Column({ type: "boolean", name: "is_within_limit", default: true })
     isWithinLimit: boolean;

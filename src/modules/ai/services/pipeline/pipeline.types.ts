@@ -37,6 +37,7 @@ export interface VoiceInput {
         };
         tts?: {
             characters: number; // TTS uchun ishlatilgan belgilar soni
+            duration?: number; // TTS audio davomiyligi (soniya)
         };
     };
 }

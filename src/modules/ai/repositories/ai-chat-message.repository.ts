@@ -38,6 +38,7 @@ export class AIChatMessageRepository extends BaseAIRepository implements IAIChat
                 aiResponseText: entity.aiResponseText || null,
                 aiResponseUzbek: entity.aiResponseUzbek || null,
                 audioUrl: entity.audioUrl || null,
+                audioDuration: entity.audioDuration || null, // Audio duration
                 isWithinLimit: entity.isWithinLimit ?? true,
             })
             .returning('*')

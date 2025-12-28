@@ -120,9 +120,10 @@ export class AIChatService {
             existingSession.lastActivityAt = new Date();
             const updated = await this.sessionRepo.update(existingSession);
 
-            // Xabarlarni yuklash va qaytarish
+            // Xabarlarni yuklash va qaytarish (oxirgi 15 ta)
             // // console.log(`[getOrCreateSession] Loading messages for session ${updated.id}...`);
-            updated.messages = await this.messageRepo.findBySessionIdOrdered(updated.id as number);
+            const allMessages = await this.messageRepo.findBySessionIdOrdered(updated.id as number);
+            updated.messages = allMessages.slice(-15); // Oxirgi 15 ta message
             // // console.log(`[getOrCreateSession] Loaded ${updated.messages.length} messages for session ${updated.id}`);
             return updated;
         }
@@ -376,16 +377,35 @@ export class AIChatService {
             console.log('User text (latin):', userTextLatin);
         }
         if (userText) {
+            // User audio duration'ni usage'dan olish (Whisper'dan)
+            const userAudioDuration = (result as any).usage?.whisper?.duration || null;
+
             const userMessage = await this.messageFactory.createUserMessage(
                 Number(sessionId),
                 userText,
-                userAudioUrl || undefined
+                userAudioUrl || undefined,
+                userAudioDuration // User audio duration
             );
             await this.messageRepo.create(userMessage);
         }
 
+        // Debug: AI message OLDIN saqlash
+        console.log(`[AIChatService] AI message BEFORE save:`, {
+            audioDuration: result.message.audioDuration,
+            audioUrl: result.message.audioUrl,
+            senderType: result.message.senderType
+        });
+
         // AI javobini saqlash
         const saved = await this.messageRepo.create(result.message);
+
+        // Debug: AI message KEYIN saqlash
+        console.log(`[AIChatService] AI message AFTER save:`, {
+            id: saved.id,
+            audioDuration: saved.audioDuration,
+            audioUrl: saved.audioUrl,
+            senderType: saved.senderType
+        });
 
         result.session.lastActivityAt = new Date();
         await this.sessionRepo.update(result.session);

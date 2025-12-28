@@ -242,6 +242,7 @@ export class AiChatController {
                 aiResponseText: msg.aiResponseText || undefined,
                 aiResponseUzbek: msg.aiResponseUzbek || undefined,
                 audioUrl: msg.audioUrl || undefined,
+                audioDuration: msg.audioDuration || undefined,
                 isWithinLimit: msg.isWithinLimit ?? true,
                 createdAt: msg.createdAt,
             }));
@@ -285,6 +286,7 @@ export class AiChatController {
                 aiResponseText: m.aiResponseText || undefined,
                 aiResponseUzbek: m.aiResponseUzbek || undefined,
                 audioUrl: m.audioUrl || undefined,
+                audioDuration: m.audioDuration || undefined,
                 isWithinLimit: m.isWithinLimit ?? true,
                 createdAt: m.createdAt,
             }));
@@ -295,6 +297,7 @@ export class AiChatController {
                 aiResponseText: msg.aiResponseText || '',
                 aiResponseUzbek: msg.aiResponseUzbek || '',
                 audioUrl: msg.audioUrl || '',
+                audioDuration: msg.audioDuration || undefined,
                 isWithinLimit: msg.isWithinLimit ?? true,
                 createdAt: msg.createdAt,
                 messages: limitedMessages,
@@ -315,6 +318,7 @@ export class AiChatController {
                     aiResponseText: m.aiResponseText || null,
                     aiResponseUzbek: m.aiResponseUzbek || null,
                     audioUrl: m.audioUrl || null,
+                    audioDuration: m.audioDuration || null,
                     isWithinLimit: m.isWithinLimit ?? true,
                 }));
 
@@ -369,7 +373,22 @@ export class AiChatController {
         console.log(`[AI Chat Controller] Get messages request for user ${userId}, session ${id}`);
         // Sessiya mavjudligini va egasini tekshiradi
         const list = await this.chat.getMessages(Number(id), userId);
-        return { message: 'ok', data: list };
+
+        // Oxirgi 15 ta message qaytarish (chat/voice endpoint'idagi kabi)
+        const limitedMessages = list.slice(-15).map(msg => ({
+            id: msg.id,
+            sessionId: msg.sessionId,
+            senderType: msg.senderType,
+            originalText: msg.originalText || undefined,
+            aiResponseText: msg.aiResponseText || undefined,
+            aiResponseUzbek: msg.aiResponseUzbek || undefined,
+            audioUrl: msg.audioUrl || undefined,
+            audioDuration: msg.audioDuration || undefined,
+            isWithinLimit: msg.isWithinLimit ?? true,
+            createdAt: msg.createdAt,
+        }));
+
+        return { message: 'ok', data: limitedMessages };
     }
 
     /**
