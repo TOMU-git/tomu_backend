@@ -76,7 +76,7 @@ export class CourseController {
   @Get()
   async findAll(
     @CurrentUser() user?: User,
-  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>>> {
+  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>>> {
     return await this.courseService.findAll(user);
   }
 

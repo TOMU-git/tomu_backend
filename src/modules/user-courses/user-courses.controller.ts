@@ -16,7 +16,7 @@ import { CreateUserCourseDto } from "./dto/create-user-course.dto";
 import { UpdateUserCourseDto } from "./dto/update-user-course.dto";
 import { ResData } from "src/lib/resData";
 import { UserCourse } from "./entities/user-course.entity";
-import { IUserCourseService } from "./interfaces/user-course.service";
+import { IUserCourseService, UserCourseWithCounts } from "./interfaces/user-course.service";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "../shared/guards/auth.guard";
 import { RolesGuard } from "../shared/guards/role.guard";
@@ -75,7 +75,7 @@ export class UserCoursesController {
   @Get("user/:id/courses")
   async findByUserId(
     @Param("id", ParseIntPipe) id: ID,
-  ): Promise<ResData<Array<UserCourse>>> {
+  ): Promise<ResData<Array<UserCourseWithCounts>>> {
     console.log('📚 USER COURSES REQUEST STARTED');
     console.log('👤 Requested user ID:', id);
     console.log('⏰ Request time:', new Date().toISOString());

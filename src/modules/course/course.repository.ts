@@ -22,7 +22,7 @@ export class CourseRepository implements ICourseRepository {
     return await this.courseRepository.find({});
   }
 
-  async findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }>> {
+  async findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>> {
     const queryBuilder = this.courseRepository
       .createQueryBuilder('course')
       .leftJoin('course.alphabets', 'alphabet')
@@ -56,10 +56,15 @@ export class CourseRepository implements ICourseRepository {
         .addSelect(
           'MAX(CASE WHEN "userCourse"."id" IS NOT NULL THEN 1 ELSE 0 END)',
           'isActiveForUser'
-        );
+        )
+        .addSelect('MAX("userCourse"."started_at")', 'startedAt')
+        .addSelect('MAX("userCourse"."ended_at")', 'endedAt');
     } else {
-      // userId yo'q bo'lsa, isActiveForUser har doim 0
-      queryBuilder.addSelect('0', 'isActiveForUser');
+      // userId yo'q bo'lsa, isActiveForUser har doim 0, dates NULL
+      queryBuilder
+        .addSelect('0', 'isActiveForUser')
+        .addSelect('NULL', 'startedAt')
+        .addSelect('NULL', 'endedAt');
     }
 
     queryBuilder
@@ -94,7 +99,9 @@ export class CourseRepository implements ICourseRepository {
       grammarCount: parseInt(row.grammarCount) || 0,
       homeworkCount: parseInt(row.lessonCount) || 0,
       isActiveForUser: row.isActiveForUser === 1 || row.isActiveForUser === '1' || row.isActiveForUser === true,
-    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean }));
+      startedAt: row.startedAt ? new Date(row.startedAt) : null,
+      endedAt: row.endedAt ? new Date(row.endedAt) : null,
+    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }));
   }
 
   async update(entity: Course): Promise<Course> {

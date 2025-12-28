@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { TTSService } from "../tts.service";
 import { AIChatMessageFactory } from "../ai-chat-message-factory.service";
 import { PipelineStep, VoiceInput, VoiceOutput } from "./pipeline.types";
-import { 
-    validateGPTResponseDiacritics, 
+import {
+    validateGPTResponseDiacritics,
     checkLastLetterDiacriticsInText,
-    logDiacriticsInfo 
+    logDiacriticsInfo
 } from "../../utils/diacritics-validator.util";
 
 /**
@@ -53,7 +53,16 @@ export class ResponseStep implements PipelineStep {
         const usage = input.usage || {};
         usage.tts = {
             characters: ttsResult.characters || 0,
+            duration: ttsResult.duration || 0, // AI audio duration
         };
+
+        // Debug: TTS result log (batafsil)
+        console.log(`[ResponseStep] TTS result:`, JSON.stringify({
+            audioUrl: ttsResult.audioUrl,
+            characters: ttsResult.characters,
+            duration: ttsResult.duration,
+            durationType: typeof ttsResult.duration
+        }));
 
         // Xabarni yaratish va saqlash
         const message = await this.messageFactory.createResponseMessage(
@@ -62,7 +71,8 @@ export class ResponseStep implements PipelineStep {
             input.aiResponse,
             input.aiResponseUz,
             true, // withinLimit - limit ichida
-            ttsResult.audioUrl // Audio URL
+            ttsResult.audioUrl, // Audio URL
+            ttsResult.duration // Audio duration (soniyalarda)
         );
 
         // Xarajat ma'lumotlarini xabar bilan birga qaytarish

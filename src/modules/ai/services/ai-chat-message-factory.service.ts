@@ -79,7 +79,7 @@ export class AIChatMessageFactory {
             // Default format: mp3
             let extension = 'mp3'; // default - mp3 formatida saqlash
             const normalizedMime = (mimetype || '').toLowerCase();
-            
+
             if (normalizedMime.includes('audio/mpeg') || normalizedMime.includes('audio/mp3') || normalizedMime.includes('mp3')) {
                 extension = 'mp3';
             } else if (normalizedMime.includes('audio/wav') || normalizedMime.includes('audio/x-wav') || normalizedMime.includes('wav')) {
@@ -112,12 +112,14 @@ export class AIChatMessageFactory {
      * @param sessionId - Chat sessiya ID (number)
      * @param originalText - Foydalanuvchi matni
      * @param audioUrl - Foydalanuvchi audio URL (ixtiyoriy)
+     * @param audioDuration - Audio davomiyligi soniyalarda (ixtiyoriy)
      * @returns Yaratilgan xabar
      */
     async createUserMessage(
         sessionId: number,
         originalText: string,
-        audioUrl?: string
+        audioUrl?: string,
+        audioDuration?: number
     ): Promise<AIChatMessage> {
         // Validation
         if (!sessionId || typeof sessionId !== 'number') {
@@ -143,6 +145,8 @@ export class AIChatMessageFactory {
         message.aiResponseText = originalText; // User matni aiResponseText ga yoziladi
         message.aiResponseUzbek = uzbekText; // O'zbek tarjimasi aiResponseUzbek ga yoziladi
         message.audioUrl = audioUrl || null; // Foydalanuvchi audio URL
+        message.audioDuration = audioDuration || null; // User audio duration
+        console.log(`[MessageFactory] User message audioDuration set: ${audioDuration}s`);
         message.isWithinLimit = true;
 
         return message;
@@ -156,6 +160,7 @@ export class AIChatMessageFactory {
      * @param aiResponseUz - AI javobi o'zbek tilida
      * @param withinLimit - Limit ichida ekanligi
      * @param audioUrl - Audio URL (ixtiyoriy)
+     * @param audioDuration - Audio davomiyligi soniyalarda (ixtiyoriy)
      * @returns Yaratilgan xabar
      */
     async createResponseMessage(
@@ -164,7 +169,8 @@ export class AIChatMessageFactory {
         aiResponse: string,
         aiResponseUz: string,
         withinLimit: boolean,
-        audioUrl?: string
+        audioUrl?: string,
+        audioDuration?: number
     ): Promise<AIChatMessage> {
         // Validation
         if (!sessionId || typeof sessionId !== 'number') {
@@ -173,11 +179,11 @@ export class AIChatMessageFactory {
 
         // aiResponseUz ni tekshirish va kerak bo'lsa tarjima qilish
         let finalUzbekText = aiResponseUz || '';
-        
+
         // Agar aiResponseUz bo'sh, aiResponse bilan bir xil yoki arabcha bo'lsa, tarjima qilish
-        const needsTranslation = 
-            !finalUzbekText || 
-            finalUzbekText.trim() === '' || 
+        const needsTranslation =
+            !finalUzbekText ||
+            finalUzbekText.trim() === '' ||
             finalUzbekText.trim() === aiResponse.trim() ||
             ArabicTextUtils.isArabicText(finalUzbekText);
 
@@ -199,7 +205,7 @@ export class AIChatMessageFactory {
         message.sessionId = sessionId;
         message.senderType = 'ai';
         message.originalText = null; // Foydalanuvchi xabari alohida saqlanadi
-        
+
         // ✅ SSML teglarini olib tashlash - bazaga saqlashdan oldin
         // TTS uchun SSML audio yaratishda ishlatiladi, lekin bazaga saqlanmaydi
         const cleanAiResponse = stripSSML(aiResponse || '');
@@ -212,6 +218,12 @@ export class AIChatMessageFactory {
         // TTS servisi SSML ni to'g'ri qayta ishlaydi
         if (audioUrl) {
             message.audioUrl = audioUrl;
+            message.audioDuration = audioDuration || null; // AI audio duration
+            console.log(`[MessageFactory] AI message audioDuration:`, {
+                received: audioDuration,
+                type: typeof audioDuration,
+                set: message.audioDuration
+            });
         } else {
             // TTS ga yuborishda asl aiResponse ishlatiladi (SSML bo'lsa ham)
             // TTS servisi SSML ni qo'llab-quvvatlaydi
@@ -219,6 +231,7 @@ export class AIChatMessageFactory {
                 text: aiResponse || '',
                 language: 'ar'
             });
+            message.audioDuration = null; // Old method, duration yo'q
         }
 
         return message;

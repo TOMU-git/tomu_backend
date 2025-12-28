@@ -20,6 +20,8 @@ export class ChatMessageDto {
     aiResponseUzbek?: string;
     @ApiProperty({ description: "Audio URL (TTS)", example: "/upload/audio/tts_1761595335910.mp3", nullable: true })
     audioUrl?: string;
+    @ApiProperty({ description: "Audio davomiyligi (soniyalarda)", example: 3.5, nullable: true, required: false })
+    audioDuration?: number;
     @ApiProperty({ description: "Limit ichida", example: true })
     isWithinLimit: boolean;
     @ApiProperty({ description: "Yaratilgan vaqt", example: "2024-01-01T12:05:00.000Z" })
@@ -42,6 +44,8 @@ export class ChatResponseDto {
     aiResponseUzbek: string;
     @ApiProperty({ description: "Audio URL (TTS)", example: "/upload/audio/tts_1761595335910.mp3", required: false, nullable: true })
     audioUrl?: string;
+    @ApiProperty({ description: "Audio davomiyligi (soniyalarda)", example: 3.5, nullable: true, required: false })
+    audioDuration?: number;
     @ApiProperty({ description: "Limit ichida", example: true })
     isWithinLimit: boolean;
     @ApiProperty({ description: "Yaratilgan vaqt", example: "2024-01-01T12:05:00.000Z" })

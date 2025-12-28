@@ -19,6 +19,7 @@ import axios from 'axios';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { TTSResponse } from '../tts.service';
+import { AudioUtils } from '../../utils/audio.util';
 
 @Injectable()
 export class GoogleTTSProvider {
@@ -328,9 +329,12 @@ export class GoogleTTSProvider {
             const audioUrl = `/upload/audio/${filename}`;
             const characters = params.text.length;
 
-            this.logger.log(`✅ Google TTS generated: ${characters} chars -> ${audioUrl}`);
+            // Audio duration'ni hisoblash
+            const duration = await AudioUtils.getAudioDuration(fullPath, buffer.length);
 
-            return { audioUrl, characters };
+            this.logger.log(`✅ Google TTS generated: ${characters} chars -> ${audioUrl} (${duration}s)`);
+
+            return { audioUrl, characters, duration };
         } catch (error: any) {
             this.logger.error(`❌ Google TTS error: ${error.message}`);
 
