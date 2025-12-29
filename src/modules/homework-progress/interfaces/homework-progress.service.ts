@@ -30,7 +30,7 @@ export interface IHomeworkProgressService {
   countQueueItems(userId: ID, courseId: ID): Promise<ResData<{ count: number }>>;
 
   // Foydalanuvchi ID bo'yicha barcha kurslar uchun uyga vazifa navbatidagi elementlar sonini qaytaradi
-  countAllQueueItems(userId: ID): Promise<ResData<{ count: number }>>;
+  countAllQueueItems(userId: ID): Promise<ResData<Array<{ courseTitle: string; count: number }>>>;
 
-  runSchedulerManually() : Promise<any>;
+  runSchedulerManually(): Promise<any>;
 }

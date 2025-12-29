@@ -98,11 +98,11 @@ export class HomeworkProgressController {
   /**
    * Foydalanuvchi uchun barcha kurslardagi uy vazifa navbatidagi elementlar sonini qaytaradi
    * Access token orqali foydalanuvchi ID si olinadi, courseId kerak emas
-   * @returns Foydalanuvchi uchun barcha kurslardagi uy vazifa navbatidagi elementlar soni
+   * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs nomi
    */
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
   @Get("total-queue-count")
-  async getTotalQueueCount(@Req() req: RequestWithUser): Promise<ResData<{ count: number }>> {
+  async getTotalQueueCount(@Req() req: RequestWithUser): Promise<ResData<Array<{ courseTitle: string; count: number }>>> {
     const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
     return await this.homeworkProgressService.countAllQueueItems(userId);
   }
