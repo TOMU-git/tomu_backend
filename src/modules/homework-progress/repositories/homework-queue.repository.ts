@@ -213,11 +213,11 @@ export class HomeworkQueueRepository {
     const result = await this.repository
       .createQueryBuilder('queue')
       .leftJoin('courses', 'course', 'course.id = queue.course_id')
-      .select('course.title', 'courseTitle')
+      .select('course.lang', 'courseTitle')
       .addSelect('COUNT(queue.id)', 'count')
       .where('queue.user_id = :userId', { userId: Number(userId) })
       .groupBy('queue.course_id')
-      .addGroupBy('course.title')
+      .addGroupBy('course.lang')
       .getRawMany();
 
     return result.map(item => ({
