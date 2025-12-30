@@ -240,7 +240,10 @@ export class AuthService implements IAuthService {
     console.log('[Auth Service] sentSms called for phone:', sendSmsDto.phone);
 
     try {
-      const generatedCode = generate();
+      // Use test OTP for app store review if phone matches test phone
+      const generatedCode = (sendSmsDto.phone === config.testPhone && config.testOtp)
+        ? config.testOtp
+        : generate();
       console.log('[Auth Service] Generated verification code:', generatedCode);
 
       const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
@@ -273,7 +276,10 @@ export class AuthService implements IAuthService {
     if (!foundUserPhone) {
       throw new HttpException("This phone number not found", 404);
     }
-    const generatedCode = generate();
+    // Use test OTP for app store review if phone matches test phone
+    const generatedCode = (dto.phone === config.testPhone && config.testOtp)
+      ? config.testOtp
+      : generate();
 
     const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
 

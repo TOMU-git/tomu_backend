@@ -57,4 +57,7 @@ export const config: IConfig = {
   firebaseIosAppId: process.env.FIREBASE_IOS_APP_ID || '1:1062737653345:ios:3abcf8fb98147f10f60420',
   firebaseMacosAppId: process.env.FIREBASE_MACOS_APP_ID || '1:1062737653345:ios:3abcf8fb98147f10f60420',
   firebaseWindowsAppId: process.env.FIREBASE_WINDOWS_APP_ID || '1:1062737653345:web:53e4274667dbf524f60420',
+  // Test OTP configuration for app store review
+  testPhone: process.env.TEST_PHONE,
+  testOtp: process.env.TEST_OTP,
 };
