@@ -53,6 +53,9 @@ export interface IConfig {
   firebaseIosAppId?: string;
   firebaseMacosAppId?: string;
   firebaseWindowsAppId?: string;
+  // Test OTP configuration for app store review
+  testPhone?: string;
+  testOtp?: string;
 }
 
 export interface CustomAxiosResponse<T = any> {
