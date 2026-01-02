@@ -55,6 +55,30 @@ export class UserController {
     return await this.userService.findAll(search, limit, page, role);
   }
 
+  // *** Check phone number availability (public endpoint) *** //
+  @ApiParam({
+    name: 'phoneNumber',
+    type: String,
+    example: '+998901234567',
+    description: 'Phone number to check availability'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Phone availability checked',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'phone availability checked' },
+        statusCode: { type: 'number', example: 200 },
+        data: { type: 'boolean', example: true, description: 'true if available, false if exists' }
+      }
+    }
+  })
+  @Get("check-phone/:phoneNumber")
+  async checkPhoneAvailability(@Param("phoneNumber") phoneNumber: string) {
+    return await this.userService.checkPhoneAvailability(phoneNumber);
+  }
+
   // *** Getting user by phone number *** //
   @ApiParam({
     name: 'phoneNumber',

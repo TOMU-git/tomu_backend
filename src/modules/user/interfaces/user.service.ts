@@ -8,6 +8,7 @@ export interface IUserService {
   findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>>;
   findAll(search: string, limit: number, page: number, role: string): Promise<ResData<IUserEntityCount>>;
   deleteUser(id: number): Promise<ResData<User>>;
+  checkPhoneAvailability(phoneNumber: string): Promise<ResData<boolean>>;
 }
 
 export interface IUserEntityCount {

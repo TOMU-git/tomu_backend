@@ -24,6 +24,15 @@ export class UserService implements IUserService {
     }
     return new ResData<User>('found user by phone', 200, foundUser);
   }
+
+  // *** Check phone number availability *** //
+  async checkPhoneAvailability(phoneNumber: string): Promise<ResData<boolean>> {
+    const normalizedPhone = phoneNumber.startsWith('+') ? phoneNumber.substring(1) : phoneNumber;
+    const userWithPlus = await this.userRepository.getOntByPhoneNumber(`+${normalizedPhone}`);
+    const userWithoutPlus = await this.userRepository.getOntByPhoneNumber(normalizedPhone);
+    const isAvailable = !userWithPlus && !userWithoutPlus;
+    return new ResData<boolean>('phone availability checked', 200, isAvailable);
+  }
   // *** Find one by id *** //
 
   async findOneById(id: number): Promise<ResData<User>> {
