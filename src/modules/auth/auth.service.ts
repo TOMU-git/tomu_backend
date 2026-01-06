@@ -246,7 +246,7 @@ export class AuthService implements IAuthService {
         : generate();
       console.log('[Auth Service] Generated verification code:', generatedCode);
 
-      const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
+      const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
       console.log('[Auth Service] Message prepared, calling SMS service...');
 
       await this.smsService.sendSMS(sendSmsDto.phone, message);
@@ -281,7 +281,7 @@ export class AuthService implements IAuthService {
       ? config.testOtp
       : generate();
 
-    const message = `Assalomu alaykum. TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}. Kodni hech kimga bermang.`;
+    const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
 
     await this.smsService.sendSMS(dto.phone, message);
 
