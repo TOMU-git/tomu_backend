@@ -89,6 +89,7 @@ export class LessonService implements ILessonService {
     );
   }
 
+
   /**
    * Boshlang'ich 10 ta darsni blok ID bo'yicha olish funksiyasi.
    * @param id Blok ID'si

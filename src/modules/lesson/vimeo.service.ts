@@ -12,6 +12,8 @@ export class VimeoService {
     const clientSecret = process.env.VIMEO_CLIENT_SECRET;
     const accessToken = process.env.VIMEO_ACCESS_TOKEN;
 
+
+    
     // console.log('🔧 VimeoService initialized with credentials:', {
     //   clientId: clientId ? `${clientId.substring(0, 8)}...` : 'NOT SET',
     //   clientSecret: clientSecret ? `${clientSecret.substring(0, 8)}...` : 'NOT SET',
@@ -33,7 +35,7 @@ export class VimeoService {
     fileBuffer: Buffer,
     title: string,
     description: string,
-  ): Promise<{ videoUrl: string; duration: number }> {
+  ): Promise<{ videoUrl: string; duration: number; vimeoVideoId: string }>{
     // console.log('🎬 Vimeo video upload started:', {
     //   title,
     //   description,
@@ -115,7 +117,11 @@ export class VimeoService {
             //   finalStatus: videoInfo.status
             // });
 
-            resolve({ videoUrl, duration: videoInfo.duration });
+            resolve({
+              videoUrl,
+              duration: videoInfo.duration,
+              vimeoVideoId: videoId,
+            });
           },
           (bytesUploaded, bytesTotal) => {
             const percentage = (bytesUploaded / bytesTotal) * 100;
@@ -163,4 +169,39 @@ export class VimeoService {
       );
     });
   }
+
+  async getPlaybackUrl(videoId: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    this.vimeoClient.request(
+      {
+        path: `/videos/${videoId}`,
+        method: "GET",
+      },
+      (error, body) => {
+        if (error) {
+          return reject(error);
+        }
+
+        /**
+         * play.hls yoki play.progressive dan foydalanamiz
+         * play — expiring (24 soat), custom player uchun TO‘G‘RI variant
+         */
+        if (body.play?.hls?.link) {
+          return resolve(body.play.hls.link);
+        }
+
+        if (body.play?.progressive?.length > 0) {
+          // eng sifatlisini olamiz
+          const sorted = body.play.progressive.sort(
+            (a, b) => b.height - a.height,
+          );
+          return resolve(sorted[0].link);
+        }
+
+        reject(new Error("Playback URL not found"));
+      },
+    );
+  });
+}
+
 }
