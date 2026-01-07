@@ -56,6 +56,8 @@ export class LessonProgressService implements ILessonProgressService {
     private readonly dataSource: DataSource,
   ) { }
 
+  
+
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     const data = await this.lessonProgressRepository.findAll();
 
@@ -417,6 +419,9 @@ export class LessonProgressService implements ILessonProgressService {
       throw error;
     }
   }
+
+
+  
 
 
   /**
