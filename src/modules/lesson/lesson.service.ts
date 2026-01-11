@@ -56,8 +56,8 @@ export class LessonService implements ILessonService {
 
     const block = await this.blockRepository.findById(dto.blockId);
 
-    // Video faylni Vimeo'ga yuklab, URL va davomiyligini oladi
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    // Video faylni Vimeo'ga yuklab, URL, davomiylik va video ID ni oladi
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
       "Dars videosi",
@@ -74,6 +74,7 @@ export class LessonService implements ILessonService {
       ...dto,
       block,
       videoUrl,
+      vimeoVideoId, // Vimeo video ID ni saqlash
       mimetype: file.mimetype,
       size: file.size,
       duration,
@@ -190,14 +191,15 @@ export class LessonService implements ILessonService {
       }
     }
 
-    // Yangi fayl bo‘lsa, videoni yangilash
+    // Yangi fayl bo'lsa, videoni yangilash
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title || foundData.title,
         "Dars videosi",
       );
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId; // Vimeo video ID ni yangilash
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
@@ -211,25 +213,16 @@ export class LessonService implements ILessonService {
       grammarLink: dto.grammarLink ?? foundData.grammarLink,
     });
 
-    console.log('🔄 UPDATE: Lesson yangilash boshlandi');
-    console.log('📋 grammarLink before update:', foundData.grammarLink);
-    console.log('📋 grammarVideoId before update:', foundData.grammarVideoId);
-
-    // grammarVideoId ni qo'lda extract qilish (BeforeUpdate hook ishlamasligi mumkin)
+    // grammarVideoId ni avtomatik extract qilish
     if (foundData.grammarLink) {
       const match = foundData.grammarLink.match(/\/video\/(\d+)/);
       foundData.grammarVideoId = match ? match[1] : null;
-      console.log('🔧 Manual extract: grammarVideoId =', foundData.grammarVideoId);
     } else {
       foundData.grammarVideoId = null;
     }
 
     // Darsni yangilash
     const data = await this.lessonRepository.update(foundData);
-
-    console.log('✅ UPDATE: Lesson yangilandi');
-    console.log('📋 grammarLink after update:', data.grammarLink);
-    console.log('📋 grammarVideoId after update:', data.grammarVideoId);
 
     return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));
   }
