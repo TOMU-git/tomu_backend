@@ -16,6 +16,8 @@ export class Homework extends BaseEntity {
   videoUrl: string;
 
   @Column({ type: "varchar", length: 50, name: "vimeo_video_id", nullable: true })
+  vimeoVideoId: string;
+
 
 
   /**
