@@ -56,8 +56,8 @@ export class LessonService implements ILessonService {
 
     const block = await this.blockRepository.findById(dto.blockId);
 
-    // Video faylni Vimeo'ga yuklab, URL va davomiyligini oladi
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    // Video faylni Vimeo'ga yuklab, URL, davomiylik va video ID ni oladi
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
       "Dars videosi",
@@ -74,10 +74,20 @@ export class LessonService implements ILessonService {
       ...dto,
       block,
       videoUrl,
+      vimeoVideoId, // Vimeo video ID ni saqlash
       mimetype: file.mimetype,
       size: file.size,
       duration,
+      grammarLink: dto.grammarLink || null, // grammarLink ni aniq qo'shish
     });
+
+    // grammarVideoId ni avtomatik extract qilish
+    if (newLesson.grammarLink) {
+      const match = newLesson.grammarLink.match(/\/video\/(\d+)/);
+      newLesson.grammarVideoId = match ? match[1] : null;
+    } else {
+      newLesson.grammarVideoId = null;
+    }
 
     // Darsni saqlash
     const savedLesson = await this.lessonRepository.create(newLesson);
@@ -181,20 +191,21 @@ export class LessonService implements ILessonService {
       }
     }
 
-    // Yangi fayl bo‘lsa, videoni yangilash
+    // Yangi fayl bo'lsa, videoni yangilash
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title || foundData.title,
         "Dars videosi",
       );
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId; // Vimeo video ID ni yangilash
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    // Yangilanishlarni qo‘llash
+    // Yangilanishlarni qo'llash
     Object.assign(foundData, {
       order: dto.order ?? foundData.order,
       title: dto.title ?? foundData.title,
@@ -202,6 +213,15 @@ export class LessonService implements ILessonService {
       grammarLink: dto.grammarLink ?? foundData.grammarLink,
     });
 
+    // grammarVideoId ni avtomatik extract qilish
+    if (foundData.grammarLink) {
+      const match = foundData.grammarLink.match(/\/video\/(\d+)/);
+      foundData.grammarVideoId = match ? match[1] : null;
+    } else {
+      foundData.grammarVideoId = null;
+    }
+
+    // Darsni yangilash
     const data = await this.lessonRepository.update(foundData);
 
     return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));

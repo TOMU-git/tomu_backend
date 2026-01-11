@@ -2,7 +2,7 @@ import { BaseEntity } from "src/common/database/baseEntity";
 import { Block } from "src/modules/block/entities/block.entity";
 import { Course } from "src/modules/course/entities/course.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, BeforeInsert, BeforeUpdate } from "typeorm";
 
 @Entity("lessons") // Entity nomini belgilash
 export class Lesson extends BaseEntity {
@@ -41,8 +41,11 @@ export class Lesson extends BaseEntity {
    */
   size: number;
 
-  @Column({type: "varchar", name: "grammar_link", nullable: true})
+  @Column({ type: "varchar", name: "grammar_link", nullable: true })
   grammarLink: string
+
+  @Column({ type: "varchar", length: 50, name: "grammar_vimeo_id", nullable: true })
+  grammarVideoId: string
 
   @Column({ type: "int" })
   duration: number;
@@ -57,4 +60,46 @@ export class Lesson extends BaseEntity {
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];
+
+  /**
+   * Lesson yaratilishidan oldin grammarLink dan grammarVideoId ni extract qiladi.
+   */
+  @BeforeInsert()
+  extractGrammarVideoIdOnInsert() {
+    console.log('🔵 BeforeInsert hook called');
+    console.log('📝 grammarLink:', this.grammarLink);
+    this.extractGrammarVideoId();
+    console.log('✅ grammarVideoId extracted:', this.grammarVideoId);
+  }
+
+  /**
+   * Lesson yangilanishidan oldin grammarLink dan grammarVideoId ni extract qiladi.
+   */
+  @BeforeUpdate()
+  extractGrammarVideoIdOnUpdate() {
+    console.log('🟡 BeforeUpdate hook called');
+    console.log('📝 grammarLink:', this.grammarLink);
+    this.extractGrammarVideoId();
+    console.log('✅ grammarVideoId extracted:', this.grammarVideoId);
+  }
+
+  /**
+   * grammarLink dan Vimeo video ID ni extract qilish logic.
+   * Masalan: "https://player.vimeo.com/video/1135043539" -> "1135043539"
+   */
+  private extractGrammarVideoId() {
+    console.log('🔧 extractGrammarVideoId method called');
+
+    if (!this.grammarLink) {
+      console.log('⚠️  grammarLink is empty, setting grammarVideoId to null');
+      this.grammarVideoId = null;
+      return;
+    }
+
+    const match = this.grammarLink.match(/\/video\/(\d+)/);
+    this.grammarVideoId = match ? match[1] : null;
+
+    console.log('🎯 Regex match result:', match);
+    console.log('💾 Final grammarVideoId:', this.grammarVideoId);
+  }
 }
