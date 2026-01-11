@@ -706,6 +706,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       homework: queueItem.homework ? {
         id: queueItem.homeworkId,
         videoUrl: queueItem.homework.videoUrl,
+        vimeoVideoId: queueItem.homework.vimeoVideoId, // Vimeo video ID
         vimeoEmbedUrl: queueItem.homework.videoUrl ? generateVimeoEmbedUrl(queueItem.homework.videoUrl) : null,
         duration: queueItem.homework.duration,
         title: queueItem.homework.title,
