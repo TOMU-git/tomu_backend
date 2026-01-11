@@ -13,6 +13,8 @@ export class Grammar extends BaseEntity {
   videoUrl: string;
 
   @Column({ type: "varchar", length: 50, name: "vimeo_video_id", nullable: true })
+  vimeoVideoId: string;
+
 
   @Column({ type: "varchar", length: 50, name: "mime_type" })
   /**
