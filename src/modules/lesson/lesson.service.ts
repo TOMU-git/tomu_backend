@@ -77,7 +77,16 @@ export class LessonService implements ILessonService {
       mimetype: file.mimetype,
       size: file.size,
       duration,
+      grammarLink: dto.grammarLink || null, // grammarLink ni aniq qo'shish
     });
+
+    // grammarVideoId ni avtomatik extract qilish
+    if (newLesson.grammarLink) {
+      const match = newLesson.grammarLink.match(/\/video\/(\d+)/);
+      newLesson.grammarVideoId = match ? match[1] : null;
+    } else {
+      newLesson.grammarVideoId = null;
+    }
 
     // Darsni saqlash
     const savedLesson = await this.lessonRepository.create(newLesson);
@@ -194,7 +203,7 @@ export class LessonService implements ILessonService {
       foundData.size = file.size;
     }
 
-    // Yangilanishlarni qo‘llash
+    // Yangilanishlarni qo'llash
     Object.assign(foundData, {
       order: dto.order ?? foundData.order,
       title: dto.title ?? foundData.title,
@@ -202,7 +211,25 @@ export class LessonService implements ILessonService {
       grammarLink: dto.grammarLink ?? foundData.grammarLink,
     });
 
+    console.log('🔄 UPDATE: Lesson yangilash boshlandi');
+    console.log('📋 grammarLink before update:', foundData.grammarLink);
+    console.log('📋 grammarVideoId before update:', foundData.grammarVideoId);
+
+    // grammarVideoId ni qo'lda extract qilish (BeforeUpdate hook ishlamasligi mumkin)
+    if (foundData.grammarLink) {
+      const match = foundData.grammarLink.match(/\/video\/(\d+)/);
+      foundData.grammarVideoId = match ? match[1] : null;
+      console.log('🔧 Manual extract: grammarVideoId =', foundData.grammarVideoId);
+    } else {
+      foundData.grammarVideoId = null;
+    }
+
+    // Darsni yangilash
     const data = await this.lessonRepository.update(foundData);
+
+    console.log('✅ UPDATE: Lesson yangilandi');
+    console.log('📋 grammarLink after update:', data.grammarLink);
+    console.log('📋 grammarVideoId after update:', data.grammarVideoId);
 
     return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));
   }

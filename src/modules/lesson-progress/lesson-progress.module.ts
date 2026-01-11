@@ -20,7 +20,8 @@ import { AiModule } from "../ai/ai.module";
     UserModule,
     BlockModule,
     UserCoursesModule,
-    forwardRef(() => HomeworkProgressModule), // forwardRef() bilan import qilingan
+    forwardRef(() => HomeworkProgressModule),
+    forwardRef(() => AiModule),
     forwardRef(() => AiModule), // AI modulini import qilish
   ],
   controllers: [LessonProgressController],
