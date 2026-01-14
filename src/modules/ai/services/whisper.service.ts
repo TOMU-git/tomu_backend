@@ -19,11 +19,41 @@ export interface WhisperUsage {
 }
 
 /**
+ * Whisper API verbose_json response segment
+ */
+export interface WhisperSegment {
+    id: number;
+    seek: number;
+    start: number;
+    end: number;
+    text: string;
+    tokens: number[];
+    temperature: number;
+    avg_logprob: number; // Ishonchlilik darajasi (past = ishonchsiz)
+    compression_ratio: number;
+    no_speech_prob: number; // Jimlik ehtimoli (yuqori = gapirish yo'q)
+}
+
+/**
+ * Whisper API verbose_json response
+ */
+export interface WhisperVerboseResponse {
+    task: string;
+    language: string; // Aniqlangan til
+    duration: number; // Audio davomiyligi (soniya)
+    text: string; // To'liq transkripsiya
+    segments: WhisperSegment[]; // Har bir segmentning batafsil ma'lumotlari
+}
+
+/**
  * Whisper response with usage
  */
 export interface WhisperResponse {
     text: string;
     duration?: number; // seconds
+    language?: string; // Aniqlangan til
+    error?: 'noSpeechDetected' | 'onlyNoise' | 'wrongLanguage'; // Xato turi
+    errorMessage?: string; // Xato xabari (fallback message)
 }
 
 /**

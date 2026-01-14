@@ -131,7 +131,7 @@ export function RateLimitGuard(maxRequests: number, windowMs: number = 60 * 1000
 // Eski SMS rate limit guard (backward compatibility uchun)
 @Injectable()
 export class SmsRateLimitGuard implements CanActivate {
-  private rateLimitGuard = RateLimitGuard(2); // 2 ta so'rov minutiga
+  private rateLimitGuard = RateLimitGuard(5); // 2 ta so'rov minutiga
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
