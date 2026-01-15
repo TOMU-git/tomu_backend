@@ -5,6 +5,7 @@ import { TTSService } from "./tts.service";
 import { TranslationService } from "./translation.service";
 import { ArabicTextUtils } from "../utils/arabic-text.util";
 import { stripSSML } from "../utils/ssml.util";
+import { getFallbackAudioUrl } from "../utils/fallback-audio.util";
 import * as fs from "fs/promises";
 import * as path from "path";
 
@@ -47,19 +48,30 @@ export class AIChatMessageFactory {
         message.isWithinLimit = true;
 
         // Fallback turiga qarab javob berish
+        let fallbackConstantKey: string;
         if (fallbackType === 'empty') {
             message.aiResponseText = AI_FALLBACK_MESSAGES.EMPTY_TRANSCRIPT.arabic;
             message.aiResponseUzbek = AI_FALLBACK_MESSAGES.EMPTY_TRANSCRIPT.uzbek;
+            fallbackConstantKey = 'EMPTY_TRANSCRIPT';
         } else {
             message.aiResponseText = AI_FALLBACK_MESSAGES.NON_ARABIC.arabic;
             message.aiResponseUzbek = AI_FALLBACK_MESSAGES.NON_ARABIC.uzbek;
+            fallbackConstantKey = 'NON_ARABIC';
         }
 
-        // TTS audio yaratish - FAQAT ARABCHA!
-        message.audioUrl = await this.tts.textToSpeech({
-            text: message.aiResponseText,
-            language: 'ar'
-        });
+        // ✅ TAYYOR AUDIO: Avval tayyor audio'ni tekshirish
+        const preRecordedAudio = getFallbackAudioUrl(fallbackConstantKey);
+        if (preRecordedAudio) {
+            console.log(`[MessageFactory] ✅ Using pre-recorded audio: ${preRecordedAudio}`);
+            message.audioUrl = preRecordedAudio;
+        } else {
+            // ❌ Tayyor audio yo'q - TTS fallback
+            console.log(`[MessageFactory] ⚠️  No pre-recorded audio, using TTS fallback`);
+            message.audioUrl = await this.tts.textToSpeech({
+                text: message.aiResponseText,
+                language: 'ar'
+            });
+        }
 
         return message;
     }

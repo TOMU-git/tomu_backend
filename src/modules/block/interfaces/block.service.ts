@@ -13,4 +13,5 @@ export interface IBlockService {
   delete(id: ID): Promise<ResData<Block>>;
   getBlocksLessonsByCourseId(courseId: number): Promise<ResData<Array<Block>>>;
   getBlocksHomeworksByCourseId(courseId: number): Promise<ResData<Array<Block>>>;
+  recalculateCountVideos(): Promise<ResData<string>>;
 }

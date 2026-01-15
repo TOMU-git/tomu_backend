@@ -173,18 +173,22 @@ export class LessonService implements ILessonService {
     file?: Express.Multer.File,
   ): Promise<ResData<Lesson>> {
     const { data: foundData } = await this.findOneById(id);
+    const oldBlockId = foundData.block.id;
+    const oldDuration = foundData.duration;
 
-    // Agar blockId berilgan bo‘lsa, yangi blokni darsga bog‘lash
-    if (dto.blockId) {
-      const block = await this.blockRepository.findById(dto.blockId);
-      foundData.block = block;
+    // Agar blockId berilgan bo'lsa va u eski blockdan farq qilsa
+    let isBlockChanged = false;
+    if (dto.blockId && dto.blockId !== oldBlockId) {
+      const newBlock = await this.blockRepository.findById(dto.blockId);
+      foundData.block = newBlock;
+      isBlockChanged = true;
     }
 
-    // Faqat order o‘zgartirilganida tekshirish
+    // Faqat order o'zgartirilganida tekshirish
     if (dto.order && dto.order !== foundData.order) {
       const orderExist = await this.lessonRepository.findOneByOrder(
         dto.order,
-        dto.blockId,
+        dto.blockId || oldBlockId,
       );
       if (orderExist) {
         throw new LessonOrderAlreadyExistException();
@@ -192,6 +196,7 @@ export class LessonService implements ILessonService {
     }
 
     // Yangi fayl bo'lsa, videoni yangilash
+    let newDuration = oldDuration;
     if (file) {
       const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
@@ -203,6 +208,7 @@ export class LessonService implements ILessonService {
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
+      newDuration = duration;
     }
 
     // Yangilanishlarni qo'llash
@@ -223,6 +229,32 @@ export class LessonService implements ILessonService {
 
     // Darsni yangilash
     const data = await this.lessonRepository.update(foundData);
+
+    // Agar block o'zgargan bo'lsa, eski va yangi blocklarning countVideos va duration ni yangilash
+    if (isBlockChanged) {
+      // Eski blockdan ayirish
+      const oldBlock = await this.blockRepository.findById(oldBlockId);
+      if (oldBlock) {
+        oldBlock.countVideos = Number(oldBlock.countVideos) - 1;
+        oldBlock.duration = Number(oldBlock.duration) - Number(oldDuration);
+        await this.blockRepository.update(oldBlock);
+      }
+
+      // Yangi blockka qo'shish
+      const newBlock = await this.blockRepository.findById(foundData.block.id);
+      if (newBlock) {
+        newBlock.countVideos = Number(newBlock.countVideos) + 1;
+        newBlock.duration = Number(newBlock.duration) + Number(newDuration);
+        await this.blockRepository.update(newBlock);
+      }
+    } else if (file) {
+      // Agar faqat video o'zgargan bo'lsa (block o'zgarmagan), duration ni yangilash
+      const block = await this.blockRepository.findById(oldBlockId);
+      if (block) {
+        block.duration = Number(block.duration) - Number(oldDuration) + Number(newDuration);
+        await this.blockRepository.update(block);
+      }
+    }
 
     return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));
   }

@@ -43,7 +43,7 @@ export class ConversationEntityExtractorService {
                 // User so'rovidan entity'larni ajratish
                 const userEntities = this.extractEntitiesFromText(content, conversationHistory.length - i);
                 entities.push(...userEntities);
-                
+
                 // User nima haqida so'ragan
                 const askedTopic = this.extractAskedTopic(content);
                 if (askedTopic) {
@@ -61,8 +61,8 @@ export class ConversationEntityExtractorService {
                 }
             }
 
-            // Faqat oxirgi 5 ta xabarni tahlil qilamiz (tezlik uchun)
-            if (conversationHistory.length - i > 5) {
+            // ✅ FILTRLASH: Faqat oxirgi 3 ta xabarni tahlil qilamiz (noisy entity'larni kamaytirish)
+            if (conversationHistory.length - i > 3) {
                 break;
             }
         }
@@ -70,10 +70,13 @@ export class ConversationEntityExtractorService {
         // Entity'larni deduplicate qilish, lekin oxirgi mention'ni saqlab qolish
         const dedupedEntities = this.deduplicateEntitiesKeepRecent(entities);
 
+        // ✅ FILTRLASH: Maksimum 5 ta entity (eng muhimlari)
+        const topEntities = dedupedEntities.slice(0, 5);
+
         return {
-            entities: dedupedEntities,
-            recentTopics: this.deduplicateTopics(recentTopics),
-            userAskedAbout: this.deduplicateTopics(userAskedAbout),
+            entities: topEntities,
+            recentTopics: this.deduplicateTopics(recentTopics).slice(0, 3), // Maksimum 3 ta topic
+            userAskedAbout: this.deduplicateTopics(userAskedAbout).slice(0, 3), // Maksimum 3 ta
             lastUserQuestion,
         };
     }
@@ -97,7 +100,7 @@ export class ConversationEntityExtractorService {
             { ar: ['عَسَل', 'عسل'], uz: 'asal', type: 'object' as const },
             { ar: ['فَاكِهَة', 'فاكهة'], uz: 'meva', type: 'object' as const },
             { ar: ['طَعَام', 'طعام'], uz: 'ovqat', type: 'object' as const },
-            
+
             // Uy-joy va narsalar
             { ar: ['كِتَاب', 'كتاب'], uz: 'kitob', type: 'object' as const },
             { ar: ['قَلَم', 'قلم'], uz: 'qalam', type: 'object' as const },
@@ -111,7 +114,7 @@ export class ConversationEntityExtractorService {
             { ar: ['سَيَّارَة', 'سيارة'], uz: 'mashina', type: 'object' as const },
             { ar: ['زَهْرَة', 'زهرة'], uz: 'gul', type: 'object' as const },
             { ar: ['شَجَرَة', 'شجرة'], uz: 'daraxt', type: 'object' as const },
-            
+
             // Kasblar va shaxslar
             { ar: ['طَبِيب', 'طبيب'], uz: 'shifokor', type: 'person' as const },
             { ar: ['مُعَلِّم', 'معلم'], uz: 'o\'qituvchi', type: 'person' as const },
@@ -121,7 +124,7 @@ export class ConversationEntityExtractorService {
             { ar: ['أُم', 'أم', 'ام'], uz: 'ona', type: 'person' as const },
             { ar: ['أَخ', 'أخ', 'اخ'], uz: 'aka/uka', type: 'person' as const },
             { ar: ['أُخْت', 'أخت', 'اخت'], uz: 'opa/singil', type: 'person' as const },
-            
+
             // Joylar
             { ar: ['مَدْرَسَة', 'مدرسة'], uz: 'maktab', type: 'place' as const },
             { ar: ['مَسْجِد', 'مسجد'], uz: 'masjid', type: 'place' as const },
@@ -129,7 +132,7 @@ export class ConversationEntityExtractorService {
             { ar: ['حَدِيقَة', 'حديقة'], uz: 'bog', type: 'place' as const },
             { ar: ['مَكْتَبَة', 'مكتبة'], uz: 'kutubxona', type: 'place' as const },
             { ar: ['مُسْتَشْفَى', 'مستشفى'], uz: 'kasalxona', type: 'place' as const },
-            
+
             // Sifatlar va tushunchalar
             { ar: ['حُلْو', 'حلو'], uz: 'shirin', type: 'concept' as const },
             { ar: ['لَذِيذ', 'لذيذ'], uz: 'mazali', type: 'concept' as const },
@@ -164,7 +167,7 @@ export class ConversationEntityExtractorService {
      */
     private extractAskedTopic(text: string): string | null {
         const normalized = normalizeText(text);
-        
+
         // "هذا" (this), "ذلك" (that), "ما" (what) so'zlari
         if (normalized.includes('هذا') || normalized.includes('هاذا')) {
             return 'this';
@@ -185,7 +188,7 @@ export class ConversationEntityExtractorService {
     private extractTopicFromResponse(text: string): string | null {
         // Oddiy mavzu aniqlash - keyinchalik murakkablashtirish mumkin
         const normalized = normalizeText(text);
-        
+
         if (normalized.includes('موز') || normalized.includes('فاكهة')) {
             return 'meva';
         }

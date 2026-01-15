@@ -25,7 +25,7 @@ export class BlockController {
   constructor(
     @Inject("IBlockService")
     private readonly blockService: IBlockService,
-  ) {}
+  ) { }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
   @Post()
@@ -72,5 +72,11 @@ export class BlockController {
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Block>> {
     return await this.blockService.delete(id);
+  }
+
+  @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Post("recalculate-count-videos")
+  async recalculateCountVideos(): Promise<ResData<string>> {
+    return await this.blockService.recalculateCountVideos();
   }
 }

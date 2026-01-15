@@ -11,11 +11,13 @@ import { TranslationService } from '../../translation.service';
 import { TranslationLookupService } from '../extractors/translation-lookup.service';
 import { quickEnrichMaterialResponse } from '../../../utils/diacritics-enrichment.util';
 import { GPTService } from '../../gpt.service';
+import { getFallbackAudioUrl } from '../../../utils/fallback-audio.util';
 
 export interface FallbackResponseResult {
     aiResponse: string;
     aiResponseUz: string;
     gptUsage: { promptTokens: number; completionTokens: number; totalTokens: number };
+    audioUrl?: string | null; // ✅ Tayyor audio URL (ixtiyoriy)
 }
 
 @Injectable()
@@ -39,44 +41,46 @@ export class FallbackResponseService {
 
     /**
      * Future lesson fallback
+     * ✅ TAYYOR AUDIO bilan (agar mavjud bo'lsa)
      */
     createFutureLessonResponse(): FallbackResponseResult {
+        const audioUrl = getFallbackAudioUrl('FUTURE_LESSON_RESPONSE');
         return {
             aiResponse: AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.arabic,
             aiResponseUz: AI_FALLBACK_MESSAGES.FUTURE_LESSON_RESPONSE.uzbek,
             gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+            audioUrl, // ✅ Tayyor audio (null bo'lishi mumkin)
         };
     }
 
     /**
      * Not understood fallback
+     * ✅ TAYYOR AUDIO bilan
      */
     createNotUnderstoodResponse(): FallbackResponseResult {
+        const audioUrl = getFallbackAudioUrl('NOT_UNDERSTOOD');
         return {
             aiResponse: AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.arabic,
             aiResponseUz: AI_FALLBACK_MESSAGES.NOT_UNDERSTOOD.uzbek,
             gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+            audioUrl, // ✅ Tayyor audio
         };
     }
 
     /**
      * No material response fallback
+     * ✅ TAYYOR AUDIO bilan
+     * ⚠️  User text tarjimasi OLIB TASHLANDI - faqat standart xabar
      */
     async createNoMaterialResponse(userText: string): Promise<FallbackResponseResult> {
-        try {
-            const userTextUz = await this.translation.translateToUzbek(userText);
-            return {
-                aiResponse: AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic,
-                aiResponseUz: `${AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek} (${userTextUz})`,
-                gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
-            };
-        } catch (e) {
-            return {
-                aiResponse: AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic,
-                aiResponseUz: AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek,
-                gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
-            };
-        }
+        const audioUrl = getFallbackAudioUrl('NO_MATERIAL_RESPONSE');
+        // ❌ User text tarjimasini qo'shmaslik - random harflar bo'lishi mumkin
+        return {
+            aiResponse: AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.arabic,
+            aiResponseUz: AI_FALLBACK_MESSAGES.NO_MATERIAL_RESPONSE.uzbek, // Faqat standart xabar
+            gptUsage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+            audioUrl, // ✅ Tayyor audio
+        };
     }
 
     /**
@@ -169,6 +173,7 @@ export class FallbackResponseService {
 
     /**
      * GPT response'ni translate qilish
+     * ✅ TO'G'IRLANGAN: Tarjima xatosi holatida retry va warning
      */
     async translateGPTResponse(
         gptResponse: string,
@@ -176,9 +181,11 @@ export class FallbackResponseService {
         lastWatchedLessonOrder: number
     ): Promise<string> {
         if (!gptResponse || gptResponse.trim().length === 0) {
+            console.warn('⚠️  [Translation] Bo\'sh GPT response, tarjima qilinmaydi');
             return '';
         }
 
+        // STEP 1: Material'dan tarjima qidirish (tez va aniq)
         const materialTranslationUz = this.translationLookup.findTranslationUzInMaterials(
             gptResponse,
             context,
@@ -186,12 +193,23 @@ export class FallbackResponseService {
         );
 
         if (materialTranslationUz) {
+            console.log('✅ [Translation] Material\'dan topildi');
             return materialTranslationUz;
         }
 
+        // STEP 2: Translation service orqali tarjima qilish (fallback)
         try {
-            return await this.translation.translateToUzbek(gptResponse);
+            const translated = await this.translation.translateToUzbek(gptResponse);
+            if (translated && translated.trim().length > 0) {
+                console.log('✅ [Translation] Translation service orqali tarjima qilindi');
+                return translated;
+            } else {
+                console.warn('⚠️  [Translation] Translation service bo\'sh string qaytardi');
+                return '';
+            }
         } catch (e) {
+            console.error(`❌ [Translation] Tarjima xatosi: ${e.message}`);
+            // Xato holatida ham bo'sh string qaytarish (lekin warning log qilinadi)
             return '';
         }
     }
@@ -226,7 +244,7 @@ export class FallbackResponseService {
             });
 
             const followUpQuestion = gptResult.text?.trim() || '';
-            
+
             // Agar GPT savol bergan bo'lsa, material javob + savol qaytarish
             if (followUpQuestion && followUpQuestion.length > 0) {
                 return `${materialResponse} ${followUpQuestion}`;

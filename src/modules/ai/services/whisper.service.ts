@@ -114,14 +114,15 @@ export class WhisperService {
 
         fd.append("file", params.audio, { filename, contentType });
         fd.append("model", WHISPER_MODEL);
-        fd.append("language", validatedLanguage);
+        // ❌ Language parametrini OLIB TASHLADIK - Whisper o'zi tilni aniqlaydi!
+        // fd.append("language", validatedLanguage); // Bu Whisper'ni majburlaydi
         fd.append("temperature", WHISPER_TEMPERATURE);
 
-        // Til uchun prompt qo'shish (agar mavjud bo'lsa)
-        const prompt = getPromptForLanguage(validatedLanguage);
-        if (prompt) {
-            fd.append("prompt", prompt);
-        }
+        // ❌ Prompt ham olib tashlandi - til detection uchun
+        // const prompt = getPromptForLanguage(validatedLanguage);
+        // if (prompt) {
+        //     fd.append("prompt", prompt);
+        // }
 
         // Response format - JSON olish uchun
         fd.append("response_format", "verbose_json");
@@ -139,7 +140,7 @@ export class WhisperService {
 
             // OpenAI: response_format=verbose_json returns JSON with text field
             let transcribedText = "";
-            const responseData = res.data as any;
+            const responseData = res.data as WhisperVerboseResponse;
 
             if (typeof responseData === "string") {
                 transcribedText = responseData;
@@ -153,6 +154,78 @@ export class WhisperService {
 
             // Extract duration from verbose_json response
             const duration = responseData?.duration || 0; // seconds
+
+            // 🔍 DEBUG: Response'ni to'liq log qilish
+            console.log(`🔍 [Whisper Debug] Response keys:`, Object.keys(responseData || {}));
+            console.log(`🔍 [Whisper Debug] Language:`, responseData?.language);
+            console.log(`🔍 [Whisper Debug] Text:`, responseData?.text?.substring(0, 50));
+            console.log(`🔍 [Whisper Debug] Duration:`, duration);
+
+            // ✅ CONFIDENCE CHECK 0: Language detection (arabcha emasligini aniqlash)
+            const detectedLanguage = responseData?.language || '';
+            console.log(`🔍 [Whisper] Detected language: "${detectedLanguage}"`);
+
+            // ✅ CONFIDENCE CHECK 0.5: Text content validation (ingliz tili so'zlari)
+            const hasEnglishWords = /\b(this|that|is|are|not|arabic|language|english|please|speak|only)\b/i.test(transcribedText);
+            if (hasEnglishWords) {
+                console.log(`⚠️  Ingliz tili so'zlari aniqlandi: "${transcribedText}"`);
+                const fallbackText = getFallbackMessage(validatedLanguage, 'nonArabic');
+                return {
+                    text: "",
+                    duration: 0,
+                    error: 'wrongLanguage',
+                    errorMessage: fallbackText
+                };
+            }
+
+            // ✅ CONFIDENCE CHECK 1: Minimum duration tekshiruvi
+            if (duration < WHISPER_DEFAULTS.MIN_DURATION_SECONDS) {
+                console.log(`⚠️  Audio juda qisqa: ${duration}s (min: ${WHISPER_DEFAULTS.MIN_DURATION_SECONDS}s)`);
+                const fallbackText = getFallbackMessage(validatedLanguage, 'tooShort');
+                return {
+                    text: "",
+                    duration: 0,
+                    error: 'onlyNoise',
+                    errorMessage: fallbackText
+                };
+            }
+
+            // ✅ CONFIDENCE CHECK 2: No speech detection (jimlik)
+            if (responseData.segments && responseData.segments.length > 0) {
+                const avgNoSpeechProb = responseData.segments.reduce(
+                    (sum, seg) => sum + seg.no_speech_prob, 0
+                ) / responseData.segments.length;
+
+                if (avgNoSpeechProb > WHISPER_DEFAULTS.NO_SPEECH_PROB_THRESHOLD) {
+                    console.log(`⚠️  Jimlik aniqlandi: no_speech_prob=${(avgNoSpeechProb * 100).toFixed(1)}% (threshold: ${(WHISPER_DEFAULTS.NO_SPEECH_PROB_THRESHOLD * 100).toFixed(0)}%)`);
+                    const fallbackText = getFallbackMessage(validatedLanguage, 'noSpeech');
+                    return {
+                        text: "",
+                        duration: 0,
+                        error: 'noSpeechDetected',
+                        errorMessage: fallbackText
+                    };
+                }
+            }
+
+            // ✅ CONFIDENCE CHECK 3: Low confidence detection (past ishonchlilik)
+            if (responseData.segments && responseData.segments.length > 0) {
+                const avgLogProb = responseData.segments.reduce(
+                    (sum, seg) => sum + seg.avg_logprob, 0
+                ) / responseData.segments.length;
+
+                if (avgLogProb < WHISPER_DEFAULTS.AVG_LOGPROB_THRESHOLD) {
+                    console.log(`⚠️  Past ishonchlilik: avg_logprob=${avgLogProb.toFixed(2)} (threshold: ${WHISPER_DEFAULTS.AVG_LOGPROB_THRESHOLD})`);
+                    const fallbackText = getFallbackMessage(validatedLanguage, 'lowConfidence');
+                    return {
+                        text: "",
+                        duration: 0,
+                        error: 'onlyNoise',
+                        errorMessage: fallbackText
+                    };
+                }
+            }
+
             // console.log(`📝 Transcribed: "${transcribedText}" (duration: ${duration}s)`);
 
             return { text: transcribedText, duration };

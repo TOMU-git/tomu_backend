@@ -25,6 +25,7 @@ export class ResponseStep implements PipelineStep {
         context: any;
         aiResponse: string;
         aiResponseUz: string;
+        audioUrl?: string | null; // ✅ Tayyor audio (agar mavjud bo'lsa)
     }): Promise<VoiceOutput> {
         // ✅ STEP 1: Diacritics validation - TTS uchun muhim!
         const diacriticsValidation = validateGPTResponseDiacritics(input.aiResponse);
@@ -43,26 +44,39 @@ export class ResponseStep implements PipelineStep {
             console.warn(`⚠️  Low last-letter diacritics coverage (${lastLetterCheck.percentage}%). TTS may drop ending sounds!`);
         }
 
-        // TTS orqali audio yaratish (xarajat ma'lumotlari bilan)
-        const ttsResult = await this.tts.textToSpeechWithUsage({
-            text: input.aiResponse,
-            language: 'ar',
-        });
-
-        // Xarajat ma'lumotlarini to'plash
+        // ✅ TAYYOR AUDIO: Agar GPTStep'dan tayyor audio kelsa, TTS skip qilish
+        let finalAudioUrl: string;
+        let audioDuration: number | null = null;
         const usage = input.usage || {};
-        usage.tts = {
-            characters: ttsResult.characters || 0,
-            duration: ttsResult.duration || 0, // AI audio duration
-        };
 
-        // Debug: TTS result log (batafsil)
-        console.log(`[ResponseStep] TTS result:`, JSON.stringify({
-            audioUrl: ttsResult.audioUrl,
-            characters: ttsResult.characters,
-            duration: ttsResult.duration,
-            durationType: typeof ttsResult.duration
-        }));
+        if (input.audioUrl) {
+            // Tayyor audio ishlatish - TTS skip
+            console.log(`[ResponseStep] ✅ Using pre-recorded audio: ${input.audioUrl}`);
+            finalAudioUrl = input.audioUrl;
+            usage.tts = { characters: 0, duration: 0 }; // TTS ishlatilmadi
+        } else {
+            // TTS orqali audio yaratish (xarajat ma'lumotlari bilan)
+            console.log(`[ResponseStep] 🎤 Generating TTS audio...`);
+            const ttsResult = await this.tts.textToSpeechWithUsage({
+                text: input.aiResponse,
+                language: 'ar',
+            });
+
+            finalAudioUrl = ttsResult.audioUrl;
+            audioDuration = ttsResult.duration || 0;
+            usage.tts = {
+                characters: ttsResult.characters || 0,
+                duration: audioDuration,
+            };
+
+            // Debug: TTS result log (batafsil)
+            console.log(`[ResponseStep] TTS result:`, JSON.stringify({
+                audioUrl: ttsResult.audioUrl,
+                characters: ttsResult.characters,
+                duration: ttsResult.duration,
+                durationType: typeof ttsResult.duration
+            }));
+        }
 
         // Xabarni yaratish va saqlash
         const message = await this.messageFactory.createResponseMessage(
@@ -71,8 +85,8 @@ export class ResponseStep implements PipelineStep {
             input.aiResponse,
             input.aiResponseUz,
             true, // withinLimit - limit ichida
-            ttsResult.audioUrl, // Audio URL
-            ttsResult.duration // Audio duration (soniyalarda)
+            finalAudioUrl, // Audio URL (tayyor yoki TTS)
+            audioDuration // Audio duration (soniyalarda)
         );
 
         // Xarajat ma'lumotlarini xabar bilan birga qaytarish

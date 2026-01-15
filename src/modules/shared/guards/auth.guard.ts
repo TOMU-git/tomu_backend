@@ -21,11 +21,11 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
-    console.log('🛡️ AUTH GUARD - Request URL:', request.url);
-    console.log('🔍 AUTH GUARD - Token present:', !!token);
-    if (token) {
-      console.log('🎫 AUTH GUARD - Token preview:', token.substring(0, 20) + '...');
-    }
+    // console.log('🛡️ AUTH GUARD - Request URL:', request.url);
+    // console.log('🔍 AUTH GUARD - Token present:', !!token);
+    // if (token) {
+    //   console.log('🎫 AUTH GUARD - Token preview:', token.substring(0, 20) + '...');
+    // }
 
     if (!token) {
       console.log('[AuthGuard] ❌ Token not found in Authorization header');
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
       const { data: foundUser } = await this.userService.findOneById(
         payload.id,
       );
-      console.log('👤 AUTH GUARD - User lookup result:', foundUser ? 'Found' : 'Not found');
+      // console.log('👤 AUTH GUARD - User lookup result:', foundUser ? 'Found' : 'Not found');
 
       if (!foundUser) {
         console.log('[AuthGuard] ❌ User not found for id:', payload.id);

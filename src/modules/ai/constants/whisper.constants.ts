@@ -13,6 +13,10 @@ export const WHISPER_DEFAULTS = {
     EXTENSION: 'webm',
     CONTENT_TYPE: 'audio/webm',
     MAX_FILE_SIZE_MB: 25,
+    // Confidence check thresholds
+    NO_SPEECH_PROB_THRESHOLD: 0.6, // 60%+ jimlik ehtimoli bo'lsa rad etish
+    AVG_LOGPROB_THRESHOLD: -1.0, // -1.0 dan past ishonchlilik bo'lsa rad etish
+    MIN_DURATION_SECONDS: 0.5, // Minimum 0.5 soniya audio kerak
 } as const;
 
 /**
