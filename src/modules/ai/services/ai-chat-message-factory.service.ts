@@ -59,6 +59,10 @@ export class AIChatMessageFactory {
             fallbackConstantKey = 'NON_ARABIC';
         }
 
+        // Fallback message qiymatlarini logga chiqarish
+        console.log('Fallback response (arabic):', message.aiResponseText);
+        console.log('Fallback response (uzbek):', message.aiResponseUzbek);
+
         // ✅ TAYYOR AUDIO: Avval tayyor audio'ni tekshirish
         const preRecordedAudio = getFallbackAudioUrl(fallbackConstantKey);
         if (preRecordedAudio) {
