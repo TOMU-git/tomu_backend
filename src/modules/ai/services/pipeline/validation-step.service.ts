@@ -32,7 +32,42 @@ export class ValidationStep implements PipelineStep {
             return { message, session: input.session };
         }
 
-        // Arab tilidan boshqa til bo'lsa
+        // ✅ QATTIQ VALIDATION 1: Minimum so'z soni (3+ so'z)
+        const words = trimmed.split(/\s+/).filter(w => w.length > 0);
+        if (words.length < 3) {
+            console.log(`⚠️  Validation: Juda qisqa matn (${words.length} so'z, min: 3)`);
+            const message = await this.messageFactory.createFallbackMessage(
+                Number(input.sessionId),
+                trimmed,
+                'empty' // Qisqa matn fallback
+            );
+            return { message, session: input.session };
+        }
+
+        // ✅ QATTIQ VALIDATION 2: Arab harf nisbati (50%+)
+        const arabicRatio = ArabicTextUtils.getArabicRatio(trimmed);
+        if (arabicRatio < 0.5) {
+            console.log(`⚠️  Validation: Arab harf nisbati past (${(arabicRatio * 100).toFixed(1)}%, min: 50%)`);
+            const message = await this.messageFactory.createFallbackMessage(
+                Number(input.sessionId),
+                trimmed,
+                'non-arabic' // Arab tilidan boshqa til fallback
+            );
+            return { message, session: input.session };
+        }
+
+        // ✅ QATTIQ VALIDATION 3: Random arab harflar (ma'nosiz ketma-ketlik)
+        if (ArabicTextUtils.isRandomArabic(trimmed)) {
+            console.log(`⚠️  Validation: Random arab harflar aniqlandi (ma'nosiz ketma-ketlik)`);
+            const message = await this.messageFactory.createFallbackMessage(
+                Number(input.sessionId),
+                trimmed,
+                'non-arabic' // Random harflar fallback
+            );
+            return { message, session: input.session };
+        }
+
+        // Arab tilidan boshqa til bo'lsa (eski tekshiruv - backup)
         if (!ArabicTextUtils.isArabicText(trimmed)) {
             console.log(`⚠️  Validation: Arab tilidan boshqa til aniqlandi`);
             const message = await this.messageFactory.createFallbackMessage(
@@ -44,7 +79,7 @@ export class ValidationStep implements PipelineStep {
         }
 
         // Validatsiya muvaffaqiyatli - matn keyingi step'ga uzatiladi
-        console.log(`✅ Validation: Matn validatsiyadan o'tdi (uzunlik: ${trimmed.length})`);
+        console.log(`✅ Validation: Matn validatsiyadan o'tdi (${words.length} so'z, arab: ${(arabicRatio * 100).toFixed(1)}%)`);
         return {
             ...input,
             validatedText: trimmed,

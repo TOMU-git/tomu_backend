@@ -8,6 +8,21 @@ export const AI_ERROR_MESSAGES = {
 };
 
 /**
+ * Fallback Audio Paths
+ * Tayyor audio file'lar uchun path mapping
+ * Agar audio topilmasa, TTS fallback ishlatiladi
+ */
+export const FALLBACK_AUDIO_PATHS: Record<string, string | null> = {
+    EMPTY_TRANSCRIPT: '/public/audio/fallbacks/ar/empty_transcrip.mp3',
+    NON_ARABIC: '/public/audio/fallbacks/ar/non_arabic.mp3',
+    NO_MATERIAL_RESPONSE: '/public/audio/fallbacks/ar/no_material.mp3',
+    NOT_UNDERSTOOD: '/public/audio/fallbacks/ar/don\'t_understand.mp3',
+    FUTURE_LESSON_RESPONSE: null, // Audio tayyorlanmagan - TTS ishlatiladi
+    DIALOGUE_END_CONFIRMATION: null, // Audio tayyorlanmagan - TTS ishlatiladi
+    CLOSE_MATCH_HELP: null, // Dynamic content - TTS kerak
+};
+
+/**
  * AI Fallback Messages
  * STT (Speech-to-Text) va validation xatolari uchun standart javoblar
  * Har bir xabar arab va o'zbek tillarida

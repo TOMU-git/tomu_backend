@@ -21,7 +21,7 @@ export class BlockService implements IBlockService {
 
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
-  ) {}
+  ) { }
 
   async create(createBlockDto: CreateBlockDto): Promise<ResData<Block>> {
     // Kursni topish
@@ -137,5 +137,37 @@ export class BlockService implements IBlockService {
     }
     await this.blockRepository.delete(block);
     return new ResData<Block>("Block deleted successfully", 200, block);
+  }
+
+  /**
+   * Barcha blocklarning countVideos qiymatini qayta hisoblaydi.
+   * countVideos faqat lesson videolarini hisobga oladi (homework emas).
+   * Bu metod mavjud ma'lumotlarni to'g'rilash uchun ishlatiladi.
+   * @returns Yangilangan blocklar soni haqida ma'lumot
+   */
+  async recalculateCountVideos(): Promise<ResData<string>> {
+    const blocks = await this.blockRepository.findAll();
+    let updatedCount = 0;
+
+    for (const block of blocks) {
+      // Blokni relationlar bilan olish
+      const blockWithRelations = await this.blockRepository.findById(block.id);
+      if (blockWithRelations) {
+        // Faqat lessonlar sonini hisoblash (homework emas)
+        const actualCount = blockWithRelations.lessons?.length || 0;
+
+        if (blockWithRelations.countVideos !== actualCount) {
+          blockWithRelations.countVideos = actualCount;
+          await this.blockRepository.update(blockWithRelations);
+          updatedCount++;
+        }
+      }
+    }
+
+    return new ResData<string>(
+      `countVideos recalculated successfully`,
+      200,
+      `Updated ${updatedCount} blocks out of ${blocks.length} total blocks`,
+    );
   }
 }

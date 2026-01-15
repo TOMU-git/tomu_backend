@@ -112,22 +112,13 @@ export class HybridFollowUpService {
             return await this.formatResult(recentHistoryResult, 'recent-history');
         }
 
-        // Phase 4: AI generic fallback (TO'RTINCHI USTUVORLIK - 80%)
-        console.log('🤖 [HybridFollowUp] Phase 4: AI generic fallback...');
-        const aiResult = await this.aiFollowUp.generateFollowUp(
-            currentResponse,
-            conversationHistory,
-            context,
-            lastWatchedLessonOrder
-        );
+        // Phase 4: AI generic fallback O'CHIRILDI (uncontrolled follow-up muammosi)
+        // Sabab: AI o'zi yaratgan savol materialdan tashqarida bo'lishi mumkin
+        // Faqat material-based follow-up'lar ishlatiladi (Phase 1-3)
+        console.log('⚠️  [HybridFollowUp] Phase 4: AI fallback o\'chirilgan (faqat material-based)');
 
-        if (aiResult && aiResult.confidence >= this.MIN_CONFIDENCE) {
-            console.log(`✅ [HybridFollowUp] Phase 4: AI yaratdi (confidence: ${aiResult.confidence})`);
-            return await this.formatResult(aiResult, 'ai-generated');
-        }
-
-        // Hech narsa topilmadi
-        console.log('❌ [HybridFollowUp] Follow-up topilmadi (barcha phase muvaffaqiyatsiz)');
+        // Hech narsa topilmadi - bu normal holat
+        console.log('ℹ️  [HybridFollowUp] Follow-up topilmadi (faqat material-based qidiruv)');
         return null;
     }
 

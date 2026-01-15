@@ -155,7 +155,7 @@ export class GPTStep implements PipelineStep {
         const precomputed = findPrecomputedResponse(userText, lastWatchedLessonOrder);
         if (precomputed) {
             console.log(`⚡ Precomputed response topildi (5s → 5ms)`);
-            
+
             // Cache'ga saqlash (keyingi safar uchun)
             await this.responseCache.set(
                 userText,
@@ -167,7 +167,7 @@ export class GPTStep implements PipelineStep {
                 courseId,
                 lastWatchedLessonOrder
             );
-            
+
             return {
                 ...input,
                 aiResponse: precomputed.aiResponseText,
@@ -210,8 +210,9 @@ export class GPTStep implements PipelineStep {
                 ...input,
                 aiResponse: response.aiResponse,
                 aiResponseUz: response.aiResponseUz || '',
+                audioUrl: response.audioUrl, // ✅ Tayyor audio (agar mavjud bo'lsa)
                 usage,
-            } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+            } as VoiceInput & { aiResponse: string; aiResponseUz: string; audioUrl?: string | null };
         }
 
         // Materiallardan javob topish
@@ -288,8 +289,9 @@ export class GPTStep implements PipelineStep {
             ...input,
             aiResponse: response.aiResponse,
             aiResponseUz: response.aiResponseUz || '',
+            audioUrl: response.audioUrl, // ✅ Tayyor audio (agar mavjud bo'lsa)
             usage,
-        } as VoiceInput & { aiResponse: string; aiResponseUz: string };
+        } as VoiceInput & { aiResponse: string; aiResponseUz: string; audioUrl?: string | null };
     }
 
     /**
@@ -304,15 +306,27 @@ export class GPTStep implements PipelineStep {
         lastWatchedLessonOrder: number,
         conversationTopic: any,
         conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
-    ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage'] }> {
+    ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage']; audioUrl?: string | null }> {
         // 1) Materialdan topilgan javob
         if (materialMatch.nextSentence) {
             if (materialMatch.nextSentence === 'DIALOGUE_END') {
-                return this.fallbackResponse.createDialogueEndResponse();
+                const fallback = this.fallbackResponse.createDialogueEndResponse();
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
 
             if (materialMatch.lessonOrder !== null && materialMatch.lessonOrder > lastWatchedLessonOrder) {
-                return this.fallbackResponse.createFutureLessonResponse();
+                const fallback = this.fallbackResponse.createFutureLessonResponse();
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
 
             // Material javobini validatsiya qilish
@@ -325,7 +339,7 @@ export class GPTStep implements PipelineStep {
 
             if (!validation.isValid) {
                 console.log(`⚠️  Material javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-                
+
                 // Agar "question_to_question" sabab bo'lsa, GPT'dan javob so'rash
                 if (validation.reason === 'question_to_question') {
                     console.log('🔄 Material javob savolga savol bilan javob berdi, GPT\'dan javob so\'ralmoqda...');
@@ -341,10 +355,16 @@ export class GPTStep implements PipelineStep {
                         false // freeMode = false (material context bilan)
                     );
                 }
-                
+
                 // Boshqa sabablar uchun "materialda yo'q" deb javob berish
                 // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
+                const fallback = await this.fallbackResponse.createNoMaterialResponse(userText);
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
 
             // Valid material response
@@ -363,12 +383,12 @@ export class GPTStep implements PipelineStep {
                     // Sabab: Bitta response'da 2 ta savol bo'lmasligi kerak
                     const { isQuestion } = await import('../../utils/question-detector.util');
                     const materialIsQuestion = isQuestion(materialResponseResult.aiResponse);
-                    
+
                     if (materialIsQuestion) {
                         console.log('ℹ️  Material javob o\'zi savol, follow-up qo\'shilmaydi (1 response = 1 savol)');
                     } else {
                         console.log('🔄 Material javobga follow-up savol qo\'shilmoqda (Hybrid)...');
-                        
+
                         // Material match ma'lumotlarini o'tkazish (sequential follow-up uchun)
                         const followUpResult = await this.hybridFollowUp.generateFollowUp(
                             materialResponseResult.aiResponse,
@@ -385,16 +405,16 @@ export class GPTStep implements PipelineStep {
                         // Agar follow-up topilsa
                         if (followUpResult && followUpResult.question) {
                             console.log(`✅ Follow-up savol qo'shildi (${followUpResult.method}, confidence: ${followUpResult.confidence})`);
-                            
+
                             // ⏸️  SSML BREAK: Javob va savol orasiga pauza qo'shish
                             // Faqat Google TTS uchun SSML formatida, OpenAI uchun oddiy text
                             const useSSML = this.tts.supportsSSML();
                             const pauseDuration = '1.5s'; // 1.5 soniya pauza
-                            
+
                             // Follow-up savol ekanligini tekshirish (savol ohangi uchun)
                             const { isQuestion } = await import('../../utils/question-detector.util');
                             const isFollowUpQuestion = isQuestion(followUpResult.question);
-                            
+
                             const enrichedResponse = addPauseBetweenTexts(
                                 materialResponseResult.aiResponse,
                                 followUpResult.question,
@@ -402,10 +422,10 @@ export class GPTStep implements PipelineStep {
                                 useSSML,
                                 isFollowUpQuestion
                             );
-                            
+
                             // Translation uchun SSML kerak emas
                             const enrichedTranslation = `${materialResponseResult.aiResponseUz} ${followUpResult.questionUz}`;
-                            
+
                             // Log: SSML ishlatilganligini ko'rsatish
                             if (useSSML) {
                                 console.log(`⏸️  SSML break qo'shildi: ${pauseDuration} pauza`);
@@ -415,7 +435,7 @@ export class GPTStep implements PipelineStep {
                                 // Database saqlash uchun SSML'siz versiya (ai-chat-message-factory.service.ts da olib tashlanadi)
                                 console.log(`📝 Clean text (DB): ${stripSSML(enrichedResponse)}`);
                             }
-                            
+
                             // ✅ SSML bilan qaytarish - TTS uchun kerak (pauza ishlashi uchun)
                             // SSML teglar bazaga saqlashda ai-chat-message-factory.service.ts da olib tashlanadi
                             return {
@@ -442,7 +462,13 @@ export class GPTStep implements PipelineStep {
             materialMatch.bestMatchNextSentence.length > 1) {
 
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
-                return this.fallbackResponse.createFutureLessonResponse();
+                const fallback = this.fallbackResponse.createFutureLessonResponse();
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
 
             // Help response yaratish
@@ -470,7 +496,13 @@ export class GPTStep implements PipelineStep {
             materialMatch.bestMatchSentence.length > 1) {
 
             if (materialMatch.bestMatchLessonOrder !== null && materialMatch.bestMatchLessonOrder > lastWatchedLessonOrder) {
-                return this.fallbackResponse.createFutureLessonResponse();
+                const fallback = this.fallbackResponse.createFutureLessonResponse();
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
 
             return await this.fallbackResponse.createCloseMatchHelpResponse(
@@ -506,7 +538,7 @@ export class GPTStep implements PipelineStep {
         conversationTopic: any,
         conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
         freeMode: boolean = false
-    ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage'] }> {
+    ): Promise<{ aiResponse: string; aiResponseUz: string; gptUsage?: GPTResponse['usage']; audioUrl?: string | null }> {
         // Entity extraction - suhbatdan obyektlar va mavzularni ajratish
         const conversationContext = this.entityExtractor.extractEntities(conversationHistory);
         const conversationEntitiesStr = this.entityExtractor.formatEntitiesForGPT(conversationContext, this.enableUserEngagement);
@@ -551,18 +583,30 @@ export class GPTStep implements PipelineStep {
 
         if (!validation.isValid) {
             console.log(`⚠️  GPT javob validatsiyadan o'tmadi (sabab: ${validation.reason || 'unknown'})`);
-            
+
             // Agar "question_to_question" sabab bo'lsa, retry yoki fallback
             if (validation.reason === 'question_to_question') {
                 console.log('🔄 GPT javob savolga savol bilan javob berdi, fallback javob qaytarilmoqda...');
                 // Fallback javob - "materialda yo'q" deb javob berish
                 // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
-                return await this.fallbackResponse.createNoMaterialResponse(userText);
+                const fallback = await this.fallbackResponse.createNoMaterialResponse(userText);
+                return {
+                    aiResponse: fallback.aiResponse,
+                    aiResponseUz: fallback.aiResponseUz,
+                    audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                    gptUsage: fallback.gptUsage,
+                };
             }
-            
+
             // Boshqa sabablar uchun "materialda yo'q" deb javob berish
             // (user grammatik to'g'ri gapirgan bo'lishi mumkin)
-            return await this.fallbackResponse.createNoMaterialResponse(userText);
+            const fallback = await this.fallbackResponse.createNoMaterialResponse(userText);
+            return {
+                aiResponse: fallback.aiResponse,
+                aiResponseUz: fallback.aiResponseUz,
+                audioUrl: fallback.audioUrl, // ✅ Tayyor audio
+                gptUsage: fallback.gptUsage,
+            };
         }
 
         // Valid GPT response
@@ -577,6 +621,7 @@ export class GPTStep implements PipelineStep {
             aiResponse,
             aiResponseUz,
             gptUsage,
+            audioUrl: undefined, // GPT response - tayyor audio yo'q, TTS ishlatiladi
         };
     }
 

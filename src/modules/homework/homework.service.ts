@@ -63,9 +63,8 @@ export class HomeworkService implements IHomeworkService {
       "Dars videosi",
     );
 
-    // Blockdagi video soni va davomiyligini yangilaydi
+    // Blockdagi davomiyligini yangilaydi (countVideos faqat lesson uchun)
     block.duration = Number(block.duration) + Number(duration);
-    block.countVideos = Number(block.countVideos) + 1;
     await this.blockRepository.update(block);
 
     // Homework ma'lumotlarini yaratadi va bazaga saqlaydi

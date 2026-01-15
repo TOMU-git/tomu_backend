@@ -19,6 +19,11 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
+  // ✅ Static assets serving - /public papkani serve qilish
+  app.useStaticAssets('public', {
+    prefix: '/public',
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

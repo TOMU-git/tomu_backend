@@ -35,17 +35,28 @@ export class ContextStep implements PipelineStep {
         // Lekin conversation history'ni yig'ish kerak (GPT uchun context)
         if (this.accessGeneral) {
             console.log(`🌐 ACCESS_GENERAL rejimi: materiallardan qidirilmaydi, erkin suhbat`);
-            
+
             // Suhbat tarixini olish (erkin rejimda ham kerak!)
             let conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
             try {
                 const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
 
-                // Suhbat tarixini GPT uchun formatlash
+                // ✅ FILTRLANGAN Suhbat tarixi: faqat material-based javoblar
                 conversationHistory = previousMessages
                     .filter(msg => {
                         const content = msg.aiResponseText;
-                        return content && content.trim().length > 0;
+                        if (!content || content.trim().length === 0) {
+                            return false;
+                        }
+
+                        // Fallback javoblarni olib tashlash
+                        const isFallback =
+                            content.includes('عَفْوًا') || // "Kechirasiz" fallback
+                            content.includes('لَمْ أَسْمَعْ') || // "Eshitmadim" fallback
+                            content.includes('لَمْ أَفْهَمْ') || // "Tushunmadim" fallback
+                            content.includes('أَنَا لَمْ أَتَعَلَّمْ'); // "O'rganmadim" fallback
+
+                        return !isFallback;
                     })
                     .slice(-AI_LIMITS.MAX_CONVERSATION_HISTORY)
                     .map(msg => ({
@@ -108,10 +119,10 @@ export class ContextStep implements PipelineStep {
         // Agar topilgan ma'lumotlardan eng kichik lessonOrder <= currentOrder bo'lsa,
         // demak foydalanuvchi bu darsga kelgan va xabar chiqmasligi kerak
         if (possibleLessons.futureLessons.length > 0) {
-            const minMentionedOrder = possibleLessons.mentioned.length > 0 
-                ? Math.min(...possibleLessons.mentioned) 
+            const minMentionedOrder = possibleLessons.mentioned.length > 0
+                ? Math.min(...possibleLessons.mentioned)
                 : Infinity;
-            
+
             // Agar eng kichik mentioned order <= lastWatchedLessonOrder bo'lsa,
             // demak foydalanuvchi bu darsga kelgan, shuning uchun future lesson xabarini chiqarmaymiz
             if (minMentionedOrder <= lastWatchedLessonOrder) {
@@ -128,12 +139,23 @@ export class ContextStep implements PipelineStep {
         try {
             const previousMessages = await this.aiChatService.getMessages(Number(input.sessionId), Number(input.userId));
 
-            // Suhbat tarixini GPT uchun formatlash
+            // ✅ FILTRLANGAN Suhbat tarixi: faqat material-based javoblar
             conversationHistory = previousMessages
                 .filter(msg => {
                     // Foydalanuvchi va AI xabarlari ikkalasi ham aiResponseText dan o'qiladi
                     const content = msg.aiResponseText;
-                    return content && content.trim().length > 0;
+                    if (!content || content.trim().length === 0) {
+                        return false;
+                    }
+
+                    // Fallback javoblarni olib tashlash
+                    const isFallback =
+                        content.includes('عَفْوًا') || // "Kechirasiz" fallback
+                        content.includes('لَمْ أَسْمَعْ') || // "Eshitmadim" fallback
+                        content.includes('لَمْ أَفْهَمْ') || // "Tushunmadim" fallback
+                        content.includes('أَنَا لَمْ أَتَعَلَّمْ'); // "O'rganmadim" fallback
+
+                    return !isFallback;
                 })
                 .slice(-AI_LIMITS.MAX_CONVERSATION_HISTORY)
                 .map(msg => ({
