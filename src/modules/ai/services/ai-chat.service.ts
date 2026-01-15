@@ -245,6 +245,8 @@ export class AIChatService {
         const userTextLatin = ArabicTextUtils.transliterateArabic(text.trim());
         console.log('User text (latin):', userTextLatin);
 
+      
+
         // 1. AI javob qaytarishiga qancha vaqt ketganini chiqarib qo'y
         console.log(`AI javob vaqti: ${aiResponseTime}ms (${(aiResponseTime / 1000).toFixed(2)}s)`);
 
@@ -375,6 +377,16 @@ export class AIChatService {
         if (userText) {
             const userTextLatin = ArabicTextUtils.transliterateArabic(userText);
             console.log('User text (latin):', userTextLatin);
+
+            // 3. User matnining tarjimasini chiqarish
+            try {
+                const userTextTranslation = await this.translation.translateToUzbek(userText);
+                if (userTextTranslation) {
+                    console.log('User text (uzbek):', userTextTranslation);
+                }
+            } catch (error) {
+                console.warn('Translation failed for user text:', error);
+            }
         }
         if (userText) {
             // User audio duration'ni usage'dan olish (Whisper'dan)

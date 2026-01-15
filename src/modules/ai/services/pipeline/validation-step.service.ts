@@ -32,10 +32,10 @@ export class ValidationStep implements PipelineStep {
             return { message, session: input.session };
         }
 
-        // ✅ QATTIQ VALIDATION 1: Minimum so'z soni (3+ so'z)
+        // ✅ VALIDATION 1: Minimum so'z soni (1+ so'z) - "ha", "yo'q" kabi qisqa javoblarga ruxsat
         const words = trimmed.split(/\s+/).filter(w => w.length > 0);
-        if (words.length < 3) {
-            console.log(`⚠️  Validation: Juda qisqa matn (${words.length} so'z, min: 3)`);
+        if (words.length < 1) {
+            console.log(`⚠️  Validation: Juda qisqa matn (${words.length} so'z, min: 1)`);
             const message = await this.messageFactory.createFallbackMessage(
                 Number(input.sessionId),
                 trimmed,
