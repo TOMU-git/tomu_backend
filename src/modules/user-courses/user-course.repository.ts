@@ -88,20 +88,6 @@ export class UserCourseRepository implements IUserCourseRepository {
     return await this.userCourseRepository.find({
       where: { user: { id: userId } },
       relations: ["course"], // Bog'langan Course obyektini qo'shish
-      select: {
-        id: true,
-        status: true,
-        isActive: true,
-        startedAt: true,
-        endedAt: true,
-        course: {
-          id: true,
-          title: true,
-          imageUrl: true,
-          description: true,
-          lang: true,
-        },
-      },
     });
   }
 

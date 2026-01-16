@@ -22,7 +22,7 @@ export class CourseRepository implements ICourseRepository {
     return await this.courseRepository.find({});
   }
 
-  async findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>> {
+  async findAllWithCounts(userId?: number): Promise<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }>> {
     const queryBuilder = this.courseRepository
       .createQueryBuilder('course')
       .leftJoin('course.alphabets', 'alphabet')
@@ -57,12 +57,32 @@ export class CourseRepository implements ICourseRepository {
           'MAX(CASE WHEN "userCourse"."id" IS NOT NULL AND "userCourse"."has_ever_paid" = true AND "userCourse"."is_active" = true AND ("userCourse"."ended_at" IS NULL OR "userCourse"."ended_at" >= CURRENT_DATE) THEN 1 ELSE 0 END)',
           'isActiveForUser'
         )
+        .addSelect(
+          `MAX(CASE 
+            WHEN "userCourse"."has_ever_paid" = true 
+                 AND "userCourse"."is_active" = true 
+                 AND ("userCourse"."ended_at" IS NULL OR "userCourse"."ended_at" >= CURRENT_DATE)
+            THEN 'purchased'
+            
+            WHEN "userCourse"."on_free_trial" = true
+                 AND "userCourse"."has_ever_paid" = false
+            THEN 'free_trial'
+            
+            WHEN "userCourse"."id" IS NOT NULL 
+                 AND "userCourse"."ended_at" < CURRENT_DATE
+            THEN 'expired'
+            
+            ELSE 'no_subscription'
+          END)`,
+          'subscriptionStatus'
+        )
         .addSelect('MAX("userCourse"."started_at")', 'startedAt')
         .addSelect('MAX("userCourse"."ended_at")', 'endedAt');
     } else {
       // userId yo'q bo'lsa, isActiveForUser har doim 0, dates NULL
       queryBuilder
         .addSelect('0', 'isActiveForUser')
+        .addSelect(`'no_subscription'`, 'subscriptionStatus')
         .addSelect('NULL', 'startedAt')
         .addSelect('NULL', 'endedAt');
     }
@@ -99,9 +119,10 @@ export class CourseRepository implements ICourseRepository {
       grammarCount: parseInt(row.grammarCount) || 0,
       homeworkCount: parseInt(row.lessonCount) || 0,
       isActiveForUser: row.isActiveForUser === 1 || row.isActiveForUser === '1' || row.isActiveForUser === true,
+      subscriptionStatus: row.subscriptionStatus || 'no_subscription',
       startedAt: row.startedAt ? new Date(row.startedAt) : null,
       endedAt: row.endedAt ? new Date(row.endedAt) : null,
-    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }));
+    } as Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }));
   }
 
   async update(entity: Course): Promise<Course> {
