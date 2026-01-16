@@ -97,15 +97,19 @@ export class CourseService implements ICourseService {
         userId: userCourse.user?.id,
         courseId: userCourse.course?.id,
         isActive: userCourse.isActive,
-        status: userCourse.status
+        hasEverPaid: userCourse.hasEverPaid,
+        endedAt: userCourse.endedAt
       } : 'NULL');
 
-      // Agar userCourse topilsa (ya'ni user bu kursga ega bo'lsa), isActiveForUser = true
-      if (userCourse) {
+      // Faqat harid qilingan va aktiv obunani tekshirish
+      if (userCourse &&
+        userCourse.hasEverPaid &&
+        userCourse.isActive &&
+        (!userCourse.endedAt || userCourse.endedAt >= new Date())) {
         isActiveForUser = true;
-        console.log('[CourseService.findOneById] userCourse found, setting isActiveForUser = true');
+        console.log('[CourseService.findOneById] Active subscription found, setting isActiveForUser = true');
       } else {
-        console.log('[CourseService.findOneById] userCourse NOT found, isActiveForUser remains false');
+        console.log('[CourseService.findOneById] No active subscription, isActiveForUser remains false');
       }
     } else {
       console.log('[CourseService.findOneById] No user provided, isActiveForUser = false');
@@ -138,74 +142,74 @@ export class CourseService implements ICourseService {
     return new ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>("ok", 200, responseData);
   }
 
-async update(
-  id: ID,
-  updateCourseDto: UpdateCourseDto,
-  file?: Express.Multer.File,
-): Promise<ResData<Partial<Course> & { vimeoEmbedUrl?: string }>> {
-  // Kursni topish
-  const foundData = await this.courseRepository.findById(id);
-  if (!foundData) {
-    throw new CourseNotFoundException();
-  }
-
-  // Agar yangi fayl kelgan bo‘lsa, eski faylni o‘chirish
-  if (file && foundData.imageUrl) {
-    try {
-      await this.fileService.removeByImageUrl(foundData.imageUrl);
-    } catch (error) {
-      console.error("Error occurred while deleting the file:", error.message);
-      throw new Error("Faylni o'chirishda xato yuz berdi.");
+  async update(
+    id: ID,
+    updateCourseDto: UpdateCourseDto,
+    file?: Express.Multer.File,
+  ): Promise<ResData<Partial<Course> & { vimeoEmbedUrl?: string }>> {
+    // Kursni topish
+    const foundData = await this.courseRepository.findById(id);
+    if (!foundData) {
+      throw new CourseNotFoundException();
     }
-  }
 
-  // Yangi faylni saqlash
-  if (file) {
-    const savedFile = await this.fileService.create(file);
-    foundData.imageUrl = savedFile.data.path;
-  }
-
-  // PATCH logika: faqat haqiqiy qiymat kelganda update qilamiz
-  if (updateCourseDto.title !== undefined && updateCourseDto.title !== null && updateCourseDto.title.trim() !== "") {
-    foundData.title = updateCourseDto.title;
-  }
-
-  if (updateCourseDto.description !== undefined && updateCourseDto.description !== null && updateCourseDto.description.trim() !== "") {
-    foundData.description = updateCourseDto.description;
-  }
-
-  if (updateCourseDto.videoUrl !== undefined && updateCourseDto.videoUrl !== null && updateCourseDto.videoUrl.trim() !== "") {
-    foundData.videoUrl = updateCourseDto.videoUrl;
-  }
-
-if (updateCourseDto.lang !== undefined && updateCourseDto.lang !== null && updateCourseDto.lang.trim() !== "") {
-  foundData.lang = updateCourseDto.lang;
-}
-
-
-  // isActive faqat agar kelgan bo‘lsa update qilinadi
-  if (updateCourseDto.isActive !== undefined && updateCourseDto.isActive !== null) {
-    foundData.isActive = updateCourseDto.isActive;
-  }
-
-  // Kursni yangilash DB da
-  const data = await this.courseRepository.update(foundData);
-
-  // Faqat yangilangan ma’lumotlarni qaytarish
-  return new ResData<Partial<Course> & { vimeoEmbedUrl?: string }>(
-    "Course updated successfully",
-    200,
-    {
-      title: data.title,
-      description: data.description,
-      videoUrl: data.videoUrl,
-      vimeoEmbedUrl: data.videoUrl ? generateVimeoEmbedUrl(data.videoUrl) : null,
-      imageUrl: data.imageUrl,
-      lang: data.lang,
-      isActive: data.isActive,
+    // Agar yangi fayl kelgan bo‘lsa, eski faylni o‘chirish
+    if (file && foundData.imageUrl) {
+      try {
+        await this.fileService.removeByImageUrl(foundData.imageUrl);
+      } catch (error) {
+        console.error("Error occurred while deleting the file:", error.message);
+        throw new Error("Faylni o'chirishda xato yuz berdi.");
+      }
     }
-  );
-}
+
+    // Yangi faylni saqlash
+    if (file) {
+      const savedFile = await this.fileService.create(file);
+      foundData.imageUrl = savedFile.data.path;
+    }
+
+    // PATCH logika: faqat haqiqiy qiymat kelganda update qilamiz
+    if (updateCourseDto.title !== undefined && updateCourseDto.title !== null && updateCourseDto.title.trim() !== "") {
+      foundData.title = updateCourseDto.title;
+    }
+
+    if (updateCourseDto.description !== undefined && updateCourseDto.description !== null && updateCourseDto.description.trim() !== "") {
+      foundData.description = updateCourseDto.description;
+    }
+
+    if (updateCourseDto.videoUrl !== undefined && updateCourseDto.videoUrl !== null && updateCourseDto.videoUrl.trim() !== "") {
+      foundData.videoUrl = updateCourseDto.videoUrl;
+    }
+
+    if (updateCourseDto.lang !== undefined && updateCourseDto.lang !== null && updateCourseDto.lang.trim() !== "") {
+      foundData.lang = updateCourseDto.lang;
+    }
+
+
+    // isActive faqat agar kelgan bo‘lsa update qilinadi
+    if (updateCourseDto.isActive !== undefined && updateCourseDto.isActive !== null) {
+      foundData.isActive = updateCourseDto.isActive;
+    }
+
+    // Kursni yangilash DB da
+    const data = await this.courseRepository.update(foundData);
+
+    // Faqat yangilangan ma’lumotlarni qaytarish
+    return new ResData<Partial<Course> & { vimeoEmbedUrl?: string }>(
+      "Course updated successfully",
+      200,
+      {
+        title: data.title,
+        description: data.description,
+        videoUrl: data.videoUrl,
+        vimeoEmbedUrl: data.videoUrl ? generateVimeoEmbedUrl(data.videoUrl) : null,
+        imageUrl: data.imageUrl,
+        lang: data.lang,
+        isActive: data.isActive,
+      }
+    );
+  }
 
 
   async delete(id: ID): Promise<ResData<Course>> {

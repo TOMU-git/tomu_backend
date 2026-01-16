@@ -54,7 +54,7 @@ export class CourseRepository implements ICourseRepository {
           { userId }
         )
         .addSelect(
-          'MAX(CASE WHEN "userCourse"."id" IS NOT NULL THEN 1 ELSE 0 END)',
+          'MAX(CASE WHEN "userCourse"."id" IS NOT NULL AND "userCourse"."has_ever_paid" = true AND "userCourse"."is_active" = true AND ("userCourse"."ended_at" IS NULL OR "userCourse"."ended_at" >= CURRENT_DATE) THEN 1 ELSE 0 END)',
           'isActiveForUser'
         )
         .addSelect('MAX("userCourse"."started_at")', 'startedAt')
