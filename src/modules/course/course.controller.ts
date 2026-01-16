@@ -76,7 +76,7 @@ export class CourseController {
   @Get()
   async findAll(
     @CurrentUser() user?: User,
-  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>>> {
+  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }>>> {
     return await this.courseService.findAll(user);
   }
 
@@ -86,7 +86,7 @@ export class CourseController {
   async findOne(
     @Param("id", ParseIntPipe) id: ID,
     @CurrentUser() user?: User,
-  ): Promise<ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
+  ): Promise<ResData<Course & { isActiveForUser: boolean; subscriptionStatus: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
     console.log('[CourseController.findOne] Request received - Course ID:', id, 'User:', user ? `ID: ${user.id}, Email/Phone: ${user.phoneNumber || 'N/A'}` : 'NOT AUTHENTICATED');
     const result = await this.courseService.findOneById(id, user);
     console.log('[CourseController.findOne] Response - isActiveForUser:', result.data?.isActiveForUser);

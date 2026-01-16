@@ -14,6 +14,7 @@ import { Course } from "./entities/course.entity";
 import { User } from "../user/entities/user.entity";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
 import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray, generateVimeoEmbedUrl } from "src/common/utils/helper";
+import { getSubscriptionStatus } from "src/common/utils/subscription-helper";
 
 @Injectable()
 export class CourseService implements ICourseService {
@@ -59,7 +60,7 @@ export class CourseService implements ICourseService {
     return new ResData<Course>("Course created successfully", 201, addVimeoEmbedUrl(newData));
   }
 
-  async findAll(user?: User): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>>> {
+  async findAll(user?: User): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }>>> {
     // Barcha kurslarni count va isActiveForUser bilan olish
     // Agar user mavjud bo'lsa, uning ID'sini uzatamiz
     const data = await this.courseRepository.findAllWithCounts(user?.id);
@@ -70,10 +71,10 @@ export class CourseService implements ICourseService {
       vimeoEmbedUrl: course.videoUrl ? generateVimeoEmbedUrl(course.videoUrl) : null,
     }));
 
-    return new ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; startedAt: Date | null; endedAt: Date | null }>>("ok", 200, dataWithVimeo);
+    return new ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }>>("ok", 200, dataWithVimeo);
   }
 
-  async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
+  async findOneById(id: ID, user?: User): Promise<ResData<Course & { isActiveForUser: boolean; subscriptionStatus: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
     console.log('[CourseService.findOneById] START - Course ID:', id, 'User:', user ? `ID: ${user.id}` : 'NOT PROVIDED');
 
     // ID bo'yicha kursni count bilan topish
@@ -86,9 +87,10 @@ export class CourseService implements ICourseService {
 
     // Agar user mavjud bo'lsa, user uchun bu kurs mavjudligini tekshirish
     let isActiveForUser = false;
+    let userCourse = null;
     if (user) {
       console.log('[CourseService.findOneById] Checking userCourse - User ID:', user.id, 'Course ID:', id);
-      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(
+      userCourse = await this.userCourseRepository.findByUserIdAndCourseId(
         user.id,
         id,
       );
@@ -117,6 +119,10 @@ export class CourseService implements ICourseService {
 
     console.log('[CourseService.findOneById] FINAL - isActiveForUser:', isActiveForUser);
 
+    // subscriptionStatus ni hisoblash
+    const subscriptionStatus = getSubscriptionStatus(userCourse || null);
+    console.log('[CourseService.findOneById] subscriptionStatus:', subscriptionStatus);
+
     // Response ga isActiveForUser va count ma'lumotlarini qo'shish
     // TypeORM entity ni plain object ga aylantirish (metadata muammosini oldini olish uchun)
     const responseData = {
@@ -133,13 +139,14 @@ export class CourseService implements ICourseService {
       createdAt: foundData.createdAt,
       lastUpdatedAt: foundData.lastUpdatedAt,
       isActiveForUser,
+      subscriptionStatus,
       alphabetCount: foundData.alphabetCount,
       lessonCount: foundData.lessonCount,
       grammarCount: foundData.grammarCount,
       homeworkCount: foundData.homeworkCount,
-    } as Course & { isActiveForUser: boolean; vimeoEmbedUrl?: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number };
+    } as Course & { isActiveForUser: boolean; subscriptionStatus: string; vimeoEmbedUrl?: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number };
 
-    return new ResData<Course & { isActiveForUser: boolean; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>("ok", 200, responseData);
+    return new ResData<Course & { isActiveForUser: boolean; subscriptionStatus: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>("ok", 200, responseData);
   }
 
   async update(

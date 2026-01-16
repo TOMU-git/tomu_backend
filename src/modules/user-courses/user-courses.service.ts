@@ -11,6 +11,7 @@ import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { IUserRepository } from "../user/interfaces/user.repository";
 import { UserNotFound } from "../user/exception/user.exception";
+import { getSubscriptionStatus } from "src/common/utils/subscription-helper";
 
 @Injectable()
 export class UserCourseService implements IUserCourseService {
@@ -60,6 +61,14 @@ export class UserCourseService implements IUserCourseService {
     newUserCourse.course = foundCourse;
     newUserCourse.user = foundUser;
     newUserCourse = Object.assign(newUserCourse, createUserCourseDto);
+
+    // Bepul sinov uchun endedAt qo'shilmaydi, faqat to'lov qilinganda qo'shiladi
+    if (!createUserCourseDto.onFreeTrial) {
+      // To'lov qilingan holatda endedAt o'rnatiladi (agar kerak bo'lsa)
+      // Bu yerda endedAt o'rnatish logikasi qo'shilishi mumkin
+      // Hozircha endedAt null qoladi, to'lov qilinganda transactions.service.ts da o'rnatiladi
+    }
+
     const newData = await this.userCourseRepository.create(newUserCourse);
 
     return new ResData<Partial<UserCourse>>(
@@ -117,6 +126,9 @@ export class UserCourseService implements IUserCourseService {
     // Har bir course uchun count ma'lumotlarini qo'shamiz
     const enrichedData = await Promise.all(
       foundData.map(async (userCourse) => {
+        // subscriptionStatus ni hisoblash
+        const subscriptionStatus = getSubscriptionStatus(userCourse);
+
         if (userCourse.course && userCourse.course.id) {
           // Course uchun count ma'lumotlarini olamiz
           const courseWithCounts = await this.courseRepository.findByIdWithCounts(
@@ -127,6 +139,7 @@ export class UserCourseService implements IUserCourseService {
             // Course object'ga count'larni qo'shamiz
             return {
               ...userCourse,
+              subscriptionStatus,
               course: {
                 ...userCourse.course,
                 alphabetCount: courseWithCounts.alphabetCount,
@@ -138,7 +151,10 @@ export class UserCourseService implements IUserCourseService {
           }
         }
         // Agar course yo'q bo'lsa yoki count olinmasa, original data qaytaramiz
-        return userCourse;
+        return {
+          ...userCourse,
+          subscriptionStatus,
+        };
       }),
     );
 
