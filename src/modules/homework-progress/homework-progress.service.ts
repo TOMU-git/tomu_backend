@@ -537,8 +537,7 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       const remainingQueueItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
       const isQueueEmpty = !remainingQueueItems || remainingQueueItems.length === 0;
 
-      // const dailyWatchedCount = await this.lessonProgressService.checkDailyLessonsLimit(userId);
-      const dailyWatchedCount = 1;
+
 
       // if (isQueueEmpty && dailyWatchedCount < 10) {
       // // 4. Eng so‘nggi homework progressni aniqlaymiz
@@ -585,31 +584,36 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       // }
 
 
-      if (isQueueEmpty && dailyWatchedCount < 10) {
-        // 4. Eng so‘nggi watched + unlocked lessonProgress dan keyingisini ochamiz
-        const lastLessonOrder =
-          await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(userId, courseId, queueItem.blockOrder);
+      if (isQueueEmpty) {
+        const dailyWatchedCount = await this.lessonProgressService.checkDailyLessonsLimit(userId);
+        // if (dailyWatchedCount < 10) {
+        //   // 4. Eng so‘nggi watched + unlocked lessonProgress dan keyingisini ochamiz
+        //   const lastLessonOrder =
+        //     await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(userId, courseId, queueItem.blockOrder);
 
-        if (lastLessonOrder === null) {
-          this.logger.warn("📭 Foydalanuvchi uchun hech qanday watched & unlocked dars topilmadi");
-        } else {
-          const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
-            lastLessonOrder + 1,
-            userId,
-            queueItem.blockOrder,
-            courseId
-          );
+        //   if (lastLessonOrder === null) {
+        //     this.logger.warn("📭 Foydalanuvchi uchun hech qanday watched & unlocked dars topilmadi");
+        //   } else {
+        //     const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+        //       lastLessonOrder + 1,
+        //       userId,
+        //       queueItem.blockOrder,
+        //       courseId
+        //     );
 
-          if (nextLessonProgress && !nextLessonProgress.isUnlocked) {
-            nextLessonProgress.isUnlocked = true;
-            await this.lessonProgressRepository.update(nextLessonProgress);
-            this.logger.log(
-              `✅ Queue bo‘shadi va watched dars asosida keyingi dars (lessonOrder ${nextLessonProgress.lessonOrder}) ochildi`
-            );
-          } else {
-            this.logger.log("⏩ Keyingi dars allaqachon ochilgan yoki mavjud emas");
-          }
-        }
+        //     if (nextLessonProgress && !nextLessonProgress.isUnlocked) {
+        //       nextLessonProgress.isUnlocked = true;
+        //       await this.lessonProgressRepository.update(nextLessonProgress);
+        //       this.logger.log(
+        //         `✅ Queue bo‘shadi va watched dars asosida keyingi dars (lessonOrder ${nextLessonProgress.lessonOrder}) ochildi`
+        //       );
+        //     } else {
+        //       this.logger.log("⏩ Keyingi dars allaqachon ochilgan yoki mavjud emas");
+        //     }
+        //   }
+        // } else {
+        //   this.logger.log(`🚫 Kunlik limit tugagan (${dailyWatchedCount}/10), keyingi dars ertaga ochiladi`);
+        // }
       } else {
         this.logger.log("🚫 Queue to‘liq bo‘sh emas, keyingi dars ochilmadi");
       }
