@@ -1,4 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import {
   AccessAuthDto,
   ForgotPassword,
@@ -31,6 +33,8 @@ import { SmsService } from "../../lib/smsService";
 import { ICourseService } from "../course/interfaces/course.service";
 import { IDeviceService } from "src/modules/user-device/interfaces/device.service";
 import { DeviceInfoDto } from "src/modules/user-device/dto/device-info.dto";
+import { IOAuthProfile, IOAuthUserData } from "./interfaces/oauth-profile.interface";
+import { AuthProviderEnum, GenderEnum } from "src/common/enums/enum";
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -42,6 +46,7 @@ export class AuthService implements IAuthService {
     @Inject("ICourseService") private readonly courseService: ICourseService,
     private readonly smsService: SmsService,
     @Inject("IDeviceService") private readonly deviceService: IDeviceService,
+    @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) { }
 
   // *** Login for only students *** //
@@ -358,4 +363,164 @@ export class AuthService implements IAuthService {
       foundUser,
     );
   }
+
+  // *** OAuth Methods *** //
+
+  /**
+   * Validate Google OAuth user
+   * Creates new user if doesn't exist, updates if exists
+   * Returns user data with JWT tokens
+   */
+  async validateGoogleUser(
+    profile: IOAuthProfile,
+    res: Response,
+  ): Promise<ResData<ILoginData>> {
+    try {
+      // Check if user exists by Google ID
+      let user = await this.userRepo.findOneBy({ googleId: profile.providerId });
+
+      if (!user) {
+        // Check if user exists by email (account linking scenario)
+        user = await this.userRepo.findOneBy({ email: profile.email });
+
+        if (user) {
+          // Link Google account to existing user
+          user.googleId = profile.providerId;
+          user.emailVerified = profile.emailVerified;
+          user.avatar = profile.avatar || user.avatar;
+          await this.userRepository.update(user);
+        } else {
+          // Create new user from Google profile
+          const newUser = new User();
+          newUser.googleId = profile.providerId;
+          newUser.email = profile.email;
+          newUser.emailVerified = profile.emailVerified;
+          newUser.firstName = profile.firstName;
+          newUser.lastName = profile.lastName;
+          newUser.avatar = profile.avatar;
+          newUser.authProvider = AuthProviderEnum.GOOGLE;
+          newUser.role = RoleEnum.STUDENT; // Default role for OAuth users
+          newUser.gender = null; // Will be set later if needed
+          newUser.password = null; // No password for OAuth users
+          newUser.unhashedPassword = null;
+
+          user = await this.userRepository.create(newUser);
+        }
+      }
+
+      // Generate JWT tokens
+      const access_token = await this.jwtService.signAsync(
+        { id: user.id },
+        { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
+      );
+      const refresh_token = await this.jwtService.signAsync(
+        { id: user.id },
+        { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
+      );
+
+      user.hashed_refresh_token = await hashed(refresh_token);
+      const updated = await this.userRepository.update(user);
+
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: config.jwtCookieTime,
+      });
+
+      return new ResData<ILoginData>(
+        "Google authentication successful",
+        HttpStatus.OK,
+        {
+          data: updated,
+          tokens: { access_token, refresh_token },
+        },
+      );
+    } catch (error) {
+      console.error('[Auth Service] Google OAuth error:', error);
+      throw new HttpException(
+        "Google authentication failed",
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Validate Apple OAuth user
+   * Creates new user if doesn't exist, updates if exists
+   * Returns user data with JWT tokens
+   */
+  async validateAppleUser(
+    profile: IOAuthProfile,
+    res: Response,
+  ): Promise<ResData<ILoginData>> {
+    try {
+      // Check if user exists by Apple ID
+      let user = await this.userRepo.findOneBy({ appleId: profile.providerId });
+
+      if (!user) {
+        // Check if user exists by email (account linking scenario)
+        if (profile.email) {
+          user = await this.userRepo.findOneBy({ email: profile.email });
+        }
+
+        if (user) {
+          // Link Apple account to existing user
+          user.appleId = profile.providerId;
+          user.emailVerified = profile.emailVerified;
+          // Only update name if provided (Apple only sends it on first login)
+          if (profile.firstName) user.firstName = profile.firstName;
+          if (profile.lastName) user.lastName = profile.lastName;
+          await this.userRepository.update(user);
+        } else {
+          // Create new user from Apple profile
+          const newUser = new User();
+          newUser.appleId = profile.providerId;
+          newUser.email = profile.email;
+          newUser.emailVerified = profile.emailVerified;
+          newUser.firstName = profile.firstName || 'Apple';
+          newUser.lastName = profile.lastName || 'User';
+          newUser.authProvider = AuthProviderEnum.APPLE;
+          newUser.role = RoleEnum.STUDENT; // Default role for OAuth users
+          newUser.gender = null; // Will be set later if needed
+          newUser.password = null; // No password for OAuth users
+          newUser.unhashedPassword = null;
+
+          user = await this.userRepository.create(newUser);
+        }
+      }
+
+      // Generate JWT tokens
+      const access_token = await this.jwtService.signAsync(
+        { id: user.id },
+        { secret: config.jwtSecretKey, expiresIn: config.jwtExpiredIn },
+      );
+      const refresh_token = await this.jwtService.signAsync(
+        { id: user.id },
+        { secret: config.jwtRefreshKey, expiresIn: config.jwtRefreshExpiresIn },
+      );
+
+      user.hashed_refresh_token = await hashed(refresh_token);
+      const updated = await this.userRepository.update(user);
+
+      res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        maxAge: config.jwtCookieTime,
+      });
+
+      return new ResData<ILoginData>(
+        "Apple authentication successful",
+        HttpStatus.OK,
+        {
+          data: updated,
+          tokens: { access_token, refresh_token },
+        },
+      );
+    } catch (error) {
+      console.error('[Auth Service] Apple OAuth error:', error);
+      throw new HttpException(
+        "Apple authentication failed",
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
+

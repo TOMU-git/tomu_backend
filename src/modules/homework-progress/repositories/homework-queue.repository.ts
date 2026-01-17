@@ -207,17 +207,18 @@ export class HomeworkQueueRepository {
    * Foydalanuvchi ID si bo'yicha har bir kurs uchun uyga vazifa navbatidagi elementlar sonini hisoblash
    * 
    * @param userId - Foydalanuvchi ID
-   * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs nomi
+   * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs tili (ar, eng, ru)
    */
   async countQueueItemsGroupedByCourse(userId: ID): Promise<Array<{ courseTitle: string; count: number }>> {
     const result = await this.repository
       .createQueryBuilder('queue')
       .leftJoin('courses', 'course', 'course.id = queue.course_id')
-      .select('course.lang', 'courseTitle')
+      .select('queue.course_id', 'courseId')
+      .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
       .addSelect('COUNT(queue.id)', 'count')
       .where('queue.user_id = :userId', { userId: Number(userId) })
       .groupBy('queue.course_id')
-      .addGroupBy('course.lang')
+      .orderBy('queue.course_id', 'ASC')
       .getRawMany();
 
     return result.map(item => ({

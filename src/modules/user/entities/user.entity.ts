@@ -1,6 +1,6 @@
 import { IsPhoneNumber } from "class-validator";
 import { BaseEntity } from "src/common/database/baseEntity";
-import { GenderEnum, RoleEnum } from "src/common/enums/enum";
+import { AuthProviderEnum, GenderEnum, RoleEnum } from "src/common/enums/enum";
 import { Feedback } from "src/modules/feedback/entities/feedback.entity";
 import { HomeworkProgress } from "src/modules/homework-progress/entities/homework-progress.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
@@ -21,13 +21,13 @@ export class User extends BaseEntity {
   @IsPhoneNumber(null)
   phoneNumber: string;
 
-  @Column({ type: "enum", enum: GenderEnum, nullable: false })
+  @Column({ type: "enum", enum: GenderEnum, nullable: true })
   gender: GenderEnum;
 
-  @Column({ type: "text", nullable: false })
+  @Column({ type: "text", nullable: true })
   password: string;
 
-  @Column({ type: "text", name: 'unhashed_password', nullable: false })
+  @Column({ type: "text", name: 'unhashed_password', nullable: true })
   unhashedPassword: string;
 
   @Column({ type: "enum", enum: RoleEnum, nullable: false })
@@ -67,6 +67,65 @@ export class User extends BaseEntity {
     comment: 'Whether device management is enabled for this user'
   })
   deviceManagementEnabled: boolean;
+
+  /**
+   * OAuth Provider Information
+   * These fields support Google and Apple authentication
+   */
+
+  @Column({
+    name: 'google_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    unique: true,
+    comment: 'Google OAuth user ID'
+  })
+  googleId: string;
+
+  @Column({
+    name: 'apple_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    unique: true,
+    comment: 'Apple OAuth user ID'
+  })
+  appleId: string;
+
+  @Column({
+    name: 'email',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    comment: 'User email address from OAuth or manual entry'
+  })
+  email: string;
+
+  @Column({
+    name: 'avatar',
+    type: 'text',
+    nullable: true,
+    comment: 'User avatar URL from OAuth provider'
+  })
+  avatar: string;
+
+  @Column({
+    name: 'auth_provider',
+    type: 'enum',
+    enum: AuthProviderEnum,
+    default: AuthProviderEnum.LOCAL,
+    comment: 'Authentication provider: local, google, or apple'
+  })
+  authProvider: AuthProviderEnum;
+
+  @Column({
+    name: 'email_verified',
+    type: 'boolean',
+    default: false,
+    comment: 'Whether email has been verified'
+  })
+  emailVerified: boolean;
 
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
