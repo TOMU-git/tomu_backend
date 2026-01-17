@@ -19,6 +19,10 @@ import { IUserService } from "../user/interfaces/user.service";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
 import { SmsRateLimitGuard, RateLimitGuard } from "./guards/sms-rate-limit.guard";
+import { GoogleOAuthGuard } from "./guards/google-oauth.guard";
+import { AppleOAuthGuard } from "./guards/apple-oauth.guard";
+import { IOAuthProfile } from "./interfaces/oauth-profile.interface";
+import { Req } from "@nestjs/common";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -246,5 +250,81 @@ export class AuthController {
       res,
     );
     res.send(createdUser);
+  }
+
+  // **** OAuth Endpoints **** //
+
+  /**
+   * Google OAuth - Initiate authentication
+   * GET /api/auth/google
+   * Redirects user to Google login page
+   */
+  @ApiOperation({
+    summary: "Initiate Google OAuth authentication",
+    description: "Redirects user to Google login page for authentication",
+  })
+  @Get("google")
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuth() {
+    // Guard redirects to Google
+  }
+
+  /**
+   * Google OAuth - Callback handler
+   * GET /api/auth/google/callback
+   * Google redirects here after successful authentication
+   */
+  @ApiOperation({
+    summary: "Google OAuth callback",
+    description: "Handles Google OAuth callback and creates/updates user",
+  })
+  @Get("google/callback")
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuthCallback(@Req() req: any, @Res() res: Response) {
+    const profile: IOAuthProfile = req.user;
+    const result = await this.authService.validateGoogleUser(profile, res);
+
+    // Redirect to frontend with tokens
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${result.data.tokens.access_token}`;
+
+    res.redirect(redirectUrl);
+  }
+
+  /**
+   * Apple OAuth - Initiate authentication
+   * GET /api/auth/apple
+   * Redirects user to Apple Sign In page
+   */
+  @ApiOperation({
+    summary: "Initiate Apple OAuth authentication",
+    description: "Redirects user to Apple Sign In page for authentication",
+  })
+  @Get("apple")
+  @UseGuards(AppleOAuthGuard)
+  async appleAuth() {
+    // Guard redirects to Apple
+  }
+
+  /**
+   * Apple OAuth - Callback handler
+   * POST /api/auth/apple/callback
+   * Apple redirects here after successful authentication
+   */
+  @ApiOperation({
+    summary: "Apple OAuth callback",
+    description: "Handles Apple OAuth callback and creates/updates user",
+  })
+  @Post("apple/callback")
+  @UseGuards(AppleOAuthGuard)
+  async appleAuthCallback(@Req() req: any, @Res() res: Response) {
+    const profile: IOAuthProfile = req.user;
+    const result = await this.authService.validateAppleUser(profile, res);
+
+    // Redirect to frontend with tokens
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${result.data.tokens.access_token}`;
+
+    res.redirect(redirectUrl);
   }
 }
