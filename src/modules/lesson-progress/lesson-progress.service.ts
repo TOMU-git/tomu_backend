@@ -56,7 +56,7 @@ export class LessonProgressService implements ILessonProgressService {
     private readonly dataSource: DataSource,
   ) { }
 
-  
+
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     const data = await this.lessonProgressRepository.findAll();
@@ -99,7 +99,7 @@ export class LessonProgressService implements ILessonProgressService {
           foundLessonProgress,
         );
       }
-      
+
       // ✅ Kunlik limit tekshiruvi
       // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
       // if (dailyWatchedCount >= 10) {
@@ -257,8 +257,8 @@ export class LessonProgressService implements ILessonProgressService {
 
       // TODO: TEMPORARY - Re-enable queue check for production
       // TEMPORARY: Queue check disabled for AI testing
-    
-        // Vazifalar bo'limidagi vazifalar sonini tekshirish
+
+      // Vazifalar bo'limidagi vazifalar sonini tekshirish
       const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
       if (queueItemsCount.data.count > 4) {
         return {
@@ -268,7 +268,7 @@ export class LessonProgressService implements ILessonProgressService {
           isPaid: isActive
         };
       }
-      
+
 
 
       // // ✅ Kunlik limitni tekshirish
@@ -284,7 +284,7 @@ export class LessonProgressService implements ILessonProgressService {
 
       // TODO: TEMPORARY - Re-enable payment check for production
       // TEMPORARY: Payment check disabled for AI testing
-      
+
       if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
           return {
@@ -310,7 +310,36 @@ export class LessonProgressService implements ILessonProgressService {
           }
         }
       }
-    
+
+      // ✅ Lazy Unlock: Barcha tekshiruvlardan o'tgandan keyin, agar queue bo'sh bo'lsa keyingi darsni ochish
+      if (queueItemsCount.data.count === 0) {
+        const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+        if (dailyWatchedCount < 10) {
+          const lastLessonOrder = await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(
+            userId,
+            courseId,
+            blockOrder
+          );
+
+          if (lastLessonOrder !== null) {
+            const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+              lastLessonOrder + 1,
+              userId,
+              blockOrder,
+              courseId
+            );
+
+            if (nextLessonProgress && !nextLessonProgress.isUnlocked) {
+              nextLessonProgress.isUnlocked = true;
+              await this.lessonProgressRepository.update(nextLessonProgress);
+              this.logger.log(
+                `✅ Lazy unlock: Queue bo'sh, keyingi dars (lessonOrder ${nextLessonProgress.lessonOrder}) ochildi`
+              );
+            }
+          }
+        }
+      }
+
       return {
         message: "Lesson fetched successfully",
         statusCode: 200,
@@ -421,7 +450,7 @@ export class LessonProgressService implements ILessonProgressService {
   }
 
 
-  
+
 
 
   /**
