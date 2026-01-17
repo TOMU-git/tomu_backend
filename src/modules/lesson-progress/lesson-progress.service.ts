@@ -318,7 +318,7 @@ export class LessonProgressService implements ILessonProgressService {
         const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
         this.logger.log(`📊 Kunlik ko'rilgan darslar: ${dailyWatchedCount}/10`);
 
-        if (dailyWatchedCount < 10) {
+        if (dailyWatchedCount < 40) {
           const lastLessonOrder = await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(
             userId,
             courseId,
