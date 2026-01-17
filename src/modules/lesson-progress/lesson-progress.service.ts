@@ -313,13 +313,18 @@ export class LessonProgressService implements ILessonProgressService {
 
       // ✅ Lazy Unlock: Barcha tekshiruvlardan o'tgandan keyin, agar queue bo'sh bo'lsa keyingi darsni ochish
       if (queueItemsCount.data.count === 0) {
+        this.logger.log(`🔍 Lazy unlock boshlandi: userId=${userId}, courseId=${courseId}, blockOrder=${blockOrder}`);
+
         const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+        this.logger.log(`📊 Kunlik ko'rilgan darslar: ${dailyWatchedCount}/10`);
+
         if (dailyWatchedCount < 10) {
           const lastLessonOrder = await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(
             userId,
             courseId,
             blockOrder
           );
+          this.logger.log(`📌 Oxirgi watched & unlocked dars: ${lastLessonOrder}`);
 
           if (lastLessonOrder !== null) {
             const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
@@ -328,6 +333,7 @@ export class LessonProgressService implements ILessonProgressService {
               blockOrder,
               courseId
             );
+            this.logger.log(`🔎 Keyingi dars topildi: lessonOrder=${lastLessonOrder + 1}, isUnlocked=${nextLessonProgress?.isUnlocked}`);
 
             if (nextLessonProgress && !nextLessonProgress.isUnlocked) {
               nextLessonProgress.isUnlocked = true;
@@ -335,15 +341,28 @@ export class LessonProgressService implements ILessonProgressService {
               this.logger.log(
                 `✅ Lazy unlock: Queue bo'sh, keyingi dars (lessonOrder ${nextLessonProgress.lessonOrder}) ochildi`
               );
+            } else if (nextLessonProgress && nextLessonProgress.isUnlocked) {
+              this.logger.log(`⏩ Dars allaqachon ochiq: lessonOrder=${nextLessonProgress.lessonOrder}`);
+            } else {
+              this.logger.warn(`❌ Keyingi dars topilmadi: lessonOrder=${lastLessonOrder + 1}`);
             }
+          } else {
+            this.logger.warn(`❌ Hech qanday watched & unlocked dars topilmadi`);
           }
+        } else {
+          this.logger.log(`🚫 Kunlik limit tugagan: ${dailyWatchedCount}/10`);
         }
+      } else {
+        this.logger.log(`🚫 Queue bo'sh emas: ${queueItemsCount.data.count} ta vazifa`);
       }
+
+      // ✅ Agar unlock qilingan bo'lsa, yangilangan ma'lumotlarni qaytarish
+      const finalProgresses = await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
 
       return {
         message: "Lesson fetched successfully",
         statusCode: 200,
-        data: existingProgresses,
+        data: finalProgresses,
         isPaid: !!isActive
       };
     }
