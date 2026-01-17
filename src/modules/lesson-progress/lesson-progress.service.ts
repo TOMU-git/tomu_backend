@@ -101,14 +101,14 @@ export class LessonProgressService implements ILessonProgressService {
       }
       
       // ✅ Kunlik limit tekshiruvi
-      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
-      if (dailyWatchedCount >= 10) {
-        return new ResData<LessonProgress>(
-          "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
-          403,
-          foundLessonProgress,
-        );
-      }
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+      //     403,
+      //     foundLessonProgress,
+      //   );
+      // }
 
       // UserCourse ma'lumotlarini tekshirish
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
@@ -272,15 +272,15 @@ export class LessonProgressService implements ILessonProgressService {
 
 
       // // ✅ Kunlik limitni tekshirish
-      const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
-      if (dailyWatchedCount >= 10) {
-        return {
-          message: "Kunlik dars ko'rish limiti tugagan. Ertaga davom eting.",
-          statusCode: 403,
-          data: existingProgresses, // eski darslar ko'rsatiladi
-          isPaid: isActive,
-        };
-      }
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return {
+      //     message: "Kunlik dars ko'rish limiti tugagan. Ertaga davom eting.",
+      //     statusCode: 403,
+      //     data: existingProgresses, // eski darslar ko'rsatiladi
+      //     isPaid: isActive,
+      //   };
+      // }
 
       // TODO: TEMPORARY - Re-enable payment check for production
       // TEMPORARY: Payment check disabled for AI testing
