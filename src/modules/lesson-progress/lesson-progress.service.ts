@@ -82,6 +82,15 @@ export class LessonProgressService implements ILessonProgressService {
 
       const { userId, blockId, courseId, blockOrder, lessonOrder } = foundLessonProgress;
 
+      // 🔒 Dars ochilganmi tekshirish (eng muhim tekshiruv!)
+      if (!foundLessonProgress.isUnlocked) {
+        return new ResData<LessonProgress>(
+          "Bu dars hali ochilmagan. Avvalgi darslarni yakunlang.",
+          403,
+          foundLessonProgress,
+        );
+      }
+
       if (foundLessonProgress.isWatched) {
         return new ResData<LessonProgress>(
           "Dars allaqachon ko'rilgan",
