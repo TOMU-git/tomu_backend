@@ -142,13 +142,18 @@ export class HomeworkService implements IHomeworkService {
     foundData.title = updateHomeworkDto.title;
     foundData.block = block;
 
-    // Yangi video fayl mavjud bo'lsa, yuklaydi
+    // Video o'zgarganda block duration ni yangilash logic
     if (file) {
       const { videoUrl, duration } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateHomeworkDto.title,
         "Dars videosi",
       );
+
+      // Block duration dagi farqni hisoblash va yangilash
+      block.duration =
+        Number(block.duration) - Number(foundData.duration) + Number(duration);
+      await this.blockRepository.update(block);
 
       foundData.videoUrl = videoUrl;
       foundData.mimetype = file.mimetype;
@@ -157,7 +162,7 @@ export class HomeworkService implements IHomeworkService {
     }
 
     const updatedData = Object.assign(foundData, updateHomeworkDto);
-    const data = await this.homeworkRepository.update(updatedData)
+    const data = await this.homeworkRepository.update(updatedData);
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
@@ -216,8 +221,20 @@ export class HomeworkService implements IHomeworkService {
    */
   async delete(id: ID): Promise<ResData<Homework>> {
     const { data: foundData } = await this.findOneById(id);
+
+    // Block duration dan dars vaqtini ayirish
+    const block = await this.blockRepository.findById(foundData.block.id);
+    if (block) {
+      block.duration = Number(block.duration) - Number(foundData.duration);
+      await this.blockRepository.update(block);
+    }
+
     const data = await this.homeworkRepository.delete(foundData);
 
-    return new ResData<Homework>("Homework deleted successfully", 200, addVimeoEmbedUrl(data));
+    return new ResData<Homework>(
+      "Homework deleted successfully",
+      200,
+      addVimeoEmbedUrl(data),
+    );
   }
 }
