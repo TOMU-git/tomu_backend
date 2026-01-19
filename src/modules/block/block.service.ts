@@ -140,34 +140,49 @@ export class BlockService implements IBlockService {
   }
 
   /**
-   * Barcha blocklarning countVideos qiymatini qayta hisoblaydi.
+   * Berilgan block ID bo'yicha videolar soni va umumiy davomiylikni qayta hisoblaydi.
    * countVideos faqat lesson videolarini hisobga oladi (homework emas).
-   * Bu metod mavjud ma'lumotlarni to'g'rilash uchun ishlatiladi.
-   * @returns Yangilangan blocklar soni haqida ma'lumot
+   * duration esa lesson va homework videolarining umumiy davomiyligini hisobga oladi.
+   * @param id Block ID
+   * @returns Yangilangan ma'lumotlar haqida xabar
    */
-  async recalculateCountVideos(): Promise<ResData<string>> {
-    const blocks = await this.blockRepository.findAll();
-    let updatedCount = 0;
+  async recalculateCountVideos(id: ID): Promise<ResData<string>> {
+    const block = await this.blockRepository.findById(id);
+    if (!block) {
+      throw new BlockNotFoundException();
+    }
 
-    for (const block of blocks) {
-      // Blokni relationlar bilan olish
-      const blockWithRelations = await this.blockRepository.findById(block.id);
-      if (blockWithRelations) {
-        // Faqat lessonlar sonini hisoblash (homework emas)
-        const actualCount = blockWithRelations.lessons?.length || 0;
+    // Haqiqiy lessonlar soni
+    const actualCount = block.lessons?.length || 0;
 
-        if (blockWithRelations.countVideos !== actualCount) {
-          blockWithRelations.countVideos = actualCount;
-          await this.blockRepository.update(blockWithRelations);
-          updatedCount++;
-        }
-      }
+    // Lesson va Homework'larning umumiy davomiyligini hisoblash
+    const lessonDuration =
+      block.lessons?.reduce((sum, item) => sum + Number(item.duration), 0) || 0;
+    const homeworkDuration =
+      block.homeworks?.reduce((sum, item) => sum + Number(item.duration), 0) ||
+      0;
+    const actualDuration = lessonDuration + homeworkDuration;
+
+    let isChanged = false;
+
+    if (Number(block.countVideos) !== actualCount) {
+      block.countVideos = actualCount;
+      isChanged = true;
+    }
+
+    if (Number(block.duration) !== actualDuration) {
+      block.duration = actualDuration;
+      isChanged = true;
+    }
+
+    if (isChanged) {
+      await this.blockRepository.update(block);
     }
 
     return new ResData<string>(
-      `countVideos recalculated successfully`,
+      `Block stats recalculated successfully`,
       200,
-      `Updated ${updatedCount} blocks out of ${blocks.length} total blocks`,
+      `Block ID: ${id}, Count: ${actualCount}, Duration: ${actualDuration}`,
     );
   }
 }

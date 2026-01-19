@@ -75,8 +75,10 @@ export class BlockController {
   }
 
   @Auth(RoleEnum.ADMIN, RoleEnum.DIRECTOR)
-  @Post("recalculate-count-videos")
-  async recalculateCountVideos(): Promise<ResData<string>> {
-    return await this.blockService.recalculateCountVideos();
+  @Post("recalculate-count-videos/:id")
+  async recalculateCountVideos(
+    @Param("id", ParseIntPipe) id: ID,
+  ): Promise<ResData<string>> {
+    return await this.blockService.recalculateCountVideos(id);
   }
 }
