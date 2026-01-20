@@ -34,10 +34,11 @@ import { User } from "../user/entities/user.entity";
     AuthService,
     SmsService,
     SmsRateLimitGuard,
-    // OAuth strategies - uncomment when credentials are configured
-    // GoogleStrategy,
+    // OAuth strategies
+    GoogleStrategy,
+    GoogleOAuthGuard,
+    // Apple OAuth - disabled until credentials are configured
     // AppleStrategy,
-    // GoogleOAuthGuard,
     // AppleOAuthGuard,
   ],
 })
