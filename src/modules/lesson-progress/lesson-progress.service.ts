@@ -82,6 +82,16 @@ export class LessonProgressService implements ILessonProgressService {
 
       const { userId, blockId, courseId, blockOrder, lessonOrder } = foundLessonProgress;
 
+      // 🔒 Avvalgi vazifalar soni 5 dan oshmaganmi?
+      const initialQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (initialQueue?.data?.count >= 5) {
+        return new ResData<LessonProgress>(
+          "Avvalgi vazifalarni yakunlang, so'ngra dars davom etadi.",
+          403,
+          foundLessonProgress,
+        );
+      }
+
       // 🔒 Dars ochilganmi tekshirish (eng muhim tekshiruv!)
       if (!foundLessonProgress.isUnlocked) {
         return new ResData<LessonProgress>(
@@ -99,15 +109,7 @@ export class LessonProgressService implements ILessonProgressService {
         );
       }
 
-      // 🔒 Avvalgi vazifalar soni 5 dan oshmaganmi?
-      const initialQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
-      if (initialQueue?.data?.count > 5) {
-        return new ResData<LessonProgress>(
-          "Avvalgi vazifalarni yakunlang, so'ngra dars davom etadi.",
-          403,
-          foundLessonProgress,
-        );
-      }
+
 
       // ✅ Kunlik limit tekshiruvi
       // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
@@ -269,7 +271,7 @@ export class LessonProgressService implements ILessonProgressService {
 
       // Vazifalar bo'limidagi vazifalar sonini tekshirish
       const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
-      if (queueItemsCount.data.count > 5) {
+      if (queueItemsCount.data.count >= 5) {
         return {
           message: "Finish reviewing the previous tasks first.",
           statusCode: 403,
