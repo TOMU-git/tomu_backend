@@ -38,8 +38,8 @@ import { User } from "../user/entities/user.entity";
     GoogleStrategy,
     GoogleOAuthGuard,
     // Apple OAuth - disabled until credentials are configured
-    // AppleStrategy,
-    // AppleOAuthGuard,
+    AppleStrategy,
+    AppleOAuthGuard,
   ],
 })
 export class AuthModule { }
