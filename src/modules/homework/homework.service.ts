@@ -57,7 +57,7 @@ export class HomeworkService implements IHomeworkService {
     }
 
     // Video faylni yuklaydi va tegishli ma'lumotlarni saqlaydi
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       createHomeworkDto.title,
       "Dars videosi",
@@ -71,13 +71,28 @@ export class HomeworkService implements IHomeworkService {
     let newHomework = new Homework();
     newHomework.block = block;
     newHomework.videoUrl = videoUrl;
+    newHomework.vimeoVideoId = vimeoVideoId;
     newHomework.mimetype = file.mimetype;
     newHomework.size = file.size;
     newHomework.duration = duration;
     newHomework = Object.assign(newHomework, createHomeworkDto);
     const newData = await this.homeworkRepository.create(newHomework);
 
-    return new ResData<Homework>("Homework created successfully", 201, addVimeoEmbedUrl(newData));
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: newData.id,
+      title: newData.title,
+      videoUrl: newData.videoUrl,
+      vimeoVideoId: newData.vimeoVideoId,
+      order: newData.order,
+      mimetype: newData.mimetype,
+      size: newData.size,
+      duration: newData.duration,
+      createdAt: newData.createdAt,
+      lastUpdatedAt: newData.lastUpdatedAt,
+    };
+
+    return new ResData<Homework>("Homework created successfully", 201, addVimeoEmbedUrl(responseData as Homework));
   }
 
   /**
@@ -144,7 +159,7 @@ export class HomeworkService implements IHomeworkService {
 
     // Video o'zgarganda block duration ni yangilash logic
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateHomeworkDto.title,
         "Dars videosi",
@@ -156,17 +171,32 @@ export class HomeworkService implements IHomeworkService {
       await this.blockRepository.update(block);
 
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
       foundData.duration = duration;
     }
 
-    const updatedData = Object.assign(foundData, updateHomeworkDto);
-    const data = await this.homeworkRepository.update(updatedData);
+    const data = await this.homeworkRepository.update(foundData);
+
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      order: data.order,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
-      addVimeoEmbedUrl(data),
+      addVimeoEmbedUrl(responseData as Homework),
     );
   }
 

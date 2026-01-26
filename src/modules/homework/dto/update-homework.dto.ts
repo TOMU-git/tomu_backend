@@ -16,11 +16,15 @@ export class UpdateHomeworkDto {
   video?: any; // Fayl yuklash uchun maydon
 
   @ApiPropertyOptional({
-    description: 'Bog‘lanadigan Blockning IDsi',
+    description: 'Bog\'lanadigan Blockning IDsi',
     example: 1,
   })
   @IsOptional()
-  @Transform(({ value }) => parseInt(value, 10))
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  })
   blockId?: number;
 
   @ApiPropertyOptional({
@@ -28,6 +32,10 @@ export class UpdateHomeworkDto {
     example: 1,
   })
   @IsOptional()
-  @Transform(({ value }) => parseInt(value, 10))
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  })
   order?: number;
 }

@@ -33,18 +33,26 @@ export class UpdateLessonDto {
   video?: any; // Fayl yuklash uchun maydon
 
   @ApiPropertyOptional({
-    description: 'Bog‘lanadigan Blockning IDsi',
+    description: 'Bog\'lanadigan Blockning IDsi',
     example: 1,
   })
   @IsOptional()
-  @Transform(({ value }) => (value ? parseInt(value, 10) : value)) // Stringni avtomatik raqamga aylantirish, bo‘sh bo‘lsa o‘zgartirmaslik
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  })
   order?: number;
 
   @ApiPropertyOptional({
-    description: 'Bog‘lanadigan Blockning IDsi',
+    description: 'Bog\'lanadigan Blockning IDsi',
     example: 1,
   })
   @IsOptional()
-  @Transform(({ value }) => (value ? parseInt(value, 10) : value)) // Stringni avtomatik raqamga aylantirish, bo‘sh bo‘lsa o‘zgartirmaslik
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  })
   blockId?: number;
 }

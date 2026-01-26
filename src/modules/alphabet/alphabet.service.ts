@@ -44,7 +44,7 @@ export class AlphabetService implements IAlphabetService {
     }
 
     // video_url ni yuklanadigan video faylning URL ga aylantirish
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
       'Dars videosi',
@@ -55,6 +55,7 @@ export class AlphabetService implements IAlphabetService {
     Object.assign(newAlphabet, {
       ...dto,
       videoUrl,
+      vimeoVideoId,
       duration,
       course,
       mimetype: file.mimetype,
@@ -63,10 +64,24 @@ export class AlphabetService implements IAlphabetService {
 
     const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
 
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: savedAlphabet.id,
+      title: savedAlphabet.title,
+      videoUrl: savedAlphabet.videoUrl,
+      vimeoVideoId: savedAlphabet.vimeoVideoId,
+      order: savedAlphabet.order,
+      mimetype: savedAlphabet.mimetype,
+      size: savedAlphabet.size,
+      duration: savedAlphabet.duration,
+      createdAt: savedAlphabet.createdAt,
+      lastUpdatedAt: savedAlphabet.lastUpdatedAt,
+    };
+
     return new ResData<Alphabet>(
       'Alifbo muvaffaqiyatli yaratildi',
       201,
-      addVimeoEmbedUrl(savedAlphabet),
+      addVimeoEmbedUrl(responseData as Alphabet),
     );
   }
 
@@ -127,31 +142,44 @@ export class AlphabetService implements IAlphabetService {
       }
     }
 
-    const updateData = {
-      order, // Order qiymati
-      title: dto.title === '' ? foundData.title : dto.title || undefined,
-      video: dto.video === '' ? undefined : dto.video || foundData.videoUrl,
-    };
-
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title,
         'Dars videosi',
       );
 
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    Object.assign(foundData, updateData);
+    // Order va title ni yangilash
+    foundData.order = order;
+    if (dto.title && dto.title !== '') {
+      foundData.title = dto.title;
+    }
 
     const data = await this.alphabetRepository.update(foundData);
 
-    return new ResData<Alphabet>('Alphabet updated successfully', 200, addVimeoEmbedUrl(data));
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      order: data.order,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
+    return new ResData<Alphabet>('Alphabet updated successfully', 200, addVimeoEmbedUrl(responseData as Alphabet));
   }
 
   async delete(id: ID): Promise<ResData<Alphabet>> {
