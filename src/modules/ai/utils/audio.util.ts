@@ -41,33 +41,69 @@ export class AudioUtils {
     }
 
     /**
-     * Audio file duration'ni aniqlash (approximate)
-     * File size va bitrate'dan duration'ni hisoblash
+     * Audio file duration'ni aniqlash (MP3 metadata orqali)
+     * MP3 metadata'dan aniq duration'ni o'qish, xato bo'lsa approximate formula ishlatish
      * @param filePath - Audio file path
-     * @param fileSize - File size (bytes)
-     * @returns Duration in seconds (approximate)
+     * @param fileSize - File size (bytes) - fallback uchun
+     * @returns Duration in seconds (aniq yoki approximate)
      */
     static async getAudioDuration(filePath: string, fileSize?: number): Promise<number> {
         try {
             const fs = require('fs').promises;
 
-            // File size'ni olish (agar berilmagan bo'lsa)
-            if (!fileSize) {
-                const stats = await fs.stat(filePath);
-                fileSize = stats.size;
+            // Faylni buffer sifatida o'qish
+            const fileBuffer = await fs.readFile(filePath);
+
+            // MP3 metadata'ni parse qilish
+            const { parseBuffer } = require('music-metadata');
+            const metadata = await parseBuffer(fileBuffer, { mimeType: 'audio/mpeg' });
+
+            if (metadata.format.duration) {
+                // Aniq duration (millisekund aniqlikda)
+                const duration = Math.round(metadata.format.duration * 10) / 10; // 1 decimal
+                console.log(`[AudioUtils] ✅ Accurate duration from metadata: ${duration}s`);
+                return duration;
             }
 
-            // MP3 uchun approximate formula:
-            // Duration (seconds) = File Size (bytes) / (Bitrate (kbps) * 1000 / 8)
-            // Average bitrate: 128 kbps (OpenAI TTS default)
-            const averageBitrate = 128; // kbps
-            const duration = fileSize / (averageBitrate * 1000 / 8);
+            // Fallback: eski formula (agar metadata'da duration bo'lmasa)
+            console.warn(`[AudioUtils] ⚠️  No duration in metadata, using approximate formula`);
+            return this.getApproximateDuration(fileBuffer.length);
 
-            return Math.round(duration * 10) / 10; // 1 decimal place
         } catch (error: any) {
-            console.error(`[AudioUtils] Error getting audio duration: ${error.message}`);
-            return 0; // Xato bo'lsa 0 qaytarish
+            console.error(`[AudioUtils] ❌ Error reading audio metadata: ${error.message}`);
+
+            // Fallback: eski formula
+            if (fileSize) {
+                return this.getApproximateDuration(fileSize);
+            }
+
+            // Agar file size ham bo'lmasa, fayldan o'qishga harakat qilish
+            try {
+                const fs = require('fs').promises;
+                const stats = await fs.stat(filePath);
+                return this.getApproximateDuration(stats.size);
+            } catch (statError: any) {
+                console.error(`[AudioUtils] ❌ Error getting file stats: ${statError.message}`);
+                return 0; // Xato bo'lsa 0 qaytarish
+            }
         }
+    }
+
+    /**
+     * Approximate duration hisoblash (fallback)
+     * File size va average bitrate'dan duration'ni hisoblash
+     * @param fileSize - File size (bytes)
+     * @returns Duration in seconds (approximate)
+     */
+    private static getApproximateDuration(fileSize: number): number {
+        // MP3 uchun approximate formula:
+        // Duration (seconds) = File Size (bytes) / (Bitrate (kbps) * 1000 / 8)
+        // Average bitrate: 128 kbps (OpenAI TTS default)
+        const averageBitrate = 128; // kbps
+        const duration = fileSize / (averageBitrate * 1000 / 8);
+
+        console.log(`[AudioUtils] 📊 Approximate duration (${fileSize} bytes): ${Math.round(duration * 10) / 10}s`);
+        return Math.round(duration * 10) / 10; // 1 decimal place
     }
 }
 
