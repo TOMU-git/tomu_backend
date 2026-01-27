@@ -13,7 +13,7 @@ import { IFileService } from "../file/interfaces/file.service";
 import { Course } from "./entities/course.entity";
 import { User } from "../user/entities/user.entity";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
-import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray, generateVimeoEmbedUrl } from "src/common/utils/helper";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray, extractVimeoId, generateVimeoEmbedUrl } from "src/common/utils/helper";
 import { getSubscriptionStatus } from "src/common/utils/subscription-helper";
 
 @Injectable()
@@ -48,9 +48,14 @@ export class CourseService implements ICourseService {
 
     // Yangi kurs ob'ektini yaratish
     const newCourse = new Course();
+
+    // videoUrl dan vimeoVideoId ni extract qilish
+    const vimeoVideoId = dto.videoUrl ? extractVimeoId(dto.videoUrl) : null;
+
     Object.assign(newCourse, {
       ...dto,
       videoUrl: dto.videoUrl,
+      vimeoVideoId,
       imageUrl,
       mimetype: file ? file.mimetype : null, // Fayl MIME turi
       size: file ? file.size : null, // Fayl o'lchami
@@ -187,6 +192,8 @@ export class CourseService implements ICourseService {
 
     if (updateCourseDto.videoUrl !== undefined && updateCourseDto.videoUrl !== null && updateCourseDto.videoUrl.trim() !== "") {
       foundData.videoUrl = updateCourseDto.videoUrl;
+      // videoUrl dan vimeoVideoId ni extract qilish
+      foundData.vimeoVideoId = extractVimeoId(updateCourseDto.videoUrl);
     }
 
     if (updateCourseDto.lang !== undefined && updateCourseDto.lang !== null && updateCourseDto.lang.trim() !== "") {

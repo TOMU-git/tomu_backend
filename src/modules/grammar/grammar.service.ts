@@ -46,7 +46,7 @@ export class GrammarService implements IGrammarService {
     }
 
     // Video yuklash
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       createGrammarDto.title,
       "Grammar video",
@@ -57,16 +57,31 @@ export class GrammarService implements IGrammarService {
     newGrammar.duration = duration;
     newGrammar.title = createGrammarDto.title;
     newGrammar.videoUrl = videoUrl;
+    newGrammar.vimeoVideoId = vimeoVideoId;
     newGrammar.courseId = createGrammarDto.courseId;
     newGrammar.mimetype = file.mimetype;
     newGrammar.size = file.size;
 
     const savedGrammar = await this.grammarRepository.create(newGrammar);
 
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: savedGrammar.id,
+      title: savedGrammar.title,
+      videoUrl: savedGrammar.videoUrl,
+      vimeoVideoId: savedGrammar.vimeoVideoId,
+      courseId: savedGrammar.courseId,
+      mimetype: savedGrammar.mimetype,
+      size: savedGrammar.size,
+      duration: savedGrammar.duration,
+      createdAt: savedGrammar.createdAt,
+      lastUpdatedAt: savedGrammar.lastUpdatedAt,
+    };
+
     return new ResData<Grammar>(
       "Grammar created successfully",
       201,
-      addVimeoEmbedUrl(savedGrammar),
+      addVimeoEmbedUrl(responseData as Grammar),
     );
   }
 
@@ -117,31 +132,43 @@ export class GrammarService implements IGrammarService {
       foundData.courseId = updateGrammarDto.courseId;
     }
 
-    // Yangilangan ma'lumotlarni tayyorlash
-    const updateData = {
-      title: updateGrammarDto.title || foundData.title,
-    };
+    // Title ni yangilash
+    if (updateGrammarDto.title) {
+      foundData.title = updateGrammarDto.title;
+    }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateGrammarDto.title || foundData.title,
         "Grammar video",
       );
 
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    // Boshqa maydonlarni yangilash
-    Object.assign(foundData, updateData);
-
     const data = await this.grammarRepository.update(foundData);
 
-    return new ResData<Grammar>("Grammar updated successfully", 200, addVimeoEmbedUrl(data));
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      courseId: data.courseId,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
+    return new ResData<Grammar>("Grammar updated successfully", 200, addVimeoEmbedUrl(responseData as Grammar));
   }
 
   async delete(id: ID): Promise<ResData<Grammar>> {

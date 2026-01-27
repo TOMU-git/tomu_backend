@@ -21,6 +21,9 @@ export class Course extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true, name: "video_url" }) // Kurs videosi URL
   videoUrl: string;
 
+  @Column({ type: "varchar", length: 50, nullable: true, name: "vimeo_video_id" }) // Vimeo video ID
+  vimeoVideoId: string;
+
   @Column({ type: "varchar", length: 50, nullable: true, name: "mime_type" }) // Fayl turi (mimetype)
   mimetype: string;
 

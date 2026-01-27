@@ -92,10 +92,26 @@ export class LessonService implements ILessonService {
     // Darsni saqlash
     const savedLesson = await this.lessonRepository.create(newLesson);
 
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: savedLesson.id,
+      title: savedLesson.title,
+      videoUrl: savedLesson.videoUrl,
+      vimeoVideoId: savedLesson.vimeoVideoId,
+      order: savedLesson.order,
+      mimetype: savedLesson.mimetype,
+      size: savedLesson.size,
+      duration: savedLesson.duration,
+      grammarLink: savedLesson.grammarLink,
+      grammarVideoId: savedLesson.grammarVideoId,
+      createdAt: savedLesson.createdAt,
+      lastUpdatedAt: savedLesson.lastUpdatedAt,
+    };
+
     return new ResData<Lesson>(
       "Dars muvaffaqiyatli yaratildi",
       201,
-      addVimeoEmbedUrl(savedLesson),
+      addVimeoEmbedUrl(responseData as Lesson),
     );
   }
 
@@ -212,12 +228,15 @@ export class LessonService implements ILessonService {
     }
 
     // Yangilanishlarni qo'llash
-    Object.assign(foundData, {
-      order: dto.order ?? foundData.order,
-      title: dto.title ?? foundData.title,
-      video: dto.video ?? foundData.videoUrl,
-      grammarLink: dto.grammarLink ?? foundData.grammarLink,
-    });
+    if (dto.order !== undefined && dto.order !== null) {
+      foundData.order = dto.order;
+    }
+    if (dto.title !== undefined && dto.title !== null && dto.title.trim() !== '') {
+      foundData.title = dto.title;
+    }
+    if (dto.grammarLink !== undefined) {
+      foundData.grammarLink = dto.grammarLink;
+    }
 
     // grammarVideoId ni avtomatik extract qilish
     if (foundData.grammarLink) {
@@ -256,7 +275,23 @@ export class LessonService implements ILessonService {
       }
     }
 
-    return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(data));
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      order: data.order,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      grammarLink: data.grammarLink,
+      grammarVideoId: data.grammarVideoId,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
+    return new ResData<Lesson>("Lesson updated successfully", 200, addVimeoEmbedUrl(responseData as Lesson));
   }
 
 
