@@ -12,6 +12,12 @@ export class GrammarAlreadyExistException extends HttpException {
   }
 }
 
+export class GrammarOrderAlreadyExistException extends HttpException {
+  constructor() {
+    super("Grammar with this order already exists in this course", 400);
+  }
+}
+
 export class GrammarsNotFoundByCourseId extends HttpException {
   constructor() {
     super("No grammars found for this course", 400);
