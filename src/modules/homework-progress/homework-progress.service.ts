@@ -654,8 +654,19 @@ export class HomeworkProgressService implements IHomeworkProgressService {
         return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
       }
 
+      // Faqat scheduledAt vaqti kelgan homeworklarni filtrlash
+      const now = new Date();
+      const readyHomeworks = queueItems.filter(item =>
+        !item.scheduledAt || new Date(item.scheduledAt) <= now
+      );
+
+      if (!readyHomeworks || readyHomeworks.length === 0) {
+        // Agar vaqti kelgan homework bo'lmasa
+        return new ResData("Foydalanuvchi uchun uy vazifa videolar yo'q", 404, []);
+      }
+
       // Navbatdagi videolarni formatlash
-      const formattedVideos = queueItems.map(item => this.formatHomeworkQueueItem(item));
+      const formattedVideos = readyHomeworks.map(item => this.formatHomeworkQueueItem(item));
 
 
       // Agar videolar orasida 1-moduldan boshqa modul yoki 30-darsdan keyin darslar bo'lsa, to'lov tekshirish
