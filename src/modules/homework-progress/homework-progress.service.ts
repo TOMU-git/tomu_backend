@@ -150,8 +150,23 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // 5) Intervalni hisoblash
     let delayMinutes = 30; // default
-    if (userCourse.hasEverPaid && !userCourse.isActive) {
-      delayMinutes = 5 * 60;
+
+    // Free trial user va 29+ dars tugatgan bo'lsa
+    if (userCourse.onFreeTrial && !userCourse.hasEverPaid && !userCourse.isActive) {
+      const completedLessons = await this.lessonProgressRepository.countCompletedLessonsInBlock(
+        userId,
+        courseId,
+        1 // 1-bo'lim
+      );
+
+      if (completedLessons >= 29) {
+        delayMinutes = 5 * 60; // 300 minut = 5 soat
+        this.logger.log(`Free trial user ${userId} has completed ${completedLessons} lessons, applying 5-hour interval`);
+      }
+    }
+    // Puli tugagan user
+    else if (userCourse.hasEverPaid && !userCourse.isActive) {
+      delayMinutes = 5 * 60; // 300 minut = 5 soat
     }
 
     // 6) Keyingi yuborish vaqtini tayyorlash

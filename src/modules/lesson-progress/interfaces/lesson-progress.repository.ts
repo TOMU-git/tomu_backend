@@ -70,4 +70,32 @@ export interface ILessonProgressRepository {
     courseId: ID,
     blockOrder: ID,
   ): Promise<number | null>;
+
+  /**
+   * Berilgan blokda foydalanuvchi tomonidan tugatilgan darslar sonini hisoblash.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param courseId - Kurs ID si
+   * @param blockOrder - Blok tartibi (masalan, 1-bo'lim uchun 1)
+   * @returns Tugatilgan darslar soni
+   */
+  countCompletedLessonsInBlock(
+    userId: ID,
+    courseId: ID,
+    blockOrder: number,
+  ): Promise<number>;
+
+  /**
+   * Berilgan blokdagi barcha darslar foydalanuvchi tomonidan tugatilganligini tekshirish.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param courseId - Kurs ID si
+   * @param blockOrder - Blok tartibi (masalan, 1-bo'lim uchun 1)
+   * @returns true - agar barcha darslar tugatilgan bo'lsa, false - aks holda
+   */
+  isBlockFullyCompleted(
+    userId: ID,
+    courseId: ID,
+    blockOrder: number,
+  ): Promise<boolean>;
 }
