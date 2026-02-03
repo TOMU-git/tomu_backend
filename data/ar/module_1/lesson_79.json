@@ -1,0 +1,54 @@
+{
+    "id": "ar_m1_l79",
+    "language": "ar",
+    "module": 1,
+    "lesson": 79,
+    "title": "اَلزَّوْجَانِ",
+    "summary": "Er-xotinning bolalar sumkalari va ularning ranglari haqida suhbati.",
+    "vocabulary": [
+      { "word": "زَوْج", "translationUz": "er" },
+      { "word": "زَوْجَة", "translationUz": "xotin" },
+      { "word": "حَقِيبَة", "translationUz": "sumka" },
+      { "word": "أَوْلَاد", "translationUz": "bolalar" },
+      { "word": "خِزَانَة", "translationUz": "shkaf" },
+      { "word": "سَوْدَاء", "translationUz": "qora" },
+      { "word": "وَرْدِيَّة", "translationUz": "pushti" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلزَّوْجُ",
+        "text": "أَيْنَ حَقِيبَةُ الأَوْلَادِ؟",
+        "translationUz": "Bolalar sumkasi qayerda?",
+        "next": "حَقِيبَةُ الأَوْلَادِ فِي الخِزَانَةِ."
+      },
+      {
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "حَقِيبَةُ الأَوْلَادِ فِي الخِزَانَةِ.",
+        "translationUz": "Bolalar sumkasi shkafda.",
+        "next": "هَاتَانِ حَقِيبَتَانِ لِلَيْلَى ولِأَحْمَدَ."
+      },
+      {
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "هَاتَانِ حَقِيبَتَانِ لِلَيْلَى ولِأَحْمَدَ.",
+        "translationUz": "Bu ikkita sumka Laylo va Ahmadga tegishli.",
+        "next": "حَقِيبَةٌ سَوْدَاءُ لِأَحْمَدَ، وَحَقِيبَةٌ وَرْدِيَّةٌ لِلَيْلَى."
+      },
+      {
+        "speaker": "اَلزَّوْجَةُ",
+        "text": "حَقِيبَةٌ سَوْdَاءُ لِأَحْمَدَ، وَحَقِيبَةٌ وَرْdِيَّةٌ لِلَيْلَى.",
+        "translationUz": "Ahmad uchun qora sumka, Laylo uchun pushti sumka.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ لَكَ حَقِيبَةٌ؟",
+      "مَا لَوْنُ حَقِيبَتِكَ؟",
+      "أَيْنَ تَضَعُ حَقِيبَتَكَ؟",
+      "لِمَنْ هَذِهِ الْحَقِيبَةُ؟",
+      "كَمْ حَقِيبَةً عِنْدَكَ؟"
+    ],
+    "context": {
+      "main_topic": "family_bags",
+      "pattern": "ask_location → answer_location → identify_bags → describe_colors"
+    }
+  }

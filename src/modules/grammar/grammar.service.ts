@@ -14,6 +14,8 @@ import {
 import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { VimeoService } from "../lesson/vimeo.service";
+import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from "src/common/utils/helper";
 
 @Injectable()
 export class GrammarService implements IGrammarService {
@@ -24,15 +26,18 @@ export class GrammarService implements IGrammarService {
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
 
+    @Inject("IUserCourseRepository")
+    private readonly userCourseRepository: IUserCourseRepository,
+
     private readonly vimeoService: VimeoService,
-  ) {}
+  ) { }
 
   async create(
     createGrammarDto: CreateGrammarDto,
     file: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
     // Qo'shilayotgan grammarnı nomiga ko'ra tekshirish
-       // Kurs mavjudligini tekshirish
+    // Kurs mavjudligini tekshirish
     const course = await this.courseRepository.findById(
       createGrammarDto.courseId,
     );
@@ -41,7 +46,7 @@ export class GrammarService implements IGrammarService {
     }
 
     // Video yuklash
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       createGrammarDto.title,
       "Grammar video",
@@ -49,41 +54,60 @@ export class GrammarService implements IGrammarService {
 
     // Yangi grammarnı yaratish
     const newGrammar = new Grammar();
-    newGrammar.duration = duration; 
+    newGrammar.duration = duration;
     newGrammar.title = createGrammarDto.title;
     newGrammar.videoUrl = videoUrl;
+    newGrammar.vimeoVideoId = vimeoVideoId;
     newGrammar.courseId = createGrammarDto.courseId;
     newGrammar.mimetype = file.mimetype;
     newGrammar.size = file.size;
 
     const savedGrammar = await this.grammarRepository.create(newGrammar);
 
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: savedGrammar.id,
+      title: savedGrammar.title,
+      videoUrl: savedGrammar.videoUrl,
+      vimeoVideoId: savedGrammar.vimeoVideoId,
+      courseId: savedGrammar.courseId,
+      mimetype: savedGrammar.mimetype,
+      size: savedGrammar.size,
+      duration: savedGrammar.duration,
+      createdAt: savedGrammar.createdAt,
+      lastUpdatedAt: savedGrammar.lastUpdatedAt,
+    };
+
     return new ResData<Grammar>(
       "Grammar created successfully",
       201,
-      savedGrammar,
+      addVimeoEmbedUrl(responseData as Grammar),
     );
   }
 
-  async findGrammarByCourseId(courseId: number): Promise<ResData<Grammar[]>> {
-    const foundGrammars =
-      await this.grammarRepository.findGrammarsByCourseId(courseId);
-    if (foundGrammars.length === 0) {
-      return new ResData<Grammar[]>("Not any grammar yet", 200, foundGrammars);
-    }
-    return new ResData<Grammar[]>(
-      "Grammars found successfully",
-      200,
-      foundGrammars,
-    );
+  async findGrammarByCourseId(courseId: number, userId: number): Promise<any> {
+    const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+    const isPaid = userCourse && userCourse.isActive;
+
+    const foundGrammars = await this.grammarRepository.findGrammarsByCourseId(courseId);
+
+    const message = foundGrammars.length === 0 ? "Not any grammar yet" : "Grammars found successfully";
+
+    return {
+      message,
+      statusCode: 200,
+      data: addVimeoEmbedUrlToArray(foundGrammars),
+      isPaid: !!isPaid
+    };
   }
+
 
   async findAll(): Promise<ResData<Array<Grammar>>> {
     const data = await this.grammarRepository.findAll();
     if (data.length === 0) {
       return new ResData<Grammar[]>("Not any grammar yet", 200, data);
     }
-    return new ResData<Array<Grammar>>("ok", 200, data);
+    return new ResData<Array<Grammar>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   async findOneById(id: ID): Promise<ResData<Grammar>> {
@@ -91,7 +115,7 @@ export class GrammarService implements IGrammarService {
     if (!foundData) {
       throw new GrammarNotFoundException();
     }
-    return new ResData<Grammar>("ok", 200, foundData);
+    return new ResData<Grammar>("ok", 200, addVimeoEmbedUrl(foundData));
   }
 
   async update(
@@ -108,37 +132,49 @@ export class GrammarService implements IGrammarService {
       foundData.courseId = updateGrammarDto.courseId;
     }
 
-    // Yangilangan ma'lumotlarni tayyorlash
-    const updateData = {
-      title: updateGrammarDto.title || foundData.title,
-    };
+    // Title ni yangilash
+    if (updateGrammarDto.title) {
+      foundData.title = updateGrammarDto.title;
+    }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateGrammarDto.title || foundData.title,
         "Grammar video",
       );
 
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    // Boshqa maydonlarni yangilash
-    Object.assign(foundData, updateData);
-
     const data = await this.grammarRepository.update(foundData);
 
-    return new ResData<Grammar>("Grammar updated successfully", 200, data);
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      courseId: data.courseId,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
+    return new ResData<Grammar>("Grammar updated successfully", 200, addVimeoEmbedUrl(responseData as Grammar));
   }
 
   async delete(id: ID): Promise<ResData<Grammar>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.grammarRepository.delete(foundData);
 
-    return new ResData<Grammar>("Grammar deleted successfully", 200, data);
+    return new ResData<Grammar>("Grammar deleted successfully", 200, addVimeoEmbedUrl(data));
   }
 }

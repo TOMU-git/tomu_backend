@@ -1,0 +1,52 @@
+{
+  "id": "ar_m1_l10",
+  "language": "ar",
+  "module": 1,
+  "lesson": 10,
+  "title": "عَلِيٌّ وَالتُّفَّاحَةُ",
+  "summary": "Learning simple past tense verbs and prepositions through a short story about Ali and an apple.",
+  "vocabulary": [
+    { "word": "عَلِيٌّ", "translationUz": "Ali" },
+    { "word": "تُفَّاحَةٌ", "translationUz": "olma" },
+    { "word": "ذَهَبَ", "translationUz": "ketdi" },
+    { "word": "إِلَى", "translationUz": "ga" },
+    { "word": "الْبَيْتِ", "translationUz": "uy" },
+    { "word": "فِي", "translationUz": "da" },
+    { "word": "الطَّرِيقِ", "translationUz": "yo'l" },
+    { "word": "نَظَرَ", "translationUz": "qaradi" },
+    { "word": "شَجَرَةِ", "translationUz": "daraxt" },
+    { "word": "سَقَطَتْ", "translationUz": "tushdi" },
+    { "word": "رَأْسِهِ", "translationUz": "uning boshiga" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ذَهَبَ عَلِيٌّ إِلَى الْبَيْتِ،",
+      "translationUz": "Ali uyga ketdi,",
+      "next": "وَ فِي الطَّرِيقِ نَظَرَ إِلَى شَجَرَةِ التُّفَّاحِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ فِي الطَّرِيقِ نَظَرَ إِلَى شَجَرَةِ التُّفَّاحِ.",
+      "translationUz": "va yo'lda olma daraxtiga qaradi.",
+      "next": "فَسَقَطَتْ تُفَّاحَةٌ عَلَى رَأْسِهِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَسَقَطَتْ تُفَّاحَةٌ عَلَى رَأْسِهِ.",
+      "translationUz": "va uning boshiga bir olma tushdi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا حَدَثَ لِعَلِيٍّ؟",
+    "هَلْ كَانَتِ التُّفَّاحَةُ كَبِيرَةً؟",
+    "إِلَى أَيْنَ ذَهَبَ عَلِيٌّ؟",
+    "مَاذَا رَأَى عَلِيٌّ فِي الطَّرِيقِ؟",
+    "هَلْ تَأَلَّمَ عَلِيٌّ؟"
+  ],
+  "context": {
+    "main_topic": "short_story_past_tense",
+    "pattern": "narration → narration → narration"
+  }
+}

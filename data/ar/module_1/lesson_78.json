@@ -1,0 +1,49 @@
+{
+    "id": "ar_m1_l78",
+    "language": "ar",
+    "module": 1,
+    "lesson": 78,
+    "title": "اَلْأَرَانِبُ",
+    "summary": "Quyonlarning yashash joyi, ovqatlanishi va vazni haqida.",
+    "vocabulary": [
+      { "word": "أَرَانِب", "translationUz": "quyonlar" },
+      { "word": "غَابَة", "translationUz": "o'rmon" },
+      { "word": "أَلِيف", "translationUz": "uy hayvoni" },
+      { "word": "جَزَر", "translationUz": "sabzi" },
+      { "word": "كُرُنْب", "translationUz": "karam" },
+      { "word": "أَعْشَاب", "translationUz": "o'tlar" },
+      { "word": "وَزْن", "translationUz": "vazn" },
+      { "word": "كِيلُوجْرَام", "translationUz": "kilogram" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "تَعِيشُ الْأَرَانِبُ فِي الْغَابَةِ، وَ بَعْضُ الْأَرَانِبِ أَلِيْفَةٌ.",
+        "translationUz": "Quyonlar o'rmonda yashaydi va ba'zi quyonlar uy hayvonidir.",
+        "next": "هِيَ تَأْكُلُ الْجَزَرَ، وَالْكُرُنْبَ، وَالْأَعْشَابَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ تَأْكُلُ الْجَزَرَ، وَالْكُرُنْبَ، وَالْأَعْشَابَ.",
+        "translationUz": "Ular sabzi, karam va o'tlar bilan oziqlanadi.",
+        "next": "وَزْنُ الْأَرْنَبِ يَبْلُغُ حَتَّى خَمْسَةَ كِيلُوجْرَامَاتٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَزْنُ الْأَرْنَبِ يَبْلُغُ حَتَّى خَمْسَةَ كِيلُوجْرَامَاتٍ.",
+        "translationUz": "Quyonning vazni besh kilogrammgacha yetadi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْأَرَانِبَ؟",
+      "مَاذَا تَأْكُلُ الْأَرَانِبُ؟",
+      "أَيْنَ تَعِيشُ الْأَرَانِبُ؟",
+      "هَلْ لَدَيْكَ أَرْنَبٌ أَلِيفٌ؟",
+      "كَمْ يَبْلُغُ وَزْنُ الْأَرْنَبِ؟"
+    ],
+    "context": {
+      "main_topic": "rabbits_description",
+      "pattern": "narration → narration → narration"
+    }
+  }

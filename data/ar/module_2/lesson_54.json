@@ -1,0 +1,66 @@
+{
+  "id": "ar_m2_l54",
+  "language": "ar",
+  "module": 2,
+  "lesson": 54,
+  "title": "اَلْغُرْفَةُ الْجَمِيْلَةُ",
+  "summary": "Xona band qilgan va uni qabul qilayotgan mehmon bilan mehmonxona xodimi o'rtasidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْغُرْفَةُ", "translationUz": "xona"},
+    {"word": "الْجَمِيْلَةُ", "translationUz": "chiroyli"},
+    {"word": "اَلْعَمِيلُ", "translationUz": "mijoz"},
+    {"word": "أَمْسِ", "translationUz": "kecha"},
+    {"word": "كُنْتُ", "translationUz": "men edim"},
+    {"word": "حَجَزْتُ", "translationUz": "band qildim"},
+    {"word": "الْفُنْدُقِ", "translationUz": "mehmonxona"},
+    {"word": "بِاسْمِ", "translationUz": "nomida"},
+    {"word": "السَّيِّدِ", "translationUz": "janob"},
+    {"word": "اَلْمُوَظَّفُ", "translationUz": "xodim"},
+    {"word": "رَقْمُ", "translationUz": "raqami"},
+    {"word": "غُرْفَتِكَ", "translationUz": "sizning xonangiz"},
+    {"word": "تِسْعَةَ عَشَرَ", "translationUz": "o'n to'qqiz"},
+    {"word": "مِفْتَاحُهَا", "translationUz": "uning kaliti"},
+    {"word": "تَفَضَّلْ", "translationUz": "marhamat"},
+    {"word": "هَذِهِ", "translationUz": "bu (ayol)"},
+    {"word": "أَلَيْسَ", "translationUz": "shunday emasmi"},
+    {"word": "كَذَلِكَ", "translationUz": "shunday"},
+    {"word": "بَلَى", "translationUz": "ha (tasdiq)"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْعَمِيلُ",
+      "text": "أَمْسِ كُنْتُ حَجَزْتُ غُرْفَةً فِي الْفُنْدُقِ بِاسْمِ السَّيِّدِ أَحْمَدَ.",
+      "translationUz": "Kecha men janob Ahmad nomida mehmonxonada xona band qilgan edim.",
+      "next": "اَلْمُوَظَّفُ: نَعَمْ، سَيِّدِي، رَقْمُ غُرْفَتِكَ تِسْعَةَ عَشَرَ، وَ هذَا هُوَ مِفْتَاحُهَا."
+    },
+    {
+      "speaker": "اَلْمُوَظَّفُ",
+      "text": "نَعَمْ، سَيِّدِي، رَقْمُ غُرْفَتِكَ تِسْعَةَ عَشَرَ، وَ هذَا هُوَ مِفْتَاحُهَا.",
+      "translationUz": "Ha, janobim, sizning xonangizning raqami o'n to'qqiz va bu uning kaliti.",
+      "next": "اَلْمُوَظَّفُ: تَفَضَّلْ، سَيِّدِي، هَذِهِ غُرْفَتُكَ وَ هِيَ جَمِيلَةٌ جِدًّا، أَلَيْسَ كَذَلِكَ؟"
+    },
+    {
+      "speaker": "اَلْمُوَظَّفُ",
+      "text": "تَفَضَّلْ، سَيِّدِي، هَذِهِ غُرْفَتُكَ وَ هِيَ جَمِيلَةٌ جِدًّا، أَلَيْسَ كَذَلِكَ？",
+      "translationUz": "Marhamat, janobim, bu sizning xonangiz va u juda chiroyli, shunday emasmi?",
+      "next": "العَمِيلُ: بَلَى، هِيَ جَمِيلَةٌ جِدًّا."
+    },
+    {
+      "speaker": "اَلْعَمِيلُ",
+      "text": "بَلَى، هِيَ جَمِيلَةٌ جِدًّا.",
+      "translationUz": "Ha, u juda chiroyli.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَتَى حَجَزَ الْعَمِيلُ الْغُرْفَةَ؟",
+    "بِأَيِّ اسْمٍ حَجَزَهَا؟",
+    "مَا رَقْمُ الْغُرْفَةِ؟",
+    "كَيْفَ هِيَ الْغُرْفَةُ؟",
+    "هَلْ يُوَافِقُ الْعَمِيلُ عَلَى وَصْفِ الْمُوَظَّفِ؟"
+  ],
+  "context": {
+    "main_topic": "hotel_room_checkin",
+    "pattern": "reservation_statement → room_number_and_key → room_presentation_and_question → agreement"
+  }
+}

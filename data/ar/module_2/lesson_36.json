@@ -1,0 +1,54 @@
+{
+  "id": "ar_m2_l36",
+  "language": "ar",
+  "module": 2,
+  "lesson": 36,
+  "title": "دُرُوسُ الجَامِعَةِ وَالمَدْرَسَةِ",
+  "summary": "Universitet va maktab darslarining qiyinlik darajasi, talabalar va o'quvchilarning o'qish miqdori va barcha darslarning foydasi haqida.",
+  "vocabulary": [
+    {"word": "دُرُوسُ", "translationUz": "darslar"},
+    {"word": "الْجَامِعَةِ", "translationUz": "universitet"},
+    {"word": "وَالْمَدْرَسَةِ", "translationUz": "va maktab"},
+    {"word": "أَصْعَبُ", "translationUz": "qiyinroq"},
+    {"word": "مِنْ", "translationUz": "dan"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "يَدْرُسُ", "translationUz": "o'qiydi"},
+    {"word": "الطُّلَّابُ", "translationUz": "talabalar"},
+    {"word": "أَكْثَرَ", "translationUz": "ko'proq"},
+    {"word": "التَّلَامِيذِ", "translationUz": "o'quvchilar"},
+    {"word": "كُلُّ", "translationUz": "barcha"},
+    {"word": "مُفِيدَةٌ", "translationUz": "foydali"},
+    {"word": "لِلتَّعْلِيمِ", "translationUz": "ta'lim uchun"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "دُرُوسُ الْجَامِعَةِ أَصْعَبُ مِنْ دُرُوسِ الْمَدْرَسَةِ،",
+      "translationUz": "Universitet darslari maktab darslaridan qiyinroq,",
+      "next": "لِذَلِكَ يَدْرُسُ الطُّلَّابُ أَكْثَرَ مِنَ  التَّلَامِيذِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِذَلِكَ يَدْرُسُ الطُّلَّابُ أَكْثَرَ مِنَ  التَّلَامِيذِ.",
+      "translationUz": "Shuning uchun talabalar o'quvchilardan ko'proq o'qiydilar.",
+      "next": "كُلُّ الدُّرُوسِ مُفِيدَةٌ لِلتَّعْلِيمِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كُلُّ الدُّرُوسِ مُفِيدَةٌ لِلتَّعْلِيمِ.",
+      "translationUz": "Barcha darslar ta'lim uchun foydalidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيُّ دُرُوسٍ أَصْعَبُ؟",
+    "لِمَاذَا يَدْرُسُ الطُّلَّابُ أَكْثَرَ؟",
+    "مَنْ يَدْرُسُ أَكْثَرَ؟",
+    "هَلْ كُلُّ الدُّرُوسِ مُفِيدَةٌ؟",
+    "لِمَاذَا هِيَ مُفِيدَةٌ؟"
+  ],
+  "context": {
+    "main_topic": "university_school_lessons_comparison",
+    "pattern": "difficulty_comparison → study_hours_comparison → educational_benefit"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "ar_m2_l74",
+  "language": "ar",
+  "module": 2,
+  "lesson": 74,
+  "title": "صَوْتٌ مُنْخَفِضٌ",
+  "summary": "Ahmad va Ali o'rtasida past ovoz bilan gaplashish sababi va Ali baland ovoz bilan gapirishni yoqtirmasligi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "صَوْتٌ", "translationUz": "ovoz"},
+    {"word": "مُنْخَفِضٌ", "translationUz": "past"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "صَوْتُكَ", "translationUz": "sening ovozing"},
+    {"word": "عَالٍ", "translationUz": "baland"},
+    {"word": "لَكِنِّي", "translationUz": "lekin men"},
+    {"word": "لَا أُحِبُّ", "translationUz": "yoqtirmayman"},
+    {"word": "أَنْ أَتَكَلَّمَ", "translationUz": "gapirishni"},
+    {"word": "بِصَوْتٍ", "translationUz": "ovoz bilan"},
+    {"word": "فَهِمْتُ", "translationUz": "tushundim"},
+    {"word": "تَتَكَلَّمُ", "translationUz": "gapirasiz"},
+    {"word": "دَائِمًا", "translationUz": "doimo"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لِمَاذَا صَوْتُكَ مُنْخَفِضٌ يَا عَلِيُّ؟",
+      "translationUz": "Nega ovozing past, Ali?",
+      "next": " عَلِيٌّ: صَوْتِي عَالٍ، لَكِنِّي لَا أُحِبُّ أَنْ أَتَكَلَّمَ بِصَوْتٍ عَالٍ."
+    },
+    {
+      "speaker": "عَلِيٌّ",
+      "text": "صَوْتِي عَالٍ، لَكِنِّي لَا أُحِبُّ أَنْ أَتَكَلَّمَ بِصَوْتٍ عَالٍ.",
+      "translationUz": "Mening ovozim baland, lekin men baland ovoz bilan gapirishni yoqtirmayman.",
+      "next": " أَحْمَدُ: فَهِمْتُ الْآنَ لِمَاذَا تَتَكَلَّمُ دَائِمًا بِصَوْتٍ مُنْخَفِضٍ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "فَهِمْتُ الْآنَ لِمَاذَا تَتَكَلَّمُ دَائِمًا بِصَوْتٍ مُنْخَفِضٍ.",
+      "translationUz": "Endi tushundim nega siz doimo past ovoz bilan gapirasiz.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَلْحَظُ أَحْمَدُ عَلَى عَلِيٍّ؟",
+    "كَيْفَ يُجِيبُ عَلِيٌّ؟",
+    "هَلْ صَوْتُهُ حَقِيقَةً مُنْخَفِضٌ؟",
+    "مَاذَا لَا يُحِبُّ أَنْ يَفْعَلَهُ؟",
+    "هَلْ يَفْهَمُ أَحْمَدُ فِي النِّهَايَةِ؟"
+  ],
+  "context": {
+    "main_topic": "low_voice_conversation",
+    "pattern": "voice_observation_question → voice_capacity_and_preference → understanding"
+  }
+}

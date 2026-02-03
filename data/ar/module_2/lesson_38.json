@@ -1,0 +1,60 @@
+{
+  "id": "ar_m2_l38",
+  "language": "ar",
+  "module": 2,
+  "lesson": 38,
+  "title": "حَيَاةُ الْقَرْيَةِ",
+  "summary": "Qishloq hayotining shahar hayotidan qiyin, lekin juda zavqli bo'lishi, aholining dehqonchilik va chorvachilik bilan shug'ullanishi haqida.",
+  "vocabulary": [
+    {"word": "حَيَاةُ", "translationUz": "hayot"},
+    {"word": "الْقَرْيَةِ", "translationUz": "qishloq"},
+    {"word": "أَصْعَبُ", "translationUz": "qiyinroq"},
+    {"word": "الْمَدِينَةِ", "translationUz": "shahar"},
+    {"word": "وَلَكِنَّهَا", "translationUz": "lekin u"},
+    {"word": "مُمْتِعَةٌ", "translationUz": "zavqli, quvnoq"},
+    {"word": "أَكْثَرُ", "translationUz": "aksariyat"},
+    {"word": "أَهْلِ", "translationUz": "aholisi"},
+    {"word": "يَزْرَعُونَ", "translationUz": "ekadilar"},
+    {"word": "يَرْعُونَ", "translationUz": "boqadilar"},
+    {"word": "الْأَغْنَامَ", "translationUz": "qo'ylar"},
+    {"word": "الْأَبْقَارَ", "translationUz": "sigirlar"},
+    {"word": "أُحِبُّ", "translationUz": "sevaman"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ حَيَاةَ الْقَرْيَةِ أَصْعَبُ مِنْ حَيَاةِ الْمَدِينَةِ،",
+      "translationUz": "Albatta qishloq hayoti shahar hayotidan qiyinroq,",
+      "next": "وَ لَكِنَّهَا مُمْتِعَةٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنَّهَا مُمْتِعَةٌ جِدًّا.",
+      "translationUz": "lekin u juda zavqlidir.",
+      "next": " أَكْثَرُ أَهْلِ الْقَرْيَةِ يَزْرَعُونَ وَ يَرْعُونَ الْأَغْنَامَ وَ الْأَبْقَارَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَكْثَرُ أَهْلِ الْقَرْيَةِ يَزْرَعُونَ وَ يَرْعُونَ الْأَغْنَامَ وَ الْأَبْقَارَ.",
+      "translationUz": "Qishloq aholisining aksariyati ekadi va qo'y va sigirlarni boqadi.",
+      "next": " أَنَا أُحِبُّ حَيَاةَ الْقَرْيَةِ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَنَا أُحِبُّ حَيَاةَ الْقَرْيَةِ كَثِيرًا.",
+      "translationUz": "Men qishloq hayotini juda sevaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هِيَ حَيَاةُ الْقَرْيَةِ؟",
+    "مَاذَا يَفْعَلُ أَكْثَرُ أَهْلِ الْقَرْيَةِ؟",
+    "لِمَاذَا تُعْتَبَرُ الْحَيَاةُ الْقَرَوِيَّةُ مُمْتِعَةً؟",
+    "كَيْفَ يَشْعُرُ الْكَاتِبُ نَحْوَ حَيَاةِ الْقَرْيَةِ؟",
+    "هَلْ تُفَضِّلُ الْحَيَاةَ فِي الْقَرْيَةِ أَمْ فِي الْمَدِينَةِ؟"
+  ],
+  "context": {
+    "main_topic": "village_life_description",
+    "pattern": "difficulty_comparison → enjoyment → main_activities → personal_preference"
+  }
+}

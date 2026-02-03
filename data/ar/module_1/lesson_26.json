@@ -1,0 +1,51 @@
+{
+  "id": "ar_m1_l26",
+  "language": "ar",
+  "module": 1,
+  "lesson": 26,
+  "title": "فِي الْغُرْفَةِ",
+  "summary": "Joylashuvni so'rash va javob berish: xona va maktab.",
+  "vocabulary": [
+    { "word": "غُرْفَةٌ", "translationUz": "xona" },
+    { "word": "مَدْرَسَةٌ", "translationUz": "maktab" },
+    { "word": "أَيْنَ", "translationUz": "qayerda" },
+    { "word": "أَنَا", "translationUz": "men" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُتَحَدِّثٌ ١",
+      "text": "أَيْنَ أَنْتِ يَا لَيْلَى؟",
+      "translationUz": "Qayerdasan, Laylo?",
+      "next": "أَنَا فِي الْغُرْفَةِ."
+    },
+    {
+      "speaker": "لَيْلَى",
+      "text": "أَنَا فِي الْغُرْفَةِ.",
+      "translationUz": "Men xonadaman.",
+      "next": "أَيْنَ أَنْتِ يَا فِيرُوزَةُ؟"
+    },
+    {
+      "speaker": "مُتَحَدِّثٌ ١",
+      "text": "أَيْنَ أَنْتِ يَا فِيرُوزَةُ؟",
+      "translationUz": "Qayerdasan, Firuza?",
+      "next": "أَنَا فِي الْمَدْرَسَةِ."
+    },
+    {
+      "speaker": "فِيرُوزَةُ",
+      "text": "أَنَا فِي الْمَدْرَسَةِ.",
+      "translationUz": "Men maktabdaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلِ الْغُرْفَةُ كَبِيرَةٌ؟",
+    "مَاذَا تَفْعَلِينَ فِي الْمَدْرَسَةِ؟",
+    "أَيْنَ صَدِيقَتُكِ؟",
+    "هَلْ تُحِبِّينَ الْمَدْرَسَةَ؟",
+    "مَاذَا فِي الْغُرْفَةِ؟"
+  ],
+  "context": {
+    "main_topic": "location_inquiry",
+    "pattern": "ask_location → answer → ask_another_location → answer"
+  }
+}

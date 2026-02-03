@@ -1,0 +1,49 @@
+{
+  "id": "ar_m2_l98",
+  "language": "ar",
+  "module": 2,
+  "lesson": 98,
+  "title": "مَحَاصِيلُ فَصْلِ الرَّبِيعِ 2",
+  "summary": "Dehqonlarning yozda hosillarini shahar bozorlarida sotishlari va shahar aholisining ularning mahsulotlarini yaxshi ko‘rishlari haqida.",
+  "vocabulary": [
+    { "word": "صَّيْفٌ", "translationUz": "yoz" },
+    { "word": "يَبِيعُ", "translationUz": "sotadi" },
+    { "word": "مَحْصُولٌ", "translationUz": "hosil, mahsulot" },
+    { "word": "سُوقٌ", "translationUz": "bozor" },
+    { "word": "طَازِجٌ", "translationUz": "yangI, yangi pishgan" },
+    { "word": "لِذَلِكَ", "translationUz": "shuning uchun" },
+    { "word": "سُكَّانُ", "translationUz": "aholi" },
+    { "word": "يَشْتَرِي", "translationUz": "sotib oladi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْفَلَّاحُونَ فِي الصَّيْفِ يَبِيعُونَ مَحْصُولَاتِهِمْ فِي أَسْوَاقِ الْمَدِينَةِ.",
+      "translationUz": "Dehqonlar yozda o‘z mahsulotlarini shahar bozorlarida sotadilar.",
+      "next": "مَحْصُولَاتُهُمْ طَازِجَةٌ وَ لَذِيذَةٌ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مَحْصُولَاتُهُمْ طَازِجَةٌ وَ لَذِيذَةٌ،",
+      "translationUz": "Ularning mahsulotlari yangi va mazali,",
+      "next": "لِذَلِكَ سُكَّانُ الْمَدِينَةِ يُحِبُّونَ مَحْصُولَاتِ الْفَلَّاحِينَ وَ يَشْتَرُونَهَا كُلَّ يَوْمٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِذَلِكَ سُكَّانُ الْمَدِينَةِ يُحِبُّونَ مَحْصُولَاتِ الْفَلَّاحِينَ وَ يَشْتَرُونَهَا كُلَّ يَوْمٍ.",
+      "translationUz": "Shuning uchun shahar aholisi dehqonlar mahsulotlarini yaxshi ko‘radi va ularni har kuni sotib oladi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "لِمَاذَا مَحْصُولَاتُ الْفَلَّاحِينَ طَازِجَةٌ؟",
+    "أَيْنَ يَبِيعُ الْفَلَّاحُونَ فِي مَدِينَتِكَ؟",
+    "مَاذَا تَشْتَرِي مِنْ أَسْوَاقِ الْمَدِينَةِ؟",
+    "هَلْ تُفَضِّلُ مَحْصُولَاتِ الْقَرْيَةِ؟",
+    "كَيْفَ يَنْتَقِلُ الْفَلَّاحُونَ إِلَى الْمَدِينَةِ؟"
+  ],
+  "context": {
+    "main_topic": "selling_produce_in_city",
+    "pattern": "when_and_where_farmers_sell → quality_of_produce → consequence_city_dwellers_love_and_buy"
+  }
+}

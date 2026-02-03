@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l49",
+    "language": "ar",
+    "module": 1,
+    "lesson": 49,
+    "title": "اَلْمَرْأَةُ الْحَزِينَةُ",
+    "summary": "Bog'da o'tirgan g'amgin ayol haqida suhbat va uning holati.",
+    "vocabulary": [
+      { "word": "مَرْأَة", "translationUz": "ayol" },
+      { "word": "حَزِينَة", "translationUz": "g'amgin" },
+      { "word": "جَلَسَت", "translationUz": "o'tirdi" },
+      { "word": "زَوْجَة", "translationUz": "xotin" },
+      { "word": "مَرِيضَة", "translationUz": "kasal" },
+      { "word": "قَلِيلًا", "translationUz": "ozgina" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "حَفْصَةُ",
+        "text": "مَنِ الْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ، يَا سَلْمَى؟",
+        "translationUz": "Bog'da o'tirgan ayol kim, Salmo?",
+        "next": "اَلْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ زَوْجَةُ أَخِي."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "اَلْمَرْأَةُ الَّتِي جَلَسَتْ فِي الْحَدِيقَةِ زَوْجَةُ أَخِي.",
+        "translationUz": "Bog'da o'tirgan ayol mening akamning xotini.",
+        "next": "لِمَاذَا هِيَ حَزِينَةٌ؟"
+      },
+      {
+        "speaker": "حَفْصَةُ",
+        "text": "لِمَاذَا هِيَ حَزِينَةٌ؟",
+        "translationUz": "Nega u g'amgin?",
+        "next": "هِيَ مَرِيضَةٌ قَلِيلًا."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "هِيَ مَرِيضَةٌ قَلِيلًا.",
+        "translationUz": "U ozgina kasal.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ أَنْتَ حَزِينٌ الْيَوْمَ؟",
+      "لِمَاذَا تَكُونُ حَزِينًا؟",
+      "مَاذَا يَجِبُ فِعْلُهُ عِنْدَمَا تَكُونُ حَزِينًا؟",
+      "هَلْ تَذْهَبُ إِلَى الْحَدِيقَةِ عِنْدَمَا تَكُونُ حَزِينًا؟",
+      "مَنْ هِيَ زَوْجَةُ أَخِيكَ؟"
+    ],
+    "context": {
+      "main_topic": "emotions_sadness",
+      "pattern": "ask_who → identify → ask_why_sad → explain_reason"
+    }
+  }

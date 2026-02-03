@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l44",
+    "language": "ar",
+    "module": 1,
+    "lesson": 44,
+    "title": "حُبُّ الْوَالِدَيْنِ",
+    "summary": "Ota-onaning mehnati va bolaning ularga bo'lgan muhabbati haqida.",
+    "vocabulary": [
+      { "word": "وَالِدَيْن", "translationUz": "ota-ona" },
+      { "word": "عَمِلَ", "translationUz": "ishladi" },
+      { "word": "كَثِيرًا", "translationUz": "ko'p" },
+      { "word": "طَبَخَت", "translationUz": "pishirdi" },
+      { "word": "حَلْوَى", "translationUz": "shirinlik" },
+      { "word": "نَظَّفَت", "translationUz": "tozaladi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ذَهَبَ أَبِي إِلَى الْعَمَلِ.",
+        "translationUz": "Otam ishga ketdi.",
+        "next": "عَمِلَ أَبِي كَثِيرًا جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "عَمِلَ أَبِي كَثِيرًا جِدًّا.",
+        "translationUz": "Otam juda ko'p ishladi.",
+        "next": "وَ أُمِّي طَبَخَتِ الْحَلْوَى وَ نَظَّفَتِ الْبَيْتَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ أُمِّي طَبَخَتِ الْحَلْوَى وَ نَظَّفَتِ الْبَيْتَ.",
+        "translationUz": "Va onam shirinlik pishirdi va uyni tozaladi.",
+        "next": "أَنَا أُحِبُّ أُمِّي وَ أَبِي."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أُحِبُّ أُمِّي وَ أَبِي.",
+        "translationUz": "Men onam va otamni yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ وَالِدَيْكَ؟",
+      "مَاذَا يَفْعَلُ أَبُوكَ؟",
+      "مَاذَا تَفْعَلُ أُمُّكَ فِي الْبَيْتِ؟",
+      "هَلْ تُسَاعِدُ وَالِدَيْكَ؟",
+      "كَيْفَ تُظْهِرُ حُبَّكَ لِوَالِدَيْكَ؟"
+    ],
+    "context": {
+      "main_topic": "family_love",
+      "pattern": "narration → narration → narration → narration"
+    }
+  }

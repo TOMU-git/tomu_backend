@@ -1,0 +1,54 @@
+{
+    "id": "ar_m1_l35",
+    "language": "ar",
+    "module": 1,
+    "lesson": 35,
+    "title": "اَلْأَبُ وَ مَحْمُودٌ",
+    "summary": "Ota va o'g'il o'rtasida kitoblar soni haqida arifmetik suhbat.",
+    "vocabulary": [
+      { "word": "أَبٌ", "translationUz": "ota" },
+      { "word": "بُنَيَّ", "translationUz": "o'g'lim" },
+      { "word": "كُتُبٍ", "translationUz": "kitoblar" },
+      { "word": "عَشَرَةُ", "translationUz": "o'n" },
+      { "word": "ثَلَاثَةُ", "translationUz": "uch" },
+      { "word": "سَبْعَةُ", "translationUz": "yetti" },
+      { "word": "خِزَانَةٌ", "translationUz": "shkaf" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأَبُ",
+        "text": "يَا بُنَيَّ، عِندِي عَشَرَةُ كُتُبٍ. أَخَذَتْ أُخْتُكَ ثَلَاثَةَ كُتُبٍ. فَكَمْ بَقِيَ لَدَيَّ، يَا بُنَيُّ؟",
+        "translationUz": "O'g'lim, menda o'nta kitob bor. Opang uchta kitob oldi. Qancha qoldi, o'g'lim?",
+        "next": "عَشَرَةُ كُتُبٍ."
+      },
+      {
+        "speaker": "مَحْمُودٌ",
+        "text": "عَشَرَةُ كُتُبٍ.",
+        "translationUz": "O'nta kitob.",
+        "next": "لِمَاذَا قُلْتَ عَشَرَةً؟"
+      },
+      {
+        "speaker": "اَلْأَبُ",
+        "text": "لِمَاذَا قُلْتَ عَشَرَةً؟",
+        "translationUz": "Nega o'nta deding?",
+        "next": "بَقِيَتْ عِنْدَكَ سَبْعَةُ كُتُبٍ، وَ ثَلَاثَةُ كُتُبٍ فِي الْخِزَانَةِ."
+      },
+      {
+        "speaker": "مُحَمَّدٌ",
+        "text": "بَقِيَتْ عِنْدَكَ سَبْعَةُ كُتُبٍ، وَ ثَلَاثَةُ كُتُبٍ فِي الْخِزَانَةِ.",
+        "translationUz": "Sizda ettita kitob qoldi, va uchtasi shkafda.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ أَصَابَ مُحَمَّدٌ؟",
+      "كَمْ كِتَابًا عِنْدَكَ؟",
+      "هَلْ تُحِبُّ الْقِرَاءَةَ؟",
+      "مَاذَا تَقْرَأُ؟",
+      "لِمَاذَا أَخَذَتِ الْأُخْتُ ثَلَاثَةَ كُتُبٍ؟"
+    ],
+    "context": {
+      "main_topic": "family_math",
+      "pattern": "ask_math → wrong_answer → ask_reason → correct_answer"
+    }
+  }

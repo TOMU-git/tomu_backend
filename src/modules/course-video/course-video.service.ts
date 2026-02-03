@@ -5,6 +5,7 @@ import { CourseVideo } from './entities/course-video.entity';
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
 import { CourseNotFoundException } from '../course/exception/course.exception';
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from 'src/common/utils/helper';
 
 @Injectable()
 export class CourseVideoService {
@@ -12,15 +13,15 @@ export class CourseVideoService {
     @Inject('ICourseVideoRepository')
     private readonly courseVideoRepository: ICourseVideoRepository,
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   async create(file: Express.Multer.File): Promise<ResData<CourseVideo>> {
-     const { videoUrl, duration } = await this.vimeoService.uploadVideo(
-       file.buffer,
-       file.filename,
-       'Dars videosi',
-       // file.size,
-     );
+    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      file.buffer,
+      file.filename,
+      'Dars videosi',
+      // file.size,
+    );
 
     const newCourseVideo = new CourseVideo();
     Object.assign(newCourseVideo, {
@@ -35,7 +36,7 @@ export class CourseVideoService {
     return new ResData<CourseVideo>(
       'Course videosi muvaffaqiyatli yaratildi',
       201,
-      savedCourseVideo,
+      addVimeoEmbedUrl(savedCourseVideo),
     );
   }
 
@@ -45,12 +46,12 @@ export class CourseVideoService {
       throw new CourseNotFoundException();
     }
 
-    return new ResData<CourseVideo>('ok', 200, foundData);
+    return new ResData<CourseVideo>('ok', 200, addVimeoEmbedUrl(foundData));
   }
 
   async findAll(): Promise<ResData<Array<CourseVideo>>> {
     const data = await this.courseVideoRepository.findAll();
-    return new ResData<Array<CourseVideo>>('ok', 200, data);
+    return new ResData<Array<CourseVideo>>('ok', 200, addVimeoEmbedUrlToArray(data));
   }
 
   async delete(id: ID): Promise<ResData<CourseVideo>> {
@@ -60,7 +61,7 @@ export class CourseVideoService {
     return new ResData<CourseVideo>(
       'CourseVideo deleted successfully',
       200,
-      data,
+      addVimeoEmbedUrl(data),
     );
   }
 }

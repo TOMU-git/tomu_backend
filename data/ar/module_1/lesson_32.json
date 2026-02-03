@@ -1,0 +1,41 @@
+{
+    "id": "ar_m1_l32",
+    "language": "ar",
+    "module": 1,
+    "lesson": 32,
+    "title": "سَائِقُ الْحَافِلَةِ",
+    "summary": "Avtobusda sayohat va haydovchi haqida hikoya.",
+    "vocabulary": [
+      { "word": "سَائِقٌ", "translationUz": "haydovchi" },
+      { "word": "حَافِلَةٌ", "translationUz": "avtobus" },
+      { "word": "مَحَطَّةٌ", "translationUz": "bekat" },
+      { "word": "رَكِبَ", "translationUz": "chiqdi" },
+      { "word": "سُرْعَةٌ", "translationUz": "tezlik" },
+      { "word": "مُبَكِّرًا", "translationUz": "erta" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "خَرَجَ مُحَمَّدٌ مِنَ الْبَيْتِ، وَ ذَهَبَ إِلَى الْمَحَطَّةِ، وَ رَكِبَ الْحَافِلَةَ.",
+        "translationUz": "Muhammad uydan chiqdi, bekatga bordi va avtobusga chiqdi.",
+        "next": "سَاقَ السَّائِقُ الْحَافِلَةَ بِسُرْعَةٍ شَدِيدَةٍ، وَ وَصَلَ مُحَمَّدٌ إِلَى الْعَمَلِ مُبَكِّرًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "سَاقَ السَّائِقُ الْحَافِلَةَ بِسُرْعَةٍ شَدِيدَةٍ، وَ وَصَلَ مُحَمَّدٌ إِلَى الْعَمَلِ مُبَكِّرًا.",
+        "translationUz": "Haydovchi avtobusni juda tez haydadi va Muhammad ishga erta keldi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَرْكَبُ الْحَافِلَةَ كُلَّ يَوْمٍ؟",
+      "مَاذَا يَفْعَلُ السَّائِقُ؟",
+      "لِمَاذَا سَاقَ السَّائِقُ بِسُرْعَةٍ؟",
+      "هَلِ الْحَافِلَةُ مُزْدَحِمَةٌ؟",
+      "كَيْفَ تَذْهَبُ إِلَى الْعَمَلِ؟"
+    ],
+    "context": {
+      "main_topic": "transportation",
+      "pattern": "narration → narration"
+    }
+  }

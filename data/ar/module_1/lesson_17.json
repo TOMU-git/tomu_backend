@@ -1,0 +1,51 @@
+{
+    "id": "ar_m1_l17",
+    "language": "ar",
+    "module": 1,
+    "lesson": 17,
+    "title": "تُفَّاحَةٌ لِأُمِّي",
+    "summary": "Narsalarning kimga tegishli ekanligini so'rash va javob berish.",
+    "vocabulary": [
+      { "word": "تُفَّاحَةٌ", "translationUz": "olma" },
+      { "word": "لِمَنْ", "translationUz": "kim uchun" },
+      { "word": "لِأُمِّي", "translationUz": "onam uchun" },
+      { "word": "هَذِهِ", "translationUz": "bu (ayol)" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "سَلْمَى",
+        "text": "مَا هَذِهِ يَا لَيْلَى؟",
+        "translationUz": "Bu nima, Laylo?",
+        "next": "هَذِهِ تُفَّاحَةٌ يَا سَلْمَى."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "هَذِهِ تُفَّاحَةٌ يَا سَلْمَى.",
+        "translationUz": "Bu olma, Salmo.",
+        "next": "لِمَنْ هَذِهِ التُّفَّاحَةُ؟"
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "لِمَنْ هَذِهِ التُّفَّاحَةُ؟",
+        "translationUz": "Bu olma kim uchun?",
+        "next": "هَذِهِ الْتُّفَّاحَةُ لِأُمِّي."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "هَذِهِ الْتُّفَّاحَةُ لِأُمِّي.",
+        "translationUz": "Bu olma onam uchun.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ أُمَّكِ التُّفَّاحَ؟",
+      "مَاذَا تُرِيدُ أَنْ تَهْدِيَ لِأُمِّكِ؟",
+      "هَلْ لِأَبِيكَ تُفَّاحَةٌ أَيْضًا؟",
+      "كَمْ تُفَّاحَةً عِنْدَكِ؟",
+      "لِمَنْ هَذِهِ الْهَدِيَّةُ؟"
+    ],
+    "context": {
+      "main_topic": "possession_gifts",
+      "pattern": "ask_what → answer → ask_for_whom → answer_owner"
+    }
+  }

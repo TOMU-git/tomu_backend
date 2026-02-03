@@ -1,0 +1,44 @@
+{
+    "id": "ar_m1_l95",
+    "language": "ar",
+    "module": 1,
+    "lesson": 95,
+    "title": "أَخَوَاتٌ",
+    "summary": "Ahmadning uchta singlisi haqida qisqa matn.",
+    "vocabulary": [
+      { "word": "أَخَوَاتٌ", "translationUz": "singillar" },
+      { "word": "مُؤَدَّبَاتٌ", "translationUz": "odobli (ko‘plik)" },
+      { "word": "يَدْرُسْنَ", "translationUz": "o‘qishadi" },
+      { "word": "يَلْعَبْنَ", "translationUz": "o‘ynashadi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "أَنَا اِسْمِي أَحْمَدُ. عِنْدِي ثَلَاثُ أَخَوَاتٍ.",
+        "translationUz": "Mening ismim Ahmad. Menda uchta singlim bor.",
+        "next": "هُنَّ مُؤَدَّبَاتٌ جِدًّا."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "هُنَّ مُؤَدَّبَاتٌ جِدًّا. لاَ يَلْعَبْنَ كَثِيرًا، بَلْ يَدْرُسْنَ كَثِيرًا.",
+        "translationUz": "Ular juda odobli. Ko‘p o‘ynamaydilar, aksincha ko‘p o‘qishadi.",
+        "next": "أَنَا أُحِبُّهُنَّ جِدًّا."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "أَنَا أُحِبُّهُنَّ جِدًّا.",
+        "translationUz": "Men ularni juda yaxshi ko‘raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ أُخْتًا عِنْدَ أَحْمَدَ؟",
+      "هَلْ أَخَوَاتُهُ مُؤَدَّبَاتٌ؟",
+      "مَاذَا يَفْعَلْنَ كَثِيرًا؟"
+    ],
+    "context": {
+      "main_topic": "family_intro",
+      "pattern": "intro → description → feeling"
+    }
+  }
+  

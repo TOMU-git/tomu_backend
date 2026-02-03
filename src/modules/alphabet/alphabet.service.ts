@@ -10,6 +10,7 @@ import { VimeoService } from '../lesson/vimeo.service';
 import { ICourseRepository } from '../course/interfaces/course.repository';
 import { CourseNotFoundException } from '../course/exception/course.exception';
 import { AlphabetOrderAlreadyExistException } from './exception/alphabet.exception';
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from 'src/common/utils/helper';
 
 @Injectable()
 export class AlphabetService implements IAlphabetService {
@@ -21,7 +22,7 @@ export class AlphabetService implements IAlphabetService {
     private readonly courseRepository: ICourseRepository,
 
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   async create(
     dto: CreateAlphabetDto,
@@ -43,7 +44,7 @@ export class AlphabetService implements IAlphabetService {
     }
 
     // video_url ni yuklanadigan video faylning URL ga aylantirish
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       dto.title,
       'Dars videosi',
@@ -54,6 +55,7 @@ export class AlphabetService implements IAlphabetService {
     Object.assign(newAlphabet, {
       ...dto,
       videoUrl,
+      vimeoVideoId,
       duration,
       course,
       mimetype: file.mimetype,
@@ -62,16 +64,30 @@ export class AlphabetService implements IAlphabetService {
 
     const savedAlphabet = await this.alphabetRepository.create(newAlphabet);
 
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: savedAlphabet.id,
+      title: savedAlphabet.title,
+      videoUrl: savedAlphabet.videoUrl,
+      vimeoVideoId: savedAlphabet.vimeoVideoId,
+      order: savedAlphabet.order,
+      mimetype: savedAlphabet.mimetype,
+      size: savedAlphabet.size,
+      duration: savedAlphabet.duration,
+      createdAt: savedAlphabet.createdAt,
+      lastUpdatedAt: savedAlphabet.lastUpdatedAt,
+    };
+
     return new ResData<Alphabet>(
       'Alifbo muvaffaqiyatli yaratildi',
       201,
-      savedAlphabet,
+      addVimeoEmbedUrl(responseData as Alphabet),
     );
   }
 
   async findAll(): Promise<ResData<Array<Alphabet>>> {
     const data = await this.alphabetRepository.findAll();
-    return new ResData<Array<Alphabet>>('ok', 200, data);
+    return new ResData<Array<Alphabet>>('ok', 200, addVimeoEmbedUrlToArray(data));
   }
 
   async findOneById(id: ID): Promise<ResData<Alphabet>> {
@@ -80,7 +96,7 @@ export class AlphabetService implements IAlphabetService {
       throw new AlphabetOrderAlreadyExistException();
     }
 
-    return new ResData<Alphabet>('ok', 200, foundData);
+    return new ResData<Alphabet>('ok', 200, addVimeoEmbedUrl(foundData));
   }
 
   async getAlphabetsByCourseId(courseId: ID): Promise<ResData<Alphabet[]>> {
@@ -94,7 +110,7 @@ export class AlphabetService implements IAlphabetService {
     return new ResData<Alphabet[]>(
       'Alphabets by courseId fetched successfully',
       200,
-      alphabets,
+      addVimeoEmbedUrlToArray(alphabets),
     );
   }
 
@@ -126,37 +142,50 @@ export class AlphabetService implements IAlphabetService {
       }
     }
 
-    const updateData = {
-      order, // Order qiymati
-      title: dto.title === '' ? foundData.title : dto.title || undefined,
-      video: dto.video === '' ? undefined : dto.video || foundData.videoUrl,
-    };
-
     // Agar fayl bo'lsa, video URL'ini yangilaydi
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         dto.title,
         'Dars videosi',
       );
 
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.duration = duration;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
     }
 
-    Object.assign(foundData, updateData);
+    // Order va title ni yangilash
+    foundData.order = order;
+    if (dto.title && dto.title !== '') {
+      foundData.title = dto.title;
+    }
 
     const data = await this.alphabetRepository.update(foundData);
 
-    return new ResData<Alphabet>('Alphabet updated successfully', 200, data);
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      order: data.order,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
+    return new ResData<Alphabet>('Alphabet updated successfully', 200, addVimeoEmbedUrl(responseData as Alphabet));
   }
 
   async delete(id: ID): Promise<ResData<Alphabet>> {
     const { data: foundData } = await this.findOneById(id);
     const data = await this.alphabetRepository.delete(foundData);
 
-    return new ResData<Alphabet>('Alphabet deleted successfully', 200, data);
+    return new ResData<Alphabet>('Alphabet deleted successfully', 200, addVimeoEmbedUrl(data));
   }
 }

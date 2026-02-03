@@ -1,0 +1,52 @@
+{
+    "id": "ar_m1_l52",
+    "language": "ar",
+    "module": 1,
+    "lesson": 52,
+    "title": "شَارِعُ الْمَحْكَمَةِ",
+    "summary": "Yashash joyi va ota kasbi haqida suhbat.",
+    "vocabulary": [
+      { "word": "شَارِع", "translationUz": "ko'cha" },
+      { "word": "مَحْكَمَة", "translationUz": "sud" },
+      { "word": "أَمَام", "translationUz": "oldida" },
+      { "word": "وِزَارَة", "translationUz": "vazirlik" },
+      { "word": "يَعْمَل", "translationUz": "ishlaydi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "كَرِيمٌ",
+        "text": "فِي أَيِّ شَارِعٍ تَسْكُنُ، يَا سَلِيمُ؟",
+        "translationUz": "Qaysi ko'chada yashaysan, Salim?",
+        "next": "أَسْكُنُ فِي الشَّارِعِ الَّذِي أَمَامَ الْمَحْكَمَةِ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "أَسْكُنُ فِي الشَّارِعِ الَّذِي أَمَامَ الْمَحْكَمَةِ.",
+        "translationUz": "Men sud oldidagi ko'chada yashayman.",
+        "next": "هَلْ يَعْمَلُ أَبُوكَ فِي الْمَحْكَمَةِ؟"
+      },
+      {
+        "speaker": "كَرِيمٌ",
+        "text": "هَلْ يَعْمَلُ أَبُوكَ فِي الْمَحْكَمَةِ؟",
+        "translationUz": "Otang sudda ishlaydimi?",
+        "next": "لَا، أَبِي يَعْمَلُ فِي الْوِزَارَةِ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "لَا، أَبِي يَعْمَلُ فِي الْوِزَارَةِ.",
+        "translationUz": "Yo'q, otam vazirlikda ishlaydi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "فِي أَيِّ شَارِعٍ تَسْكُنُ؟",
+      "هَلْ تَعْمَلُ فِي الْمَحْكَمَةِ؟",
+      "مَاذَا يَعْمَلُ أَبُوكَ؟",
+      "هَلِ الْوَزَارَةُ قَرِيبَةٌ مِنْ بَيْتِكَ؟",
+      "أَيْنَ تَعْمَلُ؟"
+    ],
+    "context": {
+      "main_topic": "address_profession",
+      "pattern": "ask_street → answer → ask_father_job → answer"
+    }
+  }

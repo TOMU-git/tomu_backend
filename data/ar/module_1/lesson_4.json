@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l4",
+  "language": "ar",
+  "module": 1,
+  "lesson": 4,
+  "title": "تَاجِرٌ",
+  "summary": "Learning to identify people and professions using demonstratives and simple yes/no questions.",
+  "vocabulary": [
+    { "word": "تَاجِرٌ", "translationUz": "savdogar" },
+    { "word": "مُهَنْدِسٌ", "translationUz": "muhandis" },
+    { "word": "مَنْ", "translationUz": "kim" },
+    { "word": "هَذَا", "translationUz": "bu (yaqin)" },
+    { "word": "ذَلِكَ", "translationUz": "u (uzoq)" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "لاَ", "translationUz": "yo'q" },
+    { "word": "أَيْضًا", "translationUz": "ham" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "مَنْ هَذَا، يَا مُحَمَّدُ؟",
+      "translationUz": "Bu kim, Muhammad?",
+      "next": "هَذَا تَاجِرٌ، يَا أَحْمَدُ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَذَا تَاجِرٌ، يَا أَحْمَدُ.",
+      "translationUz": "Bu savdogar, Ahmad.",
+      "next": "هَلْ ذَلِكَ مُهَنْدِسٌ؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "هَلْ ذَلِكَ مُهَنْدِسٌ؟",
+      "translationUz": "U (narigi) muhandismi?",
+      "next": "لَا، هُوَ تَاجِرٌ أَيْضًا."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "لَا، هُوَ تَاجِرٌ أَيْضًا.",
+      "translationUz": "Yo'q, u ham savdogar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ ذَلِكَ؟",
+    "هَلْ هُنَاكَ مُهَنْدِسٌ؟",
+    "هَلْ أَنْتَ تَاجِرٌ أَيْضًا؟",
+    "مَا هِيَ مِهْنَةُ أَبِيكَ؟",
+    "هَلْ تُحِبُّ أَنْ تَكُونَ تَاجِرًا؟"
+  ],
+  "context": {
+    "main_topic": "professions",
+    "pattern": "question → answer → question → answer"
+  }
+}

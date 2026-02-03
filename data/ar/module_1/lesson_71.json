@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l71",
+    "language": "ar",
+    "module": 1,
+    "lesson": 71,
+    "title": "اَلْبَيْتُ الْجَدِيدُ",
+    "summary": "Yangi uy va uning yangi mebellari haqida tavsif.",
+    "vocabulary": [
+      { "word": "بَيْت", "translationUz": "uy" },
+      { "word": "جَدِيد", "translationUz": "yangi" },
+      { "word": "أَثَاث", "translationUz": "mebel" },
+      { "word": "دُولَاب", "translationUz": "garderob" },
+      { "word": "بُوتَاجَاز", "translationUz": "gaz plita" },
+      { "word": "سَرِير", "translationUz": "karavot" },
+      { "word": "خِزَانَةُ كُتُب", "translationUz": "kitob javoni" },
+      { "word": "إِبْرِيقُ شَاي", "translationUz": "choynak" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بَيْتُنَا جَدِيدٌ. اِشْتَرَيْنَا لَهُ أَثَاثًا جَدِيدًا، مِنْهُ: دُولَابٌ، بُوتَاجَازٌ، سَرِيرٌ، طَاوِلَةٌ، كَرَاسِيُّ، خِزَانَةُ كُتُبٍ، إِبْرِيقُ شَايٍ، وَ غَيْرُ ذَلِكَ.",
+        "translationUz": "Uyimiz yangi. Biz unga yangi mebel sotib oldik, jumladan: garderob, gaz plita, karavot, stol, stullar, kitob javoni, choynak va boshqalar.",
+        "next": "بَيْتُنَا مُمْتَلِئٌ بِالْأَثَاثِ الْجَدِيدِ, وَ أَنَا أُحِبُّ بَيْتَنَا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بَيْتُنَا مُمْتَلِئٌ بِالْأَثَاثِ الْجَدِيدِ, وَ أَنَا أُحِبُّ بَيْتَنَا.",
+        "translationUz": "Uyimiz yangi mebellar bilan to'la va men uyimizni yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ بَيْتُكَ جَدِيدٌ؟",
+      "مَا هُوَ أَثَاثُ بَيْتِكَ؟",
+      "أَيْنَ تَضَعُ الْكُتُبَ فِي بَيْتِكَ؟",
+      "هَلْ تُحِبُّ بَيْتَكَ؟",
+      "مَا هِيَ أَشْيَاءُكَ الْمُفَضَّلَةُ فِي بَيْتِكَ؟"
+    ],
+    "context": {
+      "main_topic": "new_house_furniture",
+      "pattern": "narration → narration"
+    }
+  }

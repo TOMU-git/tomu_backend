@@ -1,0 +1,58 @@
+{
+  "id": "ar_m2_l1",
+  "language": "ar",
+  "module": 2,
+  "lesson": 1,
+  "title": "هَدِيَّةُ الْعِيِدِ",
+  "summary": "Ramazon hayitida do'stga sovg'a berish va minnatdorchilik bildirish haqida.",
+  "vocabulary": [
+    {"word": "هَدِيَّةُ", "translationUz": "sovg'a"},
+    {"word": "الْعِيِدِ", "translationUz": "hayit"},
+    {"word": "اِشْتَرَى", "translationUz": "sotib oldi"},
+    {"word": "لِأَحْمَدَ", "translationUz": "Ahmad uchun"},
+    {"word": "كَانَ", "translationUz": "edi"},
+    {"word": "ذَلِكَ الْيَوْمُ", "translationUz": "o kun"},
+    {"word": "يَوْمَ عِيدِ الْفِطْرِ", "translationUz": "Ramazon hayiti kuni"},
+    {"word": "قَالَ", "translationUz": "dedi"},
+    {"word": "شُكْرًا لَكَ", "translationUz": "rahmat senga"},
+    {"word": "أَفْضَلُ", "translationUz": "eng yaxshi"},
+    {"word": "صَدِيقٍ", "translationUz": "do'st"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اِشْتَرَى مُحَمَّدٌ هَدِيَّةً لِأَحْمَدَ.",
+      "translationUz": "Muhammad Ahmad uchun sovg'a sotib oldi.",
+      "next": " كَانَ ذَلِكَ الْيَوْمُ يَوْمَ عِيدِ الْفِطْرِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " كَانَ ذَلِكَ الْيَوْمُ يَوْمَ عِيدِ الْفِطْرِ.",
+      "translationUz": "O kun Ramazon hayiti kuni edi.",
+      "next": " وقَالَ أَحْمَدُ: شُكْرًا لَكَ يَا مُحَمَّدُ،"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "شُكْرًا لَكَ يَا مُحَمَّدُ،",
+      "translationUz": "Rahmat senga, Muhammad,",
+      "next": " أَنْتَ أَفْضَلُ صَدِيقٍ لِي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَنْتَ أَفْضَلُ صَدِيقٍ لِي.",
+      "translationUz": "Sen mening eng yaxshi do'stimsan.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا اِشْتَرَى مُحَمَّدٌ؟",
+    "لِمَنْ اِشْتَرَى الْهَدِيَّةَ؟",
+    "فِي أَيِّ يَوْمٍ كَانَ ذَلِكَ؟",
+    "مَاذَا قَالَ أَحْمَدُ لِمُحَمَّدٍ؟",
+    "هَلْ تُحِبُّ أَنْ تُهْدِيَ الْأَصْدِقَاءَ فِي الْعِيدِ؟"
+  ],
+  "context": {
+    "main_topic": "eid_gift_giving",
+    "pattern": "purchase_description → occasion → thanks_and_friendship"
+  }
+}

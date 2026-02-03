@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l83",
+    "language": "ar",
+    "module": 1,
+    "lesson": 83,
+    "title": "شِرَاءُ الْخُبْزِ",
+    "summary": "Non sotib olish va narxini hisoblash haqida ona va o'g'il o'rtasida suhbat.",
+    "vocabulary": [
+      { "word": "خُبْز", "translationUz": "non" },
+      { "word": "اشْتَرَى", "translationUz": "sotib oldi" },
+      { "word": "أَرْبَعَة", "translationUz": "to'rt" },
+      { "word": "جُنَيْه", "translationUz": "funty" },
+      { "word": "ثَمَن", "translationUz": "narx" },
+      { "word": "ثَمَانِيَة", "translationUz": "sakkiz" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "كَمْ خُبْزًا اشْتَرَيْتَ يَا بُنَيَّ؟",
+        "translationUz": "Necha non sotib olding, o'g'lim?",
+        "next": "إِشْتَرَيْتُ أَرْبَعَةَ أَخْبَازٍ يَا أُمِّي."
+      },
+      {
+        "speaker": "اَلْإِبْنُ",
+        "text": "إِشْتَرَيْتُ أَرْبَعَةَ أَخْبَازٍ يَا أُمِّي.",
+        "translationUz": "To'rtta non sotib oldim, ona.",
+        "next": "بِكَمْ إِشْتَرَيْتَ؟"
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "بِكَمْ إِشْتَرَيْتَ؟",
+        "translationUz": "Qancha to'lading?",
+        "next": "اَلْخُبْزُ الْوَاحِdُ بِجُنَيْهَيْنِ، لِذَلِكَ سَيَكُونُ ثَمَنُ الْأَرْبَعَةِ ثَمَانِيَةَ جُنَيْهَاتٍ."
+      },
+      {
+        "speaker": "اَلْإِبْنُ",
+        "text": "اَلْخُبْزُ الْوَاحِدُ بِجُنَيْهَيْنِ، لِذَلِكَ سَيَكُونُ ثَمَنُ الْأَرْبَعَةِ ثَمَانِيَةَ جُنَيْهَاتٍ.",
+        "translationUz": "Bitta non ikki funt, shuning uchun to'rttasi sakkiz funt bo'ladi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ ثَمَنُ الْخُبْزِ فِي بَلَدِكَ؟",
+      "هَلْ تَشْتَرِي الْخُبْزَ؟",
+      "كَمْ خُبْزًا تَشْتَرِي؟",
+      "مَا هُوَ طَعَامُكَ الْمُفَضَّلُ؟",
+      "هَلْ تَعْرِفُ تَحْسِيبَ الثَّمَنِ؟"
+    ],
+    "context": {
+      "main_topic": "buying_bread",
+      "pattern": "ask_quantity → answer → ask_price → calculate_price"
+    }
+  }

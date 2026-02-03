@@ -1,0 +1,123 @@
+{
+  "id": "ar_m1_l9",
+  "language": "ar",
+  "module": 1,
+  "lesson": 9,
+  "title": "اَلتَّعَارُفُ",
+  "summary": "Basic greetings and introductions: exchanging names, asking about origin, and responding politely.",
+  "vocabulary": [
+    {
+      "word": "اَلسَّلَامُ عَلَيْكُمْ",
+      "translationUz": "Salom (sizga tinchlik bo'lsin)"
+    },
+    {
+      "word": "وَعَلَيْكُمُ السَّلَامُ",
+      "translationUz": "Va sizga ham tinchlik bo'lsin"
+    },
+    {
+      "word": "مَا اسْمُكَ",
+      "translationUz": "Isming nima?"
+    },
+    {
+      "word": "اِسْمِي",
+      "translationUz": "Mening ismim"
+    },
+    {
+      "word": "مِنْ",
+      "translationUz": "dan"
+    },
+    {
+      "word": "مِصْرَ",
+      "translationUz": "Misr"
+    },
+    {
+      "word": "أُوزْبَكِسْتَانَ",
+      "translationUz": "O'zbekiston"
+    },
+    {
+      "word": "أَهْلًا وَسَهْلًا",
+      "translationUz": "Xush kelibsiz"
+    },
+    {
+      "word": "أَهْلًا بِكَ",
+      "translationUz": "Xush ko'rdim seni"
+    },
+    {
+      "word": "مِنْ أَيْنَ",
+      "translationUz": "Qayerdansan?"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "اَلسَّلَامُ عَلَيْكُمْ.",
+      "translationUz": "Assalomu alaykum.",
+      "next": "وَعَلَيْكُمُ السَّلَامُ."
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "وَعَلَيْكُمُ السَّلَامُ.",
+      "translationUz": "Va alaykum assalom.",
+      "next": "مَا اسْمُكَ؟"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "مَا اسْمُكَ؟",
+      "translationUz": "Isming nima?",
+      "next": "اِسْمِي فَرِيدٌ، وَمَا اسْمُكَ؟"
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "اِسْمِي فَرِيدٌ، وَمَا اسْمُكَ؟",
+      "translationUz": "Ismim Farid, sening isming nima?",
+      "next": "اِسْمِي مُحَمَّدٌ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "اِسْمِي مُحَمَّدٌ.",
+      "translationUz": "Ismim Muhammad.",
+      "next": "مِنْ أَيْنَ أَنْتَ يَا مُحَمَّدُ؟"
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "مِنْ أَيْنَ أَنْتَ يَا مُحَمَّدُ؟",
+      "translationUz": "Qayerdansan, Muhammad?",
+      "next": "أَنَا مِنْ مِصْرَ، وَمِنْ أَيْنَ أَنْتَ يَا فَرِيدُ؟"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "أَنَا مِنْ مِصْرَ، وَمِنْ أَيْنَ أَنْتَ يَا فَرِيدُ؟",
+      "translationUz": "Men Misrdanman. Sen qayerdansan, Farid?",
+      "next": "أَنَا مِنْ أُوزْبَكِسْتَانَ."
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "أَنَا مِنْ أُوزْبَكِسْتَانَ.",
+      "translationUz": "Men O'zbekistondanman.",
+      "next": "أَهْلًا وَسَهْلًا!"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "أَهْلًا وَسَهْلًا!",
+      "translationUz": "Xush kelibsiz!",
+      "next": "أَهْلًا بِكَ."
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "أَهْلًا بِكَ.",
+      "translationUz": "Xush ko'rdim seni.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ حَالُكَ؟",
+    "هَلْ تَزُورُ مِصْرَ كَثِيرًا؟",
+    "مَاذَا تَعْمَلُ فِي أُوزْبَكِسْتَانَ؟",
+    "هَلْ تَتَحَدَّثُ اللُّغَةَ الْعَرَبِيَّةَ جَيِّدًا؟",
+    "مَتَى وَصَلْتَ إِلَى مِصْرَ؟"
+  ],
+  "context": {
+    "main_topic": "greetings_introductions",
+    "pattern": "greeting → greeting → name_exchange → origin_questions → welcome"
+  }
+}

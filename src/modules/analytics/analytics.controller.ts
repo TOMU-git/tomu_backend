@@ -70,9 +70,9 @@ export class AnalyticsController {
     const dateTo = new Date(`${to}T00:00:00Z`);
     dateTo.setUTCHours(23, 59, 0, 0);
     const timestampFrom = dateFrom.getTime();
-    console.log(timestampFrom);
+    // console.log(timestampFrom);
     const timestampTo = dateTo.getTime();
-    console.log(timestampTo);
+    // console.log(timestampTo);
     return this.analyticsService.findOne(timestampFrom, timestampTo, id);
   }
 }

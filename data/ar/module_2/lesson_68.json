@@ -1,0 +1,77 @@
+{
+  "id": "ar_m2_l68",
+  "language": "ar",
+  "module": 2,
+  "lesson": 68,
+  "title": "مِتْرُو طَشْقَنْدَ 2",
+  "summary": "Metro chiptasining narxi, universitetga borish uchun metrodan foydalanish, ko'p vaqtlarda tirbandlik va o'tiradigan joy topib bo'lmasligi haqida.",
+  "vocabulary": [
+    {"word": "سِعْرُ", "translationUz": "narxi"},
+    {"word": "تَذْكِرَةِ", "translationUz": "chiptaning"},
+    {"word": "ثَلَاثَةُ", "translationUz": "uch"},
+    {"word": "آلَافِ", "translationUz": "ming"},
+    {"word": "سُومٍ", "translationUz": "so'm"},
+    {"word": "أَنَا", "translationUz": "men"},
+    {"word": "أَيْضًا", "translationUz": "ham"},
+    {"word": "أَسْتَخْدِمُ", "translationUz": "foydalanaman"},
+    {"word": "لِلْوُصُولِ", "translationUz": "yetish uchun"},
+    {"word": "إِلَى", "translationUz": "ga"},
+    {"word": "الْجَامِعَةِ", "translationUz": "universitet"},
+    {"word": "وَلَكِنْ", "translationUz": "lekin"},
+    {"word": "لِلْأَسَفِ", "translationUz": "afsuski"},
+    {"word": "يَكُونُ", "translationUz": "bo'ladi"},
+    {"word": "مُزْدَحِمًا", "translationUz": "tirband"},
+    {"word": "مُعْظَمِ", "translationUz": "aksariyat"},
+    {"word": "الْأَوْقَاتِ", "translationUz": "vaqtlar"},
+    {"word": "لَا", "translationUz": "yo'q"},
+    {"word": "أَجِدُ", "translationUz": "topaman"},
+    {"word": "مَقْعَدًا", "translationUz": "o'tiradigan joy"},
+    {"word": "فَارِغًا", "translationUz": "bo'sh"},
+    {"word": "لِلْجُلُوسِ", "translationUz": "o'tirish uchun"},
+    {"word": "فَأَذْهَبُ", "translationUz": "shunda boraman"},
+    {"word": "وَاقِفًا", "translationUz": "turgan holda"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "سِعْرُ تَذْكِرَةِ الْمِتْرُو ثَلَاثَةُ آلَافِ سُومٍ.",
+      "translationUz": "Metro chiptasining narxi uch ming so'm.",
+      "next": "أَنَا أَيْضًا أَسْتَخْدِمُ الْمِتْرُو لِلْوُصُولِ إِلَى الْجَامِعَةِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أَيْضًا أَسْتَخْدِمُ الْمِتْرُو لِلْوُصُولِ إِلَى الْجَامِعَةِ،",
+      "translationUz": "Men ham universitetga yetish uchun metrodan foydalanaman,",
+      "next": "وَ لَكِنْ لِلْأَسَفِ يَكُونُ مُزْدَحِمًا فِي  مُعْظَمِ الْأَوْقَاتِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَكِنْ لِلْأَسَفِ يَكُونُ مُزْدَحِمًا فِي  مُعْظَمِ الْأَوْقَاتِ，",
+      "translationUz": "lekin afsuski u aksariyat vaqtlarda tirband bo'ladi,",
+      "next": "وَ لَا أَجِدُ مَقْعَدًا فَارِغًا لِلْجُلُوسِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لَا أَجِدُ مَقْعَدًا فَارِغًا لِلْجُلُوسِ，",
+      "translationUz": "va men o'tirish uchun bo'sh joy topolmayman,",
+      "next": "فَأَذْهَبُ وَاقِفًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَأَذْهَبُ وَاقِفًا.",
+      "translationUz": "shunda men turgan holda boraman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ سِعْرُ تَذْكِرَةِ الْمِتْرُو؟",
+    "لِمَاذَا يَسْتَخْدِمُ الْكَاتِبُ الْمِتْرُو؟",
+    "كَيْفَ يَكُونُ حَالُ الْمِتْرُو فِي مُعْظَمِ الْأَوْقَاتِ؟",
+    "مَاذَا لَا يَجِدُ فِي الْمِتْرُو؟",
+    "كَيْفَ يَذْهَبُ الْكَاتِبُ؟"
+  ],
+  "context": {
+    "main_topic": "tashkent_metro_experience",
+    "pattern": "ticket_price → personal_usage → congestion_problem → seat_unavailability → standing_solution"
+  }
+}

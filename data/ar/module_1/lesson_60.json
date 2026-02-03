@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l60",
+    "language": "ar",
+    "module": 1,
+    "lesson": 60,
+    "title": "أَيُّهُمَا أَطْوَلُ ٢",
+    "summary": "O'qituvchi va o'quvchi o'rtasida jirafa va banan daraxtining balandligini solishtirish va to'g'ri javobni tasdiqlash.",
+    "vocabulary": [
+      { "word": "طُول", "translationUz": "balandlik" },
+      { "word": "يَصِل", "translationUz": "yetadi" },
+      { "word": "خَمْسَة", "translationUz": "besh" },
+      { "word": "سِتَّة", "translationUz": "olti" },
+      { "word": "أَمْتَار", "translationUz": "metr" },
+      { "word": "أَقْصَر", "translationUz": "qisqaroq" },
+      { "word": "صَحِيح", "translationUz": "to'g'ri" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْمُعَلِّمَةُ",
+        "text": "لِمَاذَا تَقُولُ إِنَّ الزَّرَافَةَ أَطْوَلُ، يَا أَحْمَدُ؟",
+        "translationUz": "Nega jirafa balandroq deyapsan, Ahmad?",
+        "next": "لِأَنَّ طُولَ الزَّرَافَةِ يَصِلُ إِلَى خَمْسَةٍ أَوْ سِتَّةِ أَمْتَارٍ، أَمَّا شَجَرُ المَوزِ فَهُوَ أَقْصَرُ مِنْ ذَلِكَ."
+      },
+      {
+        "speaker": "أَحْمَدُ",
+        "text": "لِأَنَّ طُولَ الزَّرَافَةِ يَصِلُ إِلَى خَمْسَةٍ أَوْ سِتَّةِ أَمْتَارٍ، أَمَّا شَجَرُ المَوزِ فَهُوَ أَقْصَرُ مِنْ ذَلِكَ.",
+        "translationUz": "Chunki jirafaning balandligi besh yoki olti metrga yetadi, ammo banan daraxti bundan qisqaroq.",
+        "next": "صَحِيحٌ، يَا بُنَيَّ، الزَّرَافَةُ أَطْوَلُ."
+      },
+      {
+        "speaker": "اَلْمُعَلِّمَةُ",
+        "text": "صَحِيحٌ، يَا بُنَيَّ، الزَّرَافَةُ أَطْوَلُ.",
+        "translationUz": "To'g'ri, o'g'lim, jirafa balandroq.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ يَبْلُغُ طُولُ الزَّرَافَةِ؟",
+      "كَمْ يَبْلُغُ طُولُ شَجَرِ الْمَوْزِ؟",
+      "هَلْ تَعْرِفُ حَيَوَانًا آخَرَ طَوِيلًا؟",
+      "لِمَاذَا الزَّرَافَةُ طَوِيلَةٌ؟",
+      "مَا فَائِدَةُ طُولِ الزَّرَافَةِ؟"
+    ],
+    "context": {
+      "main_topic": "height_explanation",
+      "pattern": "ask_reason → explain_with_facts → confirm_correct"
+    }
+  }

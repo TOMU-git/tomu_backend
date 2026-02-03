@@ -13,13 +13,25 @@ import { PhoneNumberAlreadyExist } from "../auth/exception/auth.exception";
 export class UserService implements IUserService {
   constructor(
     @Inject("IUserRepository") private readonly userRepository: IUserRepository,
-  ) {}
+  ) { }
 
   // *** Find user by phone number (only returns one) *** //
 
   async findOneByPhoneNumber(phoneNumber: string): Promise<ResData<User>> {
     const foundUser = await this.userRepository.getOntByPhoneNumber(phoneNumber);
+    if (!foundUser) {
+      throw new UserNotFound();
+    }
     return new ResData<User>('found user by phone', 200, foundUser);
+  }
+
+  // *** Check phone number availability *** //
+  async checkPhoneAvailability(phoneNumber: string): Promise<ResData<boolean>> {
+    const normalizedPhone = phoneNumber.startsWith('+') ? phoneNumber.substring(1) : phoneNumber;
+    const userWithPlus = await this.userRepository.getOntByPhoneNumber(`+${normalizedPhone}`);
+    const userWithoutPlus = await this.userRepository.getOntByPhoneNumber(normalizedPhone);
+    const isAvailable = !userWithPlus && !userWithoutPlus;
+    return new ResData<boolean>('phone availability checked', 200, isAvailable);
   }
   // *** Find one by id *** //
 
@@ -39,15 +51,15 @@ export class UserService implements IUserService {
     if (role === 'teacher') {
       const foundUsers = await this.userRepository.findAllTeachers(search, limit, page);
       const totalPage = foundUsers.count / 10;
-      return new ResData<IUserEntityCount>("Teachers found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
-    } else if (role === 'admin') {
+      return new ResData<IUserEntityCount>("Teachers found successfully", 200, { users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage) });
+    } else if (role === 'admin' || role === 'director') {
       const foundUsers = await this.userRepository.findAllAdmins(search, limit, page)
       const totalPage = foundUsers.count / 10;
-      return new ResData<IUserEntityCount>("Admins found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
+      return new ResData<IUserEntityCount>("Admins found successfully", 200, { users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage) });
     } else {
       const foundUsers = await this.userRepository.findAll(search, limit, page);
       const totalPage = foundUsers.count / 10;
-      return new ResData<IUserEntityCount>("Users found successfully", 200, {users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage)});
+      return new ResData<IUserEntityCount>("Users found successfully", 200, { users: foundUsers.users, count: foundUsers.count, total_page: Math.ceil(totalPage) });
     }
   }
 
@@ -73,6 +85,12 @@ export class UserService implements IUserService {
 
     if (dto.password) {
       foundUser.unhashedPassword = dto.password;
+    }
+    if (dto.maxDevices !== undefined) {
+      foundUser.maxDevices = dto.maxDevices;
+    }
+    if (dto.deviceManagementEnabled !== undefined) {
+      foundUser.deviceManagementEnabled = dto.deviceManagementEnabled;
     }
     const updated = await this.userRepository.update(foundUser);
     return new ResData<User>("User updated successfully", 200, updated);

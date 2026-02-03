@@ -1,18 +1,19 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { IHomeworkService } from "./interfaces/homework.service";
 import { IHomeworkRepository } from "./interfaces/homework.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
-import { IHomeworkService } from "./interfaces/homework.service";
+import { Homework } from "./entities/homework.entity";
+import { CreateHomeworkDto } from "./dto/create-homework.dto";
+import { UpdateHomeworkDto } from "./dto/update-homework.dto";
 import {
   HomeworkNotFoundException,
   HomeworkOrderAlreadyExistException,
 } from "./exception/homework.exception";
-import { UpdateHomeworkDto } from "./dto/update-homework.dto";
-import { CreateHomeworkDto } from "./dto/create-homework.dto";
-import { Homework } from "./entities/homework.entity";
+import { VimeoService } from "../lesson/vimeo.service";
 import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
-import { VimeoService } from "../lesson/vimeo.service";
+import { addVimeoEmbedUrl, addVimeoEmbedUrlToArray } from "src/common/utils/helper";
 
 @Injectable()
 export class HomeworkService implements IHomeworkService {
@@ -24,7 +25,7 @@ export class HomeworkService implements IHomeworkService {
     private readonly blockRepository: IBlockRepository,
 
     private readonly vimeoService: VimeoService, // Inject VimeoService
-  ) {}
+  ) { }
 
   /**
    * Yangi Homework yaratadi.
@@ -56,28 +57,42 @@ export class HomeworkService implements IHomeworkService {
     }
 
     // Video faylni yuklaydi va tegishli ma'lumotlarni saqlaydi
-    const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+    const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
       createHomeworkDto.title,
       "Dars videosi",
     );
 
-    // Blockdagi video soni va davomiyligini yangilaydi
+    // Blockdagi davomiyligini yangilaydi (countVideos faqat lesson uchun)
     block.duration = Number(block.duration) + Number(duration);
-    block.countVideos = Number(block.countVideos) + 1;
     await this.blockRepository.update(block);
 
     // Homework ma'lumotlarini yaratadi va bazaga saqlaydi
     let newHomework = new Homework();
     newHomework.block = block;
     newHomework.videoUrl = videoUrl;
+    newHomework.vimeoVideoId = vimeoVideoId;
     newHomework.mimetype = file.mimetype;
     newHomework.size = file.size;
     newHomework.duration = duration;
     newHomework = Object.assign(newHomework, createHomeworkDto);
     const newData = await this.homeworkRepository.create(newHomework);
 
-    return new ResData<Homework>("Homework created successfully", 201, newData);
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: newData.id,
+      title: newData.title,
+      videoUrl: newData.videoUrl,
+      vimeoVideoId: newData.vimeoVideoId,
+      order: newData.order,
+      mimetype: newData.mimetype,
+      size: newData.size,
+      duration: newData.duration,
+      createdAt: newData.createdAt,
+      lastUpdatedAt: newData.lastUpdatedAt,
+    };
+
+    return new ResData<Homework>("Homework created successfully", 201, addVimeoEmbedUrl(responseData as Homework));
   }
 
   /**
@@ -87,7 +102,7 @@ export class HomeworkService implements IHomeworkService {
   async findAll(): Promise<ResData<Array<Homework>>> {
     const data = await this.homeworkRepository.findAll();
 
-    return new ResData<Array<Homework>>("ok", 200, data);
+    return new ResData<Array<Homework>>("ok", 200, addVimeoEmbedUrlToArray(data));
   }
 
   /**
@@ -102,7 +117,7 @@ export class HomeworkService implements IHomeworkService {
       throw new HomeworkNotFoundException();
     }
 
-    return new ResData<Homework>("ok", 200, foundData);
+    return new ResData<Homework>("ok", 200, addVimeoEmbedUrl(foundData));
   }
 
   /**
@@ -125,7 +140,7 @@ export class HomeworkService implements IHomeworkService {
       updateHomeworkDto.order,
       updateHomeworkDto.blockId,
     );
-    if (orderExist && foundData.order !== updateHomeworkDto.order ) { 
+    if (orderExist && foundData.order !== updateHomeworkDto.order) {
       throw new HomeworkOrderAlreadyExistException();
     }
 
@@ -142,49 +157,69 @@ export class HomeworkService implements IHomeworkService {
     foundData.title = updateHomeworkDto.title;
     foundData.block = block;
 
-    // Yangi video fayl mavjud bo'lsa, yuklaydi
+    // Video o'zgarganda block duration ni yangilash logic
     if (file) {
-      const { videoUrl, duration } = await this.vimeoService.uploadVideo(
+      const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
         file.buffer,
         updateHomeworkDto.title,
         "Dars videosi",
       );
 
+      // Block duration dagi farqni hisoblash va yangilash
+      block.duration =
+        Number(block.duration) - Number(foundData.duration) + Number(duration);
+      await this.blockRepository.update(block);
+
       foundData.videoUrl = videoUrl;
+      foundData.vimeoVideoId = vimeoVideoId;
       foundData.mimetype = file.mimetype;
       foundData.size = file.size;
       foundData.duration = duration;
     }
 
-    const updatedData = Object.assign(foundData, updateHomeworkDto);
-    const data = await this.homeworkRepository.update(updatedData)
+    const data = await this.homeworkRepository.update(foundData);
+
+    // Response uchun faqat kerakli ma'lumotlarni qaytarish (relation ma'lumotlarisiz)
+    const responseData = {
+      id: data.id,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      vimeoVideoId: data.vimeoVideoId,
+      order: data.order,
+      mimetype: data.mimetype,
+      size: data.size,
+      duration: data.duration,
+      createdAt: data.createdAt,
+      lastUpdatedAt: data.lastUpdatedAt,
+    };
+
     return new ResData<Homework>(
       "Homework updated successfully",
       200,
-      data,
+      addVimeoEmbedUrl(responseData as Homework),
     );
   }
 
-    /**
-   * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
-   * @param blockId Blok ID'si
-   * @returns Blokga tegishli darslar
-   */
-    async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
-      const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
-      if(homeworks.length === 0){
-        return new ResData<Homework[]>(
-          `No any videos in this blockId: ${blockId} `,
-          200,
-          homeworks,
-        );
-      }
+  /**
+ * Berilgan blok ID'siga tegishli barcha darslarni olish funksiyasi.
+ * @param blockId Blok ID'si
+ * @returns Blokga tegishli darslar
+ */
+  async getHomeworksByBlockId(blockId: ID): Promise<ResData<Homework[]>> {
+    const homeworks = await this.homeworkRepository.findHomeworksByBlockId(blockId);
+    if (homeworks.length === 0) {
       return new ResData<Homework[]>(
-        "Homeworks by blockId fetched successfully",
+        `No any videos in this blockId: ${blockId} `,
         200,
         homeworks,
       );
     }
+    return new ResData<Homework[]>(
+      "Homeworks by blockId fetched successfully",
+      200,
+      addVimeoEmbedUrlToArray(homeworks),
+    );
+  }
 
   /**
    * Keyingi 5 ta videoni oladi.
@@ -204,7 +239,7 @@ export class HomeworkService implements IHomeworkService {
     return new ResData<Array<Homework>>(
       "Videos fetched successfully",
       200,
-      data,
+      addVimeoEmbedUrlToArray(data),
     );
   }
 
@@ -216,8 +251,20 @@ export class HomeworkService implements IHomeworkService {
    */
   async delete(id: ID): Promise<ResData<Homework>> {
     const { data: foundData } = await this.findOneById(id);
+
+    // Block duration dan dars vaqtini ayirish
+    const block = await this.blockRepository.findById(foundData.block.id);
+    if (block) {
+      block.duration = Number(block.duration) - Number(foundData.duration);
+      await this.blockRepository.update(block);
+    }
+
     const data = await this.homeworkRepository.delete(foundData);
 
-    return new ResData<Homework>("Homework deleted successfully", 200, data);
+    return new ResData<Homework>(
+      "Homework deleted successfully",
+      200,
+      addVimeoEmbedUrl(data),
+    );
   }
 }

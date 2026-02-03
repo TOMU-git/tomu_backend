@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l120",
+  "language": "ar",
+  "module": 1,
+  "lesson": 120,
+  "title": "اللَّعِبُ فِي الطَّرِيقِ",
+
+  "summary": "Xavfsizlik qoidalarini o‘rganish va qayerda o‘ynash mumkin yoki mumkin emasligini aytish.",
+
+  "vocabulary": [
+    { "word": "اللَّعِبُ", "translationUz": "o‘yin" },
+    { "word": "الطَّرِيقُ", "translationUz": "yo‘l" },
+    { "word": "الْحَدِيقَةُ", "translationUz": "bog‘" },
+    { "word": "الْمَلْعَبُ", "translationUz": "o‘yingoh" },
+    { "word": "لاَ تَلْعَبُوا", "translationUz": "o‘ynamanglar" },
+    { "word": "اِلْعَبُوا", "translationUz": "o‘ynanglar" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الأَبُ",
+      "text": "أَيْنَ تَلْعَبُونَ؟",
+      "translationUz": "Qayerda o‘ynayapsizlar?",
+      "next": "نَلْعَبُ فِي الطَّرِيقِ."
+    },
+    {
+      "speaker": "الأَوْلَادُ",
+      "text": "نَلْعَبُ فِي الطَّرِيقِ.",
+      "translationUz": "Yo‘lda o‘ynayapmiz.",
+      "next": "هَلْ هَذَا صَحِيحٌ؟"
+    },
+    {
+      "speaker": "الأَبُ",
+      "text": "هَلْ هَذَا صَحِيحٌ؟",
+      "translationUz": "Bu to‘g‘rimi?",
+      "next": "لاَ، اِلْعَبُوا فِي الْحَدِيقَةِ."
+    },
+    {
+      "speaker": "الأَبُ",
+      "text": "لاَ، اِلْعَبُوا فِي الْحَدِيقَةِ.",
+      "translationUz": "Yo‘q, bog‘da o‘ynanglar.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تَلْعَبُ فِي الطَّرِيقِ؟",
+    "أَيْنَ تَلْعَبُ مَعَ أَصْدِقَائِكَ؟",
+    "هَلْ الْمَلْعَبُ قَرِيبٌ؟"
+  ],
+
+  "context": {
+    "main_topic": "safety and play",
+    "pattern": "question → answer → question → answer"
+  }
+}

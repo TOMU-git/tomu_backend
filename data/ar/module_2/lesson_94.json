@@ -1,0 +1,63 @@
+{
+  "id": "ar_m2_l94",
+  "language": "ar",
+  "module": 2,
+  "lesson": 94,
+  "title": "أَفْضَلُ حَفِيْدٍ",
+  "summary": "Bobo va nabirasi o‘rtasida dorixona borish, og‘riq shikoyati qilish, sog‘lig‘ uchun tilak va maqtov so‘zlashish.",
+  "vocabulary": [
+    { "word": "حَفِيدٌ", "translationUz": "nabira" },
+    { "word": "جَدٌّ", "translationUz": "bobo" },
+    { "word": "صَيْدَلِيَّةٌ", "translationUz": "dorixona" },
+    { "word": "دَوَاءٌ", "translationUz": "dori" },
+    { "word": "أَلَمٌ", "translationUz": "og‘riq" },
+    { "word": "حَنْجَرَةٌ", "translationUz": "tomoq" },
+    { "word": "شَفَاكَ اللهُ", "translationUz": "Alloh senga shifo bersin" },
+    { "word": "عَاجِلًا", "translationUz": "tezda" },
+    { "word": "بِسُرْعَةٍ", "translationUz": "tezlik bilan" },
+    { "word": "أَفْضَلُ", "translationUz": "eng yaxshi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْجَدُّ",
+      "text": "إذْهَبْ إِلَى الصَّيْدَلِيَّةِ يَا حَفِيْدِي.",
+      "translationUz": "Dorixonaga bor, nabirasi.",
+      "next": "لِمَاذَا يَا جَدِّي؟"
+    },
+    {
+      "speaker": "اَلْحَفِيْدُ",
+      "text": "لِمَاذَا يَا جَدِّي؟",
+      "translationUz": "Nima uchun, bobojon?",
+      "next": "أُرِيدُ دَوَاءً لِأَنَّنِي أَشْعُرُ بِأَلَمٍ فِي حَنْجَرَتِي."
+    },
+    {
+      "speaker": "اَلْجَدُّ",
+      "text": "أُرِيدُ دَوَاءً لِأَنَّنِي أَشْعُرُ بِأَلَمٍ فِي حَنْجَرَتِي.",
+      "translationUz": "Men dori kerak, chunki tomog‘im og‘riyapti.",
+      "next": "شَفَاكَ اللهُ شِفَاءً عَاجِلًا يَا جَدِّي. سَأَذْهَبُ إِلَى الصَّيْدَلِيَّةِ بِسُرْعَةٍ."
+    },
+    {
+      "speaker": "اَلْحَفِيْدُ",
+      "text": "شَفَاكَ اللهُ شِفَاءً عَاجِلًا يَا جَدِّي. سَأَذْهَبُ إِلَى الصَّيْدَلِيَّةِ بِسُرْعَةٍ.",
+      "translationUz": "Alloh senga tezda shifo bersin, bobojon. Men dorixonaga tez boraman.",
+      "next": "شُكْرًا، أَنْتَ أَفْضَلُ حَفِيدٍ لِي."
+    },
+    {
+      "speaker": "اَلْجَدُّ",
+      "text": "شُكْرًا، أَنْتَ أَفْضَلُ حَفِيدٍ لِي.",
+      "translationUz": "Rahmat, sen mening eng yaxshi nabiramsan.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا الَّذِي يَشْتَرِي الْحَفِيدُ مِنَ الصَّيْدَلِيَّةِ؟",
+    "كَيْفَ يَشْعُرُ الْجَدُّ الْآنَ؟",
+    "كَيْفَ تَكُونُ الْحَنْجَرَةُ الْمُؤْلِمَةُ؟",
+    "هَلْ تَزُورُ جَدَّكَ كَثِيرًا؟",
+    "مَا هِيَ أَفْضَلُ صِفَةٍ فِي حَفِيدٍ؟"
+  ],
+  "context": {
+    "main_topic": "grandparent_errand_praise",
+    "pattern": "request_to_go → question_about_reason → explanation_of_pain → well_wish_and_acceptance → praise"
+  }
+}

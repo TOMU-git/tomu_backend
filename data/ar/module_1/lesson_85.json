@@ -1,0 +1,43 @@
+{
+    "id": "ar_m1_l85",
+    "language": "ar",
+    "module": 1,
+    "lesson": 85,
+    "title": "أَنْهَارُ آسِيَا الْوُسْطَى",
+    "summary": "O'rta Osiyoning ikkita buyuk daryolari haqida ma'lumot.",
+    "vocabulary": [
+      { "word": "أَنْهَار", "translationUz": "daryolar" },
+      { "word": "آسِيَا", "translationUz": "Osiyo" },
+      { "word": "وُسْطَى", "translationUz": "o'rta" },
+      { "word": "نَهْر", "translationUz": "daryo" },
+      { "word": "عَظِيم", "translationUz": "buyuk" },
+      { "word": "أَمُودَرْيَا", "translationUz": "O'mudaryo" },
+      { "word": "سِيردَرْيَا", "translationUz": "Sirdaryo" },
+      { "word": "مِنْطَقَة", "translationUz": "mintaqa" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي آسِيَا الْوُسْطَى نَهْرَانِ عَظِيمَانِ، وَهُمَا أَمُودَرْيَا وَسِيردَرْيَا.",
+        "translationUz": "O'rta Osiyoda ikkita buyuk daryo bor, ular O'mudaryo va Sirdaryo.",
+        "next": "هَذَانِ النَّهْرَانِ هُمَا أَكْبَرُ أَنْهَارِ هَذِهِ الْمِنْطَقَةِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَانِ النَّهْرَانِ هُمَا أَكْبَرُ أَنْهَارِ هَذِهِ الْمِنْطَقَةِ.",
+        "translationUz": "Bu ikkita daryo bu mintaqaning eng katta daryolaridir.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَعْرِفُ أَنْهَارَ آسِيَا الْوُسْطَى؟",
+      "مَا هُوَ أَكْبَرُ نَهْرٍ فِي بَلَدِكَ؟",
+      "هَلْ تَرَى الْأَنْهَارَ كَثِيرًا؟",
+      "لِمَاذَا الْأَنْهَارُ مُهِمَّةٌ؟",
+      "مَا فَائِدَةُ الْأَنْهَارِ؟"
+    ],
+    "context": {
+      "main_topic": "central_asia_rivers",
+      "pattern": "narration → narration"
+    }
+  }

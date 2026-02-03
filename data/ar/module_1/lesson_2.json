@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l2",
+  "language": "ar",
+  "module": 1,
+  "lesson": 2,
+  "title": "بَيْتٌ",
+  "summary": "Practicing demonstrative pronouns and forming simple yes/no questions about objects.",
+  "vocabulary": [
+    { "word": "بَيْتٌ", "translationUz": "uy" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "أَيْضًا", "translationUz": "ham" },
+    { "word": "إِنَّهُ", "translationUz": "albatta u" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "مَا هَذَا، يَا أَحْمَدُ؟",
+      "translationUz": "Bu nima, Ahmad?",
+      "next": "هَذَا بَيْتٌ، يَا مُحَمَّدُ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "هَذَا بَيْتٌ، يَا مُحَمَّدُ.",
+      "translationUz": "Bu uy, Muhammad.",
+      "next": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "وَهَلْ هَذَا بَيْتٌ أَيْضًا؟",
+      "translationUz": "Bu ham uy emasmi?",
+      "next": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "نَعَمْ، إِنَّهُ بَيْتٌ أَيْضًا.",
+      "translationUz": "Ha, bu ham uy.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ هُوَ كَبِيرٌ؟",
+    "مَنْ يَسْكُنُ فِي هَذَا البَيْتِ؟",
+    "هَلْ هُوَ جَدِيدٌ؟",
+    "هَلْ تُعْجِبُكَ هَذِهِ البُيُوتُ؟",
+    "كَمْ غُرْفَةً فِي هَذَا البَيْتِ؟",
+    "هَلْ هُنَاكَ بُيُوتٌ أُخْرَى؟"
+  ],
+  "context": {
+    "main_object": "house",
+    "pattern": "question → answer → question → answer"
+  }
+}

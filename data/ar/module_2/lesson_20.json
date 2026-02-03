@@ -1,0 +1,72 @@
+{
+  "id": "ar_m2_l20",
+  "language": "ar",
+  "module": 2,
+  "lesson": 20,
+  "title": "مَتْجَرُ الْمَلَابِسِ",
+  "summary": "Mijoz va sotuvchi o'rtasida shim narxi haqidagi kelishmovchilik va oxirida qora shim sotib olish haqida.",
+  "vocabulary": [
+    {"word": "مَتْجَرُ", "translationUz": "do'kon"},
+    {"word": "الْمَلَابِسِ", "translationUz": "kiyimlar"},
+    {"word": "اَلزَّبُونُ", "translationUz": "mijoz"},
+    {"word": "كَمْ", "translationUz": "qancha"},
+    {"word": "سِعْرُ", "translationUz": "narxi"},
+    {"word": "هَذَا", "translationUz": "bu (erkak)"},
+    {"word": "الْبَنْطَلُونِ", "translationUz": "shim"},
+    {"word": "اَلْبَائِعُ", "translationUz": "sotuvchi"},
+    {"word": "سِعْرُهُ", "translationUz": "uning narxi"},
+    {"word": "خَمْسَةَ", "translationUz": "besh"},
+    {"word": "عَشَرَ", "translationUz": "o'n"},
+    {"word": "جُنَيْهًا", "translationUz": "juniych (pul birligi)"},
+    {"word": "غَالٍ", "translationUz": "qimmat"},
+    {"word": "سَيِّدِي", "translationUz": "janobim"},
+    {"word": "لَيْسَ", "translationUz": "emas"},
+    {"word": "غَالِيًا", "translationUz": "qimmat"},
+    {"word": "حَسَنًا", "translationUz": "yaxshi"},
+    {"word": "أَشْتَرِي", "translationUz": "sotib olaman"},
+    {"word": "الْأَسْوَدَ", "translationUz": "qora"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "كَمْ سِعْرُ هَذَا الْبَنْطَلُونِ؟",
+      "translationUz": "Bu shimning narxi qancha?",
+      "next": "اَلْبَائِعُ: سِعْرُهُ خَمْسَةَ عَشَرَ جُنَيْهًا."
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "سِعْرُهُ خَمْسَةَ عَشَرَ جُنَيْهًا.",
+      "translationUz": "Uning narxi o'n besh juniych.",
+      "next": "اَلزَّبُونُ: هَذَا غَالٍ جِدًّا."
+    },
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "هَذَا غَالٍ جِدًّا.",
+      "translationUz": "Bu juda qimmat.",
+      "next": "اَلْبَائِعُ: لَا يَا سَيِّدِي، إِنَّهُ لَيْسَ غَالِيًا."
+    },
+    {
+      "speaker": "اَلْبَائِعُ",
+      "text": "لَا يَا سَيِّدِي، إِنَّهُ لَيْسَ غَالِيًا.",
+      "translationUz": "Yo'q, janobim, u qimmat emas.",
+      "next": "اَلزَّبُونُ: حَسَنًا، أَشْتَرِي الْبَنْطَلُونَ الْأَسْوَدَ."
+    },
+    {
+      "speaker": "اَلزَّبُونُ",
+      "text": "حَسَنًا، أَشْتَرِي الْبَنْطَلُونَ الْأَسْوَدَ.",
+      "translationUz": "Yaxshi, men qora shimni sotib olaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ الزَّبُونُ؟",
+    "مَا سِعْرُ الْبَنْطَلُونِ؟",
+    "مَاذَا يَرَى الزَّبُونُ فِي السِّعْرِ؟",
+    "كَيْفَ يُرَدُّ الْبَائِعُ؟",
+    "مَاذَا يَقَرِّرُ الزَّبُونُ؟"
+  ],
+  "context": {
+    "main_topic": "clothing_store_price_negotiation",
+    "pattern": "price_inquiry → price_given → price_complaint → price_defense → purchase_decision"
+  }
+}

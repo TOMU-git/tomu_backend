@@ -1,0 +1,82 @@
+{
+  "id": "ar_m2_l59",
+  "language": "ar",
+  "module": 2,
+  "lesson": 59,
+  "title": "اَلْعُطْلَةُ الصَّيْفِيَّةُ",
+  "summary": "Hamza va Husayn o'rtasida yozgi ta'til boshlanishi, Samarqanddagi qishloqqa borish va buvisi-buvasi va qarindoshlarini ziyorat qilish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْعُطْلَةُ", "translationUz": "ta'til"},
+    {"word": "الصَّيْفِيَّةُ", "translationUz": "yozgi"},
+    {"word": "مَتَى", "translationUz": "qachon"},
+    {"word": "تَبْدَأُ", "translationUz": "boshlanadi"},
+    {"word": "بَعْدَ", "translationUz": "keyin"},
+    {"word": "خَمْسَةَ عَشَرَ", "translationUz": "o'n besh"},
+    {"word": "يَوْمًا", "translationUz": "kun"},
+    {"word": "رَائِعٌ", "translationUz": "ajoyib"},
+    {"word": "إِلَى أَيْنَ", "translationUz": "qayerga"},
+    {"word": "الْقَرْيَةِ", "translationUz": "qishloq"},
+    {"word": "الَّتِي", "translationUz": "qaysi"},
+    {"word": "تَقَعُ", "translationUz": "joylashgan"},
+    {"word": "سَمَرْقَنْدَ", "translationUz": "Samarqand"},
+    {"word": "مَاذَا", "translationUz": "nima"},
+    {"word": "الْبَحْرِ", "translationUz": "dengiz"},
+    {"word": "هُنَاكَ", "translationUz": "u yerda"},
+    {"word": "أَزُورُ", "translationUz": "ziyorat qilaman"},
+    {"word": "جَدِّي", "translationUz": "buva"},
+    {"word": "جَدَّتِي", "translationUz": "buvi"},
+    {"word": "أَقَارِبِي", "translationUz": "qarindoshlarim"},
+    {"word": "لِأَنَّنِي", "translationUz": "chunki men"},
+    {"word": "اشْتَقْتُ", "translationUz": "sog'indim"},
+    {"word": "إِلَيْهِمْ", "translationUz": "ularga"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "مَتَى تَبْدَأُ عُطْلَةُ الصَّيْفِ يَا حُسَيْنُ؟",
+      "translationUz": "Yozgi ta'til qachon boshlanadi, Husayn?",
+      "next": "حُسَيْنُ: تَبْدَأُ بَعْدَ خَمْسَةَ عَشَرَ يَوْمًا."
+    },
+    {
+      "speaker": "حُسَيْنُ",
+      "text": "تَبْدَأُ بَعْدَ خَمْسَةَ عَشَرَ يَوْمًا.",
+      "translationUz": "O'n besh kundan keyin boshlanadi.",
+      "next": "حَمْزَةُ: رَائِعٌ! إِلَى أَيْنَ تَذْهَبُ فِي الْعُطْلَةِ؟"
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "رَائِعٌ! إِلَى أَيْنَ تَذْهَبُ فِي الْعُطْلَةِ？",
+      "translationUz": "Ajoyib! Ta'tilda qayerga borasan?",
+      "next": "حُسَيْنُ: أَذْهَبُ إِلَى الْقَرْيَةِ الَّتِي تَقَعُ فِي سَمَرْقَنْدَ."
+    },
+    {
+      "speaker": "حُسَيْنُ",
+      "text": "أَذْهَبُ إِلَى الْقَرْيَةِ الَّتِي تَقَعُ فِي سَمَرْقَنْدَ.",
+      "translationUz": "Men Samarqandda joylashgan qishloqqa boraman.",
+      "next": "حَمْزَةُ: مَاذَا تَفْعَلُ فِي الْقَرْيَةِ؟ هَلْ تَذْهَبُ إِلَى الْبَحْرِ؟"
+    },
+    {
+      "speaker": "حَمْزَةُ",
+      "text": "مَاذَا تَفْعَلُ فِي الْقَرْيَةِ؟ هَلْ تَذْهَبُ إِلَى الْبَحْرِ？",
+      "translationUz": "Qishloqda nima qilasiz? Dengizga borasizmi?",
+      "next": "حُسَيْنُ: لَا يَا صَدِيقِي، هُنَاكَ أَزُورُ جَدِّي وَ جَدَّتِي وَأَقَارِبِي، لِأَنَّنِي اشْتَقْتُ إِلَيْهِمْ كَثِيرًا."
+    },
+    {
+      "speaker": "حُسَيْنُ",
+      "text": "لَا yَا صَدِيقِي، هُنَاكَ أَزُورُ جَدِّي وَ جَدَّتِي وَأَقَارِبِي، لِأَنَّنِي اشْتَقْتُ إِلَيْهِمْ kَثِيرًا.",
+      "translationUz": "Yo'q, do'stim, u yerda buvam, buvim va qarindoshlarimni ziyorat qilaman, chunki men ularga juda sog'indim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَتَى تَبْدَأُ عُطْلَةُ الصَّيْفِ؟",
+    "إِلَى أَيْنَ يَذْهَبُ حُسَيْنُ فِي الْعُطْلَةِ؟",
+    "أَيْنَ تَقَعُ الْقَرْيَةُ؟",
+    "مَاذَا يَفْعَلُ حُسَيْنُ فِي الْقَرْيَةِ؟",
+    "لِمَاذَا يَزُورُ أَقَارِبَهُ؟"
+  ],
+  "context": {
+    "main_topic": "summer_holiday_plans",
+    "pattern": "start_date_question → answer → destination_question → village_location → activities_question → family_visit_reason"
+  }
+}

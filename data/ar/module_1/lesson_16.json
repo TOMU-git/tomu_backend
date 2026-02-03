@@ -1,0 +1,51 @@
+{
+    "id": "ar_m1_l16",
+    "language": "ar",
+    "module": 1,
+    "lesson": 16,
+    "title": "اَلْزَّهْرَةُ",
+    "summary": "Gullar haqida suhbat: nima ekanligini so'rash va tasdiqlash.",
+    "vocabulary": [
+      { "word": "زَهْرَةٌ", "translationUz": "gul" },
+      { "word": "أَيْضًا", "translationUz": "ham" },
+      { "word": "نَعَم", "translationUz": "ha" },
+      { "word": "هَذِهِ", "translationUz": "bu (ayol)" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "آمِنَةُ",
+        "text": "مَا هَذِهِ يَا فَاطِمَةُ؟",
+        "translationUz": "Bu nima, Fotima?",
+        "next": "هَذِهِ زَهْرَةٌ يَا آمِنَةُ."
+      },
+      {
+        "speaker": "فَاطِمَةُ",
+        "text": "هَذِهِ زَهْرَةٌ يَا آمِنَةُ.",
+        "translationUz": "Bu gul, Omina.",
+        "next": "وَ هَذِهِ زَهْرَةٌ أَيْضًا؟"
+      },
+      {
+        "speaker": "آمِنَةُ",
+        "text": "وَ هَذِهِ زَهْرَةٌ أَيْضًا؟",
+        "translationUz": "Bu ham gulmi?",
+        "next": "نَعَم , هَذِهِ زَهْرَةٌ أَيْضًا."
+      },
+      {
+        "speaker": "فَاطِمَةُ",
+        "text": "نَعَم , هَذِهِ زَهْرَةٌ أَيْضًا.",
+        "translationUz": "Ha, bu ham gul.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَا فَرْقُ بَيْنَ الْوَرْدَةِ وَالزَّهْرَةِ؟",
+      "هَلْ تُحِبِّينَ الزُّهُورَ؟",
+      "كَمْ زَهْرَةً فِي الْبُسْتَانِ؟",
+      "مَا هِيَ أَجْمَلُ زَهْرَةٍ فِي نَظَرِكِ؟",
+      "هَلْ تَزْرَعِينَ زُهُورًا فِي بَيْتِكِ؟"
+    ],
+    "context": {
+      "main_topic": "flowers_identification",
+      "pattern": "ask_what → answer → ask_confirmation → confirm"
+    }
+  }

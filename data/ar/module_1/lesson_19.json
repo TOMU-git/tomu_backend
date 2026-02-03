@@ -1,0 +1,52 @@
+{
+  "id": "ar_m1_l19",
+  "language": "ar",
+  "module": 1,
+  "lesson": 19,
+  "title": "شُكْرًا يَا أُخْتِي",
+  "summary": "Uydagi narsalarning joylashuvini so'rash va minnatdorchilik bildirish.",
+  "vocabulary": [
+    { "word": "مَطْبَخٌ", "translationUz": "oshxona" },
+    { "word": "مِلْعَقَةٌ", "translationUz": "qoshiq" },
+    { "word": "فُرْنٌ", "translationUz": "pech" },
+    { "word": "شُكْرًا", "translationUz": "rahmat" },
+    { "word": "أُخْتِي", "translationUz": "opam/singlim" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَاطِمَةُ ذَهَبَتْ إِلَى الْمَطْبَخِ وَسَأَلَتْ زَيْنَبَ:",
+      "translationUz": "Fotima oshxonaga bordi va Zaynabdan so'radi:",
+      "next": "أَيْنَ الْمِلْعَقَةُ يَا زَيْنَبُ؟"
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "أَيْنَ الْمِلْعَقَةُ يَا زَيْنَبُ؟",
+      "translationUz": "Qoshiq qayerda, Zaynab?",
+      "next": "اَلْمِلْعَقَةُ عَلَى الْفُرْنِ."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "اَلْمِلْعَقَةُ عَلَى الْفُرْنِ.",
+      "translationUz": "Qoshiq pechning ustida.",
+      "next": "شُكْرًا يَا أُخْتِي."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "شُكْرًا يَا أُخْتِي.",
+      "translationUz": "Rahmat, opam/singlim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلِ الْمِلْعَقَةُ نَظِيفَةٌ؟",
+    "مَاذَا تُرِيدُ فَاطِمَةُ بِالْمِلْعَقَةِ؟",
+    "أَيْنَ الْفُنْجَانُ وَالصَّحْنُ؟",
+    "هَلْ تَسْتَعْمِلُ الْمِلْعَقَةَ كُلَّ يَوْمٍ؟",
+    "مَاذَا فِي الْمَطْبَخِ غَيْرَ الْمِلْعَقَةِ؟"
+  ],
+  "context": {
+    "main_topic": "household_items_location",
+    "pattern": "narration → ask_location → answer_location → thank"
+  }
+}

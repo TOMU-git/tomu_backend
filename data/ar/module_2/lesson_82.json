@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l82",
+  "language": "ar",
+  "module": 2,
+  "lesson": 82,
+  "title": "أَبِي فِي الْمُسْتَشْفَى",
+  "summary": "Kasb va u bilan bog‘liq xavflarni, shuningdek, o‘tgan zamonda sodir bo‘lgan baxtsiz hodisani tasvirlash.",
+  "vocabulary": [
+    { "word": "مُسْتَشْفَى", "translationUz": "shifoxona" },
+    { "word": "جَزَّارٌ", "translationUz": "qassob" },
+    { "word": "يَعْمَلُ", "translationUz": "ishlaydi" },
+    { "word": "عَمَلٌ", "translationUz": "ish, kasb" },
+    { "word": "صَعْبٌ", "translationUz": "qiyin" },
+    { "word": "يَذْبَحُ", "translationUz": "so‘yadi" },
+    { "word": "أَبْقَارٌ", "translationUz": "mol, sigirlar" },
+    { "word": "أَغْنَامٌ", "translationUz": "qo‘ylar" },
+    { "word": "ثَوْرٌ", "translationUz": "buqa" },
+    { "word": "رَكَلَ", "translationUz": "tepdi" },
+    { "word": "ٱنْكَسَرَ", "translationUz": "sindi" },
+    { "word": "يَدٌ", "translationUz": "qo‘l" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَبِي يَعْمَلُ جَزَّارًا،",
+      "translationUz": "Otam qassob bo‘lib ishlaydi,",
+      "next": "وَ هُوَ يَعْمَلُ مِنَ الصَّبَاحِ إِلَى الْمَسَاءِ. عَمَلُهُ صَعْبٌ جِدًّا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ هُوَ يَعْمَلُ مِنَ الصَّبَاحِ إِلَى الْمَسَاءِ. عَمَلُهُ صَعْبٌ جِدًّا.",
+      "translationUz": "va u ertalabdan kechgacha ishlaydi. Uning ishi juda qiyin.",
+      "next": "كُلَّ يَوْمٍ يَذْبَحُ الْأَبْقَارَ وَ الْأَغْنَامَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كُلَّ يَوْمٍ يَذْبَحُ الْأَبْقَارَ وَ الْأَغْنَامَ.",
+      "translationUz": "Har kuni u mollarni va qo‘ylarni so‘yadi.",
+      "next": "فِي يَوْمٍ مِنَ الْأَيَّامِ، كَانَ يَذْبَحُ ثَوْرًا، فَرَكَلَهُ الثَّوْرُ، وَانْكَسَرَتْ يَدُهُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي يَوْمٍ مِنَ الْأَيَّامِ، كَانَ يَذْبَحُ ثَوْرًا، فَرَكَلَهُ الثَّوْرُ، وَانْكَسَرَتْ يَدُهُ.",
+      "translationUz": "Kunlarning birida, u buqani so‘yayotganda, buqa uni tepdi va uning qo‘li sindi.",
+      "next": "اَلْآنَ, أَبِي فِي الْمُسْتَشْفَى."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْآنَ, أَبِي فِي الْمُسْتَشْفَى.",
+      "translationUz": "Endi, otam shifoxonada.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ حَالُ أَبِيكَ الْآنَ؟",
+    "هَلْ عَمَلُ الْجَزَّارِ خَطِرٌ؟",
+    "مَاذَا يَفْعَلُ الْجَزَّارُ؟",
+    "هَلْ تُرِيدُ أَنْ تَصْبِحَ جَزَّارًا؟",
+    "كَمْ مِنَ الْوَقْتِ سَيَبْقَى أَبُوكَ فِي الْمُسْتَشْفَى؟"
+  ],
+  "context": {
+    "main_topic": "professions_accidents",
+    "pattern": "narration_profession → work_hours_and_difficulty → daily_tasks → past_accident → current_state"
+  }
+}

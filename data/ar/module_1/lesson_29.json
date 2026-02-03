@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l29",
+  "language": "ar",
+  "module": 1,
+  "lesson": 29,
+  "title": "فِي الْقَرْيَةِ",
+  "summary": "Qishloq hayotining go'zalligi va u yerdagi hayvonlar haqida tavsif.",
+  "vocabulary": [
+    { "word": "قَرْيَةٌ", "translationUz": "qishloq" },
+    { "word": "هَادِئَةٌ", "translationUz": "tinch" },
+    { "word": "مُنْعِشٌ", "translationUz": "serhavo" },
+    { "word": "مَرَاعٍ", "translationUz": "o'tloqlar" },
+    { "word": "أَلِيفَةٌ", "translationUz": "uy hayvonlari" },
+    { "word": "شَاةٌ", "translationUz": "qo'y" },
+    { "word": "مَاعِزٌ", "translationUz": "echki" },
+    { "word": "فَرَسٌ", "translationUz": "ot" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْحَيَاةُ فِي الْقَرْيَةِ جَمِيلَةٌ وَ هَادِئَةٌ.",
+      "translationUz": "Qishloq hayoti chiroyli va tinch.",
+      "next": "جَوُّ الْقَرْيَةِ نَقِيٌّ وَمُنْعِشٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "جَوُّ الْقَرْيَةِ نَقِيٌّ وَمُنْعِشٌ.",
+      "translationUz": "Qishloq havosi toza va serhavo.",
+      "next": "فِي الْقَرْيَةِ جِبَالٌ، وَ أَشْجَارٌ، وَ مَرَاعٍ خَضْرَاءُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي الْقَرْيَةِ جِبَالٌ، وَ أَشْجَارٌ، وَ مَرَاعٍ خَضْرَاءُ.",
+      "translationUz": "Qishloqda tog'lar, daraxtlar va yashil o'tloqlar bor.",
+      "next": "كُلُّ الْحَيَوَانَاتِ فِي الْقَرْيَةِ أَلِيفَةٌ، مِثَالًا: بَقَرَةٌ، وَ شَاةٌ، وَ مَاعِزٌ، وَ فَرَسٌ، وَ غَيْرُ ذَلِكَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كُلُّ الْحَيَوَانَاتِ فِي الْقَرْيَةِ أَلِيفَةٌ، مِثَالًا: بَقَرَةٌ، وَ شَاةٌ، وَ مَاعِزٌ، وَ فَرَسٌ، وَ غَيْرُ ذَلِكَ.",
+      "translationUz": "Qishloqdagi barcha hayvonlar uy hayvonlari, masalan: sigir, qo'y, echki, ot va boshqalar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تَعِيشُ فِي قَرْيَةٍ؟",
+    "مَا فَرْقُ بَيْنَ الْقَرْيَةِ وَالْمَدِينَةِ؟",
+    "أَيُّ الْحَيَوَانَاتِ تُفَضِّلُ؟",
+    "لِمَاذَا الْحَيَاةُ فِي الْقَرْيَةِ هَادِئَةٌ؟",
+    "هَلْ تُرِيدُ زِيَارَةَ قَرْيَةٍ؟"
+  ],
+  "context": {
+    "main_topic": "village_life",
+    "pattern": "narration → narration → narration → narration"
+  }
+}

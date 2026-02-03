@@ -1,0 +1,46 @@
+{
+    "id": "ar_m1_l38",
+    "language": "ar",
+    "module": 1,
+    "lesson": 38,
+    "title": "مُحَمَّدٌ فِي الْحَدِيقَةِ",
+    "summary": "Yosh yigitning bog'dagi kunlik mashg'ulotlari haqida hikoya.",
+    "vocabulary": [
+      { "word": "شَاب", "translationUz": "yosh yigit" },
+      { "word": "يَخْرُج", "translationUz": "chiqadi" },
+      { "word": "كُرَة", "translationUz": "to'p" },
+      { "word": "مَغْرِب", "translationUz": "shom" },
+      { "word": "يَعُود", "translationUz": "qaytadi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "مُحَمَّدٌ شَابٌّ صَغِيرٌ.",
+        "translationUz": "Muhammad kichik yosh yigit.",
+        "next": "كُلَّ يَوْمٍ يَخْرُجُ إِلَى الْحَدِيقَةِ، وَهُنَاكَ يَلْعَبُ الْكُرَةَ مَعَ كَرِيمٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "كُلَّ يَوْمٍ يَخْرُجُ إِلَى الْحَدِيقَةِ، وَهُنَاكَ يَلْعَبُ الْكُرَةَ مَعَ كَرِيمٍ.",
+        "translationUz": "U har kuni bog'ga chiqadi va u yerda Karim bilan to'p o'ynaydi.",
+        "next": "قَبْلَ الْمَغْرِبِ، يَعُودُ مُحَمَّدٌ إِلَى الْبَيْتِ، وَ يَعُودُ كَرِيمٌ إِلَى بَيْتِهِ أَيْضًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "قَبْلَ الْمَغْرِبِ، يَعُودُ مُحَمَّدٌ إِلَى الْبَيْتِ، وَ يَعُودُ كَرِيمٌ إِلَى بَيْتِهِ أَيْضًا.",
+        "translationUz": "Shomdan oldin Muhammad uyga qaytadi va Karim ham o'z uyiga qaytadi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْحَدَائِقَ؟",
+      "مَاذَا تَفْعَلُ فِي الْحَدِيقَةِ؟",
+      "مَعَ مَنْ تَلْعَبُ الْكُرَةَ؟",
+      "مَتَى تَعُودُ إِلَى بَيْتِكَ؟",
+      "هَلْ تَلْعَبُ كُرَةَ الْقَدَمِ؟"
+    ],
+    "context": {
+      "main_topic": "daily_activities",
+      "pattern": "narration → narration → narration"
+    }
+  }

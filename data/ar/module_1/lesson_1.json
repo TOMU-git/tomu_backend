@@ -1,0 +1,57 @@
+{
+  "id": "ar_m1_l1",
+  "language": "ar",
+  "module": 1,
+  "lesson": 1,
+  "title": "بُرْتُقَالٌ لَذِيذٌ",
+  
+  "summary": "Learning to ask 'What is this?' and describe objects using basic adjectives.",
+  
+  "vocabulary": [
+    { "word": "بُرْتُقَالٌ", "translationUz": "apelsin" },
+    { "word": "لَذِيذٌ", "translationUz": "mazali" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "جِدًّا", "translationUz": "juda" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "مَا هَذَا، يَا فَرِيدُ؟",
+      "translationUz": "Bu nima, Farid?",
+      "next": "هَذَا بُرْتُقَالٌ"
+    },
+    {
+      "speaker": "فَرِيدٌ", 
+      "text": "هَذَا بُرْتُقَالٌ.",
+      "translationUz": "Bu apelsin.",
+      "next": "هَلْ هُوَ لَذِيذٌ؟"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَلْ هُوَ لَذِيذٌ؟",
+      "translationUz": "U mazalimi?",
+      "next": "نَعَمْ، هُوَ لَذِيذٌ"
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "نَعَمْ، هَذَا البُرْتُقَالُ لَذِيذٌ جِدَّا.",
+      "translationUz": "Ha, bu apelsin juda mazali.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تُحِبُّ البُرْتُقَالَ؟",
+    "هَلْ هُوَ حُلْوٌ أَمْ حَامِضٌ؟", 
+    "هَلْ تُرِيدُ أَنْ تَجْرِبَ قِطْعَةً؟"
+  ],
+
+  "context": {
+    "main_object": "orange",
+    "pattern": "question → answer → question → answer"
+  }
+}

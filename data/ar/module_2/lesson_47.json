@@ -1,0 +1,67 @@
+{
+  "id": "ar_m2_l47",
+  "language": "ar",
+  "module": 2,
+  "lesson": 47,
+  "title": "التَّسَوُّقُ",
+  "summary": "Er va xotin o'rtasida bozorga borish va ko'p miqdorda idish, qoshiq va daftar so'rash haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "التَّسَوُّقُ", "translationUz": "savdo qilish, bozorga borish"},
+    {"word": "اَلزَّوْجُ", "translationUz": "er"},
+    {"word": "سَأَذْهَبُ", "translationUz": "boraman"},
+    {"word": "السُّوقِ", "translationUz": "bozor"},
+    {"word": "تُرِيدِينَ", "translationUz": "xohlaysizmi (ayol)"},
+    {"word": "شَيْئًا", "translationUz": "biror narsa"},
+    {"word": "أُمَّ أَحْمَدَ", "translationUz": "Ahmadning onasi"},
+    {"word": "اَلزَّوْجَةُ", "translationUz": "xotin"},
+    {"word": "أُرِيدُ", "translationUz": "xohlayman"},
+    {"word": "خَمْسَةَ عَشَرَ", "translationUz": "o'n besh"},
+    {"word": "فِنْجَانًا", "translationUz": "fincan, piyola"},
+    {"word": "وَإِثْنَتَيْ عَشَرَةَ", "translationUz": "va o'n ikkita"},
+    {"word": "مِلْعَقَةً", "translationUz": "qoshiq"},
+    {"word": "وَتِسْعَةَ عَشَرَ", "translationUz": "va o'n to'qqiz"},
+    {"word": "دَفْتَرًا", "translationUz": "daftar"},
+    {"word": "لِلْأَوْلَادِ", "translationUz": "bolalar uchun"},
+    {"word": "أَبَا أَحْمَدَ", "translationUz": "Ahmadning otasi"},
+    {"word": "هَذَا", "translationUz": "bu"},
+    {"word": "كَثِيرٌ", "translationUz": "ko'p"},
+    {"word": "لَيْسَ", "translationUz": "emas"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلزَّوْجُ",
+      "text": "سَأَذْهَبُ إِلَى السُّوقِ، هَلْ تُرِيدِينَ شَيْئًا يَا أُمَّ أَحْمَدَ؟",
+      "translationUz": "Men bozorga boraman, biror narsa xohlaysizmi, Ahmadning onasi?",
+      "next": "اَلزَّوْجَةُ: أُرِيدُ خَمْسَةَ عَشَرَ فِنْجَانًا وَإِثْنَتَيْ عَشَرَةَ مِلْعَقَةً وَتِسْعَةَ عَشَرَ دَفْتَرًا لِلْأَوْلَادِ يَا أَبَا أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجَةُ",
+      "text": "أُرِيدُ خَمْسَةَ عَشَرَ فِنْجَانًا وَإِثْنَتَيْ عَشَرَةَ مِلْعَقَةً وَتِسْعَةَ عَشَرَ dَفْتَرًا لِلْأَوْلَادِ yَا أَبَا أَحْمَدَ.",
+      "translationUz": "Men o'n beshta fincan, o'n ikkita qoshiq va bolalar uchun o'n to'qqizta daftar xohlayman, Ahmadning otasi.",
+      "next": "اَلزَّوْجُ: هَذَا كَثِيرٌ يَا أُمَّ أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجُ",
+      "text": "هَذَا كَثِيرٌ يَا أُمَّ أَحْمَدَ.",
+      "translationUz": "Bu ko'p, Ahmadning onasi.",
+      "next": "الزَّوْجَةُ: لَا، لَيْسَ كَثِيرًا يَا أَبَا أَحْمَدَ."
+    },
+    {
+      "speaker": "اَلزَّوْجَةُ",
+      "text": "لَا، لَيْسَ كَثِيرًا يَا أَبَا أَحْمَدَ.",
+      "translationUz": "Yo'q, bu ko'p emas, Ahmadning otasi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "إِلَى أَيْنَ سَيَذْهَبُ الزَّوْجُ؟",
+    "مَاذَا يَسْأَلُ زَوْجَتَهُ؟",
+    "مَاذَا تُرِيدُ الزَّوْجَةُ؟",
+    "مَاذَا يَقُولُ الزَّوْجُ عَنْ طَلَبِهَا؟",
+    "كَيْفَ تَرُدُّ الزَّوْجَةُ؟"
+  ],
+  "context": {
+    "main_topic": "shopping_list_conversation",
+    "pattern": "market_announcement_and_offer → detailed_request → quantity_comment → disagreement"
+  }
+}

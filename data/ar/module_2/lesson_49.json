@@ -1,0 +1,57 @@
+{
+  "id": "ar_m2_l49",
+  "language": "ar",
+  "module": 2,
+  "lesson": 49,
+  "title": "مُدُنُ أُوزْبَكِسْتَانَ",
+  "summary": "O'zbekistonning o'n ikki viloyati, Qoraqalpog'iston muxtor respublikasi, shahar va qishloqlarning ko'pligi va eng mashhur qadimiy shaharlar haqida.",
+  "vocabulary": [
+    {"word": "مُدُنُ", "translationUz": "shaharlar"},
+    {"word": "أُوزْبَكِسْتَانَ", "translationUz": "O'zbekiston"},
+    {"word": "إِثْنَتَا عَشَرَةَ", "translationUz": "o'n ikki"},
+    {"word": "وِلَايَةً", "translationUz": "viloyat"},
+    {"word": "قَرَقَلْبَاغِسْتَانُ", "translationUz": "Qoraqalpog'iston"},
+    {"word": "مُخْتَارُ", "translationUz": "muxtor"},
+    {"word": "جُمْهُورِيَّةٍ", "translationUz": "respublika"},
+    {"word": "كُلِّ", "translationUz": "har bir"},
+    {"word": "كَثِيرٌ", "translationUz": "ko'p"},
+    {"word": "الْقُرَى", "translationUz": "qishloqlar"},
+    {"word": "بُخَارَى", "translationUz": "Buxoro"},
+    {"word": "سَمَرْقَنْدُ", "translationUz": "Samarqand"},
+    {"word": "طَشْقَنْدُ", "translationUz": "Toshkent"},
+    {"word": "خَوَارِزْمُ", "translationUz": "Xorazm"},
+    {"word": "أَشْهَرُ", "translationUz": "eng mashhur"},
+    {"word": "أَقْدَمُ", "translationUz": "eng qadimgi"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي أُوزْبَكِسْتَانَ إِثْنَتَا عَشَرَةَ وِلَايَةً، وَ قَرَقَلْبَاغِسْتَانُ مُخْتَارُ جُمْهُورِيَّةٍ.",
+      "translationUz": "O'zbekistonda o'n ikki viloyat bor va Qoraqalpog'iston muxtor respublika.",
+      "next": "فِي كُلِّ وِلَايَةٍ كَثِيرٌ مِنَ الْمُدُنِ وَ الْقُرَى."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي كُلِّ وِلَايَةٍ كَثِيرٌ مِنَ الْمُدُنِ وَ الْقُرَى.",
+      "translationUz": "Har bir viloyatda ko'p shaharlar va qishloqlar bor.",
+      "next": "بُخَارَى وَسَمَرْقَنْدُ وَ طَشْقَنْدُ وَ خَوَارِزْمُ أَشْهَرُ وَ أَقْدَمُ مُدُنِ أُوزْبَكِسْتَانَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بُخَارَى وَسَمَرْقَنْدُ وَ طَشْقَنْدُ وَ خَوَارِزْمُ أَشْهَرُ وَ أَقْدَمُ مُدُنِ أُوزْبَكِسْتَانَ.",
+      "translationUz": "Buxoro, Samarqand, Toshkent va Xorazm O'zbekistonning eng mashhur va eng qadimgi shaharlaridir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَمْ وِلَايَةً فِي أُوزْبَكِسْتَانَ؟",
+    "مَا اسْمُ الْجُمْهُورِيَّةِ الْمُخْتَارَةِ؟",
+    "مَاذَا يَكُونُ فِي كُلِّ وِلَايَةٍ؟",
+    "مَا هِيَ أَشْهَرُ مُدُنِ أُوزْبَكِسْتَانَ؟",
+    "مَا هِيَ أَقْدَمُ مُدُنِ أُوزْبَكِسْتَانَ؟"
+  ],
+  "context": {
+    "main_topic": "cities_of_uzbekistan",
+    "pattern": "administrative_divisions → settlements_in_each_region → famous_ancient_cities"
+  }
+}

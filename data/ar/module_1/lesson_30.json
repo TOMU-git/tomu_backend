@@ -1,0 +1,48 @@
+{
+  "id": "ar_m1_l30",
+  "language": "ar",
+  "module": 1,
+  "lesson": 30,
+  "title": "اَللُّغَةُ الْعَرَبِيَّةُ",
+  "summary": "Arab tili haqida umumiy ma'lumot va uning tarqalishi.",
+  "vocabulary": [
+    { "word": "لُغَةٌ", "translationUz": "til" },
+    { "word": "جَمِيلَةٌ", "translationUz": "chiroyli" },
+    { "word": "تَتَحَدَّثُ", "translationUz": "gapiriladi" },
+    { "word": "دُوَلٌ", "translationUz": "davlatlar" },
+    { "word": "شِمَالُ", "translationUz": "shimol" },
+    { "word": "إِفْرِيقِيَا", "translationUz": "Afrika" },
+    { "word": "آسِيَا", "translationUz": "Osiyo" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْعَرَبِيَّةُ لُغَةٌ جَمِيلَةٌ جِدًّا.",
+      "translationUz": "Arab tili juda chiroyli til.",
+      "next": "تَتَحَدَّثُ بِهَذِهِ اللُّغَةِ كَثِيرٌ مِنَ الدُّوَلِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "تَتَحَدَّثُ بِهَذِهِ اللُّغَةِ كَثِيرٌ مِنَ الدُّوَلِ،",
+      "translationUz": "Bu til bilan ko'plab davlatlarda gapiriladi,",
+      "next": "وَأَكْثَرُهَا فِي شِمَالِ إِفْرِيقِيَا وَآسِيَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَأَكْثَرُهَا فِي شِمَالِ إِفْرِيقِيَا وَآسِيَا.",
+      "translationUz": "va ularning aksariyati Shimoliy Afrika va Osiyoda.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تُحِبُّ اللُّغَةَ الْعَرَبِيَّةَ؟",
+    "لِمَاذَا تَتَعَلَّمُ الْعَرَبِيَّةَ؟",
+    "كَمْ دَوْلَةً تَتَحَدَّثُ الْعَرَبِيَّةَ؟",
+    "هَلِ الْعَرَبِيَّةُ صَعْبَةٌ؟",
+    "مَا هِيَ اللُّغَةُ الْأَجْمَلُ فِي نَظَرِكَ؟"
+  ],
+  "context": {
+    "main_topic": "arabic_language",
+    "pattern": "narration → narration → narration"
+  }
+}

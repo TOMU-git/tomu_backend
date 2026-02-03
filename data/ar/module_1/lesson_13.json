@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l13",
+    "language": "ar",
+    "module": 1,
+    "lesson": 13,
+    "title": "اَلسُّوقُ",
+    "summary": "Bozordagi mevalar va sabzavotlarni tasvirlash.",
+    "vocabulary": [
+      { "word": "سُوقٌ", "translationUz": "bozor" },
+      { "word": "كَبِيرٌ جِدًّا", "translationUz": "juda katta" },
+      { "word": "تُفَّاحٌ", "translationUz": "olma" },
+      { "word": "عِنَبٌ", "translationUz": "uzum" },
+      { "word": "تَمْرٌ", "translationUz": "xurmo" },
+      { "word": "مَوْزٌ", "translationUz": "banan" },
+      { "word": "بُرْتُقَالٌ", "translationUz": "apelsin" },
+      { "word": "بَصَلٌ", "translationUz": "piyoz" },
+      { "word": "جَزَرٌ", "translationUz": "sabzi" },
+      { "word": "بَطَاطِسٌ", "translationUz": "kartoshka" },
+      { "word": "كُرُنْبٌ", "translationUz": "karam" },
+      { "word": "ثُومٌ", "translationUz": "sarimsoq" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَا السُّوقُ كَبِيرٌ جِدًّا.",
+        "translationUz": "Bu bozor juda katta.",
+        "next": "فِي السُّوقِ تُفَّاحٌ وعِنَبٌ وَتَمْرٌ وَمَوْزٌ وَبُرْتُقَالٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي السُّوقِ تُفَّاحٌ وعِنَبٌ وَتَمْرٌ وَمَوْزٌ وَبُرْتُقَالٌ.",
+        "translationUz": "Bozorda olma, uzum, xurmo, banan va apelsin bor.",
+        "next": "فِي السُّوقِ أَيْضًا بَصَلٌ وَجَزَرٌ وَ بَطَاطِسٌ وَ كُرُنْبٌ وَ ثُومٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي السُّوقِ أَيْضًا بَصَلٌ وَجَزَرٌ وَ بَطَاطِسٌ وَ كُرُنْبٌ وَ ثُومٌ.",
+        "translationUz": "Bozorda shuningdek piyoz, sabzi, kartoshka, karam va sarimsoq ham bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الذَّهَابَ إِلَى السُّوقِ؟",
+      "مَاذَا تَشْتَرِي فِي السُّوقِ؟",
+      "هَلِ السُّوقُ بَعِيدٌ عَنْ بَيْتِكَ؟",
+      "أَيُّ الْفَوَاكِهِ تُحِبُّ؟",
+      "هَلْ فِي السُّوقِ لُحُومٌ وَأَسْمَاكٌ؟"
+    ],
+    "context": {
+      "main_topic": "market_food",
+      "pattern": "narration → narration → narration"
+    }
+  }

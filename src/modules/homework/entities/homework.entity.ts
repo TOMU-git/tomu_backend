@@ -14,6 +14,12 @@ export class Homework extends BaseEntity {
    */
   @Column({ type: "varchar", length: 255, name: "video_url" })
   videoUrl: string;
+
+  @Column({ type: "varchar", length: 50, name: "vimeo_video_id", nullable: true })
+  vimeoVideoId: string;
+
+
+
   /**
    * Fayl turi (mimetype).
    * Masalan, 'video/mp4'.

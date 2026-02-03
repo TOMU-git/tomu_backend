@@ -101,4 +101,7 @@ export interface IHomeworkProgressRepository {
     courseId: ID,
     homeworkOrder: ID, // homeworkOrder ni qabul qilish
   ): Promise<boolean>;
+
+  // Berilgan foydalanuvchi va kurs ID bo'yicha HomeworkProgress yozuvlarini topadi
+  findByUserIdAndCourseId(userId: ID, courseId: ID): Promise<Array<HomeworkProgress>>;
 }

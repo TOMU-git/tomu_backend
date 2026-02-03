@@ -1,0 +1,68 @@
+{
+  "id": "ar_m2_l62",
+  "language": "ar",
+  "module": 2,
+  "lesson": 62,
+  "title": "مَصْدَرُ اللَّبَنِ",
+  "summary": "Onamizning har kuni ertalab sigirimizni sog'ishi, semiz sigirimizning ko'p sut berishi va uni sevimli va foydali uy hayvoni sifatida sevishimiz haqida.",
+  "vocabulary": [
+    {"word": "مَصْدَرُ", "translationUz": "manba"},
+    {"word": "اللَّبَنِ", "translationUz": "sut"},
+    {"word": "كُلَّ يَوْمٍ", "translationUz": "har kun"},
+    {"word": "صَبَاحًا", "translationUz": "ertalab"},
+    {"word": "تَحْلُبُ", "translationUz": "sog'adi"},
+    {"word": "أُمِّي", "translationUz": "onam"},
+    {"word": "بَقَرَتَنَا", "translationUz": "bizning sigirimiz"},
+    {"word": "سَمِينَةٌ", "translationUz": "semiz (ayol)"},
+    {"word": "لَبَنُهَا", "translationUz": "uning suti"},
+    {"word": "كَثِيرٌ", "translationUz": "ko'p"},
+    {"word": "تُعْطِينَا", "translationUz": "bizga beradi"},
+    {"word": "خَمْسَةَ عَشَرَ", "translationUz": "o'n besh"},
+    {"word": "لِتْرًا", "translationUz": "litr"},
+    {"word": "لَوْنُ", "translationUz": "rangi"},
+    {"word": "بَقَرَتِنَا", "translationUz": "bizning sigirimiz"},
+    {"word": "أَبْيَضُ", "translationUz": "oq"},
+    {"word": "أَسْوَدُ", "translationUz": "qora"},
+    {"word": "نُحِبُّ", "translationUz": "sevamiz"},
+    {"word": "لِأَنَّهَا", "translationUz": "chunki u"},
+    {"word": "أَلِيفَةٌ", "translationUz": "uy hayvon, evaz"},
+    {"word": "مُفِيدَةٌ", "translationUz": "foydali (ayol)"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "كُلَّ يَوْمٍ صَبَاحًا، تَحْلُبُ أُمِّي بَقَرَتَنَا.",
+      "translationUz": "Har kun ertalab, onam bizning sigirimizni sog'adi.",
+      "next": "بَقَرَتُنَا سَمِينَةٌ،وَ لَبَنُهَا كَثِيرٌ، وَ هِيَ تُعْطِينَا كُلَّ يَوْمٍ خَمْسَةَ عَشَرَ لِتْرًا مِنَ اللَّبَنِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بَقَرَتُنَا سَمِينَةٌ،وَ لَبَنُهَا كَثِيرٌ، وَ هِيَ تُعْطِينَا كُلَّ يَوْمٍ خَمْسَةَ عَشَرَ لِتْرًا مِنَ اللَّبَنِ.",
+      "translationUz": "Bizning sigirimiz semiz va uning suti ko'p, va u bizga har kuni o'n besh litr sut beradi.",
+      "next": "لَوْنُ بَقَرَتِنَا أَبْيَضُ وَ أَسْوَدُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَوْنُ بَقَرَتِنَا أَبْيَضُ وَ أَسْوَدُ.",
+      "translationUz": "Bizning sigirimizning rangi oq va qora.",
+      "next": "نَحْنُ نُحِبُّ بَقَرَتَنَا لِأَنَّهَا  أَلِيفَةٌ  مُفِيدَةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "نَحْنُ نُحِبُّ بَقَرَتَنَا لِأَنَّهَا  أَلِيفَةٌ  مُفِيدَةٌ.",
+      "translationUz": "Biz sigirimizni sevamiz, chunki u uy hayvoni va foydalidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَتَى تَحْلُبُ الْأُمُّ الْبَقَرَةَ؟",
+    "كَيْفَ هِيَ الْبَقَرَةُ؟",
+    "كَمْ لِتْرًا مِنَ اللَّبَنِ تُعْطِي كُلَّ يَوْمٍ؟",
+    "مَا لَوْنُ الْبَقَرَةِ؟",
+    "لِمَاذَا يُحِبُّونَ الْبَقَرَةَ؟"
+  ],
+  "context": {
+    "main_topic": "milk_source_cow",
+    "pattern": "milking_routine → cow_description_and_milk_yield → cow_colors → love_reason"
+  }
+}

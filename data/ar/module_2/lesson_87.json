@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l87",
+  "language": "ar",
+  "module": 2,
+  "lesson": 87,
+  "title": "اَلْمَوَادُّ الصَّعْبَةُ",
+  "summary": "Sevimli fanlar haqida suhbat, qiyinlik to‘g‘risida fikr bildirish va ularni o‘rganishga bo‘lgan muhabbat haqida gapirish.",
+  "vocabulary": [
+    { "word": "مَوَادُّ", "translationUz": "fanlar, predmetlar" },
+    { "word": "فِيزْيَاءُ", "translationUz": "fizika" },
+    { "word": "رِّيَاضِيَّاتُ", "translationUz": "matematika" },
+    { "word": "هَاتَانِ", "translationUz": "bu ikkita (ayol)" },
+    { "word": "يُمْكِنُ", "translationUz": "mumkin" },
+    { "word": "بَعْضُ", "translationUz": "ba‘zi" },
+    { "word": "نَّاسُ", "translationUz": "odamlar" },
+    { "word": "بِحُبٍّ", "translationUz": "muhabbat bilan" },
+    { "word": "نَشَاطٍ", "translationUz": "faollik bilan" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "مَا هِيَ مَوَادُّكِ الْمُفَضَّلَةُ يَا مَرْيَمُ؟",
+      "translationUz": "Qaysi fanlar seni sevimli, Maryam?",
+      "next": "اَلْفِيزْيَاءُ وَ الرِّيَاضِيَّاتُ."
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "اَلْفِيزْيَاءُ وَ الرِّيَاضِيَّاتُ.",
+      "translationUz": "Fizika va matematika.",
+      "next": "أَنَا أَظُنُّ أَنَّ هَاتَيْنِ الْمَادَّتَيْنِ صَعْبَتَانِ جِدًّا."
+    },
+    {
+      "speaker": "زَيْنَبُ",
+      "text": "أَنَا أَظُنُّ أَنَّ هَاتَيْنِ الْمَادَّتَيْنِ صَعْبَتَانِ جِدًّا.",
+      "translationUz": "Menimcha, bu ikkala fan juda qiyin.",
+      "next": "يُمْكِنُ أَنْ تَكُونَا صَعْبَتَيْنِ لِبَعْضِ النَّاسِ، وَ لَكِنَّنِي أُحِبُّهُمَا وَ أَدْرُسُهُمَا بِحُبٍّ وَ نَشَاطٍ."
+    },
+    {
+      "speaker": "مَرْيَمُ",
+      "text": "يُمْكِنُ أَنْ تَكُونَا صَعْبَتَيْنِ لِبَعْضِ النَّاسِ، وَ لَكِنَّنِي أُحِبُّهُمَا وَ أَدْرُسُهُمَا بِحُبٍّ وَ نَشَاطٍ.",
+      "translationUz": "Ba‘zi odamlar uchun qiyin bo‘lishi mumkin, lekin men ularni yaxshi ko‘raman va ularni muhabbat va faollik bilan o‘rganaman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هِيَ أَصْعَبُ مَادَّةٍ لَدَيْكَ؟",
+    "هَلْ تُحِبُّ مَادَّةَ الْفِيزْيَاءِ؟",
+    "لِمَاذَا تُحِبُّينَ الْفِيزْيَاءَ وَ الرِّيَاضِيَّاتَ؟",
+    "مَاذَا تَدْرُسِينَ فِي الرِّيَاضِيَّاتِ؟",
+    "كَيْفَ تَدْرُسِينَ مَوَادَّكَ؟"
+  ],
+  "context": {
+    "main_topic": "academic_subjects_difficulty",
+    "pattern": "question_about_favorite_subjects → answer → comment_on_difficulty → explanation_of_passion"
+  }
+}

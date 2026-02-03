@@ -3,10 +3,7 @@ import { ILessonProgressService } from "./interfaces/lesson-progress.service";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { LessonProgress } from "./entities/lesson-progress.entity";
-import {
-  LessonProgressAlreadyExistException,
-  LessonProgressNotFoundException,
-} from "./exception/lesson-progress.exception";
+import { LessonProgressNotFoundException } from "./exception/lesson-progress.exception";
 import { ILessonProgressRepository } from "./interfaces/lesson-progress.repository";
 import { IUserService } from "../user/interfaces/user.service";
 import { ILessonService } from "../lesson/interfaces/lesson.service";
@@ -17,7 +14,10 @@ import { IBlockRepository } from "../block/interfaces/block.repository";
 import { BlockNotFoundException } from "../block/exception/block.exception";
 import { Logger } from '@nestjs/common';
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
-import { StatusEnum } from "src/common/enums/enum";
+import { User } from "../user/entities/user.entity";
+import { UserCourseProgressService } from "../ai/services/user-course-progress.service";
+import { UserProgressCalculator } from "../ai/utils/user-progress-calculator.util";
+import { DataSource } from "typeorm";
 
 @Injectable()
 export class LessonProgressService implements ILessonProgressService {
@@ -47,7 +47,16 @@ export class LessonProgressService implements ILessonProgressService {
 
     @Inject("IUserCourseRepository") // UserCourseRepository ni inject qilamiz
     private readonly userCourseRepository: IUserCourseRepository,
+
+    // AI modulidan UserCourseProgress servislari
+    private readonly userCourseProgressService: UserCourseProgressService,
+    private readonly userProgressCalculator: UserProgressCalculator,
+
+    // Database transaction uchun
+    private readonly dataSource: DataSource,
   ) { }
+
+
 
   async findAll(): Promise<ResData<Array<LessonProgress>>> {
     const data = await this.lessonProgressRepository.findAll();
@@ -66,18 +75,32 @@ export class LessonProgressService implements ILessonProgressService {
 
   async update(id: ID): Promise<ResData<LessonProgress>> {
     try {
-      // Progress topish va lesson relationni yuklash
       const foundLessonProgress = await this.lessonProgressRepository.findById(id);
-      if (!foundLessonProgress) {
+      if (!foundLessonProgress || !foundLessonProgress.lesson) {
         throw new LessonProgressNotFoundException();
       }
 
-      // Lesson ma'lumotlarini tekshirish
-      if (!foundLessonProgress.lesson) {
-        throw new Error('Dars topilmadi');
+      const { userId, blockId, courseId, blockOrder, lessonOrder } = foundLessonProgress;
+
+      // 🔒 Avvalgi vazifalar soni 5 dan oshmaganmi?
+      const initialQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (initialQueue?.data?.count >= 5) {
+        return new ResData<LessonProgress>(
+          "Avvalgi vazifalarni yakunlang, so'ngra dars davom etadi.",
+          403,
+          foundLessonProgress,
+        );
       }
 
-      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
+      // 🔒 Dars ochilganmi tekshirish (eng muhim tekshiruv!)
+      if (!foundLessonProgress.isUnlocked) {
+        return new ResData<LessonProgress>(
+          "Bu dars hali ochilmagan. Avvalgi darslarni yakunlang.",
+          403,
+          foundLessonProgress,
+        );
+      }
+
       if (foundLessonProgress.isWatched) {
         return new ResData<LessonProgress>(
           "Dars allaqachon ko'rilgan",
@@ -86,69 +109,71 @@ export class LessonProgressService implements ILessonProgressService {
         );
       }
 
-      const userId = Number(foundLessonProgress.userId);
-      const courseId = Number(foundLessonProgress.courseId);
-      const blockOrder = Number(foundLessonProgress.blockOrder);
-      const lessonOrder = Number(foundLessonProgress.lessonOrder);
 
-      // Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
-      const watchedLessonsToday = await this.checkDailyLessonsLimit(userId);
-      if (watchedLessonsToday >= 10) {
+
+      // ✅ Kunlik limit tekshiruvi
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return new ResData<LessonProgress>(
+      //     "Kunlik dars ko‘rish limiti tugagan. Ertaga davom eting.",
+      //     403,
+      //     foundLessonProgress,
+      //   );
+      // }
+
+      // UserCourse ma'lumotlarini tekshirish
+      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+
+      const hasPaid = userCourse.hasEverPaid
+      const isActive = userCourse.isActive
+
+
+      if (foundLessonProgress.lessonOrder >= 30 && !hasPaid && !isActive) {
         return new ResData<LessonProgress>(
-          "Bugun uchun darslar limiti (10) tugadi. Iltimos, ertaga davom eting.",
-          400,
+          "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
+          403,
           foundLessonProgress,
         );
       }
 
-      // Oldingi uy vazifalar bajarilganligini tekshirish
-      const lastWatchedLessonOrder = await this.lessonProgressRepository.findLastWatchedLessonOrder(
-        userId,
-        courseId,
-        blockOrder,
-      );
-
-      const lastWatchedHomeworkOrder = await this.homeworkProgressRepository.findLastWatchedHomework(
-        courseId,
-        userId,
-        blockOrder,
-      );
-
-      // Har bir darsdan keyin uy vazifa bajarilishi shart
-      if (lastWatchedLessonOrder > lastWatchedHomeworkOrder) {
+      if (foundLessonProgress.lessonOrder > 30 && hasPaid && !isActive) {
         return new ResData<LessonProgress>(
-          "Keyingi darsni ko'rish uchun avval uy vazifani bajarishingiz kerak",
-          400,
+          "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
+          403,
           foundLessonProgress,
         );
       }
 
-      // Agar dars allaqachon ko'rilgan bo'lsa, uy vazifani qayta qo'shmaslik
-      if (foundLessonProgress.isWatched) {
-        return new ResData<LessonProgress>(
-          "Dars allaqachon ko'rilgan",
-          200,
-          foundLessonProgress,
-        );
-      }
+      // 🔄 Transaction ichida LessonProgress va UserCourseProgress ni yangilash
+      const queryRunner = this.dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
 
-      // Joriy darsni ko'rilgan qilish
-      foundLessonProgress.isWatched = true;
-      await this.lessonProgressRepository.update(foundLessonProgress);
-
-      // Darsni ko'rilgan qilishda uy vazifani qo'shish
       try {
-        if (!foundLessonProgress.lesson || !foundLessonProgress.lesson.id) {
-          this.logger.warn(`Dars ma'lumotlari to‘liq emas, uyga vazifa rejalashtirish o'tkazib yuborildi`);
-          return new ResData<LessonProgress>(
-            "Dars progressi muvaffaqiyatli yangilandi, lekin uyga vazifa rejalashtirilmadi",
-            200,
-            foundLessonProgress,
-          );
-        }
+        // 👁 Darsni ko'rilgan deb belgilaymiz
+        foundLessonProgress.isWatched = true;
+        await queryRunner.manager.save(foundLessonProgress);
 
-        const lessonId = foundLessonProgress.lesson.id;
+        // 🔄 UserCourseProgress ni yangilash
+        await this.updateUserCourseProgressInTransaction(
+          queryRunner,
+          userId,
+          courseId,
+          foundLessonProgress
+        );
 
+        await queryRunner.commitTransaction();
+        this.logger.log(`LessonProgress and UserCourseProgress updated successfully for user ${userId}, course ${courseId}`);
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        this.logger.error(`Transaction failed: ${error.message}`, error.stack);
+        throw error;
+      } finally {
+        await queryRunner.release();
+      }
+
+      // 📌 Uyga vazifa rejalashtirish
+      try {
         const result = await this.homeworkProgressService.scheduleHomeworkForLesson(
           userId,
           courseId,
@@ -157,29 +182,34 @@ export class LessonProgressService implements ILessonProgressService {
         );
 
         if (result.statusCode === 200) {
-          this.logger.log(`Dars (ID: ${lessonId}) ko‘rilgandan so‘ng uyga vazifa muvaffaqiyatli rejalashtirildi`);
+          this.logger.log(`Dars ID: ${foundLessonProgress.lesson.id} uchun vazifa muvaffaqiyatli rejalashtirildi`);
         } else {
-          this.logger.warn(`Dars (ID: ${lessonId}) uchun uyga vazifa rejalashtirilmadi: ${result.message}`);
+          this.logger.warn(`Vazifa rejalashtirishda muammo: ${result.message}`);
           return new ResData<LessonProgress>(
-            `Dars progressi yangilandi, lekin uyga vazifa rejalashtirilmadi: ${result.message}`,
+            `Dars ko‘rildi, ammo vazifa rejalashtirilmadi: ${result.message}`,
             200,
             foundLessonProgress,
           );
         }
       } catch (error) {
-        this.logger.error(
-          `Dars ko‘rilgandan so‘ng uyga vazifani rejalashtirishda xatolik: ${error.message}`,
-          error.stack,
-        );
+        this.logger.error(`Vazifa rejalashtirishda xatolik: ${error.message}`, error.stack);
         return new ResData<LessonProgress>(
-          "Dars progressi yangilandi, lekin uyga vazifa rejalashtirishda xatolik yuz berdi",
+          "Dars ko‘rildi, ammo uyga vazifani rejalashtirishda xatolik yuz berdi",
           200,
           foundLessonProgress,
         );
       }
 
+      // 🔄 Vazifa qo‘shilgandan keyin yana tekshiramiz
+      const afterQueue = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (afterQueue?.data?.count <= 4) {
+        await this.lessonProgressRepository.unlockNextLesson(lessonOrder, userId, blockId);
+      } else {
+        this.logger.warn("Vazifa limiti tugadi, keyingi dars ochilmadi");
+      }
+
       return new ResData<LessonProgress>(
-        "Dars progressi muvaffaqiyatli yangilandi",
+        "Dars muvaffaqiyatli ko‘rildi",
         200,
         foundLessonProgress,
       );
@@ -189,103 +219,192 @@ export class LessonProgressService implements ILessonProgressService {
     }
   }
 
-  async getVideos(
-    userId: ID,
-    blockId: ID,
-  ): Promise<ResData<Array<LessonProgress>>> {
+
+
+  async getVideos(userId: ID, blockId: ID): Promise<any> {
     const block = await this.blockRepository.findById(blockId);
     if (!block) {
       throw new BlockNotFoundException();
     }
 
     const existingProgresses =
-      await this.lessonProgressRepository.findByBlockIdAndUserId(
-        blockId,
-        userId,
-      );
+      await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
 
-    // 🔄 Progress mavjud bo'lsa, lekin yangi darslar qo'shilgan bo'lsa, progressni yangilash
     if (existingProgresses && existingProgresses.length > 0) {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
 
-      // 1. Darslar sonini tekshirish
       const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
       const progressCount = existingProgresses.length;
 
-      // 2. Agar yangi darslar mavjud bo‘lsa, progressga qo‘shib qo‘yish
       if (totalLessonsCount > progressCount) {
-        // generateLessonProgress progresslarni to‘liq qayta yaratmaydi, faqat yo‘qlarni qo‘shadi
         await this.generateLessonProgress(userId, blockId, courseId);
 
-        // Progressni qaytadan olish (yangilangan holda)
         const updatedProgresses =
-          await this.lessonProgressRepository.findByBlockIdAndUserId(
-            blockId,
-            userId,
-          );
+          await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
 
-        return new ResData<Array<LessonProgress>>(
-          "Lesson progress updated with new lessons",
-          200,
-          updatedProgresses,
-        );
+        return {
+          message: "Lesson progress updated with new lessons",
+          statusCode: 200,
+          data: updatedProgresses,
+          isPaid: true
+        };
       }
 
-      // ❗ Kurs pullik bo'lsa va progress tekshiruvlari (o'zgarmagan qismi)
-      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
-      const isPaid = userCourse && userCourse.status === StatusEnum.COMPLETED;
 
-      if (!isPaid) {
+
+      // UserCourse ma'lumotlarini tekshirish
+      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
+
+      if (!userCourse) {
+        throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
+      }
+
+      const hasPaid = userCourse.hasEverPaid
+      const isActive = userCourse.isActive
+      const onFreeTrial = userCourse.onFreeTrial
+
+
+
+      // TODO: TEMPORARY - Re-enable queue check for production
+      // TEMPORARY: Queue check disabled for AI testing
+
+      // Vazifalar bo'limidagi vazifalar sonini tekshirish
+      const queueItemsCount = await this.homeworkProgressService.countQueueItems(userId, courseId);
+      if (queueItemsCount.data.count >= 5) {
+        return {
+          message: "Finish reviewing the previous tasks first.",
+          statusCode: 403,
+          data: existingProgresses,
+          isPaid: isActive
+        };
+      }
+
+
+
+      // // ✅ Kunlik limitni tekshirish
+      // const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+      // if (dailyWatchedCount >= 10) {
+      //   return {
+      //     message: "Kunlik dars ko'rish limiti tugagan. Ertaga davom eting.",
+      //     statusCode: 403,
+      //     data: existingProgresses, // eski darslar ko'rsatiladi
+      //     isPaid: isActive,
+      //   };
+      // }
+
+      // TODO: TEMPORARY - Re-enable payment check for production
+      // TEMPORARY: Payment check disabled for AI testing
+
+      if (!hasPaid || !isActive) {
         if (blockOrder > 1) {
-          return new ResData<Array<LessonProgress>>(
-            "To access lessons beyond module 1, you need to purchase this course.",
-            403,
-            [],
-          );
+          return {
+            message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
+            statusCode: 403,
+            data: [],
+            isPaid: false
+          };
         }
 
         if (blockOrder === 1) {
-          const hasLessonBeyond20 = existingProgresses.some(progress =>
-            progress.lessonOrder > 20 && progress.isUnlocked
+          const hasLessonBeyond30 = existingProgresses.some(progress =>
+            progress.lessonOrder >= 30 && progress.isUnlocked
           );
 
-          if (hasLessonBeyond20) {
-            return new ResData<Array<LessonProgress>>(
-              "To access lessons beyond lesson 20 in module 1, you need to purchase this course.",
-              403,
-              existingProgresses,
-            );
+          if (hasLessonBeyond30) {
+            return {
+              message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
+              statusCode: 403,
+              data: existingProgresses,
+              isPaid: false
+            };
           }
         }
       }
 
-      return new ResData<Array<LessonProgress>>(
-        "Lesson fetched successfully",
-        200,
-        existingProgresses,
-      );
+      // ✅ Lazy Unlock: Barcha tekshiruvlardan o'tgandan keyin, agar queue bo'sh bo'lsa keyingi darsni ochish
+      if (queueItemsCount.data.count === 0) {
+        this.logger.log(`🔍 Lazy unlock boshlandi: userId=${userId}, courseId=${courseId}, blockOrder=${blockOrder}`);
+
+        const dailyWatchedCount = await this.checkDailyLessonsLimit(userId);
+        this.logger.log(`📊 Kunlik ko'rilgan darslar: ${dailyWatchedCount}/10`);
+
+        if (dailyWatchedCount < 40) {
+          const lastLessonOrder = await this.lessonProgressRepository.findLastUnlockedAndWatchedLessonOrder(
+            userId,
+            courseId,
+            blockOrder
+          );
+          this.logger.log(`📌 Oxirgi watched & unlocked dars: ${lastLessonOrder}`);
+
+          if (lastLessonOrder !== null) {
+            const nextLessonProgress = await this.lessonProgressRepository.getLessonProgress(
+              lastLessonOrder + 1,
+              userId,
+              blockOrder,
+              courseId
+            );
+            this.logger.log(`🔎 Keyingi dars topildi: lessonOrder=${lastLessonOrder + 1}, isUnlocked=${nextLessonProgress?.isUnlocked}`);
+
+            if (nextLessonProgress && !nextLessonProgress.isUnlocked) {
+              nextLessonProgress.isUnlocked = true;
+              await this.lessonProgressRepository.update(nextLessonProgress);
+              this.logger.log(
+                `✅ Lazy unlock: Queue bo'sh, keyingi dars (lessonOrder ${nextLessonProgress.lessonOrder}) ochildi`
+              );
+            } else if (nextLessonProgress && nextLessonProgress.isUnlocked) {
+              this.logger.log(`⏩ Dars allaqachon ochiq: lessonOrder=${nextLessonProgress.lessonOrder}`);
+            } else {
+              this.logger.warn(`❌ Keyingi dars topilmadi: lessonOrder=${lastLessonOrder + 1}`);
+            }
+          } else {
+            this.logger.warn(`❌ Hech qanday watched & unlocked dars topilmadi`);
+          }
+        } else {
+          this.logger.log(`🚫 Kunlik limit tugagan: ${dailyWatchedCount}/10`);
+        }
+      } else {
+        this.logger.log(`🚫 Queue bo'sh emas: ${queueItemsCount.data.count} ta vazifa`);
+      }
+
+      // ✅ Agar unlock qilingan bo'lsa, yangilangan ma'lumotlarni qaytarish
+      const finalProgresses = await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+
+      return {
+        message: "Lesson fetched successfully",
+        statusCode: 200,
+        data: finalProgresses,
+        isPaid: !!isActive
+      };
     }
 
-    // ❌ Agar progress umuman bo'lmasa — ilk marta yaratilmoqda
     const courseId = await this.blockRepository.getCourseIdByBlockId(blockId);
-
     if (existingProgresses.length === 0) {
       const newProgresses = await this.generateLessonProgress(userId, blockId, courseId);
+      const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
 
-      return new ResData<Array<LessonProgress>>(
-        "Lesson progress created successfully",
-        200,
-        newProgresses,
-      );
+      if (!userCourse) {
+        throw new Error(`UserCourse not found for userId=${userId}, courseId=${courseId}`);
+      }
+
+      const isActive = userCourse.isActive;
+
+      return {
+        message: "Lesson progress created successfully",
+        statusCode: 200,
+        data: newProgresses,
+        isPaid: !!isActive
+      };
     }
 
-    return new ResData<Array<LessonProgress>>(
-      "No lessons available",
-      404,
-      [],
-    );
+    return {
+      message: "No lessons available",
+      statusCode: 404,
+      data: [],
+      isPaid: false
+    };
   }
+
 
 
   /**
@@ -331,7 +450,7 @@ export class LessonProgressService implements ILessonProgressService {
         }
 
         const newProgress = new LessonProgress();
-        newProgress.userId = userId;
+        newProgress.user = { id: userId } as User; // Relation orqali yozish
         newProgress.blockId = blockId;
         newProgress.lessonOrder = lesson.order;
         newProgress.blockOrder = block.order;
@@ -361,12 +480,15 @@ export class LessonProgressService implements ILessonProgressService {
   }
 
 
+
+
+
   /**
    * Foydalanuvchining bugungi ko'rgan darslar sonini tekshirish
    * @param userId - Foydalanuvchi ID si
    * @returns Bugun ko'rilgan darslar soni
    */
-  private async checkDailyLessonsLimit(userId: ID): Promise<number> {
+  async checkDailyLessonsLimit(userId: ID): Promise<number> {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Bugungi kunning boshlanishi (00:00:00)
 
@@ -382,16 +504,116 @@ export class LessonProgressService implements ILessonProgressService {
 
     return watchedLessonsToday;
   }
+
+  /**
+   * UserCourseProgress ni yangilash (LessonProgress o'zgarishidan keyin)
+   * @param userId - Foydalanuvchi ID
+   * @param courseId - Kurs ID
+   * @param lessonProgress - Yangilangan LessonProgress
+   */
+  private async updateUserCourseProgress(
+    userId: ID,
+    courseId: ID,
+    lessonProgress: LessonProgress
+  ): Promise<void> {
+    try {
+      // Barcha lesson progresslarni olish (calculation uchun)
+      const allLessonProgresses = await this.lessonProgressRepository.findByBlockIdAndUserId(
+        lessonProgress.blockId,
+        userId
+      );
+
+      // UserCourseProgress uchun ma'lumotlarni hisoblash
+      const progressData = this.userProgressCalculator.calculateUserCourseProgressData(
+        allLessonProgresses,
+        lessonProgress.lesson?.id,
+        lessonProgress.lessonOrder,
+        lessonProgress.blockId,
+        'arabic' // Course language (Arabic course)
+      );
+
+      // UserCourseProgress upsert
+      const upsertResult = await this.userCourseProgressService.upsertFromLessonProgress(
+        userId,
+        courseId,
+        {
+          currentLessonId: progressData.currentLessonId,
+          currentLessonOrder: progressData.currentLessonOrder,
+          currentBlockId: progressData.currentBlockId,
+          courseLanguage: progressData.courseLanguage,
+        }
+      );
+
+      if (upsertResult.statusCode !== 200 && upsertResult.statusCode !== 201) {
+        throw new Error(`UserCourseProgress upsert failed: ${upsertResult.message}`);
+      }
+
+      this.logger.log(`UserCourseProgress successfully updated for user ${userId}, course ${courseId}`);
+    } catch (error) {
+      this.logger.error(`updateUserCourseProgress failed: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  /**
+   * Transaction ichida UserCourseProgress ni yangilash
+   * @param queryRunner - TypeORM QueryRunner
+   * @param userId - Foydalanuvchi ID
+   * @param courseId - Kurs ID
+   * @param lessonProgress - Yangilangan LessonProgress
+   */
+  private async updateUserCourseProgressInTransaction(
+    queryRunner: any,
+    userId: ID,
+    courseId: ID,
+    lessonProgress: LessonProgress
+  ): Promise<void> {
+    try {
+      // Barcha lesson progresslarni olish (calculation uchun)
+      const allLessonProgresses = await queryRunner.manager.find(LessonProgress, {
+        where: {
+          blockId: lessonProgress.blockId,
+          user: { id: userId }
+        },
+        relations: ['lesson']
+      });
+
+      // UserCourseProgress uchun ma'lumotlarni hisoblash
+      const progressData = this.userProgressCalculator.calculateUserCourseProgressData(
+        allLessonProgresses,
+        lessonProgress.lesson?.id,
+        lessonProgress.lessonOrder,
+        lessonProgress.blockId,
+        'arabic' // Course language (Arabic course)
+      );
+
+      // Transaction ichida UserCourseProgress upsert
+      await this.userCourseProgressService.recalculateAndUpsertInTransaction(
+        queryRunner,
+        userId,
+        courseId,
+        allLessonProgresses,
+        progressData.currentLessonId,
+        progressData.currentLessonOrder,
+        progressData.currentBlockId,
+        progressData.courseLanguage
+      );
+
+      this.logger.log(`UserCourseProgress successfully updated in transaction for user ${userId}, course ${courseId}`);
+    } catch (error) {
+      this.logger.error(`updateUserCourseProgressInTransaction failed: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
 }
 
 // INSERT INTO homeworks (title, video_url, mime_type, size, "order", duration, block_id)
 // SELECT
 //     'Generated description for homework ' || i,
-//     'https://player.vimeo.com/video/1031009633',
-//     'video/mp4',
+//     'https://player.vimeo.com/video/1131005257',
 //     1024000 + (i * 1000),  -- Fayl hajmini oshib boruvchi qiymat sifatida o'zgartirish
 //     i,  -- Order ketma-ketlikda oshib boradi
 //     300 + (i * 10),  -- Davomiylik oshib boruvchi qiymat sifatida
-//     32  -- block_id
+//     11  -- block_id
 // FROM
 //     generate_series(1, 100) AS s(i);

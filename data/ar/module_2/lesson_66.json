@@ -1,0 +1,60 @@
+{
+  "id": "ar_m2_l66",
+  "language": "ar",
+  "module": 2,
+  "lesson": 66,
+  "title": "تُرْكِيَا",
+  "summary": "Turkiyaning ikki qit'ada (Osiyo va Yevropa) joylashishi, turistik davlat bo'lishi, ko'p sayyohlarni jalb qilishi va sanoat, qishloq xo'jaligi va harbiy qudvatga ega bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "تُرْكِيَا", "translationUz": "Turkiya"},
+    {"word": "تَقَعُ", "translationUz": "joylashgan"},
+    {"word": "قَارَّتَيْنِ", "translationUz": "ikki qit'ada"},
+    {"word": "هُمَا", "translationUz": "ular"},
+    {"word": "آسِيَا", "translationUz": "Osiyo"},
+    {"word": "أُورُوبَّا", "translationUz": "Yevropa"},
+    {"word": "دَوْلَةٌ", "translationUz": "davlat"},
+    {"word": "سِيَاحِيَّةٌ", "translationUz": "turistik"},
+    {"word": "يَزُورُهَا", "translationUz": "uni ziyorat qiladi"},
+    {"word": "سُيَّاحِ", "translationUz": "sayyohlar"},
+    {"word": "كُلَّ", "translationUz": "har"},
+    {"word": "سَنَةٍ", "translationUz": "yil"},
+    {"word": "لِمُشَاهَدَةِ", "translationUz": "ko'rish uchun"},
+    {"word": "مَعَالِمِهَا", "translationUz": "uning diqqatga sazovor joylari"},
+    {"word": "قَوِيَّةٌ", "translationUz": "kuchli"},
+    {"word": "الصِّنَاعَةِ", "translationUz": "sanoat"},
+    {"word": "الزِّرَاعَةِ", "translationUz": "qishloq xo'jaligi"},
+    {"word": "الْقُوَّةِ", "translationUz": "kuch"},
+    {"word": "الْعَسْكَرِيَّةِ", "translationUz": "harbiy"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "تَقَعُ تُرْكِيَا فِي قَارَّتَيْنِ، وَ هُمَا: آسِيَا وَ أُورُوبَّا.",
+      "translationUz": "Turkiya ikki qit'ada joylashgan, va ular: Osiyo va Yevropa.",
+      "next": "تُرْكِيَا دَوْلَةٌ سِيَاحِيَّةٌ، يَزُورُهَا كَثِيرٌ مِنَ السُّيَّاحِ كُلَّ سَنَةٍ لِمُشَاهَدَةِ مَعَالِمِهَا الْجَمِيلَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "تُرْكِيَا دَوْلَةٌ سِيَاحِيَّةٌ، يَزُورُهَا كَثِيرٌ مِنَ السُّيَّاحِ كُلَّ سَنَةٍ لِمُشَاهَدَةِ mَعَالِمِهَا الْجَمِيلَةِ.",
+      "translationUz": "Turkiya turistik davlat, uni har yili ko'p sayyohlar go'zal diqqatga sazovor joylarini ko'rish uchun ziyorat qiladi.",
+      "next": "وَ هِيَ أَيْضًا دَوْلَةٌ قَوِيَّةٌ فِي الصِّنَاعَةِ وَ الزِّرَاعَةِ وَ الْقُوَّةِ الْعَسْكَرِيَّةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ هِيَ أَيْضًا دَوْلَةٌ قَوِيَّةٌ فِي الصِّنَاعَةِ وَ الزِّرَاعَةِ وَ الْقُوَّةِ الْعَسْكَرِيَّةِ.",
+      "translationUz": "Va u shuningdek sanoat, qishloq xo'jaligi va harbiy kuchda kuchli davlatdir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "فِي كَمْ قَارَّةً تَقَعُ تُرْكِيَا؟",
+    "مَا هُمَا الْقَارَّتَانِ؟",
+    "لِمَاذَا تُسَمَّى تُرْكِيَا دَوْلَةً سِيَاحِيَّةً؟",
+    "كَمْ سَائِحًا يَزُورُهَا؟",
+    "فِي أَيِّ مَجَالَاتٍ هِيَ قَوِيَّةٌ؟"
+  ],
+  "context": {
+    "main_topic": "turkey_description",
+    "pattern": "geographical_location → tourism_attraction → economic_and_military_strength"
+  }
+}

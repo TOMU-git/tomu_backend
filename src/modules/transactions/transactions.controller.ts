@@ -30,11 +30,28 @@ export class TransactionsController {
   constructor(
     @Inject("ITransactionServcie")
     private readonly transactionsService: ITransactionService,
-  ) {}
+  ) { }
 
   @Post("payme")
   async payme(@Res() res: Response, @Req() req: Request) {
     const { method, params, id }: PaymeDto = req.body;
+
+    // Log qo'shish - mobile vs web farqini ko'rish uchun
+    if (method === PaymeMethodEnum.CHECK_PERFORM_TRANSACTION) {
+      // console.log("=== PAYME REQUEST DEBUG ===");
+      // console.log("Method:", method);
+      // console.log("User-Agent:", req.headers['user-agent']);
+      // console.log("Headers:", {
+      //   'user-agent': req.headers['user-agent'],
+      //   'x-forwarded-for': req.headers['x-forwarded-for'],
+      //   'origin': req.headers['origin'],
+      //   'referer': req.headers['referer'],
+      // });
+      // console.log("Request body:", JSON.stringify(req.body, null, 2));
+      // console.log("Params:", JSON.stringify(params, null, 2));
+      // console.log("===========================");
+    }
+
     if (method === PaymeMethodEnum.CHECK_PERFORM_TRANSACTION) {
       checkTransactionDto(paymeCheckPerformTrSchema, params, id);
       await this.transactionsService.checkPerformTransaction(params, id);

@@ -1,0 +1,59 @@
+{
+  "id": "ar_m2_l100",
+  "language": "ar",
+  "module": 2,
+  "lesson": 100,
+  "title": "أَنْهَارُ آسِيَا الْوُسْطَى",
+  "summary": "O‘rta Osiyo daryolarining (Amudaryo va Sirdaryo) xususiyatlari, ularning suvi va baliqchilik uchun ahamiyati haqida.",
+  "vocabulary": [
+    { "word": "نَهْرٌ (ج: أَنْهَار)", "translationUz": "daryo" },
+    { "word": "آسِيَا الْوُسْطَى", "translationUz": "O‘rta Osiyo" },
+    { "word": "مَاءٌ", "translationUz": "suv" },
+    { "word": "عَذْبٌ", "translationUz": "chuchuk" },
+    { "word": "صَالِحٌ لِ", "translationUz": "uchun yaroqli" },
+    { "word": "شُرْبٌ", "translationUz": "ichish" },
+    { "word": "زِّرَاعَةٌ", "translationUz": "qishloq xo‘jaligi" },
+    { "word": "يَعِيشُ", "translationUz": "yashaydi" },
+    { "word": "أَسْمَاكٌ", "translationUz": "baliqlar" },
+    { "word": "مُخْتَلِفٌ", "translationUz": "turli" },
+    { "word": "صَّيَّادُ", "translationUz": "baliqchi" },
+    { "word": "مَوْسِمُ الصَّيْدِ", "translationUz": "ovlash mavsumi" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَمُودَرْيَا وَسِرْدَرْيَا أَكْبَرُ أَنْهَارٍ فِي آسِيَا الْوُسْطَى.",
+      "translationUz": "Amudaryo va Sirdaryo O‘rta Osiyodagi eng katta daryolardir.",
+      "next": "مَاءُ أَمُودَرْيَا وَ سِرْدَرْيَا عَذْبٌ،صَالِحٌ لِلشُّرْبِ وَ لِلزِّرَاعَةِ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مَاءُ أَمُودَرْيَا وَ سِرْدَرْيَا عَذْبٌ،صَالِحٌ لِلشُّرْبِ وَ لِلزِّرَاعَةِ،",
+      "translationUz": "Amudaryo va Sirdaryoning suvi chuchuk, ichish va qishloq xo‘jaligi uchun yaroqli.",
+      "next": "وَ فِيهِ تَعِيشُ الْأَسْمَاكِ الْمُخْتَلِفَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ فِيهِ تَعِيشُ الْأَسْمَاكِ الْمُخْتَلِفَةِ.",
+      "translationUz": "Va unda turli xil baliqlar yashaydi.",
+      "next": "لِذَلِكَ، الصَّيَّادُونَ يَعْمَلُونَ كَثِيرًا فِي مَوْسِمِ الصَّيْدِ فِي هَذَيْنِ النَّهْرَيْنِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِذَلِكَ، الصَّيَّادُونَ يَعْمَلُونَ كَثِيرًا فِي مَوْسِمِ الصَّيْدِ فِي هَذَيْنِ النَّهْرَيْنِ.",
+      "translationUz": "Shuning uchun, baliqchilar ovlash mavsumida bu ikki daryoda ko‘p ishlaydilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تَشْرَبُ مِنْ مَاءِ النَّهْرِ؟",
+    "مَاذَا تَصْطَادُ فِي هَذَيْنِ النَّهْرَيْنِ؟",
+    "أَيْنَ تَجْرِي هَذِهِ الْأَنْهَارُ؟",
+    "هَلْ زُرْتَ نَهْرَ أَمُودَرْيَا؟",
+    "لِمَاذَا يَعْمَلُ الصَّيَّادُونَ كَثِيرًا فِي هَذَا الْمَوْسِمِ؟"
+  ],
+  "context": {
+    "main_topic": "rivers_central_asia",
+    "pattern": "statement_about_rivers → qualities_of_water → fish_life → consequence_for_fishermen"
+  }
+}

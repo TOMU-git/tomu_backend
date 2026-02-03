@@ -1,0 +1,51 @@
+{
+  "id": "ar_m1_l5",
+  "language": "ar",
+  "module": 1,
+  "lesson": 5,
+  "title": "مَسْجِدٌ جَمِيلٌ",
+  "summary": "Learning to describe location and distance using demonstratives and simple adjectives like 'near' and 'far'.",
+  "vocabulary": [
+    { "word": "مَسْجِدٌ", "translationUz": "masjid" },
+    { "word": "جَمِيلٌ", "translationUz": "chiroyli" },
+    { "word": "بَيْتٌ", "translationUz": "uy" },
+    { "word": "قَرِيبٌ", "translationUz": "yaqin" },
+    { "word": "بَعِيدٌ", "translationUz": "uzoq" },
+    { "word": "هَذَا", "translationUz": "bu (yaqin)" },
+    { "word": "ذَلِكَ", "translationUz": "u (uzoq)" },
+    { "word": "أَهَذَا", "translationUz": "bu ham ...mi?" },
+    { "word": "أَيْضًا", "translationUz": "ham" },
+    { "word": "لَا", "translationUz": "yo'q" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَذَا الْبَيْتُ قَرِيبٌ، ذَلِكَ الْمَسْجِدُ بَعِيدٌ.",
+      "translationUz": "Bu uy yaqin, u masjid uzoq.",
+      "next": "أَهَذَا مَسْجِدٌ أَيْضًا؟"
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أَهَذَا مَسْجِدٌ أَيْضًا؟",
+      "translationUz": "Bu ham masjidmi?",
+      "next": "لَا، هَذَا بَيْتٌ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "لَا، هَذَا بَيْتٌ.",
+      "translationUz": "Yo'q, bu uy.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ ذَلِكَ الْمَسْجِدُ جَمِيلٌ؟",
+    "أَيْنَ الْبَيْتُ الْقَرِيبُ؟",
+    "هَلْ تَذْهَبُ إِلَى الْمَسْجِدِ؟",
+    "كَمْ مَسَافَةُ الْمَسْجِدِ؟",
+    "هَلْ تُحِبُّ الْمَسَاجِدَ الْقَرِيبَةَ؟"
+  ],
+  "context": {
+    "main_topic": "location_distance",
+    "pattern": "statement → question → answer"
+  }
+}

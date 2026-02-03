@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l45",
+    "language": "ar",
+    "module": 1,
+    "lesson": 45,
+    "title": "اَلدُّبُّ الْكَبِيرُ",
+    "summary": "Tog'da katta ayiq bilan uchrashuv va undan qochish haqida hayajonli hikoya.",
+    "vocabulary": [
+      { "word": "دُب", "translationUz": "ayiq" },
+      { "word": "صَعِدَ", "translationUz": "ko'tarildi" },
+      { "word": "هَرَبَ", "translationUz": "qochdi" },
+      { "word": "جَرَى", "translationUz": "yugurdi" },
+      { "word": "خَلْف", "translationUz": "orqasida" },
+      { "word": "نَجَا", "translationUz": "qutuldi" },
+      { "word": "سَالِمًا", "translationUz": "sog'-salomat" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "صَعِدَ كَرِيمٌ إِلَى الْجَبَلِ، فَرَأَى فِيهِ دُبًّا كَبِيرًا.",
+        "translationUz": "Karim tog'ga ko'tarildi va u yerda katta ayiqni ko'rdi.",
+        "next": "فَهَرَبَ كَرِيمٌ مِنَ الدُّبِّ، وَ جَرَى الدُّبُّ خَلْفَهُ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فَهَرَبَ كَرِيمٌ مِنَ الدُّبِّ، وَ جَرَى الدُّبُّ خَلْفَهُ.",
+        "translationUz": "Shuning uchun Karim ayiqdan qochdi va ayiq uning orqasidan yugurdi.",
+        "next": "وَ لَكِنَّ كَرِيمًا نَجَا مِنْهُ وَ رَجَعَ إِلَى بَيْتِهِ سَالِمًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ لَكِنَّ كَرِيمًا نَجَا مِنْهُ وَ رَجَعَ إِلَى بَيْتِهِ سَالِمًا.",
+        "translationUz": "Lekin Karim undan qutuldi va uyiga sog'-salomat qaytdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ رَأَيْتَ دُبًّا مِنْ قَبْلُ؟",
+      "مَاذَا يَجِبُ فِعْلُهُ عِنْدَمَا تَرَى دُبًّا؟",
+      "هَلْ تَخَافُ مِنَ الدِّبَبَةِ؟",
+      "لِمَاذَا هَرَبَ كَرِيمٌ؟",
+      "هَلْ تَذْهَبُ إِلَى الْجِبَالِ؟"
+    ],
+    "context": {
+      "main_topic": "adventure_escape",
+      "pattern": "narration → narration → narration"
+    }
+  }

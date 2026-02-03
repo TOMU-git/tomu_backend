@@ -1,0 +1,50 @@
+{
+    "id": "ar_m1_l69",
+    "language": "ar",
+    "module": 1,
+    "lesson": 69,
+    "title": "جَمَالُ الأَزْhَارِ",
+    "summary": "Gullarning rang-barangligi va turli turlari haqida tavsif.",
+    "vocabulary": [
+      { "word": "أَزْهَار", "translationUz": "gullar" },
+      { "word": "مُلَوَّن", "translationUz": "rang-barang" },
+      { "word": "حَمْرَاء", "translationUz": "qizil" },
+      { "word": "بَيْضَاء", "translationUz": "oq" },
+      { "word": "زَرْقَاء", "translationUz": "ko'k" },
+      { "word": "خَضْرَاء", "translationUz": "yashil" },
+      { "word": "صَفْرَاء", "translationUz": "sariq" },
+      { "word": "تُولِيب", "translationUz": "lola" },
+      { "word": "أُورْكِيد", "translationUz": "orkideya" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "اَلْأَزْهَارُ مُلَوَّنَةٌ. تُوجَدُ أَزْهَارٌ حَمْرَاءُ، وَبَيْضَاءُ، وَزَرْقَاءُ، وَخَضْرَاءُ، وَصَفْرَاءُ، وَغَيْرُ ذَلِكَ.",
+        "translationUz": "Gullar rang-barang. Qizil, oq, ko'k, yashil, sariq va boshqa gullar mavjud.",
+        "next": "مِنَ الأَزْهَارِ: اَلتُّولِيبُ، وَالْأُورْكِيدُ، وَغَيْرُهُمَا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "مِنَ الأَزْهَارِ: اَلتُّولِيبُ، وَالْأُورْكِيدُ، وَغَيْرُهُمَا.",
+        "translationUz": "Gullardan: lola, orkideya va boshqalar.",
+        "next": "أَنَا أُحِبُّ التُّولِيبَ، وَأُخْتِي الْكُبْرَى تُحِبُّ الأُورْكِيدَ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أُحِبُّ التُّولِيبَ، وَأُخْتِي الْكُبْرَى تُحِبُّ الأُورْكِيدَ.",
+        "translationUz": "Men lolani yaxshi ko'raman, katta opam esa orkideyani yaxshi ko'radi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْأَزْهَارَ؟",
+      "مَا هُوَ زَهْرُكَ الْمُفَضَّلُ؟",
+      "مَا هِيَ أَلْوَانُ الْأَزْهَارِ الَّتِي تُحِبُّهَا؟",
+      "هَلْ تَهْدِي الْأَزْhَارَ لِأَحَدٍ؟",
+      "أَيْنَ تَرَى الْأَزْهَارَ؟"
+    ],
+    "context": {
+      "main_topic": "flowers_colors",
+      "pattern": "narration → narration → narration"
+    }
+  }

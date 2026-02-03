@@ -1,19 +1,11 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Inject,
-  Res,
-  Query,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Inject, Res, Query, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
   CreateAdminDto,
   CreateStudentDto,
   CreateTeacherDto,
 } from "../user/dto/create-users.dto";
-import { ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiQuery, ApiTags, ApiTooManyRequestsResponse } from "@nestjs/swagger";
 import { Response } from "express";
 import { PhoneNumberAlreadyExist } from "./exception/auth.exception";
 import {
@@ -26,6 +18,11 @@ import {
 import { IUserService } from "../user/interfaces/user.service";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { RoleEnum } from "src/common/enums/enum";
+import { SmsRateLimitGuard, RateLimitGuard } from "./guards/sms-rate-limit.guard";
+import { GoogleOAuthGuard } from "./guards/google-oauth.guard";
+import { AppleOAuthGuard } from "./guards/apple-oauth.guard";
+import { IOAuthProfile } from "./interfaces/oauth-profile.interface";
+import { Req } from "@nestjs/common";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -33,7 +30,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     @Inject("IUserService") private readonly userService: IUserService,
-  ) {}
+  ) { }
   // **** Login for all users **** //
 
   @ApiOperation({
@@ -45,6 +42,28 @@ export class AuthController {
     res.send(found);
   }
 
+  /**
+   * Login with device information (V2 API)
+   * Backward compatible - device info is optional
+   */
+  @ApiOperation({
+    summary: "Log In user with device information (V2)",
+    description:
+      "Enhanced login endpoint that supports device management. Device information is optional for backward compatibility.",
+  })
+  @Post("sign-in/users/v2")
+  async loginWithDevice(
+    @Body() loginDto: LoginAuthDto & { deviceInfo?: any },
+    @Res() res: Response,
+  ) {
+    const found = await this.authService.login(
+      loginDto,
+      res,
+      loginDto.deviceInfo,
+    );
+    res.send(found);
+  }
+
   // **** Access validation **** //
 
   @Post("current")
@@ -52,20 +71,43 @@ export class AuthController {
     return await this.authService.access(accessDto);
   }
 
+  /**
+   * Check device management support
+   * GET /api/auth/device-support
+   */
+  @ApiOperation({
+    summary: "Check device management support",
+    description: "Check if device management is supported by the backend",
+  })
+  @Get("device-support")
+  async checkDeviceSupport() {
+    return {
+      supported: true,
+      version: "2.0",
+      features: [
+        "device_registration",
+        "device_limits",
+        "device_management",
+        "security_levels",
+      ],
+    };
+  }
+
   // **** Regenerate the refresh token **** //
 
-
-  @Post('forgot-password')
+  @Post("forgot-password")
   async forgotPassword(@Body() forgotDto: ForgotPassword) {
-    return await this.authService.forgotPass(forgotDto)
+    return await this.authService.forgotPass(forgotDto);
   }
-  
+
   @ApiQuery({
     name: "refresh_token",
     required: false,
     type: String,
     description: "For regenerating the refresh token",
   })
+  @UseGuards(RateLimitGuard(20)) // 20 ta so'rov minutiga
+
   @Get("refresh")
   async refresh(
     @Query("refresh_token") refreshToken: string,
@@ -82,12 +124,22 @@ export class AuthController {
     @Body() studentCreateDto: CreateStudentDto,
     @Res() res: Response,
   ) {
-    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      studentCreateDto.phoneNumber,
-    );
+    try {
+      const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+        studentCreateDto.phoneNumber,
+      );
 
-    if (foundUser) {
-      throw new PhoneNumberAlreadyExist();
+      if (foundUser) {
+        throw new PhoneNumberAlreadyExist();
+      }
+    } catch (error) {
+      // If UserNotFound exception, that's fine - user doesn't exist and can register
+      if (error.status === 404) {
+        // User doesn't exist, which is expected for registration - continue
+      } else {
+        // Other errors (like PhoneNumberAlreadyExist) should be thrown
+        throw error;
+      }
     }
     const createdUser = await this.authService.createStudent(
       studentCreateDto,
@@ -105,9 +157,38 @@ export class AuthController {
 
   // **** Sending sms to user **** //
 
+  @ApiOperation({
+    summary: "Send SMS verification code",
+    description: "Send SMS verification code to phone number. Limited to 5 requests per minute per phone number.",
+  })
+  @ApiTooManyRequestsResponse({
+    description: "Too many requests. Maximum 5 requests per minute per phone number.",
+  })
   @Post("send-sms")
+  @UseGuards(SmsRateLimitGuard)
   async SentSms(@Body() sentSms: SentSmsDto) {
-    return await this.authService.sentSms(sentSms);
+    console.log('[Auth Controller] POST /send-sms endpoint hit');
+    console.log('[Auth Controller] Request body:', sentSms);
+    console.log('[Auth Controller] Request headers:', sentSms);
+    console.log('[Auth Controller] Request query:', sentSms);
+    console.log('[Auth Controller] Request params:', sentSms);
+
+    try {
+      const result = await this.authService.sentSms(sentSms);
+      console.log('[Auth Controller] SMS sent successfully, returning result');
+      console.log('[Auth Controller] Response body:', result);
+      console.log('[Auth Controller] Response headers:', result);
+      console.log('[Auth Controller] Response status code:', result);
+      return result;
+    } catch (error) {
+      console.error('[Auth Controller] Error in SentSms endpoint:', error.message);
+      console.error('[Auth Controller] Error details:', {
+        name: error.name,
+        status: error.status,
+        stack: error.stack,
+      });
+      throw error;
+    }
   }
 
   // **** Register for admins and teachers **** //
@@ -118,12 +199,22 @@ export class AuthController {
     @Body() adminCreateDto: CreateAdminDto,
     @Res() res: Response,
   ) {
-    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      adminCreateDto.phoneNumber,
-    );
+    try {
+      const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+        adminCreateDto.phoneNumber,
+      );
 
-    if (foundUser) {
-      throw new PhoneNumberAlreadyExist();
+      if (foundUser) {
+        throw new PhoneNumberAlreadyExist();
+      }
+    } catch (error) {
+      // If UserNotFound exception, that's fine - user doesn't exist and can register
+      if (error.status === 404) {
+        // User doesn't exist, which is expected for registration - continue
+      } else {
+        // Other errors (like PhoneNumberAlreadyExist) should be thrown
+        throw error;
+      }
     }
     const createdUser = await this.authService.createAdmin(adminCreateDto, res);
     res.send(createdUser);
@@ -137,17 +228,103 @@ export class AuthController {
     @Body() teacherCreateDto: CreateTeacherDto,
     @Res() res: Response,
   ) {
-    const { data: foundUser } = await this.userService.findOneByPhoneNumber(
-      teacherCreateDto.phoneNumber,
-    );
+    try {
+      const { data: foundUser } = await this.userService.findOneByPhoneNumber(
+        teacherCreateDto.phoneNumber,
+      );
 
-    if (foundUser) {
-      throw new PhoneNumberAlreadyExist();
+      if (foundUser) {
+        throw new PhoneNumberAlreadyExist();
+      }
+    } catch (error) {
+      // If UserNotFound exception, that's fine - user doesn't exist and can register
+      if (error.status === 404) {
+        // User doesn't exist, which is expected for registration - continue
+      } else {
+        // Other errors (like PhoneNumberAlreadyExist) should be thrown
+        throw error;
+      }
     }
     const createdUser = await this.authService.createTeacher(
       teacherCreateDto,
       res,
     );
     res.send(createdUser);
+  }
+
+  // **** OAuth Endpoints **** //
+
+  /**
+   * Google OAuth - Initiate authentication
+   * GET /api/auth/google
+   * Redirects user to Google login page
+   */
+  @ApiOperation({
+    summary: "Initiate Google OAuth authentication",
+    description: "Redirects user to Google login page for authentication",
+  })
+  @Get("google")
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuth() {
+    // Guard redirects to Google
+  }
+
+  /**
+   * Google OAuth - Callback handler
+   * GET /api/auth/google/callback
+   * Google redirects here after successful authentication
+   */
+  @ApiOperation({
+    summary: "Google OAuth callback",
+    description: "Handles Google OAuth callback and creates/updates user",
+  })
+  @Get("google/callback")
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuthCallback(@Req() req: any, @Res() res: Response) {
+    const profile: IOAuthProfile = req.user;
+    const result = await this.authService.validateGoogleUser(profile, res);
+
+    // Redirect to frontend with tokens
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${result.data.tokens.access_token}`;
+
+    res.redirect(redirectUrl);
+  }
+
+  /**
+   * Apple OAuth - Initiate authentication
+   * GET /api/auth/apple
+   * Redirects user to Apple Sign In page
+   */
+  @ApiOperation({
+    summary: "Initiate Apple OAuth authentication",
+    description: "Redirects user to Apple Sign In page for authentication",
+  })
+  @Get("apple")
+  @UseGuards(AppleOAuthGuard)
+  async appleAuth() {
+    // Guard redirects to Apple
+  }
+
+  /**
+   * Apple OAuth - Callback handler
+   * POST /api/auth/apple/callback
+   * Apple redirects here after successful authentication
+   */
+  @ApiOperation({
+    summary: "Apple OAuth callback",
+    description: "Handles Apple OAuth callback and creates/updates user",
+  })
+  @Post("apple/callback")
+  @UseGuards(AppleOAuthGuard)
+  async appleAuthCallback(@Req() req: any, @Res() res: Response) {
+    const profile: IOAuthProfile = req.user;
+    const result = await this.authService.validateAppleUser(profile, res);
+
+    // Redirect to frontend with tokens
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const redirectUrl = `${frontendUrl}/auth/callback?access_token=${result.data.tokens.access_token}`;
+
+    res.redirect(redirectUrl);
   }
 }

@@ -1,0 +1,53 @@
+{
+  "id": "ar_m1_l148",
+  "language": "ar",
+  "module": 1,
+  "lesson": 148,
+  "title": "اَلرَّجُلُ الغَنِيُّ",
+  "summary": "Ahmadning boyligi, uning mashinalari va biznesi haqida tavsif.",
+  "vocabulary": [
+    {"word": "الرَّجُلُ", "translationUz": "erkak, odam"},
+    {"word": "الغَنِيُّ", "translationUz": "boy"},
+    {"word": "هَاتَانِ", "translationUz": "bu ikkita (ayol)"},
+    {"word": "السَّيَّارَتَانِ", "translationUz": "ikkita mashina"},
+    {"word": "لِأَحْمَدَ", "translationUz": "Ahmad uchun, Ahmadning"},
+    {"word": "سَيَّارَتَاهُ", "translationUz": "uning ikkita mashinasi"},
+    {"word": "جَمِيلَتَانِ", "translationUz": "chiroyli (ikkita)"},
+    {"word": "لَوْنُهُمَا", "translationUz": "ularning rangi"},
+    {"word": "أَسْوَدُ", "translationUz": "qora"},
+    {"word": "أَبْيَضُ", "translationUz": "oq"},
+    {"word": "يَمْلِكُ", "translationUz": "ega, egasi"},
+    {"word": "شَرِكَةً", "translationUz": "kompaniya"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هَاتَانِ السَّيَّارَتَانِ لِأَحْمَدَ.",
+      "translationUz": "Bu ikkita mashina Ahmadniki.",
+      "next": " سَيَّارَتَاهُ جَمِيلَتَانِ، وَ لَوْنُهُمَا أَسْوَدُ وَ أَبْيَضُ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " سَيَّارَتَاهُ جَمِيلَتَانِ، وَ لَوْنُهُمَا أَسْوَدُ وَ أَبْيَضُ.",
+      "translationUz": "Uning ikkita mashinasi chiroyli va ularning rangi qora va oq.",
+      "next": " أَحْمَدُ رَجُلٌ غَنِيٌّ، وَ هُوَ يَمْلِكُ شَرِكَةً كَبِيرَةً."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " أَحْمَدُ رَجُلٌ غَنِيٌّ، وَ هُوَ يَمْلِكُ شَرِكَةً كَبِيرَةً.",
+      "translationUz": "Ahmad boy odam va u katta kompaniyaga ega.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ يَمْلِكُ السَّيَّارَتَيْنِ؟",
+    "كَيْفَ هُمَا السَّيَّارَتَانِ؟",
+    "مَا لَوْنُ السَّيَّارَتَيْنِ؟",
+    "لِمَاذَا أَحْمَدُ غَنِيٌّ؟",
+    "هَلْ تُرِيدُ أَنْ تَكُونَ غَنِيًّا؟"
+  ],
+  "context": {
+    "main_topic": "rich_man_description",
+    "pattern": "car_ownership → car_description → wealth_and_business"
+  }
+}

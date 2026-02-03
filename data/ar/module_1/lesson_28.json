@@ -1,0 +1,43 @@
+{
+  "id": "ar_m1_l28",
+  "language": "ar",
+  "module": 1,
+  "lesson": 28,
+  "title": "حَدِيقَةُ الْحَيَوَانَاتِ",
+  "summary": "Hayvonot bog'idagi turli hayvonlar va ularning xususiyatlari haqida.",
+  "vocabulary": [
+    { "word": "حَدِيقَةُ الْحَيَوَانَاتِ", "translationUz": "hayvonot bog'i" },
+    { "word": "تَلَامِيذُ", "translationUz": "o'quvchilar" },
+    { "word": "غَزَالَةٌ", "translationUz": "kiyik" },
+    { "word": "أَسَدٌ", "translationUz": "sher" },
+    { "word": "زَرَافَةٌ", "translationUz": "jirafa" },
+    { "word": "نَمِرٌ", "translationUz": "yolbars" },
+    { "word": "فِيلٌ", "translationUz": "fil" },
+    { "word": "رَقَبَةٌ", "translationUz": "bo'yin" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلتَّلَامِيذُ فِي حَدِيقَةِ الْحَيَوَانَاتِ. هُنَاكَ حَيَوَانَاتٌ مُخْتَلِفَةٌ مَوْجُودَةٌ، مِثَالًا: غَزَالَةٌ، وَ أَسَدٌ، وَ زَرَافَةٌ، وَ نَمِرٌ، وَ فِيلٌ، وَ غَيْرُ ذَلِكَ،",
+      "translationUz": "O'quvchilar hayvonot bog'ida. U yerda turli hayvonlar mavjud, masalan: kiyik, sher, jirafa, yolbars, fil va boshqalar.",
+      "next": "رَقَبَةُ الزَّرَافَةِ طَوِيلَةٌ، وَعَيْنُ الْغَزَالَةِ جَمِيلَةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "رَقَبَةُ الزَّرَافَةِ طَوِيلَةٌ، وَعَيْنُ الْغَزَالَةِ جَمِيلَةٌ.",
+      "translationUz": "Jirafaning bo'yni uzun, kiyikning ko'zlari chiroyli.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ زُرْتَ حَدِيقَةَ الْحَيَوَانَاتِ؟",
+    "أَيُّ الْحَيَوَانَاتِ تُحِبُّ؟",
+    "لِمَاذَا رَقَبَةُ الزَّرَافَةِ طَوِيلَةٌ؟",
+    "مَاذَا تَأْكُلُ الْأَسَدُ؟",
+    "هَلِ الْفِيلُ كَبِيرٌ؟"
+  ],
+  "context": {
+    "main_topic": "zoo_animals",
+    "pattern": "narration → narration"
+  }
+}

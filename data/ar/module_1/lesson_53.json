@@ -1,0 +1,65 @@
+{
+    "id": "ar_m1_l53",
+    "language": "ar",
+    "module": 1,
+    "lesson": 53,
+    "title": "اَلْفَلَّاحُونَ المِصْرِيُونَ",
+    "summary": "Misrlik dehqonlar va ularning qovun yetishtirishi haqida suhbat.",
+    "vocabulary": [
+      { "word": "فَلَّاح", "translationUz": "dehqon" },
+      { "word": "رِجَال", "translationUz": "erkaklar" },
+      { "word": "مِصْر", "translationUz": "Misr" },
+      { "word": "يَزْرَع", "translationUz": "yetishtiradi" },
+      { "word": "شَمَّام", "translationUz": "qovun" },
+      { "word": "لَذِيذ", "translationUz": "mazali" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "كَرِيمٌ",
+        "text": "مَنْ هَؤُلاَءِ الرِّجَالُ، يَا سَلِيمُ؟",
+        "translationUz": "Bu erkaklar kim, Salim?",
+        "next": "هَؤُلاَءِ الرِّجَالُ فَلَّاحُونَ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "هَؤُلاَءِ الرِّجَالُ فَلَّاحُونَ.",
+        "translationUz": "Bu erkaklar dehqonlar.",
+        "next": "مِنْ أَيْنَ هُمْ؟"
+      },
+      {
+        "speaker": "كَرِيمٌ",
+        "text": "مِنْ أَيْنَ هُمْ؟",
+        "translationUz": "Ular qayerdan?",
+        "next": "هُمْ مِنْ مِصْرَ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "هُمْ مِنْ مِصْرَ.",
+        "translationUz": "Ular Misrdan.",
+        "next": "مَاذَا يَفْعَلُونَ هُنَا؟"
+      },
+      {
+        "speaker": "كَرِيمٌ",
+        "text": "مَاذَا يَفْعَلُونَ هُنَا؟",
+        "translationUz": "Ular bu yerda nima qilishyapti?",
+        "next": "يَزْرَعُونَ الشَّمَّامَ؛ لِأَنَّ الشَّمَّامَ فِي مِصْرَ لَذِيذٌ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "يَزْرَعُونَ الشَّمَّامَ؛ لِأَنَّ الشَّمَّامَ فِي مِصْرَ لَذِيذٌ.",
+        "translationUz": "Ular qovun yetishtirishyaptilar, chunki Misrda qovun mazali.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَعْرِفُ فَلَّاحِينَ؟",
+      "مَاذَا يَزْرَعُ الْفَلَّاحُونَ؟",
+      "هَلْ تُحِبُّ الشَّمَّامَ؟",
+      "مِنْ أَيْنَ أَطْيَبُ الشَّمَّامِ؟",
+      "هَلْ زُرْتَ مِصْرَ؟"
+    ],
+    "context": {
+      "main_topic": "farmers_origin",
+      "pattern": "ask_who → identify → ask_origin → answer → ask_what_doing → explain"
+    }
+  }

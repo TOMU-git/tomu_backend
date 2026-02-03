@@ -377,4 +377,23 @@ export class HomeworkProgressRepository implements IHomeworkProgressRepository {
     });
   }
 
+
+  /**
+ * Berilgan foydalanuvchi va kurs ID bo'yicha HomeworkProgress yozuvlarini topadi.
+ * 
+ * @param userId - Foydalanuvchi ID
+ * @param courseId - Kurs ID
+ * @returns HomeworkProgress yozuvlari ro'yxati
+ */
+async findByUserIdAndCourseId(userId: ID, courseId: ID): Promise<HomeworkProgress[]> {
+  return await this.homeworkProgressRepository.find({
+    where: {
+      userId: Number(userId),
+      courseId: Number(courseId),
+    },
+    relations: ["homework"], // homework ni birga yuklaydi (kerak bo‘lsa)
+  });
+}
+
+
 }

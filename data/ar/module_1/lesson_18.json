@@ -1,0 +1,64 @@
+{
+  "id": "ar_m1_l18",
+  "language": "ar",
+  "module": 1,
+  "lesson": 18,
+  "title": "اَلطَّبِيبَةُ المَاهِرَةُ",
+  "summary": "Salomlashish va yangi odamni tanishtirish, kasbini so'rash.",
+  "vocabulary": [
+    { "word": "طَبِيبَةٌ", "translationUz": "shifokor (ayol)" },
+    { "word": "مَاهِرَةٌ", "translationUz": "mohir" },
+    { "word": "صَدِيقَتِي", "translationUz": "do'stim (ayol)" },
+    { "word": "مَنْ", "translationUz": "kim" },
+    { "word": "هِيَ", "translationUz": "u (ayol)" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "آمِنَةُ",
+      "text": "اَلسَّلَامُ عَلَيْكُمْ يَا فَاطِمَةُ.",
+      "translationUz": "Assalomu alaykum, Fotima.",
+      "next": "وَعَلَيْكُمُ السَّلاَمُ يَا آمِنَةُ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "وَعَلَيْكُمُ السَّلاَمُ يَا آمِنَةُ.",
+      "translationUz": "Va alaykum assalom, Omina.",
+      "next": "مَنْ هَذِهِ يَا فَاطِمَةُ؟"
+    },
+    {
+      "speaker": "آمِنَةُ",
+      "text": "مَنْ هَذِهِ يَا فَاطِمَةُ؟",
+      "translationUz": "Bu kim, Fotima?",
+      "next": "هَذِهِ صَدِيقَتِي خَدِيجَةُ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "هَذِهِ صَدِيقَتِي خَدِيجَةُ.",
+      "translationUz": "Bu mening do'stim Xadicha.",
+      "next": "هَلْ هِيَ طَبِيبَةٌ؟"
+    },
+    {
+      "speaker": "آمِنَةُ",
+      "text": "هَلْ هِيَ طَبِيبَةٌ؟",
+      "translationUz": "U shifokormi?",
+      "next": "نَعْم , هِيَ طَبِيبَةٌ مَاهِرَةٌ."
+    },
+    {
+      "speaker": "فَاطِمَةُ",
+      "text": "نَعْم , هِيَ طَبِيبَةٌ مَاهِرَةٌ.",
+      "translationUz": "Ha, u mohir shifokor.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ تَعْمَلُ خَدِيجَةُ؟",
+    "هَلْ أَنْتِ طَبِيبَةٌ أَيْضًا؟",
+    "مَاذَا تَدْرُسُ خَدِيجَةُ؟",
+    "هَلْ تَعْرِفِينَ طَبِيبًا آخَرَ؟",
+    "كَيْفَ أَصْبَحَتْ خَدِيجَةُ طَبِيبَةً؟"
+  ],
+  "context": {
+    "main_topic": "introductions_professions",
+    "pattern": "greeting → greeting → ask_who → introduce → ask_profession → confirm_profession"
+  }
+}

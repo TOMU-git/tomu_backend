@@ -1,0 +1,47 @@
+{
+  "id": "ar_m1_l8",
+  "language": "ar",
+  "module": 1,
+  "lesson": 8,
+  "title": "فِي الْبَيْتِ",
+  "summary": "Introducing prepositions of place, particularly 'fi' (in), through short dialogues about location.",
+  "vocabulary": [
+    { "word": "فِي", "translationUz": "ichida / da" },
+    { "word": "بَيْتٌ", "translationUz": "uy" },
+    { "word": "مَسْجِدٌ", "translationUz": "masjid" },
+    { "word": "أَيْنَ", "translationUz": "qayerda" },
+    { "word": "أَنَا", "translationUz": "men" },
+    { "word": "أَنْتَ", "translationUz": "sen (erkak)" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "أَيْنَ أَنْتَ يَا فَرِيدُ؟",
+      "translationUz": "Qayerdasan, Farid?",
+      "next": "أَنَا فِي الْمَسْجِدِ. وَأَيْنَ أَنْتَ يَا كَرِيمُ؟"
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "أَنَا فِي الْمَسْجِدِ. وَأَيْنَ أَنْتَ يَا كَرِيمُ؟",
+      "translationUz": "Men masjiddaman. Sen qayerdasan, Karim?",
+      "next": "أَنَا فِي الْبَيْتِ."
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "أَنَا فِي الْبَيْتِ.",
+      "translationUz": "Men uyda.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ أَنْتَ فِي الْمَسْجِدِ الْآنَ؟",
+    "مَنْ فِي الْبَيْتِ مَعَكَ؟",
+    "هَلْ تُرِيدُ الْمَجِيءَ إِلَى الْمَسْجِدِ؟",
+    "مَتَى تَخْرُجُ مِنَ الْبَيْتِ؟",
+    "أَيْنَ صَدِيقُكَ؟"
+  ],
+  "context": {
+    "main_topic": "location_prepositions",
+    "pattern": "question → answer_with_question → answer"
+  }
+}

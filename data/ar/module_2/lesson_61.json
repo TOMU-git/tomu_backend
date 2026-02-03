@@ -1,0 +1,53 @@
+{
+  "id": "ar_m2_l61",
+  "language": "ar",
+  "module": 2,
+  "lesson": 61,
+  "title": "اَلْفِئْرَانُ",
+  "summary": "Kalamushlarning zararli hayvonlar bo'lishi, ularning oziq-ovqatlari va uzun tishlari bilan narsalarni kemirishi haqida.",
+  "vocabulary": [
+    {"word": "اَلْفِئْرَانُ", "translationUz": "kalamushlar"},
+    {"word": "حَيَوَانَاتٌ", "translationUz": "hayvonlar"},
+    {"word": "ضَارَّةٌ", "translationUz": "zararli"},
+    {"word": "تَأْكُلُ", "translationUz": "yeydi"},
+    {"word": "الْحُبُوبَ", "translationUz": "donali ekinlar"},
+    {"word": "الْخُضْرَوَاتِ", "translationUz": "sabzavotlar"},
+    {"word": "الْفَوَاكِهَ", "translationUz": "mevalar"},
+    {"word": "تَقْرِضُ", "translationUz": "kemirib yuboradi"},
+    {"word": "بِأَسْنَانِهَا", "translationUz": "o'zining tishlari bilan"},
+    {"word": "الطَّاوِلَاتِ", "translationUz": "uzun"},
+    {"word": "الْكَرَاسِيَّ", "translationUz": "stullarni"},
+    {"word": "الْمَلَابِسَ", "translationUz": "kiyimlarni"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْفِئْرَانُ حَيَوَانَاتٌ ضَارَّةٌ.",
+      "translationUz": "Kalamushlar zararli hayvonlardir.",
+      "next": " الْفِئْرَانُ تَأْكُلُ الْحُبُوبَ، وَ الْخُضْرَوَاتِ، وَ الْفَوَاكِهَ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " الْفِئْرَانُ تَأْكُلُ الْحُبُوبَ، وَ الْخُضْرَوَاتِ، وَ الْفَوَاكِهَ،",
+      "translationUz": "Kalamushlar donali ekinlar, sabzavotlar va mevalarni yeydi,",
+      "next": "وَ تَقْرِضُ بِأَسْنَانِهَا الطَّاوِلَاتِ، وَ الْكَرَاسِيَّ، وَ الْْمَلَابِسَ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ تَقْرِضُ بِأَسْنَانِهَا الطَّاوِلَاتِ، وَ الْكَرَاسِيَّ، وَ الْْمَلَابِسَ.",
+      "translationUz": "va uzun tishlari bilan stullar, kiyimlarni kemirib yuboradi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هِيَ الْفِئْرَانُ؟",
+    "مَاذَا تَأْكُلُ الْفِئْرَانُ؟",
+    "كَيْفَ تَقْرِضُ الْفِئْرَانُ؟",
+    "بِمَ تَقْرِضُ؟",
+    "مَاذَا تَقْرِضُ؟"
+  ],
+  "context": {
+    "main_topic": "rats_description",
+    "pattern": "harmful_nature → diet_description → gnawing_behavior"
+  }
+}

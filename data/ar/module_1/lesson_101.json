@@ -1,0 +1,65 @@
+{
+    "id": "ar_m1_l101",
+    "language": "ar",
+    "module": 1,
+    "lesson": 101,
+    "title": "اَلْمِسْطَرَةُ الْحَمْرَاءُ",
+    "summary": "Qalam va daftarlarning egaligi va ranglari haqida qizlar o'rtasidagi suhbat.",
+    "vocabulary": [
+      {"word": "اَلْمِسْطَرَةُ", "translationUz": "chizg'ich"},
+      {"word": "الْحَمْرَاءُ", "translationUz": "qizil"},
+      {"word": "زَرْقَاءُ", "translationUz": "ko'k"},
+      {"word": "كُرَّاسَةُ", "translationUz": "daftar"},
+      {"word": "هَلْ", "translationUz": "mi (savol so'zi)"},
+      {"word": "نَعَم", "translationUz": "ha"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "خَدِيجَةُ",
+        "text": "هَلْ هَذِهِ مِسْطَرَتُكِ يَا عَائِشَةُ؟",
+        "translationUz": "Bu sening chizg'ichingmi, Oisha?",
+        "next": "لا، مِسْطَرَتِي زَرْقَاءُ."
+      },
+      {
+        "speaker": "عَائِشَةُ",
+        "text": "لا، مِسْطَرَتِي زَرْقَاءُ.",
+        "translationUz": "Yo'q, mening chizg'ichim ko'k.",
+        "next": "هَلْ هِيَ مِسْطَرَةُ سَلْمَى؟"
+      },
+      {
+        "speaker": "خَدِيجَةُ",
+        "text": "هَلْ هِيَ مِسْطَرَةُ سَلْمَى؟",
+        "translationUz": "Bu Salmaning chizg'ichimi?",
+        "next": "لا، مِسْطَرَتُهَا حَمْرَاءُ."
+      },
+      {
+        "speaker": "عَائِشَةُ",
+        "text": "لا، مِسْطَرَتُهَا حَمْرَاءُ.",
+        "translationUz": "Yo'q, uning chizg'ichi qizil.",
+        "next": "هَلْ هَذِهِ كُرَّاسَتُكِ؟"
+      },
+      {
+        "speaker": "خَدِيجَةُ",
+        "text": "هَلْ هَذِهِ كُرَّاسَتُكِ؟",
+        "translationUz": "Bu sening daftaringmi?",
+        "next": "نَعَم، هَذِهِ كُرَّاسَتِي."
+      },
+      {
+        "speaker": "عَائِشَةُ",
+        "text": "نَعَم، هَذِهِ كُرَّاسَتِي.",
+        "translationUz": "Ha, bu mening daftarim.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَا لَوْنُ مِسْطَرَتِكِ؟",
+      "هَلْ هَذِهِ كُرَّاسَةُ صَدِيقَتِكِ؟",
+      "أَيْنَ مِسْطَرَتُكِ؟",
+      "مَاذَا تَفْعَلُ بِالْمِسْطَرَةِ؟",
+      "هَلْ تُحِبُّ الْأَلْوَانَ الْحَمْرَاءَ؟"
+    ],
+    "context": {
+      "main_topic": "school_supplies_possession",
+      "pattern": "question_about_ruler → denial_with_color → question_about_another → denial_with_color → question_about_notebook → confirmation"
+    }
+  }

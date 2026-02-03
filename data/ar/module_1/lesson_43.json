@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l43",
+    "language": "ar",
+    "module": 1,
+    "lesson": 43,
+    "title": "أَسْكُنُ فِي طَشْقَنْدَ",
+    "summary": "Toshkent shahrida yashash va uning afzalliklari haqida.",
+    "vocabulary": [
+      { "word": "أَسْكُن", "translationUz": "yashayman" },
+      { "word": "طَشْقَنْد", "translationUz": "Toshkent" },
+      { "word": "مَرْكَز", "translationUz": "markaz" },
+      { "word": "مَدِينَة", "translationUz": "shahar" },
+      { "word": "مَكْتَب", "translationUz": "ofis" },
+      { "word": "أُحِب", "translationUz": "yoqtiraman" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أَسْكُنُ فِي طَشْقَنْدَ.",
+        "translationUz": "Men Toshkentda yashayman.",
+        "next": "بَيْتِي فِي مَرْكَزِ الْمَدِينَةِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بَيْتِي فِي مَرْكَزِ الْمَدِينَةِ.",
+        "translationUz": "Uyim shahar markazida.",
+        "next": "وَ مَكْتَبِي هُنَاكَ أَيْضًا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ مَكْتَبِي هُنَاكَ أَيْضًا.",
+        "translationUz": "Va mening ofisim ham u yerda.",
+        "next": "أَنَا أُحِبُّ مَدِينَةَ طَشْقَنْدَ جِدًّا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "أَنَا أُحِبُّ مَدِينَةَ طَشْقَنْدَ جِدًّا.",
+        "translationUz": "Men Toshkent shahrini juda yaxshi ko'raman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَسْكُنُ فِي طَشْقَنْدَ؟",
+      "أَيْنَ تَسْكُنُ؟",
+      "هَلْ تُحِبُّ مَدِينَتَكَ؟",
+      "مَا هِيَ مَدِينَتُكَ الْمُفَضَّلَةُ؟",
+      "هَلْ تَعْمَلُ فِي مَرْكَزِ الْمَدِينَةِ؟"
+    ],
+    "context": {
+      "main_topic": "living_city",
+      "pattern": "narration → narration → narration → narration"
+    }
+  }

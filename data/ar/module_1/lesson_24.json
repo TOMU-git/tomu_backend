@@ -1,0 +1,46 @@
+{
+  "id": "ar_m1_l24",
+  "language": "ar",
+  "module": 1,
+  "lesson": 24,
+  "title": "اَلْمُمَرِّضَةُ المَاهِرَةُ",
+  "summary": "Kasb va ish joyi haqida: mohir hamshira va uning vazifalari.",
+  "vocabulary": [
+    { "word": "مُمَرِّضَةٌ", "translationUz": "hamshira" },
+    { "word": "مُسْتَشْفَى", "translationUz": "kasalxona" },
+    { "word": "مَرْكَزُ", "translationUz": "markaz" },
+    { "word": "مَدِينَةٌ", "translationUz": "shahar" },
+    { "word": "مَرْضَى", "translationUz": "bemorlar" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فَاطِمَةُ مُمَرِّضَةٌ مَاهِرَةٌ، وَهِيَ تَعْمَلُ فِي الْمُسْتَشْفَى.",
+      "translationUz": "Fotima mohir hamshira va u kasalxonada ishlaydi.",
+      "next": "ذَلِكَ الْمُسْتَشْفَى فِي مَرْكَزِ الْمَدِينَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "ذَلِكَ الْمُسْتَشْفَى فِي مَرْكَزِ الْمَدِينَةِ.",
+      "translationUz": "Bu kasalxona shahar markazida joylashgan.",
+      "next": "وَهِيَ تُسَاعِدُ الْمَرْضَى دَائِمًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَهِيَ تُسَاعِدُ الْمَرْضَى دَائِمًا.",
+      "translationUz": "U har doim bemorlarga yordam beradi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تُرِيدُ أَنْ تَكُونَ مُمَرِّضَةً؟",
+    "مَاذَا تَفْعَلُ الْمُمَرِّضَةُ؟",
+    "هَلِ الْمُسْتَشْفَى قَرِيبٌ مِنْ بَيْتِكَ؟",
+    "لِمَاذَا تُسَاعِدُ فَاطِمَةُ الْمَرْضَى؟",
+    "هَلْ زُرْتَ مُسْتَشْفَى مِنْ قَبْلُ؟"
+  ],
+  "context": {
+    "main_topic": "professions_healthcare",
+    "pattern": "narration → narration → narration"
+  }
+}

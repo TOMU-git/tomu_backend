@@ -1,0 +1,60 @@
+{
+  "id": "ar_m2_l76",
+  "language": "ar",
+  "module": 2,
+  "lesson": 76,
+  "title": "أَسْرَعُ مِنَ الرِّيْحِ",
+  "summary": "O‘z otini tezligi va xatti-harakati bilan tavsiflash, 'كَ' (kabi) taqqoslash va muntazam fe'llarni o‘rganish.",
+  "vocabulary": [
+    { "word": "حِصَانٌ", "translationUz": "ot" },
+    { "word": "جَمِيلٌ", "translationUz": "chiroyli" },
+    { "word": "سَرِيعٌ", "translationUz": "tez" },
+    { "word": "يَأْكُلُ", "translationUz": "yeydi (yemoq)" },
+    { "word": "شَعِيرٌ", "translationUz": "arpa" },
+    { "word": "أَعْشَابٌ", "translationUz": "o‘tlar" },
+    { "word": "يَرْكُضُ", "translationUz": "yuguradi (yugurmoq)" },
+    { "word": "بِسُرْعَةٍ", "translationUz": "tezlik bilan" },
+    { "word": "كَ", "translationUz": "kabi, o‘xshab" },
+    { "word": "رِيحٌ", "translationUz": "shamol" },
+    { "word": "يَرْكَبُ", "translationUz": "minadi (minmoq)" },
+    { "word": "يَتَجَوَّلُ", "translationUz": "aylanadi, sayr qiladi" },
+    { "word": "غُرُوبُ", "translationUz": "botish" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لَدَيَّ حِصَانٌ جَمِيلٌ وَ سَرِيعٌ.",
+      "translationUz": "Mening chiroyli va tez otim bor.",
+      "next": "هُوَ يَأْكُلُ الشَّعِيرَ وَ الْأَعْشَابَ، وَ يَرْكُضُ بِسُرْعَةٍ كَالرِّيحِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هُوَ يَأْكُلُ الشَّعِيرَ وَ الْأَعْشَابَ، وَ يَرْكُضُ بِسُرْعَةٍ كَالرِّيحِ.",
+      "translationUz": "U arpa va o‘tlar yeydi va shamoldek tez yuguradi.",
+      "next": "أَنَا أَرْكَبُهُ وَ أَتَجَوَّلُ بِهِ قَلِيلًا عِنْدَ غُرُوبِ الشَّمْسِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أَرْكَبُهُ وَ أَتَجَوَّلُ بِهِ قَلِيلًا عِنْدَ غُرُوبِ الشَّمْسِ.",
+      "translationUz": "Men unga minib, quyosh botayotganda biroz sayr qilaman.",
+      "next": "أَنَا أُحِبُّهُ كَثِيرًا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "أَنَا أُحِبُّهُ كَثِيرًا.",
+      "translationUz": "Men uni juda yaxshi ko‘raman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَأْكُلُ حِصَانُكَ؟",
+    "هَلْ حِصَانُكَ أَسْرَعُ مِنَ السَّيَّارَةِ؟",
+    "مَتَى تَرْكَبُ حِصَانَكَ؟",
+    "لِمَاذَا تُحِبُّ حِصَانَكَ؟",
+    "أَيْنَ تَذْهَبُ مَعَ حِصَانِكَ؟"
+  ],
+  "context": {
+    "main_topic": "describing_animals_possession",
+    "pattern": "narration_about_pet → habits → activities_with_pet → feeling"
+  }
+}

@@ -1,0 +1,65 @@
+{
+    "id": "ar_m1_l82",
+    "language": "ar",
+    "module": 1,
+    "lesson": 82,
+    "title": "إِخْوَةُ سَعِيدٍ",
+    "summary": "Do'stning aka-uka va opa-singillari soni haqida suhbat.",
+    "vocabulary": [
+      { "word": "إِخْوَة", "translationUz": "aka-ukalar" },
+      { "word": "أَخ", "translationUz": "aka" },
+      { "word": "أُخْت", "translationUz": "opa" },
+      { "word": "ثَلَاثَة", "translationUz": "uch" },
+      { "word": "وَاحِد", "translationUz": "bitta" },
+      { "word": "يَدْرُس", "translationUz": "o'qiydi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "عَلِيٌّ",
+        "text": "كَمْ أَخًا لَكَ يَا سَعِيدُ؟",
+        "translationUz": "Nechta akang bor, Said?",
+        "next": "لِي ثَلَاثَةُ إِخْوَةٍ."
+      },
+      {
+        "speaker": "سَعِيدٌ",
+        "text": "لِي ثَلَاثَةُ إِخْوَةٍ.",
+        "translationUz": "Mening uchta akam bor.",
+        "next": "وَ كَمْ أُخْتًا لَكَ يَا سَعِيدُ؟"
+      },
+      {
+        "speaker": "عَلِيٌّ",
+        "text": "وَ كَمْ أُخْتًا لَكَ يَا سَعِيدُ؟",
+        "translationUz": "Va nechta opang bor, Said?",
+        "next": "لِي أُخْتٌ وَاحِدَةٌ."
+      },
+      {
+        "speaker": "سَعِيدٌ",
+        "text": "لِي أُخْتٌ وَاحِدَةٌ.",
+        "translationUz": "Mening bitta opam bor.",
+        "next": "هَلْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟"
+      },
+      {
+        "speaker": "عَلِيٌّ",
+        "text": "هَلْ يَدْرُسُونَ فِي الْمَدْرَسَةِ؟",
+        "translationUz": "Ular maktabda o'qiydilarmi?",
+        "next": "نَعَم، هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ."
+      },
+      {
+        "speaker": "سَعِيدٌ",
+        "text": "نَعَم، هُمْ يَدْرُسُونَ فِي الْمَدْرَسَةِ.",
+        "translationUz": "Ha, ular maktabda o'qiydilar.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ أَخًا لَكَ؟",
+      "كَمْ أُخْتًا لَكَ؟",
+      "هَلْ إِخْوَتُكَ يَدْرُسُونَ؟",
+      "أَيْنَ يَدْرُسُ إِخْوَتُكَ؟",
+      "هَلْ تُحِبُّ إِخْوَتَكَ؟"
+    ],
+    "context": {
+      "main_topic": "siblings_count",
+      "pattern": "ask_brothers → answer → ask_sisters → answer → ask_study → confirm"
+    }
+  }

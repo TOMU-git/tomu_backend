@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l35",
+  "language": "ar",
+  "module": 2,
+  "lesson": 35,
+  "title": "نَهْرُ النِّيْلِ",
+  "summary": "Nil daryosining dunyodagi eng uzun daryo bo'lishi, undagi hayot va suvining ichish va dehqonchilik uchun yaroqli bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "نَهْرُ", "translationUz": "daryo"},
+    {"word": "النِّيْلِ", "translationUz": "Nil"},
+    {"word": "أَطْوَلُ", "translationUz": "eng uzun"},
+    {"word": "نَهْرٍ", "translationUz": "daryo"},
+    {"word": "الْعَالَمِ", "translationUz": "dunyo"},
+    {"word": "تَعِيشُ", "translationUz": "yashaydi"},
+    {"word": "الْأَسْمَاكِ", "translationUz": "baliqlar"},
+    {"word": "التَّمَاسِيحِ", "translationUz": "timsohlar"},
+    {"word": "حَيَوَانَاتٍ", "translationUz": "hayvonlar"},
+    {"word": "أُخْرَى", "translationUz": "boshqa"},
+    {"word": "مَاءُ", "translationUz": "suv"},
+    {"word": "عَذْبٌ", "translationUz": "shirin"},
+    {"word": "صَالِحٌ", "translationUz": "yaroqli"},
+    {"word": "لِلشُّرْبِ", "translationUz": "ichish uchun"},
+    {"word": "الزِّرَاعَةِ", "translationUz": "dehqonchilik"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "نَهْرُ النِّيلِ أَطْوَلُ نَهْرٍ فِي الْعَالَمِ،",
+      "translationUz": "Nil daryosi dunyodagi eng uzun daryodir,",
+      "next": "وَ فِيهِ تَعِيشُ كَثِيرٌ مِنَ الْأَسْمَاكِ وَ التَّمَاسِيحِ وَ حَيَوَانَاتٍ أُخْرَى."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ فِيهِ تَعِيشُ كَثِيرٌ مِنَ الْأَسْمَاكِ وَ التَّمَاسِيحِ وَ حَيَوَانَاتٍ أُخْرَى.",
+      "translationUz": "va unda ko'p baliqlar, timsohlar va boshqa hayvonlar yashaydi.",
+      "next": "مَاءُ نَهْرِ النِّيلِ عَذْبٌ، وَ صَالِحٌ لِلشُّرْبِ وَ الزِّرَاعَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مَاءُ نَهْرِ النِّيلِ عَذْبٌ، وَ صَالِحٌ lِلشُّرْبِ وَ الزِّرَاعَةِ.",
+      "translationUz": "Nil daryosining suvi shirin va ichish va dehqonchilik uchun yaroqlidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَقَعُ نَهْرُ النِّيلِ؟",
+    "كَيْفَ هُوَ نَهْرُ النِّيلِ مِنْ حَيْثُ الطُّولِ؟",
+    "مَاذَا يَعِيشُ فِي نَهْرِ النِّيلِ؟",
+    "كَيْفَ هُوَ مَاؤُهُ؟",
+    "لِمَاذَا يَصْلُحُ مَاءُ النِّيلِ؟"
+  ],
+  "context": {
+    "main_topic": "nile_river_description",
+    "pattern": "length_record → wildlife → water_quality_and_uses"
+  }
+}

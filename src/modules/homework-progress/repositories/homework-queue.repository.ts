@@ -184,4 +184,46 @@ export class HomeworkQueueRepository {
       where: { userId: Number(userId), courseId: Number(courseId) }
     });
   }
+
+  /**
+   * Foydalanuvchi ID si bo'yicha barcha kurslar uchun uyga vazifa navbatidagi elementlar sonini hisoblash
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @returns Foydalanuvchi uchun barcha kurslardagi uyga vazifa navbatidagi elementlar soni
+   */
+  async countAllQueueItemsByUserId(userId: ID): Promise<number> {
+    return this.repository.count({
+      where: { userId: Number(userId) }
+    });
+  }
+
+  async findByUserId(userId: number): Promise<HomeworkQueue[]> {
+    return this.repository.createQueryBuilder('queue')
+      .where('queue.userId = :userId', { userId })
+      .getMany();
+  }
+
+  /**
+   * Foydalanuvchi ID si bo'yicha har bir kurs uchun uyga vazifa navbatidagi elementlar sonini hisoblash
+   * 
+   * @param userId - Foydalanuvchi ID
+   * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs tili (ar, eng, ru)
+   */
+  async countQueueItemsGroupedByCourse(userId: ID): Promise<Array<{ courseTitle: string; count: number }>> {
+    const result = await this.repository
+      .createQueryBuilder('queue')
+      .leftJoin('courses', 'course', 'course.id = queue.course_id')
+      .select('queue.course_id', 'courseId')
+      .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
+      .addSelect('COUNT(queue.id)', 'count')
+      .where('queue.user_id = :userId', { userId: Number(userId) })
+      .groupBy('queue.course_id')
+      .orderBy('queue.course_id', 'ASC')
+      .getRawMany();
+
+    return result.map(item => ({
+      courseTitle: item.courseTitle,
+      count: parseInt(item.count, 10)
+    }));
+  }
 }

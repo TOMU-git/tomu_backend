@@ -1,0 +1,70 @@
+{
+  "id": "ar_m2_l57",
+  "language": "ar",
+  "module": 2,
+  "lesson": 57,
+  "title": "اَلْأَوْلَادُ الْمَرْضَى",
+  "summary": "Ona va bolalari o'rtasida kasallik, qattiq bosh og'rig'i, shifokor bilan bog'lanish va tovuq go'shtidan sho'rva tayyorlash haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْأَوْلَادُ", "translationUz": "bolalar"},
+    {"word": "الْمَرْضَى", "translationUz": "kasallar"},
+    {"word": "اَلْأُمُّ", "translationUz": "ona"},
+    {"word": "حُزَنَاءُ", "translationUz": "g'amgin, qayg'uli"},
+    {"word": "نَحْنُ", "translationUz": "biz"},
+    {"word": "مَرْضَى", "translationUz": "kasalmiz"},
+    {"word": "مَا بِكُمْ", "translationUz": "sizlarga nima bo'ldi"},
+    {"word": "نَشْعُرُ", "translationUz": "his qilamiz"},
+    {"word": "بِصُدَاعٍ", "translationUz": "bosh og'rig'i bilan"},
+    {"word": "شَدِيدٍ", "translationUz": "qattiq"},
+    {"word": "رُؤُوسِنَا", "translationUz": "bizning boshlarimiz"},
+    {"word": "اَلآنَ", "translationUz": "endi, hozir"},
+    {"word": "سَأَتَّصِلُ", "translationUz": "bog'lanaman"},
+    {"word": "بِالطَّبِيبِ", "translationUz": "shifokor bilan"},
+    {"word": "أَطْبُخُ", "translationUz": "pishiraman"},
+    {"word": "حَسَاءً", "translationUz": "sho'rva"},
+    {"word": "لَحْمِ الدَّجَاجِ", "translationUz": "tovuq go'shti"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "لِمَاذَا أَنْتُمْ حُزَنَاءُ يَا أَوْلَادُ؟",
+      "translationUz": "Nega g'amginsiz, bolalar?",
+      "next": "اَلْأَوْلَادُ: نَحْنُ مَرْضَى يَا أُمِّي."
+    },
+    {
+      "speaker": "اَلْأَوْلَادُ",
+      "text": "نَحْنُ مَرْضَى yَا أُمِّي.",
+      "translationUz": "Biz kasalmiz, ona.",
+      "next": "اَلْأُمُّ: مَا بِكُمْ؟"
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "مَا بِكُمْ؟",
+      "translationUz": "Sizlarga nima bo'ldi?",
+      "next": "اَلْأَوْلَادُ: نَحْنُ نَشْعُرُ بِصُدَاعٍ شَدِيدٍ فِي رُؤُوسِنَا."
+    },
+    {
+      "speaker": "اَلْأَوْلَادُ",
+      "text": "نَحْنُ نَشْعُرُ بِصُدَاعٍ شَدِيدٍ فِي رُؤُوسِنَا.",
+      "translationUz": "Biz boshlarimizda qattiq og'riq his qilyapmiz.",
+      "next": "اَلْأُمُّ: اَلآنَ سَأَتَّصِلُ بِالطَّبِيبِ وَ أَطْبُخُ لَكُمْ حَسَاءً مِنْ لَحْمِ الدَّجَاجِ."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "اَلآنَ سَأَتَّصِلُ بِالطَّبِيبِ وَ أَطْبُخُ لَكُمْ حَسَاءً مِنْ لَحْمِ الدَّجَاجِ.",
+      "translationUz": "Endi men shifokor bilan bog'lanaman va sizlar uchun tovuq go'shtidan sho'rva pishiraman.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ تَبْدُو الْأَوْلَادُ؟",
+    "مَاذَا يُجِيبُونَ عَلَى سُؤَالِ أُمِّهِمْ؟",
+    "مَاذَا يُشْكُونَ مِنْهُ؟",
+    "مَاذَا تَعِدُهُمُ الْأُمُّ بِفِعْلِهِ؟",
+    "مَا هُوَ الطَّعَامُ الَّذِي سَتَطْبُخُهُ؟"
+  ],
+  "context": {
+    "main_topic": "sick_children_conversation",
+    "pattern": "sadness_question → sickness_admission → concern_question → symptoms_description → plan_of_action"
+  }
+}

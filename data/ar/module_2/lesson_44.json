@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l44",
+  "language": "ar",
+  "module": 2,
+  "lesson": 44,
+  "title": "اَلْإِزْدِحَامُ",
+  "summary": "Shahar ko'chalaridagi ko'p mashinalar, ularning chumolilar qatori kabi uzluksiz harakati va natijada tirbandlik haqida.",
+  "vocabulary": [
+    {"word": "اَلْإِزْدِحَامُ", "translationUz": "tirbandlik"},
+    {"word": "شَوَارِعِ", "translationUz": "ko'chalar"},
+    {"word": "الْمَدِينَةِ", "translationUz": "shahar"},
+    {"word": "سَيَّارَاتٌ", "translationUz": "mashinalar"},
+    {"word": "كَأَنَّهَا", "translationUz": "go'yo u"},
+    {"word": "سِرْبٌ", "translationUz": "guruh, qator"},
+    {"word": "النَّمْلِ", "translationUz": "chumolilar"},
+    {"word": "تَسِيرُ", "translationUz": "harakatlanadi"},
+    {"word": "بِدُونِ", "translationUz": "o'zisiz"},
+    {"word": "تَوَقُّفٍ", "translationUz": "to'xtash"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "فَإِنَّ", "translationUz": "albatta"},
+    {"word": "شَوَارِعَ", "translationUz": "ko'chalari"},
+    {"word": "دَائِمًا", "translationUz": "doimo"},
+    {"word": "مُزْدَحِمَةٌ", "translationUz": "gavjum, tirband"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "فِي شَوَارِعِ الْمَدِينَةِ سَيَّارَاتٌ كَثِيرَةٌ، كَأَنَّهَا سِرْبٌ مِنَ النَّمْلِ.",
+      "translationUz": "Shahar ko'chalarida ko'p mashinalar bor, go'yo ular chumolilar qatoridir.",
+      "next": "تَسِيرُ السَّيَّارَاتُ فِي الشَّوَارِعِ بِدُونِ تَوَقُّفٍ،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "تَسِيرُ السَّيَّارَاتُ fِي الشَّوَارِعِ بِدُونِ تَوَقُّفٍ،",
+      "translationUz": "Mashinalar ko'chalarda to'xtovsiz harakatlanadi,",
+      "next": "وَ لِذَلِكَ فَإِنَّ شَوَارِعَ الْمَدِينَةِ دَائِمًا مُزْدَحِمَةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "وَ لِذَلِكَ فَإِنَّ شَوَارِعَ الْمَدِينَةِ دَائِمًا مُزْدَحِمَةٌ.",
+      "translationUz": "va shuning uchun shahar ko'chalari doimo tirband.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ حَالُ الشَّوَارِعِ فِي الْمَدِينَةِ؟",
+    "بِمَ تُشَبَّهُ السَّيَّارَاتُ؟",
+    "كَيْفَ تَسِيرُ السَّيَّارَاتُ؟",
+    "لِمَاذَا تَكُونُ الشَّوَارِعُ مُزْدَحِمَةً؟",
+    "هَلْ تُحِبُّ الزِّحَامَ فِي الشَّوَارِعِ؟"
+  ],
+  "context": {
+    "main_topic": "city_traffic_congestion",
+    "pattern": "vehicle_abundance_metaphor → continuous_movement → resulting_congestion"
+  }
+}

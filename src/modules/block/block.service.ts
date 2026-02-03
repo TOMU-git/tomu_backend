@@ -21,7 +21,7 @@ export class BlockService implements IBlockService {
 
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
-  ) {}
+  ) { }
 
   async create(createBlockDto: CreateBlockDto): Promise<ResData<Block>> {
     // Kursni topish
@@ -137,5 +137,52 @@ export class BlockService implements IBlockService {
     }
     await this.blockRepository.delete(block);
     return new ResData<Block>("Block deleted successfully", 200, block);
+  }
+
+  /**
+   * Berilgan block ID bo'yicha videolar soni va umumiy davomiylikni qayta hisoblaydi.
+   * countVideos faqat lesson videolarini hisobga oladi (homework emas).
+   * duration esa lesson va homework videolarining umumiy davomiyligini hisobga oladi.
+   * @param id Block ID
+   * @returns Yangilangan ma'lumotlar haqida xabar
+   */
+  async recalculateCountVideos(id: ID): Promise<ResData<string>> {
+    const block = await this.blockRepository.findById(id);
+    if (!block) {
+      throw new BlockNotFoundException();
+    }
+
+    // Haqiqiy lessonlar soni
+    const actualCount = block.lessons?.length || 0;
+
+    // Lesson va Homework'larning umumiy davomiyligini hisoblash
+    const lessonDuration =
+      block.lessons?.reduce((sum, item) => sum + Number(item.duration), 0) || 0;
+    const homeworkDuration =
+      block.homeworks?.reduce((sum, item) => sum + Number(item.duration), 0) ||
+      0;
+    const actualDuration = lessonDuration + homeworkDuration;
+
+    let isChanged = false;
+
+    if (Number(block.countVideos) !== actualCount) {
+      block.countVideos = actualCount;
+      isChanged = true;
+    }
+
+    if (Number(block.duration) !== actualDuration) {
+      block.duration = actualDuration;
+      isChanged = true;
+    }
+
+    if (isChanged) {
+      await this.blockRepository.update(block);
+    }
+
+    return new ResData<string>(
+      `Block stats recalculated successfully`,
+      200,
+      `Block ID: ${id}, Count: ${actualCount}, Duration: ${actualDuration}`,
+    );
   }
 }

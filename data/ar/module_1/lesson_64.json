@@ -1,0 +1,60 @@
+{
+    "id": "ar_m1_l64",
+    "language": "ar",
+    "module": 1,
+    "lesson": 64,
+    "title": "زِيَارَةٌ إِلَى الْمَدِينَةِ",
+    "summary": "Madina shahriga sayohat va parvoz vaqti haqida hikoya.",
+    "vocabulary": [
+      { "word": "مَدِينَة مُنَوَّرَة", "translationUz": "Madina" },
+      { "word": "حَقِيبَة", "translationUz": "sumka" },
+      { "word": "سَفَر", "translationUz": "sayohat" },
+      { "word": "سَاعَة", "translationUz": "soat" },
+      { "word": "سَابِعَة", "translationUz": "yettinchi" },
+      { "word": "طَائِرَة", "translationUz": "samolyot" },
+      { "word": "تَسْتَغْرِق", "translationUz": "davom etadi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "تُسَافِرُ خَدِيجَةُ إِلَى الْمَدِينَةِ الْمُنَوَّرَةِ لِلزِّيَارَةِ.",
+        "translationUz": "Xadicha Madina shahriga tashrif buyurish uchun sayohat qiladi.",
+        "next": "حَضَّرَتْ حَقِيبَةَ السَّفَرِ بَعْدَ الظُّهْرِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "حَضَّرَتْ حَقِيبَةَ السَّفَرِ bَعْدَ الظُّهْرِ.",
+        "translationUz": "U peshindan keyin sayohat sumkasini tayyorladi.",
+        "next": "سَفَرُهَا فِي السَّاعَةِ السَّابِعَةِ مَسَاءً."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "سَفَرُهَا فِي السَّاعَةِ السَّابِعَةِ مَسَاءً.",
+        "translationUz": "Uning sayohati kechki soat yettida.",
+        "next": "وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَتَسْتَغْرِقُ الطَّائِرَةُ خَمْسَ سَاعَاتٍ.",
+        "translationUz": "Va samolyot besh soat davom etadi.",
+        "next": "تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ فِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "تَصِلُ خَدِيجَةُ إِلَى الْمَدِينَةِ fِي السَّاعَةِ الْوَاحِدَةِ لَيْلًا بَعْدَ مُنْتَصَفِ اللَيْلِ.",
+        "translationUz": "Xadicha shaharga yarim tundan keyin tungi soat birda yetib boradi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ سَافَرْتَ إِلَى الْمَدِينَةِ الْمُنَوَّرَةِ؟",
+      "مَتَى تُسَافِرُ؟",
+      "كَمْ تَسْتَغْرِقُ رِحْلَتُكَ؟",
+      "مَاذَا تَفْعَلُ قَبْلَ السَّفَرِ؟",
+      "هَلْ تُحِبُّ السَّفَرَ بِالطَّائِرَةِ؟"
+    ],
+    "context": {
+      "main_topic": "travel_planning",
+      "pattern": "narration → narration → narration → narration → narration"
+    }
+  }

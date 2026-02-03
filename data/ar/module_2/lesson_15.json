@@ -1,0 +1,61 @@
+{
+  "id": "ar_m2_l15",
+  "language": "ar",
+  "module": 2,
+  "lesson": 15,
+  "title": "الطَّبَّاخُ الْمَاهِرُ",
+  "summary": "Katta qorni bo'lgan, sekin lekin oshpazlikda juda mohir restoran oshpazi haqida.",
+  "vocabulary": [
+    {"word": "الطَّبَّاخُ", "translationUz": "oshpaz"},
+    {"word": "الْمَاهِرُ", "translationUz": "mohir, ustoz"},
+    {"word": "ذُو", "translationUz": "ega bo'lgan"},
+    {"word": "الْبَطْنِ", "translationUz": "qorin"},
+    {"word": "الْكَبِيْرِ", "translationUz": "katta"},
+    {"word": "يَعْمَلُ", "translationUz": "ishlaydi"},
+    {"word": "الْمَطْعَمِ", "translationUz": "restoran"},
+    {"word": "بَطِيْئٌ", "translationUz": "sekin"},
+    {"word": "وَلَكِنَّهُ", "translationUz": "lekin u"},
+    {"word": "فِي طَبْخِ", "translationUz": "oshpazlikda"},
+    {"word": "الطَّعَامِ", "translationUz": "ovqat"},
+    {"word": "لِذَلِكَ", "translationUz": "shuning uchun"},
+    {"word": "أَطْعِمَتُهُ", "translationUz": "uning ovqatlari"},
+    {"word": "لَذِيْذَةٌ", "translationUz": "lazzatli"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " هَذَا  الرَّجُلُ  ذُو الْبَطْنِ الْكَبِيْرِ طَبَّاخٌ.",
+      "translationUz": "Bu katta qorni bo'lgan odam oshpaz.",
+      "next": "هُوَ يَعْمَلُ فِي ذَلِكَ الْمَطْعَمِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هُوَ يَعْمَلُ فِي ذَلِكَ الْمَطْعَمِ.",
+      "translationUz": "U shu restoranda ishlaydi.",
+      "next": "هُوَ بَطِيْئٌ قَلِيلًا وَ لَكِنَّهُ مَاهِرٌ جِدًّا فِي طَبْخِ الطَّعَامِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هُوَ بَطِيْئٌ قَلِيلًا وَ لَكِنَّهُ مَاهِرٌ جِدًّا فِي طَبْخِ الطَّعَامِ.",
+      "translationUz": "U ozgina sekin, lekin ovqat pishirishda juda mohir.",
+      "next": "لِذَلِكَ أَطْعِمَتُهُ لَذِيْذَةٌ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِذَلِكَ أَطْعِمَتُهُ لَذِيْذَةٌ.",
+      "translationUz": "Shuning uchun uning ovqatlari lazzatlidir.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا مِهْنَةُ الرَّجُلِ؟",
+    "كَيْفَ شَكْلُهُ؟",
+    "أَيْنَ يَعْمَلُ؟",
+    "كَيْفَ يَعْمَلُ؟",
+    "لِمَاذَا أَطْعِمَتُهُ لَذِيذَةٌ؟"
+  ],
+  "context": {
+    "main_topic": "skilled_cook_description",
+    "pattern": "physical_description_and_job → workplace → skill_description → result_of_skill"
+  }
+}

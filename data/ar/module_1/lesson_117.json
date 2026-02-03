@@ -1,0 +1,56 @@
+{
+  "id": "ar_m1_l117",
+  "language": "ar",
+  "module": 1,
+  "lesson": 117,
+  "title": "تَعَلُّمُ الأَرْقَامِ",
+
+  "summary": "Raqamlarni o‘rganish va “nima o‘rganding?” kabi oddiy savol-javoblar orqali sanashni mashq qilish",
+
+  "vocabulary": [
+    { "word": "أَرْقَامٌ", "translationUz": "raqamlar" },
+    { "word": "وَاحِدٌ", "translationUz": "bir" },
+    { "word": "اثْنَانِ", "translationUz": "ikki" },
+    { "word": "ثَلَاثَةٌ", "translationUz": "uch" },
+    { "word": "عَشَرَةٌ", "translationUz": "o‘n" },
+    { "word": "مَاذَا", "translationUz": "nima" }
+  ],
+
+  "dialogue": [
+    {
+      "speaker": "الأَبُ",
+      "text": "مَاذَا تَعَلَّمْتِ فِي الْمَدْرَسَةِ؟",
+      "translationUz": "Maktabda nima o‘rganding?",
+      "next": "تَعَلَّمْتُ الأَرْقَامَ."
+    },
+    {
+      "speaker": "الْبِنْتُ",
+      "text": "تَعَلَّمْتُ الأَرْقَامَ.",
+      "translationUz": "Raqamlarni o‘rgandim.",
+      "next": "هَلْ تَعْرِفِينَ الْعَدَّ؟"
+    },
+    {
+      "speaker": "الأَبُ",
+      "text": "هَلْ تَعْرِفِينَ الْعَدَّ؟",
+      "translationUz": "Sanay olasanmi?",
+      "next": "نَعَمْ، وَاحِدٌ، اثْنَانِ، ثَلَاثَةٌ."
+    },
+    {
+      "speaker": "الْبِنْتُ",
+      "text": "نَعَمْ، وَاحِدٌ، اثْنَانِ، ثَلَاثَةٌ.",
+      "translationUz": "Ha, bir, ikki, uch.",
+      "next": null
+    }
+  ],
+
+  "followups": [
+    "هَلْ تُحِبُّ الأَرْقَامَ؟",
+    "كَمْ رَقْمًا تَعْرِفُ؟",
+    "هَلْ تَعُدُّ إِلَى عَشَرَةٍ؟"
+  ],
+
+  "context": {
+    "main_topic": "numbers",
+    "pattern": "question → answer → question → answer"
+  }
+}

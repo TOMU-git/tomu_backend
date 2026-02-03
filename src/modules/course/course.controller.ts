@@ -11,18 +11,22 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  UseGuards,
 } from "@nestjs/common";
 import { ID } from "src/common/types/type";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { UpdateCourseDto } from "./dto/update-course.dto";
 import { ResData } from "src/lib/resData";
 import { ICourseService } from "./interfaces/course.service";
-import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { RoleEnum } from "src/common/enums/enum";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { fileOption } from "src/lib/file";
 import { Auth } from "src/common/decorator/auth.decorator";
 import { Course } from "./entities/course.entity";
+import { CurrentUser } from "src/common/decorator/CurrentUser.decorator";
+import { User } from "../user/entities/user.entity";
+import { OptionalAuthGuard } from "../shared/guards/optional-auth.guard";
 
 @ApiTags("course")
 @Controller("course")
@@ -30,7 +34,7 @@ export class CourseController {
   constructor(
     @Inject("ICourseService")
     private readonly courseService: ICourseService,
-  ) {}
+  ) { }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
   @Post()
@@ -67,14 +71,26 @@ export class CourseController {
     return await this.courseService.create(createCourseDto, file);
   }
 
+  @UseGuards(OptionalAuthGuard)
+  @ApiBearerAuth()
   @Get()
-  async findAll(): Promise<ResData<Array<Course>>> {
-    return await this.courseService.findAll();
+  async findAll(
+    @CurrentUser() user?: User,
+  ): Promise<ResData<Array<Course & { alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number; isActiveForUser: boolean; subscriptionStatus: string; startedAt: Date | null; endedAt: Date | null }>>> {
+    return await this.courseService.findAll(user);
   }
 
+  @UseGuards(OptionalAuthGuard)
+  @ApiBearerAuth()
   @Get(":id")
-  async findOne(@Param("id", ParseIntPipe) id: ID): Promise<ResData<Course>> {
-    return await this.courseService.findOneById(id);
+  async findOne(
+    @Param("id", ParseIntPipe) id: ID,
+    @CurrentUser() user?: User,
+  ): Promise<ResData<Course & { isActiveForUser: boolean; subscriptionStatus: string; alphabetCount: number; lessonCount: number; grammarCount: number; homeworkCount: number }>> {
+    console.log('[CourseController.findOne] Request received - Course ID:', id, 'User:', user ? `ID: ${user.id}, Email/Phone: ${user.phoneNumber || 'N/A'}` : 'NOT AUTHENTICATED');
+    const result = await this.courseService.findOneById(id, user);
+    console.log('[CourseController.findOne] Response - isActiveForUser:', result.data?.isActiveForUser);
+    return result;
   }
 
   @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN)
@@ -99,6 +115,11 @@ export class CourseController {
         },
         isActive: {
           type: "boolean"
+        },
+        lang: {
+          type: "string",
+          example: "ar",
+          description: "Kursning qaysi tilda mavjudligi"
         },
       },
     },

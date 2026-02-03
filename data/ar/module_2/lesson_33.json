@@ -1,0 +1,75 @@
+{
+  "id": "ar_m2_l33",
+  "language": "ar",
+  "module": 2,
+  "lesson": 33,
+  "title": "اَلصَّدِيْقُ الْمَرِيْضُ",
+  "summary": "Yo'qob va Ahmad o'rtasida juda issiq kunda dengizga borish taklifi va Ahmadning bosh og'rig'i tufayli rad etishi haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلصَّدِيْقُ", "translationUz": "do'st"},
+    {"word": "الْمَرِيْضُ", "translationUz": "kasal"},
+    {"word": "يَعْقُوبُ", "translationUz": "Yo'qob"},
+    {"word": "حَارٌّ", "translationUz": "issiq"},
+    {"word": "هَلْ نَذْهَبُ", "translationUz": "boramizmi"},
+    {"word": "الْبَحْرِ", "translationUz": "dengiz"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "أُرِيدُ", "translationUz": "xohlayman"},
+    {"word": "الذَّهَابَ", "translationUz": "borishni"},
+    {"word": "لَكِنِّي", "translationUz": "lekin men"},
+    {"word": "أَشْعُرُ", "translationUz": "his qilaman"},
+    {"word": "بِأَلَمٍ", "translationUz": "og'riq bilan"},
+    {"word": "شَدِيدٍ", "translationUz": "qattiq"},
+    {"word": "رَأْسِي", "translationUz": "boshim"},
+    {"word": "شَفَاكَ اللهُ", "translationUz": "Alloh senga shifo bersin"},
+    {"word": "اَللَّهُمَّ آمِينَ", "translationUz": "Allohim, omiyn"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "اَلْيَوْمَ حَارٌّ جِدًّا، هَلْ نَذْهَبُ إِلَى الْبَحْرِ يَا أَحْمَدُ؟",
+      "translationUz": "Bugun juda issiq, dengizga boramizmi, Ahmad?",
+      "next": " أَحْمَدُ: لَا يَا يَعْقُوبُ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "لَا يَا يَعْقُوبُ.",
+      "translationUz": "Yo'q, Yo'qob.",
+      "next": " يَعْقُوبُ: لِمَاذَا يَا أَحْمَدُ؟"
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "لِمَاذَا يَا أَحْمَدُ？",
+      "translationUz": "Nega, Ahmad?",
+      "next": " أَحْمَدُ: أُرِيدُ الذَّهَابَ، لَكِنِّي أَشْعُرُ بِأَلَمٍ شَدِيدٍ فِي رَأْسِي."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "أُرِيدُ الذَّهَابَ، لَكِنِّي أَشْعُرُ بِأَلَمٍ شَدِيدٍ فِي رَأْسِي.",
+      "translationUz": "Men borishni xohlayman, lekin boshimda qattiq og'riq his qilyapman.",
+      "next": " يَعْقُوبُ: شَفَاكَ اللهُ يَا صَدِيقِي."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "شَفَاكَ اللهُ يَا صَدِيقِي.",
+      "translationUz": "Alloh senga shifo bersin, do'stim.",
+      "next": " أَحْمَدُ: اَللَّهُمَّ آمِينَ."
+    },
+    {
+      "speaker": "أَحْمَدُ",
+      "text": "اَللَّهُمَّ آمِينَ.",
+      "translationUz": "Allohim, omiyn.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ الْيَوْمُ؟",
+    "مَاذَا يَقْتَرِحُ يَعْقُوبُ؟",
+    "هَلْ يَقْبَلُ أَحْمَدُ الِاقْتِرَاحَ؟",
+    "مَاذَا يُشْكِي أَحْمَدُ؟",
+    "مَاذَا يَقُولُ يَعْقُوبُ لِأَحْمَدَ؟"
+  ],
+  "context": {
+    "main_topic": "sick_friend_conversation",
+    "pattern": "weather_observation_and_suggestion → refusal → reason_inquiry → explanation_and_symptoms → get_well_wish → amen"
+  }
+}

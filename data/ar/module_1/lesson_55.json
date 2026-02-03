@@ -1,0 +1,59 @@
+{
+    "id": "ar_m1_l55",
+    "language": "ar",
+    "module": 1,
+    "lesson": 55,
+    "title": "اَلْجَزَّارُونَ",
+    "summary": "Qassoblar va ularning bayram uchun qo'zini so'yishi haqida suhbat.",
+    "vocabulary": [
+      { "word": "جَزَّار", "translationUz": "qassob" },
+      { "word": "يَذْبَح", "translationUz": "so'yadi" },
+      { "word": "خَرُوف", "translationUz": "qo'zi" },
+      { "word": "عِيد", "translationUz": "bayram" },
+      { "word": "أُولَئِكَ", "translationUz": "ular" },
+      { "word": "لَا أَعْرِف", "translationUz": "bilmayman" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "هَلْ تَعْرِفُ أُولَئِكَ الرِّجَالَ؟",
+        "translationUz": "Bu erkaklarni tanaysanmi?",
+        "next": "لاَ، لَا أَعْرِفُ مَنْ هُمْ."
+      },
+      {
+        "speaker": "مُحَمَّدٌ",
+        "text": "لاَ، لَا أَعْرِفُ مَنْ هُمْ.",
+        "translationUz": "Yo'q, ular kimligini bilmayman.",
+        "next": "أُولَئِكَ جَزَّارُونَ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "أُولَئِكَ جَزَّارُونَ.",
+        "translationUz": "Ular qassoblar.",
+        "next": "مَاذَا يَفْعَلُونَ هُنَا؟"
+      },
+      {
+        "speaker": "مُحَمَّدٌ",
+        "text": "مَاذَا يَفْعَلُونَ هُنَا؟",
+        "translationUz": "Ular bu yerda nima qilishyapti?",
+        "next": "يَذْبَحُ أُولَئِكَ الْجَزَّارُونَ الْخَرُوفَ لِلْعِيدِ."
+      },
+      {
+        "speaker": "سَلِيمٌ",
+        "text": "يَذْبَحُ أُولَئِكَ الْجَزَّارُونَ الْخَرُوفَ لِلْعِيدِ.",
+        "translationUz": "U qassoblar bayram uchun qo'zini so'yishyapti.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَعْرِفُ جَزَّارًا؟",
+      "مَاذَا يَفْعَلُ الْجَزَّارُ؟",
+      "لِمَاذَا يَذْبَحُونَ الْخَرُوفَ؟",
+      "هَلْ تَأْكُلُ لَحْمَ الْخَرُوفِ؟",
+      "أَيُّ عِيدٍ يَحْتَفِلُونَ بِهِ؟"
+    ],
+    "context": {
+      "main_topic": "butchers_activity",
+      "pattern": "ask_if_know → deny → identify → ask_what_doing → explain"
+    }
+  }

@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l14",
+  "language": "ar",
+  "module": 2,
+  "lesson": 14,
+  "title": "مَدِيْنَةُ دِمَشْقَ",
+  "summary": "Muhammad va Mahmud o'rtasida Suriyaning poytaxti Damashq haqidagi bilimlarini sinash haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "مَدِيْنَةُ", "translationUz": "shahar"},
+    {"word": "دِمَشْقَ", "translationUz": "Damashq"},
+    {"word": "مَحْمُودُ", "translationUz": "Mahmud"},
+    {"word": "عَاصِمَةُ", "translationUz": "poytaxt"},
+    {"word": "سُورِيَا", "translationUz": "Suriya"},
+    {"word": "مَاذَا", "translationUz": "nima"},
+    {"word": "عَنْهَا", "translationUz": "u haqda"},
+    {"word": "ذَاتُ", "translationUz": "ega bo'lgan"},
+    {"word": "تَارِيخٍ", "translationUz": "tarix"},
+    {"word": "عَتِيقٍ", "translationUz": "qadimiy, qadimgi"},
+    {"word": "صَدِيقِي", "translationUz": "do'stim"},
+    {"word": "عَاقِلٌ", "translationUz": "aql-idrokli, aqlli"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَلْ تَعْرِفُ دِمَشْقَ يَا مَحْمُودُ؟",
+      "translationUz": "Damashqni bilasizmi, Mahmud?",
+      "next": " نَعَمْ، إِنَّهَا عَاصِمَةُ سُورِيَا."
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "نَعَمْ، إِنَّهَا عَاصِمَةُ سُورِيَا.",
+      "translationUz": "Ha, u Suriyaning poytaxti.",
+      "next": " مُحَمَّدٌ: مَاذَا تَعْرِفُ أَيْضًا عَنْهَا؟"
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "مَاذَا تَعْرِفُ أَيْضًا عَنْهَا؟",
+      "translationUz": "U haqda yana nima bilasiz?",
+      "next": " دِمَشْقُ مَدِينَةٌ كَبِيرَةٌ ذَاتُ تَارِيخٍ عَتِيقٍ."
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "دِمَشْقُ مَدِينَةٌ كَبِيرَةٌ ذَاتُ تَارِيخٍ عَتِيقٍ.",
+      "translationUz": "Damashq katta va qadimiy tarixga ega shahar.",
+      "next": " مُحَمَّدٌ: يَا صَدِيقِي، أَنْتَ عَاقِلٌ جِدًّا."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "يَا صَدِيقِي، أَنْتَ عَاقِلٌ جِدًّا.",
+      "translationUz": "Ey do'stim, sen juda aqlidsan.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ مُحَمَّدٌ؟",
+    "مَاذَا يُجِيبُ مَحْمُودٌ؟",
+    "مَاذَا يَعْرِفُ مَحْمُودٌ عَنْ دِمَشْقَ؟",
+    "كَيْفَ يَثْنِي مُحَمَّدٌ عَلَى صَدِيقِهِ؟",
+    "هَلْ زُرْتَ دِمَشْقَ مِنْ قَبْلُ؟"
+  ],
+  "context": {
+    "main_topic": "damascus_knowledge",
+    "pattern": "question_about_city → capital_response → further_inquiry → additional_info → compliment"
+  }
+}

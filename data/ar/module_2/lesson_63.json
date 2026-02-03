@@ -1,0 +1,62 @@
+{
+  "id": "ar_m2_l63",
+  "language": "ar",
+  "module": 2,
+  "lesson": 63,
+  "title": "اَلتِّلْفَازُ",
+  "summary": "Televizorning zamonamizda mashhurligi, uning kundalik yangiliklarni tarqatishi va turli mavzular uchun maxsus kanallarga ega bo'lishi haqida.",
+  "vocabulary": [
+    {"word": "اَلتِّلْفَازُ", "translationUz": "televizor"},
+    {"word": "مَشْهُورٌ", "translationUz": "mashhur"},
+    {"word": "زَمَانِنَا", "translationUz": "bizning davrimiz"},
+    {"word": "لِمَاذَا", "translationUz": "nega"},
+    {"word": "هَكَذَا", "translationUz": "shunday"},
+    {"word": "يَنْشُرُ", "translationUz": "tarqatadi"},
+    {"word": "الْأَخْبَارَ", "translationUz": "yangiliklarni"},
+    {"word": "الْعَالَمِيَّةَ", "translationUz": "jahon"},
+    {"word": "الْمَحَلِّيَّةَ", "translationUz": "mahalliy"},
+    {"word": "يَوْمِيًّا", "translationUz": "kundalik"},
+    {"word": "قَنَوَاتٌ", "translationUz": "kanallar"},
+    {"word": "خَاصَّةٌ", "translationUz": "maxsus"},
+    {"word": "كُلِّ", "translationUz": "har bir"},
+    {"word": "مَوْضُوعٍ", "translationUz": "mavzu"},
+    {"word": "مُخْتَلِفٍ", "translationUz": "turlicha"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ التِّلْفَازَ مَشْهُورٌ جِدًّا فِي زَمَانِنَا.",
+      "translationUz": "Albatta televizor bizning davrimizda juda mashhur.",
+      "next": "لِمَاذَا التِّلْفَازُ مَشْهُورٌ هَكَذَا؟"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "لِمَاذَا التِّلْفَازُ مَشْهُورٌ هَكَذَا؟",
+      "translationUz": "Nega televizor shunday mashhur?",
+      "next": " لِأَنَّهُ يَنْشُرُ الْأَخْبَارَ الْعَالَمِيَّةَ وَ الْمَحَلِّيَّةَ يَوْمِيًّا،"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " لِأَنَّهُ يَنْشُرُ الْأَخْبَارَ الْعَالَمِيَّةَ وَ الْمَحَلِّيَّةَ يَوْمِيًّا،",
+      "translationUz": "Chunki u jahon va mahalliy yangiliklarni kundalik tarqatadi,",
+      "next": " وَ فِيهِ قَنَوَاتٌ خَاصَّةٌ لِكُلِّ مَوْضُوعٍ مُخْتَلِفٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " وَ فِيهِ قَنَوَاتٌ خَاصَّةٌ لِكُلِّ مَوْضُوعٍ مُخْتَلِفٍ.",
+      "translationUz": "va unda har bir turlicha mavzu uchun maxsus kanallar bor.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ هُوَ التِّلْفَازُ فِي زَمَانِنَا؟",
+    "لِمَاذَا هُوَ مَشْهُورٌ؟",
+    "مَاذَا يَفْعَلُ التِّلْفَازُ؟",
+    "مَا هِيَ الْقَنَوَاتُ الْخَاصَّةُ فِي التِّلْفَازِ؟",
+    "هَلْ تُشَاهِدُ التِّلْفَازَ كَثِيرًا؟"
+  ],
+  "context": {
+    "main_topic": "television_popularity",
+    "pattern": "popularity_statement → reason_question → news_dissemination → specialized_channels"
+  }
+}

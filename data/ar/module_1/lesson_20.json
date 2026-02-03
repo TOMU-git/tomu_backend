@@ -1,0 +1,54 @@
+{
+  "id": "ar_m1_l20",
+  "language": "ar",
+  "module": 1,
+  "lesson": 20,
+  "title": "رَجُلٌ غَرِيبٌ",
+  "summary": "Bog'ning kimga tegishli ekanligini so'rash va g'ayrioddiy vaziyatni muhokama qilish.",
+  "vocabulary": [
+    { "word": "حَدِيقَةٌ", "translationUz": "bog'" },
+    { "word": "لِلْأَطْفَالِ", "translationUz": "bolalar uchun" },
+    { "word": "رَجُلٌ", "translationUz": "erkak" },
+    { "word": "غَرِيبٌ", "translationUz": "g'alati" },
+    { "word": "كَلْبٌ", "translationUz": "it" },
+    { "word": "أُخْرُجْ", "translationUz": "chiq" },
+    { "word": "هُنَاكَ", "translationUz": "u yerda" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "زَيْدٌ",
+      "text": "لِمَنْ تِلْكَ الْحَدِيقَةُ يَا كَرِيمُ؟",
+      "translationUz": "Bu bog' kimga tegishli, Karim?",
+      "next": "تِلْكَ الْحَدِيقَةُ لِلْأَطْفَالِ."
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "تِلْكَ الْحَدِيقَةُ لِلْأَطْفَالِ.",
+      "translationUz": "Bu bog' bolalar uchun.",
+      "next": "لِمَاذَا هُنَاكَ ذَلِكَ رَجُلٌ مَعَ الْكَلْبِ؟"
+    },
+    {
+      "speaker": "زَيْدٌ",
+      "text": "لِمَاذَا هُنَاكَ ذَلِكَ رَجُلٌ مَعَ الْكَلْبِ؟",
+      "translationUz": "Nega u yerda it bilan bir erkak bor?",
+      "next": "يَا رَجُلُ أُخْرُجْ مِنْ هُنَاكَ!"
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "يَا رَجُلُ أُخْرُجْ مِنْ هُنَاكَ!",
+      "translationUz": "Ey erkak, u yerdan chiq!",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلِ الْحَدِيقَةُ جَمِيلَةٌ؟",
+    "مَاذَا يَفْعَلُ الْأَطْفَالُ فِي الْحَدِيقَةِ؟",
+    "هَلْ يُمْكِنُ لِلرِّجَالِ دُخُولُ حَدِيقَةِ الْأَطْفَالِ؟",
+    "لِمَاذَا الْكَلْبُ مَعَ الرَّجُلِ؟",
+    "هَلْ تَخَافُ مِنَ الْكِلَابِ؟"
+  ],
+  "context": {
+    "main_topic": "park_safety_strangers",
+    "pattern": "ask_owner → answer_owner → ask_about_stranger → command_to_leave"
+  }
+}

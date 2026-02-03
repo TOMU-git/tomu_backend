@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Voice Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 720px;
+        margin: 32px auto;
+        padding: 0 16px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 8px 0;
+      }
+      .log {
+        white-space: pre-wrap;
+        background: #f6f6f6;
+        padding: 8px;
+        border-radius: 6px;
+        min-height: 80px;
+      }
+      .messages {
+        margin-top: 16px;
+        border-top: 1px solid #ddd;
+        padding-top: 12px;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+      button {
+        padding: 10px 16px;
+        font-weight: 600;
+      }
+      .ptt {
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 6px;
+      }
+      .small {
+        font-size: 12px;
+        color: #666;
+      }
+      input,
+      select {
+        padding: 8px;
+      }
+    </style>
+    <script>
+      let mediaRecorder;
+      let chunks = [];
+      let sessionId = null;
+      let token = "";
+      let apiBase = "";
+      let isRecording = false;
+
+      async function init() {
+        apiBase = document.getElementById("api").value.trim();
+        token = document.getElementById("token").value.trim();
+        log("⚙️ API va token yangilandi");
+      }
+
+      function log(msg) {
+        // Log ni eskiroq ma'lumotlar uchun ishlatamiz
+      }
+
+      function setStatus(msg) {
+        const el = document.getElementById("status");
+        el.textContent = msg;
+      }
+
+      async function createSession() {
+        apiBase = document.getElementById("api").value.trim();
+        token = document.getElementById("token").value.trim();
+
+        if (!apiBase) {
+          setStatus("❌ API URL kiritilmagan");
+          return;
+        }
+
+        if (!token) {
+          setStatus("❌ Token kiritilmagan. Iltimos, JWT token kiriting.");
+          return;
+        }
+
+        const courseId = document.getElementById("course").value.trim() || null;
+        const sessionLanguage = "ar";
+
+        try {
+          const res = await fetch(`${apiBase}/ai/chat/sessions`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              courseId: courseId ? Number(courseId) : null,
+              sessionLanguage,
+            }),
+          });
+
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => null);
+            const errorMessage = errorData?.message || `Xato: ${res.status}`;
+            setStatus(`❌ ${errorMessage}`);
+            console.error("Sessiya yaratish xatosi:", {
+              status: res.status,
+              error: errorData,
+            });
+            return;
+          }
+
+          const json = await res.json();
+          if (json?.data?.id) {
+            sessionId = json.data.id;
+            document.getElementById("session").textContent =
+              `Session: ${sessionId}`;
+            setStatus("✅ Sessiya yaratildi");
+          } else {
+            setStatus("❌ Sessiya yaratilmadi");
+          }
+        } catch (error) {
+          setStatus(`❌ Tarmoq xatosi: ${error.message}`);
+          console.error("Network error:", error);
+        }
+      }
+
+      async function startRecording() {
+        chunks = [];
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          const mime = MediaRecorder.isTypeSupported("audio/webm")
+            ? "audio/webm"
+            : "audio/ogg";
+          mediaRecorder = new MediaRecorder(stream, { mimeType: mime });
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) chunks.push(e.data);
+          };
+          mediaRecorder.onerror = (e) => {
+            log("❌ MediaRecorder xato: " + (e.error?.message || "unknown"));
+          };
+          mediaRecorder.onstop = onStop;
+          // timeslice bilan yozib boramiz (ba'zi brauzerlarda bo'sh blob muammosini oldini oladi)
+          mediaRecorder.start(250);
+          isRecording = true;
+          // Tugma tashqarisida qo'yib yuborish holatlari uchun global listenerlar
+          const stopOnce = () => {
+            try {
+              stopRecording();
+            } catch {}
+          };
+          document.addEventListener("mouseup", stopOnce, { once: true });
+          document.addEventListener("touchend", stopOnce, { once: true });
+          setStatus("🎙️ Yozish boshlandi...");
+        } catch (e) {
+          setStatus("❌ Mikrofon xatolik");
+        }
+      }
+
+      async function stopRecording() {
+        if (!isRecording) return;
+        isRecording = false;
+        // Tugma qo'yib yuborilganda holatni darhol yangilaymiz
+        setStatus("⏳ Jarayonda...");
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          try {
+            mediaRecorder.stop();
+          } catch {}
+        }
+      }
+
+      async function onStop() {
+        if (!sessionId) {
+          setStatus("❌ Sessiya yaratilmagan. Avval sessiya yarating.");
+          return;
+        }
+        if (!apiBase || !token) {
+          setStatus("❌ API URL yoki token kiritilmagan");
+          return;
+        }
+        const blob = new Blob(chunks, {
+          type: chunks[0]?.type || "audio/webm",
+        });
+        if (!blob || blob.size === 0) {
+          setStatus("❌ Audio yozilmadi");
+          return;
+        }
+        const fd = new FormData();
+        fd.append("file", blob, "voice.webm");
+        fd.append("sessionId", String(sessionId));
+        // courseId endi qabul qilinmaydi - session'dan olinadi
+
+        try {
+          const res = await fetch(`${apiBase}/ai/chat/voice`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: fd,
+          });
+
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => null);
+            const errorMessage =
+              errorData?.data?.message ||
+              errorData?.message ||
+              `Xato: ${res.status}`;
+            setStatus(`❌ ${errorMessage}`);
+            console.error("Voice request error:", {
+              status: res.status,
+              error: errorData,
+            });
+            return;
+          }
+          const json = await res.json();
+          if (json?.data) {
+            renderMessage(json.data);
+            setStatus("✅ Javob olindi");
+          } else {
+            setStatus("❌ Xato: Javob ma'lumotlari topilmadi");
+          }
+        } catch (error) {
+          setStatus(`❌ Tarmoq xatosi: ${error.message}`);
+          console.error("Network error:", error);
+        }
+      }
+
+      function renderMessage(msg) {
+        const wrap = document.getElementById("messages");
+
+        // Avval eski message'larni tozalaymiz
+        wrap.innerHTML = '';
+
+        // Oxirgi 25 ta message'larni ko'rsatamiz (API dan keladi)
+        // CSS flex-direction: column-reverse tufayli, array'ni to'g'ri tartibda ko'rib chiqamiz
+        // va appendChild qilamiz - CSS o'zi teskari tartibda ko'rsatadi
+        if (msg.messages && Array.isArray(msg.messages)) {
+          // Array'ni to'g'ri tartibda ko'rib chiqamiz (CSS column-reverse teskari ko'rsatadi)
+          msg.messages.forEach(message => {
+            const div = document.createElement("div");
+            div.className = "row";
+
+            const sender = message.senderType === 'user' ? '👤 User' : '🤖 AI';
+            let displayText = `[${new Date(message.createdAt).toLocaleTimeString()}] ${sender}: `;
+
+            if (message.senderType === 'user') {
+              displayText += message.originalText || message.aiResponseText || '';
+            } else {
+              displayText += message.aiResponseText || '';
+              // O'zbekcha tarjimani qo'shish
+              if (message.aiResponseUzbek && message.aiResponseUzbek.trim()) {
+                displayText += `\n[UZ] ${message.aiResponseUzbek}`;
+              }
+            }
+
+            const text = document.createElement("div");
+            text.textContent = displayText;
+            text.style.whiteSpace = "pre-wrap";
+            div.appendChild(text);
+
+            // Audio faqat AI xabarlari uchun
+            if (message.senderType === 'ai' && message.audioUrl) {
+              const audio = document.createElement("audio");
+              audio.controls = true;
+              audio.src = message.audioUrl;
+              audio.style.width = "100%";
+              div.appendChild(audio);
+            }
+
+            // appendChild - CSS column-reverse tufayli eng yangi tepada ko'rinadi
+            wrap.appendChild(div);
+          });
+        }
+
+        // Agar yangi javob bo'lsa, uni ham qo'shamiz
+        // CSS column-reverse tufayli eng yangi tepada ko'rinadi
+        if (msg.aiResponseText && !msg.messages) {
+          const div = document.createElement("div");
+          div.className = "row";
+          const text = document.createElement("div");
+          let displayText = `[${new Date(msg.createdAt).toLocaleTimeString()}] 🤖 AI: ${msg.aiResponseText || ""}`;
+          // O'zbekcha tarjimani qo'shish
+          if (msg.aiResponseUzbek && msg.aiResponseUzbek.trim()) {
+            displayText += `\n[UZ] ${msg.aiResponseUzbek}`;
+          }
+          text.textContent = displayText;
+          text.style.whiteSpace = "pre-wrap";
+          div.appendChild(text);
+          if (msg.audioUrl) {
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = msg.audioUrl;
+            audio.style.width = "100%";
+            div.appendChild(audio);
+          }
+          // appendChild - CSS column-reverse tufayli eng yangi tepada ko'rinadi
+          wrap.appendChild(div);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h2>AI Voice Demo (PTT)</h2>
+    <div class="row">
+      <input
+        id="api"
+        placeholder="API base (e.g. http://localhost:3000)"
+        style="flex: 1"
+      />
+      <input id="token" placeholder="Bearer token" style="flex: 1" />
+      <input
+        id="course"
+        placeholder="courseId (optional)"
+        style="width: 140px"
+      />
+      <button onclick="init()">Init</button>
+    </div>
+    <div class="row">
+      <button onclick="createSession()">Sessiya yaratish</button>
+      <span id="session" class="small"></span>
+    </div>
+    <div class="row">
+      <div style="flex: 1"></div>
+      <button
+        class="ptt"
+        onmousedown="startRecording()"
+        onmouseup="stopRecording()"
+        ontouchstart="startRecording()"
+        ontouchend="stopRecording()"
+      >
+        Bosib gapiring
+      </button>
+      <span id="status" class="small" style="margin-left: 12px"></span>
+    </div>
+
+    <div class="messages" id="messages"></div>
+  </body>
+</html>

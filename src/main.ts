@@ -1,4 +1,4 @@
-import { HttpAdapterHost, NestFactory } from "@nestjs/core";
+import { HttpAdapterHost, NestFactory, ModuleRef } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { config } from "./common/config/index";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -14,9 +14,15 @@ async function bootstrap() {
     credentials: true,
   });
   const httpAdapterHost = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
+  const moduleRef = app.get(ModuleRef);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, moduleRef));
 
   app.setGlobalPrefix("api");
+
+  // ✅ Static assets serving - /public papkani serve qilish
+  app.useStaticAssets('public', {
+    prefix: '/public',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

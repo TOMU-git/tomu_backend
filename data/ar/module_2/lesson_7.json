@@ -1,0 +1,47 @@
+{
+  "id": "ar_m2_l7",
+  "language": "ar",
+  "module": 2,
+  "lesson": 7,
+  "title": "تِلْمِيْذٌ مُجْتَهِدٌ",
+  "summary": "Boshlang'ich maktabda o'qiydigan, o'qishga intiluvchi va ustozlarini yaxshi ko'radigan akasi Ahmad haqida.",
+  "vocabulary": [
+    {"word": "تِلْمِيْذٌ", "translationUz": "o'quvchi"},
+    {"word": "مُجْتَهِدٌ", "translationUz": "tirishqoq, intiluvchan"},
+    {"word": "إِنَّ", "translationUz": "albatta, chunki"},
+    {"word": "الْمُتَفَوِّقَ", "translationUz": "o'ziga tortgan, yetakchi"},
+    {"word": "الَّذِي", "translationUz": "kim, qaysi"},
+    {"word": "يَدْرُسُ", "translationUz": "o'qiydi"},
+    {"word": "الْإِبْتِدَائِيَّةِ", "translationUz": "boshlang'ich"},
+    {"word": "أَخِي", "translationUz": "mening akam"},
+    {"word": "كُلَّ يَوْمٍ", "translationUz": "har kuni"},
+    {"word": "دُرُوسَهُ", "translationUz": "uning darslari"},
+    {"word": "يُحِبُّ", "translationUz": "yoqtiradi"},
+    {"word": "أَسَاتِذَهُ", "translationUz": "uning ustozlari"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "إِنَّ الـتِّلْمِيْذَ الْمُتَفَوِّقَ الَّذِي يَدْرُسُ فِي الْمَدْرَسَةِ الْإِبْتِدَائِيَّةِ هُوَ أَخِي و اسْمُهُ أَحْمَدُ",
+      "translationUz": "Albatta, boshlang'ich maktabda o'qiydigan yetakchi o'quvchi mening akam va uning ismi Ahmad.",
+      "next": " هُوَ تِلْمِيْذٌ مُجْتَهِدٌ و كُلَّ يَوْمٍ يَدْرُسُ دُرُوسَهُ و يُحِبُّ أَسَاتِذَهُ"
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": " هُوَ تِلْمِيْذٌ مُجْتَهِدٌ و كُلَّ يَوْمٍ يَدْرُسُ دُرُوسَهُ و يُحِبُّ أَسَاتِذَهُ",
+      "translationUz": "U tirishqoq o'quvchi va har kuni darslarini o'qiydi va ustozlarini yaxshi ko'radi.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَنْ هُوَ التِّلْمِيذُ الْمُتَفَوِّقُ؟",
+    "أَيْنَ يَدْرُسُ أَحْمَدُ؟",
+    "كَيْفَ هُوَ أَحْمَدُ كَتَلْمِيذٍ؟",
+    "مَاذَا يَفْعَلُ كُلَّ يَوْمٍ؟",
+    "مَاذَا يُحِبُّ أَحْمَدُ؟"
+  ],
+  "context": {
+    "main_topic": "hardworking_student",
+    "pattern": "introduction_of_student → description_of_qualities"
+  }
+}

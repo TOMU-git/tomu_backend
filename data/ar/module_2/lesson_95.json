@@ -1,0 +1,64 @@
+{
+  "id": "ar_m2_l95",
+  "language": "ar",
+  "module": 2,
+  "lesson": 95,
+  "title": "يَعْقُوبُ وَأَصْدِقَائُهُ 1",
+  "summary": "Do‘stlar bilan ochlikni his qilish va restoranga borib aniq taom (O‘zbek oshi va salat) va ichimlik buyurtma qilish rejasi.",
+  "vocabulary": [
+    { "word": "جَوْعَانُ", "translationUz": "och" },
+    { "word": "جِيَاعٌ", "translationUz": "och (ko‘plik)" },
+    { "word": "كَمِثْلِ", "translationUz": "kabi, o‘xshab" },
+    { "word": "مَطْعَمٌ", "translationUz": "restoran" },
+    { "word": "أَرُزُّ بُخَارِيٌّ", "translationUz": "buxoro oshi" },
+    { "word": "سَلَطَةٌ", "translationUz": "salat" },
+    { "word": "عَصِيرٌ", "translationUz": "sharbat" },
+    { "word": "خَوْخٌ", "translationUz": "shaftoli" },
+    { "word": "فِكْرَةٌ", "translationUz": "g‘oya, fikr" },
+    { "word": "رَائِعٌ", "translationUz": "ajoyib" },
+    { "word": "هَيَّا بِنَا", "translationUz": "haydi, ketdik" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "أَنَا جَوْعَانُ جِدًّا يَا أَصْدِقَائِي.",
+      "translationUz": "Men juda ochman, do‘stlarim.",
+      "next": "نَحْنُ أَيْضًا جِيَاعٌ كَمِثْلِكَ."
+    },
+    {
+      "speaker": "الأَصْدِقَاءُ",
+      "text": "نَحْنُ أَيْضًا جِيَاعٌ كَمِثْلِكَ.",
+      "translationUz": "Biz ham sen kabi ochmiz.",
+      "next": "هَيَّا نَذْهَبُ إِلَى الْمَطْعَمِ وَ نَأْكُلُ أَرُزَّ الْبُخَارِيِّ مَعَ سَلَطَةِ الطَّمَاطِمِ وَ الْخِيَارِ، وَنَشْرَبُ عَصِيرَ الْخَوْخِ."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "هَيَّا نَذْهَبُ إِلَى الْمَطْعَمِ وَ نَأْكُلُ أَرُزَّ الْبُخَارِيِّ مَعَ سَلَطَةِ الطَّمَاطِمِ وَ الْخِيَارِ، وَنَشْرَبُ عَصِيرَ الْخَوْخِ.",
+      "translationUz": "Haydi restoranga boraylik va pomidor-bodring salati bilan buxoro oshi yeylik va shaftoli sharbati ichaylik.",
+      "next": "فِكْرَةٌ رَائِعَةٌ يَا يَعْقُوبُ."
+    },
+    {
+      "speaker": "الأَصْدِقَاءُ",
+      "text": "فِكْرَةٌ رَائِعَةٌ يَا يَعْقُوبُ.",
+      "translationUz": "Ajoyib fikr, Yoqub.",
+      "next": "هَيَّا بِنَا يَا أَصْدِقَائِي."
+    },
+    {
+      "speaker": "يَعْقُوبُ",
+      "text": "هَيَّا بِنَا يَا أَصْdِقَائِي.",
+      "translationUz": "Haydi ketdik, do‘stlarim.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ هَذَا الْمَطْعَمُ؟",
+    "هَلْ تُحِبُّ الْأَرُزَّ الْبُخَارِيَّ؟",
+    "مَاذَا تَأْكُلُ فِي الْمَطْعَمِ عَادَةً؟",
+    "مَنْ يَدْفَعُ فِي الْيَوْمِ؟",
+    "كَيْفَ طَعْمُ عَصِيرِ الْخَوْخِ؟"
+  ],
+  "context": {
+    "main_topic": "friends_hunger_plan",
+    "pattern": "expression_of_hunger → agreement_and_similarity → suggestion_of_specific_meal → approval → call_to_action"
+  }
+}

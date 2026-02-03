@@ -1,0 +1,50 @@
+{
+    "id": "ar_m1_l70",
+    "language": "ar",
+    "module": 1,
+    "lesson": 70,
+    "title": "أَنْوَاعُ الْعِنَبِ",
+    "summary": "Turli xil uzum turlari va O'zbekiston uzumining mashhurligi haqida.",
+    "vocabulary": [
+      { "word": "أَنْوَاع", "translationUz": "turlar" },
+      { "word": "عِنَب", "translationUz": "uzum" },
+      { "word": "أَلْوَان", "translationUz": "ranglar" },
+      { "word": "أَحْمَر", "translationUz": "qizil" },
+      { "word": "أَصْفَر", "translationUz": "sariq" },
+      { "word": "أَسْوَد", "translationUz": "qora" },
+      { "word": "أَبْيَض", "translationUz": "oq" },
+      { "word": "عَسَل", "translationUz": "asal" },
+      { "word": "مَشْهُور", "translationUz": "mashhur" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "تُوجَدُ أَنْوَاعٌ وَ أَلْوَانٌ مُخْتَلِفَةٌ مِنَ العِنَبِ.",
+        "translationUz": "Uzumning turli xil turlari va ranglari mavjud.",
+        "next": "مِثَالًا : عِنَبٌ أَحْمَرُ، عِنَبٌ أَصْفَرُ، عِنَبٌ أَسْوَدُ، وَعِنَبٌ أَبْيَضُ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "مِثَالًا : عِنَبٌ أَحْمَرُ، عِنَبٌ أَصْفَرُ، عِنَبٌ أَسْوَدُ، وَعِنَبٌ أَبْيَضُ.",
+        "translationUz": "Masalan: qizil uzum, sariq uzum, qora uzum va oq uzum.",
+        "next": "عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "عِنَبُ أُوزْبَكِسْتَانَ كَالْعَسَلِ،وَ هُوَ مَشْهُورٌ فِي الْعَالَمِ.",
+        "translationUz": "O'zbekiston uzumi asal kabi va u butun dunyoda mashhur.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْعِنَبَ؟",
+      "أَيُّ نَوْعِ الْعِنَبِ تُفَضِّلُ؟",
+      "مَا هُوَ أَطْيَبُ الْعِنَبِ فِي نَظَرِكَ؟",
+      "هَلْ تَأْكُلُ الْعِنَبَ كُلَّ يَوْمٍ؟",
+      "لِمَاذَا عِنَبُ أُوزْبَكِسْتَانَ مَشْهُورٌ؟"
+    ],
+    "context": {
+      "main_topic": "grape_varieties",
+      "pattern": "narration → narration → narration"
+    }
+  }

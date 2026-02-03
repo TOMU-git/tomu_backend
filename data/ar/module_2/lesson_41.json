@@ -1,0 +1,65 @@
+{
+  "id": "ar_m2_l41",
+  "language": "ar",
+  "module": 2,
+  "lesson": 41,
+  "title": "سَلَطَةٌ شَهِيَّةٌ",
+  "summary": "Bola va onasi o'rtasida salatning tarkibi va uni yeyish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "سَلَطَةٌ", "translationUz": "salat"},
+    {"word": "شَهِيَّةٌ", "translationUz": "ishlatuvchi, mazali"},
+    {"word": "مِمَّ", "translationUz": "nimalardan"},
+    {"word": "صَنَعْتِ", "translationUz": "tayyorlading (ayol)"},
+    {"word": "هَذِهِ", "translationUz": "bu (ayol)"},
+    {"word": "صَنَعْتُهَا", "translationUz": "men uni tayyorladim"},
+    {"word": "الْكُرُنْبِ", "translationUz": "karam"},
+    {"word": "الْبَصَلِ", "translationUz": "piyoz"},
+    {"word": "الطَّمَاطِمِ", "translationUz": "pomidor"},
+    {"word": "الْخِيَارِ", "translationUz": "bodring"},
+    {"word": "الْبَاذِنْجَانِ", "translationUz": "baqlajon"},
+    {"word": "زَيْتِ", "translationUz": "yog'i"},
+    {"word": "الزَّيْتُونِ", "translationUz": "zaytun"},
+    {"word": "رَائِعَةٌ", "translationUz": "ajoyib (ayol)"},
+    {"word": "تَبْدُو", "translationUz": "ko'rinasan"},
+    {"word": "جَائِعًا", "translationUz": "och"},
+    {"word": "هَيَّا", "translationUz": "haydi"},
+    {"word": "نَأْكُلِ", "translationUz": "yeylik"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْوَلَدُ",
+      "text": "مِمَّ صَنَعْتِ هَذِهِ السَّلَطَةَ يَا أُمِّي؟",
+      "translationUz": "Bu salatni nimalardan tayyorlading, ona?",
+      "next": "اَلْأُمُّ: صَنَعْتُهَا مِنَ الْكُرُنْبِ، وَالْبَصَلِ، وَ الطَّمَاطِمِ، وَ الْخِيَارِ، وَ الْبَاذِنْجَانِ، وَ زَيْتِ الزَّيْتُونِ."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "صَنَعْتُهَا مِنَ الْكُرُنْبِ، وَالْبَصَلِ، وَ الطَّمَاطِمِ، وَ الْخِيَارِ، وَ الْبَاذِنْجَانِ، وَ زَيْتِ الزَّيْتُونِ.",
+      "translationUz": "Men uni karam, piyoz, pomidor, bodring, baqlajon va zaytun yog'idan tayyorladim.",
+      "next": "اَلْوَلَدُ: رَائِعَةٌ يَا أُمِّي!"
+    },
+    {
+      "speaker": "اَلْوَلَدُ",
+      "text": "رَائِعَةٌ yَا أُمِّي!",
+      "translationUz": "Ajoyib, ona!",
+      "next": "اَلْأُمُّ: تَبْدُو جَائِعًا يَا وَلَدِي، هَيَّا نَأْكُلِ السَّلَطَةَ."
+    },
+    {
+      "speaker": "اَلْأُمُّ",
+      "text": "تَبْدُو جَائِعًا يَا وَلَدِي، هَيَّا نَأْكُلِ السَّلَطَةَ.",
+      "translationUz": "Och ko'rinasan, bolam, haydi salat yeylik.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ الْوَلَدُ؟",
+    "مَاذَا تُجِيبُ الْأُمُّ؟",
+    "كَمْ عَدَدُ الْمَكَوِّنَاتِ فِي السَّلَطَةِ؟",
+    "مَاذَا يَقُولُ الْوَلَدُ عَنِ السَّلَطَةِ؟",
+    "مَاذَا تُلَاحِظُ الْأُمُّ عَلَى وَلَدِهَا؟"
+  ],
+  "context": {
+    "main_topic": "delicious_salad_conversation",
+    "pattern": "ingredients_question → ingredients_list → compliment → eating_invitation"
+  }
+}

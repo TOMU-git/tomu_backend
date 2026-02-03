@@ -1,0 +1,62 @@
+{
+  "id": "ar_m2_l75",
+  "language": "ar",
+  "module": 2,
+  "lesson": 75,
+  "title": "حَارِسُ الْبَنْكِ",
+  "summary": "Bank qo‘riqchisi haqida gapirish, 'لَهُ' (unga bor) iborasini ko‘rish va biror kishini tavsiflash.",
+  "vocabulary": [
+    { "word": "حَارِسٌ", "translationUz": "qo‘riqchi, soqchi" },
+    { "word": "بَنْكٌ", "translationUz": "bank" },
+    { "word": "رَأَى (يَرَى)", "translationUz": "ko‘rdi (ko‘rmoq)" },
+    { "word": "رَجُلٌ", "translationUz": "erkak, odam" },
+    { "word": "لِحْيَةٌ", "translationUz": "soqol" },
+    { "word": "طَوِيلٌ", "translationUz": "uzun" },
+    { "word": "الَّذِي", "translationUz": "kim, qaysi (erkaklar uchun)" },
+    { "word": "يَعْرِفُ", "translationUz": "biladi (bilmoq)" },
+    { "word": "عَمٌّ", "translationUz": "amaki (ota tomondan)" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هَلْ رَأَيْتَ ذَلِكَ الرَّجُلَ الَّذِي لَهُ لِحْيَةٌ طَوِيلَةٌ، يَا مَحْمُودُ؟",
+      "translationUz": "Uzoq soqolli u odamni ko‘rdingmi, Mahmud?",
+      "next": "نَعَمْ، رَأَيْتُهُ."
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "نَعَمْ، رَأَيْتُهُ.",
+      "translationUz": "Ha, uni ko‘rdim.",
+      "next": "هُوَ حَارِسٌ فِي هَذَا الْبَنْكِ الْكَبِيرِ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هُوَ حَارِسٌ فِي هَذَا الْبَنْكِ الْكَبِيرِ.",
+      "translationUz": "U shu katta bankning qo‘riqchisi.",
+      "next": "مِنْ أَيْنَ تَعْرِفُهُ؟"
+    },
+    {
+      "speaker": "مَحْمُودُ",
+      "text": "مِنْ أَيْنَ تَعْرِفُهُ؟",
+      "translationUz": "Uni qayerdan bilasank?",
+      "next": "هُوَ عَمِّي، يَا مَحْمُودُ."
+    },
+    {
+      "speaker": "مُحَمَّدٌ",
+      "text": "هُوَ عَمِّي، يَا مَحْمُودُ.",
+      "translationUz": "U mening amakim, Mahmud.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ لَكَ عَمٌّ آخَرُ؟",
+    "هَلْ يَعْمَلُ عَمُّكَ فِي الْبَنْكِ كَثِيرًا؟",
+    "مَاذَا يَفْعَلُ الْحَارِسُ؟",
+    "كَيْفَ هُوَ مَظْهَرُ عَمِّكَ؟",
+    "أَيْنَ يَقَعُ هَذَا الْبَنْكُ؟"
+  ],
+  "context": {
+    "main_topic": "describing_people_profession",
+    "pattern": "question_about_person → answer → info_about_job → question_about_relation → answer"
+  }
+}

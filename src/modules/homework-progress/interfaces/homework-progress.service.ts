@@ -29,5 +29,8 @@ export interface IHomeworkProgressService {
   // Foydalanuvchi ID bo'yicha uyga vazifa navbatidagi elementlar sonini qaytaradi
   countQueueItems(userId: ID, courseId: ID): Promise<ResData<{ count: number }>>;
 
-  runSchedulerManually() : Promise<any>;
+  // Foydalanuvchi ID bo'yicha barcha kurslar uchun uyga vazifa navbatidagi elementlar sonini qaytaradi
+  countAllQueueItems(userId: ID): Promise<ResData<Array<{ courseTitle: string; count: number }>>>;
+
+  runSchedulerManually(): Promise<any>;
 }

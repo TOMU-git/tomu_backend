@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l68",
+    "language": "ar",
+    "module": 1,
+    "lesson": 68,
+    "title": "لَيْلَى يَوْمُهَا",
+    "summary": "O'n olti yoshli Layloning kunlik dasturi va faoliyatlari haqida.",
+    "vocabulary": [
+      { "word": "عُمْر", "translationUz": "yosh" },
+      { "word": "سِتَّةَ عَشَرَ", "translationUz": "o'n olti" },
+      { "word": "مَعْهَد", "translationUz": "institut" },
+      { "word": "عَصْر", "translationUz": "asr" },
+      { "word": "عَشَاء", "translationUz": "kechki ovqat" },
+      { "word": "دُرُوس", "translationUz": "darslar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "لَيْلَى عُمْرُهَا سِتَّةَ عَشَرَ عَامًا. هِيَ تُسَاعِدُ أُمَّهَا،",
+        "translationUz": "Laylo o'n olti yoshda. U onasiga yordam beradi,",
+        "next": "وَ تَذْهَبُ إِلَى الْمَعْهَدِ قَبْلَ الظُّهْرِ، وَ تَرْجِعُ بَعْدَ الْعَصْرِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ تَذْهَبُ إِلَى الْمَعْهَدِ قَبْلَ الظُّهْرِ، وَ تَرْجِعُ bَعْدَ الْعَصْرِ.",
+        "translationUz": "va peshindan oldin institutga boradi, asrdan keyin qaytadi.",
+        "next": "ثُمَّ تَتَنَاوَلُ الْعَشَاءَ، وَ تَكْتُبُ دُرُوسَهَا."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ثُمَّ تَتَنَاوَلُ الْعَشَاءَ، وَ تَكْتُبُ دُرُوسَهَا.",
+        "translationUz": "Keyin kechki ovqatni yeydi va darslarini yozadi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ عُمْرُكَ؟",
+      "مَاذَا تَفْعَلُ فِي يَوْمِكَ؟",
+      "هَلْ تُسَاعِدُ أُمَّكَ؟",
+      "أَيْنَ تَدْرُسُ؟",
+      "مَتَى تَكْتُبُ دُرُوسَكَ؟"
+    ],
+    "context": {
+      "main_topic": "daily_routine",
+      "pattern": "narration → narration → narration"
+    }
+  }

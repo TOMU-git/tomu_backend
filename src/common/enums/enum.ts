@@ -41,3 +41,8 @@ export enum PaymentTypeEnum {
   TARIFF = "tariff",
 }
 
+export enum AuthProviderEnum {
+  LOCAL = "local",
+  GOOGLE = "google",
+  APPLE = "apple",
+}

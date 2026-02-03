@@ -1,0 +1,48 @@
+{
+    "id": "ar_m1_l12",
+    "language": "ar",
+    "module": 1,
+    "lesson": 12,
+    "title": "اَلْفَصْلُ",
+    "summary": "Sinf xonasini va undagi narsalarni tavsiflash.",
+    "vocabulary": [
+      { "word": "فَصْلٌ", "translationUz": "sinf xonasi" },
+      { "word": "كَبِيرٌ", "translationUz": "katta" },
+      { "word": "صُورَةٌ", "translationUz": "rasm" },
+      { "word": "مَكْتَبٌ", "translationUz": "stol" },
+      { "word": "كُرْسِيٌّ", "translationUz": "stul" },
+      { "word": "قَلَمٌ", "translationUz": "qalam" },
+      { "word": "دَفْتَرٌ", "translationUz": "daftar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هَذَا فَصْلٌ كَبِيرٌ.",
+        "translationUz": "Bu katta sinf xonasi.",
+        "next": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "فِي الْفَصْلِ صُورَةٌ وَمَكْتَبٌ وَكُرْسِيٌّ.",
+        "translationUz": "Sinf xonasida rasm, stol va stul bor.",
+        "next": "الْقَلَمُ وَ الدَّفْتَرُ عَلَى الْمَكْتَبِ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "الْقَلَمُ وَ الدَّفْتَرُ عَلَى الْمَكْتَبِ.",
+        "translationUz": "Qalam va daftar stolning ustida.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلِ الْفَصْلُ جَمِيلٌ؟",
+      "مَاذَا فِي الْفَصْلِ؟",
+      "أَيْنَ الْقَلَمُ وَالدَّفْتَرُ؟",
+      "هَلْ فِي الْفَصْلِ نَافِذَةٌ؟",
+      "كَمْ كُرْسِيًّا فِي الْفَصْلِ؟"
+    ],
+    "context": {
+      "main_topic": "classroom_objects",
+      "pattern": "narration → narration → narration"
+    }
+  }

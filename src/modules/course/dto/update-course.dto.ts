@@ -34,7 +34,7 @@ export class UpdateCourseDto {
   @IsString()
   @IsOptional()
   fileName?: string;
-  
+
   @ApiPropertyOptional({
     description: "Kurs faol yoki yo'qligini ko'rsatadi",
     example: true,
@@ -44,5 +44,14 @@ export class UpdateCourseDto {
   @IsOptional()
   @Transform(({ value }) => value === "true" || value === true)
   isActive?: boolean = true;
+
+  @ApiPropertyOptional({
+    description: "Kursning qaysi tilda mavjudligi",
+    example: "ar",
+    type: String,
+  })
+  @IsString({ message: "lang string bo'lishi kerak" })
+  @IsOptional()
+  lang?: string;
 }
 

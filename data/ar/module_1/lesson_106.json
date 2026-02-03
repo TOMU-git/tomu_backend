@@ -1,0 +1,57 @@
+{
+    "id": "ar_m1_l106",
+    "language": "ar",
+    "module": 1,
+    "lesson": 106,
+    "title": "رَسْمٌ فِي الْجِدَارِ",
+    "summary": "Ona va qizi o'rtasida rasm chizish joyi haqidagi suhbat.",
+    "vocabulary": [
+      {"word": "رَسْمٌ", "translationUz": "rasm"},
+      {"word": "الْجِدَارِ", "translationUz": "devor"},
+      {"word": "بُنَيَّتِي", "translationUz": "qizchaqonim"},
+      {"word": "أَرْسُمُ", "translationUz": "chizaman"},
+      {"word": "صُورَةً", "translationUz": "rasm"},
+      {"word": "حَسَنًا", "translationUz": "yaxshi"},
+      {"word": "أُرْسُمِي", "translationUz": "chiz (buyruq)"},
+      {"word": "الْوَرَقِ", "translationUz": "qog'oz"},
+      {"word": "وَلَكِنْ", "translationUz": "lekin"},
+      {"word": "تَرْسُمِي", "translationUz": "chizma (buyruq)"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "مَاذَا تَفْعَلِينَ يَا بُنَيَّتِي؟",
+        "translationUz": "Nima qilyapsan, qizchaqonim?",
+        "next": "أَرْسُمُ صُورَةً."
+      },
+      {
+        "speaker": "اَلْبِنْتُ",
+        "text": "أَرْسُمُ صُورَةً.",
+        "translationUz": "Rasm chizayapman.",
+        "next": "حَسَنًا، أُرْسُمِي عَلَى الْوَرَقِ يَا بُنَيَّتِي، وَلَكِنْ لاَ تَرْسُمِي عَلَى الْجِدَارِ."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "حَسَنًا، أُرْسُمِي عَلَى الْوَرَقِ يَا بُنَيَّتِي، وَلَكِنْ لاَ تَرْسُمِي عَلَى الْجِدَارِ.",
+        "translationUz": "Yaxshi, qog'ozga chiz, qizchaqonim, lekin devorga chizma.",
+        "next": "حَسَنًا يَا أُمِّي."
+      },
+      {
+        "speaker": "اَلْبِنْتُ",
+        "text": "حَسَنًا يَا أُمِّي.",
+        "translationUz": "Yaxshi, ona.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيْنَ تَرْسُمُ الْبِنْتُ؟",
+      "مَاذَا تَقُولُ الْأُمُّ لِبِنْتِهَا؟",
+      "هَلْ تَرْسُمُ عَلَى الْجِدَارِ؟",
+      "مَاذَا تَفْعَلُ عَلَى الْوَرَقِ؟",
+      "هَلْ تُحِبُّ الرَّسْمَ؟"
+    ],
+    "context": {
+      "main_topic": "drawing_etiquette",
+      "pattern": "question_about_activity → response → instruction_with_restriction → acceptance"
+    }
+  }

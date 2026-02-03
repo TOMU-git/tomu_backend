@@ -1,0 +1,56 @@
+{
+  "id": "ar_m2_l17",
+  "language": "ar",
+  "module": 2,
+  "lesson": 17,
+  "title": "جَامِعَةُ الْاِقْتِصَادِ",
+  "summary": "Iqtisod universitetida o'qiydigan va har xil fanlarni faol o'rganayotgan oq ko'ylakli talabalar haqida.",
+  "vocabulary": [
+    {"word": "جَامِعَةُ", "translationUz": "universitet"},
+    {"word": "الْاِقْتِصَادِ", "translationUz": "iqtisod"},
+    {"word": "اَلطُّلَّابُ", "translationUz": "talabalar"},
+    {"word": "الَّذِينَ", "translationUz": "qaysilar"},
+    {"word": "يَخْرُجُونَ", "translationUz": "chiqayotgan"},
+    {"word": "ذَوُو", "translationUz": "ega bo'lgan (erkaklar)"},
+    {"word": "أَقْمِصَةٍ", "translationUz": "ko'ylaklar"},
+    {"word": "بَيضَاءَ", "translationUz": "oq"},
+    {"word": "يَدْرُسُونَ", "translationUz": "o'qiydilar"},
+    {"word": "الْعُلُومَ", "translationUz": "fanlar"},
+    {"word": "الْمُخْتَلِفَةَ", "translationUz": "turlicha"},
+    {"word": "يُحِبُّونَ", "translationUz": "yoqtiradilar"},
+    {"word": "هَذِهِ", "translationUz": "bu (ayol)"},
+    {"word": "يَدْرُسُونَ", "translationUz": "o'qiydilar"},
+    {"word": "بِنَشَاطٍ", "translationUz": "faollik bilan"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلطُّلَّابُ الَّذِينَ يَخْرُجُونَ مِنَ الْجَامِعَةِ ذَوُو  أَقْمِصَةٍ بَيضَاءَ يَدْرُسُونَ فِي جَامِعَةِ  الِْاقْتِصَادِ.",
+      "translationUz": "Universitetdan chiqayotgan oq ko'ylakli talabalar iqtisod universitetida o'qiydilar.",
+      "next": "هُمْ يَدْرُسُونَ الْعُلُومَ الْمُخْتَلِفَةَ فِي الْجَامِعَةِ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "هُمْ يَدْرُسُونَ الْعُلُومَ الْمُخْتَلِفَةَ فِي الْجَامِعَةِ.",
+      "translationUz": "Ular universitetda turlicha fanlarni o'qiydilar.",
+      "next": "اَلطُّلَّابُ يُحِبُّونَ هَذِهِ الْعُلُومَ وَ يَدْرُسُونَ بِنَشَاطٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلطُّلَّابُ يُحِبُّونَ هَذِهِ الْعُلُومَ وَ يَدْرُسُونَ بِنَشَاطٍ.",
+      "translationUz": "Talabalar bu fanlarni yaxshi ko'radilar va faol o'qiydilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "أَيْنَ يَدْرُسُ الطُّلَّابُ؟",
+    "كَيْفَ هُمْ يَلْبِسُونَ؟",
+    "مَاذَا يَدْرُسُونَ؟",
+    "كَيْفَ يَشْعُرُونَ نَحْوَ الْعُلُومِ؟",
+    "كَيْفَ يَدْرُسُونَ؟"
+  ],
+  "context": {
+    "main_topic": "economics_university_students",
+    "pattern": "student_description → subjects_studied → attitude_and_effort"
+  }
+}

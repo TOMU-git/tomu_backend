@@ -21,6 +21,9 @@ export class Course extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true, name: "video_url" }) // Kurs videosi URL
   videoUrl: string;
 
+  @Column({ type: "varchar", length: 50, nullable: true, name: "vimeo_video_id" }) // Vimeo video ID
+  vimeoVideoId: string;
+
   @Column({ type: "varchar", length: 50, nullable: true, name: "mime_type" }) // Fayl turi (mimetype)
   mimetype: string;
 
@@ -29,6 +32,15 @@ export class Course extends BaseEntity {
 
   @Column({ type: "bool", nullable: true, default: true })
   isActive: boolean;
+
+  @Column({
+    type: "varchar",
+    length: 50,
+    nullable: true,
+    name: "lang",
+    default: null
+  })
+  lang: string; // "ar", "eng", "ru" - kursning qaysi tilda mavjudligi
 
   // Foydalanuvchi o'qigan kurslar bilan bog'lanish
   @OneToMany(() => UserCourse, (userCourse) => userCourse.course, {
@@ -52,12 +64,12 @@ export class Course extends BaseEntity {
   })
   blocks: Array<Block>;
 
-    // Blocklar bilan bog'lanish
-    @OneToMany(() => Lesson, (lesson) => lesson.course, {
-      onDelete: "SET NULL",
-      nullable: true,
-    })
-    lessons: Array<Block>;
+  // Blocklar bilan bog'lanish
+  @OneToMany(() => Lesson, (lesson) => lesson.course, {
+    onDelete: "SET NULL",
+    nullable: true,
+  })
+  lessons: Array<Block>;
 
   // Alifbolar bilan bog'lanish
   @OneToMany(() => Alphabet, (alphabet) => alphabet.course, {

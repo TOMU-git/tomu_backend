@@ -5,12 +5,13 @@ import { UserCourse } from "./entities/user-course.entity";
 import { IUserCourseRepository } from "./interfaces/user-course.repository";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
-import { IUserCourseService } from "./interfaces/user-course.service";
+import { IUserCourseService, UserCourseWithCounts } from "./interfaces/user-course.service";
 import { UserCourseAlreadyExistException, UserCourseNotFoundException } from "./exception/user-course.exception";
 import { ICourseRepository } from "../course/interfaces/course.repository";
 import { CourseNotFoundException } from "../course/exception/course.exception";
 import { IUserRepository } from "../user/interfaces/user.repository";
 import { UserNotFound } from "../user/exception/user.exception";
+import { getSubscriptionStatus } from "src/common/utils/subscription-helper";
 
 @Injectable()
 export class UserCourseService implements IUserCourseService {
@@ -23,7 +24,7 @@ export class UserCourseService implements IUserCourseService {
 
     @Inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository,
-  ) {}
+  ) { }
 
   /**
    * Yangi UserCourse yaratadi.
@@ -60,6 +61,14 @@ export class UserCourseService implements IUserCourseService {
     newUserCourse.course = foundCourse;
     newUserCourse.user = foundUser;
     newUserCourse = Object.assign(newUserCourse, createUserCourseDto);
+
+    // Bepul sinov uchun endedAt qo'shilmaydi, faqat to'lov qilinganda qo'shiladi
+    if (!createUserCourseDto.onFreeTrial) {
+      // To'lov qilingan holatda endedAt o'rnatiladi (agar kerak bo'lsa)
+      // Bu yerda endedAt o'rnatish logikasi qo'shilishi mumkin
+      // Hozircha endedAt null qoladi, to'lov qilinganda transactions.service.ts da o'rnatiladi
+    }
+
     const newData = await this.userCourseRepository.create(newUserCourse);
 
     return new ResData<Partial<UserCourse>>(
@@ -72,15 +81,17 @@ export class UserCourseService implements IUserCourseService {
     );
   }
 
-  async findByDate(id: number, day: Date, courseId: number): Promise<ResData<{isActive: boolean}>> {
-    const foundUserCourse = await this.userCourseRepository.findByUserIdAndCourseId(id, courseId);
+  async findByDate(userId: number, day: Date, courseId: number): Promise<ResData<{ isActive: boolean, hasEverPaid: boolean }>> {
+    const foundUserCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
     if (!foundUserCourse) {
       throw new UserCourseNotFoundException();
     }
     if (foundUserCourse.endedAt < day) {
       foundUserCourse.isActive = false;
+      // foydalanuvchini obunasi tugaganda isActive false qilinadi
+      await this.userCourseRepository.update(foundUserCourse);
     }
-    return new ResData<{isActive: boolean}>("User course", 200, {isActive: foundUserCourse.isActive});
+    return new ResData<{ isActive: boolean, hasEverPaid: boolean }>("User course", 200, { isActive: foundUserCourse.isActive, hasEverPaid: foundUserCourse.hasEverPaid });
   }
 
   /**
@@ -106,12 +117,48 @@ export class UserCourseService implements IUserCourseService {
     return new ResData<UserCourse>("ok", 200, foundData);
   }
 
-  async findOneByUserId(id: ID): Promise<ResData<Array<UserCourse>>> {
+  async findOneByUserId(id: ID): Promise<ResData<Array<UserCourseWithCounts>>> {
     const foundData = await this.userCourseRepository.findByUserId(id);
     if (!foundData) {
       throw new UserCourseNotFoundException();
     }
-    return new ResData<Array<UserCourse>>("ok", 200, foundData);
+
+    // Har bir course uchun count ma'lumotlarini qo'shamiz
+    const enrichedData = await Promise.all(
+      foundData.map(async (userCourse) => {
+        // subscriptionStatus ni hisoblash
+        const subscriptionStatus = getSubscriptionStatus(userCourse);
+
+        if (userCourse.course && userCourse.course.id) {
+          // Course uchun count ma'lumotlarini olamiz
+          const courseWithCounts = await this.courseRepository.findByIdWithCounts(
+            userCourse.course.id,
+          );
+
+          if (courseWithCounts) {
+            // Course object'ga count'larni qo'shamiz
+            return {
+              ...userCourse,
+              subscriptionStatus,
+              course: {
+                ...userCourse.course,
+                alphabetCount: courseWithCounts.alphabetCount,
+                lessonCount: courseWithCounts.lessonCount,
+                grammarCount: courseWithCounts.grammarCount,
+                homeworkCount: courseWithCounts.homeworkCount,
+              },
+            };
+          }
+        }
+        // Agar course yo'q bo'lsa yoki count olinmasa, original data qaytaramiz
+        return {
+          ...userCourse,
+          subscriptionStatus,
+        };
+      }),
+    );
+
+    return new ResData<Array<UserCourseWithCounts>>("ok", 200, enrichedData as Array<UserCourseWithCounts>);
   }
 
   /**

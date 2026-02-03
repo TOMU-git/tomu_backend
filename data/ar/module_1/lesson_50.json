@@ -1,0 +1,60 @@
+{
+    "id": "ar_m1_l50",
+    "language": "ar",
+    "module": 1,
+    "lesson": 50,
+    "title": "عُلْبَةُ الْقَهْوَةِ",
+    "summary": "Qahva va finjonning joylashuvini topish va maxsus idish haqida suhbat.",
+    "vocabulary": [
+      { "word": "عُلْبَة", "translationUz": "quti" },
+      { "word": "قَهْوَة", "translationUz": "qahva" },
+      { "word": "فِنْجَان", "translationUz": "fincan" },
+      { "word": "طَاوِلَة", "translationUz": "stol" },
+      { "word": "فُرْن", "translationUz": "pech" },
+      { "word": "أَمْس", "translationUz": "kecha" },
+      { "word": "خَاصَّة", "translationUz": "maxsus" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "أَيْنَ الْفِنْجَانُ الَّذِي عَلَى الطَّاوِلَةِ لِلْقَهْوَةِ؟",
+        "translationUz": "Stolning ustidagi qahva finjoni qayerda?",
+        "next": "الْفِنْجَانُ خَلْفَ الْفُرْنِ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "الْفِنْجَانُ خَلْفَ الْفُرْنِ.",
+        "translationUz": "Finjon pechning orqasida.",
+        "next": "وَ أَيْنَ الْقَهْوَةُ الَّتِي اشْتَرَيْتُهَا أَمْسِ؟"
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "وَ أَيْنَ الْقَهْوَةُ الَّتِي اشْتَرَيْتُهَا أَمْسِ؟",
+        "translationUz": "Va kecha sotib olgan qahvam qayerda?",
+        "next": "الْقَهْوَةُ فِي الْفُرْنِ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "الْقَهْوَةُ فِي الْفُرْنِ.",
+        "translationUz": "Qahva pechda.",
+        "next": "يَا سَلْمَى، هُنَاكَ عُلْبَةٌ خَاصَّةٌ لِلْقَهْوَةِ."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "يَا سَلْمَى، هُنَاكَ عُلْبَةٌ خَاصَّةٌ لِلْقَهْوَةِ.",
+        "translationUz": "Ey Salmo, qahva uchun maxsus quti bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْقَهْوَةَ؟",
+      "أَيْنَ تَضَعُ الْقَهْوَةَ فِي بَيْتِكَ؟",
+      "مَاذَا تَشْرَبُ فِي الصَّبَاحِ؟",
+      "هَلْ تَشْرَبُ الْقَهْوَةَ مَعَ الْفِنْجَانِ؟",
+      "لِمَاذَا الْعُلْبَةُ خَاصَّةٌ لِلْقَهْوَةِ؟"
+    ],
+    "context": {
+      "main_topic": "coffee_location",
+      "pattern": "ask_where_cup → answer_location → ask_where_coffee → answer_location → inform_special_container"
+    }
+  }

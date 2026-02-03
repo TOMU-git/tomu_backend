@@ -1,0 +1,54 @@
+{
+  "id": "ar_m1_l3",
+  "language": "ar",
+  "module": 1,
+  "lesson": 3,
+  "title": "مَوْزٌ لَذِيذٌ",
+  "summary": "Practicing questions and answers about fruits and using adjectives to describe taste.",
+  "vocabulary": [
+    { "word": "مَوْزٌ", "translationUz": "banan" },
+    { "word": "لَذِيذٌ", "translationUz": "mazali" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَلْ", "translationUz": "mi?" },
+    { "word": "نَعَمْ", "translationUz": "ha" },
+    { "word": "إِنَّهُ", "translationUz": "albatta u" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "مَا هَذَا، يَا فَرِيدُ؟",
+      "translationUz": "Bu nima, Farid?",
+      "next": "هَذَا مَوْزٌ، يَا كَرِيمُ."
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "هَذَا مَوْزٌ، يَا كَرِيمُ.",
+      "translationUz": "Bu banan, Karim.",
+      "next": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟"
+    },
+    {
+      "speaker": "كَرِيمٌ",
+      "text": "هَلْ هَذَا الْمَوْزُ لَذِيذٌ؟",
+      "translationUz": "Bu banan mazalimi?",
+      "next": "نَعَمْ، إِنَّهُ لَذِيذٌ."
+    },
+    {
+      "speaker": "فَرِيدٌ",
+      "text": "نَعَمْ، إِنَّهُ لَذِيذٌ.",
+      "translationUz": "Ha, u mazali.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ تُحِبُّ الْمَوْزَ؟",
+    "هَلْ هُوَ حُلْوٌ؟",
+    "هَلْ تُرِيدُ تَجْرِبَةَ قِطْعَةٍ؟",
+    "هَلْ عِنْدَكَ مَوْزٌ آخَرُ؟",
+    "كَمْ ثَمَنُ الْمَوْزِ؟"
+  ],
+  "context": {
+    "main_object": "banana",
+    "pattern": "question → answer → question → answer"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "ar_m2_l12",
+  "language": "ar",
+  "module": 2,
+  "lesson": 12,
+  "title": "اَلْجَبَلُ وَالصَّحْرَاءُ",
+  "summary": "Ota va o'g'il o'rtasida tog' va cho'l o'rtasidagi farqni tushuntirish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْجَبَلُ", "translationUz": "tog'"},
+    {"word": "الصَّحْرَاءُ", "translationUz": "cho'l, sahro"},
+    {"word": "اَلْأَبُ", "translationUz": "ota"},
+    {"word": "تَعْرِفُ", "translationUz": "bilasizmi"},
+    {"word": "الفَرْقَ", "translationUz": "farq"},
+    {"word": "بَيْنَ", "translationUz": "o'rtasida"},
+    {"word": "بُنَيَّ", "translationUz": "o'g'lim"},
+    {"word": "اَلْاِبْنُ", "translationUz": "o'g'il"},
+    {"word": "سُؤَالٌ", "translationUz": "savol"},
+    {"word": "مُرْتَفِعٌ", "translationUz": "baland"},
+    {"word": "أَشْجَارٌ", "translationUz": "daraxtlar"},
+    {"word": "ثَلْجٌ", "translationUz": "qor"},
+    {"word": "أَحْيَانًا", "translationUz": "ba'zida"},
+    {"word": "أَمَّا", "translationUz": "ammo, ha"},
+    {"word": "وَاسِعٌ", "translationUz": "keng"},
+    {"word": "وَجَافٌّ", "translationUz": "va quruq"},
+    {"word": "رِمَالٌ", "translationUz": "qumlar"},
+    {"word": "قَلِيلٌ", "translationUz": "oz"},
+    {"word": "النَّبَاتِ", "translationUz": "o'simlik"},
+    {"word": "أَحْسَنْتَ", "translationUz": "a'lo, yaxshi qilding"},
+    {"word": "إِجَابَتُكَ", "translationUz": "sening javobing"},
+    {"word": "صَحِيحَةٌ", "translationUz": "to'g'ri"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "هَلْ تَعْرِفُ الفَرْقَ بَيْنَ الجَبَلِ وَ الصَّحْرَاءِ، يَا بُنَيَّ؟",
+      "translationUz": "Tog' va cho'l o'rtasidagi farqni bilasizmi, o'g'lim?",
+      "next": "نَعَمْ، يَا أَبِي، إِنَّهُ سُؤَالٌ سَهْلٌ."
+    },
+    {
+      "speaker": "اَلْاِبْنُ",
+      "text": "نَعَمْ، يَا أَبِي، إِنَّهُ سُؤَالٌ سَهْلٌ.",
+      "translationUz": "Ha, otam, bu oson savol.",
+      "next": "الجَبَلُ مَكَانٌ مُرْتَفِعٌ وَ فِيهِ أَشْجَارٌ وَ ثَلْجٌ أَحْيَانًا."
+    },
+    {
+      "speaker": "اَلْاِبْنُ",
+      "text": "الجَبَلُ مَكَانٌ مُرْتَفِعٌ وَ فِيهِ أَشْجَارٌ وَ ثَلْجٌ أَحْيَانًا.",
+      "translationUz": "Tog' baland joy va unda daraxtlar va ba'zida qor bo'ladi.",
+      "next": " أَمَّا الصَّحْرَاءُ فَهِيَ مَكَانٌ وَاسِعٌ وَجَافٌّ، فِيهِ رِمَالٌ وَ قَلِيلٌ مِنَ النَّبَاتِ."
+    },
+    {
+      "speaker": "اَلْاِبْنُ",
+      "text": " أَمَّا الصَّحْرَاءُ فَهِيَ mكَانٌ وَاسِعٌ وَجَافٌّ، فِيهِ رِمَالٌ وَ قَلِيلٌ مِنَ النَّبَاتِ.",
+      "translationUz": "Ammo cho'l keng va quruq joy, unda qumlar va ozgina o'simlik bo'ladi.",
+      "next": "أَحْسَنْتَ يَا بُنَيَّ، إِجَابَتُكَ صَحِيحَةٌ."
+    },
+    {
+      "speaker": "اَلْأَبُ",
+      "text": "أَحْسَنْتَ يَا بُنَيَّ، إِجَابَتُكَ صَحِيحَةٌ.",
+      "translationUz": "A'lo, o'g'lim, javobing to'g'ri.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَاذَا يَسْأَلُ الأَبُ؟",
+    "كَيْفَ يَصِفُ الْاِبْنُ الْجَبَلَ؟",
+    "كَيْفَ يَصِفُ الصَّحْرَاءَ؟",
+    "هَلْ تُوافِقُ عَلَى وَصْفِ الْاِبْنِ؟",
+    "مَا الْفَرْقُ بَيْنَ الْجَبَلِ وَالصَّحْرَاءِ؟"
+  ],
+  "context": {
+    "main_topic": "mountain_desert_difference",
+    "pattern": "question → acknowledgement → mountain_description → desert_description → praise"
+  }
+}

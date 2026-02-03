@@ -1,0 +1,47 @@
+{
+    "id": "ar_m1_l92",
+    "language": "ar",
+    "module": 1,
+    "lesson": 92,
+    "title": "يَوْمٌ مُشْمِسٌ",
+    "summary": "Salmaning quyoshli kunda sayrga chiqishi haqida qisqa matn.",
+    "vocabulary": [
+      { "word": "مُشْمِسًا", "translationUz": "quyoshli" },
+      { "word": "نَظَّارَة", "translationUz": "ko‘zoynak" },
+      { "word": "لِبَاسٌ خَفِيفٌ", "translationUz": "yengil kiyim" },
+      { "word": "السَّاحِلِ", "translationUz": "sohil" },
+      { "word": "سَفِينَةٌ", "translationUz": "kema" },
+      { "word": "تُبْحِرُ", "translationUz": "suzmoqda" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "نَصٌّ",
+        "text": "أَرَادَتْ سَلْمَى الْخُرُوجَ إِلَى الشَّارِعِ، وَكَانَ الْيَوْمُ مُشْمِسًا.",
+        "translationUz": "Salma ko‘chaga chiqmoqchi bo‘ldi va kun quyoshli edi.",
+        "next": "هِيَ أَخَذَتْ نَظَّارَتَهَا وَ لَبِسَتْ لِبَاسًا خَفِيفًا وَ مَشَتْ عَلَى السَّاحِلِ."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "هِيَ أَخَذَتْ نَظَّارَتَهَا وَ لَبِسَتْ لِبَاسًا خَفِيفًا وَ مَشَتْ عَلَى السَّاحِلِ.",
+        "translationUz": "U ko‘zoynagini oldi, yengil kiyim kiydi va sohil bo‘ylab yurdi.",
+        "next": "وَ شَاهَدَتْ سَفِينَةً كَبِيرَةً تُبْحِرُ فِي الْبَحْرِ."
+      },
+      {
+        "speaker": "نَصٌّ",
+        "text": "وَ شَاهَدَتْ سَفِينَةً كَبِيرَةً تُبْحِرُ فِي الْبَحْرِ.",
+        "translationUz": "U dengizda suzayotgan katta kemani ko‘rdi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مَاذَا لَبِسَتْ سَلْمَى؟",
+      "أَيْنَ مَشَتْ؟",
+      "مَاذَا شَاهَدَتْ؟",
+      "هَلْ كَانَ الْيَوْمُ مُشْمِسًا؟"
+    ],
+    "context": {
+      "main_topic": "daily_routine_story",
+      "pattern": "intention → action → observation"
+    }
+  }
+  

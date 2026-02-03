@@ -1,0 +1,53 @@
+{
+    "id": "ar_m1_l42",
+    "language": "ar",
+    "module": 1,
+    "lesson": 42,
+    "title": "أَثاثُ الْبَيْتِ",
+    "summary": "Uy-joy turi va uydagi mebellar haqida suhbat.",
+    "vocabulary": [
+      { "word": "أَثَاث", "translationUz": "mebel" },
+      { "word": "شَقَّة", "translationUz": "kvartira" },
+      { "word": "يَسْكُن", "translationUz": "yashaydi" },
+      { "word": "طَاوِلَة", "translationUz": "stol" },
+      { "word": "ثَلَّاجَة", "translationUz": "muzlatgich" },
+      { "word": "أَشْيَاء", "translationUz": "narsalar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "سَلْمَى",
+        "text": "أَيْنَ تَسْكُنِينَ يَا لَيْلَى، فِي بَيْتٍ أَمْ فِي شَقَّةٍ؟",
+        "translationUz": "Qayerda yashaysan, Laylo, uydami yoki kvartirami?",
+        "next": "أَسْكُنُ فِي شَقَّةٍ."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "أَسْكُنُ فِي شَقَّةٍ.",
+        "translationUz": "Men kvartirada yashayman.",
+        "next": "هَلْ فِيهَا أَثَاثٌ؟"
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "هَلْ فِيهَا أَثَاثٌ؟",
+        "translationUz": "Unda mebellarmi?",
+        "next": "نَعَم، فِيهَا كُرْسِيٌّ، وَ طَاوِلَةٌ، وَ خِزَانَةٌ، وَ ثَلَّاجَةٌ، وَ أَشْيَاءُ أُخْرَى."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "نَعَم، فِيهَا كُرْسِيٌّ، وَ طَاوِلَةٌ، وَ خِزَانَةٌ، وَ ثَلَّاجَةٌ، وَ أَشْيَاءُ أُخْرَى.",
+        "translationUz": "Ha, unda stul, stol, shkaf, muzlatgich va boshqa narsalar bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تَسْكُنُ فِي بَيْتٍ أَمْ فِي شَقَّةٍ؟",
+      "مَا هُوَ أَثَاثُ بَيْتِكَ؟",
+      "أَيْنَ تَوْضَعُ الثَّلَّاجَةُ؟",
+      "هَلْ تُحِبُّ شَقَّتَكَ؟",
+      "مَا الْفَرْقُ بَيْنَ الْبَيْتِ وَالشَّقَّةِ؟"
+    ],
+    "context": {
+      "main_topic": "housing_furniture",
+      "pattern": "ask_where_live → answer → ask_furniture → list_furniture"
+    }
+  }

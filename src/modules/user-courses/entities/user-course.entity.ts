@@ -13,8 +13,14 @@ export class UserCourse extends BaseEntity {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column({ type: "bool", name: "is_active", default: true })
+  @Column({ name: "on_free_trial", type: "bool", default: false })
+  onFreeTrial: boolean;
+
+  @Column({ type: "bool", name: "is_active", default: false })
   isActive: boolean;
+
+  @Column({ name: 'has_ever_paid', type: 'bool', default: false })
+  hasEverPaid: boolean;
   
   @Column({ name: "tariff_id", type: 'int', nullable: true })
   tariffId: number;

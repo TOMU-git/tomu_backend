@@ -1,0 +1,54 @@
+{
+    "id": "ar_m1_l37",
+    "language": "ar",
+    "module": 1,
+    "lesson": 37,
+    "title": "عَائِلَتُنَا",
+    "summary": "Oila a'zolari va ularning soni haqida suhbat.",
+    "vocabulary": [
+      { "word": "عَائِلَة", "translationUz": "oila" },
+      { "word": "أَب", "translationUz": "ota" },
+      { "word": "أُم", "translationUz": "ona" },
+      { "word": "أَخ", "translationUz": "aka" },
+      { "word": "أُخْت", "translationUz": "opa" },
+      { "word": "خَمْسَة", "translationUz": "besh" },
+      { "word": "أَشْخَاص", "translationUz": "kishilar" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "مُتَحَدِّثٌ ١",
+        "text": "هَلْ عِنْدَكَ عَائِلَةٌ؟",
+        "translationUz": "Oilang bormi?",
+        "next": "نَعَمْ، عِنْدِي عَائِلَةٌ وَ عَائِلَتِي كَبِيرَةٌ."
+      },
+      {
+        "speaker": "مُتَحَدِّثٌ ٢",
+        "text": "نَعَمْ، عِنْدِي عَائِلَةٌ وَ عَائِلَتِي كَبِيرَةٌ.",
+        "translationUz": "Ha, oilam bor va oilam katta.",
+        "next": "نَحْنُ خَمْسَةُ أَشْخَاصٍ: أَبِي، وَ أُمِّي، وَ أَخِي، وَ أُخْتِي، وَ أَنَا."
+      },
+      {
+        "speaker": "مُتَحَدِّثٌ ٢",
+        "text": "نَحْنُ خَمْسَةُ أَشْخَاصٍ: أَبِي، وَ أُمِّي، وَ أَخِي، وَ أُخْتِي، وَ أَنَا.",
+        "translationUz": "Biz besh kishimiz: otam, onam, akam, opam va men.",
+        "next": "لِي وَ لِأَخِي غُرْفَةٌ صَغِيرَةٌ."
+      },
+      {
+        "speaker": "مُتَحَدِّثٌ ٢",
+        "text": "لِي وَ لِأَخِي غُرْفَةٌ صَغِيرَةٌ.",
+        "translationUz": "Mening va akamning kichik xonamiz bor.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ عَدَدُ أفراد عَائِلَتِكَ؟",
+      "هَلْ عِنْدَكَ إِخْوَةٌ؟",
+      "مَنْ فِي عَائِلَتِكَ؟",
+      "هَلْ تَعِيشُ مَعَ عَائِلَتِكَ؟",
+      "مَا هِيَ غُرْفَتُكَ الْمُفَضَّلَةُ فِي الْبَيْتِ؟"
+    ],
+    "context": {
+      "main_topic": "family_members",
+      "pattern": "ask_about_family → confirm → list_members → describe_room"
+    }
+  }

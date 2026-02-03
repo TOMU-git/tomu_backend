@@ -1,0 +1,67 @@
+{
+    "id": "ar_m1_l110",
+    "language": "ar",
+    "module": 1,
+    "lesson": 110,
+    "title": "أَنَا عِنْدَ الْبَابِ",
+    "summary": "Qiz va onasi o'rtasida eshik oldida bo'layotgan suhbat.",
+    "vocabulary": [
+      {"word": "عِنْدَ", "translationUz": "yonida, oldida"},
+      {"word": "الْبَابِ", "translationUz": "eshik"},
+      {"word": "السَّلَامُ عَلَيْكِ", "translationUz": "salom (ayolga)"},
+      {"word": "وَعَلَيْكِ السَّلَامُ", "translationUz": "va sizga ham salom"},
+      {"word": "مَتَى", "translationUz": "qachon"},
+      {"word": "تَرْجِعِينَ", "translationUz": "qaytasiz"},
+      {"word": "اِفْتَحِي", "translationUz": "och (buyruq)"},
+      {"word": "شُكْرًا", "translationUz": "rahmat"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "لَيْلَى",
+        "text": "السَّلَامُ عَلَيْكِ يَا أُمِّي.",
+        "translationUz": "Salom, ona.",
+        "next": "وَعَلَيْكِ السَّلَامُ يَا بِنْتِي."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "وَعَلَيْكِ السَّلَامُ يَا بِنْتِي.",
+        "translationUz": "Va sizga ham salom, qizim.",
+        "next": "مَتَى تَرْجِعِينَ يَا أُمِّي؟"
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "مَتَى تَرْجِعِينَ يَا أُمِّي؟",
+        "translationUz": "Qachon qaytasiz, ona?",
+        "next": "أَنَا عِنْدَ الْبَابِ، اِفْتَحِي الْبَابَ يَا بِنْتِي."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "أَنَا عِنْدَ الْبَابِ، اِفْتَحِي الْبَابَ يَا بِنْتِي.",
+        "translationUz": "Men eshik oldidaman, eshikni och, qizim.",
+        "next": "حَسَنًا يَا أُمِّي."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "حَسَنًا يَا أُمِّي.",
+        "translationUz": "Yaxshi, ona.",
+        "next": "شُكْرًا يَا بِنْتِي."
+      },
+      {
+        "speaker": "اَلْأُمُّ",
+        "text": "شُكْرًا يَا بِنْتِي.",
+        "translationUz": "Rahmat, qizim.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيْنَ تَقِفُ الْأُمُّ؟",
+      "مَاذَا تَطْلُبُ الْأُمُّ مِنْ بِنْتِهَا؟",
+      "كَيْفَ تَرُدُّ الْبِنْتُ عَلَى أُمِّهَا؟",
+      "مَاذَا يَقُولُ الشَّخْصُ عِنْدَ الْبَابِ؟",
+      "هَلْ تَفْتَحُ الْبَابَ لِأُمِّكَ؟"
+    ],
+    "context": {
+      "main_topic": "door_conversation",
+      "pattern": "greeting → greeting → question_about_return → location_request → acceptance → thanks"
+    }
+  }

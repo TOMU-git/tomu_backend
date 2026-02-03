@@ -45,7 +45,7 @@ export class HomeworkProgressController {
 
   @Get('run-scheduler')
   async runScheduler() {
-    console.log("Manual scheduler ishga tushdi!");
+    // console.log("Manual scheduler ishga tushdi!");
     await this.homeworkProgressService['processHomeworkQueue'](); // private metodni chaqiryapmiz
     return { message: 'Scheduler ishga tushdi (manual test)', success: true };
   }
@@ -93,5 +93,17 @@ export class HomeworkProgressController {
   async getQueueCount(@Req() req: RequestWithUser, @Query("courseId", ParseIntPipe) courseId: ID): Promise<ResData<{ count: number }>> {
     const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
     return await this.homeworkProgressService.countQueueItems(userId, courseId);
+  }
+
+  /**
+   * Foydalanuvchi uchun barcha kurslardagi uy vazifa navbatidagi elementlar sonini qaytaradi
+   * Access token orqali foydalanuvchi ID si olinadi, courseId kerak emas
+   * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs nomi
+   */
+  @Auth(RoleEnum.DIRECTOR, RoleEnum.ADMIN, RoleEnum.STUDENT, RoleEnum.TEACHER)
+  @Get("total-queue-count")
+  async getTotalQueueCount(@Req() req: RequestWithUser): Promise<ResData<Array<{ courseTitle: string; count: number }>>> {
+    const userId = req.user.id; // JWT orqali olingan foydalanuvchi ID
+    return await this.homeworkProgressService.countAllQueueItems(userId);
   }
 }

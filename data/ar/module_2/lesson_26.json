@@ -1,0 +1,54 @@
+{
+  "id": "ar_m2_l26",
+  "language": "ar",
+  "module": 2,
+  "lesson": 26,
+  "title": "اَلْبَبَّغَاءُ",
+  "summary": "Tuti qushining ajoyibligi, dunyoning turli qit'alarida yashashi va uyda uy hayvoni sifatida boqilishi haqida.",
+  "vocabulary": [
+    {"word": "اَلْبَبَّغَاءُ", "translationUz": "tuti qushi"},
+    {"word": "طَائِرٌ", "translationUz": "qush"},
+    {"word": "عَجِيبٌ", "translationUz": "ajoyib"},
+    {"word": "يَعِيشُ", "translationUz": "yashaydi"},
+    {"word": "مَنَاطِقِ", "translationUz": "joylar"},
+    {"word": "الْعَالَمِ", "translationUz": "dunyo"},
+    {"word": "مِثْلَ", "translationUz": "masalan"},
+    {"word": "إِفْرِيقِيَا", "translationUz": "Afrika"},
+    {"word": "أُسْتُرَالِيَا", "translationUz": "Avstraliya"},
+    {"word": "يُرَبُّونَ", "translationUz": "boqadilar"},
+    {"word": "بُيُوتِهِمْ", "translationUz": "ularning uylarida"},
+    {"word": "كَطَائِرٍ", "translationUz": "qush sifatida"},
+    {"word": "أَلِيفٍ", "translationUz": "uy hayvon, evaz"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "اَلْبَبَّغَاءُ طَائِرٌ عَجِيبٌ، وَ هُوَ يَعِيشُ فِي بَعْضِ مَنَاطِقِ الْعَالَمِ،",
+      "translationUz": "Tuti qushi ajoyib qush va u dunyoning ba'zi joylarida yashaydi,",
+      "next": "مِثْلَ: آسِيَا، وَ إِفْرِيقِيَا، وَ أُسْتُرَالِيَا."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "مِثْلَ: آسِيَا، وَ إِفْرِيقِيَا، وَ أُسْتُرَالِيَا.",
+      "translationUz": "Masalan: Osiyo, Afrika va Avstraliya.",
+      "next": "بَعْضُ النَّاسِ يُرَبُّونَ الْبَبَّغَاءَ فِي بُيُوتِهِمْ كَطَائِرٍ أَلِيفٍ."
+    },
+    {
+      "speaker": "رِوَايَةٌ",
+      "text": "بَعْضُ النَّاسِ يُرَبُّونَ الْبَبَّغَاءَ فِي بُيُوتِهِmْ كَطَائِرٍ أَلِيفٍ.",
+      "translationUz": "Ba'zi odamlar tuti qushini uylarida uy hayvoni sifatida boqadilar.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "مَا هُوَ الْبَبَّغَاءُ؟",
+    "أَيْنَ يَعِيشُ الْبَبَّغَاءُ؟",
+    "هَلْ هُوَ طَائِرٌ عَجِيبٌ؟",
+    "مَاذَا يَفْعَلُ بَعْضُ النَّاسِ؟",
+    "هَلْ تُرَبِّي طَائِرًا فِي بَيْتِكَ؟"
+  ],
+  "context": {
+    "main_topic": "parrot_description",
+    "pattern": "bird_description → habitats → pet_keeping"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "ar_m2_l43",
+  "language": "ar",
+  "module": 2,
+  "lesson": 43,
+  "title": "اَلْحَفِيْدَةُ الْمَرِيضَةُ",
+  "summary": "Buvi va nabirasi o'rtasida kasallik hissi, qorin og'rig'i va kasalxonaga borish haqidagi suhbat.",
+  "vocabulary": [
+    {"word": "اَلْحَفِيْدَةُ", "translationUz": "nabira (qiz)"},
+    {"word": "الْمَرِيضَةُ", "translationUz": "kasal (ayol)"},
+    {"word": "اَلْجَدَّةُ", "translationUz": "buvi"},
+    {"word": "حَزِينَةٌ", "translationUz": "g'amgin (ayol)"},
+    {"word": "أَشْعُرُ", "translationUz": "his qilaman"},
+    {"word": "بِأَنَّنِي", "translationUz": "men ... ekanligimni"},
+    {"word": "مَرِيضَةٌ", "translationUz": "kasal (ayol)"},
+    {"word": "مَا بِكِ", "translationUz": "sizga nima bo'ldi"},
+    {"word": "بِأَلَمٍ", "translationUz": "og'riq bilan"},
+    {"word": "شَدِيدٍ", "translationUz": "qattiq"},
+    {"word": "بَطْنِي", "translationUz": "qornim"},
+    {"word": "شَفَاكِ اللهُ", "translationUz": "Alloh sizga shifo bersin"},
+    {"word": "هَيَّا", "translationUz": "haydi"},
+    {"word": "نَذْهَبْ", "translationUz": "boraylik"},
+    {"word": "الْمُسْتَشْفَى", "translationUz": "kasalxona"}
+  ],
+  "dialogue": [
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "لِمَاذَا أَنْتِ حَزِينَةٌ يَا حَفِيدَتِي؟",
+      "translationUz": "Nega g'amginsiz, nabirachim?",
+      "next": "اَلْحَفِيدَةُ: أَشْعُرُ بِأَنَّنِي مَرِيضَةٌ يَا جَدَّتِي."
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "أَشْعُرُ بِأَنَّنِي mَرِيضَةٌ يَا جَدَّتِي.",
+      "translationUz": "Men kasal ekanligimni his qilyapman, buvijon.",
+      "next": "اَلْجَدَّةُ: مَا بِكِ؟"
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "مَا بِكِ؟",
+      "translationUz": "Sizga nima bo'ldi?",
+      "next": "اَلْحَفِيدَةُ: أَشْعُرُ بِأَلَمٍ شَدِيدٍ فِي بَطْنِي."
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "أَشْعُرُ بِأَلَمٍ شَدِيدٍ فِي بَطْنِي.",
+      "translationUz": "Qornimda qattiq og'riq his qilyapman.",
+      "next": "اَلجَدَّةُ: شَفَاكِ اللهُ ، هَيَّا نَذْهَبْ إِلَى الْمُسْتَشْفَى."
+    },
+    {
+      "speaker": "اَلْجَدَّةُ",
+      "text": "شَفَاكِ اللهُ ، هَيَّا نَذْهَبْ إِلَى الْمُسْتَشْفَى.",
+      "translationUz": "Alloh sizga shifo bersin, haydi kasalxonaga boraylik.",
+      "next": "اَلْحَفِيدَةُ: حَسَنًا يَا جَدَّتِي."
+    },
+    {
+      "speaker": "اَلْحَفِيدَةُ",
+      "text": "حَسَنًا يَا جَدَّتِي.",
+      "translationUz": "Yaxshi, buvijon.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "كَيْفَ تَبْدُو الْحَفِيدَةُ؟",
+    "مَاذَا تُشْعِرُ بِهِ؟",
+    "أَيْنَ يَحِدُثُ الْأَلَمُ؟",
+    "مَاذَا تَقْتَرِحُ الْجَدَّةُ؟",
+    "كَيْفَ تَرُدُّ الْحَفِيدَةُ عَلَى الِاقْتِرَاحِ؟"
+  ],
+  "context": {
+    "main_topic": "sick_granddaughter_conversation",
+    "pattern": "sadness_question → sickness_feeling → concern_question → pain_location → suggestion_and_blessing → acceptance"
+  }
+}

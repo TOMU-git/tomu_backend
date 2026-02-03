@@ -1,13 +1,13 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { IUserCount, IUserRepository } from "./interfaces/user.repository";
-import { ILike, Repository } from "typeorm";
+import { ILike, Repository, In } from "typeorm";
 import { RoleEnum } from "src/common/enums/enum";
 
 export class UserRepository implements IUserRepository {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   // *** Create a new user *** //
 
@@ -43,7 +43,7 @@ export class UserRepository implements IUserRepository {
       });
       const count = await this.userRepository
         .createQueryBuilder("users")
-        .where({role: RoleEnum.STUDENT})
+        .where({ role: RoleEnum.STUDENT })
         .select("COUNT(*) count")
         .getRawOne();
       return { users: foundUsers, count: parseInt(count.count, 10) };
@@ -59,7 +59,7 @@ export class UserRepository implements IUserRepository {
     if (search && search.trim() !== "") {
       whereCondition = {
         phoneNumber: ILike(`%${search}%`),
-        role: RoleEnum.ADMIN,
+        role: In([RoleEnum.ADMIN, RoleEnum.DIRECTOR]),
       };
       const foundUsers = await this.userRepository.find({
         skip: offset,
@@ -72,11 +72,11 @@ export class UserRepository implements IUserRepository {
       const foundUsers = await this.userRepository.find({
         skip: offset,
         take: limit,
-        where: { role: RoleEnum.ADMIN },
+        where: { role: In([RoleEnum.ADMIN, RoleEnum.DIRECTOR]) },
       });
       const count = await this.userRepository
         .createQueryBuilder("users")
-        .where({role: RoleEnum.ADMIN})
+        .where("users.role IN (:...roles)", { roles: [RoleEnum.ADMIN, RoleEnum.DIRECTOR] })
         .select("COUNT(*) count")
         .getRawOne();
       return { users: foundUsers, count: parseInt(count.count, 10) };
@@ -109,7 +109,7 @@ export class UserRepository implements IUserRepository {
       });
       const count = await this.userRepository
         .createQueryBuilder("users")
-        .where({role: RoleEnum.TEACHER})
+        .where({ role: RoleEnum.TEACHER })
         .select("COUNT(*) count")
         .getRawOne();
       return { users: foundUsers, count: parseInt(count.count, 10) };

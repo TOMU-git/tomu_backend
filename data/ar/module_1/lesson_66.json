@@ -1,0 +1,42 @@
+{
+    "id": "ar_m1_l66",
+    "language": "ar",
+    "module": 1,
+    "lesson": 66,
+    "title": "اَلْغُرَابُ",
+    "summary": "Qarg'aning sovuqni sevishi va fasllar bo'yicha ko'chishi haqida.",
+    "vocabulary": [
+      { "word": "غُرَاب", "translationUz": "qarg'a" },
+      { "word": "بَرْد", "translationUz": "sovuq" },
+      { "word": "شِتَاء", "translationUz": "qish" },
+      { "word": "يَطِير", "translationUz": "uchadi" },
+      { "word": "رَبِيع", "translationUz": "bahor" },
+      { "word": "يَرْجِع", "translationUz": "qaytadi" },
+      { "word": "بَارِد", "translationUz": "sovuq" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يُحِبُّ الْغُرَابُ الْبَرْدَ وَ الشِّتَاءَ.",
+        "translationUz": "Qarg'a sovuqni va qishni yaxshi ko'radi.",
+        "next": "يَطِيرُ إِلَى أُوزْبَكِسْتَانَ قَبْلَ فَصْلِ الشِّتَاءِ، وَ بَعْدَ انْتِهَاءِ الشِّتَاءِ فِي فَصْلِ الرَّبِيعِ، يَرْجِعُ إِلَى أَمَاكِنَ بَارِdَةٍ أُخْرَى."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "يَطِيرُ إِلَى أُوزْبَكِسْتَانَ قَبْلَ فَصْلِ الشِّتَاءِ، وَ بَعْدَ انْتِهَاءِ الشِّتَاءِ فِي فَصْلِ الرَّبِيعِ، يَرْجِعُ إِلَى أَمَاكِنَ بَارِدَةٍ أُخْرَى.",
+        "translationUz": "U qish faslidan oldin O'zbekistonga uchadi va qish tugagach, bahor faslida boshqa sovuq joylarga qaytadi.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "هَلْ تُحِبُّ الْبَرْدَ أَمِ الْحَرَّ؟",
+      "أَيْنَ يَذْهَبُ الْغُرَابُ فِي الشِّتَاءِ؟",
+      "لِمَاذَا يُحِبُّ الْغُرَابُ الْبَرْدَ؟",
+      "هَلْ تَرَى الْغِرْبَانَ فِي بَلَدِكَ؟",
+      "مَاذَا تَعْرِفُ عَنِ الْغِرْبَانِ؟"
+    ],
+    "context": {
+      "main_topic": "bird_migration",
+      "pattern": "narration → narration"
+    }
+  }

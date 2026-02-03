@@ -1,0 +1,46 @@
+{
+    "id": "ar_m1_l33",
+    "language": "ar",
+    "module": 1,
+    "lesson": 33,
+    "title": "بِنْتُ خَدِيجَةَ",
+    "summary": "Kichkina qizning xususiyatlari va kunlik faoliyati haqida.",
+    "vocabulary": [
+      { "word": "بِنْتُ", "translationUz": "qizi" },
+      { "word": "طِفْلَةٌ", "translationUz": "qiz bola" },
+      { "word": "صَغِيرَةٌ", "translationUz": "kichik" },
+      { "word": "كُلَّ يَوْمٍ", "translationUz": "har kuni" },
+      { "word": "ذَكِيَّةٌ", "translationUz": "aqlli" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "بِنْتُ خَدِيجَةَ طِفْلَةٌ صَغِيرَةٌ.",
+        "translationUz": "Xadichaning qizi kichkina qiz bola.",
+        "next": "هِيَ تَلْعَبُ فِي الْمَلْعَبِ كُلَّ يَوْمٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ تَلْعَبُ فِي الْمَلْعَبِ كُلَّ يَوْمٍ.",
+        "translationUz": "U har kuni maydonchada o'ynaydi.",
+        "next": "هِيَ ذَكِيَّةٌ وَجَمِيلَةٌ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "هِيَ ذَكِيَّةٌ وَجَمِيلَةٌ.",
+        "translationUz": "U aqlli va chiroyli.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "كَمْ عُمْرُ بِنْتِ خَدِيجَةَ؟",
+      "مَاذَا تُحِبُّ أَنْ تَلْعَبَ؟",
+      "هَلْ لَكَ أُخْتٌ صَغِيرَةٌ؟",
+      "لِمَاذَا هِيَ ذَكِيَّةٌ؟",
+      "أَيْنَ يَوْمِيًّا؟"
+    ],
+    "context": {
+      "main_topic": "child_description",
+      "pattern": "narration → narration → narration"
+    }
+  }

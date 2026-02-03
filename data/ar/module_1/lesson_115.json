@@ -1,0 +1,46 @@
+{
+    "id": "ar_m1_l115",
+    "language": "ar",
+    "module": 1,
+    "lesson": 115,
+    "title": "فِي السُّوقِ",
+    "summary": "Bozorda turli xil mevalar sotib olish haqida.",
+    "vocabulary": [
+      {"word": "السُّوقِ", "translationUz": "bozor"},
+      {"word": "اشْتَرَيْتُ", "translationUz": "men sotib oldim"},
+      {"word": "ثَمَانِيَ", "translationUz": "sakkiz"},
+      {"word": "رُمَّانَاتٍ", "translationUz": "anorlar"},
+      {"word": "خَمْسَ", "translationUz": "besh"},
+      {"word": "تُفَّاحَاتٍ", "translationUz": "olmalar"},
+      {"word": "أَيْضًا", "translationUz": "shuningdek"},
+      {"word": "عَشَرَ", "translationUz": "o'n"},
+      {"word": "مُوْزَاتٍ", "translationUz": "bananlar"},
+      {"word": "عَشْرَ", "translationUz": "o'n"},
+      {"word": "فَرَاوِلَاتٍ", "translationUz": "qulupnaylar"}
+    ],
+    "dialogue": [
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "ذَهَبْتُ إِلَى السُّوقِ وَ اشْتَرَيْتُ ثَمَانِيَ رُمَّانَاتٍ وَ خَمْسَ تُفَّاحَاتٍ.",
+        "translationUz": "Men bozorga bordim va sakkizta anor va beshta olma sotib oldim.",
+        "next": "وَ اشْتَرَيْتُ أَيْضًا عَشَرَ مُوْزَاتٍ وَ عَشْرَ فَرَاوِلَاتٍ."
+      },
+      {
+        "speaker": "رِوَايَةٌ",
+        "text": "وَ اشْتَرَيْتُ أَيْضًا عَشَرَ مُوْزَاتٍ وَ عَشْرَ فَرَاوِلَاتٍ.",
+        "translationUz": "Va men shuningdek o'n ta banan va o'n ta qulupnay sotib oldim.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "أَيْنَ ذَهَبَ الشَّخْصُ؟",
+      "مَاذَا اشْتَرَى مِنَ الْفَوَاكِهِ؟",
+      "كَمْ رُمَّانَةً اشْتَرَى؟",
+      "كَمْ تُفَّاحَةً اشْتَرَى؟",
+      "هَلْ تُحِبُّ الذَّهَابَ إِلَى السُّوقِ؟"
+    ],
+    "context": {
+      "main_topic": "shopping_fruits",
+      "pattern": "market_visit_and_purchases → additional_purchases"
+    }
+  }

@@ -1,0 +1,71 @@
+{
+    "id": "ar_m1_l58",
+    "language": "ar",
+    "module": 1,
+    "lesson": 58,
+    "title": "كُلِّيَّةُ الطِّبِّ",
+    "summary": "Tibbiyot fakultetida o'qish va o'qish yili haqida suhbat.",
+    "vocabulary": [
+      { "word": "كُلِّيَّة", "translationUz": "fakultet" },
+      { "word": "طِب", "translationUz": "tibbiyot" },
+      { "word": "جَامِعَة", "translationUz": "universitet" },
+      { "word": "أَزْهَر", "translationUz": "Azhar" },
+      { "word": "سَنَة", "translationUz": "yil" },
+      { "word": "ثَالِثَة", "translationUz": "uchinchi" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "لَيْلَى",
+        "text": "فِي أَيِّ جَامِعَةٍ تَدْرُسِينَ، يَا سَلْمَى؟",
+        "translationUz": "Qaysi universitetda o'qiysan, Salmo?",
+        "next": "أَدْرُسُ فِي جَامِعَةِ الأَزْهَرِ الشَّرِيفِ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "أَدْرُسُ فِي جَامِعَةِ الأَزْهَرِ الشَّرِيفِ.",
+        "translationUz": "Azhar universitetida o'qiyman.",
+        "next": "فِي أَيِّ كُلِّيَّةٍ؟"
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "فِي أَيِّ كُلِّيَّةٍ؟",
+        "translationUz": "Qaysi fakultetda?",
+        "next": "فِي كُلِّيَّةِ الطِّبِّ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "فِي كُلِّيَّةِ الطِّبِّ.",
+        "translationUz": "Tibbiyot fakultetida.",
+        "next": "فِي أَيِّ سَنَةٍ تَدْرُسِينَ؟"
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "فِي أَيِّ سَنَةٍ تَدْرُسِينَ؟",
+        "translationUz": "Qaysi yilda o'qiysan?",
+        "next": "فِي السَّنَةِ الثَّالِثَةِ."
+      },
+      {
+        "speaker": "سَلْمَى",
+        "text": "فِي السَّنَةِ الثَّالِثَةِ.",
+        "translationUz": "Uchinchi yilda.",
+        "next": "أَنَا أَيْضًا أَدْرُسُ فِي كُلِّيَّةِ الطِّبِّ فِي السَّنَةِ الثَّالِثَةِ."
+      },
+      {
+        "speaker": "لَيْلَى",
+        "text": "أَنَا أَيْضًا أَدْرُسُ فِي كُلِّيَّةِ الطِّبِّ فِي السَّنَةِ الثَّالِثَةِ.",
+        "translationUz": "Men ham tibbiyot fakultetida uchinchi yilda o'qiyman.",
+        "next": null
+      }
+    ],
+    "followups": [
+      "فِي أَيِّ جَامِعَةٍ تَدْرُسُ؟",
+      "فِي أَيِّ كُلِّيَّةٍ تَدْرُسُ؟",
+      "فِي أَيِّ سَنَةٍ تَدْرُسُ؟",
+      "هَلْ تُرِيدُ دِرَاسَةَ الطِّبِّ؟",
+      "مَا هِيَ أَصْعَبُ مَادَّةٍ فِي كُلِّيَّةِ الطِّبِّ؟"
+    ],
+    "context": {
+      "main_topic": "medical_studies",
+      "pattern": "ask_university → answer → ask_faculty → answer → ask_year → answer → share_common"
+    }
+  }

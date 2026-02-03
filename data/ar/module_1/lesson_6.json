@@ -1,0 +1,55 @@
+{
+  "id": "ar_m1_l6",
+  "language": "ar",
+  "module": 1,
+  "lesson": 6,
+  "title": "اَلْكُرْسِيُّ",
+  "summary": "Introducing new vocabulary related to classroom objects and learning to describe spatial relations using 'behind'.",
+  "vocabulary": [
+    { "word": "كُرْسِيٌّ", "translationUz": "stul" },
+    { "word": "مُعَلِّمٌ", "translationUz": "o'qituvchi" },
+    { "word": "خَلْفَ", "translationUz": "orqasida" },
+    { "word": "الَّذِي", "translationUz": "kimki / narsa (erkak jins)" },
+    { "word": "مَنْ", "translationUz": "kim" },
+    { "word": "مَا", "translationUz": "nima" },
+    { "word": "هَذَا", "translationUz": "bu" },
+    { "word": "خَلْفَ الْمُعَلِّمِ", "translationUz": "o'qituvchining orqasida" }
+  ],
+  "dialogue": [
+    {
+      "speaker": "سَعِيدٌ",
+      "text": "مَنْ هَذَا، يَا زَيْدُ؟",
+      "translationUz": "Bu kim, Zayd?",
+      "next": "هَذَا مُعَلِّمٌ، يَا سَعِيدُ."
+    },
+    {
+      "speaker": "زَيْدٌ",
+      "text": "هَذَا مُعَلِّمٌ، يَا سَعِيدُ.",
+      "translationUz": "Bu o'qituvchi, Said.",
+      "next": "وَمَا هَذَا الَّذِي خَلْفَ الْمُعَلِّمِ؟"
+    },
+    {
+      "speaker": "سَعِيدٌ",
+      "text": "وَمَا هَذَا الَّذِي خَلْفَ الْمُعَلِّمِ؟",
+      "translationUz": "O'qituvchining orqasidagi bu narsa nima?",
+      "next": "خَلْفَ الْمُعَلِّمِ كُرْسِيٌّ."
+    },
+    {
+      "speaker": "زَيْدٌ",
+      "text": "خَلْفَ الْمُعَلِّمِ كُرْسِيٌّ.",
+      "translationUz": "O'qituvchining orqasida stul bor.",
+      "next": null
+    }
+  ],
+  "followups": [
+    "هَلْ هُنَاكَ كُرْسِيٌّ آخَرُ؟",
+    "مَا هُوَ أَمَامَ الْمُعَلِّمِ؟",
+    "هَلْ يَجْلِسُ الْمُعَلِّمُ عَلَى الْكُرْسِيِّ؟",
+    "مَنْ يَجْلِسُ خَلْفَ الْكُرْسِيِّ؟",
+    "هَلْ الْكُرْسِيُّ جَدِيدٌ؟"
+  ],
+  "context": {
+    "main_topic": "classroom_objects",
+    "pattern": "question → answer → question → answer"
+  }
+}

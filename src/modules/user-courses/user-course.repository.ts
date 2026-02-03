@@ -10,7 +10,7 @@ export class UserCourseRepository implements IUserCourseRepository {
   constructor(
     @InjectRepository(UserCourse)
     private userCourseRepository: Repository<UserCourse>,
-  ) {}
+  ) { }
 
   /**
    * Yangi UserCourse ma'lumotlarini yaratadi va saqlaydi.
@@ -42,7 +42,7 @@ export class UserCourseRepository implements IUserCourseRepository {
         course: { id: courseId },
       },
       relations: ["user", "course"], // bu muhim
-    });    
+    });
   }
 
   /**
@@ -88,16 +88,6 @@ export class UserCourseRepository implements IUserCourseRepository {
     return await this.userCourseRepository.find({
       where: { user: { id: userId } },
       relations: ["course"], // Bog'langan Course obyektini qo'shish
-      select: {
-        id: true,
-        status: true,
-        course: {
-          id: true,
-          title: true,
-          imageUrl: true,
-          description: true,
-        },
-      },
     });
   }
 
@@ -115,13 +105,25 @@ export class UserCourseRepository implements IUserCourseRepository {
     userId: number,
     courseId: number,
   ): Promise<UserCourse | null> {
-    return await this.userCourseRepository.findOne({
+    // console.log('[UserCourseRepository.findByUserIdAndCourseId] Searching - User ID:', userId, 'Course ID:', courseId);
+
+    const result = await this.userCourseRepository.findOne({
       where: {
         user: { id: userId },
         course: { id: courseId },
       },
       relations: ['user', 'course'], // kerakli joinlar
     });
+
+    // console.log('[UserCourseRepository.findByUserIdAndCourseId] Result:', result ? {
+    //   id: result.id,
+    //   userId: result.user?.id,
+    //   courseId: result.course?.id,
+    //   isActive: result.isActive,
+    //   status: result.status
+    // } : 'NULL');
+
+    return result;
   }
-  
+
 }

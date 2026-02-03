@@ -1,0 +1,89 @@
+{
+    "id": "ar_m1_l57",
+    "language": "ar",
+    "module": 1,
+    "lesson": 57,
+    "title": "تَعَارُفٌ بَيْنَ نَادِرٍ وَجَمَالٍ",
+    "summary": "O'zbekistonlik va misrlik o'rtasida tanishish va mamlakatlar haqida suhbat.",
+    "vocabulary": [
+      { "word": "تَعَارُف", "translationUz": "tanishish" },
+      { "word": "أَخِي", "translationUz": "akam" },
+      { "word": "عَزِيز", "translationUz": "aziz" },
+      { "word": "بَلَد", "translationUz": "mamlakat" },
+      { "word": "أُوزْبَكِسْتَان", "translationUz": "O'zbekiston" },
+      { "word": "أَهْلًا وَسَهْلًا", "translationUz": "xush kelibsiz" }
+    ],
+    "dialogue": [
+      {
+        "speaker": "نَادِرٌ",
+        "text": "السَّلَامُ عَلَيْكُمْ.",
+        "translationUz": "Assalomu alaykum.",
+        "next": "وَعَلَيْكُمُ السَّلَامُ."
+      },
+      {
+        "speaker": "جَمَالٌ",
+        "text": "وَعَلَيْكُمُ السَّلَامُ.",
+        "translationUz": "Va alaykum assalom.",
+        "next": "مَا اسْمُكَ يَا أَخِي؟"
+      },
+      {
+        "speaker": "نَادِرٌ",
+        "text": "مَا اسْمُكَ يَا أَخِي؟",
+        "translationUz": "Isming nima, akam?",
+        "next": "إِسْمِي جَمَالٌ، وَمَا اسْمُكَ يَا أَخِي العَزِيزُ؟"
+      },
+      {
+        "speaker": "جَمَالٌ",
+        "text": "إِسْمِي جَمَالٌ، وَمَا اسْمُكَ يَا أَخِي العَزِيزُ؟",
+        "translationUz": "Ismim Jamol, sening isming nima, aziz akam?",
+        "next": "إِسْمِي نَادِرٌ."
+      },
+      {
+        "speaker": "نَادِرٌ",
+        "text": "إِسْمِي نَادِرٌ.",
+        "translationUz": "Ismim Nodir.",
+        "next": "مِنْ أَيِّ بَلَدٍ أَنْتَ؟"
+      },
+      {
+        "speaker": "جَمَالٌ",
+        "text": "مِنْ أَيِّ بَلَدٍ أَنْتَ؟",
+        "translationUz": "Qaysi mamlakatdansan?",
+        "next": "أَنَا مِنْ أُوزْبَكِسْتَانَ، وَأَنْتَ؟"
+      },
+      {
+        "speaker": "نَادِرٌ",
+        "text": "أَنَا مِنْ أُوزْبَكِسْتَانَ، وَأَنْتَ؟",
+        "translationUz": "Men O'zbekistondanman, senchi?",
+        "next": "أَنَا مِنْ مِصْرَ."
+      },
+      {
+        "speaker": "جَمَالٌ",
+        "text": "أَنَا مِنْ مِصْرَ.",
+        "translationUz": "Men Misrdanman.",
+        "next": "أَهْلًا وَسَهْلًا!"
+      },
+      {
+        "speaker": "نَادِرٌ",
+        "text": "أَهْلًا وَسَهْلًا!",
+        "translationUz": "Xush kelibsiz!",
+        "next": "أَهْلًا بِكَ!"
+      },
+      {
+        "speaker": "جَمَالٌ",
+        "text": "أَهْلًا بِكَ!",
+        "translationUz": "Xush ko'rdim seni!",
+        "next": null
+      }
+    ],
+    "followups": [
+      "مِنْ أَيْنَ أَنْتَ؟",
+      "هَلْ تَعْرِفُ أَحَدًا مِنْ مِصْرَ؟",
+      "مَا هِيَ أَشْهَرُ الْمَدَائِنِ فِي أُوزْبَكِسْتَانَ؟",
+      "هَلْ زُرْتَ مِصْرَ مِنْ قَبْلُ؟",
+      "كَيْفَ تَتَعَرَّفُ عَلَى أَصْدِقَاء جُدُد؟"
+    ],
+    "context": {
+      "main_topic": "international_introductions",
+      "pattern": "greeting → greeting → ask_name → exchange_names → ask_country → exchange_countries → welcome"
+    }
+  }
