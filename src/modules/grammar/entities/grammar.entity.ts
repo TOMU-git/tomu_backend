@@ -9,6 +9,14 @@ export class Grammar extends BaseEntity {
   @Column({ type: "varchar", length: 255 })
   title: string;
 
+  @Column({ type: "int", nullable: true })
+  /**
+   * Grammarning tartibini belgilaydi.
+   * Bu maydon yordamida grammarlar o'zaro bog'liq ravishda tartiblangan holda ko'rsatiladi.
+   * O'quv jarayonida foydalanuvchilar grammarlarni belgilangan tartibda o'qishi mumkin.
+   */
+  order: number;
+
   @Column({ type: "varchar", length: 255, name: "video_url" })
   videoUrl: string;
 
@@ -33,6 +41,6 @@ export class Grammar extends BaseEntity {
   @Column({ type: "int" })
   duration: number;
 
-  @Column({name: 'course_id', type: 'int', nullable: false})
+  @Column({ name: 'course_id', type: 'int', nullable: false })
   courseId: number;
 }

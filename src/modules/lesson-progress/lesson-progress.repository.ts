@@ -284,5 +284,62 @@ export class LessonProgressRepository implements ILessonProgressRepository {
     return result ? result.lessonOrder : null;
   }
 
+  /**
+   * Berilgan blokda foydalanuvchi tomonidan tugatilgan darslar sonini hisoblash.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param courseId - Kurs ID si
+   * @param blockOrder - Blok tartibi (masalan, 1-bo'lim uchun 1)
+   * @returns Tugatilgan darslar soni
+   */
+  async countCompletedLessonsInBlock(
+    userId: ID,
+    courseId: ID,
+    blockOrder: number,
+  ): Promise<number> {
+    const count = await this.lessonProgressRepository.count({
+      where: {
+        user: { id: userId },
+        courseId: courseId,
+        blockOrder: blockOrder,
+        isWatched: true,
+      }
+    });
+
+    return count;
+  }
+
+  /**
+   * Berilgan blokdagi barcha darslar foydalanuvchi tomonidan tugatilganligini tekshirish.
+   * 
+   * @param userId - Foydalanuvchi ID si
+   * @param courseId - Kurs ID si
+   * @param blockOrder - Blok tartibi (masalan, 1-bo'lim uchun 1)
+   * @returns true - agar barcha darslar tugatilgan bo'lsa, false - aks holda
+   */
+  async isBlockFullyCompleted(
+    userId: ID,
+    courseId: ID,
+    blockOrder: number,
+  ): Promise<boolean> {
+    // Blokdagi barcha lesson progresslarni olish
+    const allLessonProgresses = await this.lessonProgressRepository.find({
+      where: {
+        user: { id: userId },
+        courseId: courseId,
+        blockOrder: blockOrder,
+      }
+    });
+
+    // Agar hech qanday progress bo'lmasa, blok tugatilmagan
+    if (!allLessonProgresses || allLessonProgresses.length === 0) {
+      return false;
+    }
+
+    // Barcha darslar ko'rilganligini tekshirish
+    const allWatched = allLessonProgresses.every((progress) => progress.isWatched);
+
+    return allWatched;
+  }
 
 }

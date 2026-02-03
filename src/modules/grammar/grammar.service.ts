@@ -9,6 +9,7 @@ import { IGrammarService } from "./interfaces/grammar.service";
 import {
   GrammarAlreadyExistException,
   GrammarNotFoundException,
+  GrammarOrderAlreadyExistException,
   GrammarsNotFoundByCourseId,
 } from "./exception/grammar.exception";
 import { ICourseRepository } from "../course/interfaces/course.repository";
@@ -45,6 +46,15 @@ export class GrammarService implements IGrammarService {
       throw new CourseNotFoundException();
     }
 
+    // Order uniqueness validation
+    const orderExist = await this.grammarRepository.findOneByOrder(
+      createGrammarDto.order,
+      createGrammarDto.courseId,
+    );
+    if (orderExist) {
+      throw new GrammarOrderAlreadyExistException();
+    }
+
     // Video yuklash
     const { videoUrl, duration, vimeoVideoId } = await this.vimeoService.uploadVideo(
       file.buffer,
@@ -59,6 +69,7 @@ export class GrammarService implements IGrammarService {
     newGrammar.videoUrl = videoUrl;
     newGrammar.vimeoVideoId = vimeoVideoId;
     newGrammar.courseId = createGrammarDto.courseId;
+    newGrammar.order = createGrammarDto.order;
     newGrammar.mimetype = file.mimetype;
     newGrammar.size = file.size;
 
@@ -71,6 +82,7 @@ export class GrammarService implements IGrammarService {
       videoUrl: savedGrammar.videoUrl,
       vimeoVideoId: savedGrammar.vimeoVideoId,
       courseId: savedGrammar.courseId,
+      order: savedGrammar.order,
       mimetype: savedGrammar.mimetype,
       size: savedGrammar.size,
       duration: savedGrammar.duration,
@@ -124,6 +136,7 @@ export class GrammarService implements IGrammarService {
     file?: Express.Multer.File,
   ): Promise<ResData<Grammar>> {
     const { data: foundData } = await this.findOneById(id);
+    const oldCourseId = foundData.courseId;
 
     if (updateGrammarDto.courseId) {
       const course = await this.courseRepository.findById(
@@ -132,9 +145,25 @@ export class GrammarService implements IGrammarService {
       foundData.courseId = updateGrammarDto.courseId;
     }
 
+    // Faqat order o'zgartirilganida tekshirish
+    if (updateGrammarDto.order && updateGrammarDto.order !== foundData.order) {
+      const orderExist = await this.grammarRepository.findOneByOrder(
+        updateGrammarDto.order,
+        updateGrammarDto.courseId || oldCourseId,
+      );
+      if (orderExist) {
+        throw new GrammarOrderAlreadyExistException();
+      }
+    }
+
     // Title ni yangilash
     if (updateGrammarDto.title) {
       foundData.title = updateGrammarDto.title;
+    }
+
+    // Yangilanishlarni qo'llash
+    if (updateGrammarDto.order !== undefined && updateGrammarDto.order !== null) {
+      foundData.order = updateGrammarDto.order;
     }
 
     // Agar fayl bo'lsa, video URL'ini yangilaydi
@@ -161,6 +190,7 @@ export class GrammarService implements IGrammarService {
       videoUrl: data.videoUrl,
       vimeoVideoId: data.vimeoVideoId,
       courseId: data.courseId,
+      order: data.order,
       mimetype: data.mimetype,
       size: data.size,
       duration: data.duration,

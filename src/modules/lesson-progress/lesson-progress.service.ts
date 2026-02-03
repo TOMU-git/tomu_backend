@@ -234,26 +234,7 @@ export class LessonProgressService implements ILessonProgressService {
       const courseId = existingProgresses[0].courseId;
       const blockOrder = existingProgresses[0].blockOrder;
 
-      const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
-      const progressCount = existingProgresses.length;
-
-      if (totalLessonsCount > progressCount) {
-        await this.generateLessonProgress(userId, blockId, courseId);
-
-        const updatedProgresses =
-          await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
-
-        return {
-          message: "Lesson progress updated with new lessons",
-          statusCode: 200,
-          data: updatedProgresses,
-          isPaid: true
-        };
-      }
-
-
-
-      // UserCourse ma'lumotlarini tekshirish
+      // UserCourse ma'lumotlarini olish (isPreviousModuleCompleted uchun kerak)
       const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
 
       if (!userCourse) {
@@ -263,6 +244,63 @@ export class LessonProgressService implements ILessonProgressService {
       const hasPaid = userCourse.hasEverPaid
       const isActive = userCourse.isActive
       const onFreeTrial = userCourse.onFreeTrial
+
+      // ✅ Oldingi modulni to'liq tugatganligini tekshirish va kunlik warning limiti
+      let isPreviousModuleCompleted: boolean | null = true; // Default: 1-modul yoki oldingi modul tugatilgan
+
+      if (blockOrder > 1) {
+        const previousBlockOrder = blockOrder - 1;
+        const isCompleted = await this.lessonProgressRepository.isBlockFullyCompleted(
+          userId,
+          courseId,
+          previousBlockOrder
+        );
+
+        if (!isCompleted) {
+          // Oldingi modul tugatilmagan - kunlik warning limitni tekshirish
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); // Bugungi kunning boshlanishi
+
+          const lastWarning = userCourse.lastModuleWarningShownAt;
+          const lastWarningBlock = userCourse.lastModuleWarningBlockOrder;
+
+          // Agar warning bugun ko'rsatilmagan bo'lsa yoki boshqa modul uchun ko'rsatilgan bo'lsa
+          if (!lastWarning ||
+            new Date(lastWarning) < today ||
+            lastWarningBlock !== blockOrder) {
+            // Warning ko'rsatish va timestamp yangilash
+            isPreviousModuleCompleted = false;
+            userCourse.lastModuleWarningShownAt = new Date();
+            userCourse.lastModuleWarningBlockOrder = blockOrder;
+            await this.userCourseRepository.update(userCourse);
+            this.logger.log(`⚠️ Module warning shown: userId=${userId}, blockOrder=${blockOrder}`);
+          } else {
+            // Warning bugun allaqachon ko'rsatilgan
+            isPreviousModuleCompleted = null;
+            this.logger.log(`ℹ️ Module warning already shown today: userId=${userId}, blockOrder=${blockOrder}`);
+          }
+        }
+      }
+
+      const totalLessonsCount = await this.lessonRepository.countByBlockId(blockId);
+      const progressCount = existingProgresses.length;
+
+      if (totalLessonsCount > progressCount) {
+
+
+        await this.generateLessonProgress(userId, blockId, courseId);
+
+        const updatedProgresses =
+          await this.lessonProgressRepository.findByBlockIdAndUserId(blockId, userId);
+
+        return {
+          message: "Lesson progress updated with new lessons",
+          statusCode: 200,
+          data: updatedProgresses,
+          isPaid: true,
+          isPreviousModuleCompleted
+        };
+      }
 
 
 
@@ -276,7 +314,8 @@ export class LessonProgressService implements ILessonProgressService {
           message: "Finish reviewing the previous tasks first.",
           statusCode: 403,
           data: existingProgresses,
-          isPaid: isActive
+          isPaid: isActive,
+          isPreviousModuleCompleted
         };
       }
 
@@ -302,7 +341,8 @@ export class LessonProgressService implements ILessonProgressService {
             message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
             statusCode: 403,
             data: [],
-            isPaid: false
+            isPaid: false,
+            isPreviousModuleCompleted
           };
         }
 
@@ -316,7 +356,8 @@ export class LessonProgressService implements ILessonProgressService {
               message: "To access lessons beyond lesson 30 in module 1, you need to purchase this course.",
               statusCode: 403,
               data: existingProgresses,
-              isPaid: false
+              isPaid: false,
+              isPreviousModuleCompleted
             };
           }
         }
@@ -374,7 +415,8 @@ export class LessonProgressService implements ILessonProgressService {
         message: "Lesson fetched successfully",
         statusCode: 200,
         data: finalProgresses,
-        isPaid: !!isActive
+        isPaid: !!isActive,
+        isPreviousModuleCompleted
       };
     }
 
@@ -393,7 +435,8 @@ export class LessonProgressService implements ILessonProgressService {
         message: "Lesson progress created successfully",
         statusCode: 200,
         data: newProgresses,
-        isPaid: !!isActive
+        isPaid: !!isActive,
+        isPreviousModuleCompleted: true
       };
     }
 
@@ -401,7 +444,8 @@ export class LessonProgressService implements ILessonProgressService {
       message: "No lessons available",
       statusCode: 404,
       data: [],
-      isPaid: false
+      isPaid: false,
+      isPreviousModuleCompleted: true
     };
   }
 

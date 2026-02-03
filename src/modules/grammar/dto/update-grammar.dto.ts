@@ -3,7 +3,7 @@ import { Transform } from "class-transformer";
 import { IsOptional, IsString, MaxLength } from "class-validator";
 
 export class UpdateGrammarDto {
-    @ApiPropertyOptional({
+  @ApiPropertyOptional({
     description: 'Darsning sarlavhasi',
     example: 'Ingliz tilida dars',
     maxLength: 255,
@@ -20,6 +20,17 @@ export class UpdateGrammarDto {
   @IsOptional()
   video?: any; // Fayl yuklash uchun maydon
 
+  @ApiPropertyOptional({
+    description: 'Grammarning tartibi',
+    example: 1,
+  })
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  })
+  order?: number;
 
   @ApiPropertyOptional({
     description: 'Bog‘lanadigan Kursnig IDsi',

@@ -21,7 +21,7 @@ export class UserCourse extends BaseEntity {
 
   @Column({ name: 'has_ever_paid', type: 'bool', default: false })
   hasEverPaid: boolean;
-  
+
   @Column({ name: "tariff_id", type: 'int', nullable: true })
   tariffId: number;
 
@@ -35,6 +35,12 @@ export class UserCourse extends BaseEntity {
 
   @Column({ name: "ended_at", type: "date", nullable: true })
   endedAt: Date;
+
+  @Column({ name: "last_module_warning_shown_at", type: "timestamp", nullable: true })
+  lastModuleWarningShownAt: Date | null;
+
+  @Column({ name: "last_module_warning_block_order", type: "int", nullable: true })
+  lastModuleWarningBlockOrder: number | null;
 
   @ManyToOne(() => Course, (course) => course.userCourses)
   @JoinColumn({ name: "course_id" })

@@ -20,6 +20,15 @@ export class CreateGrammarDto {
   video: any; // Fayl yuklash uchun maydon
 
   @ApiProperty({
+    description: 'Grammarning tartibi',
+    example: 1,
+    required: false,
+  })
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value, 10))
+  order: number;
+
+  @ApiProperty({
     type: Number,
     description: "The ID of the associated course, if any",
     example: 1,

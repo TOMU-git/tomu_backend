@@ -10,7 +10,7 @@ export class GrammarRepository implements IGrammarRepository {
   constructor(
     @InjectRepository(Grammar)
     private grammarRepository: Repository<Grammar>,
-  ) {}
+  ) { }
 
   async create(entity: Grammar): Promise<Grammar> {
     return await this.grammarRepository.save(entity);
@@ -18,14 +18,14 @@ export class GrammarRepository implements IGrammarRepository {
 
   async findAll(): Promise<Array<Grammar>> {
     return await this.grammarRepository.find({
-      select: ["id", "title"], order: {createdAt: 'ASC'}
+      select: ["id", "title"], order: { createdAt: 'ASC' }
     });
   }
 
   async findGrammarsByCourseId(id: number): Promise<Grammar[]> {
     return await this.grammarRepository.find({
       where: { courseId: id },
-      order: { createdAt: "ASC" }, // yoki 'ASC' o'sish tartibida saralash uchun
+      order: { order: "ASC" }, // Changed from createdAt to order
     });
   }
 
@@ -39,5 +39,14 @@ export class GrammarRepository implements IGrammarRepository {
 
   async findById(id: ID): Promise<Grammar | null> {
     return await this.grammarRepository.findOneBy({ id });
+  }
+
+  async findOneByOrder(order: number, courseId: ID): Promise<Grammar | null> {
+    return await this.grammarRepository.findOne({
+      where: {
+        order: order,
+        courseId: courseId,
+      },
+    });
   }
 }
