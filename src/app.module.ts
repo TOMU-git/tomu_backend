@@ -40,6 +40,8 @@ import { ChromaService } from './modules/ai/services/chroma.service';
 import { NotificationModule } from './modules/notification/notification.module';
 import { VideoModule } from "./modules/video/video.module";
 import { ScheduleModule } from '@nestjs/schedule';
+import { GroupModule } from './modules/group/group.module';
+import { LectureModule } from './modules/lecture/lecture.module';
 
 @Module({
   imports: [
@@ -92,6 +94,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     UserDeviceModule,
     NotificationModule,
     VideoModule,
+    GroupModule,
+    LectureModule,
   ],
 })
 export class AppModule implements NestModule, OnModuleInit {
