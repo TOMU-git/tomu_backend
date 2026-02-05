@@ -39,9 +39,11 @@ import { UserDeviceModule } from './modules/user-device/user-device.module';
 import { ChromaService } from './modules/ai/services/chroma.service';
 import { NotificationModule } from './modules/notification/notification.module';
 import { VideoModule } from "./modules/video/video.module";
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [".env", ".development.env"],

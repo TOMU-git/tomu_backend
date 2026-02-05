@@ -5,6 +5,12 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { AllExceptionsFilter } from "./lib/AllExceptionFilters";
 import { ValidationPipe } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as crypto from 'crypto';
+
+// global crypto qilib qo'yamiz
+if (!globalThis.crypto) {
+  (globalThis as any).crypto = crypto;
+}
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

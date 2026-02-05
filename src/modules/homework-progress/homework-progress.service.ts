@@ -634,7 +634,13 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       }
 
 
-      return new ResData("Homework progress successfully updated", 200, homeworkProgress);
+      return new ResData(
+        "Homework progress successfully updated",
+        200,
+        homeworkProgress,
+        null,
+        { isQueueEmpty } // Queue bo'shligini metadata sifatida yuboramiz
+      );
     } catch (error) {
       this.logger.error(`Error updating homework progress: ${error.message}`, error.stack);
       throw error;
