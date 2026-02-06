@@ -8,6 +8,7 @@ import { UserCourse } from "src/modules/user-courses/entities/user-course.entity
 import { UserDevice } from "src/modules/user-device/entities/user-device.entity";
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { Group } from "src/modules/group/entities/group.entity";
+import { Lecture } from "src/modules/lecture/entities/lecture.entity";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -154,7 +155,14 @@ export class User extends BaseEntity {
   devices: UserDevice[];
 
 
-  @ManyToOne(() => Group, (group) => group.users, {nullable:true})
+  @OneToMany(() => Lecture, (lecture) => lecture.user)
+  lectures: Lecture[];
+
+
+  @ManyToOne(() => Group, (group) => group.users, {
+    nullable:true,
+    onDelete: 'SET NULL'
+  })
   @JoinColumn({ name: "group_id" })
   group: Group;
 }
