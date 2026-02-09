@@ -9,4 +9,4 @@ export interface IAlphabetRepository {
   findById(id: ID): Promise<Alphabet | null>;
   findOneByOrder(order: number, courseId: ID): Promise<Alphabet | null>;
   getAlphabetsByCourseId(courseId: number): Promise<Alphabet[]>;
-}
+} 
