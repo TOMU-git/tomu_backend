@@ -9,7 +9,9 @@ import {
     IsUrl,
     Min,
     MaxLength,
+    IsEnum,
 } from 'class-validator';
+import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 
 export class CreateLectureDto {
     @ApiProperty({
@@ -22,15 +24,6 @@ export class CreateLectureDto {
     @IsNotEmpty()
     @MaxLength(255)
     title: string;
-
-    @ApiProperty({
-        type: Date,
-        example: '2026-02-10',
-        description: 'The date when the lecture will be held',
-    })
-    @IsDate()
-    @Type(() => Date)
-    day: Date;
 
     @ApiProperty({
         type: Date,
@@ -54,15 +47,24 @@ export class CreateLectureDto {
     duration?: number;
 
     @ApiProperty({
+        enum: LectureStatusEnum,
+        example: LectureStatusEnum.SCHEDULED,
+        description: 'Status of the lecture',
+        required: false,
+    })
+    @IsOptional()
+    @IsEnum(LectureStatusEnum)
+    status?: LectureStatusEnum;
+
+    @ApiProperty({
         type: String,
-        example: 'https://t.me/example_bot',
-        description: 'Telegram bot URL for the lecture',
+        example: 'https://t.me/+AbCdEfGhIjK',
+        description: 'Telegram invite link for the lecture',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @IsUrl()
-    botUrl?: string;
+    inviteLink?: string;
 
     @ApiProperty({
         type: Number,
@@ -77,8 +79,9 @@ export class CreateLectureDto {
         type: Number,
         example: 1,
         description: 'The ID of the user (teacher) conducting this lecture',
+        required: false,
     })
+    @IsOptional()
     @IsInt()
-    @IsNotEmpty()
-    userId: number;
+    userId?: number;
 }

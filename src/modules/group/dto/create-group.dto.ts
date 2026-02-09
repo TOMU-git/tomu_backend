@@ -6,30 +6,40 @@ import {
     IsOptional,
     Min,
     MaxLength,
+    IsEnum,
 } from 'class-validator';
+import { GenderEnum } from 'src/common/enums/enum';
 
 export class CreateGroupDto {
     @ApiProperty({
         type: String,
-        example: 'Advanced TypeScript Group',
-        description: 'The name of the group',
-        maxLength: 255,
+        example: '1a',
+        description: 'The name of the group (e.g. 1a, 1b)',
+        maxLength: 50,
     })
     @IsString()
     @IsNotEmpty()
-    @MaxLength(255)
+    @MaxLength(50)
     name: string;
 
     @ApiProperty({
+        enum: GenderEnum,
+        example: GenderEnum.MALE,
+        description: 'Gender of the group members',
+    })
+    @IsEnum(GenderEnum)
+    @IsNotEmpty()
+    gender: GenderEnum;
+
+    @ApiProperty({
         type: Number,
-        example: 0,
-        description: 'The number of students in the group',
+        example: 12,
+        description: 'Maximum number of students',
         required: false,
-        minimum: 0,
-        default: 0,
+        default: 12,
     })
     @IsOptional()
     @IsInt()
-    @Min(0)
-    studentsCount?: number;
+    @Min(1)
+    maxStudents?: number;
 }

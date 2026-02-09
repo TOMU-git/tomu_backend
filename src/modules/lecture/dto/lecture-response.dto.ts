@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 
 export class LectureResponseDto {
     @ApiProperty({
@@ -17,17 +18,18 @@ export class LectureResponseDto {
 
     @ApiProperty({
         type: Date,
-        example: '2026-02-10',
-        description: 'The date when the lecture will be held',
-    })
-    day: Date;
-
-    @ApiProperty({
-        type: Date,
         example: '2026-02-10T14:30:00Z',
         description: 'The start time of the lecture',
     })
     startTime: Date;
+
+    @ApiProperty({
+        type: Date,
+        example: '2026-02-10T16:00:00Z',
+        description: 'The end time of the lecture',
+        required: false,
+    })
+    endTime?: Date;
 
     @ApiProperty({
         type: Number,
@@ -38,26 +40,33 @@ export class LectureResponseDto {
     duration?: number;
 
     @ApiProperty({
+        enum: LectureStatusEnum,
+        example: LectureStatusEnum.SCHEDULED,
+        description: 'Status of the lecture',
+    })
+    status: LectureStatusEnum;
+
+    @ApiProperty({
         type: String,
-        example: 'https://t.me/example_bot',
-        description: 'Telegram bot URL for the lecture',
+        example: 'https://t.me/+AbCdEf...',
+        description: 'Telegram invite link',
         required: false,
     })
-    botUrl?: string;
+    inviteLink?: string;
 
     @ApiProperty({
         type: Object,
         description: 'The group this lecture belongs to',
         example: {
             id: 1,
-            name: 'Advanced TypeScript Group',
-            studentsCount: 25,
+            name: '1a',
+            gender: 'MALE',
         },
     })
     group: {
         id: number;
         name: string;
-        studentsCount: number;
+        gender: string;
     };
 
     @ApiProperty({
@@ -68,8 +77,9 @@ export class LectureResponseDto {
             firstName: 'John',
             lastName: 'Doe',
         },
+        required: false,
     })
-    user: {
+    user?: {
         id: number;
         firstName: string;
         lastName: string;

@@ -154,13 +154,13 @@ export class User extends BaseEntity {
   })
   devices: UserDevice[];
 
-
+  d
   @OneToMany(() => Lecture, (lecture) => lecture.user)
   lectures: Lecture[];
 
 
   @ManyToOne(() => Group, (group) => group.users, {
-    nullable:true,
+    nullable: true,
     onDelete: 'SET NULL'
   })
   @JoinColumn({ name: "group_id" })
