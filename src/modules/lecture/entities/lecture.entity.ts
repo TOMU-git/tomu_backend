@@ -5,7 +5,7 @@ import { BaseEntity } from 'src/common/database/baseEntity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 
-@Index(['day', 'startTime'])
+@Index(['endTime', 'startTime'])
 @Entity('lectures')
 export class Lecture extends BaseEntity {
     @Column({ type: 'varchar', length: 255 })
