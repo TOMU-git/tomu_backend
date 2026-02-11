@@ -42,4 +42,13 @@ export class CreateGroupDto {
     @IsInt()
     @Min(1)
     maxStudents?: number;
+
+    @ApiProperty({
+        type: Number,
+        example: 1,
+        description: 'Course ID',
+    })
+    @IsInt()
+    @IsNotEmpty()
+    courseId: number;
 }

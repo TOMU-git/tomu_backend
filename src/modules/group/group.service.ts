@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { IGroupService } from './interfaces/group.service';
@@ -7,12 +7,20 @@ import { ResData } from 'src/lib/resData';
 import { Group } from './entities/group.entity';
 import { ID } from 'src/common/types/type';
 import { GroupNotFoundException } from './exception/group.exception';
+import { GenderEnum } from 'src/common/enums/enum';
+import { GroupStatusEnum } from 'src/common/enums/group-status.enum';
 
 @Injectable()
 export class GroupService implements IGroupService {
   constructor(
     @Inject("IGroupRepository")
-    private readonly groupRepository: IGroupRepository
+    private readonly groupRepository: IGroupRepository,
+    @Inject("IUserRepository")
+    private readonly userRepository: any,
+    @Inject("ICourseRepository")
+    private readonly courseRepository: any,
+    @Inject("ILectureService")
+    private readonly lectureService: any,
   ) { }
 
   async create(createGroupDto: CreateGroupDto): Promise<ResData<Group>> {
@@ -52,5 +60,79 @@ export class GroupService implements IGroupService {
     }
     const deleted = await this.groupRepository.delete(foundData);
     return new ResData<Group>("Group deleted successfully", 200, deleted);
+  }
+
+  async addStudentToGroup(userId: ID, courseId: number): Promise<ResData<Group>> {
+    // User va Course mavjudligini tekshirish
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    const course = await this.courseRepository.findById(courseId);
+    if (!course) throw new NotFoundException('Course not found');
+
+    // Mos guruhni topish yoki yaratish
+    let group = await this.groupRepository.findAvailableGroup(courseId, user.gender);
+
+    if (!group) {
+      // Yangi guruh yaratamiz
+      const groupName = await this.getNextGroupName(courseId, user.gender);
+      const createDto: CreateGroupDto = {
+        name: groupName,
+        gender: user.gender,
+        courseId,
+        maxStudents: 12,
+      };
+      const result = await this.create(createDto);
+      group = result.data;
+    }
+
+    // Userni guruhga qo'shamiz
+    user.group = group;
+    await this.userRepository.update(user);
+
+    // Guruh o'quvchilar sonini oshiramiz
+    const updatedGroup = await this.groupRepository.incrementStudentCount(group.id);
+
+    return new ResData<Group>('Student added to group successfully', 200, updatedGroup);
+  }
+
+  async getNextGroupName(courseId: number, gender: GenderEnum): Promise<string> {
+    const course = await this.courseRepository.findById(courseId);
+    const existingGroups = await this.groupRepository.findByCourseIdAndGender(courseId, gender);
+
+    const genderLabel = gender === GenderEnum.MALE ? 'E' : 'A';
+    const courseName = course.title;
+
+    // Tartib raqamini hisoblash
+    const maxNumber = existingGroups.reduce((max, group) => {
+      const match = group.name.match(/^(\d+)([a-z]+)/);
+      if (match) {
+        const num = parseInt(match[1]);
+        return num > max ? num : max;
+      }
+      return max;
+    }, 0);
+
+    const number = maxNumber > 0 ? maxNumber : 1;
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    const letterIndex = existingGroups.filter(g => g.name.startsWith(`${number}`)).length;
+    const letter = letters[letterIndex] || 'a';
+
+    return `${number}${letter}-${courseName}-${genderLabel}`;
+  }
+
+  async startGroupsIfReady(): Promise<ResData<void>> {
+    const groupsToStart = await this.groupRepository.findGroupsToStart();
+
+    for (const group of groupsToStart) {
+      // Har bir guruh uchun darslar yaratish
+      await this.lectureService.createLecturesForGroup(group.id);
+
+      // Guruh  statusini ACTIVE ga o'zgartirish
+      group.status = GroupStatusEnum.ACTIVE;
+      await this.groupRepository.update(group);
+    }
+
+    return new ResData<void>(`${groupsToStart.length} groups started successfully`, 200, null);
   }
 }

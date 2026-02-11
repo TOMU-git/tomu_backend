@@ -6,6 +6,7 @@ import { Tariff } from "src/modules/tariff/entities/tariff.entity"; // Tariffni 
 import { Column, Entity, OneToMany } from "typeorm";
 import { Alphabet } from "src/modules/alphabet/entities/alphabet.entity";
 import { Lesson } from "src/modules/lesson/entities/lesson.entity";
+import { Group } from "src/modules/group/entities/group.entity";
 
 @Entity("courses")
 export class Course extends BaseEntity {
@@ -77,4 +78,11 @@ export class Course extends BaseEntity {
     nullable: true, // Alifbolar bo'sh qoldirilishi mumkin
   })
   alphabets: Alphabet[];
+
+  // Guruhlar bilan bog'lanish
+  @OneToMany(() => Group, (group) => group.course, {
+    onDelete: "SET NULL",
+    nullable: true,
+  })
+  groups: Group[];
 }

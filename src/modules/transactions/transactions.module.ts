@@ -15,6 +15,7 @@ import { CoursePaymentHistoryModule } from "../course-payment-history/course-pay
 import { LivechatPaymentHistoryModule } from "../livechat-payment-history/livechat-payment-history.module";
 import { UserLivechatsModule } from "../user-livechats/user-livechats.module";
 import { AiModule } from "../ai/ai.module";
+import { GroupModule } from "../group/group.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AiModule } from "../ai/ai.module";
     LivechatPaymentHistoryModule,
     UserLivechatsModule,
     AiModule, // AI limit reset uchun
+    GroupModule, // Guruhga qo'shish uchun
   ],
   controllers: [TransactionsController],
   providers: [

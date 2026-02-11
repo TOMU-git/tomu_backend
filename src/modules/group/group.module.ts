@@ -1,16 +1,28 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { GroupController } from './group.controller';
 import { GroupRepository } from './group.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
+import { UserModule } from '../user/user.module';
+import { CourseModule } from '../course/course.module';
+import { LectureModule } from '../lecture/lecture.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Group])],
+  imports: [
+    TypeOrmModule.forFeature([Group]),
+    UserModule,
+    CourseModule,
+    forwardRef(() => LectureModule),
+  ],
   controllers: [GroupController],
-    providers: [
-      { provide: "IGroupService", useClass: GroupService },
-      { provide: "IGroupRepository", useClass: GroupRepository },
-    ],
+  providers: [
+    { provide: "IGroupService", useClass: GroupService },
+    { provide: "IGroupRepository", useClass: GroupRepository },
+  ],
+  exports: [
+    "IGroupService",
+    "IGroupRepository",
+  ],
 })
-export class GroupModule {}
+export class GroupModule { }

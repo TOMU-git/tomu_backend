@@ -20,6 +20,9 @@ export class Lecture extends BaseEntity {
     @Column({ type: 'int', nullable: true })
     duration: number;
 
+    @Column({ type: 'int', default: 1 })
+    order: number; // Darsning tartib raqami guruh ichida
+
     @Column({ type: 'enum', enum: LectureStatusEnum, default: LectureStatusEnum.SCHEDULED })
     status: LectureStatusEnum;
 

@@ -17,5 +17,8 @@ import { UserCoursesModule } from "../user-courses/user-courses.module";
     { provide: "IGrammarService", useClass: GrammarService },
     { provide: "IGrammarRepository", useClass: GrammarRepository },
   ],
+  exports: [
+    "IGrammarRepository",
+  ],
 })
-export class GrammarModule {}
+export class GrammarModule { }

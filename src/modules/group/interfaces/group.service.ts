@@ -1,3 +1,4 @@
+import { GenderEnum } from "src/common/enums/enum";
 import { ResData } from "src/lib/resData";
 import { ID } from "src/common/types/type";
 import { CreateGroupDto } from "../dto/create-group.dto";
@@ -10,4 +11,7 @@ export interface IGroupService {
     findOne(id: ID): Promise<ResData<Group>>;
     update(id: ID, dto: UpdateGroupDto): Promise<ResData<Group>>;
     remove(id: ID): Promise<ResData<Group>>;
+    addStudentToGroup(userId: ID, courseId: number): Promise<ResData<Group>>;
+    getNextGroupName(courseId: number, gender: GenderEnum): Promise<string>;
+    startGroupsIfReady(): Promise<ResData<void>>;
 }

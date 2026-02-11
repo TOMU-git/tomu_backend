@@ -58,6 +58,8 @@ export class TransactionsService implements ITransactionService {
     @Inject("IUserLiveChatRepository")
     private readonly userLiveChatRepository: IUserLiveChatRepository,
     private readonly limitCheckService: LimitCheckService, // AI limit reset uchun
+    @Inject("IGroupService")
+    private readonly groupService: any, // Guruhga qo'shish uchun
   ) { }
 
   //// *** Checking
@@ -451,6 +453,13 @@ export class TransactionsService implements ITransactionService {
         foundUserCourse.hasEverPaid = true;
         const updatedUserCourse = await this.userCourseRepository.update(foundUserCourse);
 
+        // Guruhga qo'shish (to'lov qilingan userlar)
+        try {
+          await this.groupService.addStudentToGroup(Number(foundOrder.userId), Number(foundTariff.courseId));
+        } catch (error: any) {
+          console.error('[WARNING] Group enrollment error (payment successful):', error.message);
+        }
+
         // console.log("9. After update - Updated UserCourse:", {
         //   id: updatedUserCourse.id,
         //   tariffId: updatedUserCourse.tariffId,
@@ -486,6 +495,13 @@ export class TransactionsService implements ITransactionService {
         // Birinchi marta to'lov qilindi
         newUserCourse.hasEverPaid = true;
         const createdUserCourse = await this.userCourseRepository.create(newUserCourse);
+
+        // Guruhga qo'shish (to'lov qilingan userlar)
+        try {
+          await this.groupService.addStudentToGroup(Number(foundOrder.userId), Number(foundTariff.courseId));
+        } catch (error: any) {
+          console.error('[WARNING] Group enrollment error (payment successful):', error.message);
+        }
 
         // console.log("9. After create - Created UserCourse:", {
         //   id: createdUserCourse.id,
