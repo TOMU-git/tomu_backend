@@ -1,0 +1,13 @@
+import { ResData } from "src/lib/resData";
+import { ID } from "src/common/types/type";
+import { CreateGroupDto } from "../dto/create-group.dto";
+import { UpdateGroupDto } from "../dto/update-group.dto";
+import { Group } from "../entities/group.entity";
+
+export interface IGroupService {
+    create(dto: CreateGroupDto): Promise<ResData<Group>>;
+    findAll(): Promise<ResData<Array<Group>>>;
+    findOne(id: ID): Promise<ResData<Group>>;
+    update(id: ID, dto: UpdateGroupDto): Promise<ResData<Group>>;
+    remove(id: ID): Promise<ResData<Group>>;
+}
