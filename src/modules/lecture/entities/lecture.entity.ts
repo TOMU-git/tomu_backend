@@ -29,9 +29,15 @@ export class Lecture extends BaseEntity {
     @Column({ type: 'varchar', nullable: true })
     inviteLink: string; // Telegram guruh havolasi
 
+    @Column({ type: 'timestamp', nullable: true, name: 'claimed_at' })
+    claimedAt: Date; // Ustoz darsni qabul qilgan vaqt
+
+    @Column({ type: 'varchar', nullable: true, name: 'telegram_message_id' })
+    telegramMessageId: string; // Telegram guruhidagi xabar ID'si
+
     @ManyToOne(() => Group, (group) => group.lectures, { onDelete: 'CASCADE' })
     group: Group;
 
-    @ManyToOne(() => User, (user) => user.lectures)
-    user: User;
+    @ManyToOne(() => User, { nullable: true })
+    assignedTeacher: User; // Darsni olib boruvchi ustoz
 }

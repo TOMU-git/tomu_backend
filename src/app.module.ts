@@ -40,12 +40,15 @@ import { ChromaService } from './modules/ai/services/chroma.service';
 import { NotificationModule } from './modules/notification/notification.module';
 import { VideoModule } from "./modules/video/video.module";
 import { ScheduleModule } from '@nestjs/schedule';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GroupModule } from './modules/group/group.module';
 import { LectureModule } from './modules/lecture/lecture.module';
+import { TelegramBotModule } from './modules/telegram-bot/telegram-bot.module';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
+    EventEmitterModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [".env", ".development.env"],
@@ -96,6 +99,7 @@ import { LectureModule } from './modules/lecture/lecture.module';
     VideoModule,
     GroupModule,
     LectureModule,
+    TelegramBotModule,
   ],
 })
 export class AppModule implements NestModule, OnModuleInit {

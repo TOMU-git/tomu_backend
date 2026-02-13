@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationService } from '../notification/services/notification.service';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
@@ -9,6 +10,7 @@ import { Lecture } from './entities/lecture.entity';
 import { ID } from 'src/common/types/type';
 import { ScheduleCalculatorService } from './schedule-calculator.service';
 import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
+import { LectureCreatedEvent } from '../telegram-bot/events/lecture.events';
 
 @Injectable()
 export class LectureService implements ILectureService {
@@ -23,11 +25,23 @@ export class LectureService implements ILectureService {
     private readonly grammarRepository: any,
     private readonly scheduleCalculator: ScheduleCalculatorService,
     private readonly notificationService: NotificationService,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
   async create(createLectureDto: CreateLectureDto): Promise<ResData<Lecture>> {
     const newLecture = new Lecture();
     Object.assign(newLecture, createLectureDto);
     const created = await this.lectureRepository.create(newLecture);
+
+    // Telegram botga xabarnoma yuborish uchun event emit qilish
+    this.eventEmitter.emit('lecture.created', new LectureCreatedEvent(
+      created.id,
+      created.title,
+      created.startTime,
+      created.duration,
+      created.group?.id,
+      created.group?.name,
+    ));
+
     return new ResData<Lecture>('Lecture created successfully', 201, created);
   }
 
@@ -86,6 +100,18 @@ export class LectureService implements ILectureService {
     });
 
     const created = await this.lectureRepository.createBulk(lectures);
+
+    // Har bir lecture uchun event emit qilish
+    for (const lecture of created) {
+      this.eventEmitter.emit('lecture.created', new LectureCreatedEvent(
+        lecture.id,
+        lecture.title,
+        lecture.startTime,
+        lecture.duration,
+        lecture.group?.id,
+        lecture.group?.name,
+      ));
+    }
 
     return new ResData<Lecture[]>('Lectures created successfully', 201, created);
   }

@@ -128,6 +128,27 @@ export class User extends BaseEntity {
   })
   emailVerified: boolean;
 
+  /**
+   * Telegram Integration Fields
+   * Used for teacher's Telegram group integration
+   */
+  @Column({
+    name: 'telegram_chat_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    comment: 'Teacher Telegram chat ID for bot communication'
+  })
+  telegramChatId: string;
+
+  @Column({
+    name: 'telegram_group_link',
+    type: 'text',
+    nullable: true,
+    comment: 'Teacher default Telegram group invite link'
+  })
+  telegramGroupLink: string;
+
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
@@ -153,11 +174,6 @@ export class User extends BaseEntity {
     eager: false    // Don't load devices by default
   })
   devices: UserDevice[];
-
-  d
-  @OneToMany(() => Lecture, (lecture) => lecture.user)
-  lectures: Lecture[];
-
 
   @ManyToOne(() => Group, (group) => group.users, {
     nullable: true,
