@@ -1,4 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
+import { NotificationModule } from '../notification/notification.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LectureService } from './lecture.service';
 import { LectureController } from './lecture.controller';
@@ -13,6 +14,7 @@ import { GrammarModule } from '../grammar/grammar.module';
     TypeOrmModule.forFeature([Lecture]),
     forwardRef(() => GroupModule),
     GrammarModule,
+    NotificationModule,
   ],
   controllers: [LectureController],
   providers: [

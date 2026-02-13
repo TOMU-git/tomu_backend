@@ -35,7 +35,10 @@ export class LectureRepository implements ILectureRepository {
     }
 
     findById(id: ID): Promise<Lecture | null> {
-        return this.lectureRepository.findOneBy({ id });
+        return this.lectureRepository.findOne({
+            where: { id: id as any },
+            relations: ['group', 'group.users'],
+        });
     }
 
     async findByGroupId(groupId: ID): Promise<Lecture[]> {

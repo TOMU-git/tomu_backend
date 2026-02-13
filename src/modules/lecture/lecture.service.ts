@@ -1,4 +1,5 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { NotificationService } from '../notification/services/notification.service';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
 import { ILectureService } from './interfaces/lecture.service';
@@ -11,6 +12,8 @@ import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 
 @Injectable()
 export class LectureService implements ILectureService {
+  private readonly logger = new Logger(LectureService.name);
+
   constructor(
     @Inject('ILectureRepository')
     private readonly lectureRepository: ILectureRepository,
@@ -19,6 +22,7 @@ export class LectureService implements ILectureService {
     @Inject('IGrammarRepository')
     private readonly grammarRepository: any,
     private readonly scheduleCalculator: ScheduleCalculatorService,
+    private readonly notificationService: NotificationService,
   ) { }
   async create(createLectureDto: CreateLectureDto): Promise<ResData<Lecture>> {
     const newLecture = new Lecture();
@@ -94,6 +98,23 @@ export class LectureService implements ILectureService {
     lecture.status = LectureStatusEnum.COMPLETED;
 
     const updated = await this.lectureRepository.update(lecture);
+
+    // O'quvchilarga bildirishnoma yuborish
+    if (updated.group && updated.group.users) {
+      this.logger.log(`Sending notifications to ${updated.group.users.length} students for lecture ${lectureId}`);
+      for (const student of updated.group.users) {
+        try {
+          await this.notificationService.sendNotification({
+            userId: Number(student.id),
+            title: 'Dars linki tayyor!',
+            body: `${updated.title} darsi uchun Telegram link biriktirildi.`,
+          });
+        } catch (error) {
+          this.logger.error(`Notification error for user ${student.id}: ${error.message}`);
+        }
+      }
+    }
+
     return new ResData<Lecture>('Invite link updated', 200, updated);
   }
 

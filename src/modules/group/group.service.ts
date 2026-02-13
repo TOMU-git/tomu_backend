@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { IGroupService } from './interfaces/group.service';
@@ -12,6 +12,8 @@ import { GroupStatusEnum } from 'src/common/enums/group-status.enum';
 
 @Injectable()
 export class GroupService implements IGroupService {
+  private readonly logger = new Logger(GroupService.name);
+
   constructor(
     @Inject("IGroupRepository")
     private readonly groupRepository: IGroupRepository,
@@ -63,12 +65,23 @@ export class GroupService implements IGroupService {
   }
 
   async addStudentToGroup(userId: ID, courseId: number): Promise<ResData<Group>> {
+
     // User va Course mavjudligini tekshirish
-    const user = await this.userRepository.findById(userId);
-    if (!user) throw new NotFoundException('User not found');
+    const user = await this.userRepository.findOneById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     const course = await this.courseRepository.findById(courseId);
-    if (!course) throw new NotFoundException('Course not found');
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+
+    // Jinsni tekshirish (Guruhlar jinsga qarab ajratilgan)
+    if (!user.gender) {
+      throw new Error('Talabalaning jinsi belgilanmagan. Guruhga qo\'shish uchun jins talab qilinadi.');
+    }
 
     // Mos guruhni topish yoki yaratish
     let group = await this.groupRepository.findAvailableGroup(courseId, user.gender);
@@ -84,6 +97,8 @@ export class GroupService implements IGroupService {
       };
       const result = await this.create(createDto);
       group = result.data;
+    } else {
+      this.logger.log(`[INFO] Found available group: ${group.name} (ID: ${group.id}) - Current students: ${group.studentsCount}`);
     }
 
     // Userni guruhga qo'shamiz
