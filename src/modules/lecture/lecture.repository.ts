@@ -3,7 +3,7 @@ import { ILectureRepository } from "./interfaces/lecture.repository";
 import { ID } from "src/common/types/type";
 import { Lecture } from "./entities/lecture.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { LessThan, MoreThan, Repository } from "typeorm";
 import { LectureStatusEnum } from "src/common/enums/lecture-status.enum";
 
 @Injectable()
@@ -46,6 +46,17 @@ export class LectureRepository implements ILectureRepository {
             where: { group: { id: groupId } },
             order: { order: 'ASC' },
             relations: ['user', 'group'],
+        });
+    }
+
+    async findUpcomingByGroupId(groupId: ID): Promise<Lecture | null> {
+        return await this.lectureRepository.findOne({
+            where: {
+                group: { id: groupId as any },
+                startTime: MoreThan(new Date()),
+            },
+            order: { startTime: 'ASC' },
+            relations: ['group'],
         });
     }
 

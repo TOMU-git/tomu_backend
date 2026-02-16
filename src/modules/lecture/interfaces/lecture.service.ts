@@ -13,4 +13,5 @@ export interface ILectureService {
     createLecturesForGroup(groupId: ID): Promise<ResData<Lecture[]>>;
     updateInviteLink(lectureId: ID, inviteLink: string): Promise<ResData<Lecture>>;
     findByGroupId(groupId: ID): Promise<ResData<Lecture[]>>;
+    getLectureByUserId(userId: ID): Promise<ResData<Lecture>>;
 }

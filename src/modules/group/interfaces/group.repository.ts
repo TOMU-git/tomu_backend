@@ -12,4 +12,5 @@ export interface IGroupRepository {
     findGroupsToStart(): Promise<Group[]>;
     incrementStudentCount(groupId: ID): Promise<Group>;
     findByCourseIdAndGender(courseId: number, gender: GenderEnum): Promise<Group[]>;
+    findByUserId(userId: ID): Promise<Group | null>;
 }

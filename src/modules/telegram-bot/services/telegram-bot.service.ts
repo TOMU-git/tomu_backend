@@ -90,10 +90,12 @@ export class TelegramBotService {
             );
 
             // Telegram message ID'ni saqlash
-            await this.lectureRepository.update(
-                { id: lectureId },
-                { telegramMessageId: sentMessage.message_id.toString() }
-            );
+            // Telegram message ID'ni saqlash
+            const lecture = await this.lectureRepository.findById(lectureId);
+            if (lecture) {
+                lecture.telegramMessageId = sentMessage.message_id.toString();
+                await this.lectureRepository.update(lecture);
+            }
 
             this.logger.log(`✅ Lecture notification sent for lecture #${lectureId}`);
         } catch (error) {
@@ -142,9 +144,13 @@ export class TelegramBotService {
         await queryRunner.connect();
         await queryRunner.startTransaction();
 
+        let teacher: User | null = null;
+        let lecture: Lecture | null = null;
+        let transactionSuccess = false;
+
         try {
             // 1. Ustozni topish (transaction tashqarida, chunki bu o'zgarmaydi)
-            const teacher = await this.userRepository.findOne({
+            teacher = await this.userRepository.findOne({
                 where: { telegramChatId: telegramUserId.toString() }
             });
 
@@ -154,7 +160,6 @@ export class TelegramBotService {
                     show_alert: true
                 });
                 await queryRunner.rollbackTransaction();
-                await queryRunner.release();
                 return;
             }
 
@@ -165,29 +170,41 @@ export class TelegramBotService {
                     show_alert: true
                 });
                 await queryRunner.rollbackTransaction();
-                await queryRunner.release();
                 return;
             }
 
             // 3. Lecture'ni PESSIMISTIC_WRITE lock bilan olish
-            // Bu yerda race condition hal qilinadi - faqat bitta transaction lock olishi mumkin
-            const lecture = await queryRunner.manager.findOne(Lecture, {
+            // MUHIM: Pessimistic lock LEFT JOIN bilan ishlamaydi, shuning uchun
+            // avval faqat lecture'ni lock qilamiz, keyin relation'larni load qilamiz
+            lecture = await queryRunner.manager.findOne(Lecture, {
                 where: { id: lectureId },
-                relations: ['assignedTeacher', 'group'],
-                lock: { mode: 'pessimistic_write' } // MUHIM: Bu race condition'ni hal qiladi!
+                lock: { mode: 'pessimistic_write' } // Race condition protection
             });
 
             if (!lecture) {
+                this.logger.warn(`Lecture #${lectureId} not found`);
                 await this.bot.answerCallbackQuery(callbackQuery.id, {
                     text: '❌ Dars topilmadi',
                     show_alert: true
                 });
                 await queryRunner.rollbackTransaction();
-                await queryRunner.release();
                 return;
             }
 
-            // 4. Lock olingandan KEYIN tekshirish
+            // 4. Relation'larni alohida load qilish (lock'dan keyin)
+            const loadedLecture = await queryRunner.manager.getRepository(Lecture)
+                .createQueryBuilder('lecture')
+                .leftJoinAndSelect('lecture.assignedTeacher', 'assignedTeacher')
+                .leftJoinAndSelect('lecture.group', 'group')
+                .where('lecture.id = :id', { id: lectureId })
+                .getOne();
+
+            if (loadedLecture) {
+                lecture.assignedTeacher = loadedLecture.assignedTeacher;
+                lecture.group = loadedLecture.group;
+            }
+
+            // 5. Lock olingandan KEYIN tekshirish
             // Agar allaqachon olingan bo'lsa, ikkinchi ustoz bu yerda to'xtaladi
             if (lecture.assignedTeacher) {
                 const teacherName = `${lecture.assignedTeacher.firstName} ${lecture.assignedTeacher.lastName}`;
@@ -196,11 +213,10 @@ export class TelegramBotService {
                     show_alert: true
                 });
                 await queryRunner.rollbackTransaction();
-                await queryRunner.release();
                 return;
             }
 
-            // 5. Darsni yangilash (transaction ichida)
+            // 6. Darsni yangilash (transaction ichida)
             lecture.assignedTeacher = teacher;
             lecture.inviteLink = teacher.telegramGroupLink;
             lecture.claimedAt = new Date();
@@ -208,70 +224,88 @@ export class TelegramBotService {
 
             await queryRunner.manager.save(lecture);
 
-            // 6. Transaction'ni commit qilish
+            // 7. Transaction'ni commit qilish
             await queryRunner.commitTransaction();
-
+            transactionSuccess = true;
             this.logger.log(`✅ Lecture #${lectureId} claimed by teacher #${teacher.id} (with transaction)`);
-
-            // 7. Transaction muvaffaqiyatli bo'lgandan KEYIN Telegram xabarlarini yuborish
-            // Ustozga tasdiqlash yuborish
-            const confirmationMessage = this.config.getClaimConfirmationMessage(
-                lecture.title,
-                `${teacher.firstName} ${teacher.lastName}`
-            );
-
-            await RetryHelper.retryTelegramCall(
-                () => this.bot.sendMessage(telegramUserId, confirmationMessage, {
-                    parse_mode: 'HTML'
-                }),
-                'sendConfirmationToTeacher'
-            );
-
-            // Javob yuborish
-            await RetryHelper.retryTelegramCall(
-                () => this.bot.answerCallbackQuery(callbackQuery.id, {
-                    text: '✅ Dars muvaffaqiyatli qabul qilindi!'
-                }),
-                'answerCallbackQuery'
-            );
-
-            // Guruh xabarini yangilash (tugmani o'chirish)
-            const teacherName = `${teacher.firstName} ${teacher.lastName}`;
-            const updatedMessage = this.config.getLectureNotificationMessage(
-                lecture.title,
-                lecture.startTime,
-                lecture.group?.name
-            ) + `\n\n🎯 <b>Ustoz:</b> ${teacherName} ✅`;
-
-            try {
-                await RetryHelper.retryTelegramCall(
-                    () => this.bot.editMessageText(updatedMessage, {
-                        chat_id: chatId,
-                        message_id: messageId,
-                        parse_mode: 'HTML',
-                        reply_markup: { inline_keyboard: [] } // Tugmani o'chirish
-                    }),
-                    'editGroupMessage'
-                );
-            } catch (error) {
-                this.logger.warn(`Could not edit message (after retries): ${error.message}`);
-            }
 
         } catch (error) {
             // Xatolik bo'lsa, transaction'ni rollback qilish
-            await queryRunner.rollbackTransaction();
+            if (queryRunner.isTransactionActive) {
+                await queryRunner.rollbackTransaction();
+            }
             this.logger.error(`Error in handleClaimLecture transaction: ${error.message}`, error.stack);
 
-            // Ustozga xatolik haqida xabar yuborish
             await this.bot.answerCallbackQuery(callbackQuery.id, {
-                text: "❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+                text: '❌ Xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.',
                 show_alert: true
             });
-
-            throw error; // Re-throw for logging
+            return;
         } finally {
-            // Query runner'ni har doim release qilish
             await queryRunner.release();
+        }
+
+        // 8. Transaction muvaffaqiyatli bo'lsa, xabarlarni yuborish
+        if (transactionSuccess && teacher && lecture) {
+            try {
+                // Ustozga tasdiqlash yuborish
+                const confirmationMessage = this.config.getClaimConfirmationMessage(
+                    lecture.title,
+                    `${teacher.firstName} ${teacher.lastName}`
+                );
+
+                try {
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.sendMessage(telegramUserId, confirmationMessage, {
+                            parse_mode: 'HTML'
+                        }),
+                        'sendConfirmationToTeacher'
+                    );
+                } catch (error) {
+                    // Agar ustoz botni start qilmagan bo'lsa (403 Forbidden), faqat log qilamiz
+                    if (error.message && (error.message.includes('403') || error.message.includes('Forbidden'))) {
+                        this.logger.warn(`⚠️ Could not send private message to teacher #${teacher.id}: Bot not started by user.`);
+                    } else {
+                        this.logger.error(`❌ Failed to send confirmation to teacher: ${error.message}`);
+                    }
+                }
+
+                // Javob yuborish
+                try {
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.answerCallbackQuery(callbackQuery.id, {
+                            text: '✅ Dars muvaffaqiyatli qabul qilindi!'
+                        }),
+                        'answerCallbackQuery'
+                    );
+                } catch (error) {
+                    this.logger.warn(`Could not answer callback query: ${error.message}`);
+                }
+
+                // Guruh xabarini yangilash (tugmani o'chirish)
+                const teacherName = `${teacher.firstName} ${teacher.lastName}`;
+                const updatedMessage = this.config.getLectureNotificationMessage(
+                    lecture.title,
+                    lecture.startTime,
+                    lecture.group?.name
+                ) + `\n\n🎯 <b>Ustoz:</b> ${teacherName} ✅`;
+
+                try {
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.editMessageText(updatedMessage, {
+                            chat_id: chatId,
+                            message_id: messageId,
+                            parse_mode: 'HTML',
+                            reply_markup: { inline_keyboard: [] } // Tugmani o'chirish
+                        }),
+                        'editGroupMessage'
+                    );
+                } catch (error) {
+                    this.logger.warn(`Could not edit message (after retries): ${error.message}`);
+                }
+            } catch (error) {
+                this.logger.error(`Error in post-transaction notifications: ${error.message}`);
+            }
         }
     }
 

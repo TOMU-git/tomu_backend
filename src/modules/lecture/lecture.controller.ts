@@ -1,5 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Auth } from 'src/common/decorator/auth.decorator';
+import { RoleEnum } from 'src/common/enums/enum';
+import { CurrentUser } from 'src/common/decorator/CurrentUser.decorator';
+import { User as UserEntity } from '../user/entities/user.entity';
 import { ILectureService } from './interfaces/lecture.service';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
@@ -22,14 +26,22 @@ export class LectureController {
     return this.lectureService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get upcoming lecture by user group' })
+  @ApiBearerAuth()
+  @Auth(RoleEnum.STUDENT, RoleEnum.TEACHER, RoleEnum.ADMIN, RoleEnum.DIRECTOR)
+  @Get('by-user')
+  async getLectureByUser(@CurrentUser() user: UserEntity) {
+    return await this.lectureService.getLectureByUserId(user.id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a lecture by ID' })
-  findOne(@Param('id') id: string) {
-    return this.lectureService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.lectureService.findOne(+id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a lecture' })
+  @ApiOperation({ summary: 'Update lecture' })
   update(@Param('id') id: string, @Body() updateLectureDto: UpdateLectureDto) {
     return this.lectureService.update(+id, updateLectureDto);
   }

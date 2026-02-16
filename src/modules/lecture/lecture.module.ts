@@ -8,6 +8,7 @@ import { Lecture } from './entities/lecture.entity';
 import { ScheduleCalculatorService } from './schedule-calculator.service';
 import { GroupModule } from '../group/group.module';
 import { GrammarModule } from '../grammar/grammar.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { GrammarModule } from '../grammar/grammar.module';
     forwardRef(() => GroupModule),
     GrammarModule,
     NotificationModule,
+    UserModule,
   ],
   controllers: [LectureController],
   providers: [

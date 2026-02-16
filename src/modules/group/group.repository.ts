@@ -85,4 +85,11 @@ export class GroupRepository implements IGroupRepository {
         });
     }
 
-}   
+    async findByUserId(userId: ID): Promise<Group | null> {
+        return await this.groupRepository.findOne({
+            where: { users: { id: userId as any } },
+            relations: ['users']
+        });
+    }
+
+}

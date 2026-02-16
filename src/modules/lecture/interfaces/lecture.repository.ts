@@ -9,4 +9,5 @@ export interface ILectureRepository {
   delete(entity: Lecture): Promise<Lecture>;
   findById(id: ID): Promise<Lecture | null>;
   findByGroupId(groupId: ID): Promise<Lecture[]>;
+  findUpcomingByGroupId(groupId: ID): Promise<Lecture | null>;
 }

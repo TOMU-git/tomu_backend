@@ -13,6 +13,11 @@ export class UpdateUserDto {
   @IsString()
   telegramChatId?: string;
 
+  @ApiProperty({ type: String })
+  @IsOptional()
+  @IsString()
+  telegramGroupLink?: string;
+
 
   @ApiProperty({ type: String })
   @IsOptional()

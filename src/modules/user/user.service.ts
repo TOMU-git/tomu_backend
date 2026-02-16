@@ -95,6 +95,9 @@ export class UserService implements IUserService {
     if (dto.telegramChatId) {
       foundUser.telegramChatId = dto.telegramChatId;
     }
+    if (dto.telegramGroupLink) {
+      foundUser.telegramGroupLink = dto.telegramGroupLink;
+    }
     const updated = await this.userRepository.update(foundUser);
     return new ResData<User>("User updated successfully", 200, updated);
   }

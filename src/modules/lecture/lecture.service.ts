@@ -30,6 +30,19 @@ export class LectureService implements ILectureService {
   async create(createLectureDto: CreateLectureDto): Promise<ResData<Lecture>> {
     const newLecture = new Lecture();
     Object.assign(newLecture, createLectureDto);
+
+    if (createLectureDto.groupId) {
+      const group = await this.groupRepository.findById(createLectureDto.groupId);
+      if (!group) throw new NotFoundException('Group not found');
+      newLecture.group = group;
+    }
+
+    if (newLecture.startTime && newLecture.duration) {
+      const endTime = new Date(newLecture.startTime);
+      endTime.setMinutes(endTime.getMinutes() + newLecture.duration);
+      newLecture.endTime = endTime;
+    }
+
     const created = await this.lectureRepository.create(newLecture);
 
     // Telegram botga xabarnoma yuborish uchun event emit qilish
@@ -147,5 +160,19 @@ export class LectureService implements ILectureService {
   async findByGroupId(groupId: ID): Promise<ResData<Lecture[]>> {
     const lectures = await this.lectureRepository.findByGroupId(groupId);
     return new ResData<Lecture[]>('Lectures found', 200, lectures);
+  }
+
+  async getLectureByUserId(userId: ID): Promise<ResData<Lecture>> {
+    const group = await this.groupRepository.findByUserId(userId);
+    if (!group) {
+      throw new NotFoundException('User is not in any group');
+    }
+
+    const lecture = await this.lectureRepository.findUpcomingByGroupId(group.id);
+    if (!lecture) {
+      throw new NotFoundException('No upcoming lectures found for this group');
+    }
+
+    return new ResData<Lecture>('Upcoming lecture found', 200, lecture);
   }
 }
