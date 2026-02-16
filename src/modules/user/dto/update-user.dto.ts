@@ -11,6 +11,12 @@ export class UpdateUserDto {
   @ApiProperty({ type: String })
   @IsOptional()
   @IsString()
+  telegramChatId?: string;
+
+
+  @ApiProperty({ type: String })
+  @IsOptional()
+  @IsString()
   lastName?: string;
 
   @ApiProperty({ type: String })

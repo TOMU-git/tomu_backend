@@ -5,10 +5,11 @@ import { TelegramBotConfig } from '../config/telegram-bot.config';
 import { LectureCreatedEvent } from '../events/lecture.events';
 import { ILectureService } from 'src/modules/lecture/interfaces/lecture.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Lecture } from 'src/modules/lecture/entities/lecture.entity';
 import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
+import { RetryHelper } from '../utils/retry.helper';
 
 @Injectable()
 export class TelegramBotService {
@@ -21,6 +22,7 @@ export class TelegramBotService {
         private readonly lectureRepository: any,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        private readonly dataSource: DataSource,
     ) {
         this.initializeBot();
     }
@@ -79,10 +81,13 @@ export class TelegramBotService {
                 ]
             };
 
-            const sentMessage = await this.bot.sendMessage(teachersGroupId, message, {
-                parse_mode: 'HTML',
-                reply_markup: keyboard
-            });
+            const sentMessage = await RetryHelper.retryTelegramCall(
+                () => this.bot.sendMessage(teachersGroupId, message, {
+                    parse_mode: 'HTML',
+                    reply_markup: keyboard
+                }),
+                'sendLectureNotification'
+            );
 
             // Telegram message ID'ni saqlash
             await this.lectureRepository.update(
@@ -90,9 +95,10 @@ export class TelegramBotService {
                 { telegramMessageId: sentMessage.message_id.toString() }
             );
 
-            this.logger.log(`Lecture notification sent for lecture #${lectureId}`);
+            this.logger.log(`✅ Lecture notification sent for lecture #${lectureId}`);
         } catch (error) {
-            this.logger.error(`Failed to send lecture notification: ${error.message}`);
+            this.logger.error(`❌ Failed to send lecture notification after retries: ${error.message}`);
+            throw error; // Re-throw to mark event as failed in tracker
         }
     }
 
@@ -122,7 +128,7 @@ export class TelegramBotService {
     }
 
     /**
-     * Darsni qabul qilish logikasi
+     * Darsni qabul qilish logikasi (Transaction + Pessimistic Lock bilan)
      */
     private async handleClaimLecture(
         lectureId: number,
@@ -131,95 +137,142 @@ export class TelegramBotService {
         chatId: number,
         callbackQuery: TelegramBot.CallbackQuery
     ): Promise<void> {
-        // Lecture'ni olish
-        const lecture = await this.lectureRepository.findOne({
-            where: { id: lectureId },
-            relations: ['assignedTeacher', 'group']
-        });
-
-        if (!lecture) {
-            await this.bot.answerCallbackQuery(callbackQuery.id, {
-                text: '❌ Dars topilmadi',
-                show_alert: true
-            });
-            return;
-        }
-
-        // Allaqachon olingan bo'lsa
-        if (lecture.assignedTeacher) {
-            const teacherName = `${lecture.assignedTeacher.firstName} ${lecture.assignedTeacher.lastName}`;
-            await this.bot.answerCallbackQuery(callbackQuery.id, {
-                text: this.config.getAlreadyClaimedMessage(teacherName),
-                show_alert: true
-            });
-            return;
-        }
-
-        // Ustozni topish (telegram_chat_id bo'yicha)
-        const teacher = await this.userRepository.findOne({
-            where: { telegramChatId: telegramUserId.toString() }
-        });
-
-        if (!teacher) {
-            await this.bot.answerCallbackQuery(callbackQuery.id, {
-                text: '❌ Sizning profilingiz topilmadi. Iltimos, avval ro\'yxatdan o\'ting.',
-                show_alert: true
-            });
-            return;
-        }
-
-        // Ustoz guruh linkini tekshirish
-        if (!teacher.telegramGroupLink) {
-            await this.bot.answerCallbackQuery(callbackQuery.id, {
-                text: this.config.getNoGroupLinkMessage(),
-                show_alert: true
-            });
-            return;
-        }
-
-        // Darsni yangilash
-        lecture.assignedTeacher = teacher;
-        lecture.inviteLink = teacher.telegramGroupLink;
-        lecture.claimedAt = new Date();
-        lecture.status = LectureStatusEnum.COMPLETED;
-
-        await this.lectureRepository.save(lecture);
-
-        // Ustozga tasdiqlash yuborish
-        const confirmationMessage = this.config.getClaimConfirmationMessage(
-            lecture.title,
-            `${teacher.firstName} ${teacher.lastName}`
-        );
-
-        await this.bot.sendMessage(telegramUserId, confirmationMessage, {
-            parse_mode: 'HTML'
-        });
-
-        // Javob yuborish
-        await this.bot.answerCallbackQuery(callbackQuery.id, {
-            text: '✅ Dars muvaffaqiyatli qabul qilindi!'
-        });
-
-        // Guruh xabarini yangilash (tugmani o'chirish)
-        const teacherName = `${teacher.firstName} ${teacher.lastName}`;
-        const updatedMessage = this.config.getLectureNotificationMessage(
-            lecture.title,
-            lecture.startTime,
-            lecture.group?.name
-        ) + `\n\n🎯 <b>Ustoz:</b> ${teacherName} ✅`;
+        // Query runner yaratish
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
 
         try {
-            await this.bot.editMessageText(updatedMessage, {
-                chat_id: chatId,
-                message_id: messageId,
-                parse_mode: 'HTML',
-                reply_markup: { inline_keyboard: [] } // Tugmani o'chirish
+            // 1. Ustozni topish (transaction tashqarida, chunki bu o'zgarmaydi)
+            const teacher = await this.userRepository.findOne({
+                where: { telegramChatId: telegramUserId.toString() }
             });
-        } catch (error) {
-            this.logger.warn(`Could not edit message: ${error.message}`);
-        }
 
-        this.logger.log(`Lecture #${lectureId} claimed by teacher #${teacher.id}`);
+            if (!teacher) {
+                await this.bot.answerCallbackQuery(callbackQuery.id, {
+                    text: '❌ Sizning profilingiz topilmadi. Iltimos, avval ro\'yxatdan o\'ting.',
+                    show_alert: true
+                });
+                await queryRunner.rollbackTransaction();
+                await queryRunner.release();
+                return;
+            }
+
+            // 2. Ustoz guruh linkini tekshirish
+            if (!teacher.telegramGroupLink) {
+                await this.bot.answerCallbackQuery(callbackQuery.id, {
+                    text: this.config.getNoGroupLinkMessage(),
+                    show_alert: true
+                });
+                await queryRunner.rollbackTransaction();
+                await queryRunner.release();
+                return;
+            }
+
+            // 3. Lecture'ni PESSIMISTIC_WRITE lock bilan olish
+            // Bu yerda race condition hal qilinadi - faqat bitta transaction lock olishi mumkin
+            const lecture = await queryRunner.manager.findOne(Lecture, {
+                where: { id: lectureId },
+                relations: ['assignedTeacher', 'group'],
+                lock: { mode: 'pessimistic_write' } // MUHIM: Bu race condition'ni hal qiladi!
+            });
+
+            if (!lecture) {
+                await this.bot.answerCallbackQuery(callbackQuery.id, {
+                    text: '❌ Dars topilmadi',
+                    show_alert: true
+                });
+                await queryRunner.rollbackTransaction();
+                await queryRunner.release();
+                return;
+            }
+
+            // 4. Lock olingandan KEYIN tekshirish
+            // Agar allaqachon olingan bo'lsa, ikkinchi ustoz bu yerda to'xtaladi
+            if (lecture.assignedTeacher) {
+                const teacherName = `${lecture.assignedTeacher.firstName} ${lecture.assignedTeacher.lastName}`;
+                await this.bot.answerCallbackQuery(callbackQuery.id, {
+                    text: this.config.getAlreadyClaimedMessage(teacherName),
+                    show_alert: true
+                });
+                await queryRunner.rollbackTransaction();
+                await queryRunner.release();
+                return;
+            }
+
+            // 5. Darsni yangilash (transaction ichida)
+            lecture.assignedTeacher = teacher;
+            lecture.inviteLink = teacher.telegramGroupLink;
+            lecture.claimedAt = new Date();
+            lecture.status = LectureStatusEnum.COMPLETED;
+
+            await queryRunner.manager.save(lecture);
+
+            // 6. Transaction'ni commit qilish
+            await queryRunner.commitTransaction();
+
+            this.logger.log(`✅ Lecture #${lectureId} claimed by teacher #${teacher.id} (with transaction)`);
+
+            // 7. Transaction muvaffaqiyatli bo'lgandan KEYIN Telegram xabarlarini yuborish
+            // Ustozga tasdiqlash yuborish
+            const confirmationMessage = this.config.getClaimConfirmationMessage(
+                lecture.title,
+                `${teacher.firstName} ${teacher.lastName}`
+            );
+
+            await RetryHelper.retryTelegramCall(
+                () => this.bot.sendMessage(telegramUserId, confirmationMessage, {
+                    parse_mode: 'HTML'
+                }),
+                'sendConfirmationToTeacher'
+            );
+
+            // Javob yuborish
+            await RetryHelper.retryTelegramCall(
+                () => this.bot.answerCallbackQuery(callbackQuery.id, {
+                    text: '✅ Dars muvaffaqiyatli qabul qilindi!'
+                }),
+                'answerCallbackQuery'
+            );
+
+            // Guruh xabarini yangilash (tugmani o'chirish)
+            const teacherName = `${teacher.firstName} ${teacher.lastName}`;
+            const updatedMessage = this.config.getLectureNotificationMessage(
+                lecture.title,
+                lecture.startTime,
+                lecture.group?.name
+            ) + `\n\n🎯 <b>Ustoz:</b> ${teacherName} ✅`;
+
+            try {
+                await RetryHelper.retryTelegramCall(
+                    () => this.bot.editMessageText(updatedMessage, {
+                        chat_id: chatId,
+                        message_id: messageId,
+                        parse_mode: 'HTML',
+                        reply_markup: { inline_keyboard: [] } // Tugmani o'chirish
+                    }),
+                    'editGroupMessage'
+                );
+            } catch (error) {
+                this.logger.warn(`Could not edit message (after retries): ${error.message}`);
+            }
+
+        } catch (error) {
+            // Xatolik bo'lsa, transaction'ni rollback qilish
+            await queryRunner.rollbackTransaction();
+            this.logger.error(`Error in handleClaimLecture transaction: ${error.message}`, error.stack);
+
+            // Ustozga xatolik haqida xabar yuborish
+            await this.bot.answerCallbackQuery(callbackQuery.id, {
+                text: "❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+                show_alert: true
+            });
+
+            throw error; // Re-throw for logging
+        } finally {
+            // Query runner'ni har doim release qilish
+            await queryRunner.release();
+        }
     }
 
     /**

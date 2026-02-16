@@ -7,11 +7,12 @@ import { TelegramBotListener } from './listeners/telegram-bot.listener';
 import { User } from '../user/entities/user.entity';
 import { Lecture } from '../lecture/entities/lecture.entity';
 import { LectureRepository } from '../lecture/lecture.repository';
+import { EventProcessingTracker } from './entities/event-processing-tracker.entity';
 
 @Module({
     imports: [
         ConfigModule,
-        TypeOrmModule.forFeature([User, Lecture]),
+        TypeOrmModule.forFeature([User, Lecture, EventProcessingTracker]),
     ],
     providers: [
         TelegramBotService,
