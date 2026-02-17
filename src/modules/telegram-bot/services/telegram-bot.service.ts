@@ -10,6 +10,7 @@ import { User } from 'src/modules/user/entities/user.entity';
 import { Lecture } from 'src/modules/lecture/entities/lecture.entity';
 import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 import { RetryHelper } from '../utils/retry.helper';
+import { GroupTelegramMember } from 'src/modules/group/entities/group-telegram-member.entity';
 
 @Injectable()
 export class TelegramBotService {
@@ -22,6 +23,8 @@ export class TelegramBotService {
         private readonly lectureRepository: any,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(GroupTelegramMember)
+        private readonly groupTelegramMemberRepository: Repository<GroupTelegramMember>,
         private readonly dataSource: DataSource,
     ) {
         this.initializeBot();
@@ -46,6 +49,11 @@ export class TelegramBotService {
             // Callback query handler'ni sozlash
             this.bot.on('callback_query', (callbackQuery) => {
                 this.handleCallbackQuery(callbackQuery);
+            });
+
+            // Chat member update handler — guruhga a'zo qo'shilishini kuzatish
+            this.bot.on('chat_member', (update) => {
+                this.handleChatMemberUpdate(update);
             });
 
             this.logger.log('✅ Telegram bot successfully initialized');
@@ -342,5 +350,181 @@ export class TelegramBotService {
      */
     async processUpdate(update: any): Promise<void> {
         this.bot.processUpdate(update);
+    }
+
+    /**
+     * Guruhga yangi a'zo qo'shilganda yoki chiqganda kuzatish
+     * Bu orqali o'quvchilarning Telegram ID larini saqlaymiz
+     */
+    private async handleChatMemberUpdate(update: any): Promise<void> {
+        try {
+            const chatId = update.chat?.id?.toString();
+            const newMember = update.new_chat_member;
+            const userId = newMember?.user?.id?.toString();
+
+            if (!chatId || !userId) return;
+
+            // Bot o'zini e'tiborsiz qoldirish
+            const botInfo = await this.bot.getMe();
+            if (userId === botInfo.id.toString()) return;
+
+            if (newMember.status === 'member') {
+                // Yangi a'zo qo'shildi — saqlash
+                const existing = await this.groupTelegramMemberRepository.findOne({
+                    where: { telegramUserId: userId, telegramChatId: chatId }
+                });
+
+                if (!existing) {
+                    const member = this.groupTelegramMemberRepository.create({
+                        telegramUserId: userId,
+                        telegramChatId: chatId,
+                    });
+                    await this.groupTelegramMemberRepository.save(member);
+                    this.logger.log(`👤 New member tracked: ${userId} in chat ${chatId}`);
+                }
+            } else if (newMember.status === 'left' || newMember.status === 'kicked') {
+                // A'zo chiqib ketdi — o'chirish
+                await this.groupTelegramMemberRepository.delete({
+                    telegramUserId: userId,
+                    telegramChatId: chatId,
+                });
+                this.logger.log(`👤 Member removed from tracking: ${userId} in chat ${chatId}`);
+            }
+        } catch (error) {
+            this.logger.error(`Error handling chat member update: ${error.message}`);
+        }
+    }
+
+    /**
+     * Dars tugagach guruhdagi barcha o'quvchilarni chiqarish
+     * ban + unban orqali (a'zoni chiqarish, lekin qayta qo'shilish imkonini berish)
+     */
+    async removeStudentsFromGroup(chatId: string): Promise<void> {
+        try {
+            // Saqlangan a'zolar ro'yxatini olish
+            const members = await this.groupTelegramMemberRepository.find({
+                where: { telegramChatId: chatId }
+            });
+
+            if (members.length === 0) {
+                this.logger.log(`No tracked members to remove from chat ${chatId}`);
+                return;
+            }
+
+            this.logger.log(`🧹 Removing ${members.length} students from chat ${chatId}`);
+
+            for (const member of members) {
+                try {
+                    // Ban qilish (guruhdan chiqarish)
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.banChatMember(chatId, parseInt(member.telegramUserId)),
+                        `banChatMember:${member.telegramUserId}`
+                    );
+
+                    // Darhol unban qilish (qayta qo'shilish imkonini berish)
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.unbanChatMember(chatId, parseInt(member.telegramUserId)),
+                        `unbanChatMember:${member.telegramUserId}`
+                    );
+
+                    this.logger.log(`✅ Removed member ${member.telegramUserId} from chat ${chatId}`);
+                } catch (error) {
+                    this.logger.error(`Failed to remove member ${member.telegramUserId}: ${error.message}`);
+                }
+            }
+
+            // Tracking jadvaldan tozalash
+            await this.groupTelegramMemberRepository.delete({ telegramChatId: chatId });
+            this.logger.log(`🧹 Cleanup complete for chat ${chatId}`);
+        } catch (error) {
+            this.logger.error(`Error in removeStudentsFromGroup: ${error.message}`);
+        }
+    }
+
+    /**
+     * Eski invite linkni bekor qilib, yangi link yaratish
+     * Yangi link ustozning profilida saqlanadi
+     */
+    async rotateInviteLink(chatId: string, oldLink: string): Promise<string | null> {
+        try {
+            // 1. Eski linkni bekor qilish
+            if (oldLink) {
+                try {
+                    await RetryHelper.retryTelegramCall(
+                        () => this.bot.revokeChatInviteLink(chatId, oldLink),
+                        'revokeChatInviteLink'
+                    );
+                    this.logger.log(`🔗 Old invite link revoked for chat ${chatId}`);
+                } catch (error) {
+                    this.logger.warn(`Could not revoke old link: ${error.message}`);
+                }
+            }
+
+            // 2. Yangi link yaratish
+            const newLink = await RetryHelper.retryTelegramCall(
+                () => this.bot.createChatInviteLink(chatId, {
+                    creates_join_request: false,
+                }),
+                'createChatInviteLink'
+            );
+
+            const inviteLink = newLink.invite_link;
+            this.logger.log(`🔗 New invite link created for chat ${chatId}: ${inviteLink}`);
+
+            // 3. Ustozning profilidagi linkni yangilash
+            const teacher = await this.userRepository.findOne({
+                where: { telegramGroupChatId: chatId }
+            });
+
+            if (teacher) {
+                teacher.telegramGroupLink = inviteLink;
+                await this.userRepository.save(teacher);
+                this.logger.log(`✅ Teacher #${teacher.id} profile updated with new link`);
+            }
+
+            return inviteLink;
+        } catch (error) {
+            this.logger.error(`Error in rotateInviteLink: ${error.message}`);
+            return null;
+        }
+    }
+
+    /**
+     * Dars yakunlanganda cleanup jarayonini boshlash
+     * lecture.completed eventini eshitadi
+     */
+    @OnEvent('lecture.completed')
+    async handleLectureCompleted(payload: { lectureId: number, groupId: number, assignedTeacherId: number }): Promise<void> {
+        try {
+            const { assignedTeacherId } = payload;
+
+            if (!assignedTeacherId) {
+                this.logger.warn(`No assigned teacher for completed lecture #${payload.lectureId}`);
+                return;
+            }
+
+            // Ustozni topish
+            const teacher = await this.userRepository.findOne({
+                where: { id: assignedTeacherId }
+            });
+
+            if (!teacher?.telegramGroupChatId) {
+                this.logger.warn(`Teacher #${assignedTeacherId} has no telegramGroupChatId`);
+                return;
+            }
+
+            const chatId = teacher.telegramGroupChatId;
+            const oldLink = teacher.telegramGroupLink;
+
+            // 1. O'quvchilarni chiqarish
+            await this.removeStudentsFromGroup(chatId);
+
+            // 2. Invite linkni yangilash
+            await this.rotateInviteLink(chatId, oldLink);
+
+            this.logger.log(`✅ Cleanup completed for lecture #${payload.lectureId}`);
+        } catch (error) {
+            this.logger.error(`❌ Cleanup failed for lecture #${payload.lectureId}: ${error.message}`);
+        }
     }
 }

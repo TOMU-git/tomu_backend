@@ -51,6 +51,8 @@ export class ScheduleCalculatorService {
         group: Group,
         grammarTitles: string[],
         startDate: Date = null,
+        limit: number = 0, // 0 means all
+        startOrder: number = 1,
     ): Promise<Partial<Lecture>[]> {
         const lectures: Partial<Lecture>[] = [];
         const firstLectureDate = startDate || new Date(group.startDate);
@@ -59,7 +61,9 @@ export class ScheduleCalculatorService {
         let currentDate = new Date(firstLectureDate);
         let currentStep = this.TIME_SLOTS.indexOf(15); // 15:00 = index 3
 
-        for (let i = 0; i < grammarTitles.length; i++) {
+        const count = limit > 0 ? Math.min(limit, grammarTitles.length) : grammarTitles.length;
+
+        for (let i = 0; i < count; i++) {
             const endTime = new Date(currentDate);
             endTime.setHours(endTime.getHours() + 1); // 1 soat davomiylik
 
@@ -69,11 +73,11 @@ export class ScheduleCalculatorService {
                 endTime: endTime,
                 duration: 60, // 1 soat (minutlarda)
                 status: LectureStatusEnum.SCHEDULED,
-                order: i + 1,
+                order: startOrder + i,
             });
 
             // Keyingi darsni hisoblash
-            if (i < grammarTitles.length - 1) {
+            if (i < count - 1) {
                 const next = this.calculateNextLectureTime(currentDate, currentStep);
                 currentDate = next.date;
                 currentStep = next.nextStep;

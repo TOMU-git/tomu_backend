@@ -10,4 +10,10 @@ export interface ILectureRepository {
   findById(id: ID): Promise<Lecture | null>;
   findByGroupId(groupId: ID): Promise<Lecture[]>;
   findUpcomingByGroupId(groupId: ID): Promise<Lecture | null>;
+  findDueToStart(): Promise<Lecture[]>;
+  findDueToEnd(): Promise<Lecture[]>;
+  findLatestByGroupId(groupId: ID): Promise<Lecture | null>;
+  findLecturesNeedingReminder(minutesBefore: number): Promise<Lecture[]>;
+  findCompletedByTeacherId(teacherId: ID): Promise<Lecture[]>;
+  findAllByGroupIdWithStats(groupId: ID): Promise<Lecture[]>;
 }

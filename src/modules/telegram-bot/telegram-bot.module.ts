@@ -8,11 +8,12 @@ import { User } from '../user/entities/user.entity';
 import { Lecture } from '../lecture/entities/lecture.entity';
 import { LectureRepository } from '../lecture/lecture.repository';
 import { EventProcessingTracker } from './entities/event-processing-tracker.entity';
+import { GroupTelegramMember } from '../group/entities/group-telegram-member.entity';
 
 @Module({
     imports: [
         ConfigModule,
-        TypeOrmModule.forFeature([User, Lecture, EventProcessingTracker]),
+        TypeOrmModule.forFeature([User, Lecture, EventProcessingTracker, GroupTelegramMember]),
     ],
     providers: [
         TelegramBotService,
@@ -26,3 +27,4 @@ import { EventProcessingTracker } from './entities/event-processing-tracker.enti
     exports: [TelegramBotService, TelegramBotConfig],
 })
 export class TelegramBotModule { }
+

@@ -149,6 +149,15 @@ export class User extends BaseEntity {
   })
   telegramGroupLink: string;
 
+  @Column({
+    name: 'telegram_group_chat_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    comment: 'Teacher Telegram group numeric chat ID for API calls'
+  })
+  telegramGroupChatId: string;
+
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];

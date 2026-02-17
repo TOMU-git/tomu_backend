@@ -6,6 +6,9 @@ import { LectureController } from './lecture.controller';
 import { LectureRepository } from './lecture.repository';
 import { Lecture } from './entities/lecture.entity';
 import { ScheduleCalculatorService } from './schedule-calculator.service';
+import { LectureLifecycleService } from './services/lecture-lifecycle.service';
+import { LectureReminderService } from './services/lecture-reminder.service';
+import { LectureListener } from './listeners/lecture.listener';
 import { GroupModule } from '../group/group.module';
 import { GrammarModule } from '../grammar/grammar.module';
 import { UserModule } from '../user/user.module';
@@ -23,6 +26,9 @@ import { UserModule } from '../user/user.module';
     { provide: 'ILectureService', useClass: LectureService },
     { provide: 'ILectureRepository', useClass: LectureRepository },
     ScheduleCalculatorService,
+    LectureLifecycleService,
+    LectureReminderService,
+    LectureListener,
   ],
   exports: [
     'ILectureService',
@@ -31,3 +37,4 @@ import { UserModule } from '../user/user.module';
   ],
 })
 export class LectureModule { }
+

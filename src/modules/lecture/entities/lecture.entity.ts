@@ -35,6 +35,9 @@ export class Lecture extends BaseEntity {
     @Column({ type: 'varchar', nullable: true, name: 'telegram_message_id' })
     telegramMessageId: string; // Telegram guruhidagi xabar ID'si
 
+    @Column({ type: 'boolean', default: false, name: 'reminder_sent' })
+    reminderSent: boolean; // Eslatma yuborilganmi
+
     @ManyToOne(() => Group, (group) => group.lectures, { onDelete: 'CASCADE' })
     group: Group;
 

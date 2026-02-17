@@ -12,6 +12,12 @@ export interface ILectureService {
     remove(id: ID): Promise<ResData<Lecture>>;
     createLecturesForGroup(groupId: ID): Promise<ResData<Lecture[]>>;
     updateInviteLink(lectureId: ID, inviteLink: string): Promise<ResData<Lecture>>;
+    scheduleNextLecture(groupId: ID): Promise<void>;
     findByGroupId(groupId: ID): Promise<ResData<Lecture[]>>;
     getLectureByUserId(userId: ID): Promise<ResData<Lecture>>;
+    startLecture(id: ID): Promise<ResData<Lecture>>;
+    completeLecture(id: ID): Promise<ResData<Lecture>>;
+    cancelLecture(id: ID): Promise<ResData<Lecture>>;
+    getTeacherReport(teacherId: ID): Promise<ResData<Lecture[]>>;
+    getGroupReport(groupId: ID): Promise<ResData<Lecture[]>>;
 }

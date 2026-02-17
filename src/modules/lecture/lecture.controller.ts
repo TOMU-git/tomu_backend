@@ -34,6 +34,18 @@ export class LectureController {
     return await this.lectureService.getLectureByUserId(user.id);
   }
 
+  @Get('report/teacher/:teacherId')
+  @ApiOperation({ summary: 'Get completed lectures report for a teacher' })
+  getTeacherReport(@Param('teacherId') teacherId: number) {
+    return this.lectureService.getTeacherReport(teacherId);
+  }
+
+  @Get('report/group/:groupId')
+  @ApiOperation({ summary: 'Get all lectures report for a group' })
+  getGroupReport(@Param('groupId') groupId: number) {
+    return this.lectureService.getGroupReport(groupId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a lecture by ID' })
   async findOne(@Param('id') id: string) {
@@ -72,4 +84,23 @@ export class LectureController {
   ) {
     return this.lectureService.updateInviteLink(id, dto.inviteLink);
   }
+
+  @Post(':id/start')
+  @ApiOperation({ summary: 'Manually start a lecture (ASSIGNED → ONGOING)' })
+  startLecture(@Param('id') id: number) {
+    return this.lectureService.startLecture(id);
+  }
+
+  @Post(':id/complete')
+  @ApiOperation({ summary: 'Manually complete a lecture (ONGOING → COMPLETED + cleanup)' })
+  completeLecture(@Param('id') id: number) {
+    return this.lectureService.completeLecture(id);
+  }
+
+  @Post(':id/cancel')
+  @ApiOperation({ summary: 'Cancel a lecture' })
+  cancelLecture(@Param('id') id: number) {
+    return this.lectureService.cancelLecture(id);
+  }
 }
+

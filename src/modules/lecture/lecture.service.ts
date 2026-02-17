@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationService } from '../notification/services/notification.service';
 import { CreateLectureDto } from './dto/create-lecture.dto';
@@ -11,6 +11,7 @@ import { ID } from 'src/common/types/type';
 import { ScheduleCalculatorService } from './schedule-calculator.service';
 import { LectureStatusEnum } from 'src/common/enums/lecture-status.enum';
 import { LectureCreatedEvent } from '../telegram-bot/events/lecture.events';
+import { LectureCompletedEvent } from './events/lecture-completed.event';
 
 @Injectable()
 export class LectureService implements ILectureService {
@@ -98,10 +99,13 @@ export class LectureService implements ILectureService {
     const grammars = await this.grammarRepository.findGrammarsByCourseId(group.courseId);
     const grammarTitles = grammars.map(g => g.title);
 
-    // Darslarni generatsiya qilamiz
+    // Darslarni generatsiya qilamiz (Faqat 1 ta dars oldindan)
     const lectureData = await this.scheduleCalculator.generateLecturesForGroup(
       group,
       grammarTitles,
+      null,
+      1, // Limit: faqat 1 tasini yaratish
+      1  // Boshlanish tartib raqami
     );
 
     // Database ga saqlaymiz
@@ -138,6 +142,13 @@ export class LectureService implements ILectureService {
 
     const updated = await this.lectureRepository.update(lecture);
 
+    // Cleanup va keyingi darsni rejalashtirish uchun event emit qilish
+    this.eventEmitter.emit('lecture.completed', new LectureCompletedEvent(
+      updated.id,
+      Number(updated.group?.id),
+      Number(updated.assignedTeacher?.id),
+    ));
+
     // O'quvchilarga bildirishnoma yuborish
     if (updated.group && updated.group.users) {
       this.logger.log(`Sending notifications to ${updated.group.users.length} students for lecture ${lectureId}`);
@@ -146,7 +157,7 @@ export class LectureService implements ILectureService {
           await this.notificationService.sendNotification({
             userId: Number(student.id),
             title: 'Dars linki tayyor!',
-            body: `${updated.title} darsi uchun Telegram link biriktirildi.`,
+            body: `${updated.title} darsi uchun Telegram link.`,
           });
         } catch (error) {
           this.logger.error(`Notification error for user ${student.id}: ${error.message}`);
@@ -155,6 +166,86 @@ export class LectureService implements ILectureService {
     }
 
     return new ResData<Lecture>('Invite link updated', 200, updated);
+  }
+
+  async scheduleNextLecture(groupId: ID): Promise<void> {
+    const group = await this.groupRepository.findById(groupId);
+    if (!group) {
+      this.logger.warn(`Group not found for scheduling next lecture. GroupID: ${groupId}`);
+      return;
+    }
+
+    // 1. Oxirgi rejalashtirilgan darsni topamiz
+    const lastLecture = await this.lectureRepository.findLatestByGroupId(groupId);
+
+    if (!lastLecture) {
+      this.logger.warn(`No lectures found for group ${groupId}. Cannot schedule next.`);
+      return;
+    }
+
+    // 2. Keyingi dars ma'lumotlarini aniqlaymiz
+    const nextOrder = lastLecture.order + 1;
+    const nextGrammar = await this.grammarRepository.findOneByOrder(nextOrder, group.courseId);
+
+    if (!nextGrammar) {
+      this.logger.log(`No more grammar topics for group ${groupId}. Course seems finished.`);
+      // Bu yerda kurs tugaganligini bildirish mumkin
+      return;
+    }
+
+    // 3. Keyingi dars vaqtini hisoblaymiz
+    // Oxirgi darsning vaqti va slotidan foydalanamiz
+    const currentStep = [9, 11, 13, 15, 17, 19, 10, 12, 14, 16, 18, 20].indexOf(lastLecture.startTime.getHours());
+
+    // Agar currentStep topilmasa (manual vaqt bo'lsa), default 15:00 (index 3) ni olamiz yoki soatni o'zini
+    // Yaxshisi ScheduleCalculatorService.generateLecturesForGroup dan foydalanamiz, 
+    // u avtomatik keyingi vaqtni hisoblab beradi agar biz unga "startDate" sifatida oxirgi darsni bersak.
+    // Lekin generateLecturesForGroup ichida calculateNextLectureTime chaqirilganda u logic ishlaydi.
+
+    // Biz bitta dars yaratishimiz kerak. generateLecturesForGroup ni 1 ta limit bilan chaqiramiz.
+    // Ammo generateLecturesForGroup "startDate" ni birinchi dars sifatida qabul qiladi va loopni boshlaydi.
+    // Biz unga "startDate" sifatida oxirgi darsning vaqtini berib, loopni 0 dan emas, balki "keyingi" deb hisoblatsak...
+    // generateLecturesForGroup logikasi:
+    // firstLectureDate = startDate || group.startDate
+    // currentDate = firstLectureDate
+    // loop...
+
+    // Agar biz startDate = lastLecture.startTime bersak.
+    // generateLecturesForGroup uni 15:00 ga reset qiladi (firstLectureDate.setHours(15...))! BU MUAMMO.
+    // Demak generateLecturesForGroup ni to'g'ridan-to'g'ri ishlata olmaymiz, chunki u YANGI guruh boshlanishiga moslashgan.
+
+    // Shuning uchun calculateNextLectureTime ni o'zimiz chaqiramiz.
+    const stepIndex = currentStep !== -1 ? currentStep : 3; // Default 15:00 if unknown
+    const nextTimeData = this.scheduleCalculator.calculateNextLectureTime(lastLecture.startTime, stepIndex);
+
+    const nextStartTime = nextTimeData.date;
+    const nextEndTime = new Date(nextStartTime);
+    nextEndTime.setHours(nextEndTime.getHours() + 1);
+
+    // 4. Yangi darsni yaratamiz
+    const newLecture = new Lecture();
+    newLecture.title = nextGrammar.title;
+    newLecture.startTime = nextStartTime;
+    newLecture.endTime = nextEndTime;
+    newLecture.duration = 60;
+    newLecture.order = nextOrder;
+    newLecture.group = group;
+    newLecture.status = LectureStatusEnum.SCHEDULED;
+
+    const created = await this.lectureRepository.create(newLecture);
+
+    this.logger.log(`Scheduled next lecture #${created.id} (Order: ${nextOrder}) for group ${groupId}`);
+
+    // Event emit (agar kerak bo'lsa, masalan notification uchun)
+    this.eventEmitter.emit('lecture.created', new LectureCreatedEvent(
+      created.id,
+      created.title,
+      created.startTime,
+      created.duration,
+      created.group?.id,
+      created.group?.name,
+    ));
+
   }
 
   async findByGroupId(groupId: ID): Promise<ResData<Lecture[]>> {
@@ -175,4 +266,91 @@ export class LectureService implements ILectureService {
 
     return new ResData<Lecture>('Upcoming lecture found', 200, lecture);
   }
+
+  /**
+   * Darsni qo'lda boshlash (Admin manual override)
+   * ASSIGNED → ONGOING
+   */
+  async startLecture(id: ID): Promise<ResData<Lecture>> {
+    const lecture = await this.lectureRepository.findById(id);
+    if (!lecture) throw new NotFoundException('Lecture not found');
+
+    if (lecture.status !== LectureStatusEnum.ASSIGNED) {
+      throw new BadRequestException(
+        `Darsni boshlash uchun status ASSIGNED bo'lishi kerak. Hozirgi status: ${lecture.status}`
+      );
+    }
+
+    lecture.status = LectureStatusEnum.ONGOING;
+    const updated = await this.lectureRepository.update(lecture);
+    this.logger.log(`Lecture #${id} manually started (ASSIGNED → ONGOING)`);
+
+    return new ResData<Lecture>('Lecture started successfully', 200, updated);
+  }
+
+  /**
+   * Darsni qo'lda tugatish (Admin manual override)
+   * ONGOING → COMPLETED + cleanup triggerlanadi
+   */
+  async completeLecture(id: ID): Promise<ResData<Lecture>> {
+    const lecture = await this.lectureRepository.findById(id);
+    if (!lecture) throw new NotFoundException('Lecture not found');
+
+    if (lecture.status !== LectureStatusEnum.ONGOING) {
+      throw new BadRequestException(
+        `Darsni tugatish uchun status ONGOING bo'lishi kerak. Hozirgi status: ${lecture.status}`
+      );
+    }
+
+    lecture.status = LectureStatusEnum.COMPLETED;
+    const updated = await this.lectureRepository.update(lecture);
+    this.logger.log(`Lecture #${id} manually completed (ONGOING → COMPLETED)`);
+
+    // Cleanup uchun event emit qilish
+    this.eventEmitter.emit('lecture.completed', {
+      lectureId: updated.id,
+      groupId: updated.group?.id,
+      assignedTeacherId: updated.assignedTeacher?.id,
+    });
+
+    return new ResData<Lecture>('Lecture completed successfully', 200, updated);
+  }
+
+  /**
+   * Darsni bekor qilish (Admin manual override)
+   * Har qanday statusdan → CANCELLED
+   */
+  async cancelLecture(id: ID): Promise<ResData<Lecture>> {
+    const lecture = await this.lectureRepository.findById(id);
+    if (!lecture) throw new NotFoundException('Lecture not found');
+
+    if (lecture.status === LectureStatusEnum.COMPLETED || lecture.status === LectureStatusEnum.CANCELLED) {
+      throw new BadRequestException(
+        `Bu darsni bekor qilib bo'lmaydi. Hozirgi status: ${lecture.status}`
+      );
+    }
+
+    lecture.status = LectureStatusEnum.CANCELLED;
+    const updated = await this.lectureRepository.update(lecture);
+    this.logger.log(`Lecture #${id} cancelled`);
+
+    return new ResData<Lecture>('Lecture cancelled successfully', 200, updated);
+  }
+
+  /**
+   * O'qituvchining yakunlangan darslari hisoboti
+   */
+  async getTeacherReport(teacherId: ID): Promise<ResData<Lecture[]>> {
+    const lectures = await this.lectureRepository.findCompletedByTeacherId(teacherId);
+    return new ResData<Lecture[]>('Teacher report', 200, lectures);
+  }
+
+  /**
+   * Guruhning barcha darslari hisoboti
+   */
+  async getGroupReport(groupId: ID): Promise<ResData<Lecture[]>> {
+    const lectures = await this.lectureRepository.findAllByGroupIdWithStats(groupId);
+    return new ResData<Lecture[]>('Group report', 200, lectures);
+  }
 }
+
