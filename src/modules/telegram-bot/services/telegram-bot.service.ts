@@ -295,7 +295,8 @@ export class TelegramBotService {
                 const updatedMessage = this.config.getLectureNotificationMessage(
                     lecture.title,
                     lecture.startTime,
-                    lecture.group?.name
+                    lecture.group?.name,
+                    true
                 ) + `\n\n🎯 <b>Ustoz:</b> ${teacherName} ✅`;
 
                 try {

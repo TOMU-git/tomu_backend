@@ -66,6 +66,13 @@ export class GroupService implements IGroupService {
 
   async addStudentToGroup(userId: ID, courseId: number): Promise<ResData<Group>> {
 
+    // User already in group (faollashtirish kerak, quyidagi muhim logika, commentda qolib ketmasin)
+
+    // const existingGroup = await this.groupRepository.findByUserId(userId);
+    // if (existingGroup) {
+    //   throw new Error('User already in group');
+    // }
+
     // User va Course mavjudligini tekshirish
     const user = await this.userRepository.findOneById(userId);
     if (!user) {

@@ -55,7 +55,16 @@ export class ScheduleCalculatorService {
         startOrder: number = 1,
     ): Promise<Partial<Lecture>[]> {
         const lectures: Partial<Lecture>[] = [];
-        const firstLectureDate = startDate || new Date(group.startDate);
+        let firstLectureDate: Date;
+        if (startDate) {
+            firstLectureDate = new Date(startDate);
+        } else if (group.startDate) {
+            firstLectureDate = new Date(group.startDate);
+        } else {
+            this.logger.warn(`Group ${group.id} has no startDate. Using current date as fallback.`);
+            firstLectureDate = new Date();
+        }
+
         firstLectureDate.setHours(15, 0, 0, 0); // Birinchi dars 15:00 da
 
         let currentDate = new Date(firstLectureDate);

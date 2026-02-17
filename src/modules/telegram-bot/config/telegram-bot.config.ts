@@ -22,7 +22,7 @@ export class TelegramBotConfig {
     }
 
     // Xabar shablonlari
-    getLectureNotificationMessage(lectureTitle: string, startTime: Date, groupName?: string): string {
+    getLectureNotificationMessage(lectureTitle: string, startTime: Date, groupName?: string, isClaimed: boolean = false): string {
         const formattedDate = startTime.toLocaleDateString('uz-UZ', {
             weekday: 'long',
             year: 'numeric',
@@ -34,12 +34,15 @@ export class TelegramBotConfig {
             minute: '2-digit'
         });
 
-        return `🎓 <b>Yangi dars yaratildi!</b>\n\n` +
+        const instruction = isClaimed ? '' : `\n👇 Darsni olish uchun tugmani bosing`;
+        const title = isClaimed ? `🎓 <b>Dars biriktirildi!</b>` : `🎓 <b>Yangi dars!</b>`;
+
+        return `${title}\n\n` +
             `📚 <b>Dars:</b> ${lectureTitle}\n` +
             `📅 <b>Sana:</b> ${formattedDate}\n` +
             `🕐 <b>Vaqt:</b> ${formattedTime}\n` +
             (groupName ? `👥 <b>Guruh:</b> ${groupName}\n` : '') +
-            `\n👇 Darsni olish uchun tugmani bosing`;
+            instruction;
     }
 
     getClaimConfirmationMessage(lectureTitle: string, teacherName: string): string {

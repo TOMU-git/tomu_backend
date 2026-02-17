@@ -62,17 +62,20 @@ export class GroupRepository implements IGroupRepository {
     async incrementStudentCount(groupId: ID): Promise<Group> {
         const group = await this.findById(groupId);
         if (!group) throw new NotFoundException('Group not found');
-
         group.studentsCount += 1;
+        console.log("group.studentsCount", group.studentsCount);
 
         if (group.studentsCount >= group.maxStudents) {
             group.status = GroupStatusEnum.WAITING;
+            console.log("group.status", group.status);
             group.fillAt = new Date();
+            console.log("group.fillAt", group.fillAt);
 
             // startDate ni 3 kun keyingi vaqtga belgilaymiz
             const startDate = new Date();
             startDate.setDate(startDate.getDate() + 3);
             group.startDate = startDate;
+            console.log("group.startDate", group.startDate);
         }
 
         return await this.groupRepository.save(group);

@@ -194,29 +194,16 @@ export class LectureService implements ILectureService {
     }
 
     // 3. Keyingi dars vaqtini hisoblaymiz
-    // Oxirgi darsning vaqti va slotidan foydalanamiz
     const currentStep = [9, 11, 13, 15, 17, 19, 10, 12, 14, 16, 18, 20].indexOf(lastLecture.startTime.getHours());
-
-    // Agar currentStep topilmasa (manual vaqt bo'lsa), default 15:00 (index 3) ni olamiz yoki soatni o'zini
-    // Yaxshisi ScheduleCalculatorService.generateLecturesForGroup dan foydalanamiz, 
-    // u avtomatik keyingi vaqtni hisoblab beradi agar biz unga "startDate" sifatida oxirgi darsni bersak.
-    // Lekin generateLecturesForGroup ichida calculateNextLectureTime chaqirilganda u logic ishlaydi.
-
-    // Biz bitta dars yaratishimiz kerak. generateLecturesForGroup ni 1 ta limit bilan chaqiramiz.
-    // Ammo generateLecturesForGroup "startDate" ni birinchi dars sifatida qabul qiladi va loopni boshlaydi.
-    // Biz unga "startDate" sifatida oxirgi darsning vaqtini berib, loopni 0 dan emas, balki "keyingi" deb hisoblatsak...
-    // generateLecturesForGroup logikasi:
-    // firstLectureDate = startDate || group.startDate
-    // currentDate = firstLectureDate
-    // loop...
-
-    // Agar biz startDate = lastLecture.startTime bersak.
-    // generateLecturesForGroup uni 15:00 ga reset qiladi (firstLectureDate.setHours(15...))! BU MUAMMO.
-    // Demak generateLecturesForGroup ni to'g'ridan-to'g'ri ishlata olmaymiz, chunki u YANGI guruh boshlanishiga moslashgan.
-
-    // Shuning uchun calculateNextLectureTime ni o'zimiz chaqiramiz.
     const stepIndex = currentStep !== -1 ? currentStep : 3; // Default 15:00 if unknown
-    const nextTimeData = this.scheduleCalculator.calculateNextLectureTime(lastLecture.startTime, stepIndex);
+    let nextTimeData = this.scheduleCalculator.calculateNextLectureTime(lastLecture.startTime, stepIndex);
+
+    // Agar hisoblangan vaqt o'tmishda bo'lsa (oxirgi dars ancha oldin bo'lgan), 
+    // kelajakdagi birinchi mos vaqtni topguncha davom etamiz
+    const now = new Date();
+    while (nextTimeData.date < now) {
+      nextTimeData = this.scheduleCalculator.calculateNextLectureTime(nextTimeData.date, nextTimeData.nextStep);
+    }
 
     const nextStartTime = nextTimeData.date;
     const nextEndTime = new Date(nextStartTime);
