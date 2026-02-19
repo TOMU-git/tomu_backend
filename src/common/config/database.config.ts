@@ -10,7 +10,7 @@ export const connectionSource: DataSourceOptions = {
   database: config.database,
   entities: [__dirname + "/../../**/*.entity{.ts,.js}"],
   migrations: [__dirname + "/../../database/migrations/*{.ts,.js}"],
-  synchronize: true,
+  synchronize: false,
 };
 
 export default new DataSource(connectionSource);

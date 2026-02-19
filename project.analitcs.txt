@@ -1,0 +1,202 @@
+Tomu Backend — To'liq Loyiha Analizi
+📊 Umumiy Ko'rinish
+Framework	NestJS v10 (Express)
+Database	PostgreSQL 15 + TypeORM
+Cache	Redis 7 + in-memory CacheManager
+AI	OpenAI (GPT, Whisper, TTS) + ChromaDB
+Bot	Telegram Bot API (polling)
+To'lov	Payme integratsiyasi
+Modullar soni	35 ta modul
+AI servislar	26+ alohida servis fayl
+🔴 KRITIK MUAMMOLAR (Darhol tuzatish kerak)
+1. Ma'lumotlar bazasi synchronize: true — Production uchun juda xavfli
+database.config.ts
+ da synchronize: true qo'yilgan. Bu shuni anglatadiki, TypeORM har bir ishga tushirishda entity'larni bazaga avtomatik sinxronlashtiradi. Productionʼda bu jadval strukturasini buzishi, ustunlarni o'chirib yuborishi yoki ma'lumotlarni yo'qotishi mumkin. Faqat migrationlar orqali ishlash kerak.
+
+2. Parollar ochiq matnda saqlanmoqda
+User entity'da unhashedPassword degan ustun mavjud. Bu foydalanuvchi parolini hash'lanmagan holda bazada saqlaydi. Bu jiddiy xavfsizlik buzilishi bo'lib, agar baza buzilsa barcha foydalanuvchi parollari ochiq holda ko'rinadi.
+
+3. CORS — har qanday domaindan so'rov qabul qilinmoqda
+main.ts
+ da origin: true qo'yilgan, ya'ni har qanday domain so'rov yuborishi mumkin. Bu CSRF va boshqa hujumlarga yo'l ochadi. Productionda aniq domenlar ro'yxati ko'rsatilishi kerak.
+
+4. Docker Compose'da parollar plaintext
+docker-compose.yml
+ da PostgreSQL paroli (postgres123), JWT secret key (your-secret-key) va boshqa maxfiy ma'lumotlar ochiq yozilgan. Bular Docker secrets yoki environment variable orqali boshqarilishi kerak.
+
+5. Swagger productionda ochiq
+/docs endpointi productionda ham ochiq. Bu hujumchilarga barcha API endpointlarini, DTO strukturalarini va boshqalarni ko'rish imkonini beradi. Production muhitda Swagger o'chirilishi yoki password bilan himoyalanishi kerak.
+
+🟠 XAVFSIZLIK MUAMMOLARI
+6. Ko'pchilik controller'larda autentifikatsiya yo'q
+Analiz natijasida faqat auth, 
+ai
+ va course (qisman) controller'larida @UseGuards ishlatilgan. Qolgan barcha controller'lar (feedback, tariff, user-courses, file, lesson, block, grammar, homework, homework-progress, live-chat, orders, user-livechats, lesson-progress, analytics, lecture va boshqalar) himoyalanmagan holatda.
+
+7. Rate limiting faqat SMS va refresh token endpointlarida
+Butun loyihada rate limiting faqat SMS jo'natish va refresh token endpointlarida qo'llanilgan. Login, registratsiya, file upload, AI endpointlari va boshqa barcha so'rovlarda rate limiting yo'q. Bu brute-force hujumlar va resurs suiiste'moliga imkon beradi.
+
+8. Fayl yuklashda validatsiya yo'q
+file.service.ts
+ da yuklangan faylning turi, hajmi yoki nomi tekshirilmaydi. Foydalanuvchi istalgan turdagi va hajmdagi faylni yuklashi mumkin (masalan, 10 GB fayl, zararli executable fayl va h.k.). Bu disk to'lib qolishiga olib kelishi mumkin.
+
+9. Hardcoded domen
+file.service.ts
+ da fayl yo'li https://tomubackend.tomu.uz/ deb qattiq yozilgan. Bu turli muhitlarda (development, staging, production) muammo chiqaradi va deployment vaqtida URL'lar noto'g'ri bo'lishi mumkin.
+
+10. Admin registratsiyasi ochiq
+registerAdmin
+ endpointi hech qanday autentifikatsiya yoki avtorizatsiyasiz ochiq. Istalgan odam admin yaratishi mumkin. Bu jiddiy xavfsizlik buzilishi.
+
+11. Teacher registratsiyasi ochiq
+Xuddi admin kabi, 
+registerTeacher
+ endpointi ham ochiq. Istalgan foydalanuvchi o'qituvchi sifatida ro'yxatdan o'tishi mumkin.
+
+🟡 XOTIRA VA RAM MUAMMOLARI
+12. RAG indeksi server xotirasida saqlanadi
+ChromaService server ishga tushganda barcha darslar kontentini xotiraga yuklaydi (Memory Index). Kurs kontenti o'sishi bilan bu xotira hajmi ham oshadi. 1000+ darslar bo'lganda bu yuzlab MB dan GB'larga chiqishi mumkin.
+
+13. CacheModule in-memory rejimda
+CacheModule.register() Redis'siz konfiguratsiya qilingan (globall in-memory). Katta hajmdagi kesh ma'lumotlari (SMS kodlari, rate limit hisoblagichlari, session'lar) barchasi Node.js jarayoni xotirasida saqlanadi. Bu vaqt o'tishi bilan memory leak ga olib kelishi mumkin.
+
+14. AI servislardagi katta audio fayllar
+WhisperService va TTSService audio fayllarni qayta ishlaydi. Katta hajmdagi audio fayllar (20+ minut) to'liq xotiraga yuklanishi mumkin. Bu bir vaqtning o'zida bir nechta foydalanuvchi so'rov yuborganida RAM to'lib qolishiga olib keladi.
+
+15. 
+findAll()
+ metodlari cheklanmagan
+Ko'plab repository'larda 
+findAll()
+ metodi mavjud, lekin pagination (sahifalash) yo'q. Ma'lumotlar ko'payishi bilan bitta so'rov bilan minglab yozuvlar qaytarilishi mumkin. Bu ham xotira, ham tarmoq trafigi muammolarini keltirib chiqaradi.
+
+16. AppModule'da ChromaService dependency injection
+AppModule
+ to'g'ridan-to'g'ri ChromaServiceni inject qiladi va 
+onModuleInit
+ da indekslash jarayonini boshlaydi. Bu server ishga tushish vaqtini sezilarli darajada oshiradi va xotira sarfini oshiradi.
+
+⚡ TEZLIK VA PERFORMANCE MUAMMOLARI
+17. N+1 so'rov muammosi
+Repository'larda relations bilan yuklash ko'p hollarda optimallashtrilmagan. Masalan, lecture'larni group, grammar bilan birga yuklash alohida so'rovlar bilan amalga oshirilishi mumkin. Bu ko'plab ortiqcha SQL so'rovlariga olib keladi.
+
+18. TransactionsService — 633 qator bitta faylda
+To'lov servisi juda katta (633 qator). Ichida tranzaksiya yaratish, bajarish, bekor qilish, kurs berish, livechat berish, AI limit yangilash, guruhga qo'shish kabi ko'plab mas'uliyatlar birga. Har bir o'zgarish boshqa qismlarni buzishi mumkin.
+
+19. Database indekslari ko'rsatilmagan
+Entity'larda @Index decorator'lari ko'rinmaydi. Tez-tez qidiruv qilinadigan ustunlar (phoneNumber, status, groupId, userId, lectureId) uchun indekslar bo'lmasa, jadvallar kattalashishi bilan so'rovlar sekinlashadi.
+
+20. Vaqt zonasi muammolari
+Oldingi suhbatlarda startTime va endTime da 1970-01-01 muammosi uchrab turgan. Bu vaqt zonasi va sana/vaqt qayta ishlashdagi yashirin xatolarni ko'rsatadi.
+
+21. Server ishga tushishi sekin
+RAG tizimi (ChromaService.indexCourse) server ishga tushganda sinxron ravishda ishlaydi. Kontentning hajmiga qarab bu bir necha soniyadan bir necha daqiqagacha davom etishi mumkin. Bu vaqtda server so'rovlarni qabul qila olmaydi.
+
+🛡️ DDoS HUJUMLAR UCHUN ZAIFLIKLAR
+22. Global rate limiting yo'q
+Loyihada umuman global rate limiting (masalan, IP bo'yicha minutiga cheklash) mavjud emas. Hujumchi IP manzilini o'zgartirmay turib ham hech qanday cheklovlarsiz minglab so'rovlarni yuborishi mumkin.
+
+23. AI endpointlari — eng kuchli zaiflik
+AI endpointlari (ovozli suhbat, GPT, TTS) har bir so'rovda OpenAI API'ga tashqi chaqiriqlar qiladi. Hujumchi ko'p sonli so'rovlar yuborganda bu OpenAI API cheklovlariga taqalishiga, katta to'lovlarga va server resurslarining tugashiga olib keladi. AI endpointlarida rate limiting mavjud emas.
+
+24. Fayl yuklash DDoS
+Fayl yuklash endpointida hajm chegarasi yo'q. Hujumchi katta hajmdagi fayllarni yuborib diskni to'ldirishi mumkin. Shuningdek, ko'p sonli kichik fayllarni yuborish ham serverni sekinlashtiradi.
+
+25. SMS bombardirovkasi
+SMS rate limiting mavjud bo'lsa ham (minutiga 5 ta), bu IP bo'yicha emas, telefon raqam bo'yicha ishlaydi. Hujumchi turli telefon raqamlariga SMS yuborib SMS providerning limitini to'ldirishi va xarajatni oshirishi mumkin.
+
+26. Telegram bot polling — DDoS vektori
+Telegram bot polling rejimida ishlaydi. Agar bot xatolarni qayta ishlashda muammo chiqarsa yoki Telegram API'da kechikishlar bo'lsa, bu server resurslarini band qiladi.
+
+27. Static fayllar chegarasiz
+/upload va /public papkalaridan static fayl xizmati ko'rsatiladi. Bu papkalardagi fayllar to'g'ridan-to'g'ri disk'dan o'qiladi. Katta hajmdagi yoki ko'p sonli so'rovlar disk I/O'ni to'yintirishi mumkin.
+
+🏗️ ARXITEKTURA MUAMMOLARI
+28. Modullar o'rtasida kuchli bog'liqlik (tight coupling)
+TransactionsService boshqa 10+ modulga bog'liq (User, Course, Tariff, UserCourse, UserTariff, LiveChat, UserLiveChat, Group, AI Limit). Bitta modulni o'zgartirish boshqa ko'plab modullarni buzishi mumkin.
+
+29. AppModule'da duplikat import
+app.module.ts da CourseModule va BlockModule ikki marta import qilingan. Bu xatolik bo'lmasa ham, kod sifatining pastligini ko'rsatadi.
+
+30. AllExceptionsFilter — juda murakkab
+Global exception filter (158 qator) ichida dinamik import (await import(...)) ishlatiladi. Bu production'da kutilmagan xatolarga olib kelishi mumkin. Shuningdek, filter Payme, AI va umumiy xatolarni bir joyda boshqaradi, bu mas'uliyatlarni ajratish tamoyiliga zid.
+
+31. Interface va repository pattern'i to'liq emas
+Ko'plab servislar any turi bilan dependency injection qiladi (masalan, @Inject('IGroupService') private readonly groupService: any). Bu TypeScript'ning asosiy afzalligini — tip xavfsizligini — yo'qotadi.
+
+32. AI moduli juda katta va monolit
+AI modulida 26+ alohida servis, 5 entity, 11 exception, 5 DTO va pipeline servislari mavjud. Bu bitta modulni juda murakkab va qiyin boshqariladigan qiladi. Uni kichikroq sub-modullarga ajratish kerak.
+
+33. Event-driven arxitekturada xato boshqarish zaif
+EventEmitter2 yordamida eventlar ishlatiladi (masalan, lecture.created, lecture.completed), lekin event listener'larda xatolar yuzaga kelganda retry mexanizmi yoki dead letter queue mavjud emas.
+
+34. Testlar kam yoki yuzaki
+Loyihada test fayllar mavjud (.spec.ts), lekin aksariyati faqat NestJS CLI tomonidan generatsiya qilingan bo'sh scaffold'lar. Haqiqiy business logikani qamrab olgan testlar juda kam.
+
+35. Dockerfile optimallashtirilmagan
+Dockerfile'da source code'ni ko'chirish (COPY . .) va build qilish bitta bosqichda amalga oshiriladi. npm ci --only=production dan keyin npm run build ishlamaydi chunki devDependencies o'rnatilmagan (TypeScript kompilyatori zarur). Shuningdek, multi-stage build ishlatilmagan, shuning uchun yakuniy image keragidan katta bo'ladi.
+
+36. Environment variable validatsiyasi yo'q
+config/index.ts da muhit o'zgaruvchilari hech qanday validatsiyasiz o'qiladi. Agar biror muhim o'zgaruvchi o'rnatilmagan bo'lsa (masalan, JWT_SECRET_KEY), server undefined bilan ishlaydi va kutilmagan xatolar yuzaga keladi.
+
+37. Logging strategiyasi zaif
+Loyihada console.log va console.error ishlatiladi. Markazlashtirilgan logging tizimi (Winston, Pino) yoki strukturali log format (JSON) mavjud emas. Production'da xatolarni kuzatish va tahlil qilish qiyin bo'ladi.
+
+38. Health check endpointi yo'q
+Serverning holatini tekshirish uchun /health yoki /readiness endpointi mavjud emas. Bu Kubernetes, Docker va load balancer'lar uchun zarur. Serverning bazaga ulanish, Redis'ga ulanish holatini bilish imkonsiz.
+
+39. Graceful shutdown mavjud emas
+Server to'xtaganda (restart, deploy) ochiq database connection'lar, davom etayotgan so'rovlar yoki Telegram bot polling to'g'ri yopilmaydi. Bu ma'lumotlar yo'qolishiga olib kelishi mumkin.
+
+40. WebSocket xavfsizligi
+@nestjs/websockets va socket.io ishlatilmoqda, lekin WebSocket connection'larda autentifikatsiya va avtorizatsiya tekshiruvi aniqlanmagan.
+
+📋 YAXSHILANISHLAR RO'YXATI
+Xavfsizlik
+synchronize: false qilib, migration tizimiga o'tish
+unhashedPassword ustunini butunlay olib tashlash
+CORS'da aniq domenlar ro'yxatini ko'rsatish
+Swagger'ni production'da o'chirish yoki parol bilan himoyalash
+Admin va Teacher registratsiyasini autentifikatsiya orqasiga o'tkazish
+Barcha controller'larga tegishli guard'larni qo'shish
+Fayl yuklashda tur va hajm validatsiyasi qo'shish
+Docker Compose'dagi maxfiy ma'lumotlarni secret management'ga ko'chirish
+WebSocket connection'larda autentifikatsiya qo'shish
+Performance
+Global rate limiting middleware qo'shish (Throttler module)
+AI endpointlariga alohida rate limiting qo'shish
+Barcha findAll metodlariga pagination qo'shish
+Tez-tez so'rov qilinadigan ustunlarga database indekslar qo'shish
+N+1 muammolarini QueryBuilder orqali hal qilish
+Fayl yuklashni stream orqali qilish (to'liq xotiraga yuklamaslik)
+Xotira va RAM
+CacheModule'ni Redis backend bilan konfiguratsiya qilish
+RAG Memory Index'ni alohida servis yoki to'liq ChromaDB'ga ko'chirish
+Audio fayllarni stream orqali qayta ishlash
+Katta ma'lumotlar uchun cursor-based pagination
+Arxitektura
+TransactionsServiceni kichik servislaraga bo'lish (Strategy pattern)
+AI modulini sub-modullarga ajratish (Chat, TTS, Whisper, RAG)
+AllExceptionsFilterni modullar bo'yicha alohida filter'larga ajratish
+Event listener'larga retry va error handling mexanizmi qo'shish
+any turlarni tegishli interface'lar bilan almashtirish
+Environment variable validatsiyasini (Joi schema) qo'shish
+Health check endpoint qo'shish (@nestjs/terminus)
+Graceful shutdown implementatsiya qilish
+Winston yoki Pino kabi strukturali logger qo'shish
+Multi-stage Docker build qilish
+Test qamrovini oshirish (kamida har bir servisga unit test)
+🎯 Ustuvorlik bo'yicha harakat rejasi
+Ustuvorlik	Muammo	Tavsiya
+🔴 Darhol	synchronize: true	false ga o'zgartirish
+🔴 Darhol	unhashedPassword	Butunlay olib tashlash
+🔴 Darhol	Ochiq Admin/Teacher registratsiya	Guard qo'shish
+🔴 Darhol	CORS origin: true	Aniq domenlar
+🟠 Tez orada	Global rate limiting	ThrottlerModule qo'shish
+🟠 Tez orada	Fayl validatsiyasi	Hajm va tur chegarasi
+🟠 Tez orada	Swagger himoyalash	Production'da o'chirish
+🟡 Rejali	Health check	@nestjs/terminus
+🟡 Rejali	Logging	Winston/Pino
+🟡 Rejali	Arxitektura refactoring	Kichik modullarga ajratish
+🟡 Rejali	Test coverage	Unit va integration testlar
+z

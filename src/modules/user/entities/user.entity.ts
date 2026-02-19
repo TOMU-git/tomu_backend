@@ -5,9 +5,10 @@ import { Feedback } from "src/modules/feedback/entities/feedback.entity";
 import { HomeworkProgress } from "src/modules/homework-progress/entities/homework-progress.entity";
 import { LessonProgress } from "src/modules/lesson-progress/entities/lesson-progress.entity";
 import { UserCourse } from "src/modules/user-courses/entities/user-course.entity";
-import { UserTariff } from "src/modules/user-tariff/entities/user-tariff.entity";
 import { UserDevice } from "src/modules/user-device/entities/user-device.entity";
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
+import { Group } from "src/modules/group/entities/group.entity";
+import { Lecture } from "src/modules/lecture/entities/lecture.entity";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -127,6 +128,36 @@ export class User extends BaseEntity {
   })
   emailVerified: boolean;
 
+  /**
+   * Telegram Integration Fields
+   * Used for teacher's Telegram group integration
+   */
+  @Column({
+    name: 'telegram_chat_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    comment: 'Teacher Telegram chat ID for bot communication'
+  })
+  telegramChatId: string;
+
+  @Column({
+    name: 'telegram_group_link',
+    type: 'text',
+    nullable: true,
+    comment: 'Teacher default Telegram group invite link'
+  })
+  telegramGroupLink: string;
+
+  @Column({
+    name: 'telegram_group_chat_id',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+    comment: 'Teacher Telegram group numeric chat ID for API calls'
+  })
+  telegramGroupChatId: string;
+
   // Foydalanuvchi bergan feedbacklar
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];
@@ -152,4 +183,11 @@ export class User extends BaseEntity {
     eager: false    // Don't load devices by default
   })
   devices: UserDevice[];
+
+  @ManyToOne(() => Group, (group) => group.users, {
+    nullable: true,
+    onDelete: 'SET NULL'
+  })
+  @JoinColumn({ name: "group_id" })
+  group: Group;
 }
