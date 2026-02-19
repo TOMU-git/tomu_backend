@@ -51,4 +51,9 @@ export class GroupController {
   startReadyGroups() {
     return this.groupService.startGroupsIfReady();
   }
+  @Get(':id/telegram-members')
+  @ApiOperation({ summary: 'Get telegram members of a group' })
+  getTelegramMembers(@Param('id') id: string) {
+    return this.groupService.getTelegramMembers(+id);
+  }
 }

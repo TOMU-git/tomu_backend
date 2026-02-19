@@ -23,6 +23,8 @@ export class TelegramBotService {
         private readonly lectureRepository: any,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(Lecture)
+        private readonly lectureTypeOrmRepository: Repository<Lecture>,
         @InjectRepository(GroupTelegramMember)
         private readonly groupTelegramMemberRepository: Repository<GroupTelegramMember>,
         private readonly dataSource: DataSource,
@@ -42,8 +44,13 @@ export class TelegramBotService {
                 this.bot = new TelegramBot(token);
                 this.logger.log(`Telegram bot initialized in WEBHOOK mode`);
             } else {
-                this.bot = new TelegramBot(token, { polling: true });
-                this.logger.log(`Telegram bot initialized in POLLING mode`);
+                // Kutubxonani polling OLMAGAN holda ishga tushiramiz (faqat API metodlari uchun)
+                // chat_member eventlari uchun alohida manual polling ishlatamiz
+                this.bot = new TelegramBot(token);
+                this.logger.log(`Telegram bot initialized (manual polling mode)`);
+
+                // Manual polling: barcha update turlarini qabul qiladi
+                setTimeout(() => this.startManualPolling(token), 1000);
             }
 
             // Callback query handler'ni sozlash
@@ -52,8 +59,24 @@ export class TelegramBotService {
             });
 
             // Chat member update handler — guruhga a'zo qo'shilishini kuzatish
-            this.bot.on('chat_member', (update) => {
-                this.handleChatMemberUpdate(update);
+            // MUHIM: node-telegram-bot-api 'chat_member' eventini emit qilmaydi,
+            // shuning uchun barcha updatelarni 'update' orqali qo'lda parse qilamiz
+            this.bot.on('update', (update: any) => {
+                // DEBUG: Barcha kelgan updatelarni ko'rish uchun
+                this.logger.debug(`📨 Raw update received: ${JSON.stringify(Object.keys(update))}`);
+
+                if (update.chat_member) {
+                    this.logger.log(`👥 chat_member update received!`);
+                    this.handleChatMemberUpdate(update.chat_member);
+                }
+                if (update.my_chat_member) {
+                    this.logger.log(`🤖 Bot status changed in chat: ${update.my_chat_member.chat?.id}`);
+                }
+            });
+
+            // Polling xatolarini kuzatish
+            this.bot.on('polling_error', (error) => {
+                this.logger.error(`❌ Polling error: ${error.message}`);
             });
 
             this.logger.log('✅ Telegram bot successfully initialized');
@@ -65,6 +88,50 @@ export class TelegramBotService {
     /**
      * Lecture yaratilganda ustozlar guruhiga xabarnoma yuborish
      */
+    /**
+     * Barcha Telegram updatelarini qabul qilish uchun manual polling loop.
+     * node-telegram-bot-api kutubxonasi chat_member eventlarini qabul qilmasligi
+     * sababli, to'g'ridan-to'g'ri Telegram API ga so'rov yuboramiz.
+     */
+    private async startManualPolling(token: string): Promise<void> {
+        this.logger.log(`🔄 Starting manual polling loop (all update types)...`);
+        let offset = 0;
+        const axios = require('axios');
+
+        while (true) {
+            try {
+                const response = await axios.post(
+                    `https://api.telegram.org/bot${token}/getUpdates`,
+                    {
+                        offset,
+                        timeout: 30,
+                        allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member'],
+                    },
+                    { timeout: 35000 }
+                );
+
+                const updates = response.data?.result || [];
+                for (const update of updates) {
+                    offset = update.update_id + 1;
+
+                    if (update.callback_query) {
+                        this.handleCallbackQuery(update.callback_query);
+                    }
+                    if (update.chat_member) {
+                        this.logger.log(`👥 [Poll] chat_member update received!`);
+                        await this.handleChatMemberUpdate(update.chat_member);
+                    }
+                    if (update.my_chat_member) {
+                        this.logger.log(`🤖 [Poll] Bot status changed in chat: ${update.my_chat_member.chat?.id}`);
+                    }
+                }
+            } catch (err) {
+                this.logger.error(`❌ Manual polling error: ${err.message}`);
+                await new Promise(resolve => setTimeout(resolve, 5000));
+            }
+        }
+    }
+
     async sendLectureNotification(event: LectureCreatedEvent): Promise<void> {
         const { lectureId, title, startTime, groupName } = event;
 
@@ -228,7 +295,7 @@ export class TelegramBotService {
             lecture.assignedTeacher = teacher;
             lecture.inviteLink = teacher.telegramGroupLink;
             lecture.claimedAt = new Date();
-            lecture.status = LectureStatusEnum.COMPLETED;
+            lecture.status = LectureStatusEnum.ASSIGNED;
 
             await queryRunner.manager.save(lecture);
 
@@ -323,7 +390,9 @@ export class TelegramBotService {
      */
     async setWebhook(url: string): Promise<boolean> {
         try {
-            await this.bot.setWebHook(url);
+            await this.bot.setWebHook(url, {
+                allowed_updates: ["message", "callback_query", "chat_member", "my_chat_member"]
+            });
             this.logger.log(`Webhook set to: ${url}`);
             return true;
         } catch (error) {
@@ -376,12 +445,42 @@ export class TelegramBotService {
                 });
 
                 if (!existing) {
+                    let groupId = null;
+                    try {
+                        // Guruh ID sini topishga harakat qilamiz
+                        // 1. Shu chat egasi (o'qituvchi) ni topamiz
+                        const teacher = await this.userRepository.findOne({
+                            where: { telegramGroupChatId: chatId }
+                        });
+
+                        if (teacher) {
+                            // 2. Shu o'qituvchining hozirgi yoki yaqinlashib kelayotgan darsini topamiz
+                            // Hozircha oddiy yechim: Eng oxirgi active/scheduled dars guruhi
+                            const lecture = await this.lectureTypeOrmRepository.findOne({
+                                where: {
+                                    assignedTeacher: { id: teacher.id },
+                                    status: LectureStatusEnum.ONGOING
+                                },
+                                relations: ['group'],
+                                order: { startTime: 'DESC' }
+                            });
+
+                            if (lecture && lecture.group) {
+                                groupId = lecture.group.id;
+                            }
+                        }
+                    } catch (err) {
+                        this.logger.warn(`Could not determine groupId for chat member: ${err.message}`);
+                    }
+
                     const member = this.groupTelegramMemberRepository.create({
                         telegramUserId: userId,
                         telegramChatId: chatId,
+                        groupId: groupId, // Null bo'lishi mumkin
                     });
+
                     await this.groupTelegramMemberRepository.save(member);
-                    this.logger.log(`👤 New member tracked: ${userId} in chat ${chatId}`);
+                    this.logger.log(`👤 New member tracked: ${userId} in chat ${chatId} (Group: ${groupId})`);
                 }
             } else if (newMember.status === 'left' || newMember.status === 'kicked') {
                 // A'zo chiqib ketdi — o'chirish
@@ -448,6 +547,8 @@ export class TelegramBotService {
      */
     async rotateInviteLink(chatId: string, oldLink: string): Promise<string | null> {
         try {
+            this.logger.log(`🔗 [rotateInviteLink] Starting for chat ${chatId}, oldLink: ${oldLink}`);
+
             // 1. Eski linkni bekor qilish
             if (oldLink) {
                 try {
@@ -459,9 +560,12 @@ export class TelegramBotService {
                 } catch (error) {
                     this.logger.warn(`Could not revoke old link: ${error.message}`);
                 }
+            } else {
+                this.logger.warn(`🔗 [rotateInviteLink] No oldLink provided, skipping revoke`);
             }
 
             // 2. Yangi link yaratish
+            this.logger.log(`🔗 [rotateInviteLink] Creating new invite link...`);
             const newLink = await RetryHelper.retryTelegramCall(
                 () => this.bot.createChatInviteLink(chatId, {
                     creates_join_request: false,
@@ -481,11 +585,14 @@ export class TelegramBotService {
                 teacher.telegramGroupLink = inviteLink;
                 await this.userRepository.save(teacher);
                 this.logger.log(`✅ Teacher #${teacher.id} profile updated with new link`);
+            } else {
+                this.logger.warn(`🔗 [rotateInviteLink] No teacher found with telegramGroupChatId=${chatId}`);
             }
 
             return inviteLink;
         } catch (error) {
             this.logger.error(`Error in rotateInviteLink: ${error.message}`);
+            this.logger.error(`Error stack: ${error.stack}`);
             return null;
         }
     }

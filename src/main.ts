@@ -38,24 +38,28 @@ async function bootstrap() {
     }),
   );
 
-  const options = new DocumentBuilder()
-    .setTitle("LMS API Documentation")
-    .setDescription("Description")
-    .setVersion("1.0.0")
-    .addTag("apies")
-    .addBearerAuth()
-    .build();
+  if (process.env.NODE_ENV !== 'production') {
+    const options = new DocumentBuilder()
+      .setTitle("LMS API Documentation")
+      .setDescription("Description")
+      .setVersion("1.0.0")
+      .addTag("apies")
+      .addBearerAuth()
+      .build();
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup("docs", app, document, {
-    swaggerOptions: {
-      persistAuthorization: true, // Avtorizatsiyani saqlab qoladi
-    },
-  });
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup("docs", app, document, {
+      swaggerOptions: {
+        persistAuthorization: true, // Avtorizatsiyani saqlab qoladi
+      },
+    });
+  }
 
   await app.listen(config.port, () => {
     console.log(`http://localhost:${config.port}`);
-    console.log(`http://localhost:${config.port}/docs`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`http://localhost:${config.port}/docs`);
+    }
   });
 }
 bootstrap();

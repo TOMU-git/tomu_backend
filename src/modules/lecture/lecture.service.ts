@@ -290,17 +290,21 @@ export class LectureService implements ILectureService {
     }
 
     lecture.status = LectureStatusEnum.COMPLETED;
-    const updated = await this.lectureRepository.update(lecture);
+    await this.lectureRepository.update(lecture);
     this.logger.log(`Lecture #${id} manually completed (ONGOING → COMPLETED)`);
+
+    // Cleanup uchun relation'lar bilan qayta yuklash kerak
+    // (update() relation'larni qaytarmaydi)
+    const completedLecture = await this.lectureRepository.findById(id);
 
     // Cleanup uchun event emit qilish
     this.eventEmitter.emit('lecture.completed', {
-      lectureId: updated.id,
-      groupId: updated.group?.id,
-      assignedTeacherId: updated.assignedTeacher?.id,
+      lectureId: completedLecture.id,
+      groupId: (completedLecture as any).group?.id ?? (completedLecture as any).groupId,
+      assignedTeacherId: (completedLecture as any).assignedTeacher?.id ?? (completedLecture as any).assignedTeacherId,
     });
 
-    return new ResData<Lecture>('Lecture completed successfully', 200, updated);
+    return new ResData<Lecture>('Lecture completed successfully', 200, completedLecture);
   }
 
   /**

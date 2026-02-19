@@ -5,6 +5,7 @@ import { IGroupService } from './interfaces/group.service';
 import { IGroupRepository } from './interfaces/group.repository';
 import { ResData } from 'src/lib/resData';
 import { Group } from './entities/group.entity';
+import { GroupTelegramMember } from './entities/group-telegram-member.entity';
 import { ID } from 'src/common/types/type';
 import { GroupNotFoundException } from './exception/group.exception';
 import { GenderEnum } from 'src/common/enums/enum';
@@ -143,6 +144,7 @@ export class GroupService implements IGroupService {
     return `${number}${letter}-${courseName}-${genderLabel}`;
   }
 
+
   async startGroupsIfReady(): Promise<ResData<void>> {
     const groupsToStart = await this.groupRepository.findGroupsToStart();
 
@@ -157,4 +159,14 @@ export class GroupService implements IGroupService {
 
     return new ResData<void>(`${groupsToStart.length} groups started successfully`, 200, null);
   }
+
+  async getTelegramMembers(groupId: ID): Promise<ResData<GroupTelegramMember[]>> {
+    const foundGroup = await this.groupRepository.findById(groupId);
+    if (!foundGroup) {
+      throw new GroupNotFoundException();
+    }
+    const members = await this.groupRepository.findTelegramMembers(groupId);
+    return new ResData<GroupTelegramMember[]>("Group telegram members found", 200, members);
+  }
 }
+

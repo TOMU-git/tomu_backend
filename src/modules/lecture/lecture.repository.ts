@@ -37,7 +37,7 @@ export class LectureRepository implements ILectureRepository {
     findById(id: ID): Promise<Lecture | null> {
         return this.lectureRepository.findOne({
             where: { id: id as any },
-            relations: ['group', 'group.users'],
+            relations: ['group', 'group.users', 'assignedTeacher'],
         });
     }
 
@@ -137,4 +137,3 @@ export class LectureRepository implements ILectureRepository {
     }
 
 }
-

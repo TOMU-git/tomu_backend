@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { IGroupRepository } from "./interfaces/group.repository";
 import { Group } from "./entities/group.entity";
+import { GroupTelegramMember } from "./entities/group-telegram-member.entity";
 import { ID } from "src/common/types/type";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LessThanOrEqual, Repository } from "typeorm";
@@ -12,6 +13,8 @@ export class GroupRepository implements IGroupRepository {
     constructor(
         @InjectRepository(Group)
         private readonly groupRepository: Repository<Group>,
+        @InjectRepository(GroupTelegramMember)
+        private readonly telegramMemberRepository: Repository<GroupTelegramMember>,
     ) { }
 
     create(dto: Group): Promise<Group> {
@@ -92,6 +95,12 @@ export class GroupRepository implements IGroupRepository {
         return await this.groupRepository.findOne({
             where: { users: { id: userId as any } },
             relations: ['users']
+        });
+    }
+
+    async findTelegramMembers(groupId: ID): Promise<GroupTelegramMember[]> {
+        return await this.telegramMemberRepository.find({
+            where: { groupId: groupId as number },
         });
     }
 
