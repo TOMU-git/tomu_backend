@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ILectureRepository } from '../interfaces/lecture.repository';
+import { Lecture } from '../entities/lecture.entity';
 import { NotificationService } from '../../notification/services/notification.service';
 
 /**
@@ -53,7 +54,7 @@ export class LectureReminderService {
     /**
      * Guruhdagi barcha o'quvchilarga eslatma yuborish
      */
-    private async sendReminderToStudents(lecture: any): Promise<void> {
+    private async sendReminderToStudents(lecture: Lecture): Promise<void> {
         if (!lecture.group?.users || lecture.group.users.length === 0) {
             this.logger.warn(`No students found for lecture #${lecture.id}`);
             return;

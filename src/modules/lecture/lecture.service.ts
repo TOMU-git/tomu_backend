@@ -5,6 +5,8 @@ import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
 import { ILectureService } from './interfaces/lecture.service';
 import { ILectureRepository } from './interfaces/lecture.repository';
+import { IGroupRepository } from '../group/interfaces/group.repository';
+import { IGrammarRepository } from '../grammar/interfaces/grammar.repository';
 import { ResData } from 'src/lib/resData';
 import { Lecture } from './entities/lecture.entity';
 import { ID } from 'src/common/types/type';
@@ -21,9 +23,9 @@ export class LectureService implements ILectureService {
     @Inject('ILectureRepository')
     private readonly lectureRepository: ILectureRepository,
     @Inject('IGroupRepository')
-    private readonly groupRepository: any,
+    private readonly groupRepository: IGroupRepository,
     @Inject('IGrammarRepository')
-    private readonly grammarRepository: any,
+    private readonly grammarRepository: IGrammarRepository,
     private readonly scheduleCalculator: ScheduleCalculatorService,
     private readonly notificationService: NotificationService,
     private readonly eventEmitter: EventEmitter2,
@@ -169,10 +171,7 @@ export class LectureService implements ILectureService {
   }
 
   async scheduleNextLecture(groupId: ID): Promise<void> {
-    this.logger.log(`[DEBUG] scheduleNextLecture called with groupId: ${groupId} (type: ${typeof groupId})`);
-
     const group = await this.groupRepository.findById(groupId);
-    this.logger.log(`[DEBUG] Group found: ${!!group}, courseId: ${group?.courseId}`);
     if (!group) {
       this.logger.warn(`Group not found for scheduling next lecture. GroupID: ${groupId}`);
       return;
@@ -180,7 +179,6 @@ export class LectureService implements ILectureService {
 
     // 1. Oxirgi rejalashtirilgan darsni topamiz
     const lastLecture = await this.lectureRepository.findLatestByGroupId(groupId);
-    this.logger.log(`[DEBUG] Last lecture found: ${!!lastLecture}, order: ${lastLecture?.order}, startTime: ${lastLecture?.startTime}`);
 
     if (!lastLecture) {
       this.logger.warn(`No lectures found for group ${groupId}. Cannot schedule next.`);
@@ -189,36 +187,29 @@ export class LectureService implements ILectureService {
 
     // 2. Keyingi dars ma'lumotlarini aniqlaymiz
     const nextOrder = lastLecture.order + 1;
-    this.logger.log(`[DEBUG] Looking for grammar with order: ${nextOrder}, courseId: ${group.courseId}`);
     const nextGrammar = await this.grammarRepository.findOneByOrder(nextOrder, group.courseId);
-    this.logger.log(`[DEBUG] Next grammar found: ${!!nextGrammar}, title: ${nextGrammar?.title}`);
 
     if (!nextGrammar) {
-      this.logger.log(`No more grammar topics for group ${groupId}. Course seems finished.`);
-      // Bu yerda kurs tugaganligini bildirish mumkin
+      this.logger.log(`No more grammar topics for group ${groupId}. Course finished.`);
       return;
     }
 
     // 3. Keyingi dars vaqtini hisoblaymiz
     const currentStep = [9, 11, 13, 15, 17, 19, 10, 12, 14, 16, 18, 20].indexOf(lastLecture.startTime.getHours());
-    const stepIndex = currentStep !== -1 ? currentStep : 3; // Default 15:00 if unknown
-    this.logger.log(`[DEBUG] currentStep: ${currentStep}, stepIndex: ${stepIndex}`);
+    const stepIndex = currentStep !== -1 ? currentStep : 3;
     let nextTimeData = this.scheduleCalculator.calculateNextLectureTime(lastLecture.startTime, stepIndex);
-    this.logger.log(`[DEBUG] Initial nextTimeData: ${nextTimeData.date}, nextStep: ${nextTimeData.nextStep}`);
 
-    // Agar hisoblangan vaqt o'tmishda bo'lsa (oxirgi dars ancha oldin bo'lgan), 
-    // kelajakdagi birinchi mos vaqtni topguncha davom etamiz
+    // Agar hisoblangan vaqt o'tmishda bo'lsa, kelajakdagi birinchi mos vaqtni topamiz
     const now = new Date();
     let loopCount = 0;
     while (nextTimeData.date < now) {
       nextTimeData = this.scheduleCalculator.calculateNextLectureTime(nextTimeData.date, nextTimeData.nextStep);
       loopCount++;
       if (loopCount > 1000) {
-        this.logger.error(`[DEBUG] Infinite loop detected in scheduleNextLecture for group ${groupId}`);
+        this.logger.error(`Infinite loop detected in scheduleNextLecture for group ${groupId}`);
         return;
       }
     }
-    this.logger.log(`[DEBUG] Final nextTimeData after ${loopCount} iterations: ${nextTimeData.date}`);
 
     const nextStartTime = nextTimeData.date;
     const nextEndTime = new Date(nextStartTime);
@@ -234,12 +225,11 @@ export class LectureService implements ILectureService {
     newLecture.group = group;
     newLecture.status = LectureStatusEnum.SCHEDULED;
 
-    this.logger.log(`[DEBUG] Creating new lecture: title=${newLecture.title}, startTime=${newLecture.startTime}, order=${newLecture.order}`);
     const created = await this.lectureRepository.create(newLecture);
 
     this.logger.log(`Scheduled next lecture #${created.id} (Order: ${nextOrder}) for group ${groupId}`);
 
-    // Event emit (agar kerak bo'lsa, masalan notification uchun)
+    // Event emit (notification uchun)
     this.eventEmitter.emit('lecture.created', new LectureCreatedEvent(
       created.id,
       created.title,

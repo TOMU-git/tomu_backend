@@ -1,6 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import * as TelegramBot from 'node-telegram-bot-api';
+import axios from 'axios';
 import { TelegramBotConfig } from '../config/telegram-bot.config';
 import { LectureCreatedEvent } from '../events/lecture.events';
 import { ILectureService } from 'src/modules/lecture/interfaces/lecture.service';
@@ -62,9 +63,6 @@ export class TelegramBotService {
             // MUHIM: node-telegram-bot-api 'chat_member' eventini emit qilmaydi,
             // shuning uchun barcha updatelarni 'update' orqali qo'lda parse qilamiz
             this.bot.on('update', (update: any) => {
-                // DEBUG: Barcha kelgan updatelarni ko'rish uchun
-                this.logger.debug(`📨 Raw update received: ${JSON.stringify(Object.keys(update))}`);
-
                 if (update.chat_member) {
                     this.logger.log(`👥 chat_member update received!`);
                     this.handleChatMemberUpdate(update.chat_member);
@@ -96,11 +94,10 @@ export class TelegramBotService {
     private async startManualPolling(token: string): Promise<void> {
         this.logger.log(`🔄 Starting manual polling loop (all update types)...`);
         let offset = 0;
-        const axios = require('axios');
 
         while (true) {
             try {
-                const response = await axios.post(
+                const response: any = await axios.post(
                     `https://api.telegram.org/bot${token}/getUpdates`,
                     {
                         offset,
@@ -326,7 +323,8 @@ export class TelegramBotService {
                 // Ustozga tasdiqlash yuborish
                 const confirmationMessage = this.config.getClaimConfirmationMessage(
                     lecture.title,
-                    `${teacher.firstName} ${teacher.lastName}`
+                    `${teacher.firstName} ${teacher.lastName}`,
+                    lecture.startTime
                 );
 
                 try {
@@ -547,9 +545,9 @@ export class TelegramBotService {
      */
     async rotateInviteLink(chatId: string, oldLink: string): Promise<string | null> {
         try {
-            this.logger.log(`🔗 [rotateInviteLink] Starting for chat ${chatId}, oldLink: ${oldLink}`);
+            this.logger.log(`🔗 Rotating invite link for chat ${chatId}`);
 
-            // 1. Eski linkni bekor qilish
+            // 1. Eski qo'shimcha linkni bekor qilish (agar mavjud bo'lsa)
             if (oldLink) {
                 try {
                     await RetryHelper.retryTelegramCall(
@@ -560,21 +558,14 @@ export class TelegramBotService {
                 } catch (error) {
                     this.logger.warn(`Could not revoke old link: ${error.message}`);
                 }
-            } else {
-                this.logger.warn(`🔗 [rotateInviteLink] No oldLink provided, skipping revoke`);
             }
 
-            // 2. Yangi link yaratish
-            this.logger.log(`🔗 [rotateInviteLink] Creating new invite link...`);
-            const newLink = await RetryHelper.retryTelegramCall(
-                () => this.bot.createChatInviteLink(chatId, {
-                    creates_join_request: false,
-                }),
-                'createChatInviteLink'
+            // 2. Primary linkni yangilash
+            const inviteLink = await RetryHelper.retryTelegramCall(
+                () => this.bot.exportChatInviteLink(chatId),
+                'exportChatInviteLink'
             );
-
-            const inviteLink = newLink.invite_link;
-            this.logger.log(`🔗 New invite link created for chat ${chatId}: ${inviteLink}`);
+            this.logger.log(`🔗 New primary invite link created for chat ${chatId}`);
 
             // 3. Ustozning profilidagi linkni yangilash
             const teacher = await this.userRepository.findOne({
@@ -586,13 +577,12 @@ export class TelegramBotService {
                 await this.userRepository.save(teacher);
                 this.logger.log(`✅ Teacher #${teacher.id} profile updated with new link`);
             } else {
-                this.logger.warn(`🔗 [rotateInviteLink] No teacher found with telegramGroupChatId=${chatId}`);
+                this.logger.warn(`No teacher found with telegramGroupChatId=${chatId}`);
             }
 
             return inviteLink;
         } catch (error) {
             this.logger.error(`Error in rotateInviteLink: ${error.message}`);
-            this.logger.error(`Error stack: ${error.stack}`);
             return null;
         }
     }
