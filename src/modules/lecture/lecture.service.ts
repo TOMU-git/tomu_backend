@@ -5,6 +5,8 @@ import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
 import { ILectureService } from './interfaces/lecture.service';
 import { ILectureRepository } from './interfaces/lecture.repository';
+import { IGroupRepository } from '../group/interfaces/group.repository';
+import { IGrammarRepository } from '../grammar/interfaces/grammar.repository';
 import { ResData } from 'src/lib/resData';
 import { Lecture } from './entities/lecture.entity';
 import { ID } from 'src/common/types/type';
@@ -21,9 +23,9 @@ export class LectureService implements ILectureService {
     @Inject('ILectureRepository')
     private readonly lectureRepository: ILectureRepository,
     @Inject('IGroupRepository')
-    private readonly groupRepository: any,
+    private readonly groupRepository: IGroupRepository,
     @Inject('IGrammarRepository')
-    private readonly grammarRepository: any,
+    private readonly grammarRepository: IGrammarRepository,
     private readonly scheduleCalculator: ScheduleCalculatorService,
     private readonly notificationService: NotificationService,
     private readonly eventEmitter: EventEmitter2,
@@ -188,21 +190,25 @@ export class LectureService implements ILectureService {
     const nextGrammar = await this.grammarRepository.findOneByOrder(nextOrder, group.courseId);
 
     if (!nextGrammar) {
-      this.logger.log(`No more grammar topics for group ${groupId}. Course seems finished.`);
-      // Bu yerda kurs tugaganligini bildirish mumkin
+      this.logger.log(`No more grammar topics for group ${groupId}. Course finished.`);
       return;
     }
 
     // 3. Keyingi dars vaqtini hisoblaymiz
     const currentStep = [9, 11, 13, 15, 17, 19, 10, 12, 14, 16, 18, 20].indexOf(lastLecture.startTime.getHours());
-    const stepIndex = currentStep !== -1 ? currentStep : 3; // Default 15:00 if unknown
+    const stepIndex = currentStep !== -1 ? currentStep : 3;
     let nextTimeData = this.scheduleCalculator.calculateNextLectureTime(lastLecture.startTime, stepIndex);
 
-    // Agar hisoblangan vaqt o'tmishda bo'lsa (oxirgi dars ancha oldin bo'lgan), 
-    // kelajakdagi birinchi mos vaqtni topguncha davom etamiz
+    // Agar hisoblangan vaqt o'tmishda bo'lsa, kelajakdagi birinchi mos vaqtni topamiz
     const now = new Date();
+    let loopCount = 0;
     while (nextTimeData.date < now) {
       nextTimeData = this.scheduleCalculator.calculateNextLectureTime(nextTimeData.date, nextTimeData.nextStep);
+      loopCount++;
+      if (loopCount > 1000) {
+        this.logger.error(`Infinite loop detected in scheduleNextLecture for group ${groupId}`);
+        return;
+      }
     }
 
     const nextStartTime = nextTimeData.date;
@@ -223,7 +229,7 @@ export class LectureService implements ILectureService {
 
     this.logger.log(`Scheduled next lecture #${created.id} (Order: ${nextOrder}) for group ${groupId}`);
 
-    // Event emit (agar kerak bo'lsa, masalan notification uchun)
+    // Event emit (notification uchun)
     this.eventEmitter.emit('lecture.created', new LectureCreatedEvent(
       created.id,
       created.title,

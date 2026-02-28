@@ -6,7 +6,7 @@ services:
     image: postgres:15
     container_name: tomu_postgres
     environment:
-      POSTGRES_DB: tomu_lms
+      POSTGRES_DB: lms
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
