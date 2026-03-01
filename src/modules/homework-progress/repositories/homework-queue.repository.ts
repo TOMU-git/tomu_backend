@@ -182,12 +182,15 @@ export class HomeworkQueueRepository {
    */
   async countQueueItemsByUserId(userId: ID, courseId: ID): Promise<number> {
     const now = new Date();
-    return this.repository
-      .createQueryBuilder('queue')
-      .where('queue.userId = :userId', { userId: Number(userId) })
-      .andWhere('queue.courseId = :courseId', { courseId: Number(courseId) })
-      .andWhere('(queue.scheduledAt IS NULL OR queue.scheduledAt <= :now)', { now })
-      .getCount();
+    // SQL timezone mismatch muammosidan qochish uchun application-da filterlanadi
+    // (getUserHomeworkVideos bilan bir xil mantiq)
+    const items = await this.repository.find({
+      where: { userId: Number(userId), courseId: Number(courseId) },
+      select: ['id', 'scheduledAt'],
+    });
+    return items.filter(
+      item => !item.scheduledAt || new Date(item.scheduledAt) <= now
+    ).length;
   }
 
   /**
@@ -216,21 +219,31 @@ export class HomeworkQueueRepository {
    */
   async countQueueItemsGroupedByCourse(userId: ID): Promise<Array<{ courseTitle: string; count: number }>> {
     const now = new Date();
-    const result = await this.repository
+    // SQL timezone mismatch muammosidan qochish uchun application-da filterlanadi
+    // (getUserHomeworkVideos bilan bir xil mantiq)
+    const allItems = await this.repository
       .createQueryBuilder('queue')
       .leftJoin('courses', 'course', 'course.id = queue.courseId')
-      .select('queue.courseId', 'courseId')
-      .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
-      .addSelect('COUNT(queue.id)', 'count')
+      .select(['queue.id', 'queue.courseId', 'queue.scheduledAt'])
+      .addSelect("COALESCE(course.lang, 'unknown')", 'courseTitle')
       .where('queue.userId = :userId', { userId: Number(userId) })
-      .andWhere('(queue.scheduledAt IS NULL OR queue.scheduledAt <= :now)', { now })
-      .groupBy('queue.courseId')
-      .orderBy('queue.courseId', 'ASC')
       .getRawMany();
 
-    return result.map(item => ({
-      courseTitle: item.courseTitle,
-      count: parseInt(item.count, 10)
-    }));
+    // scheduledAt vaqti kelgan yoki null bo'lgan itemlarni filtrlash
+    const readyItems = allItems.filter(
+      item => !item.queue_scheduledAt || new Date(item.queue_scheduledAt) <= now
+    );
+
+    // kurs bo'yicha guruhlash
+    const courseMap = new Map<number, { courseTitle: string; count: number }>();
+    for (const item of readyItems) {
+      const courseId = item.queue_courseId;
+      if (!courseMap.has(courseId)) {
+        courseMap.set(courseId, { courseTitle: item.courseTitle ?? 'unknown', count: 0 });
+      }
+      courseMap.get(courseId).count += 1;
+    }
+
+    return Array.from(courseMap.values());
   }
 }
