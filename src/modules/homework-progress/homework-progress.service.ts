@@ -140,8 +140,19 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     // hasEverPaid false va ko'rilgan darslar >= 29 bo'lsa, sekinlashtirilgan rejim
     let isSlowMode = false;
+    let isWatchedFreeLessons = false;
+    let isHasEverPaid = false;
 
-    if (!subscriptionStatus.isActive) {
+    const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
+    if (watchedLessons && watchedLessons.length >= 29) {
+      isWatchedFreeLessons = true;
+    }
+
+    if(!subscriptionStatus.hasEverPaid){
+      isHasEverPaid = true;
+    }
+
+    if(isWatchedFreeLessons && isHasEverPaid && !subscriptionStatus.isActive){
       isSlowMode = true;
     }
 
