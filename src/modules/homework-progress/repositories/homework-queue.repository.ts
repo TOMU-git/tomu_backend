@@ -184,9 +184,9 @@ export class HomeworkQueueRepository {
     const now = new Date();
     return this.repository
       .createQueryBuilder('queue')
-      .where('queue.user_id = :userId', { userId: Number(userId) })
-      .andWhere('queue.course_id = :courseId', { courseId: Number(courseId) })
-      .andWhere('(queue.scheduled_at IS NULL OR queue.scheduled_at <= :now)', { now })
+      .where('queue.userId = :userId', { userId: Number(userId) })
+      .andWhere('queue.courseId = :courseId', { courseId: Number(courseId) })
+      .andWhere('(queue.scheduledAt IS NULL OR queue.scheduledAt <= :now)', { now })
       .getCount();
   }
 
@@ -218,14 +218,14 @@ export class HomeworkQueueRepository {
     const now = new Date();
     const result = await this.repository
       .createQueryBuilder('queue')
-      .leftJoin('courses', 'course', 'course.id = queue.course_id')
-      .select('queue.course_id', 'courseId')
+      .leftJoin('courses', 'course', 'course.id = queue.courseId')
+      .select('queue.courseId', 'courseId')
       .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
       .addSelect('COUNT(queue.id)', 'count')
-      .where('queue.user_id = :userId', { userId: Number(userId) })
-      .andWhere('(queue.scheduled_at IS NULL OR queue.scheduled_at <= :now)', { now })
-      .groupBy('queue.course_id')
-      .orderBy('queue.course_id', 'ASC')
+      .where('queue.userId = :userId', { userId: Number(userId) })
+      .andWhere('(queue.scheduledAt IS NULL OR queue.scheduledAt <= :now)', { now })
+      .groupBy('queue.courseId')
+      .orderBy('queue.courseId', 'ASC')
       .getRawMany();
 
     return result.map(item => ({
