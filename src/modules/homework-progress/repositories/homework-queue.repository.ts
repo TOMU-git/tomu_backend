@@ -175,14 +175,19 @@ export class HomeworkQueueRepository {
 
   /**
    * Foydalanuvchi ID si bo'yicha uyga vazifa navbatidagi elementlar sonini hisoblash
+   * Faqat scheduledAt vaqti kelgan yoki null bo'lgan elementlarni sanaydi
    * 
    * @param userId - Foydalanuvchi ID
    * @returns Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni
    */
   async countQueueItemsByUserId(userId: ID, courseId: ID): Promise<number> {
-    return this.repository.count({
-      where: { userId: Number(userId), courseId: Number(courseId) }
-    });
+    const now = new Date();
+    return this.repository
+      .createQueryBuilder('queue')
+      .where('queue.user_id = :userId', { userId: Number(userId) })
+      .andWhere('queue.course_id = :courseId', { courseId: Number(courseId) })
+      .andWhere('(queue.scheduled_at IS NULL OR queue.scheduled_at <= :now)', { now })
+      .getCount();
   }
 
   /**
@@ -210,6 +215,7 @@ export class HomeworkQueueRepository {
    * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs tili (ar, eng, ru)
    */
   async countQueueItemsGroupedByCourse(userId: ID): Promise<Array<{ courseTitle: string; count: number }>> {
+    const now = new Date();
     const result = await this.repository
       .createQueryBuilder('queue')
       .leftJoin('courses', 'course', 'course.id = queue.course_id')
@@ -217,6 +223,7 @@ export class HomeworkQueueRepository {
       .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
       .addSelect('COUNT(queue.id)', 'count')
       .where('queue.user_id = :userId', { userId: Number(userId) })
+      .andWhere('(queue.scheduled_at IS NULL OR queue.scheduled_at <= :now)', { now })
       .groupBy('queue.course_id')
       .orderBy('queue.course_id', 'ASC')
       .getRawMany();
