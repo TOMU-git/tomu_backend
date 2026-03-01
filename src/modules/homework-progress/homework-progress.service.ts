@@ -148,11 +148,11 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       isWatchedFreeLessons = true;
     }
 
-    if(subscriptionStatus.hasEverPaid){
+    if (subscriptionStatus.hasEverPaid) {
       isHasEverPaid = true;
     }
 
-    if(isHasEverPaid && !subscriptionStatus.isActive){
+    if (isHasEverPaid && !subscriptionStatus.isActive) {
       isSlowMode = true;
     }
 
