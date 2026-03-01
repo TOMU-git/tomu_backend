@@ -156,12 +156,8 @@ export class HomeworkProgressService implements IHomeworkProgressService {
       isSlowMode = true;
     }
 
-    if (!subscriptionStatus.hasEverPaid) {
-      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
-      if (watchedLessons && watchedLessons.length >= 29) {
-        isSlowMode = true;
-        this.logger.log(`User ${userId} hech to'lov qilmagan va ${watchedLessons.length} ta dars ko'rgan, 5 soatlik interval qo'llanildi`);
-      }
+    if (!isHasEverPaid && isWatchedFreeLessons) {
+      isSlowMode = true;
     }
 
     // Agar sekinlashtirilgan rejimda bo'lsa — queue'da hali scheduledAt vaqti kelmagan homework bormi tekshirish
