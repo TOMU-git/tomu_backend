@@ -230,14 +230,15 @@ export class HomeworkQueueRepository {
       .getRawMany();
 
     // scheduledAt vaqti kelgan yoki null bo'lgan itemlarni filtrlash
+    // getRawMany() DB kolonlarini snake_case formatida qaytaradi: scheduled_at, course_id
     const readyItems = allItems.filter(
-      item => !item.queue_scheduledAt || new Date(item.queue_scheduledAt) <= now
+      item => !item.queue_scheduled_at || new Date(item.queue_scheduled_at) <= now
     );
 
     // kurs bo'yicha guruhlash
     const courseMap = new Map<number, { courseTitle: string; count: number }>();
     for (const item of readyItems) {
-      const courseId = item.queue_courseId;
+      const courseId = item.queue_course_id;
       if (!courseMap.has(courseId)) {
         courseMap.set(courseId, { courseTitle: item.courseTitle ?? 'unknown', count: 0 });
       }
