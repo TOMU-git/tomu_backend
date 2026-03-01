@@ -138,6 +138,37 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
     if (!userCourse) return;
 
+    // hasEverPaid false va ko'rilgan darslar >= 29 bo'lsa, sekinlashtirilgan rejim
+    let isSlowMode = false;
+
+    if (!subscriptionStatus.isActive) {
+      isSlowMode = true;
+    }
+
+    if (!subscriptionStatus.hasEverPaid) {
+      const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
+      if (watchedLessons && watchedLessons.length >= 29) {
+        isSlowMode = true;
+        this.logger.log(`User ${userId} hech to'lov qilmagan va ${watchedLessons.length} ta dars ko'rgan, 5 soatlik interval qo'llanildi`);
+      }
+    }
+
+    // Agar sekinlashtirilgan rejimda bo'lsa — queue'da hali scheduledAt vaqti kelmagan homework bormi tekshirish
+    // Bor bo'lsa, yangi qo'shmaymiz (5 soatlik interval saqlanadi)
+    if (isSlowMode) {
+      const queuedItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
+
+      const hasPendingScheduled = queuedItems.some(
+        item => item.scheduledAt && new Date(item.scheduledAt) > now
+      );
+
+      if (hasPendingScheduled) {
+        this.logger.log(
+          `User ${userId} sekinlashtirilgan rejimda va hali kutilayotgan vazifa bor, o'tkazildi`
+        );
+        return;
+      }
+    }
 
     // agar navbatdagi vazifalar soni 20 dan ortiq bo‘lsa, qo‘shishni o‘tkazmaymiz
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
@@ -155,10 +186,10 @@ export class HomeworkProgressService implements IHomeworkProgressService {
     // 5) Intervalni hisoblash (findByDate natijasiga asosan)
     let delayMinutes = 30; // default - aktiv obuna uchun har 30 daqiqada
 
-    // Agar obuna muddati tugagan bo‘lsa - 5 soatda yuborish
-    if (!subscriptionStatus.isActive) {
+    // Agar sekinlashtirilgan rejimda bo'lsa - 5 soatda yuborish
+    if (isSlowMode) {
       delayMinutes = 5 * 60; // 300 minut = 5 soat
-      this.logger.log(`User ${userId} obunasi tugagan, 5 soatlik interval qo‘llanildi`);
+      this.logger.log(`User ${userId} sekinlashtirilgan rejimda, 5 soatlik interval qo'llanildi`);
     }
 
     // 6) Keyingi yuborish vaqtini tayyorlash
