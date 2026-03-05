@@ -60,3 +60,39 @@ export class ForgotPassword{
   @IsNotEmpty()
   phone: string;
 }
+
+export class GoogleMobileAuthDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: "The idToken received from Google Sign-In on the mobile device",
+  })
+  @IsString()
+  @IsNotEmpty()
+  idToken: string;
+}
+
+export class AppleMobileAuthDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: "The identityToken received from Apple Sign-In on the mobile device",
+  })
+  @IsString()
+  @IsNotEmpty()
+  identityToken: string;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: "First name, usually only sent on the first successful login by Apple",
+  })
+  firstName?: string;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: "Last name, usually only sent on the first successful login by Apple",
+  })
+  lastName?: string;
+}
