@@ -14,6 +14,8 @@ import {
   LoginAuthDto,
   SentSmsDto,
   VerifyDto,
+  GoogleMobileAuthDto,
+  AppleMobileAuthDto,
 } from "./dto/auth.dto";
 import { IUserService } from "../user/interfaces/user.service";
 import { Auth } from "src/common/decorator/auth.decorator";
@@ -326,5 +328,40 @@ export class AuthController {
     const redirectUrl = `${frontendUrl}/auth/callback?access_token=${result.data.tokens.access_token}`;
 
     res.redirect(redirectUrl);
+  }
+
+  /**
+   * Google OAuth - Mobile SDK integration
+   * POST /api/auth/google/mobile
+   * App SDK sends idToken here for verification
+   */
+  @ApiOperation({
+    summary: "Google OAuth for Mobile SDKs",
+    description: "Verifies idToken received from Google SDK on iOS/Android and returns JWT",
+  })
+  @Post("google/mobile")
+  async googleMobileAuth(@Body() dto: GoogleMobileAuthDto, @Res() res: Response) {
+    const result = await this.authService.verifyGoogleMobileToken(dto.idToken, res);
+    res.send(result);
+  }
+
+  /**
+   * Apple OAuth - Mobile SDK integration
+   * POST /api/auth/apple/mobile
+   * App SDK sends identityToken here for verification
+   */
+  @ApiOperation({
+    summary: "Apple OAuth for Mobile SDKs",
+    description: "Verifies identityToken received from Apple Sign In on iOS/Android and returns JWT",
+  })
+  @Post("apple/mobile")
+  async appleMobileAuth(@Body() dto: AppleMobileAuthDto, @Res() res: Response) {
+    const result = await this.authService.verifyAppleMobileToken(
+      dto.identityToken,
+      dto.firstName,
+      dto.lastName,
+      res
+    );
+    res.send(result);
   }
 }
