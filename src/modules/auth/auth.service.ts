@@ -534,14 +534,9 @@ export class AuthService implements IAuthService {
     res: Response,
   ): Promise<ResData<ILoginData>> {
     try {
-      const gClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+      const gClient = new OAuth2Client();
       const ticket = await gClient.verifyIdToken({
         idToken,
-        audience: [
-          process.env.GOOGLE_CLIENT_ID,
-          process.env.GOOGLE_IOS_CLIENT_ID,
-          process.env.GOOGLE_ANDROID_CLIENT_ID
-        ].filter(Boolean) as string[],
       });
       const payload = ticket.getPayload();
 
