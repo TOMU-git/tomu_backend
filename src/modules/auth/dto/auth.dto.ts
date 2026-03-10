@@ -87,6 +87,8 @@ export class AppleMobileAuthDto {
     required: false,
     description: "First name, usually only sent on the first successful login by Apple",
   })
+  @IsString()
+  @IsNotEmpty()
   firstName?: string;
 
   @ApiProperty({
@@ -94,5 +96,7 @@ export class AppleMobileAuthDto {
     required: false,
     description: "Last name, usually only sent on the first successful login by Apple",
   })
+  @IsString()
+  @IsNotEmpty()
   lastName?: string;
 }
