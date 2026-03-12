@@ -56,7 +56,7 @@ export class LectureRepository implements ILectureRepository {
                 startTime: MoreThan(new Date()),
             },
             order: { startTime: 'ASC' },
-            relations: ['group'],
+            relations: ['group', 'group.course'],
         });
     }
 

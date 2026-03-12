@@ -257,7 +257,12 @@ export class LectureService implements ILectureService {
       throw new NotFoundException('No upcoming lectures found for this group');
     }
 
-    return new ResData<Lecture>('Upcoming lecture found', 200, lecture);
+    const result = {
+      ...lecture,
+      courseImage: lecture.group?.course?.imageUrl || null,
+    } as unknown as Lecture;
+
+    return new ResData<Lecture>('Upcoming lecture found', 200, result);
   }
 
   /**
