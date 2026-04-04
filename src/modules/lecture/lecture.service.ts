@@ -246,15 +246,15 @@ export class LectureService implements ILectureService {
     return new ResData<Lecture[]>('Lectures found', 200, lectures);
   }
 
-  async getLectureByUserId(userId: ID): Promise<ResData<Lecture>> {
+  async getLectureByUserId(userId: ID): Promise<ResData<Lecture[]>> {
     const group = await this.groupRepository.findByUserId(userId);
     if (!group) {
-      throw new NotFoundException('User is not in any group');
+      return new ResData<Lecture[]>('User is not assigned to any group', 200, []);
     }
 
     const lecture = await this.lectureRepository.findUpcomingByGroupId(group.id);
     if (!lecture) {
-      throw new NotFoundException('No upcoming lectures found for this group');
+      return new ResData<Lecture[]>('No upcoming lectures at the moment', 200, []);
     }
 
     const result = {
@@ -262,7 +262,7 @@ export class LectureService implements ILectureService {
       courseImage: lecture.group?.course?.imageUrl || null,
     } as unknown as Lecture;
 
-    return new ResData<Lecture>('Upcoming lecture found', 200, result);
+    return new ResData<Lecture[]>('Upcoming lecture found', 200, [result]);
   }
 
   /**
