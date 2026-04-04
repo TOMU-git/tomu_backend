@@ -256,7 +256,7 @@ export class AuthService implements IAuthService {
       const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
       console.log('[Auth Service] Message prepared, calling SMS service...');
 
-      await this.smsService.sendSMS(sendSmsDto.phone, message);
+      await this.smsService.sendSMS(sendSmsDto.phone, message, "otp");
       console.log('[Auth Service] SMS service call completed successfully');
 
       await this.cacheManager.set(sendSmsDto.phone, generatedCode, 120000);
@@ -290,7 +290,7 @@ export class AuthService implements IAuthService {
 
     const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
 
-    await this.smsService.sendSMS(dto.phone, message);
+    await this.smsService.sendSMS(dto.phone, message, "forgot-password");
 
     await this.cacheManager.set(dto.phone, generatedCode, 120000);
     return new ResData<SmsSent>("Message sent successfully", 200, {

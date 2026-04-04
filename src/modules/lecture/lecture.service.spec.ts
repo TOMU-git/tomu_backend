@@ -123,10 +123,10 @@ describe('LectureService', () => {
     expect(eventEmitterVal.emit).toHaveBeenCalledWith('lecture.created', expect.any(Object));
   });
 
-  it('getLectureByUserId should return upcoming lecture', async () => {
+  it('getLectureByUserId should return upcoming lecture in array', async () => {
     const userId = 1;
     const group = { id: 10 };
-    const lecture = { id: 100, title: 'Upcoming Lecture' };
+    const lecture = { id: 100, title: 'Upcoming Lecture', group: null };
 
     groupRepositoryVal.findByUserId = jest.fn().mockReturnValue(Promise.resolve(group));
     lectureRepositoryVal.findUpcomingByGroupId = jest.fn().mockReturnValue(Promise.resolve(lecture));
@@ -135,6 +135,30 @@ describe('LectureService', () => {
 
     expect(groupRepositoryVal.findByUserId).toHaveBeenCalledWith(userId);
     expect(lectureRepositoryVal.findUpcomingByGroupId).toHaveBeenCalledWith(group.id);
-    expect(result.data).toEqual(lecture);
+    expect(Array.isArray(result.data)).toBe(true);
+    expect(result.data).toHaveLength(1);
+    expect(result.statusCode).toBe(200);
+  });
+
+  it('getLectureByUserId should return empty array when user has no group', async () => {
+    groupRepositoryVal.findByUserId = jest.fn().mockReturnValue(Promise.resolve(null));
+
+    const result = await service.getLectureByUserId(99);
+
+    expect(Array.isArray(result.data)).toBe(true);
+    expect(result.data).toHaveLength(0);
+    expect(result.statusCode).toBe(200);
+  });
+
+  it('getLectureByUserId should return empty array when no upcoming lecture', async () => {
+    const group = { id: 10 };
+    groupRepositoryVal.findByUserId = jest.fn().mockReturnValue(Promise.resolve(group));
+    lectureRepositoryVal.findUpcomingByGroupId = jest.fn().mockReturnValue(Promise.resolve(null));
+
+    const result = await service.getLectureByUserId(1);
+
+    expect(Array.isArray(result.data)).toBe(true);
+    expect(result.data).toHaveLength(0);
+    expect(result.statusCode).toBe(200);
   });
 });
