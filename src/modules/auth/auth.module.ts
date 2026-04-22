@@ -15,6 +15,7 @@ import { GoogleOAuthGuard } from "./guards/google-oauth.guard";
 import { AppleOAuthGuard } from "./guards/apple-oauth.guard";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../user/entities/user.entity";
+import { SmsLogModule } from "../sms-log/sms-log.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { User } from "../user/entities/user.entity";
     UserModule,
     CourseModule,
     UserDeviceModule,
+    SmsLogModule,
   ],
   controllers: [AuthController],
   providers: [

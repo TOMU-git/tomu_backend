@@ -35,6 +35,8 @@ import { IDeviceService } from "src/modules/user-device/interfaces/device.servic
 import { DeviceInfoDto } from "src/modules/user-device/dto/device-info.dto";
 import { IOAuthProfile, IOAuthUserData } from "./interfaces/oauth-profile.interface";
 import { AuthProviderEnum, GenderEnum } from "src/common/enums/enum";
+import { OAuth2Client } from "google-auth-library";
+import * as appleSignin from "apple-signin-auth";
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -254,7 +256,7 @@ export class AuthService implements IAuthService {
       const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
       console.log('[Auth Service] Message prepared, calling SMS service...');
 
-      await this.smsService.sendSMS(sendSmsDto.phone, message);
+      await this.smsService.sendSMS(sendSmsDto.phone, message, "otp");
       console.log('[Auth Service] SMS service call completed successfully');
 
       await this.cacheManager.set(sendSmsDto.phone, generatedCode, 120000);
@@ -288,7 +290,7 @@ export class AuthService implements IAuthService {
 
     const message = `TOMU platformasi uchun tasdiqlash kodi: ${generatedCode}`;
 
-    await this.smsService.sendSMS(dto.phone, message);
+    await this.smsService.sendSMS(dto.phone, message, "forgot-password");
 
     await this.cacheManager.set(dto.phone, generatedCode, 120000);
     return new ResData<SmsSent>("Message sent successfully", 200, {
@@ -520,6 +522,78 @@ export class AuthService implements IAuthService {
         "Apple authentication failed",
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  /**
+   * Verify Google Mobile Token
+   * Decode the token sent from Flutter and authenticate/register the user
+   */
+  async verifyGoogleMobileToken(
+    idToken: string,
+    res: Response,
+  ): Promise<ResData<ILoginData>> {
+    try {
+      const gClient = new OAuth2Client();
+      const ticket = await gClient.verifyIdToken({
+        idToken,
+      });
+      const payload = ticket.getPayload();
+
+      if (!payload) {
+        throw new HttpException("Invalid Google token payload", HttpStatus.UNAUTHORIZED);
+      }
+
+      const profile: IOAuthProfile = {
+        provider: 'google',
+        providerId: payload.sub,
+        email: payload.email || '',
+        emailVerified: payload.email_verified || false,
+        firstName: payload.given_name || '',
+        lastName: payload.family_name || '',
+        avatar: payload.picture,
+      };
+
+      return await this.validateGoogleUser(profile, res);
+    } catch (error) {
+      console.error('[Auth Service] Google mobile token verification failed:', error);
+      throw new HttpException("Invalid Google token", HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  /**
+   * Verify Apple Mobile Token
+   * Decode the identityToken sent from Flutter and authenticate/register the user
+   */
+  async verifyAppleMobileToken(
+    identityToken: string,
+    firstName: string | undefined,
+    lastName: string | undefined,
+    res: Response,
+  ): Promise<ResData<ILoginData>> {
+    try {
+      const appleIdTokenClaims = await appleSignin.verifyIdToken(identityToken, {
+        audience: [
+          process.env.APPLE_CLIENT_ID,     // Web Service ID
+          process.env.APPLE_BUNDLE_ID      // Mobile App Bundle ID
+        ].filter(Boolean) as string[],
+        ignoreExpiration: false,
+      });
+
+      const profile: IOAuthProfile = {
+        provider: 'apple',
+        providerId: appleIdTokenClaims.sub, // The unique Apple user ID
+        email: appleIdTokenClaims.email || '',
+        emailVerified: appleIdTokenClaims.email_verified === 'true' || appleIdTokenClaims.email_verified === true,
+        firstName: firstName || '', // Apple only sends names on the first successful login
+        lastName: lastName || '',
+        avatar: undefined,
+      };
+
+      return await this.validateAppleUser(profile, res);
+    } catch (error) {
+      console.error('[Auth Service] Apple mobile token verification failed:', error);
+      throw new HttpException("Invalid Apple token", HttpStatus.UNAUTHORIZED);
     }
   }
 }

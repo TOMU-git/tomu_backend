@@ -14,6 +14,7 @@ import { LessonRepository } from "../lesson/lesson.repository";
 import { BlockRepository } from "../block/block.repository";
 import { IHomeworkRepository } from "../homework/interfaces/homework.repository";
 import { IUserCourseRepository } from "../user-courses/interfaces/user-course.repository";
+import { IUserCourseService } from "../user-courses/interfaces/user-course.service";
 import { ILessonProgressService } from "../lesson-progress/interfaces/lesson-progress.service";
 import { generateVimeoEmbedUrl } from "src/common/utils/helper";
 
@@ -48,6 +49,9 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
     @Inject("IUserCourseRepository")
     private readonly userCourseRepository: IUserCourseRepository,
+
+    @Inject("IUserCourseService")
+    private readonly userCourseService: IUserCourseService,
   ) {
     // Schedule service initialization
     this.initializeSchedulers();
@@ -120,53 +124,79 @@ export class HomeworkProgressService implements IHomeworkProgressService {
 
   // Foydalanuvchi uchun yangi uy vazifa jadvallash
   private async scheduleHomeworkForUser(userId: ID, courseId: ID) {
+
+
+    // findByDate orqali obuna muddatini tekshirish va isActive ni yangilash
+    const now = new Date();
+    const { data: subscriptionStatus } = await this.userCourseService.findByDate(
+      Number(userId),
+      now,
+      Number(courseId),
+    );
+
     // 1) Kurs holatini o‘qish
     const userCourse = await this.userCourseRepository.findByUserIdAndCourseId(userId, courseId);
     if (!userCourse) return;
 
-    // agar navbatdagi vazifalar soni 20 dan ortiq bo'lsa, qo'shishni o'tkazmaymiz
+    // hasEverPaid false va ko'rilgan darslar >= 29 bo'lsa, sekinlashtirilgan rejim
+    let isSlowMode = false;
+    let isWatchedFreeLessons = false;
+    let isHasEverPaid = false;
+
+    const watchedLessons = await this.lessonProgressRepository.findAllWatchedLessonsByUser(userId, courseId);
+    if (watchedLessons && watchedLessons.length >= 29) {
+      isWatchedFreeLessons = true;
+    }
+
+    if (subscriptionStatus.hasEverPaid) {
+      isHasEverPaid = true;
+    }
+
+    if (isHasEverPaid && !subscriptionStatus.isActive) {
+      isSlowMode = true;
+    }
+
+    if (!isHasEverPaid && isWatchedFreeLessons) {
+      isSlowMode = true;
+    }
+
+    // Agar sekinlashtirilgan rejimda bo'lsa — queue'da hali scheduledAt vaqti kelmagan homework bormi tekshirish
+    // Bor bo'lsa, yangi qo'shmaymiz (5 soatlik interval saqlanadi)
+    if (isSlowMode) {
+      const queuedItems = await this.homeworkQueueRepository.findByUserIdAndCourseId(userId, courseId);
+
+      const hasPendingScheduled = queuedItems.some(
+        item => item.scheduledAt && new Date(item.scheduledAt) > now
+      );
+
+      if (hasPendingScheduled) {
+        this.logger.log(
+          `User ${userId} sekinlashtirilgan rejimda va hali kutilayotgan vazifa bor, o'tkazildi`
+        );
+        return;
+      }
+    }
+
+    // agar navbatdagi vazifalar soni 20 dan ortiq bo‘lsa, qo‘shishni o‘tkazmaymiz
     const pendingCount = await this.homeworkQueueRepository.countPendingHomeworksByUser(userId);
-    // console.log("pendingCount", pendingCount);
     if (pendingCount >= 20) {
-      // console.log("Queue limit reached, skipping...");
       return new ResData("Queue to‘la", 400);
     }
 
-    // // 2) Joriy modul order va eligible modul orderlarini aniqlash
-    // const currentOrder = await this.getCurrentUserModule(userId, courseId);
-    // // console.log("currentOrder", currentOrder);
-    // const eligibleModules = this.getEligibleModules(currentOrder);
-    // // console.log("eligibleModules.length", eligibleModules.length);
-
     // 3) Tavsiya oling
     const recommendations = await this.getHomeworkRecommendations(userId, courseId);
-    // console.log("recommendations.length", recommendations.length);
     if (!recommendations.length) return;
 
-
-    // 4) Recommendation ob’ekti – sizda mana shunday struktura:
-    //    { userId: number, homeworkId: number, priority: number, courseId: number }
+    // 4) Recommendation ob’ekti
     const candidate = recommendations[0];
 
-    // 5) Intervalni hisoblash
-    let delayMinutes = 30; // default
+    // 5) Intervalni hisoblash (findByDate natijasiga asosan)
+    let delayMinutes = 30; // default - aktiv obuna uchun har 30 daqiqada
 
-    // Free trial user va 29+ dars tugatgan bo'lsa
-    if (userCourse.onFreeTrial && !userCourse.hasEverPaid && !userCourse.isActive) {
-      const completedLessons = await this.lessonProgressRepository.countCompletedLessonsInBlock(
-        userId,
-        courseId,
-        1 // 1-bo'lim
-      );
-
-      if (completedLessons >= 29) {
-        delayMinutes = 5 * 60; // 300 minut = 5 soat
-        this.logger.log(`Free trial user ${userId} has completed ${completedLessons} lessons, applying 5-hour interval`);
-      }
-    }
-    // Puli tugagan user
-    else if (userCourse.hasEverPaid && !userCourse.isActive) {
+    // Agar sekinlashtirilgan rejimda bo'lsa - 5 soatda yuborish
+    if (isSlowMode) {
       delayMinutes = 5 * 60; // 300 minut = 5 soat
+      this.logger.log(`User ${userId} sekinlashtirilgan rejimda, 5 soatlik interval qo'llanildi`);
     }
 
     // 6) Keyingi yuborish vaqtini tayyorlash

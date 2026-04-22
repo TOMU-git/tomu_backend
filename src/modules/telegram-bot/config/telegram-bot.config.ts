@@ -45,10 +45,22 @@ export class TelegramBotConfig {
             instruction;
     }
 
-    getClaimConfirmationMessage(lectureTitle: string, teacherName: string): string {
-        return `✅ <b>Dars qabul qilindi!</b>\n\n` +
+    getClaimConfirmationMessage(lectureTitle: string, teacherName: string, startTime: Date): string {
+        const formattedDate = startTime.toLocaleDateString('uz-UZ', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        const formattedTime = startTime.toLocaleTimeString('uz-UZ', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        return `✅ <b>Dars qabul qilindi!</b>\n\n` +    
             `👨‍🏫 <b>Ustoz:</b> ${teacherName}\n` +
-            `📚 <b>Dars:</b> ${lectureTitle}\n\n` +
+            `📚 <b>Dars:</b> ${lectureTitle}\n` +
+            `📅 <b>Sana:</b> ${formattedDate}\n` +
+            `🕐 <b>Vaqt:</b> ${formattedTime}\n\n` +
             `Guruh linki muvaffaqiyatli biriktirildi!`;
     }
 

@@ -33,11 +33,19 @@ export class LectureResponseDto {
 
     @ApiProperty({
         type: Number,
-        example: 90,
+        example: 60,
         description: 'Duration of the lecture in minutes',
         required: false,
     })
     duration?: number;
+
+    @ApiProperty({
+        type: String,
+        example: 'https://example.com/course-image.jpg',
+        description: 'Course image URL',
+        required: false,
+    })
+    courseImage?: string;
 
     @ApiProperty({
         enum: LectureStatusEnum,

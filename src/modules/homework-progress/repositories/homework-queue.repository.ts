@@ -175,14 +175,22 @@ export class HomeworkQueueRepository {
 
   /**
    * Foydalanuvchi ID si bo'yicha uyga vazifa navbatidagi elementlar sonini hisoblash
+   * Faqat scheduledAt vaqti kelgan yoki null bo'lgan elementlarni sanaydi
    * 
    * @param userId - Foydalanuvchi ID
    * @returns Foydalanuvchi uchun uyga vazifa navbatidagi elementlar soni
    */
   async countQueueItemsByUserId(userId: ID, courseId: ID): Promise<number> {
-    return this.repository.count({
-      where: { userId: Number(userId), courseId: Number(courseId) }
+    const now = new Date();
+    // SQL timezone mismatch muammosidan qochish uchun application-da filterlanadi
+    // (getUserHomeworkVideos bilan bir xil mantiq)
+    const items = await this.repository.find({
+      where: { userId: Number(userId), courseId: Number(courseId) },
+      select: ['id', 'scheduledAt'],
     });
+    return items.filter(
+      item => !item.scheduledAt || new Date(item.scheduledAt) <= now
+    ).length;
   }
 
   /**
@@ -210,20 +218,33 @@ export class HomeworkQueueRepository {
    * @returns Har bir kurs uchun uyga vazifa navbatidagi elementlar soni va kurs tili (ar, eng, ru)
    */
   async countQueueItemsGroupedByCourse(userId: ID): Promise<Array<{ courseTitle: string; count: number }>> {
-    const result = await this.repository
+    const now = new Date();
+    // SQL timezone mismatch muammosidan qochish uchun application-da filterlanadi
+    // (getUserHomeworkVideos bilan bir xil mantiq)
+    const allItems = await this.repository
       .createQueryBuilder('queue')
-      .leftJoin('courses', 'course', 'course.id = queue.course_id')
-      .select('queue.course_id', 'courseId')
-      .addSelect('COALESCE(MAX(course.lang), \'unknown\')', 'courseTitle')
-      .addSelect('COUNT(queue.id)', 'count')
-      .where('queue.user_id = :userId', { userId: Number(userId) })
-      .groupBy('queue.course_id')
-      .orderBy('queue.course_id', 'ASC')
+      .leftJoin('courses', 'course', 'course.id = queue.courseId')
+      .select(['queue.id', 'queue.courseId', 'queue.scheduledAt'])
+      .addSelect("COALESCE(course.lang, 'unknown')", 'courseTitle')
+      .where('queue.userId = :userId', { userId: Number(userId) })
       .getRawMany();
 
-    return result.map(item => ({
-      courseTitle: item.courseTitle,
-      count: parseInt(item.count, 10)
-    }));
+    // scheduledAt vaqti kelgan yoki null bo'lgan itemlarni filtrlash
+    // getRawMany() DB kolonlarini snake_case formatida qaytaradi: scheduled_at, course_id
+    const readyItems = allItems.filter(
+      item => !item.queue_scheduled_at || new Date(item.queue_scheduled_at) <= now
+    );
+
+    // kurs bo'yicha guruhlash
+    const courseMap = new Map<number, { courseTitle: string; count: number }>();
+    for (const item of readyItems) {
+      const courseId = item.queue_course_id;
+      if (!courseMap.has(courseId)) {
+        courseMap.set(courseId, { courseTitle: item.courseTitle ?? 'unknown', count: 0 });
+      }
+      courseMap.get(courseId).count += 1;
+    }
+
+    return Array.from(courseMap.values());
   }
 }
