@@ -25,7 +25,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
-  // ✅ Static assets serving - /public papkani serve qilish
+  // ✅ Static assets serving
   app.useStaticAssets('public', {
     prefix: '/public',
   });
