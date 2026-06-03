@@ -87,9 +87,9 @@ export class UserCourseService implements IUserCourseService {
       throw new UserCourseNotFoundException();
     }
     if (foundUserCourse.endedAt < day) {
-      foundUserCourse.isActive = false;
+      // foundUserCourse.isActive = false;
       // foydalanuvchini obunasi tugaganda isActive false qilinadi
-      await this.userCourseRepository.update(foundUserCourse);
+      // await this.userCourseRepository.update(foundUserCourse);
     }
     return new ResData<{ isActive: boolean, hasEverPaid: boolean }>("User course", 200, { isActive: foundUserCourse.isActive, hasEverPaid: foundUserCourse.hasEverPaid });
   }
